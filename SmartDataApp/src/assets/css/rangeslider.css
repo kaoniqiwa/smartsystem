@@ -1,0 +1,113 @@
+.rangeslider,
+.rangeslider__fill {
+  display: block;  
+  border-radius: 10px;
+}
+
+.rangeslider {
+  background: #50565f;
+  position: relative;
+}
+
+.rangeslider--horizontal {
+  height:4px;
+  width: 100%;
+}
+
+.rangeslider--vertical {
+  width: 20px;
+  min-height: 150px;
+  max-height: 100%;
+  height: 100%;
+}
+
+.rangeslider--disabled {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
+  opacity: 0.4;
+}
+
+.rangeslider__fill {
+  background: #69adff;
+  position: absolute;
+}
+.rangeslider--horizontal .rangeslider__fill {
+  top: 0;
+  height: 100%;
+}
+.rangeslider--vertical .rangeslider__fill {
+  bottom: 0;
+  width: 100%;
+}
+
+.rangeslider__handle {
+  background: white;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  display: inline-block;
+  width: 6px;
+  height: 10px;
+  position: absolute;
+
+  background-size: 100%;
+  
+   border: 1px solid #aaa;
+  
+ 
+}
+.rangeslider__handle:after {
+  content: "";
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+ 
+  border-radius: 50%;
+}
+.rangeslider__handle:active, .rangeslider--active .rangeslider__handle {
+  background-size: 100%;
+ 
+}
+.rangeslider--horizontal .rangeslider__handle {
+  top: -4px;
+  touch-action: pan-y;
+  -ms-touch-action: pan-y;
+}
+.rangeslider--vertical .rangeslider__handle {
+  left: -10px;
+  touch-action: pan-x;
+  -ms-touch-action: pan-x;
+}
+
+input[type="range"]:focus + .rangeslider .rangeslider__handle {
+  -moz-box-shadow: 0 0 8px rgba(255, 0, 255, 0.9);
+  -webkit-box-shadow: 0 0 8px rgba(255, 0, 255, 0.9);
+  box-shadow: 0 0 8px rgba(255, 0, 255, 0.9);
+}
+
+
+/** 电梯 样式*/ 
+.pillar-rangeslider {
+  background-image: url("../css/skin/technology/img/pillar-green.png");
+  background-repeat: no-repeat;
+  position: relative;
+}
+.pillar-rangeslider--vertical {
+  width: 136px;
+  min-height: calc(100% - 70px);
+  /* max-height: 100%;
+  height: 100%;  */
+}
+.pillar-rangeslider__handle{ 
+  display: inline-block;  
+  position: absolute;
+  background-image: url("../css/skin/technology/img/iron.png");
+  background-size: 100%;  
+  width: 99px;
+  height: 102px;
+  margin-left: 20px;
+}

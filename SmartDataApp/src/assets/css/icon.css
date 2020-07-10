@@ -1,0 +1,820 @@
+﻿.icon {
+    background-size: contain;
+}
+
+    .icon.message {
+        background-image: url('../img/icon/message_outline.png');
+    }
+
+    .icon.message_ie8 {
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/message_outline.png', sizingMethod='scale');
+        -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/message_outline.png', sizingMethod='scale')";
+    }
+
+    .icon.set {
+        background-image: url('../img/icon/engineering.png');
+    }
+
+    .icon.home {
+        background-image: url('../img/icon/home_blue.png');
+    }
+
+    .icon.slave {
+        background-image: url('../img/icon/slave.png');
+    }
+
+    .icon.line {
+        background-image: url('../img/icon/line.png');
+    }
+
+    /*.icon.user {
+        background-image: url('../img/icon/user.png');
+    }*/
+
+    .icon.device {
+        background-image: url('../img/icon/device_blue.png');
+        background-repeat: no-repeat;
+        background-position-y: center;
+        background-size: 38px;
+        width: 40px !important;
+    }
+
+        .icon.device.title {
+            height: 30px;
+            background-size: 40px;
+            float: left;
+            margin-left: 10px;
+            background-position-y: 0;
+        }
+
+    /*.icon.department {
+        background-image: url('../img/icon/flow_chart.png');
+    }*/
+
+    .icon.permissions {
+        background-image: url('../img/icon/key.png');
+    }
+
+    .icon.exit {
+        background-image: url('../img/icon/exit.png');
+    }
+
+    .icon.delete {
+        background-image: url('../img/icon/delete.png');
+    }
+
+    .icon.close {
+        background-image: url('../img/icon/close_window.png');
+    }
+
+/*类型方块用此颜色*/
+.label-lightblue {
+    background-color: #5BC0DE;
+}
+
+    .label-lightblue[href]:hover, .label-lightblue[href]:focus {
+        background-color: #00E5EE;
+    }
+/*状态方块用此颜色*/
+.label-darkgray {
+    background-color: #999999;
+}
+
+    .label-darkgray[href]:hover, .label-darkgray[href]:focus {
+        background-color: #999999;
+    }
+/*字符串多选方块用此颜色*/
+.label-doderblue {
+    background-color: #1E90FF;
+}
+
+    .label-doderblue[href]:hover, .label-doderblue[href]:focus {
+        background-color: #696969;
+    }
+
+.badge.yellow {
+    background-color: #fdf3e4;
+    color: #f0ad4e;
+}
+
+.badge.green {
+    background-color: #dff3df;
+    color: #60c560;
+}
+
+.badge.red {
+    background-color: #fbefee;
+    color: #d9534f;
+}
+
+.badge.lightblue {
+    background-color: #5BC0DE;
+    color: white;
+}
+
+.badge.darkgray {
+    background-color: #999999;
+    color: white;
+}
+
+.badge.doderblue {
+    background-color: #1E90FF;
+    color: white;
+}
+
+
+.label-magenta {
+    background-color: #d94084;
+}
+
+.label-tomato {
+    background-color: #e86060;
+}
+
+.label-taro {
+    background-color: #c189d2;
+}
+
+.label-teal {
+    background-color: #85a5dd;
+}
+
+.label-prunus {
+    background-color: #ee6098;
+}
+
+.label-66cc99 {
+    background-color: #66cc99;
+}
+
+.label-ffae71 {
+    background-color: #ffae71;
+}
+
+.background_icon {
+    background-size: cover;
+    width: 32px;
+    height: 32px;
+    line-height: 28px;
+    vertical-align: middle;
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+    margin-top: 14px;
+    margin-left: 18px;
+    float: left;
+}
+
+    .background_icon.eventstate.inactive {
+        background-image: url("../img/icon/eventstate/inactive.png");
+    }
+
+    .background_icon.eventstate.active {
+        background-image: url("../img/icon/eventstate/active.png");
+    }
+
+    .background_icon.eventtype.none {
+        background-image: url("../img/icon/eventtype/none_white.png");
+    }
+
+    .background_icon.eventtype.io {
+        background-image: url("../img/icon/eventtype/io_white.png");
+    }
+
+    .background_icon.eventtype.vmd {
+        background-image: url("../img/icon/eventtype/vmd_white.png");
+    }
+
+    .background_icon.eventtype.videoloss {
+        background-image: url("../img/icon/eventtype/videoloss_white.png");
+    }
+
+    .background_icon.eventtype.ircut {
+        background-image: url("../img/icon/eventtype/ircut_white.png");
+    }
+
+    .background_icon.eventtype.daynight {
+        background-image: url("../img/icon/eventtype/daynight_white.png");
+    }
+
+    .background_icon.eventtype.recordstate {
+        background-image: url("../img/icon/eventtype/recordstate_white.png");
+    }
+
+    .background_icon.eventtype.storagemediumfailure {
+        background-image: url("../img/icon/eventtype/storagemediumfailure_white.png");
+    }
+
+    .background_icon.eventtype.raidfailure {
+        background-image: url("../img/icon/eventtype/raidfailure_white.png");
+    }
+
+    .background_icon.eventtype.recordingfailure {
+        background-image: url("../img/icon/eventtype/recordingfailure_white.png");
+    }
+
+    .background_icon.eventtype.badvideo {
+        background-image: url("../img/icon/eventtype/badvideo_white.png");
+    }
+
+    .background_icon.eventtype.pos {
+        background-image: url("../img/icon/eventtype/pos_white.png");
+    }
+
+    .background_icon.eventtype.fanfailure {
+        background-image: url("../img/icon/eventtype/fanfailure_white.png");
+    }
+
+    .background_icon.eventtype.cpuusage {
+        background-image: url("../img/icon/eventtype/cpuusage_white.png");
+    }
+
+    .background_icon.eventtype.memoryusage {
+        background-image: url("../img/icon/eventtype/memoryusage_white.png");
+    }
+
+    .background_icon.eventtype.temperature {
+        background-image: url("../img/icon/eventtype/temperature_white.png");
+    }
+
+    .background_icon.eventtype.pressure {
+        background-image: url("../img/icon/eventtype/pressure_white.png");
+    }
+
+    .background_icon.eventtype.voltage {
+        background-image: url("../img/icon/eventtype/voltage_white.png");
+    }
+
+    .background_icon.eventtype.maximumconnections {
+        background-image: url("../img/icon/eventtype/maximumconnections_white.png");
+    }
+
+    .background_icon.eventtype.networkbitrate {
+        background-image: url("../img/icon/eventtype/networkbitrate_white.png");
+    }
+
+    .background_icon.eventtype.videobitrate {
+        background-image: url("../img/icon/eventtype/videobitrate_white.png");
+    }
+
+    .background_icon.eventtype.squint {
+        background-image: url("../img/icon/eventtype/squint_white.png");
+    }
+
+    .background_icon.eventtype.videoturned {
+        background-image: url("../img/icon/eventtype/videoturned_white.png");
+    }
+
+    .background_icon.eventtype.intrusion {
+        background-image: url("../img/icon/eventtype/intrusion_white.png");
+    }
+
+    .background_icon.eventtype.tripwire {
+        background-image: url("../img/icon/eventtype/tripwire_white.png");
+    }
+
+    .background_icon.eventtype.loitering {
+        background-image: url("../img/icon/eventtype/loitering_white.png");
+    }
+
+    .background_icon.eventtype.unattended {
+        background-image: url("../img/icon/eventtype/unattended_white.png");
+    }
+
+    .background_icon.eventtype.removal {
+        background-image: url("../img/icon/eventtype/removal_white.png");
+    }
+
+    .background_icon.eventtype.retrograde {
+        background-image: url("../img/icon/eventtype/retrograde_white.png");
+    }
+
+    .background_icon.eventtype.atmslot {
+        background-image: url("../img/icon/eventtype/atmslot_white.png");
+    }
+
+    .background_icon.eventtype.atmkeyboard {
+        background-image: url("../img/icon/eventtype/atmkeyboard_white.png");
+    }
+
+    .background_icon.eventtype.atmdamage {
+        background-image: url("../img/icon/eventtype/atmdamage_white.png");
+    }
+
+    .background_icon.eventtype.backroomnumberlimit {
+        background-image: url("../img/icon/eventtype/backroomnumberlimit_white.png");
+    }
+
+    .background_icon.eventtype.backroomcrouched {
+        background-image: url("../img/icon/eventtype/backroomcrouched_white.png");
+    }
+
+    .background_icon.eventtype.online {
+        background-image: url("../img/icon/eventtype/online_white.png");
+    }
+
+    .background_icon.eventtype.offline {
+        background-image: url("../img/icon/eventtype/offline_white.png");
+    }
+
+    .background_icon.iooutput {
+        background-image: url("../img/icon/iooutput.png");
+    }
+
+    .background_icon.decoding {
+        background-image: url("../img/icon/decoding.png");
+    }
+
+    .background_icon.permission.user.anonymous {
+        background-image: url("../img/icon/user/anonymous.png");
+    }
+
+    .background_icon.permission.user.operator {
+        background-image: url("../img/icon/user/operator.png");
+    }
+
+    .background_icon.permission.user.administrator {
+        background-image: url("../img/icon/user/administrator.png");
+    }
+
+    .background_icon.permission.user.extended {
+        background-image: url("../img/icon/user/extended.png");
+    }
+
+    .background_icon.permission.department.anonymous {
+        background-image: url("../img/icon/department/anonymous.png");
+    }
+
+    .background_icon.permission.department.operator {
+        background-image: url("../img/icon/department/operator.png");
+    }
+
+    .background_icon.permission.department.administrator {
+        background-image: url("../img/icon/department/administrator.png");
+    }
+
+    .background_icon.permission.department.extended {
+        background-image: url("../img/icon/department/extended.png");
+    }
+
+    .background_icon.classification.device.none {
+        background-image: url("../img/icon/classification/none.png");
+    }
+
+    .background_icon.classification.device.ipcamera {
+        background-image: url("../img/icon/classification/ipcamera.png");
+    }
+
+    .background_icon.classification.device.dvs {
+        background-image: url("../img/icon/classification/dvs.png");
+    }
+
+    .background_icon.classification.device.nvr {
+        background-image: url("../img/icon/classification/nvr.png");
+    }
+
+    .background_icon.classification.device.dvr {
+        background-image: url("../img/icon/classification/dvr.png");
+    }
+
+    .background_icon.classification.device.digitalmatrix {
+        background-image: url("../img/icon/classification/digitalmatrix.png");
+    }
+
+    .background_icon.classification.device.hddecoder {
+        background-image: url("../img/icon/classification/hddecoder.png");
+    }
+
+    .background_icon.classification.device.analogmatrix {
+        background-image: url("../img/icon/classification/analogmatrix.png");
+    }
+
+    .background_icon.classification.device.vas {
+        background-image: url("../img/icon/classification/vas.png");
+    }
+
+    .background_icon.classification.device.aam {
+        background-image: url("../img/icon/classification/aam.png");
+    }
+
+    .background_icon.classification.device.nam {
+        background-image: url("../img/icon/classification/nam.png");
+    }
+
+    .background_icon.classification.device.vps {
+        background-image: url("../img/icon/classification/vps.png");
+    }
+
+    .background_icon.classification.device.integratedmatrix {
+        background-image: url("../img/icon/classification/integratedmatrix.png");
+    }
+
+    .background_icon.classification.device.matrixcontrolunit {
+        background-image: url("../img/icon/classification/matrixcontrolunit.png");
+    }
+
+    .background_icon.classification.device.streamingmediaserver {
+        background-image: url("../img/icon/classification/streamingmediaserver.png");
+    }
+
+    .background_icon.classification.device.decodingunit {
+        background-image: url("../img/icon/classification/decodingunit.png");
+    }
+
+    .background_icon.classification.device.encodingunit {
+        background-image: url("../img/icon/classification/encodingunit.png");
+    }
+
+    .background_icon.classification.device.nvs {
+        background-image: url("../img/icon/classification/nvs.png");
+    }
+
+    .background_icon.classification.device.dataserver {
+        background-image: url("../img/icon/classification/dataserver.png");
+    }
+
+    .background_icon.classification.device.acquisitionserver {
+        background-image: url("../img/icon/classification/acquisitionserver.png");
+    }
+
+    .background_icon.classification.device.systemgateway {
+        background-image: url("../img/icon/classification/systemgateway.png");
+    }
+
+    .background_icon.classification.device.camera {
+        background-image: url("../img/icon/classification/camera.png");
+    }
+
+    .background_icon.classification.device.ultrasonicprobe {
+        background-image: url("../img/icon/classification/ultrasonicprobe.png");
+    }
+
+    .background_icon.classification.device.extensionunit {
+        background-image: url("../img/icon/classification/none.png");
+    }
+
+    .background_icon.probe-type.ioinput.none {
+        background-image: url("../img/icon/probetype/none.png");
+    }
+
+    .background_icon.probe-type.ioinput.panic {
+        background-image: url("../img/icon/probetype/panic.png");
+    }
+
+    .background_icon.probe-type.ioinput.perimeter {
+        background-image: url("../img/icon/probetype/perimeter.png");
+    }
+
+    .background_icon.probe-type.ioinput.entranceguard {
+        background-image: url("../img/icon/probetype/entranceguard.png");
+    }
+
+    .background_icon.camera-type.none {
+        background-image: url("../img/icon/cameratype/none.png");
+    }
+
+    .background_icon.camera-type.gun {
+        background-image: url("../img/icon/cameratype/gun.png");
+    }
+
+    .background_icon.camera-type.ball {
+        background-image: url("../img/icon/cameratype/ball.png");
+    }
+
+    .background_icon.camera-type.halfball {
+        background-image: url("../img/icon/cameratype/halfball.png");
+    }
+
+    .background_icon.camera-type.aio {
+        background-image: url("../img/icon/cameratype/aio.png");
+    }
+
+    .background_icon.decoding.true {
+        background-image: url("../img/icon/ec_white.png");
+        background-size: 30px;
+    }
+
+    .background_icon.decoding.false {
+        background-image: url("../img/icon/dc_white.png");
+        background-size: 32px;
+    }
+
+    .background_icon.video-interface-type.none {
+        background-image: url("../img/icon/videointerfacetype/none.png");
+    }
+
+    .background_icon.video-interface-type.bnc {
+        background-image: url("../img/icon/videointerfacetype/bnc.png");
+    }
+
+    .background_icon.video-interface-type.hdmi {
+        background-image: url("../img/icon/videointerfacetype/hdmi.png");
+    }
+
+    .background_icon.video-interface-type.vga {
+        background-image: url("../img/icon/videointerfacetype/vga.png");
+    }
+
+    .background_icon.video-interface-type.dvi {
+        background-image: url("../img/icon/videointerfacetype/dvi.png");
+    }
+
+    .background_icon.video-interface-type.displayport {
+        background-image: url("../img/icon/videointerfacetype/displayport.png");
+    }
+
+    .background_icon.video-interface-type.bus {
+        background-image: url("../img/icon/videointerfacetype/bus.png");
+    }
+
+    .background_icon.deviceinformation {
+        background-image: url("../img/icon/device_info_white.png");
+    }
+
+    .background_icon.detector {
+        background-image: url("../img/detector.png");
+    }
+
+.text-default {
+    color: #999;
+}
+
+.text-primary {
+    color: #428bca;
+}
+
+.text-success {
+    color: #5cb85c;
+}
+
+.text-info {
+    color: #5bc0de;
+}
+
+.text-warning {
+    color: #f0ad4e;
+}
+
+.text-danger {
+    color: #d9534f;
+}
+
+.text-taro {
+    color: #c189d2;
+}
+
+.text-doderblue {
+    color: #1e90ff;
+}
+
+.text-teal {
+    color: #85a5dd;
+}
+
+.text-magenta {
+    color: #d94084;
+}
+
+.cpanel {
+    -moz-transition-duration: 0.8s;
+    background-color: #FFFFFF;
+    background-position: -30px 50%;
+    border-radius: 60px;
+    color: #565656;
+    display: block;
+    height: 45px;
+    width: 45px;
+    text-align: center;
+    text-indent: 0;
+    margin: 15px auto;
+    background-repeat: no-repeat;
+    background-color: #50aa26;
+    background-size: 25px;
+    background-position: center;
+}
+
+    .cpanel.fault {
+        background-color: #f46f50;
+    }
+
+    .cpanel.warning {
+        background-color: #fab43b;
+    }
+
+    .cpanel.StorageMediumAbnormalNumber {
+        background-image: url("../img/health/StorageMediumAbnormalNumber.png" );
+    }
+
+    .cpanel.OfflineNumber {
+        background-image: url("../img/health/OfflineNumber.png" );
+        background-size: 30px;
+    }
+
+    .cpanel.VideolossNumber {
+        background-image: url("../img/health/VideolossNumber.png");
+    }
+
+    .cpanel.CPUUsageNumber {
+        background-image: url("../img/health/CPUUsageNumber.png");
+    }
+
+    .cpanel.SuperHeatNumber {
+        background-image: url("../img/health/SuperHeatNumber.png");
+    }
+
+    .cpanel.VoltageInstabilityNumber {
+        background-image: url("../img/health/VoltageInstabilityNumber.png");
+    }
+
+    .cpanel.VideoHighLoadNumber {
+        background-image: url("../img/health/VideoHighLoadNumber.png");
+    }
+
+    .cpanel.VideoNetworkInstabilityNumber {
+        background-image: url("../img/health/VideoNetworkInstabilityNumber.png");
+        background-size: 30px;
+    }
+
+    .cpanel.TeardownNumber {
+        background-image: url("../img/health/TeardownNumber.png");
+    }
+
+    .cpanel.VideoConnectionFailureNumber {
+        background-image: url("../img/health/VideoConnectionFailureNumber.png");
+        background-size: 30px;
+    }
+
+    .cpanel.NetworkUsageNumber {
+        background-image: url("../img/health/NetworkUsageNumber.png");
+    }
+
+    .cpanel.MemoryUsageNumber {
+        background-image: url("../img/health/MemoryUsageNumber.png");
+    }
+
+#ulCamera .p {
+    background-image: url("img/point.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 15px;
+    width: 10px;
+}
+
+#ulCamera .selected .p {
+    background-image: url("img/selected.png");
+}
+
+.tab-content ul li.bind.selected {
+    background-image: url("img/selected.png");
+}
+
+#ulCamera li.bind {
+    background-image: url("img/camera.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: right;
+    margin-right: 15px;
+}
+
+#ulAnnunciator li.bind {
+    background-image: url("img/annunciator.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: right;
+    margin-right: 15px;
+}
+
+.prompt .icon_camera {
+    background-image: url("img/camera.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-top: 5px;
+    width: 30px;
+    height: 30px;
+    float: left;
+}
+
+.background-font-icon-mini {
+    width: 0;
+    color: white;
+    font-size: 26px;
+    margin-left: 11px;
+}
+
+    .background-font-icon-mini.dc12v_2 {
+        margin-left: 18px;
+    }
+
+    .background-font-icon-mini.dc24v {
+        margin-left: 18px;
+    }
+
+    .background-font-icon-mini.ac24v {
+        margin-left: 18px;
+    }
+
+    .background-font-icon-mini.dc12v_1 {
+        margin-left: 18px;
+    }
+
+    .background-font-icon-mini.ac220v {
+        margin-left: 18px;
+    }
+
+    .background-font-icon-mini.online {
+        margin-left: 11px;
+    }
+
+    .background-font-icon-mini.offline {
+        margin-left: 11px;
+    }
+
+    .background-font-icon-mini.humidity {
+        margin-left: 16px;
+    }
+
+    .background-font-icon-mini.temperature {
+        margin-left: 18px;
+    }
+
+    .background-font-icon-mini.poweroff {
+        margin-left: 14px;
+        font-size: 24px;
+    }
+
+    .background-font-icon-mini.transmitterrecovery {
+        margin-left: 13px;
+    }
+
+    .background-font-icon-mini.industrialrecovery {
+        margin-left: 15px;
+        font-size: 28px;
+    }
+
+    .background-font-icon-mini.dooropened {
+        margin-left: 13px;
+    }
+
+.background-font-icon {
+    width: 0;
+    color: white;
+    font-size: 40px;
+}
+
+    .background-font-icon.dc12v_2 {
+        margin-left: 14px;
+    }
+
+    .background-font-icon.dc24v {
+        margin-left: 19px;
+        font-size: 43px;
+    }
+
+    .background-font-icon.ac24v {
+        margin-left: 19px;
+        font-size: 43px;
+    }
+
+    .background-font-icon.dc12v_1 {
+        margin-left: 14px;
+    }
+
+    .background-font-icon.ac220v {
+        font-size: 43px;
+        margin-left: 16px;
+    }
+
+    .background-font-icon.online {
+        margin-left: 17px;
+        font-size: 37px;
+    }
+
+    .background-font-icon.offline {
+        margin-left: 17px;
+        font-size: 37px;
+    }
+
+    .background-font-icon.humidity {
+        font-size: 36px;
+        margin-left: 24px;
+    }
+
+    .background-font-icon.temperature {
+        margin-left: 24px;
+    }
+
+    .background-font-icon.poweroff {
+        margin-left: 19px;
+        font-size: 36px;
+    }
+
+    .background-font-icon.transmitterrecovery {
+        margin-left: 18px;
+    }
+
+    .background-font-icon.industrialrecovery {
+        margin-left: 22px;
+    }
+
+    .background-font-icon.dooropened {
+        margin-left: 17px;
+    }

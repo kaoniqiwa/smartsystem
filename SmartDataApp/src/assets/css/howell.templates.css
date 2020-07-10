@@ -1,0 +1,37 @@
+﻿.icon_btn.color.mini {
+    width: 215px;
+}
+
+.list-item-information.date.mini {
+    height: 40px !important;
+    width: 135px;
+}
+
+.icon-color-btn-background.mini {
+    margin-right: 10px;
+    width: 50px;
+    height: 39px;
+}
+
+.list-mini-head {
+    padding: 10px 10px 10px 10px;
+    font-size: 17px;
+}
+
+    .list-mini-head .details-btn {
+        margin-left: 30px;
+        font-size: 16px;
+    }
+
+.list-group-item .list-group-item-content.mini {
+    margin-bottom: 0;
+    padding: 10px 15px 10px 0;
+    border-bottom: 1px solid #dddddd;
+    height: 40px;
+    line-height: 40px;
+    font-size: 13px;
+}
+
+.arrow-left.mini {
+    margin-top: 11px;
+}

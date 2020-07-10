@@ -1,0 +1,1527 @@
+﻿
+@font-face {
+    font-family: 'HowellFont';
+    src: url("Howell.Font.eot") format("embedded-opentype"), url("Howell.Font.woff") format("woff"), url("Howell.Font.ttf") format("truetype"), url("Howell.Font.svg") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="howell-icon-"],
+[class*=" howell-icon-"] {
+    font-family: HowellFont;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: inherit;
+    -webkit-font-smoothing: antialiased;
+}
+
+
+
+    [class^="howell-icon-"]:before,
+    [class*=" howell-icon-"]:before {
+        text-decoration: inherit;
+        display: inline-block;
+        speak: none;
+    }
+
+.howell-icon-large:before {
+    vertical-align: -10%;
+    font-size: 1.3333333333333333em;
+}
+
+a [class^="howell-icon-"],
+a [class*=" howell-icon-"] {
+    display: inline;
+}
+
+[class^="howell-icon-"].howell-icon-fixed-width,
+[class*=" howell-icon-"].howell-icon-fixed-width {
+    display: inline-block;
+    width: 1.1428571428571428em;
+    text-align: right;
+    padding-right: 0.2857142857142857em;
+}
+
+    [class^="howell-icon-"].howell-icon-fixed-width.howell-icon-large,
+    [class*=" howell-icon-"].howell-icon-fixed-width.howell-icon-large {
+        width: 1.4285714285714286em;
+    }
+
+.icons-ul {
+    margin-left: 2.142857142857143em;
+    list-style-type: none;
+}
+
+    .icons-ul > li {
+        position: relative;
+    }
+
+    .icons-ul .howell-icon-li {
+        position: absolute;
+        left: -2.142857142857143em;
+        width: 2.142857142857143em;
+        text-align: center;
+        line-height: inherit;
+    }
+
+[class^="howell-icon-"].hide,
+[class*=" howell-icon-"].hide {
+    display: none;
+}
+
+.howell-icon-muted {
+    color: #eeeeee;
+}
+
+.howell-icon-light {
+    color: #ffffff;
+}
+
+.howell-icon-dark {
+    color: #333333;
+}
+
+.howell-icon-border {
+    border: solid 1px #eeeeee;
+    padding: .2em .25em .15em;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.howell-icon-2x {
+    font-size: 2em;
+}
+
+    .howell-icon-2x.howell-icon-border {
+        border-width: 2px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+    }
+
+.howell-icon-3x {
+    font-size: 3em;
+}
+
+    .howell-icon-3x.howell-icon-border {
+        border-width: 3px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
+
+.howell-icon-4x {
+    font-size: 4em;
+}
+
+    .howell-icon-4x.howell-icon-border {
+        border-width: 4px;
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-radius: 6px;
+    }
+
+.howell-icon-5x {
+    font-size: 5em;
+}
+
+    .howell-icon-5x.howell-icon-border {
+        border-width: 5px;
+        -webkit-border-radius: 7px;
+        -moz-border-radius: 7px;
+        border-radius: 7px;
+    }
+
+.pull-right {
+    float: right;
+}
+
+.pull-left {
+    float: left;
+}
+
+[class^="howell-icon-"].pull-left,
+[class*=" howell-icon-"].pull-left {
+    margin-right: .3em;
+}
+
+[class^="howell-icon-"].pull-right,
+[class*=" howell-icon-"].pull-right {
+    margin-left: .3em;
+}
+
+[class^="howell-icon-"],
+[class*=" howell-icon-"] {
+    display: inline;
+    width: auto;
+    height: auto;
+    line-height: inherit;
+    vertical-align: baseline;
+    background-image: none;
+    background-position: 0% 0%;
+    background-repeat: repeat;
+    margin-top: 0;
+}
+
+/* more sprites.less reset */
+.howell-icon-white,
+.nav-pills > .active > a > [class^="howell-icon-"],
+.nav-pills > .active > a > [class*=" howell-icon-"],
+.nav-list > .active > a > [class^="howell-icon-"],
+.nav-list > .active > a > [class*=" howell-icon-"],
+.navbar-inverse .nav > .active > a > [class^="howell-icon-"],
+.navbar-inverse .nav > .active > a > [class*=" howell-icon-"],
+.dropdown-menu > li > a:hover > [class^="howell-icon-"],
+.dropdown-menu > li > a:hover > [class*=" howell-icon-"],
+.dropdown-menu > .active > a > [class^="howell-icon-"],
+.dropdown-menu > .active > a > [class*=" howell-icon-"],
+.dropdown-submenu:hover > a > [class^="howell-icon-"],
+.dropdown-submenu:hover > a > [class*=" howell-icon-"] {
+    background-image: none;
+}
+
+/* keeps Bootstrap styles with and without icons the same */
+.btn [class^="howell-icon-"].howell-icon-large,
+.nav [class^="howell-icon-"].howell-icon-large,
+.btn [class*=" howell-icon-"].howell-icon-large,
+.nav [class*=" howell-icon-"].howell-icon-large {
+    line-height: .9em;
+}
+
+.btn [class^="howell-icon-"].howell-icon-spin,
+.nav [class^="howell-icon-"].howell-icon-spin,
+.btn [class*=" howell-icon-"].howell-icon-spin,
+.nav [class*=" howell-icon-"].howell-icon-spin {
+    display: inline-block;
+}
+
+.nav-tabs [class^="howell-icon-"],
+.nav-pills [class^="howell-icon-"],
+.nav-tabs [class*=" howell-icon-"],
+.nav-pills [class*=" howell-icon-"],
+.nav-tabs [class^="howell-icon-"].howell-icon-large,
+.nav-pills [class^="howell-icon-"].howell-icon-large,
+.nav-tabs [class*=" howell-icon-"].howell-icon-large,
+.nav-pills [class*=" howell-icon-"].howell-icon-large {
+    line-height: .9em;
+}
+
+.btn [class^="howell-icon-"].pull-left.howell-icon-2x,
+.btn [class*=" howell-icon-"].pull-left.howell-icon-2x,
+.btn [class^="howell-icon-"].pull-right.howell-icon-2x,
+.btn [class*=" howell-icon-"].pull-right.howell-icon-2x {
+    margin-top: .18em;
+}
+
+.btn [class^="howell-icon-"].howell-icon-spin.howell-icon-large,
+.btn [class*=" howell-icon-"].howell-icon-spin.howell-icon-large {
+    line-height: .8em;
+}
+
+.btn.btn-small [class^="howell-icon-"].pull-left.howell-icon-2x,
+.btn.btn-small [class*=" howell-icon-"].pull-left.howell-icon-2x,
+.btn.btn-small [class^="howell-icon-"].pull-right.howell-icon-2x,
+.btn.btn-small [class*=" howell-icon-"].pull-right.howell-icon-2x {
+    margin-top: .25em;
+}
+
+.btn.btn-large [class^="howell-icon-"],
+.btn.btn-large [class*=" howell-icon-"] {
+    margin-top: 0;
+}
+
+    .btn.btn-large [class^="howell-icon-"].pull-left.howell-icon-2x,
+    .btn.btn-large [class*=" howell-icon-"].pull-left.howell-icon-2x,
+    .btn.btn-large [class^="howell-icon-"].pull-right.howell-icon-2x,
+    .btn.btn-large [class*=" howell-icon-"].pull-right.howell-icon-2x {
+        margin-top: .05em;
+    }
+
+    .btn.btn-large [class^="howell-icon-"].pull-left.howell-icon-2x,
+    .btn.btn-large [class*=" howell-icon-"].pull-left.howell-icon-2x {
+        margin-right: .2em;
+    }
+
+    .btn.btn-large [class^="howell-icon-"].pull-right.howell-icon-2x,
+    .btn.btn-large [class*=" howell-icon-"].pull-right.howell-icon-2x {
+        margin-left: .2em;
+    }
+
+.nav-list [class^="howell-icon-"],
+.nav-list [class*=" howell-icon-"] {
+    line-height: inherit;
+}
+
+.howell-icon-stack {
+    position: relative;
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    line-height: 2em;
+    vertical-align: -35%;
+}
+
+    .howell-icon-stack [class^="howell-icon-"],
+    .howell-icon-stack [class*=" howell-icon-"] {
+        display: block;
+        text-align: center;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        font-size: 1em;
+        line-height: inherit;
+        *line-height: 2em;
+    }
+
+    .howell-icon-stack .howell-icon-stack-base {
+        font-size: 2em;
+        *line-height: 1em;
+    }
+
+.howell-icon-spin {
+    display: inline-block;
+    -moz-animation: spin 2s infinite linear;
+    -o-animation: spin 2s infinite linear;
+    -webkit-animation: spin 2s infinite linear;
+    animation: spin 2s infinite linear;
+}
+
+a .howell-icon-stack,
+a .howell-icon-spin {
+    display: inline-block;
+    text-decoration: none;
+}
+
+@-moz-keyframes spin {
+    0% {
+        -moz-transform: rotate(0deg);
+    }
+
+    100% {
+        -moz-transform: rotate(359deg);
+    }
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(359deg);
+    }
+}
+
+@-o-keyframes spin {
+    0% {
+        -o-transform: rotate(0deg);
+    }
+
+    100% {
+        -o-transform: rotate(359deg);
+    }
+}
+
+@-ms-keyframes spin {
+    0% {
+        -ms-transform: rotate(0deg);
+    }
+
+    100% {
+        -ms-transform: rotate(359deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(359deg);
+    }
+}
+
+.howell-icon-rotate-90:before {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+
+.howell-icon-rotate-180:before {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+}
+
+.howell-icon-rotate-270:before {
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    transform: rotate(270deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+.howell-icon-flip-horizontal:before {
+    -webkit-transform: scale(-1, 1);
+    -moz-transform: scale(-1, 1);
+    -ms-transform: scale(-1, 1);
+    -o-transform: scale(-1, 1);
+    transform: scale(-1, 1);
+}
+
+.howell-icon-flip-vertical:before {
+    -webkit-transform: scale(1, -1);
+    -moz-transform: scale(1, -1);
+    -ms-transform: scale(1, -1);
+    -o-transform: scale(1, -1);
+    transform: scale(1, -1);
+}
+
+a .howell-icon-rotate-90:before,
+a .howell-icon-rotate-180:before,
+a .howell-icon-rotate-270:before,
+a .howell-icon-flip-horizontal:before,
+a .howell-icon-flip-vertical:before {
+    display: inline-block;
+}
+
+.howell-icon-department-admin:before {
+    content: "\f001";
+}
+
+.howell-icon-department-anonymous:before {
+    content: "\f002";
+}
+
+.howell-icon-department-extended:before {
+    content: "\f003";
+}
+
+.howell-icon-department-operator:before {
+    content: "\f004";
+}
+
+.howell-icon-user-admin:before {
+    content: "\f005";
+}
+
+.howell-icon-user-anonymous:before {
+    content: "\f006";
+}
+
+.howell-icon-user-extended:before {
+    content: "\f007";
+}
+
+.howell-icon-user-operator:before {
+    content: "\f008";
+}
+
+.howell-icon-map:before {
+    content: "\f009";
+}
+
+.howell-icon-aio:before {
+    content: "\f00a";
+}
+
+.howell-icon-ball:before {
+    content: "\f00b";
+}
+
+.howell-icon-gun:before {
+    content: "\f00c";
+}
+
+.howell-icon-halfball:before {
+    content: "\f00d";
+}
+
+.howell-icon-camera:before {
+    content: "\f00e";
+}
+
+.howell-icon-voltage:before {
+    content: "\f00f";
+}
+
+.howell-icon-vmd:before {
+    content: "\f010";
+}
+
+.howell-icon-video-turned:before {
+    content: "\f011";
+}
+
+.howell-icon-video-loss:before {
+    content: "\f012";
+}
+
+.howell-icon-video-bitrate:before {
+    content: "\f013";
+}
+
+.howell-icon-inbox:before {
+    content: "\f014";
+}
+
+.howell-icon-tripwire:before {
+    content: "\f015";
+}
+
+.howell-icon-temperature:before {
+    content: "\f016";
+}
+
+.howell-icon-storagemediumfailure:before {
+    content: "\f017";
+}
+
+.howell-icon-outbox:before {
+    content: "\f018";
+}
+
+.howell-icon-recordstate:before {
+    content: "\f019";
+}
+
+.howell-icon-recordingfailure:before {
+    content: "\f01a";
+}
+
+.howell-icon-raidfailure:before {
+    content: "\f01b";
+}
+
+.howell-icon-pressure:before {
+    content: "\f01c";
+}
+
+.howell-icon-pos:before {
+    content: "\f01d";
+}
+
+.howell-icon-networkbitrate:before {
+    content: "\f01e";
+}
+
+.howell-icon-squint:before {
+    content: "\f01f";
+}
+
+.howell-icon-io:before {
+    content: "\f020";
+}
+
+.howell-icon-daynight:before {
+    content: "\f021";
+}
+
+.howell-icon-badvideo:before {
+    content: "\f022";
+}
+
+.howell-icon-cpuusage:before {
+    content: "\f023";
+}
+
+.howell-icon-fanfailure:before {
+    content: "\f024";
+}
+
+.howell-icon-ircut:before {
+    content: "\f025";
+}
+
+.howell-icon-loitering:before {
+    content: "\f026";
+}
+
+.howell-icon-maximumconnections:before {
+    content: "\f027";
+}
+
+.howell-icon-memoryusage:before {
+    content: "\f028";
+}
+
+.howell-icon-ultrasonicprobe:before {
+    content: "\f029";
+}
+
+.howell-icon-outbnc:before {
+    content: "\f02a";
+}
+
+.howell-icon-bus:before {
+    content: "\f02b";
+}
+
+.howell-icon-displayport:before {
+    content: "\f02c";
+}
+
+.howell-icon-dvi:before {
+    content: "\f02d";
+}
+
+.howell-icon-hdmi:before {
+    content: "\f02e";
+}
+
+.howell-icon-vga:before {
+    content: "\f02f";
+}
+
+.howell-icon-inbnc:before {
+    content: "\f030";
+}
+
+.howell-icon-decoder:before {
+    content: "\f031";
+}
+
+.howell-icon-device:before {
+    content: "\f032";
+}
+
+.howell-icon-howell:before {
+    content: "\f033";
+}
+
+.howell-icon-search-question:before {
+    content: "\f034";
+}
+
+.howell-icon-function:before {
+    content: "\f035";
+}
+
+.howell-icon-detector:before {
+    content: "\f036";
+}
+
+.howell-icon-plug:before {
+    content: "\f037";
+}
+
+.howell-icon-voltage-lightning:before {
+    content: "\f038";
+}
+
+.howell-icon-buzzer:before {
+    content: "\f039";
+}
+
+.howell-icon-box:before {
+    content: "\f03a";
+}
+
+.howell-icon-thermometer:before {
+    content: "\f03b";
+}
+
+.howell-icon-status:before {
+    content: "\f03c";
+}
+
+.howell-icon-threshold:before {
+    content: "\f03d";
+}
+
+.howell-icon-dc12v_2:before {
+    content: "\f03e";
+}
+
+.howell-icon-dc24v:before {
+    content: "\f03f";
+}
+
+.howell-icon-ac24v:before {
+    content: "\f040";
+}
+
+.howell-icon-dc12v_1:before {
+    content: "\f041";
+}
+
+.howell-icon-ac220v:before {
+    content: "\f042";
+}
+
+.howell-icon-offline:before {
+    content: "\f043";
+}
+
+.howell-icon-online:before {
+    content: "\f044";
+}
+
+.howell-icon-transmitter:before {
+    content: "\f045";
+}
+
+.howell-icon-industrial:before {
+    content: "\f046";
+}
+
+.howell-icon-ellipsis-vertical:before {
+    content: "\f047";
+}
+
+.howell-icon-single-picture:before {
+    content: "\f048";
+}
+
+.howell-icon-four-picture:before {
+    content: "\f049";
+}
+
+.howell-icon-vehicle:before {
+    content: "\f04a";
+}
+
+.howell-icon-vehicle-plate-device:before {
+    content: "\f04b";
+}
+
+.howell-icon-platform:before {
+    content: "\f04c";
+}
+
+.howell-icon-map:before {
+    content: "\f04d";
+}
+
+.howell-icon-layer:before {
+    content: "\f04e";
+}
+
+.howell-icon-annunciator:before {
+    content: "\f04f";
+}
+
+.howell-icon-helf-eye:before {
+    content: "\f050";
+}
+
+.howell-icon-login:before {
+    content: "\f051";
+}
+.howell-icon-logout:before {
+    content: "\f052";
+}
+.howell-icon-real-play:before {
+    content: "\f053";
+}
+.howell-icon-vod-play:before {
+    content: "\f054";
+}
+.howell-icon-download:before {
+    content: "\f055";
+}
+.howell-icon-ptz:before {
+    content: "\f056";
+}
+.howell-icon-decoder-switch:before {
+    content: "\f057";
+}
+.howell-icon-create-user:before {
+    content: "\f058";
+}
+.howell-icon-delete-user:before {
+    content: "\f059";
+}
+.howell-icon-set-user:before {
+    content: "\f05a";
+}
+.howell-icon-create-device:before {
+    content: "\f05b";
+}
+.howell-icon-delete-device:before {
+    content: "\f05c";
+}
+.howell-icon-set-device:before {
+    content: "\f05d";
+}
+.howell-icon-cpu:before {
+    content: "\f05e";
+}
+.howell-icon-gpu:before {
+    content: "\f05f";
+}
+
+.howell-icon-camera-passenger-flow:before {
+    content: "\f060";
+}
+
+.howell-icon-camera-group-passenger-flow:before {
+    content: "\f061";
+}
+
+.howell-icon-screen-16:before {
+    content: "\f062";
+}
+
+.howell-icon-colon:before {
+    content: "\f063";
+}
+
+.howell-icon-passenger-leave-num:before {
+    content: "\f064";
+}
+
+.howell-icon-passenger-enter-num:before {
+    content: "\f065";
+}
+
+.howell-icon-passenger-leave-num-time-record:before {
+    content: "\f066";
+}
+
+.howell-icon-passenger-enter-num-time-record:before {
+    content: "\f067";
+}
+
+.howell-icon-passenger-stay-num:before {
+    content: "\f068";
+}
+
+.howell-icon-chart-bar:before {
+    content: "\f069";
+}
+
+.howell-icon-chart-line:before {
+    content: "\f06a";
+}
+
+.howell-icon-calendar:before {
+    content: "\f06b";
+}
+
+.howell-icon-devices:before {
+    content: "\f06c";
+}
+
+.howell-icon-panoramic:before {
+    content: "\f06d";
+}
+
+.howell-icon-panoramic-three-screen:before {
+    content: "\f06e";
+}
+
+.howell-icon-panoramic-four-screen:before {
+    content: "\f06f";
+}
+
+.howell-icon-display-card:before {
+    content: "\f070";
+}
+
+.howell-icon-film:before {
+    content: "\f071";
+}
+
+.howell-icon-hard-disk:before {
+    content: "\f072";
+}
+
+.howell-icon-hard-disk-network:before {
+    content: "\f073";
+}
+
+.howell-icon-video-network:before {
+    content: "\f074";
+}
+
+.howell-icon-panoramic-video:before {
+    content: "\f075";
+}
+
+.howell-icon-passenger-flow:before {
+    content: "\f076";
+}
+
+.howell-icon-panoramic-video2:before {
+    content: "\f077";
+}
+
+.howell-icon-panoramic-film:before {
+    content: "\f078";
+}
+
+.howell-icon-panoramic-film2:before {
+    content: "\f079";
+}
+
+.howell-icon-wiper:before {
+    content: "\f07a";
+}
+
+.howell-icon-passenger-enter-leave:before {
+    content: "\f07b";
+}
+
+.howell-icon-passenger-enter-leave-num-time-record:before {
+    content: "\f07c";
+}
+
+.howell-icon-passenger-enter-leave2:before {
+    content: "\f07d";
+}
+
+.howell-icon-passenger-enter-leave-num-time-record2:before {
+    content: "\f07e";
+}
+
+.howell-icon-panoramic-graph:before {
+    content: "\f07f";
+}
+
+.howell-icon-panorama:before {
+    content: "\f080";
+}
+
+.howell-icon-panorama-180:before {
+    content: "\f081";
+}
+
+.howell-icon-panorama-270:before {
+    content: "\f082";
+}
+
+.howell-icon-panorama-360:before {
+    content: "\f083";
+}
+
+.howell-icon-panorama-240:before {
+    content: "\f084";
+}
+
+.howell-icon-left-right-stretch:before {
+    content: "\f085";
+}
+
+.howell-icon-up-down-stretch:before {
+    content: "\f086";
+}
+
+.howell-icon-network-encoder:before {
+    content: "\f087";
+}
+
+.howell-icon-chartbar2:before {
+    content: "\f088";
+}
+
+.howell-icon-settingoutline:before {
+    content: "\f089";
+}
+
+.howell-icon-magnifier:before {
+    content: "\f08a";
+}
+
+.howell-icon-ul:before {
+    content: "\f08b";
+}
+
+.howell-icon-video:before {
+    content: "\f08c";
+}
+
+.howell-icon-videooff:before {
+    content: "\f08d";
+}
+
+.howell-icon-videoswitch:before {
+    content: "\f08e";
+}
+
+.howell-icon-viewagenda:before {
+    content: "\f08f";
+}
+
+.howell-icon-viewstream:before {
+    content: "\f090";
+}
+
+.howell-icon-viewgrid:before {
+    content: "\f091";
+}
+
+.howell-icon-wifi:before {
+    content: "\f092";
+}
+
+.howell-icon-wifioff:before {
+    content: "\f093";
+}
+
+.howell-icon-volumehigh:before {
+    content: "\f094";
+}
+
+.howell-icon-volumelow:before {
+    content: "\f095";
+}
+
+.howell-icon-volumemedium:before {
+    content: "\f096";
+}
+
+.howell-icon-volumeoff:before {
+    content: "\f097";
+}
+
+.howell-icon-water:before {
+    content: "\f098";
+}
+
+.howell-icon-wateroff:before {
+    content: "\f099";
+}
+
+.howell-icon-waterpercent:before {
+    content: "\f09a";
+}
+
+.howell-icon-account:before {
+    content: "\f09b";
+}
+
+.howell-icon-airplay:before {
+    content: "\f09c";
+}
+
+.howell-icon-alarm:before {
+    content: "\f09d";
+}
+
+.howell-icon-android:before {
+    content: "\f09e";
+}
+
+.howell-icon-apple:before {
+    content: "\f09f";
+}
+
+.howell-icon-cloud:before {
+    content: "\f0a0";
+}
+
+.howell-icon-alertcircle:before {
+    content: "\f0a1";
+}
+
+.howell-icon-arrangebringforward:before {
+    content: "\f0a2";
+}
+
+.howell-icon-arrangebringtofront:before {
+    content: "\f0a3";
+}
+
+.howell-icon-arrangesendbackward:before {
+    content: "\f0a4";
+}
+
+.howell-icon-arrangesendtoback:before {
+    content: "\f0a5";
+}
+
+.howell-icon-arrowall:before {
+    content: "\f0a6";
+}
+
+.howell-icon-arrowbottomleft:before {
+    content: "\f0a7";
+}
+
+.howell-icon-arrowbottomright:before {
+    content: "\f0a8";
+}
+
+.howell-icon-arrowcompressall:before {
+    content: "\f0a9";
+}
+
+.howell-icon-arrowdown:before {
+    content: "\f0aa";
+}
+
+.howell-icon-arrowdownbold:before {
+    content: "\f0ab";
+}
+
+.howell-icon-arrowdownboldcircle:before {
+    content: "\f0ac";
+}
+
+.howell-icon-arrowdownboldcircleoutline:before {
+    content: "\f0ad";
+}
+
+.howell-icon-arrowdownboldhexagonoutline:before {
+    content: "\f0ae";
+}
+
+.howell-icon-arrowdowndropcircle:before {
+    content: "\f0af";
+}
+
+.howell-icon-arrowdowndropcircleoutline:before {
+    content: "\f0b0";
+}
+
+.howell-icon-arrowexpandall:before {
+    content: "\f0b1";
+}
+
+.howell-icon-arrowleft:before {
+    content: "\f0b2";
+}
+
+.howell-icon-arrowleftbold:before {
+    content: "\f0b3";
+}
+
+.howell-icon-arrowleftboldcircle:before {
+    content: "\f0b4";
+}
+
+.howell-icon-arrowleftboldcircleoutline:before {
+    content: "\f0b5";
+}
+
+.howell-icon-arrowleftboldhexagonoutline:before {
+    content: "\f0b6";
+}
+
+.howell-icon-arrowleftdropcircle:before {
+    content: "\f0b7";
+}
+
+.howell-icon-arrowleftdropcircleoutline:before {
+    content: "\f0b8";
+}
+
+.howell-icon-arrowright:before {
+    content: "\f0b9";
+}
+
+.howell-icon-arrowrightbold:before {
+    content: "\f0ba";
+}
+
+.howell-icon-arrowrightboldcircle:before {
+    content: "\f0bb";
+}
+
+.howell-icon-arrowrightboldcircleoutline:before {
+    content: "\f0bc";
+}
+
+.howell-icon-arrowrightboldhexagonoutline:before {
+    content: "\f0bd";
+}
+
+.howell-icon-arrowrightdropcircle:before {
+    content: "\f0be";
+}
+
+.howell-icon-arrowrightdropcircleoutline:before {
+    content: "\f0bf";
+}
+
+.howell-icon-arrowtopleft:before {
+    content: "\f0c0";
+}
+
+.howell-icon-arrowtopright:before {
+    content: "\f0c1";
+}
+
+.howell-icon-arrowup:before {
+    content: "\f0c2";
+}
+
+.howell-icon-arrowupbold:before {
+    content: "\f0c3";
+}
+
+.howell-icon-arrowupboldcircle:before {
+    content: "\f0c4";
+}
+
+.howell-icon-arrowupboldcircleoutline:before {
+    content: "\f0c5";
+}
+
+.howell-icon-arrowupboldhexagonoutline:before {
+    content: "\f0c6";
+}
+
+.howell-icon-arrowupdropcircle:before {
+    content: "\f0c7";
+}
+
+.howell-icon-arrowupdropcircleoutline:before {
+    content: "\f0c8";
+}
+
+.howell-icon-bell:before {
+    content: "\f0c9";
+}
+
+.howell-icon-belloff:before {
+    content: "\f0ca";
+}
+
+.howell-icon-brightness1:before {
+    content: "\f0cb";
+}
+
+.howell-icon-brightness2:before {
+    content: "\f0cc";
+}
+
+.howell-icon-brightness3:before {
+    content: "\f0cd";
+}
+
+.howell-icon-brightness4:before {
+    content: "\f0ce";
+}
+
+.howell-icon-brightness5:before {
+    content: "\f0cf";
+}
+
+.howell-icon-brightness6:before {
+    content: "\f0d0";
+}
+
+.howell-icon-brightness7:before {
+    content: "\f0d1";
+}
+
+.howell-icon-brightness8:before {
+    content: "\f0d2";
+}
+
+.howell-icon-cameraSLR:before {
+    content: "\f0d3";
+}
+
+.howell-icon-cameraenhance:before {
+    content: "\f0d4";
+}
+
+.howell-icon-desktopmacpc:before {
+    content: "\f0d5";
+}
+
+.howell-icon-database:before {
+    content: "\f0d6";
+}
+
+.howell-icon-databaseminus:before {
+    content: "\f0d7";
+}
+
+.howell-icon-databaseplus:before {
+    content: "\f0d8";
+}
+
+.howell-icon-delete:before {
+    content: "\f0d9";
+}
+
+.howell-icon-desktoptower:before {
+    content: "\f0da";
+}
+
+.howell-icon-eye:before {
+    content: "\f0db";
+}
+
+.howell-icon-eyeoff:before {
+    content: "\f0dc";
+}
+
+.howell-icon-internetexplorer:before {
+    content: "\f0dd";
+}
+
+.howell-icon-key:before {
+    content: "\f0de";
+}
+
+.howell-icon-keyboard:before {
+    content: "\f0df";
+}
+
+.howell-icon-keyboardoff:before {
+    content: "\f0e0";
+}
+
+.howell-icon-map3:before {
+    content: "\f0e1";
+}
+
+.howell-icon-message:before {
+    content: "\f0e2";
+}
+
+.howell-icon-messagealert:before {
+    content: "\f0e3";
+}
+
+.howell-icon-messagevideo:before {
+    content: "\f0e4";
+}
+
+.howell-icon-microphone:before {
+    content: "\f0e5";
+}
+
+.howell-icon-microphoneoff:before {
+    content: "\f0e6";
+}
+
+.howell-icon-mouse:before {
+    content: "\f0e7";
+}
+
+.howell-icon-mouseoff:before {
+    content: "\f0e8";
+}
+
+.howell-icon-pinetree:before {
+    content: "\f0e9";
+}
+
+.howell-icon-pinetreebox:before {
+    content: "\f0ea";
+}
+
+.howell-icon-pin:before {
+    content: "\f0eb";
+}
+
+.howell-icon-pinoff:before {
+    content: "\f0ec";
+}
+
+.howell-icon-play:before {
+    content: "\f0ed";
+}
+
+.howell-icon-playcircle:before {
+    content: "\f0ee";
+}
+
+.howell-icon-playcircleoutline:before {
+    content: "\f0ef";
+}
+
+.howell-icon-playpause:before {
+    content: "\f0f0";
+}
+
+.howell-icon-plus:before {
+    content: "\f0f1";
+}
+
+.howell-icon-plusbox:before {
+    content: "\f0f2";
+}
+
+.howell-icon-pluscircle:before {
+    content: "\f0f3";
+}
+
+.howell-icon-pluscircleoutline:before {
+    content: "\f0f4";
+}
+
+.howell-icon-replay:before {
+    content: "\f0f5";
+}
+
+.howell-icon-repeat:before {
+    content: "\f0f6";
+}
+
+.howell-icon-repeatoff:before {
+    content: "\f0f7";
+}
+
+.howell-icon-repeatonce:before {
+    content: "\f0f8";
+}
+
+.howell-icon-server:before {
+    content: "\f0f9";
+}
+
+.howell-icon-servernetwork:before {
+    content: "\f0fa";
+}
+
+.howell-icon-servernetworkoff:before {
+    content: "\f0fb";
+}
+
+.howell-icon-serveroff:before {
+    content: "\f0fc";
+}
+
+.howell-icon-signal:before {
+    content: "\f0fd";
+}
+
+.howell-icon-skipbackward:before {
+    content: "\f0fe";
+}
+
+.howell-icon-skipforward:before {
+    content: "\f0ff";
+}
+
+.howell-icon-skipnext:before {
+    content: "\f100";
+}
+
+.howell-icon-skipprevious:before {
+    content: "\f101";
+}
+
+.howell-icon-stepbackward2:before {
+    content: "\f102";
+}
+
+.howell-icon-stepforward:before {
+    content: "\f103";
+}
+
+.howell-icon-stepbackward:before {
+    content: "\f104";
+}
+
+.howell-icon-stepforward2:before {
+    content: "\f105";
+}
+
+.howell-icon-swaphorizontal:before {
+    content: "\f106";
+}
+
+.howell-icon-swapvertical:before {
+    content: "\f107";
+}
+
+.howell-icon-upload:before {
+    content: "\f108";
+}
+
+.howell-icon-wrench:before {
+    content: "\f109";
+}
+
+.howell-icon-heartpulse:before {
+    content: "\f10a";
+}
+
+.howell-icon-humanmale:before {
+    content: "\f10b";
+}
+
+.howell-icon-humanfemale:before {
+    content: "\f10c";
+}
+
+.howell-icon-publish:before {
+    content: "\f10d";
+}
+
+.howell-icon-arrowdownbox:before {
+    content: "\f10e";
+}
+
+.howell-icon-arrowleftbox:before {
+    content: "\f10f";
+}
+
+.howell-icon-arrowrightbox:before {
+    content: "\f110";
+}
+
+.howell-icon-arrowtopbox:before {
+    content: "\f111";
+}
+
+.howell-icon-viewparallel:before {
+    content: "\f112";
+}
+
+.howell-icon-viewsequential:before {
+    content: "\f113";
+}
+
+.howell-icon-run:before {
+    content: "\f114";
+}
+
+.howell-icon-widgets:before {
+    content: "\f115";
+}
+
+.howell-icon-homeoutline:before {
+    content: "\f116";
+}
+
+.howell-icon-home:before {
+    content: "\f117";
+}
+
+.howell-icon-setting:before {
+    content: "\f118";
+}
+
+.howell-icon-camera-passenger-flow2:before {
+    content: "\f119";
+}
+
+.howell-icon-restart:before {
+    content: "\f120";
+}
+
+.howell-icon-forward-slash:before {
+    content: "\f121";
+}
+
+.howell-icon-wiper-off:before {
+    content: "\f122";
+}
+
+.howell-icon-camera-group-passenger-flow2:before {
+    content: "\f123";
+}
+.howell-icon-camera-passenger-flow3:before {
+    content: "\f124";
+}
+.howell-icon-camera-face-recognition:before {
+    content: "\f125";
+}

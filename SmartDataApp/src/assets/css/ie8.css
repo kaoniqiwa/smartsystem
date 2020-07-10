@@ -1,0 +1,710 @@
+﻿.navbar .container-fluid.top-bar .logo {
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/logo.png',sizingMethod='scale');
+    background-image: none;
+}
+
+.icon.message {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/message_outline.png',sizingMethod='scale');
+}
+
+.icon.set {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/engineering.png',sizingMethod='scale');
+}
+
+.icon.home {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/home_blue.png',sizingMethod='scale');
+}
+
+.icon.slave {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/slave.png',sizingMethod='scale');
+}
+
+.icon.line {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/line.png',sizingMethod='scale');
+}
+
+/*.icon.user {
+        background-image:none;filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/user.png',sizingMethod='scale');
+    }*/
+
+.icon.device {
+    background-image: none;
+    width: 38px !important;
+    height: 38px !important;
+    margin: -6px auto -2px !important;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/device_blue.png',sizingMethod='scale');
+}
+
+/*.icon.department {
+        background-image:none;filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/flow_chart.png',sizingMethod='scale');
+    }*/
+
+.icon.permissions {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/key.png',sizingMethod='scale');
+}
+
+.icon.exit {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/exit.png',sizingMethod='scale');
+}
+
+.icon.delete {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/delete.png',sizingMethod='scale');
+}
+
+.icon.close {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/close_window.png',sizingMethod='scale');
+}
+
+.background_icon.eventstate.inactive {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventstate/inactive.png',sizingMethod='scale');
+}
+
+.background_icon.eventstate.active {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventstate/active.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.none {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/none_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.io {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/io_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.vmd {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/vmd_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.videoloss {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/videoloss_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.ircut {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/ircut_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.daynight {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/daynight_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.recordstate {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/recordstate_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.storagemediumfailure {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/storagemediumfailure_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.raidfailure {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/raidfailure_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.recordingfailure {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/recordingfailure_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.badvideo {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/badvideo_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.pos {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/pos_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.fanfailure {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/fanfailure_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.cpuusage {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/cpuusage_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.memoryusage {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/memoryusage_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.temperature {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/temperature_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.pressure {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/pressure_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.voltage {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/voltage_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.maximumconnections {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/maximumconnections_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.networkbitrate {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/networkbitrate_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.videobitrate {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/videobitrate_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.squint {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/squint_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.videoturned {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/videoturned_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.intrusion {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/intrusion_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.tripwire {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/tripwire_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.loitering {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/loitering_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.unattended {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/unattended_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.removal {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/removal_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.retrograde {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/retrograde_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.atmslot {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/atmslot_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.atmkeyboard {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/atmkeyboard_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.atmdamage {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/atmdamage_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.backroomnumberlimit {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/backroomnumberlimit_white.png',sizingMethod='scale');
+}
+
+.background_icon.eventtype.backroomcrouched {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/eventtype/backroomcrouched_white.png',sizingMethod='scale');
+}
+
+.background_icon.iooutput {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/iooutput.png',sizingMethod='scale');
+}
+
+.background_icon.decoding {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/decoding.png',sizingMethod='scale');
+}
+
+.background_icon.permission.user.anonymous {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/user/anonymous.png',sizingMethod='scale');
+}
+
+.background_icon.permission.user.operator {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/user/operator.png',sizingMethod='scale');
+}
+
+.background_icon.permission.user.administrator {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/user/administrator.png',sizingMethod='scale');
+}
+
+.background_icon.permission.user.extended {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/user/extended.png',sizingMethod='scale');
+}
+
+.background_icon.permission.department.anonymous {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/department/anonymous.png',sizingMethod='scale');
+}
+
+.background_icon.permission.department.operator {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/department/operator.png',sizingMethod='scale');
+}
+
+.background_icon.permission.department.administrator {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/department/administrator.png',sizingMethod='scale');
+}
+
+.background_icon.permission.department.extended {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/department/extended.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.none {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/none.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.ipcamera {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/ipcamera.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.dvs {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/dvs.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.nvr {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/nvr.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.dvr {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/dvr.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.digitalmatrix {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/digitalmatrix.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.hddecoder {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/hddecoder.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.analogmatrix {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/analogmatrix.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.vas {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/vas.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.aam {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/aam.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.nam {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/nam.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.vps {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/vps.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.integratedmatrix {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/integratedmatrix.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.matrixcontrolunit {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/matrixcontrolunit.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.streamingmediaserver {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/streamingmediaserver.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.decodingunit {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/decodingunit.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.encodingunit {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/encodingunit.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.nvs {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/nvs.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.dataserver {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/dataserver.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.acquisitionserver {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/acquisitionserver.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.systemgateway {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/systemgateway.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.camera {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/camera.png',sizingMethod='scale');
+}
+
+.background_icon.classification.device.ultrasonicprobe {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/classification/ultrasonicprobe.png',sizingMethod='scale');
+}
+
+.background_icon.probe-type.ioinput.none {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/probetype/none.png',sizingMethod='scale');
+}
+
+.background_icon.probe-type.ioinput.panic {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/probetype/panic.png',sizingMethod='scale');
+}
+
+.background_icon.probe-type.ioinput.perimeter {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/probetype/perimeter.png',sizingMethod='scale');
+}
+
+.background_icon.probe-type.ioinput.entranceguard {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/probetype/entranceguard.png',sizingMethod='scale');
+}
+
+.background_icon.camera-type.none {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/cameratype/none.png',sizingMethod='scale');
+}
+
+.background_icon.camera-type.gun {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/cameratype/gun.png',sizingMethod='scale');
+}
+
+.background_icon.camera-type.ball {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/cameratype/ball.png',sizingMethod='scale');
+}
+
+.background_icon.camera-type.halfball {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/cameratype/halfball.png',sizingMethod='scale');
+}
+
+.background_icon.camera-type.aio {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/cameratype/aio.png',sizingMethod='scale');
+}
+
+.background_icon.decoding.true {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/ec_white.png',sizingMethod='scale');
+    background-size: 30px;
+}
+
+.background_icon.decoding.false {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/dc_white.png',sizingMethod='scale');
+    background-size: 32px;
+}
+
+.background_icon.video-interface-type.none {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/videointerfacetype/none.png',sizingMethod='scale');
+}
+
+.background_icon.video-interface-type.bnc {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/videointerfacetype/bnc.png',sizingMethod='scale');
+}
+
+.background_icon.video-interface-type.hdmi {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/videointerfacetype/hdmi.png',sizingMethod='scale');
+}
+
+.background_icon.video-interface-type.vga {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/videointerfacetype/vga.png',sizingMethod='scale');
+}
+
+.background_icon.video-interface-type.dvi {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/videointerfacetype/dvi.png',sizingMethod='scale');
+}
+
+.background_icon.video-interface-type.displayport {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/videointerfacetype/displayport.png',sizingMethod='scale');
+}
+
+.background_icon.video-interface-type.bus {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/videointerfacetype/bus.png',sizingMethod='scale');
+}
+
+.background_icon.deviceinformation {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/icon/device_info_white.png',sizingMethod='scale');
+}
+
+.cpanel {
+    -webkit-border-radius: 60px;
+    -moz-border-radius: 60px;
+    background-size: 25px;
+    behavior: url('PIE.htc');
+}
+
+    .cpanel.StorageMediumAbnormalNumber {
+        background-image: none;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/health/StorageMediumAbnormalNumber.png',sizingMethod='scale');
+    }
+
+    .cpanel.OfflineNumber {
+        background-image: none;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/health/OfflineNumber.png',sizingMethod='scale');
+        background-size: 30px;
+    }
+
+    .cpanel.VideolossNumber {
+        background-image: none;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/health/VideolossNumber.png',sizingMethod='scale');
+    }
+
+    .cpanel.CPUUsageNumber {
+        background-image: none;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/health/CPUUsageNumber.png',sizingMethod='scale');
+    }
+
+    .cpanel.SuperHeatNumber {
+        background-image: none;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/health/SuperHeatNumber.png',sizingMethod='scale');
+    }
+
+    .cpanel.VoltageInstabilityNumber {
+        background-image: none;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/health/VoltageInstabilityNumber.png',sizingMethod='scale');
+    }
+
+    .cpanel.VideoHighLoadNumber {
+        background-image: none;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/health/VideoHighLoadNumber.png',sizingMethod='scale');
+    }
+
+    .cpanel.VideoNetworkInstabilityNumber {
+        background-image: none;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/health/VideoNetworkInstabilityNumber.png',sizingMethod='scale');
+        background-size: 30px;
+    }
+
+    .cpanel.TeardownNumber {
+        background-image: none;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/health/TeardownNumber.png',sizingMethod='scale');
+    }
+
+    .cpanel.VideoConnectionFailureNumber {
+        background-image: none;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/health/VideoConnectionFailureNumber.png',sizingMethod='scale');
+        background-size: 30px;
+    }
+
+    .cpanel.NetworkUsageNumber {
+        background-image: none;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/health/NetworkUsageNumber.png',sizingMethod='scale');
+    }
+
+    .cpanel.MemoryUsageNumber {
+        background-image: none;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/health/MemoryUsageNumber.png',sizingMethod='scale');
+    }
+
+
+.row {
+    margin: 10px auto;
+}
+
+#box, input.field, input[type="submit"] {
+    behavior: url('PIE.htc');
+}
+
+#box {
+    padding: 30px 30px 0 30px;
+    height: 120px !important;
+}
+
+#ulCamera .p {
+    background-image: none;
+}
+
+    #ulCamera .p div {
+        float: right;
+        display:block;
+        padding: 10px 10px;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/point.png',sizingMethod='scale');
+    }
+
+#ulCamera .selected .p {
+    background-image: none;
+}
+
+    #ulCamera .selected .p div {
+        display:block;
+        float: right;
+        padding: 10px 10px;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/selected.png',sizingMethod='scale');
+    }
+
+.tab-content ul li.bind.selected {
+    background-image: none;
+    /*filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/selected.png',sizingMethod='scale');*/
+}
+
+#ulCamera li.bind {
+    background-image: none;
+}
+
+    #ulCamera li.bind div {
+        display:block;
+        float: right;
+        padding: 10px 10px;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/camera.png',sizingMethod='scale');
+    }
+
+#ulAnnunciator li.bind {
+    background-image: none;
+}
+
+    #ulAnnunciator li.bind div {
+        display:block;
+        float: right;
+        padding: 10px 10px;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/annunciator.png',sizingMethod='scale');
+    }
+
+
+.prompt .icon_camera {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/camera.png',sizingMethod='scale');
+}
+
+.tab-content UL LI.bind .delete {
+    margin-right: -35px;
+}
+.point.selected .img {
+    background-image:none;    
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/point.png',sizingMethod='scale');
+}
+.point .img {
+    background-image:none;    
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/point.png',sizingMethod='scale');
+}
+
+.point .img.camera {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/camera.png',sizingMethod='scale');
+}
+
+    .point .img.camera.alarm {
+        background-image: none;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/vmd1.png',sizingMethod='scale');
+    }
+
+    .point .img.camera.disalarm {
+        background-image: none;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/vmd2.png',sizingMethod='scale');
+    }
+
+
+
+.point .img.annunciator {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/disalarm.png',sizingMethod='scale');
+}
+
+    .point .img.annunciator.alarm {
+        background-image: none;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/alarm.png',sizingMethod='scale');
+    }
+
+    .point .img.annunciator.disalarm {
+        background-image: none;
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/disalarm.png',sizingMethod='scale');
+    }
+
+.point label {
+    background-color: rgb(255,255,255);
+    filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=70);  
+}
+
+.point.selected label {
+    background-color: rgb(200,200,200);
+    filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=70);  
+}
+
+.point label {        
+        background-color: rgb(255,255,255);
+        filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=70);  
+    }
+
+    .point.selected label {        
+        background-color: rgb(200,200,200);
+        filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=70);  
+    }

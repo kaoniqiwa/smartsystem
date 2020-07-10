@@ -1,0 +1,66 @@
+﻿body.xsbody {
+    padding-top: 73px;
+}
+
+.opacity input[type="checkbox"].tenderblue:checked + span:before {
+    background: #87cefa url("../img/checkmark.png") no-repeat center center;
+    border-color: #87cefa;
+}
+
+.btn-tenderblue {
+    color: #fff;
+    background-color: #87cefa;
+    border-color: #87cefa;
+}
+
+    .btn-tenderblue:hover, .btn-tenderblue:focus, .btn-tenderblue:active, .btn-tenderblue.active, .open .dropdown-toggle.btn-tenderblue {
+        color: #fff;
+        background-color: #87cefa;
+        border-color: #87cefa;
+    }
+
+    .btn-tenderblue:active, .btn-tenderblue.active, .open .dropdown-toggle.btn-tenderblue {
+        background-image: none;
+    }
+
+    .btn-tenderblue.disabled, .btn-tenderblue[disabled], fieldset[disabled] .btn-tenderblue, .btn-tenderblue.disabled:hover, .btn-tenderblue[disabled]:hover, fieldset[disabled] .btn-tenderblue:hover, .btn-tenderblue.disabled:focus, .btn-tenderblue[disabled]:focus, fieldset[disabled] .btn-tenderblue:focus, .btn-tenderblue.disabled:active, .btn-tenderblue[disabled]:active, fieldset[disabled] .btn-tenderblue:active, .btn-tenderblue.disabled.active, .btn-tenderblue[disabled].active, fieldset[disabled] .btn-tenderblue.active {
+        background-color: #87cefa;
+        border-color: #87cefa;
+    }
+
+.btn-tenderblue {
+    background: #87cefa;
+    border-color: #87cefa;
+}
+
+    .btn-tenderblue:hover, .btn-tenderblue.active {
+        background: transparent;
+        color: #87cefa;
+        border-color: #87cefa;
+    }
+
+        .btn-tenderblue:hover .caret, .btn-tenderblue.active .caret {
+            border-top-color: #87cefa;
+        }
+
+.btn-tenderblue-outline {
+    color: #87cefa;
+    border: 1px solid #87cefa;
+}
+
+    .btn-tenderblue-outline .caret {
+        border-top-color: #87cefa;
+    }
+
+    .btn-tenderblue-outline:hover, .btn-tenderblue-outline.active {
+        background: #87cefa;
+        color: white;
+    }
+
+        .btn-tenderblue-outline:hover .caret, .btn-tenderblue-outline.active .caret {
+            border-top-color: white;
+        }
+
+.btn-group.dropup .btn-tenderblue:hover .caret, .btn-group.dropup .btn-tenderblue-outline .caret {
+    border-bottom-color: #87cefa;
+}

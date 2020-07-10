@@ -1,0 +1,336 @@
+﻿
+.card-group .card {
+    margin: 3px;
+}
+
+.no-btns .btns {
+    display: none;
+}
+
+.card.small {
+    height: 70px;
+    /*min-width: 290px;*/
+    line-height: 70px;
+    opacity: 0.88;
+}
+
+.ti.ti-close {
+    font-size: 80%;
+}
+
+.card.info:hover {
+    cursor: pointer;
+}
+
+.card.small:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.card.small > .card-body {
+    padding: 1px;
+    height: 70px;
+    vertical-align: middle;
+    line-height: 70px;
+    position: relative;
+}
+
+    .card.small > .card-body .round {
+        width: 66px;
+        height: 66px;
+        border-radius: 0px;
+        line-height: 66px;
+    }
+
+        .card.small > .card-body .round > i {
+            font-size: 32px;
+            line-height: 2;
+        }
+
+.card > .card-body .text {
+    color: #DCE2EC;
+    overflow-y: hidden;
+    margin: 0 5px;
+}
+
+.card.info > .card-body .text{
+    margin: 0;
+}
+
+.card.small > .card-body .subtext {
+    overflow-y: hidden;
+    margin: 0 5px;
+}
+
+.card > .card-body .btns {
+    position: absolute;
+    right: 0;
+    top: 1px;
+    line-height: 20px;
+    padding: 2px;
+    text-align: center;
+}
+
+    .card > .card-body .btns a {
+        color: white;
+    }
+
+.card.info > .card-body .btns {
+    right: 20px;
+    top: 20px;
+}
+
+.card .btns a {
+    padding: 3px;
+    line-height: 0px;
+}
+
+.card .btns i {
+    color: #99abb4;
+}
+
+.card .btn-del, .card .btn-set {
+    display: none;
+}
+
+
+.del .card:hover .btn-del, .set .card:hover .btn-set {
+    display: inline;
+}
+
+/*.btn-del:hover {
+    background-color: #fc4b6c;
+    
+}
+.btn-set:hover {
+    background-color:#999;    
+}*/
+
+.btns .btn-del {
+    font-size: 14px;
+}
+
+.btns .btn-set {
+    font-size: 12px;
+}
+
+
+.btn-del:hover i {
+    /*color: #fc4b6c;*/
+    color: #c74e4e;
+}
+
+.btn-set:hover i {
+    /*color:#99f;*/
+    color: #DCE2EC;
+}
+
+.text-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline;
+    float: left;
+}
+
+.group-item {
+    padding: 0px;
+}
+
+.card .ribbon {
+    display: none;
+    position: absolute;
+    z-index: 1;
+}
+
+.card.ribbon-wrapper {
+    padding: 0px;
+}
+
+.card.small .ribbon {
+    height: 15px;
+    line-height: 15px;
+}
+
+.card.small .ribbon-corner {
+    padding: 1px 5px 3px 3px;
+}
+
+.card.ribbon-wrapper .ribbon {
+    display: block;
+}
+
+.card.small .ribbon-corner:before {
+    border-width: 15px;
+}
+
+.card.ribbon-wrapper .btns {
+    display: none;
+}
+
+.card .statuses {
+    right: 3px;
+    position: absolute;
+    bottom: 3px;
+    line-height: 14px;
+    /*height:14px;*/
+    margin: 0px;
+    padding: 0px;
+}
+
+    .card .statuses > .status {
+        /*border-radius: 50%;
+    height: 10px;
+    width: 10px;*/
+        display: inline-block;
+        margin: 3px 2px;
+        font-size: 12px;
+    }
+
+
+.card.info .text {
+    text-wrap: none;
+    white-space:nowrap;
+    overflow-y:visible;
+}
+.card.info .text-muted {
+    white-space:nowrap;
+}
+
+.card.binding {
+}
+
+    .card.binding > .card-body > .row > .middle > .icon {
+        font-size: 36px;
+        width: 50px;
+        margin-left: -25px;
+        margin-right: -25px;
+    }
+
+    .card.binding > .card-body > .row > .flex-row > .left {
+        padding-right: 40px;
+    }
+
+    .card.binding > .card-body > .row > .flex-row > .right {
+        padding-left: 40px;
+    }
+
+.card.binding-three {
+}
+
+    .card.binding-three > .card-body > .row > .gap > .icon {
+        font-size: 36px;
+        width: 50px;
+        margin-left: -25px;
+        margin-right: -25px;
+    }
+
+    .card.binding-three > .card-body > .row > .flex-row > .binding-item {
+        padding: 40px initial;
+    }
+
+
+    .card.binding-three > .card-body > .row > .flex-row > .binding-item.first {
+        padding-left: initial;
+    }
+
+    .card.binding-three > .card-body > .row > .flex-row > .binding-item.third {
+        padding-right: initial;
+    }
+
+.time.card.datetime .time, .date.card.datetime .date, .time .card.datetime .time, .date .card.datetime .date {
+    display: block;
+}
+
+.time.time-simple .card.datetime .time {
+    font-size: 70px;
+}
+
+.time.time-simple .second, .time-simple .second-colon {
+    display: none;
+}
+
+.date.noweek .card.datetime .week {
+    display: none;
+}
+
+.card.datetime {
+}
+
+    .card.datetime .hour {
+    }
+
+    .card.datetime .minute {
+    }
+
+    .card.datetime .time {
+        font-size: 40px;
+        font-weight: bold;
+        line-height: 87px;
+        display: none;
+    }
+
+    .card.datetime .date {
+        letter-spacing: 4px;
+        font-weight: 400;
+        display: none;
+        font-size: 13px;
+    }
+
+    .card.datetime .day {
+        letter-spacing: 5px;
+    }
+
+        /* .card.picture img {
+            position: relative;
+        }
+
+        .card.picture > .card-body img > .status {
+            position: absolute;
+            font-size: 12px;
+            right: 0px;
+            bottom: 0;
+            line-height: normal;
+            width: 18px;
+        } */
+        .card.picture {
+            height: 129px;
+            /*min-width: 290px;*/
+            line-height: 70px;
+            opacity: 0.88;
+        }
+        .card.picture:hover {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .card.picture > .card-body {
+            padding: 1px;
+            height: 129px;
+            vertical-align: middle;
+            line-height: 70px;
+            position: relative;
+        }
+
+        .card.picture > .card-body img {
+            height:125px;
+            width:100px;
+            border-radius: 0px;
+        }
+
+        .card.picture > .card-body .subtext {
+            overflow-y: hidden;
+            margin: 5px 5px 0px 5px;
+        }
+        .card.picture .ribbon {
+            height: 15px;
+            line-height: 15px;
+        }
+
+        .card.picture .ribbon-corner {
+            padding: 1px 5px 3px 3px;
+        }
+
+        .card.picture .ribbon-corner:before {
+            border-width: 15px;
+        }
