@@ -1,3 +1,3 @@
-export interface MapElement {
+export interface IMapElement {
     mapElementId: string;
 }

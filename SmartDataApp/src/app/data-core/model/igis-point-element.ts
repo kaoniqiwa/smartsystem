@@ -3,6 +3,6 @@ import { GisPoint } from "./igis-point";
     /**
      * 
      */
-export interface GisPointElement {
+export interface IGisPointElement {
     gisPoint: GisPoint;
 }

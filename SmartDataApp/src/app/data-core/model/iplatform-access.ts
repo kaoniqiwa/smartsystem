@@ -2,7 +2,7 @@
     /**
      * 平台接入信息接口
      */
-export interface PlatformAccess {
+export interface IPlatformAccess {
     platformAssociation: PlatformAssociation;
 }
 

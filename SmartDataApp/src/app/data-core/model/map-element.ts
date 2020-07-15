@@ -5,12 +5,12 @@ import { GisPoint } from "./igis-point";
     /**
      * 地图元素信息
      */
-export class MapElement {
+export interface IMapElement {
     Id: string;
     Name: string;
     Description: string;
-    CreateTime: string;
-    UpdateTime: string;
+    CreateTime: string|Date;
+    UpdateTime: string|Date;;
     /**
      *  区域路径(可选)
      */
