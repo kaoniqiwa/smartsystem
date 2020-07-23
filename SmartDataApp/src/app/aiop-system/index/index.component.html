@@ -1,0 +1,63 @@
+<mat-toolbar class="example-header">
+  <div class="app-header-wrapper">
+    <div class="d3">
+      <div fxLayout="row" class="fill-height">
+        <div fxFlex="320px" fxFlexOffset="15px" class="fill-height" fxLayoutAlign=" center">
+          <img src="../../../assets/img/logo.png" alt="">
+        </div>
+        <div fxFlex fxFlexOffset="55px" class="fill-height" fxLayoutAlign=" center">
+          <div fxFlex>
+            <app-time-tool></app-time-tool>
+          </div>
+          <div fxFlex="160px">
+            <nav class="navbar top-navbar navbar-expand-md navbar-light p-t-0 p-b-0" style="z-index: 2;">
+              <div class="navbar-collapse">
+                <ul class="navbar-nav my-lg-0">
+                  <li class="nav-item dropdown p-t-0 p-b-0" id="indexAlarmBtn" style="line-height: 54px;">
+                    <app-alarm-point-tool></app-alarm-point-tool>
+                  </li>
+                  <li class="nav-item dropdown p-t-0 p-b-0" style="line-height: 54px;">
+                    <app-user-tool></app-user-tool>
+                  </li>
+
+                </ul>
+              </div>
+            </nav>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="d2"></div>
+    <div class="d1"></div>
+  </div>
+
+</mat-toolbar>
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer class="example-sidenav" [class.minimize]="!maximize" mode="side" opened="true">
+    <div class="app-left-sidenav">
+      <div class="d3">
+        <div class="sidenav-viewer">
+          <div class="m-l-15">
+            <side-nav-menu #navMenu></side-nav-menu>
+          </div>
+        </div>
+      </div>
+      <div class="d2"></div>
+      <div class="d1"></div>
+      <div class="side-nav-menu-on" [class.collapse]="maximize">
+        <a href="javascript:void(0)" (click)="menuControl(true)" class="howell-icon-hamburger light-blue "></a>
+      </div>
+      <div class="side-nav-menu-off" [class.collapse]="!maximize">
+        <a href="javascript:void(0)" (click)="menuControl(false)" class="mdi mdi-arrow-left-bold light-blue"></a>
+      </div>
+    </div>
+
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <history-link-tool></history-link-tool>
+    <router-outlet></router-outlet>
+  </div>
+  
+</mat-drawer-container>

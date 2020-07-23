@@ -1,0 +1,30 @@
+<nav [class.m-b-10]="!maximize">
+  <button class="sidenav-main-btn highlighted" [class.minimize]="!maximize">
+    <div class="t-l-angle highlighted"></div>
+    <div class="t-r-angle highlighted"></div>
+    <div class="b-l-angle highlighted"></div>
+    <div class="b-r-angle highlighted"></div>
+    <i class="howell-icon-device2 pull-left" style="margin-left: 14px;" [class.mm-r-20]="maximize"></i>
+    <span class="pull-left" >设备管理</span> 
+  </button>
+  <ul>
+    <li class="sidenav-menu-btn">
+     <a>监控点</a>
+    </li>
+  </ul>
+</nav>
+<nav [class.minimize]="!maximize">
+  <button class="sidenav-main-btn normal" [class.minimize]="!maximize">
+    <div class="t-l-angle normal"></div>
+    <div class="t-r-angle normal"></div>
+    <div class="b-l-angle normal"></div>
+    <div class="b-r-angle normal"></div>
+    <i class="howell-icon-device2 pull-left"  style="margin-left: 14px;" [class.mm-r-20]="maximize"></i>
+    <span class="pull-left">AI模型</span> 
+  </button>
+  <ul>
+    <li class="sidenav-menu-btn">
+     <a>AI模型列表</a>
+    </li>
+  </ul>
+</nav>  

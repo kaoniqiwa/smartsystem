@@ -1,0 +1,128 @@
+
+button:focus 
+    outline: none
+
+.mm-r-20
+    margin-right: 20px !important
+
+@keyframes maximize-w
+{
+from {width:70px}
+to {width:260px;}
+}
+@keyframes minimize-w
+{
+from {width:260px}
+to {width:70px;}
+}
+
+.sidenav-main-btn.minimize
+    width 70px
+   // animation  minimize-w 0.5s 
+
+.sidenav-main-btn.minimize span ,.sidenav-main-btn.minimize+ ul
+    display none
+
+.sidenav-main-btn.minimize i 
+    margin: 0 0 0 12px;
+
+.sidenav-main-btn.normal
+    background-color: rgba(105,151,255,0.2)
+    box-shadow:inset 0 0 10px 0 rgba(207,215,255, .25)
+    border: 2px rgba(207,215,255, .5) solid
+    color: #a9b5dc
+ 
+.sidenav-main-btn.normal:hover 
+    color: #ecefff
+    border: 2px rgba(207,215,255, .7) solid
+    background-color: rgba(105,151,255,0.6)
+    box-shadow: 0 0 25px 0 rgba(58,147,255, .25), inset 0 0 10px 0 rgba(216,244,255, .25)
+
+.sidenav-main-btn.normal:hover  .t-l-angle.normal,
+.sidenav-main-btn.normal:hover  .t-r-angle.normal
+{
+     border-top: 10px solid rgba(207,215,255, .7)
+} 
+.sidenav-main-btn.normal:hover  .b-l-angle.normal,
+.sidenav-main-btn.normal:hover  .b-r-angle.normal
+{
+     border-bottom: 10px solid rgba(207,215,255, .7)
+}
+
+.sidenav-main-btn.highlighted
+    box-shadow: 0 0 20px 10px rgba(58,147,255, .5), inset 0 0 20px 0 rgba(216,244,255, .5)
+    border: 2px #bfd8ff solid
+    background-color: rgba(105,151,255,0.5)
+
+.sidenav-main-btn
+    width: 260px
+    position: relative
+    height: 70px
+    font-size 30px
+    cursor pointer
+   //  animation maximize-w 0.5s 
+
+.t-l-angle.normal
+    border-top: 10px solid rgba(207,215,255, .5)
+.t-l-angle.highlighted
+    border-top: 10px solid #bfd8ff
+.sidenav-main-btn .t-l-angle
+    top: 3px
+    left: 3px
+    position: absolute
+    border-right: 10px solid transparent
+
+
+.t-r-angle.normal
+    border-top: 10px solid rgba(207,215,255, .5)
+.t-r-angle.highlighted
+    border-top: 10px solid #bfd8ff
+.sidenav-main-btn .t-r-angle
+    top: 3px
+    right: 3px
+    position: absolute 
+    border-left: 10px solid transparent
+
+.b-l-angle.normal
+    border-bottom: 10px solid rgba(207,215,255, .5)
+.b-l-angle.highlighted
+    border-bottom: 10px solid #bfd8ff
+.sidenav-main-btn .b-l-angle
+    left: 3px
+    bottom: 3px
+    position: absolute 
+    border-right: 10px solid transparent
+
+.b-r-angle.normal
+    border-bottom: 10px solid rgba(207,215,255, .5)
+.b-r-angle.highlighted
+    border-bottom: 10px solid #bfd8ff
+.sidenav-main-btn .b-r-angle
+    bottom: 3px
+    right: 3px
+    position: absolute 
+    border-left: 10px solid transparent
+
+ ul
+    list-style-type: none
+    padding: 0
+    overflow: hidden
+
+.sidenav-menu-btn
+    background-image url('/assets/img/menu-btn.png')
+    width: 253px
+    height: 58px
+    text-align: center
+    padding-top: 18px
+    margin-left: 7px;
+    cursor pointer
+
+.sidenav-menu-btn:hover
+    background-image url('/assets/img/menu-btn-hover.png')
+
+.sidenav-menu-btn.selected
+    background-image url('/assets/img/menu-btn-focus.png') 
+
+.sidenav-menu-btn a
+    font-size: 24px
+    color: white
