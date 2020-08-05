@@ -1,0 +1,146 @@
+<div class="fill-height">
+  <div *ngIf="tableService.deviceTable.form.show" class="fill-height fill-width hw-content-mask">
+    <div class="hw-form-wrap">
+      <encode-device-form [cancelFn]="tableService.deviceTable.form.cancelFn"
+        [editItem]="tableService.deviceTable.form.editItem" [saveFn]="tableService.deviceTable.form.successSaveFn">
+      </encode-device-form>
+    </div>
+  </div>
+  <div class="fill-height fill-width hw-content-mask" *ngIf="tableService.deviceTable.labels.show">
+    <div class="custom-form-wrap hw-form-wrap" style="width: 800px;height: 620px;">
+      <h2>绑定标签</h2>
+      <hw-input-tag-area [model]="tableService.deviceTable.labels._dataSource"
+        [addTagFn]="tableService.deviceTable.labels.createFn" [delTagFn]="tableService.deviceTable.labels.delFn">
+      </hw-input-tag-area>
+      <div class="text-center">
+        <button class="hw-green-m-btn m-r-10" (click)="onLabelsSubmit()">
+          <i class="howell-icon-Check"></i>
+        </button>
+        <button class="hw-gray-m-btn" (click)="hiddenBindLabels()">
+          <i class="howell-icon-Close"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+  <ng-container *ngIf="tableService.cameraTable.confirmDialog_">
+    <div  class="fill-height fill-width hw-content-mask" >
+      <hw-confirm-dialog [dialog]="tableService.deviceTable.confirmDialog_"></hw-confirm-dialog>
+    </div>
+  </ng-container>
+  <div class="second-title-bg text">
+    编码器
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between stretch" class="m-b-10">
+    <div class="hw-btn-group">
+      <button class="hw-green-btn m-r-10" style="font-size: 18px;" (click)="tableService.deviceTable.form.show=true">
+        <i class="howell-icon-plus"></i>
+        添加
+      </button>
+      <button class="hw-blue-btn m-r-10 "  (click)="syncBtnClick()" >
+        <i class="howell-icon-repeat"></i>
+        同步
+      </button>
+      <button class="hw-red-btn  m-r-10" (click)="delBtnClick()" [class.black]="!selectItems" style="font-size: 18px;">
+        <i class="howell-icon-delete-bin"></i>
+        删除
+      </button>
+      <button class="hw-cyan-btn" (click)="showBindLabels()">
+        <i class="mdi mdi-tag"></i>
+        绑定标签
+      </button>
+    </div>
+    <div>
+      <hw-input-search [searchEvent]="searchFn" [placeholder]="'名称'"></hw-input-search>
+    </div>
+  </div>
+  <div style="height: calc(100% - 130px);">
+    <hw-custom-table #table [model]="tableService.deviceTable.dataSource"></hw-custom-table>
+
+    <!-- <div class="table-header-container">
+      <div class="table-responsive">
+        <table class="table head custom stylish-table m-b-0">
+          <thead>
+            <tr>
+              <th class="title-name" style="width: 20%;">
+                名称
+              </th>
+              <th class="title-name" style="width: 20%;">
+                地址
+              </th>
+              <th class="title-name" style="width: 10%;">
+                传输类型
+              </th>
+              <th class="title-name" style="width: 10%;">
+                协议类型
+              </th>
+              <th class="title-name" style="width: 10%;">
+                状态
+              </th>
+              <th class="title-name" style="width: 10%;">
+                设备类型
+              </th>
+              <th class="title-name" style="width: 10%;">
+                型号
+              </th>
+              <th class="title-name text-center" style="width: 10%;">
+                操作
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+    <div class="table-body-container overflow-auto" infinite-scroll [infiniteScrollDistance]="scroll.scrollDistance"
+      [infiniteScrollUpDistance]="scroll.scrollUpDistance" [infiniteScrollThrottle]="scroll.throttle"
+      [scrollWindow]="scroll.scrollWindow">
+      <div class="table-responsive" style="position: relative;">
+        <table class="table body stylish-table custom m-b-0">
+          <tbody>
+            <tr (click)="trClick(item.id)" [class.selected]="tableService.deviceTable.hasSelectId(item.id)"
+              *ngFor="let item of tableService.deviceTable.dataSource.items">
+              <td style="width: 20%;">
+                <span>{{item.name}}</span>
+              </td>
+              <td style="width: 20%;">
+                <span>{{item.url}}</span>
+              </td>
+              <td style="width: 10%;">
+                <span>{{item.transType}}</span>
+              </td>
+              <td style="width: 10%;">
+                <span>{{item.protocolType}}</span>
+              </td>
+              <td style="width: 10%;">
+                <span>{{item.onlineStatus}}</span>
+              </td>
+              <td style="width: 10%;">
+                <span>{{item.deviceType}}</span>
+              </td>
+              <td style="width: 10%;">
+                <span>{{item.model}}</span>
+              </td>
+              <td class="text-center" style="width: 10%;">
+                <div>
+                  <a href="javascript:void(0)" (click)="editClick(item.id)" class="td-icon"><i
+                      class="howell-icon-modification td-icon"></i></a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between stretch" class="table-foot-wrap">
+      <div class="left-text">
+        <span class="m-r-10">已选择</span>
+        <span>6</span>
+      </div>
+      <div class="right-text">
+         <a  href="javascript:void(0)" class="m-r-10">全选</a>
+         <a  href="javascript:void(0)" class="m-r-10">反选</a>
+         <a  href="javascript:void(0)">取消</a>
+      </div>
+    </div> -->
+  </div>
+</div>

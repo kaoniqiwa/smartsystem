@@ -1,0 +1,112 @@
+<div class="custom-form-wrap fill-height" style="width: 800px;"> 
+  <ng-container *ngIf="!formService.editItem">
+    <h2>添加编码器</h2>
+  </ng-container>
+  <ng-container *ngIf="formService.editItem">
+    <h2>{{formService.editItem.Name}}</h2>
+  </ng-container>
+  <form  class="form-content m-b-20" [formGroup]="formService.form" (ngSubmit)="onSubmit()">
+    <div>
+      <input type="reset" #resetBtn class="collapse" value="">
+      <div fxLayout="row" class="form-group">
+        <div fxFlex>
+          <label class="custom control-label tran-input-label">名称</label>
+          <span class="text-danger p-t-10">*</span>
+          <input class="form-control custom"  formControlName="Name">
+        </div>
+      </div>
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="50">
+          <label class="custom control-label tran-input-label">传输类型</label>
+          <select class="form-control custom custom-select" formControlName="TransType">
+            <option value="1">TCP</option>
+            <option value="0">UDP</option>
+          </select>
+        </div>
+        <div fxFlex fxFlexOffset="10px">
+          <label class="custom control-label tran-input-label">协议类型</label>
+          <select class="form-control custom custom-select" formControlName="ProtocolType">
+            <option value=""></option> 
+            <option [value]="p" *ngFor="let p of formService.protocolTypes">{{p}}</option> 
+          </select>
+        </div>
+      </div>
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="50">
+          <label class="custom control-label tran-input-label">IP地址</label>
+          <span class="text-danger p-t-10">*</span>
+          <input class="form-control custom"  formControlName="Url_">
+        </div>
+        <div fxFlex fxFlexOffset="10px">
+          <label class="custom control-label tran-input-label">端口号</label>
+          <span class="text-danger p-t-10">*</span>
+          <input class="form-control custom"  formControlName="Port">
+        </div>
+      </div>
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="50">
+          <label class="custom control-label tran-input-label">用户名</label>
+          <input class="form-control custom"  formControlName="Username">
+        </div>
+        <div fxFlex fxFlexOffset="10px">
+          <label class="custom control-label tran-input-label">密码</label>
+          <input class="form-control custom"  formControlName="Password">
+        </div>
+      </div>
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="50">
+          <label class="custom control-label tran-input-label">设备类型</label>
+          <select class="form-control custom custom-select"  formControlName="DeviceType">
+            <option value="NVR">NVR</option>
+            <option value="IPC">IPC</option>
+            <option value="DVS">DVS</option>
+          </select>
+        </div>
+        <div fxFlex fxFlexOffset="10px">
+          <label class="custom control-label tran-input-label">型号</label>
+          <input class="form-control custom"  formControlName="Model">
+        </div>
+      </div>
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="50">
+          <label class="custom control-label tran-input-label">序列号</label>
+          <input class="form-control custom"  formControlName="SerialNumber">
+        </div>
+        <div fxFlex fxFlexOffset="10px">
+          <label class="custom control-label tran-input-label">厂商</label>
+          <input class="form-control custom"  formControlName="Manufactory">
+        </div>
+      </div>
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="50">
+          <label class="custom control-label tran-input-label">固件版本号</label>
+          <input class="form-control custom"  formControlName="FirmwareVersion">
+        </div>
+        <div fxFlex fxFlexOffset="10px">
+          <label class="custom control-label tran-input-label">软件版本号</label>
+          <input class="form-control custom"  formControlName="SoftwareVersion">
+        </div>
+      </div>
+      <div fxLayout="row" class="form-group">
+        <div fxFlex>
+          <label class="custom control-label tran-input-label">硬件版本号</label>
+          <input class="form-control custom"  formControlName="HardwareVersion">
+        </div>
+      </div>
+      <!-- <div>
+        <hw-input-tag-area [addTagFn]="formService.createResourceLabelFn" 
+        [outPutTag]="formService.resourceLabelFn"
+        [model]="formService.inputTagArea"></hw-input-tag-area>
+      </div> -->
+     
+    </div>
+  </form>
+  <div class="text-center">
+    <button class="hw-green-m-btn m-r-10" (click)="onSubmit()">
+      <i class="howell-icon-Check"></i>
+    </button>
+    <button class="hw-gray-m-btn" (click)="onCancel()">
+      <i class="howell-icon-Close"></i>
+    </button>
+  </div>
+</div>

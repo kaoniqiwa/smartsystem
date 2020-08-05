@@ -1,0 +1,71 @@
+<div class="custom-form-wrap" style="width: 800px;">
+  <ng-container *ngIf="!formService.editItem">
+    <h2>添加摄像机</h2>
+  </ng-container>
+  <ng-container *ngIf="formService.editItem">
+    <h2>{{formService.editItem.Name}}</h2>
+  </ng-container>
+  <form  class="form-content m-b-20" [formGroup]="formService.form" (ngSubmit)="onSubmit()">
+     <div>
+      <input type="reset" #resetBtn class="collapse" value="">
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="50">
+          <label class="custom control-label tran-input-label">名称</label>
+          <span class="text-danger p-t-10">*</span>
+          <input class="form-control custom" formControlName="Name">
+        </div>
+        <div fxFlex fxFlexOffset="10px">
+          <label class="custom control-label tran-input-label">类型</label>
+          <span class="text-danger p-t-10">*</span>
+          <select class="form-control custom custom-select" formControlName="CameraType">
+            <option value="1">枪机</option>
+            <option value="2">球机</option>
+            <option value="3">半球</option>
+            <option value="4">一体机</option>
+          </select>
+        </div>
+      </div>
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="50">
+          <label class="custom control-label tran-input-label">通道号</label>
+          <span class="text-danger p-t-10">*</span>
+          <input type="number" class="form-control custom" formControlName="ChannelNo">
+        </div>
+        <div fxFlex fxFlexOffset="10px">
+          <label class="custom control-label tran-input-label">编码设备</label>
+          <span class="text-danger p-t-10">*</span>
+          <select class="form-control custom custom-select" formControlName="EncodeDeviceId">
+            <option [value]="e.Id" *ngFor="let e of formService.encodeDevices">{{e.Name}}</option>
+          </select>
+        </div>
+      </div>
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="50">
+          <label class="custom control-label tran-input-label">PTZ</label>
+          <select class="form-control custom custom-select" formControlName="PTZControllable">
+            <option value="">请选择</option>
+            <option value="1">是</option>
+            <option value="0">否</option>
+          </select>
+        </div>
+        <div fxFlex fxFlexOffset="10px">
+          <label class="custom control-label tran-input-label">存储</label>
+          <select class="form-control custom custom-select" formControlName="Storable">
+            <option value="">请选择</option>
+            <option value="1">是</option>
+            <option value="0">否</option>
+          </select>
+        </div>
+      </div>
+     </div>
+  </form>
+
+  <div class="text-center">
+    <button class="hw-green-m-btn m-r-10" (click)="onSubmit()">
+      <i class="howell-icon-Check"></i>
+    </button>
+    <button class="hw-gray-m-btn" (click)="onCancel()">
+      <i class="howell-icon-Close"></i>
+    </button>
+  </div>
+</div>

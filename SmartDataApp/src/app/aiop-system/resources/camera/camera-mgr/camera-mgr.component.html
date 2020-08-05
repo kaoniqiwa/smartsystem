@@ -1,0 +1,61 @@
+<div class="fill-height">
+  <div *ngIf="tableService.cameraTable.form.show" class="fill-height fill-width hw-content-mask">
+    <div class="hw-form-wrap">
+      <camera-form [cancelFn]="tableService.cameraTable.form.cancelFn" [editItem]="tableService.cameraTable.form.editItem"
+        [saveFn]="tableService.cameraTable.form.successSaveFn">
+      </camera-form>
+    </div>
+  </div>
+  <ng-container *ngIf="tableService.cameraTable.confirmDialog_">
+    <div  class="fill-height fill-width hw-content-mask" >
+      <hw-confirm-dialog [dialog]="tableService.cameraTable.confirmDialog_"></hw-confirm-dialog>
+    </div>
+  </ng-container>
+  
+  <div class="fill-height fill-width hw-content-mask"  *ngIf="tableService.cameraTable.labels.show">
+    <div class="custom-form-wrap hw-form-wrap" style="width: 800px;height: 620px;">
+      <h2>绑定标签</h2>
+      <hw-input-tag-area [model]="tableService.cameraTable.labels._dataSource"
+      [addTagFn]="tableService.cameraTable.labels.createFn"
+      [delTagFn]="tableService.cameraTable.labels.delFn"></hw-input-tag-area>
+      <div class="text-center">
+        <button class="hw-green-m-btn m-r-10" (click)="onLabelsSubmit()">
+          <i class="howell-icon-Check"></i>
+        </button>
+        <button class="hw-gray-m-btn" (click)="hiddenBindLabels()">
+          <i class="howell-icon-Close"></i>
+        </button>
+      </div>
+    </div> 
+
+  </div>
+  <div class="second-title-bg text">
+    摄像机
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between stretch" class="m-b-10">
+    <div class="hw-btn-group">
+      <button class="hw-green-btn m-r-10"  (click)="tableService.cameraTable.form.show=true">
+        <i class="howell-icon-plus"></i>
+        添加
+      </button>
+      <button class="hw-blue-btn m-r-10 " (click)="syncBtnClick()" >
+        <i class="howell-icon-repeat"></i>
+       同步
+      </button>
+      <button class="hw-red-btn  m-r-10 " (click)="delBtnClick()" [class.black]="!selectItems">
+        <i class="howell-icon-delete-bin"></i>
+        删除
+      </button>
+      <button class="hw-cyan-btn"  (click)="showBindLabels()">
+        <i class="mdi mdi-tag"></i>
+       绑定标签
+      </button>
+    </div>
+    <div>
+      <hw-input-search [searchEvent]="searchFn"  [placeholder]="'名称'"></hw-input-search>
+    </div>
+  </div>
+  <div style="height: calc(100% - 130px);">
+    <hw-custom-table #table [model]="tableService.cameraTable.dataSource"></hw-custom-table>   
+  </div>
+</div>
