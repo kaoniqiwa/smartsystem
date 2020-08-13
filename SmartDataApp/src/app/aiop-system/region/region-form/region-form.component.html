@@ -1,0 +1,30 @@
+<div  style="width: 500px;">
+  <h2 class="m-b-20">{{title}}</h2>
+  <form  class="form-content m-b-20" [formGroup]="formService.form" (ngSubmit)="onSubmit()">
+     <div>
+      <input type="reset" #resetBtn class="collapse" value="">
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="100">
+          <label class="custom control-label tran-input-label">名称</label>
+          <span class="text-danger p-t-10">*</span>
+          <input class="form-control custom" formControlName="Name">
+        </div> 
+      </div>      
+       <div fxLayout="row" class="form-group">
+        <div fxFlex="100">
+          <label class="custom control-label tran-input-label">描述</label>
+          <textarea  formControlName="Description" cols="30" rows="10" class="form-control custom"></textarea> 
+        </div> 
+      </div>  
+     </div>
+  </form>
+
+  <div>
+    <button class="hw-green-m-btn m-r-10" (click)="onSubmit()">
+      <i class="howell-icon-Check"></i>
+    </button>
+    <button class="hw-gray-m-btn" (click)="onCancel()">
+      <i class="howell-icon-Close"></i>
+    </button>
+  </div>
+</div>

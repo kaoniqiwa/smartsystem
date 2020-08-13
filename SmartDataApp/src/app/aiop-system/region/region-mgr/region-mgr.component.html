@@ -1,0 +1,33 @@
+<div class="fill-height">
+  <div class="fill-height">
+    <div fxLayout="row wrap" class="fill-height">
+      <div fxFlex="350px" class="card-wrap m-r-20">
+        <h2 class="m-b-20">安保区域</h2>
+        <div class="m-b-10">
+          <button class="hw-green-btn m-r-10" (click)="addBtnClick()">
+            <i class="howell-icon-plus"></i>
+            添加
+          </button> 
+          <button class="hw-red-btn  m-r-10 " (click)="delBtnClick()" [class.black]="!regionMgrService.regionTree.selectedNode">
+            <i class="howell-icon-delete-bin"></i>
+            删除
+          </button>
+        </div>
+        <div class="m-b-20">
+            <hw-input-search [placeholder]="'名称'"
+            [searchEvent]="searchTree"></hw-input-search>
+        </div>
+        <div class="fine" style="height: calc(100% - 140px);overflow: scroll;">
+          <hw-custom-tree #tree [treeData]="regionMgrService.regionTree.dataSource"
+          [selectedItemFn]="regionMgrService.regionTree.selectedItemFn"></hw-custom-tree>
+        </div>
+     
+      </div>
+      <div fxFlex    class="card-wrap">
+        <region-form [title]="regionMgrService.regionTree.formTitle"  [editItem]="regionMgrService.regionTree.editItem"
+        [parentId]="regionMgrService.regionTree.selectedNodeId"
+        [saveFn]="regionMgrService.regionTree.saveRegionForm"></region-form>
+      </div>
+    </div>
+  </div>
+</div>
