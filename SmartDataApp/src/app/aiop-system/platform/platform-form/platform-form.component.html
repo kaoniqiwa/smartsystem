@@ -1,0 +1,65 @@
+<div class="custom-form-wrap" style="width: 800px;">
+  <ng-container *ngIf="!formService.editItem">
+    <h2>添加平台</h2>
+  </ng-container>
+  <ng-container *ngIf="formService.editItem">
+    <h2>{{formService.editItem.Name}}</h2>
+  </ng-container>
+  <form  class="form-content m-b-20 " style="height:calc(100% - 86px);" [formGroup]="formService.form" (ngSubmit)="onSubmit()">
+     <div class="fill-height">
+      <input type="reset" #resetBtn class="collapse" value="">
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="100">
+          <label class="custom control-label tran-input-label">名称</label>
+          <span class="text-danger p-t-10">*</span>
+          <input class="form-control custom" formControlName="Name">
+        </div> 
+      </div>      
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="50">
+          <label class="custom control-label tran-input-label">用户名</label>
+          <input class="form-control custom"  formControlName="Username">
+        </div>
+        <div fxFlex fxFlexOffset="10px">
+          <label class="custom control-label tran-input-label">密码</label>
+          <input class="form-control custom"  formControlName="Password">
+        </div>
+      </div>
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="50">
+          <label class="custom control-label tran-input-label">IP地址</label>
+          <span class="text-danger p-t-10">*</span>
+          <input class="form-control custom"  formControlName="Url_">
+        </div>
+        <div fxFlex fxFlexOffset="10px">
+          <label class="custom control-label tran-input-label">端口号</label>
+          <span class="text-danger p-t-10">*</span>
+          <input class="form-control custom"  formControlName="Port">
+        </div>
+      </div>
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="50">
+          <label class="custom control-label tran-input-label">协议类型</label>
+          <span class="text-danger p-t-10">*</span>
+          <select class="form-control custom custom-select" formControlName="ProtocolType">
+      
+            <option [value]="p.ProtocolType" *ngFor="let p of formService.protocols">{{p.ProtocolType}}</option> 
+          </select>
+        </div>
+        <div fxFlex fxFlexOffset="10px">
+          <label class="custom control-label tran-input-label">软件版本</label>
+          <input class="form-control custom"  formControlName="SoftwareVersion">
+        </div>
+      </div>
+     </div>
+  </form>
+
+  <div class="text-center">
+    <button class="hw-green-m-btn m-r-10" (click)="onSubmit()">
+      <i class="howell-icon-Check"></i>
+    </button>
+    <button class="hw-gray-m-btn" (click)="onCancel()">
+      <i class="howell-icon-Close"></i>
+    </button>
+  </div>
+</div>
