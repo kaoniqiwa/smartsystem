@@ -3,6 +3,7 @@ import { Resource  as ResourceModel} from "../model/resource";
 import {  EncodeDevice as EncodeDeviceModel} from "../model/encode-device";
 import { ResourceLabel  as ResourceLabelModel} from "../model/resource-label";
 import { GetEncodeDevicesParams, GetCamerasParams } from "../model/encode-devices-params";
+import { Protocol } from "../model/protocol";
 import { Camera as CameraModel } from "../model/camera";
 import {  CameraAIModel } from "../model/camera-ai-model";
 import * as url from "../url/resources";
@@ -11,17 +12,19 @@ import { PagedList } from "../model/page";
 import { Response } from "../model/Response";
 import { GetResourcesParams } from "../model/resources-params"; 
 import { GetResourceLabelsParams } from "../model/resource-labels-params";
-
+import { SaveModel } from "../model/save-model"; 
 @Injectable({
     providedIn:'root'
 })
-export class ResourceRequestService{
+export class ResourceRequestService extends SaveModel{
     url: url.Resource;
     constructor(private requestService: RequestService) {
+        super();
         this.url = new url.Resource();
     }
-    create(item:ResourceModel){
-        return this.requestService.axios.post<ResourceModel, Response<ResourceModel>>(this.url.create(), item);
+    create(item:ResourceModel){ 
+    
+        return this.requestService.axios.post<ResourceModel, Response<ResourceModel>>(this.url.create(),this.toModel(item,this.formMustField.resource));
     }
 
     get(id: string) {
@@ -29,7 +32,7 @@ export class ResourceRequestService{
     }
 
     set(item: ResourceModel){
-        return this.requestService.axios.put<ResourceModel, Response<ResourceModel>>(this.url.edit(item.Id),item);
+        return this.requestService.axios.put<ResourceModel, Response<ResourceModel>>(this.url.edit(item.Id),this.toModel(item,this.formMustField.resource));
     }
 
     del(id: string) {
@@ -37,20 +40,22 @@ export class ResourceRequestService{
     }
 
     list(item:GetResourcesParams){
-        return this.requestService.axios.post<GetResourcesParams, Response<PagedList<ResourceModel>>>(this.url.list(), item);
+        return this.requestService.axios.post<GetResourcesParams, Response<PagedList<ResourceModel>>>('/api/howell/ver10/aiop_service/'+this.url.list(), item);
     }
 }
 
 @Injectable({
     providedIn:'root'
 })
-export class EncodeDeviceRequestService{
+export class EncodeDeviceRequestService extends SaveModel{
     url: url.ResourceEncodeDevice;
     constructor(private requestService: RequestService) {
+        super();
         this.url = new url.ResourceEncodeDevice();
     }
     create(item:EncodeDeviceModel){
-        return this.requestService.axios.post<EncodeDeviceModel, Response<EncodeDeviceModel>>(this.url.create(), item);
+        console.log(this.toModel(item,this.formMustField.encodeDevice));
+        return this.requestService.axios.post<EncodeDeviceModel, Response<EncodeDeviceModel>>(this.url.create(), this.toModel(item,this.formMustField.encodeDevice));
     }
 
     get(id: string) {
@@ -58,7 +63,7 @@ export class EncodeDeviceRequestService{
     }
 
     set(item: EncodeDeviceModel){
-        return this.requestService.axios.put<EncodeDeviceModel, Response<EncodeDeviceModel>>(this.url.edit(item.Id),item);
+        return this.requestService.axios.put<EncodeDeviceModel, Response<EncodeDeviceModel>>(this.url.edit(item.Id), this.toModel(item,this.formMustField.encodeDevice));
     }
 
     del(id: string) {
@@ -68,18 +73,24 @@ export class EncodeDeviceRequestService{
     list(item:GetEncodeDevicesParams){
         return this.requestService.axios.post<GetEncodeDevicesParams, Response<PagedList<EncodeDeviceModel>>>(this.url.list(), item);
     }
+
+    protocol(){
+        return this.requestService.axios.get<Response<Protocol[]>>(this.url.protocol());
+    }
 }
 
 @Injectable({
     providedIn:'root'
 })
-export class CameraRequestService{
+export class CameraRequestService extends SaveModel{
     url: url.ResourceCamera;
     constructor(private requestService: RequestService) {
+        super();
         this.url = new url.ResourceCamera();
     }
-    create(item:CameraModel){
-        return this.requestService.axios.post<CameraModel, Response<CameraModel>>(this.url.create(), item);
+    create(item:CameraModel){console.log( this.toModel(item,this.formMustField.camera));
+    
+        return this.requestService.axios.post<CameraModel, Response<CameraModel>>(this.url.create(), this.toModel(item,this.formMustField.camera));
     }
 
     get(id: string) {
@@ -87,7 +98,7 @@ export class CameraRequestService{
     }
 
     set(item: CameraModel){
-        return this.requestService.axios.put<CameraModel, Response<CameraModel>>(this.url.edit(item.Id),item);
+        return this.requestService.axios.put<CameraModel, Response<CameraModel>>(this.url.edit(item.Id),this.toModel(item,this.formMustField.camera));
     }
 
     del(id: string) {
@@ -153,7 +164,7 @@ export class LabelRequestService{
     }
 
     list(item:GetResourceLabelsParams){
-        return this.requestService.axios.post<GetResourceLabelsParams, Response<PagedList<EncodeDeviceModel>>>(this.url.list(), item);
+        return this.requestService.axios.post<GetResourceLabelsParams, Response<PagedList<ResourceLabelModel>>>(this.url.list(), item);
     }
 }
 
@@ -166,16 +177,16 @@ export class ResourceLabelRequestService{
         this.url = new url.ResourceLabel();
     }
     create(sourceId:string,labelId:string){
-        return this.requestService.axios.post<ResourceLabelModel, Response<CameraAIModel>>(this.url.create(sourceId,labelId));
+        return this.requestService.axios.post<ResourceLabelModel, Response<ResourceLabelModel>>(this.url.create(sourceId,labelId));
     }
 
     get(sourceId:string,labelId:string){
         return this.requestService.axios.get<Response<ResourceLabelModel>>(this.url.get(sourceId,labelId));
     }
 
-    list(sourceId:string){
-        return this.requestService.axios.get<Response<ResourceLabelModel[]>>(this.url.list(sourceId));
-    }
+    // list(sourceId:string){
+    //     return this.requestService.axios.get<Response<ResourceLabelModel[]>>(this.url.list(sourceId));
+    // }
 
     del(sourceId:string,labelId:string){
         return this.requestService.axios.delete<Response<ResourceLabelModel>>(this.url.del(sourceId,labelId));

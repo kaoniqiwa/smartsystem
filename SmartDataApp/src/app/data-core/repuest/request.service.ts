@@ -6,8 +6,8 @@ import { Injectable } from "@angular/core";
 })
 export class RequestService {
     private axios_: AxiosDigestInstance;
-    private userName_: string;
-    private pwd_: string;
+    private userName_: string='admin';
+    private pwd_: string='123456';
     constructor() {
 
     }

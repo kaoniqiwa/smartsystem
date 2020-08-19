@@ -10,3 +10,9 @@ export interface ExceptionData {
     ExceptionType: string;
     InnerException: ExceptionData;
 }
+
+export interface HttpResponse<T> {
+    data: Response<T>;
+    status: number;
+    statusText: string;
+}

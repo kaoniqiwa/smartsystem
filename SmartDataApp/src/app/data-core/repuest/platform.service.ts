@@ -5,6 +5,7 @@ import { Injectable } from "@angular/core";
 import { RequestService } from "./Request.service";
 import { GetPlatformsParams } from "../model/platforms-Params";
 import { PagedList } from "../model/page";
+import { Protocol } from "../model/protocol";
 
 @Injectable({
     providedIn: 'root'
@@ -33,6 +34,10 @@ export class PlatformRequestSerivce{
 
     list(item:GetPlatformsParams){
         return this.requestService.axios.post<GetPlatformsParams, Response<PagedList<Platform>>>(this.url.list(), item);
+    }
+
+    protocol(){
+        return this.requestService.axios.get<Response<Protocol[]>>(this.url.protocols());
     }
 
     sync(id:string){

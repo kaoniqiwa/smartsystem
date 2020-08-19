@@ -30,6 +30,6 @@ export class AIModelRequestService{
     }
 
     list(item:GetAIModelsParams){
-        return this.requestService.axios.post<GetAIModelsParams, Response<PagedList<CameraAIModel[]>>>(this.url.list(), item);
+        return this.requestService.axios.post<GetAIModelsParams, Response<PagedList<CameraAIModel>>>(this.url.list(), item);
     }
 }

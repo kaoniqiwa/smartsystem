@@ -10,7 +10,7 @@ export interface IMapElement {
     Name: string;
     Description: string;
     CreateTime: string|Date;
-    UpdateTime: string|Date;;
+    UpdateTime: string|Date;
     /**
      *  区域路径(可选)
      */

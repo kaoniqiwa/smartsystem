@@ -1,22 +1,26 @@
-import {  IUrl} from "./IUrl";
+import {  IUrl, BaseUrl} from "./IUrl";
 
-export class Platform implements IUrl{
+export class Platform extends BaseUrl implements IUrl{
     create(): string {
-        return 'Platforms';
+        return this.aiop + 'Platforms';
     }
     edit(id:string): string {
-       return `Platforms/${id}`;
+       return this.aiop + `Platforms/${id}`;
     }
     del(id:string): string {
-        return `Platforms/${id}`;
+        return this.aiop + `Platforms/${id}`;
     }
     get(id:string): string {
-        return `Platforms/${id}`;
+        return this.aiop + `Platforms/${id}`;
     }
     list(): string {
-       return 'Platforms/List';
+       return this.aiop + 'Platforms/List';
     }
     sync(id:string): string {
-        return `Platforms/${id}/Sync`;
+        return this.aiop + `Platforms/${id}/Sync`;
+    }
+
+    protocols(){
+        return this.aiop + `Platforms/Protocols`;
     }
 }

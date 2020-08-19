@@ -1,7 +1,6 @@
-import { Resource } from "./Resource";
-
+import { Resource } from "./Resource"; 
     /**编码设备信息 */
-    export class EncodeDevice extends Resource
+    export class EncodeDevice extends Resource  
     {
         /**传输类型(可选)　0：UDP，1：TCP */
         TransType: number | null;
