@@ -1165,6 +1165,10 @@ body.login2 {
     .fill-height{
         height: 100%;
     }
+
+    .fill-width{
+        width: 100%;
+    }
     .p-r-8{
         padding-right: 8px;
     }
@@ -1188,4 +1192,16 @@ body.login2 {
     
     .p-l-7_5{
         padding-left:7.5px;
+    }
+
+    .light-blue{
+        color: #68ADFD;
+    }
+
+    .pull-left{
+        float: left;
+    }
+
+    .pull-right{
+        float: right;
     }

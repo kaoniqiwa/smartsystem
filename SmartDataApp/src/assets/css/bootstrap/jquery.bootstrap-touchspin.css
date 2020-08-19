@@ -1,5 +1,5 @@
 /*
- *  Bootstrap TouchSpin - v4.2.5
+ *  Bootstrap TouchSpin - v4.3.0
  *  A mobile and touch friendly input spinner component for Bootstrap 3 & 4.
  *  http://www.virtuosoft.eu/code/bootstrap-touchspin/
  *
@@ -28,11 +28,23 @@
 .bootstrap-touchspin .input-group-btn-vertical .bootstrap-touchspin-up {
   border-radius: 0 4px 0 0;
   top: 0;
+  background: transparent;
+  border: 0;
+  color: #5e6ebf;
 }
 
 .bootstrap-touchspin .input-group-btn-vertical .bootstrap-touchspin-down {
   border-radius: 0 0 4px 0;
   bottom: 0;
+  background: transparent;
+  border: 0;
+  color: #5e6ebf;
+}  
+.bootstrap-touchspin .input-group-btn-vertical .bootstrap-touchspin-up:hover
+,.bootstrap-touchspin .input-group-btn-vertical .bootstrap-touchspin-down:hover{
+color:#cfd7ff
 }
+
+
 
 

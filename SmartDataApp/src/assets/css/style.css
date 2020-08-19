@@ -6835,6 +6835,10 @@ sidebar navigation
     display: block;
 }
 
+.collapse:not(.in) {
+    display: none;
+ }
+
 .sidebar-nav {
     background: #fff;
     padding: 15px;

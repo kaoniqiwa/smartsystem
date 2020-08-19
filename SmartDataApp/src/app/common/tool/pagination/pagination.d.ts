@@ -1,0 +1,1 @@
+export declare function HWPagination(domId:string,total:number,changeFn:(pageIndex:number)=>void);
