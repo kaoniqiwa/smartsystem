@@ -1,7 +1,7 @@
 
 button:focus 
 {
-    outline: none
+    outline: none;
 }
 
 h2 
@@ -57,6 +57,26 @@ h2
     transform: translate(-50%,-50%);
 }
 
+.middle-round-btn{
+    background-image: url('/assets/img/middle-round.png');
+    width:99px;
+    height: 99px;
+    background-color: transparent;
+}
+
+.blue-round-btn{
+    background-image: url('/assets/img/bule-round.png');
+    width:69px;
+    height: 69px;
+    background-color: transparent;
+}
+
+.gray-round-btn{
+    background-image: url('/assets/img/gray-round.png');
+    width:69px;
+    height: 69px;
+    background-color: transparent;
+}
 
 
 .hw-gray-m-btn{
@@ -372,3 +392,10 @@ a.td-icon:hover i{
 
 }
 
+
+.sky-blue-text{
+    color: #7586e0
+}
+.light-blue-text{
+color:#cfd7ff
+}
