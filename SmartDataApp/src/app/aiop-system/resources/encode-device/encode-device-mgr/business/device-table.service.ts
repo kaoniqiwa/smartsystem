@@ -8,23 +8,22 @@ import { CustomTableEvent } from "../../../../../shared-module/custom-table/cust
 import { ResourceLabel } from "../../../../../data-core/model/resource-label";
 import { InputTagArea } from "../../../../../shared-module/input-tag-area/input-tag-area";
 import { GetResourceLabelsParams } from "../../../../../data-core/model/resource-labels-params";
-import { ResourcesRequest } from "../../../common/resources-request";
+import { ResourcesRequest } from "../../../../common/resources-request";
+import    "../../../../../common/string/hw-string";
 @Injectable()
 export class DeviceTableService extends ResourcesRequest<EncodeDevice>{
     deviceTable = new DeviceTable();
-    // search = new SearchHelper();
-    // dataSource_ = Array<EncodeDevice>();
     constructor(private requestService: EncodeDeviceRequestService
         , public labelRequestService: LabelRequestService
         , public resourceLabelRequestService: ResourceLabelRequestService) {
         super(labelRequestService,resourceLabelRequestService);
-        this.deviceTable.findDeviceFn = (id: string) => {
+        this.deviceTable.findItemFn = (id: string) => {
             return this.findDevice(id);
         }
-        this.deviceTable.addDeviceFn = (item: EncodeDevice) => {
+        this.deviceTable.addItemFn = (item: EncodeDevice) => {
             this.dataSource.push(item);
         }
-        this.deviceTable.updateDeviceFn = (item: EncodeDevice) => {
+        this.deviceTable.updateItemFn = (item: EncodeDevice) => {
             const findItem = this.dataSource.find(x => x.Id == item.Id);
             if (findItem) {
                 for (var key in item)
@@ -90,9 +89,10 @@ export class DeviceTableService extends ResourcesRequest<EncodeDevice>{
     async requestData(pageIndex: number) {
         if (this.search.state == false) {
             const response = await this.requestService.list(this.getRequsetParam(TableSearchEnum.none, pageIndex));
-            let data = new EncodeDevices(); console.log(data);
-
-            data.items = response.data.Data.Data;
+            let data = new EncodeDevices();  
+            data.items = response.data.Data.Data.sort((a,b)=>{
+                return ''.naturalCompare(a.Name,b.Name);
+            });
             this.deviceTable.Convert(data, this.deviceTable.dataSource);
             this.deviceTable.totalCount = response.data.Data.Page.TotalRecordCount;
             this.dataSource = [...this.dataSource, ...response.data.Data.Data];
@@ -107,28 +107,14 @@ export class DeviceTableService extends ResourcesRequest<EncodeDevice>{
         const response = await this.labelRequestService.list(param);
         this.deviceTable.labels.dataSource = response.data.Data.Data;
     }
-    
-    // async createResourceLabel(item: ResourceLabel) {
-    //     return await this.labelRequestService.create(item);
-    // }
-
-    // async delResourceLabel(labelId: string) {
-    //     return await this.labelRequestService.del(labelId);
-    // }
-
-    // async bindResourceLabel(sourceId: string, labelId: string) {
-    //     return await this.resourceLabelRequestService.create(sourceId, labelId);
-    // }
-
-    // async unBindResourceLabel(sourceId: string, labelId: string) {
-    //     return await this.resourceLabelRequestService.del(sourceId, labelId);
-    // }
 
     async searchData(pageIndex: number) {
         if (this.search.state && (pageIndex == 1 || this.deviceTable.maxPageIndex)) {
             const response = await this.requestService.list(this.getRequsetParam(TableSearchEnum.search, pageIndex, this.search.text));
             let data = new EncodeDevices();
-            data.items = response.data.Data.Data;
+            data.items = response.data.Data.Data.sort((a,b)=>{
+                return ''.naturalCompare(a.Name,b.Name);
+            });;
             if (pageIndex == 1) {
                 this.deviceTable.clearItems();
                 this.dataSource = [];
@@ -165,15 +151,6 @@ export class DeviceTableService extends ResourcesRequest<EncodeDevice>{
             if (lIndex > -1) this.dataSource[index].Labels.splice(lIndex, 1);
         }
     }
-
-    // set dataSource(items: EncodeDevice[]) {
-    //     for (const x of items)
-    //         this.dataSource_.push(x);
-    // }
-
-    // get dataSource() {
-    //     return this.dataSource_;
-    // }
 
     findDevice(id: string) {
         return this.dataSource.find(x => x.Id == id);

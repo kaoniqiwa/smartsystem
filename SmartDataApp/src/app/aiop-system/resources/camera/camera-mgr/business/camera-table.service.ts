@@ -1,36 +1,36 @@
 import { Injectable } from "@angular/core";
 import { CameraRequestService, EncodeDeviceRequestService, LabelRequestService, ResourceLabelRequestService } from "../../../../../data-core/repuest/resources.service";
-import { TableAttribute, TableSearchEnum, ListAttribute, SearchHelper } from "../../../../../common/tool/table-form-helper";
+import { TableAttribute, TableSearchEnum, ListAttribute } from "../../../../../common/tool/table-form-helper";
 import { CameraTable, Cameras } from "./camera-table";
 import { Camera } from "../../../../../data-core/model/camera";
 import { GetCamerasParams, GetEncodeDevicesParams } from "../../../../../data-core/model/encode-devices-params";
 import { EncodeDevice } from "../../../../../data-core/model/encode-device";
-import { CustomTableEvent, CustomTableEventEnum } from "../../../../../shared-module/custom-table/custom-table-event";
+import { CustomTableEvent } from "../../../../../shared-module/custom-table/custom-table-event";
 import { GetResourceLabelsParams } from "../../../../../data-core/model/resource-labels-params";
 import { ResourceLabel } from "../../../../../data-core/model/resource-label";
 import { InputTagArea } from "../../../../../shared-module/input-tag-area/input-tag-area";
-import {ResourcesRequest  } from "../../../common/resources-request";
+import { ResourcesRequest } from "../../../../common/resources-request";
+import "../../../../../common/string/hw-string";
+import { FormGroup } from "@angular/forms"; 
 @Injectable()
 export class CameraTableService extends ResourcesRequest<Camera> {
     cameraTable = new CameraTable();
-    // search = new SearchHelper();
-    // dataSource_ = new Array<Camera>();
-    encodeDevices = Array<EncodeDevice>();
+    encodeDevices = Array<EncodeDevice>(); 
     constructor(private cameraRequestService: CameraRequestService
         , public labelRequestService: LabelRequestService
         , public resourceLabelRequestService: ResourceLabelRequestService
         , private encodeDeviceRequestService: EncodeDeviceRequestService) {
-        super(labelRequestService,resourceLabelRequestService);
+        super(labelRequestService, resourceLabelRequestService);
         this.cameraTable.findDeviceFn = (id: string) => {
             return this.findDevice(id);
         }
-        this.cameraTable.findCameraFn = (id: string) => {
+        this.cameraTable.findItemFn = (id: string) => {
             return this.findCamera(id);
         }
-        this.cameraTable.addCameraFn = (item: Camera) => {
+        this.cameraTable.addItemFn = (item: Camera) => {
             this.dataSource.push(item);
         }
-        this.cameraTable.updateCameraFn = (item: Camera) => {
+        this.cameraTable.updateItemFn = (item: Camera) => {
             const findItem = this.dataSource.find(x => x.Id == item.Id);
             if (findItem) {
                 for (var key in item)
@@ -72,12 +72,12 @@ export class CameraTableService extends ResourcesRequest<Camera> {
                     }
                     for (const x of unbind) {
                         const index = item.Labels.findIndex(y => y.Id == x.id);
-                        if (index > -1){
+                        if (index > -1) {
                             const response = await this.unBindResourceLabel(item.Id, x.id);
                             this.updateItemLabels(false, id, response.data.Data);
                             this.cameraTable.updateItemLabels(false, id, response.data.Data);
                         }
-                           
+
                     }
                     if (use == false) {
                         this.cameraTable.labels.messageBar.response_success();
@@ -99,50 +99,39 @@ export class CameraTableService extends ResourcesRequest<Camera> {
         param.PageSize = new ListAttribute().maxSize;
         const response = await this.labelRequestService.list(param);
         this.cameraTable.labels.dataSource = response.data.Data.Data;
+        this.cameraTable.searchControl.toInputTagSelect( response.data.Data.Data);
     }
-
-    // async createResourceLabel(item: ResourceLabel) {
-    //     return await this.labelRequestService.create(item);
-    // }
-
-    // async delResourceLabel(labelId: string) {
-    //     return await this.labelRequestService.del(labelId);
-    // }
-
-    // async bindResourceLabel(sourceId: string, labelId: string) {
-    //     return await this.resourceLabelRequestService.create(sourceId, labelId);
-    // }
-
-    // async unBindResourceLabel(sourceId: string, labelId: string) {
-    //     return await this.resourceLabelRequestService.del(sourceId, labelId);
-    // }
 
     async requestEncodeDevices() {
         const param = new GetEncodeDevicesParams();
         param.PageIndex = 1;
         param.PageSize = new ListAttribute().maxSize;
         const response = await this.encodeDeviceRequestService.list(param);
-        this.encodeDevices = response.data.Data.Data;
-    } 
-    
+        this.encodeDevices = response.data.Data.Data; 
+    }
+
     async requestCamerasData(pageIndex: number) {
         if (this.search.state == false) {
             const response = await this.cameraRequestService.list(this.getRequsetParam(TableSearchEnum.none, pageIndex));
-            let data = new Cameras(); console.log(response);
+            let data = new Cameras();
 
-            data.items = response.data.Data.Data;
+            data.items = response.data.Data.Data.sort((a, b) => {
+                return ''.naturalCompare(a.Name, b.Name);
+            });
             this.cameraTable.Convert(data, this.cameraTable.dataSource);
             this.cameraTable.totalCount = response.data.Data.Page.TotalRecordCount;
             this.dataSource = [...this.dataSource, ...response.data.Data.Data];
-
         }
     }
 
     async searchCamerasData(pageIndex: number) {
+
         if (this.search.state && (pageIndex == 1 || this.cameraTable.maxPageIndex)) {
-            const response = await this.cameraRequestService.list(this.getRequsetParam(TableSearchEnum.search, pageIndex, this.search.text));
+            const response = await this.cameraRequestService.list(this.getRequsetParam(TableSearchEnum.search, pageIndex, this.cameraTable.searchform));
             let data = new Cameras();
-            data.items = response.data.Data.Data;
+            data.items = response.data.Data.Data.sort((a, b) => {
+                return ''.naturalCompare(a.Name, b.Name);
+            });
             if (pageIndex == 1) {
                 this.cameraTable.clearItems();
                 this.dataSource = [];
@@ -177,17 +166,6 @@ export class CameraTableService extends ResourcesRequest<Camera> {
         }
     }
 
-
-
-    // set dataSource(items: Camera[]) {
-    //     for (const x of items)
-    //         this.dataSource_.push(x);
-    // }
-
-    // get dataSource() {
-    //     return this.dataSource_;
-    // }
-
     findCamera(id: string) {
         return this.dataSource.find(x => x.Id == id);
     }
@@ -196,7 +174,7 @@ export class CameraTableService extends ResourcesRequest<Camera> {
         return this.encodeDevices.find(x => x.Id == id);
     }
 
-    getRequsetParam(paramType: TableSearchEnum, pageIndex: number, name?: string) {
+    getRequsetParam(paramType: TableSearchEnum, pageIndex: number, search?: FormGroup) {
         let param = new GetCamerasParams();
         param.PageIndex = pageIndex;
         param.PageSize = this.pageSize;
@@ -204,8 +182,14 @@ export class CameraTableService extends ResourcesRequest<Camera> {
 
         }
         else if (paramType == TableSearchEnum.search) {
-            if (name.trim()) param.Name = name;
+            const searchParam = this.cameraTable.searchControl.toSearchParam();
+            if (searchParam.Name)
+                param.Name = searchParam.Name;
+            if (searchParam.CameraType)
+                param.CameraTypes = [Number.parseInt(searchParam.CameraType)];
         }
         return param;
     }
+
+
 }

@@ -5,11 +5,10 @@ import { CustomTableArgs, TableAttr, TableOperationBtn, TableTh, TableIconTextTa
 import { TableFormControl } from "../../../../../common/tool/table-form-helper";
 import { IPageTable } from "../../../../../common/interface/IPageTable";
 import { CustomTableEvent, CustomTableEventEnum } from "../../../../../shared-module/custom-table/custom-table-event";
-import { EnumHelper } from "../../../../../common/tool/enum-helper";
-import { Labels } from "../../../common/label";
+ 
 import { ResourceLabel } from "../../../../../data-core/model/resource-label";
-import { ITableField } from "../../../common/ITableField";
-import { ResourcesTable } from "../../../common/resources-table";
+import { ITableField } from "../../../../common/ITableField";
+import { ResourcesTable } from "../../../../common/resources-table";
 export class DeviceTable extends ResourcesTable implements IConverter, IPageTable<EncodeDevice> {
     dataSource = new CustomTableArgs<TableField>({
         hasTableOperationTd: true,
@@ -52,15 +51,16 @@ export class DeviceTable extends ResourcesTable implements IConverter, IPageTabl
                 title: '编辑',
                 callback: (item: TableField) => {
                     this.form.show = true;
-                    this.form.editItem = this.findDeviceFn(item.id);
+                    this.form.editItem = this.findItemFn(item.id);
                 }
             })
         ]
-    });
-    updateDeviceFn: (item: EncodeDevice) => void;
-    addDeviceFn: (item: EncodeDevice) => void;
-    findDeviceFn: (id: string) => EncodeDevice;
+    });  
     scrollPageFn: (event: CustomTableEvent) => void;
+    updateItemFn: (item: EncodeDevice) => void;
+    addItemFn: (item: EncodeDevice) => void;
+    findItemFn: (id: string) => EncodeDevice;
+    delItemFn: (id: string) => void;
     form = new TableFormControl<EncodeDevice>(this);
     // labels = new Labels();
     // tableSelectIds: string[];
@@ -68,6 +68,7 @@ export class DeviceTable extends ResourcesTable implements IConverter, IPageTabl
     constructor() {
         super();
     }
+  
     Convert<EncodeDevices, CustomTableArgs>(input: EncodeDevices, output: CustomTableArgs) {
         const items = new Array<TableField>();
         const tagsAttr = new Array<TableIconTextTagAttr>();
@@ -99,7 +100,7 @@ export class DeviceTable extends ResourcesTable implements IConverter, IPageTabl
 
     addItem(item: EncodeDevice) {
         this.dataSource.values.push(this.toTableModel(item));
-        this.addDeviceFn(item);
+        this.addItemFn(item);
         this.dataSource.footArgs.totalRecordCount += 1;
     }
 
@@ -108,7 +109,7 @@ export class DeviceTable extends ResourcesTable implements IConverter, IPageTabl
         if (this.tableSelectIds) {
             var items = new Array<ResourceLabel>();
             this.tableSelectIds.map(id => {
-                const camera = this.findDeviceFn(id);
+                const camera = this.findItemFn(id);
                 camera.Labels.map(label => {
                     const findItem = items.find(i => i.Id == label.Id);
                     const label_ = { ...label, type: 2 };

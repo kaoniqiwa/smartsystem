@@ -1,6 +1,9 @@
 .example-header
     height 84px
     padding: 0
+    background: unset
+    color: unset
+    
 
 .app-header-wrapper,.app-left-sidenav
     position: relative
@@ -18,28 +21,28 @@
    position: absolute
    height: 100%
    z-index: 2
-   background: linear-gradient(to  bottom, alpha(#d8f4ff,0) 85%,alpha(#d8f4ff,0.15)  100%)
+   background: linear-gradient(to  bottom, alpha(#d8f4ff,0) 85%,alpha(#d8f4ff,0.1)  100%)
 
 .app-header-wrapper .d3
     width: 100%
     position: absolute
     height: 100%
     z-index: 3
-    background: linear-gradient(to bottom, alpha(#7f94ff,0) 85%,alpha(#7f94ff,0.15)   100%)
+    background: linear-gradient(to bottom, alpha(#7f94ff,0) 0%,alpha(#7f94ff,0.1)   100%)
 
 .app-left-sidenav .d2
     width: 100%
     position: absolute
     height: 100%
     z-index: 2
-    background: linear-gradient(to right, alpha(#d8f4ff,0) 97%,alpha(#d8f4ff,0.15)  100%)
+    background: linear-gradient(to right, alpha(#d8f4ff,0) 97%,alpha(#d8f4ff,0.1)  100%)
 
 .app-left-sidenav .d3
     width: 100%
     position: absolute
     height: 100%
     z-index: 3
-    background: linear-gradient(to  right,alpha(#7f94ff,0) 97%,alpha(#7f94ff,0.15)   100%)
+    background: linear-gradient(to  right,alpha(#7f94ff,0) 0%,alpha(#7f94ff,0.1)   100%)
 
 .sidenav-viewer
     position: sticky
@@ -50,21 +53,24 @@
     height calc(100% - 84px)
 
 .example-sidenav
-    width 320px
-    // animation maximize-w 2s 
+    width 320px;
+    overflow-x: hidden; 
+    background: unset;
+    color: unset;
+
 .example-sidenav.minimize
-    width:100px
-    // animation  minimize-w 2s 
+    width:100px;
+   
    
 
 @keyframes maximize-w
 {
 from {width:100px}
-to {width:300px;}
+to {width:320px;}
 }
 @keyframes minimize-w
 {
-from {width:300px}
+from {width:320px}
 to {width:100px;}
 }
 
@@ -97,5 +103,6 @@ to {width:100px;}
 .side-nav-menu-on a:hover,.side-nav-menu-off a:hover
     color #69adff
 
-
-
+ .example-sidenav-content .wrap
+     padding-top 50px
+     padding-right 16px

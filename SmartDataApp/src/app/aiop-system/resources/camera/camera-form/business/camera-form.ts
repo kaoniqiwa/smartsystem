@@ -99,8 +99,8 @@ export class CameraFormService extends ListAttribute implements FormAttribute {
                     successFn(true, response.data.Data, this.formState);
                 }
             }
-            else if (this.formState == FormStateEnum.edit) { 
-                const response = await this.cameraRequestService.set(camera);
+            else if (this.formState == FormStateEnum.edit) {  
+                const response = await this.cameraRequestService.set(camera); 
                 if (response.status == 200) { 
                     this.messageBar.response_success();
                     successFn(true, response.data.Data, this.formState);

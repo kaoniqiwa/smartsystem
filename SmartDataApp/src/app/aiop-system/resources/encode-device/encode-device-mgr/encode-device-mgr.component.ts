@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DeviceTableService } from "./business/device-table.service";
 import { CustomTableComponent } from '../../../../shared-module/custom-table/custom-table.component';
-import { PlatformService } from "../../common/platform-request";
+import { PlatformService } from "../../../common/platform-request";
 @Component({
   selector: 'app-encode-device-mgr',
   templateUrl: './encode-device-mgr.component.html',
   styleUrls: ['./encode-device-mgr.component.styl'],
-  providers: [DeviceTableService]
+  providers: [DeviceTableService,PlatformService]
 })
 export class EncodeDeviceMgrComponent implements OnInit {
 
@@ -31,7 +31,7 @@ export class EncodeDeviceMgrComponent implements OnInit {
     this.tableService.deviceTable.labels.messageBar.response_success('完成同步');
     this.tableService.deviceTable.clearItems();
     this.tableService.dataSource = [];
-    this.table.clearScrollDownCount();
+    //this.table.clearScrollDownCount();
     this.tableService.requestData(1);
    }
    
@@ -75,7 +75,7 @@ export class EncodeDeviceMgrComponent implements OnInit {
 
   search(text: string) {
     this.tableService.search.text = text;
-    this.table.clearScrollDownCount();
+    //this.table.clearScrollDownCount();
     this.tableService.searchData(1);
   }
 }

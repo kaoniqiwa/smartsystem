@@ -1,0 +1,80 @@
+<div class="custom-form-wrap fill-height" style="width: 800px;"> 
+  <ng-container>
+    <h2>添加AI模型</h2>
+  </ng-container>
+ 
+  <form  class="form-content  fine m-b-20 "  [formGroup]="formService.form" (ngSubmit)="onSubmit()">
+    <div>
+      <input type="reset" #resetBtn class="collapse" value="">   
+  
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="50">
+          <label class="custom control-label tran-input-label" >模型名称</label>
+          <span class="text-danger p-t-10">*</span>
+          <input class="form-control custom"  formControlName="ModelName">
+        </div>
+        <div fxFlex fxFlexOffset="10px">
+          <label class="custom control-label tran-input-label">模型协议</label>
+          <select class="form-control custom custom-select">
+            <option value="AIOP">AIOP</option> 
+          </select>
+        </div>
+      </div>
+      <div fxLayout="row" class="form-group" *ngIf="!editItem">
+        <div fxFlex >
+          <label class="custom control-label tran-input-label">上传模型</label>
+          <span class="text-danger p-t-10">*</span>
+          <div class="hw-btn-group">
+            <input type="file"  accept=".json"
+            (change)="changeFile($event)" class="collapse" id="fileInput"> 
+            <input class="form-control custom file" readonly  formControlName="FileModelName">
+            
+            <button class="hw-blue-btn m-r-10 " type="button" (click)="selectFileClick()">
+              <i class="howell-icon-repeat"></i>
+              选择模型            
+            </button>       
+            <button class="hw-cyan-btn"  type="button">
+              <i class="mdi mdi-tag"></i>
+               应用模型
+            </button>
+          </div>
+        </div>
+      </div>
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="50">
+          <label class="custom control-label tran-input-label">模型版本</label> 
+          <input class="form-control custom">
+        </div>
+        <div fxFlex fxFlexOffset="10px">
+          <label class="custom control-label tran-input-label">应用类型</label>      
+          <input class="form-control custom">
+        </div>
+      </div> 
+      <div fxLayout="row" class="form-group">
+        <div fxFlex>
+          <label class="custom control-label tran-input-label">模型图标</label>
+          <span class="text-danger p-t-10">*</span>
+          <hw-pictures-drop-list [model]="formService.modelIcons"></hw-pictures-drop-list>
+        </div>
+      </div>
+      <div fxLayout="row" class="form-group">
+        <div fxFlex>
+          <label class="custom control-label tran-input-label">模型属性</label>
+          <div class="fine attr-wrap" >
+            <hw-custom-tree #tree [mode]="formService.treeListMode" [selectedItemFn]="formService.changeModelLabelFn"
+            [treeData]="formService.dtoDataSource"></hw-custom-tree>
+          </div>
+        
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="text-center">
+    <button class="hw-green-m-btn m-r-10" (click)="onSubmit()">
+      <i class="howell-icon-Check"></i>
+    </button>
+    <button class="hw-gray-m-btn" (click)="onCancel()">
+      <i class="howell-icon-Close"></i>
+    </button>
+  </div>
+</div>

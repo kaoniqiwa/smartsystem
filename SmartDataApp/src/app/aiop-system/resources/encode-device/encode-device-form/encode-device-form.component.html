@@ -5,7 +5,7 @@
   <ng-container *ngIf="formService.editItem">
     <h2>{{formService.editItem.Name}}</h2>
   </ng-container>
-  <form  class="form-content m-b-20" [formGroup]="formService.form" (ngSubmit)="onSubmit()">
+  <form  class="form-content fine m-b-20" [formGroup]="formService.form" (ngSubmit)="onSubmit()">
     <div>
       <input type="reset" #resetBtn class="collapse" value="">
       <div fxLayout="row" class="form-group">

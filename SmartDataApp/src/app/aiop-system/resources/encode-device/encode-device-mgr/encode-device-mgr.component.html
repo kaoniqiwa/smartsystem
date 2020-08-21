@@ -23,7 +23,7 @@
     </div>
 
   </div>
-  <ng-container *ngIf="tableService.cameraTable.confirmDialog_">
+  <ng-container *ngIf="tableService.deviceTable.confirmDialog_">
     <div  class="fill-height fill-width hw-content-mask" >
       <hw-confirm-dialog [dialog]="tableService.deviceTable.confirmDialog_"></hw-confirm-dialog>
     </div>
@@ -45,7 +45,7 @@
         <i class="howell-icon-delete-bin"></i>
         删除
       </button>
-      <button class="hw-cyan-btn" (click)="showBindLabels()">
+      <button class="hw-cyan-btn" (click)="showBindLabels()" [disabled]="!selectItems" [class.black]="!selectItems">
         <i class="mdi mdi-tag"></i>
         绑定标签
       </button>

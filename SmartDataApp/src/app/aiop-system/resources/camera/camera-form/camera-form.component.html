@@ -5,16 +5,18 @@
   <ng-container *ngIf="formService.editItem">
     <h2>{{formService.editItem.Name}}</h2>
   </ng-container>
-  <form  class="form-content m-b-20" [formGroup]="formService.form" (ngSubmit)="onSubmit()">
+  <form  class="form-content m-b-20 fine" [formGroup]="formService.form" (ngSubmit)="onSubmit()">
      <div>
       <input type="reset" #resetBtn class="collapse" value="">
       <div fxLayout="row" class="form-group">
-        <div fxFlex="50">
+        <div fxFlex="100">
           <label class="custom control-label tran-input-label">名称</label>
           <span class="text-danger p-t-10">*</span>
           <input class="form-control custom" formControlName="Name">
-        </div>
-        <div fxFlex fxFlexOffset="10px">
+        </div> 
+      </div>      
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="50">
           <label class="custom control-label tran-input-label">类型</label>
           <span class="text-danger p-t-10">*</span>
           <select class="form-control custom custom-select" formControlName="CameraType">
@@ -24,19 +26,19 @@
             <option value="4">一体机</option>
           </select>
         </div>
-      </div>
-      <div fxLayout="row" class="form-group">
-        <div fxFlex="50">
-          <label class="custom control-label tran-input-label">通道号</label>
-          <span class="text-danger p-t-10">*</span>
-          <input type="number" class="form-control custom" formControlName="ChannelNo">
-        </div>
         <div fxFlex fxFlexOffset="10px">
           <label class="custom control-label tran-input-label">编码设备</label>
           <span class="text-danger p-t-10">*</span>
           <select class="form-control custom custom-select" formControlName="EncodeDeviceId">
             <option [value]="e.Id" *ngFor="let e of formService.encodeDevices">{{e.Name}}</option>
           </select>
+        </div>
+      </div>
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="100">
+          <label class="custom control-label tran-input-label">通道号</label>
+          <span class="text-danger p-t-10">*</span>
+          <input type="number" class="form-control custom" formControlName="ChannelNo">
         </div>
       </div>
       <div fxLayout="row" class="form-group">

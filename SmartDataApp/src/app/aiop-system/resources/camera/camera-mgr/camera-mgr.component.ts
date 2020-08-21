@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CameraTableService } from "./business/camera-table.service";
 import { CustomTableComponent } from '../../../../shared-module/custom-table/custom-table.component';
-import { PlatformService } from "../../common/platform-request";
+import { PlatformService } from "../../../common/platform-request";
+import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-camera-mgr',
   templateUrl: './camera-mgr.component.html',
@@ -12,11 +13,12 @@ export class CameraMgrComponent implements OnInit {
 
   @ViewChild('table')
   table: CustomTableComponent;
-  searchFn = (text: string) => {
-    this.search(text);
-  }
+  
+  searchform:FormGroup;
+  moreSearchInput = false; 
   constructor(private tableService: CameraTableService,private platformService:PlatformService
-  ) { }
+  ) {  }
+       
 
   async ngOnInit() {
     await this.tableService.requestEncodeDevices();
@@ -25,6 +27,7 @@ export class CameraMgrComponent implements OnInit {
     this.tableService.cameraTable.attrBtnFn = () => {
       this.showBindLabels();
     }
+    await this.tableService.requestResourceLabels();
   }
 
  async syncBtnClick(){
@@ -32,7 +35,7 @@ export class CameraMgrComponent implements OnInit {
    this.tableService.cameraTable.labels.messageBar.response_success('完成同步');
    this.tableService.cameraTable.clearItems();
    this.tableService.dataSource = [];
-   this.table.clearScrollDownCount();
+   //this.table.clearScrollDownCount();
    this.tableService.requestCamerasData(1);
   }
 
@@ -42,7 +45,7 @@ export class CameraMgrComponent implements OnInit {
 
   async showBindLabels() {
     if (this.tableSelectIds.length) {
-      await this.tableService.requestResourceLabels();
+     
       this.tableService.cameraTable.labels.show = true;
       this.tableService.cameraTable.getSelectItemsLabels();
     }
@@ -75,9 +78,8 @@ export class CameraMgrComponent implements OnInit {
     // this.tableService.deviceTable.delAllSelectId();
   }
 
-  search(text: string) {
-    this.tableService.search.text = text;
-    this.table.clearScrollDownCount();
+  search() { 
+    //this.table.clearScrollDownCount();
     this.tableService.searchCamerasData(1);
   }
 }

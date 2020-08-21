@@ -4,10 +4,8 @@ import { MessageBar } from "../../../../../common/tool/message-bar";
 import '../../../../../common/string/hw-string';
 import { EncodeDevice } from "../../../../../data-core/model/encode-device";
 import { EncodeDeviceRequestService, LabelRequestService, ResourceLabelRequestService } from "../../../../../data-core/repuest/resources.service";
-
 import { InputTagArea } from "../../../../../shared-module/input-tag-area/input-tag-area";
-import { ResourceLabel } from "../../../../../data-core/model/resource-label";
-import { GetResourceLabelsParams } from "../../../../../data-core/model/resource-labels-params";
+import { ResourceLabel } from "../../../../../data-core/model/resource-label"; 
 import { ListAttribute, FormAttribute, FormStateEnum } from "../../../../../common/tool/table-form-helper"; 
 @Injectable()
 export class EncodeDeviceFormService extends ListAttribute implements FormAttribute {

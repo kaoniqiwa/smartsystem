@@ -11,7 +11,7 @@ import '../../../../common/string/hw-string';
 export class PlatformMgrService extends TableAttribute {
     dataSource_ = new Array<Platform>();
     search = new SearchHelper();
-    table = new PlatformTable(this.datePipe)
+    table = new PlatformTable(this.datePipe);
     constructor(private requestSerivce: PlatformRequestSerivce, private datePipe: DatePipe) {
         super();
 
@@ -46,7 +46,7 @@ export class PlatformMgrService extends TableAttribute {
     async getPlatformData(pageIndex: number) {
         if (this.search.state == false) {
             const response = await this.requestSerivce.list(this.getRequsetParam(TableSearchEnum.none, pageIndex));
-            let data = new Platforms();console.log(response);
+            let data = new Platforms(); 
             data.items = response.data.Data.Data.sort((a, b) => {
                 return ''.naturalCompare(a.Name, b.Name);
             });;

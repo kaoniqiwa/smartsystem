@@ -6,10 +6,11 @@ import { CustomTableEvent, CustomTableEventEnum } from "../../../../../shared-mo
 import { TableFormControl } from "../../../../../common/tool/table-form-helper";
 import { IPageTable } from "../../../../../common/interface/IPageTable";
 import { EncodeDevice } from "../../../../../data-core/model/encode-device";
-import { Labels } from "../../../common/label";
 import { ResourceLabel } from "../../../../../data-core/model/resource-label";
-import { ResourcesTable } from '../../../common/resources-table';
-import { ITableField } from "../../../common/ITableField";
+import { ResourcesTable } from '../../../../common/resources-table';
+import { ITableField } from "../../../../common/ITableField";
+import { FormGroup, FormControl } from '@angular/forms';
+import { SearchControl } from "./search";
 export class CameraTable extends ResourcesTable implements IConverter, IPageTable<Camera>{
     dataSource = new CustomTableArgs<TableField>({
         hasTableOperationTd: true,
@@ -52,22 +53,30 @@ export class CameraTable extends ResourcesTable implements IConverter, IPageTabl
                 title: '编辑',
                 callback: (item: TableField) => {
                     this.form.show = true;
-                    this.form.editItem = this.findCameraFn(item.id);
+                    this.form.editItem = this.findItemFn(item.id);
                 }
             })
         ]
     });
-    findDeviceFn: (id: string) => EncodeDevice;
-    findCameraFn: (id: string) => Camera;
-    updateCameraFn: (item: Camera) => void;
-    addCameraFn: (item: Camera) => void;
+    updateItemFn: (item: Camera) => void;
+    addItemFn: (item: Camera) => void;
+    findItemFn: (id: string) => Camera;
+    findDeviceFn: (id: string) => EncodeDevice;     
+    delItemFn: (id: string) => void;
     // scrollPageFn: (event: CustomTableEvent) => void;
     form = new TableFormControl<Camera>(this);
-   
+    searchControl = new SearchControl();
    // tableSelectIds: string[];
     constructor() {
         super();
-    }
+        this.searchform = new FormGroup({
+            Name: new FormControl(''), 
+            EncodeDeviceId: new FormControl(''), 
+            CameraType: new FormControl(''),
+            SearchText: new FormControl('')
+        });
+    } 
+
     Convert<Cameras, CustomTableArgs>(input: Cameras, output: CustomTableArgs) {
         const items = new Array<TableField>();
         const tagsAttr = new Array<TableIconTextTagAttr>();
@@ -92,7 +101,7 @@ export class CameraTable extends ResourcesTable implements IConverter, IPageTabl
 
     addItem(item: Camera) {
         this.dataSource.values.push(this.toTableModel(item));
-        this.addCameraFn(item);
+        this.addItemFn(item);
         this.dataSource.footArgs.totalRecordCount += 1;
     }
 
@@ -100,7 +109,7 @@ export class CameraTable extends ResourcesTable implements IConverter, IPageTabl
         if (this.tableSelectIds) {
             var items = new Array<ResourceLabel>();
             this.tableSelectIds.map(id => {
-                const camera = this.findCameraFn(id);
+                const camera = this.findItemFn(id);
                 camera.Labels.map(label => {
                     const findItem = items.find(i => i.Id == label.Id);
                     const label_ = { ...label, type: 2 };
@@ -123,10 +132,13 @@ export class CameraTable extends ResourcesTable implements IConverter, IPageTabl
     // }
 
     editItem(item: Camera) {
-        this.updateCameraFn(item);
+        this.updateItemFn(item);
         const findVal = this.dataSource.values.find(x => x.id == item.Id);
         findVal.name = item.Name;
-
+        findVal.channelNo = item.ChannelNo + ''; 
+        findVal.cameraType = this.cameraType.get(item.CameraType);
+        const dev = this.findDeviceFn(item.EncodeDeviceId);
+        if (dev) findVal.encodeDevice = dev.Name;
     }
 
     // delItems(ids: string[]) {
