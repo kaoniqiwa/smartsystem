@@ -54,7 +54,6 @@ export class EncodeDeviceRequestService extends SaveModel{
         this.url = new url.ResourceEncodeDevice();
     }
     create(item:EncodeDeviceModel){
-        console.log(this.toModel(item,this.formMustField.encodeDevice));
         return this.requestService.axios.post<EncodeDeviceModel, Response<EncodeDeviceModel>>(this.url.create(), this.toModel(item,this.formMustField.encodeDevice));
     }
 
@@ -88,8 +87,7 @@ export class CameraRequestService extends SaveModel{
         super();
         this.url = new url.ResourceCamera();
     }
-    create(item:CameraModel){console.log( this.toModel(item,this.formMustField.camera));
-    
+    create(item:CameraModel){
         return this.requestService.axios.post<CameraModel, Response<CameraModel>>(this.url.create(), this.toModel(item,this.formMustField.camera));
     }
 
@@ -129,7 +127,7 @@ export class AIModelRequestService{
     }
 
     list(cameraId:string){
-        return this.requestService.axios.get<Response<CameraAIModel>>(this.url.list(cameraId));
+        return this.requestService.axios.get<Response<CameraAIModel[]>>(this.url.list(cameraId));
     }
 
     del(cameraId: string,aiModelId:string) {
