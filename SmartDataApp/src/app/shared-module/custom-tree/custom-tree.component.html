@@ -1,0 +1,53 @@
+<ng-container *ngIf="treeData">
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+    <!-- This is the tree node template for leaf nodes -->
+
+    <mat-tree-node *matTreeNodeDef="let node;" matTreeNodePadding [class.selected]="node.checked">
+      <div class="parent-node" (click)="itemClick(node)">
+        <button type="button" class="btn to-right" [class.collapse]="node.level"
+          [class.visibility-hidden]="node.level==0">
+          <i class="mdi mdi-menu-down"></i>
+        </button>
+        <label class="m-0" style="color: #cfd7ff;position: relative;top: 2px;cursor:pointer">
+          <i class="mdi mdi-blur-radial"></i>
+          {{node.name}}</label>
+
+        <ng-container *ngIf="listMode.rightInput==mode">
+          <div class="pull-right  p-r-10">
+            <label class="m-0" style="color:#cfd7ff"> {{node.label}}</label>
+            <i class="howell-icon-arrowright m-r-10 m-l-10" style="color:#cfd7ff"></i>
+            <div class="pull-right" style="width:60px">
+              <input type="text" value=" {{node.inputVal}}" [event]="touchSpinEvent" NgTouchSpin
+                class="form-control custom touchspin">
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+    </mat-tree-node>
+    <!-- This is the tree node template for expandable nodes -->
+    <mat-tree-node *matTreeNodeDef="let node;when: hasChild" [class.selected]="node.checked"
+      matTreeNodePaddingIndent="20" matTreeNodePadding>
+      <div class="parent-node" (click)="itemClick(node)">
+        <button type="button" class="btn to-right" matTreeNodeToggle>
+          <i class="mdi" [class.mdi-menu-right]="!treeControl.isExpanded(node)"
+            [class.mdi-menu-down]="treeControl.isExpanded(node)"></i>
+        </button>
+        <label class="m-0" style="color: #cfd7ff;position: relative;top: 2px;
+         cursor:pointer">
+          <i class="mdi mdi-blur-radial"></i>
+          {{node.name}}</label>
+        <ng-container *ngIf="listMode.rightInput==mode">
+          <div class="pull-right  p-r-10">
+            <label class="m-0" style="color:#cfd7ff"> {{node.label}}</label>
+            <i class="howell-icon-arrowright m-r-10 m-l-10" style="color:#cfd7ff"></i>
+            <div class="pull-right" style="width:60px">
+              <input type="text" value=" {{node.inputVal}}" NgTouchSpin [event]="touchSpinEvent"
+                class="form-control custom touchspin">
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-tree-node>
+  </mat-tree>
+</ng-container>

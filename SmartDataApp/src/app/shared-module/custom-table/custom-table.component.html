@@ -1,0 +1,113 @@
+<div class="fill-height" *ngIf="model" [ngStyle]="{'width':model.tableWidth}">
+  <div class="table-header-container" *ngIf="model.hasHead">
+    <div class="table-responsive">
+      <table class="table  head custom stylish-table m-b-0">
+        <thead>
+          <tr>
+            <th class="title-name" *ngFor="let th of model.tableAttrs" [ngStyle]="{'width':th.tdWidth}">
+              {{th.HeadTitleName}}</th>
+            <th class="ico-btn title-name" [ngStyle]="{'width':model.iconTextTh.width}" *ngIf="model.iconTextTh">
+              {{model.iconTextTh.name}}
+            </th>
+            <th class="ico-btn title-name" *ngIf="model.hasTableOperationTd">
+              {{model.operationTdName}}
+            </th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+  <div #customTable class="table-body-container overflow-auto"
+    [ngStyle]="{'height':'calc(100% - '+minusTableHeightStr+')'}">
+    <div class="table-responsive">
+      <table class="table body stylish-table custom m-b-0">
+        <tbody>
+          <tr *ngFor="let item of model.values" [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1"
+            (click)='itemClick(item)'>
+            <td *ngFor="let attrs of model.tableAttrs" [ngStyle]="{'width':attrs.tdWidth}">
+              <span title="{{item[attrs.tdInnerAttrName]}}"
+                class="{{attrs.tdInnerAttrClassName&&item[attrs.tdInnerAttrClassName]?item[attrs.tdInnerAttrClassName]:''}}"
+                *ngIf="!attrs.isImg&&!attrs.isHTML">{{item[attrs.tdInnerAttrName]}}</span>
+              <img src="{{item[attrs.tdInnerAttrName]}}" *ngIf="attrs.isImg" style="width:20px;height:20px;margin-left:15px">
+            </td>
+            <td *ngIf="model.iconTextTagAttr&&model.iconTextTagAttr.length&&model.iconTextTh"
+              [ngStyle]="{'width':model.iconTextTh.width}">
+              <div class="fill-width">
+                <a href="javascript:void(0)" class="tag-num  "
+                  [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1">【{{ iconTextTagAttrNum(item[model.primaryKey])}}】</a>
+                <a href="javascript:void(0)" *ngFor="let t of iconTextTagAttr(item[model.primaryKey])"
+                  class="tag-wrap m-r-10 " [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1">
+                  <i class="mdi mdi-tag "></i>
+                  <label>{{t.label}}</label>
+                </a>
+
+                <a href="javascript:void(0)" class="tag-add"
+                  (click)="iconTextTagAttrClick(item);$event.stopPropagation();"
+                  [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1">
+                  <i class="mdi  mdi-plus-circle"></i>
+                </a>
+              </div>
+            </td>
+            <td  *ngIf="model.hasTableOperationTd">
+              <div *ngIf="model.tableOperationBtns&&model.tableOperationBtns.length>0">
+                <!-- <i *ngFor="let btn of model.tableOperationBtns;let i = index" class="{{btn.css}}"
+                  [class.m-r-10]="model.tableOperationBtns.length - 1 > i" title="{{btn.title}}"
+                  (click)="btn.callback(item);$event.stopPropagation();">
+                </i> -->
+                <a href="javascript:void(0)" *ngFor="let btn of model.tableOperationBtns;let i = index"
+                  title="{{btn.title}}" (click)="btn.callback(item);$event.stopPropagation();"
+                  [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1" class="td-icon p-t-10 p-b-10" style="padding-right: 5px;">
+                  <i class="{{btn.css}}" class="td-icon"></i></a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div fxLayout="row" class="table-foot-wrap">
+    <div fxFlex="40">
+      <div class="right-text">
+        <a href="javascript:void(0)" (click)="selectAll()" class="m-r-10">全选</a>
+        <a href="javascript:void(0)" (click)="selectInvert()" class="m-r-10">反选</a>
+        <a href="javascript:void(0)" (click)="selectCancel()">取消</a>
+      </div>
+    </div>
+    <div fxFlex="60" style="position: relative;">
+      <div style="position: absolute;" [ngStyle]="{'right': paginationOptions.viewWidth+30+'px'}">
+        <!-- <div class="left-text m-r-10 pull-left">
+          <span class="m-r-10">当前数量</span>
+          <span>{{model.values.length}}</span>
+        </div> -->
+        <div class="left-text pull-left m-r-30">
+          <span class="m-r-10">已选择</span>
+          <span>{{selectedId.length}}</span>
+        </div>
+        <div class="left-text m-r-10  pull-left">
+          <span class="m-r-10">总数量</span>
+          <span> {{model.footArgs.totalRecordCount}}</span>
+        </div>
+
+      </div>
+      <div *ngIf="paginationOptions" HWPagination [options]="paginationOptions" class="page fill-height"></div>
+    </div>
+
+  </div>
+  <!-- <div class="fill-width table-foot table-foot-height" *ngIf="model.hasFoot">
+    <div class="bottom-line">
+    </div>
+    <div *ngIf="model.footArgs.hasCount" class="pull-left">当前数量&ensp;</div>
+    <div *ngIf="model.footArgs.hasCount" class="pull-left selected-count m-r-20">
+      {{model.values.length}}</div>
+    <div *ngIf="model.footArgs.hasCount" class="pull-left">总数量&ensp;</div>
+    <div *ngIf="model.footArgs.hasCount" class="pull-left selected-count m-r-20">
+      {{model.footArgs.totalRecordCount}}</div>
+    <div *ngIf="model.footArgs.hasSelectCount" class="pull-left">已选择&ensp;</div>
+    <div *ngIf="model.footArgs.hasSelectCount" class="pull-left selected-count">{{selectedId.length}}</div>
+    <div *ngIf="model.footArgs.hasSelectBtn" class="pull-right m-l-10 cursor-pointer disable"
+      (click)="selectCancel()">清空</div>
+    <div *ngIf="model.footArgs.hasSelectBtn" class="pull-right m-l-10 cursor-pointer"
+      (click)="selectInvert()">反选</div>
+    <div *ngIf="model.footArgs.hasSelectBtn" class="pull-right cursor-pointer" (click)="selectAll()">全选</div>
+  </div> -->
+</div>

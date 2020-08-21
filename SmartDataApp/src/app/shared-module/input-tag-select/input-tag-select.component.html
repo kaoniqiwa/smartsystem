@@ -1,0 +1,32 @@
+<ng-container> 
+  <div style="position: relative;"  (click)="$event.stopPropagation();">
+    <div class="m-t-10 header-wrap" (click)="showBody=!showBody; $event.stopPropagation();" fxLayout="row" fxLayoutAlign="space-between stretch">
+      <div class="placeholder collapse"   [class.in]="noneChecked">全部</div>
+      <div fxFlex class="ele-nowrap">
+        <div class="text-tag-wrap" style="max-width: 260px;">
+          <a href="javascript:void(0)" *ngFor="let item of filterChecked">
+            <span class="m-r-10">{{item.text}}</span>
+            <a href="javascript:void(0)" (click)="closeChecked(item);$event.stopPropagation();"><i class="howell-icon-Close"></i></a>
+          </a>
+        </div>
+      </div>
+      <button type="button" fxFlex="30px" class="btn to-down">
+        <i class="mdi" [class.mdi-menu-up]="!showBody" [class.mdi-menu-down]="showBody"></i>
+      </button>
+    </div>
+    <div class="fill-width body-wrap collapse" [class.in]="showBody">
+      <div class="fill-width m-b-10">
+        <hw-input-search [placeholder]="'名称'" [searchEvent]="filterHide" #search></hw-input-search>
+      </div>
+      <div class="fill-width p-l-10">
+        <div class="form-group checkbox-wrap" *ngFor="let item of allChecked" >
+          <input class="filled-in chk-col-deep-purple " [checked]="item.checked" (click)="setChecked(item); $event.stopPropagation();" [id]="item.id" type="checkbox">
+          <label [for]="item.id">{{item.text}}</label>
+        </div>
+        <div *ngIf="noneData" class="text-center m-b-5" style="color:#cfd7ff">
+          无数据
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

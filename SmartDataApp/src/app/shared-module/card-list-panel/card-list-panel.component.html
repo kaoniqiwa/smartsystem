@@ -1,0 +1,73 @@
+<ng-container *ngIf="model&&model.listPanel&&model.pagination">
+  <div class="fine" style="overflow: auto;height: calc(100% - 40px);">
+    <div class="models-list-panel" (click)="itemClick(m.id)"
+      [class.selected]="selectedId.indexOf(m.id)>-1" 
+      *ngFor="let m of model.listPanel">
+      <div class="title-bar">
+        <img src="/assets/img/blue-light-spot.png" width="197" height="34" alt="">
+        <div class="left-wrap">
+          <!-- <i class="howell-icon-video light-blue-text"></i> -->
+          <i class="{{m.barTitle.icon.colorClass}} {{m.barTitle.icon.icon}}"></i>
+          <label>{{m.barTitle.label.label}}</label>
+        </div>
+        <div class="right-wrap">
+          <!-- <a class="m-r-20">
+          <i class="mdi mdi-tag sky-blue-text"></i>
+          <label class="light-blue-text m-0">标签1</label>
+        </a>
+        <a class="m-r-20"><i class="mdi mdi-content-copy sky-blue-text"></i></a>
+        <a href=""><i class="mdi mdi-signal" style="color: red;"></i></a> -->
+          <ng-container *ngFor="let a of m.barEqualAccessorys">
+            <a class="m-r-20">
+              <i class="{{a.icon.colorClass}} {{a.icon.icon}}"></i>
+              <label class="{{a.label.colorClass}} m-0">{{a.label.label}}</label>
+            </a>
+          </ng-container>
+          <ng-container *ngIf="m.barOtherAccessorys">
+            <a class="m-r-20" href="javascript:void(0)"><i
+                class="{{m.barOtherAccessorys[0].icon}} {{m.barOtherAccessorys[0].colorClass}}"></i></a>
+            <a href=""><i class="{{m.barOtherAccessorys[1].icon}} {{m.barOtherAccessorys[1].colorClass}}"></i></a>
+          </ng-container>
+        </div>
+      </div>
+      <div class="body-bar" fxLayout="row">
+        <ng-container *ngIf="m.barBody">
+          <div fxFlex="192px" class="item" *ngFor="let b of m.barBody">
+            <div fxLayoutAlign="center">
+              <div class="  blue-round-btn">
+                <i class="howell-icon-home3 fill-height" fxLayoutAlign="center center"
+                  style="font-size: xx-large;color:white;"></i>
+              </div>
+            </div>
+            <label fxLayoutAlign="center">{{b.label}}</label>
+            <a class="collapse" href="javascript:void(0)" (click)="b.id"><i class="howell-icon-Close"></i></a>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>  
+  <div fxLayout="row" class="table-foot-wrap">
+    <div fxFlex="40">
+      <div class="right-text">
+        <a href="javascript:void(0)" (click)="selectAll()" class="m-r-10">全选</a>
+        <a href="javascript:void(0)" (click)="selectInvert()" class="m-r-10">反选</a>
+        <a href="javascript:void(0)" (click)="selectCancel()">取消</a>
+      </div>
+    </div>
+    <div fxFlex="60" style="position: relative;">
+      <div style="position: absolute;" [ngStyle]="{'right': model.pagination.viewWidth+30+'px'}">
+        <div class="left-text pull-left m-r-30">
+          <span class="m-r-10">已选择</span>
+          <span>0</span>
+        </div>
+        <div class="left-text m-r-10  pull-left">
+          <span class="m-r-10">总数量</span>
+          <span> {{model.pagination.totalRecordCount}}</span>
+        </div>
+
+      </div>
+      <div HWPagination [options]="model.pagination" class="page fill-height"></div>
+    </div>
+
+  </div>
+</ng-container>

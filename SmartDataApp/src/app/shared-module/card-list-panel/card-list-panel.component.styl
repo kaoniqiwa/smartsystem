@@ -1,0 +1,103 @@
+ .models-list-panel:hover
+  border:1px  #495D92 solid
+  cursor: pointer
+  background-color: alpha(#2448a5,0.2)  
+  box-shadow: 0 0 5px 0px rgba(127,148,255, .3), inset 0 0 10px 0 rgba(127,148,255, .3)
+
+ .model-item-wrap:hover  label{
+    color:white  !important;
+  }
+
+
+.models-list-panel.selected
+  border:1px  #6d86c4 solid
+  background-color: alpha(#2448a5,0.4)  
+  box-shadow: 0 0 5px 0px rgba(127,148,255, .5), inset 0 0 10px 0 rgba(127,148,255, .5)
+
+ .models-list-panel{
+   height 154px; 
+   border:1px  #35324B  solid;
+   background-color: alpha(#0d1f38,0.2)  ;
+   box-shadow: 0 0 5px 0px rgba(127,148,255, .15), inset 0 0 10px 0 rgba(127,148,255, .15);
+    background: 
+        linear-gradient(to left, #ADE9FF, #ADE9FF) left top no-repeat
+        , linear-gradient(to bottom, #ADE9FF, #ADE9FF) left top no-repeat,
+         linear-gradient(to left, #ADE9FF, #ADE9FF) right top no-repeat,
+          linear-gradient(to bottom, #ADE9FF, #ADE9FF) right top no-repeat, 
+          linear-gradient(to left, #ADE9FF, #ADE9FF) left bottom no-repeat, 
+          linear-gradient(to bottom, #ADE9FF, #ADE9FF) left bottom no-repeat, 
+          linear-gradient(to left, #ADE9FF, #ADE9FF) right bottom no-repeat, 
+          linear-gradient(to left, #ADE9FF, #ADE9FF) right bottom no-repeat;
+        background-size: 1px 6px, 6px 1px,1px 6px, 6px 1px !important;
+    
+      margin-bottom: 10px
+  }
+
+.models-list-panel .title-bar
+    width: 100%
+    border-bottom: 1px alpha(#b8d8ff,0.05) solid;
+    background: linear-gradient(to bottom, rgba(105,173,255,0) 0%, rgba(105,173,255,0.1) 100%)
+    height: 36px
+    position relative
+
+.title-bar>img 
+    position: absolute
+    z-index: -1
+
+.title-bar .left-wrap
+  font-size: 18px
+  padding-left: 10px
+  padding-top: 4px
+  float: left
+  width:30%
+
+.title-bar .left-wrap label 
+    margin: 0
+    padding-left: 10px
+    color: white
+
+.title-bar .right-wrap
+  width: 70%
+  float: right
+  padding: 10px
+  text-align: right
+ 
+.body-bar
+  margin-top: 8px
+  padding-left: 10px
+  
+
+ .body-bar>.item
+     border:1px alpha(#000000,0) solid
+     position relative
+     height: 104px
+     margin-right:  10px
+
+ .body-bar>.item:hover 
+     border:1px  #314070 solid;
+
+ .body-bar>.item:hover a{
+  display: block;   
+}
+  
+
+ .body-bar>.item label 
+    margin-top: 4px
+    margin-bottom: 0px
+    color: #cfd7ff
+
+ .body-bar>.item a 
+    position: absolute
+    color: red
+    top: 0
+    right: 10px
+
+
+.table-foot-wrap
+  height: 30px
+  padding: 5px 20px
+  border-top: 1px rgb(117,134,224,0.5) solid
+
+.table-foot-wrap .left-text,.table-foot-wrap .right-text a 
+  font-size 14px
+  color: #cfd7ff 
