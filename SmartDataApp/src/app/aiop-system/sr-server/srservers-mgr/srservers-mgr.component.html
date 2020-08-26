@@ -1,0 +1,35 @@
+<div class="fill-height">
+  <div  *ngIf="mgrService.table.form.show" class="fill-height fill-width hw-content-mask">
+    <div  class="hw-form-wrap" style="height: 650px;">
+      <srserver-form  [cancelFn]="mgrService.table.form.cancelFn"
+      [editItem]="mgrService.table.form.editItem" [saveFn]="mgrService.table.form.successSaveFn"></srserver-form>
+    </div>
+  </div>
+  <ng-container *ngIf="mgrService.table.confirmDialog_">
+    <div class="fill-height fill-width hw-content-mask">
+      <hw-confirm-dialog [dialog]="mgrService.table.confirmDialog_"></hw-confirm-dialog>
+    </div>
+  </ng-container>
+  <div class="second-title-bg text">
+    流转服务
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between stretch" class="m-b-10">
+    <div class="hw-btn-group">
+      <button class="hw-green-btn m-r-10"  style="font-size: 18px;" (click)="mgrService.table.form.show=true">
+        <i class="howell-icon-plus"></i>
+        添加
+      </button>
+      <button class="hw-red-btn  m-r-10" (click)="delBtnClick()" [class.gray-text]="!selectItems" [class.black]="!selectItems"  style="font-size: 18px;">
+        <i class="howell-icon-delete-bin"></i>
+        删除
+      </button>
+    </div>
+    <div>
+      <hw-input-search [searchEvent]="searchFn" [placeholder]="'名称'"></hw-input-search>
+    </div>
+  </div>
+  <div style="height: calc(100% - 130px);">
+    <hw-custom-table #table [model]="mgrService.table.dataSource"></hw-custom-table>
+ 
+  </div>
+</div>
