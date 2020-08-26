@@ -13,6 +13,8 @@ import { Response } from "../model/Response";
 import { GetResourcesParams } from "../model/resources-params"; 
 import { GetResourceLabelsParams } from "../model/resource-labels-params";
 import { SaveModel } from "../model/save-model"; 
+import { BatchCopyRequest } from "../model/ai-models-params";
+import { BatchResult } from "../model/batch";
 @Injectable({
     providedIn:'root'
 })
@@ -132,6 +134,10 @@ export class AIModelRequestService{
 
     del(cameraId: string,aiModelId:string) {
         return this.requestService.axios.delete<Response<CameraAIModel>>(this.url.del(cameraId,aiModelId));
+    }
+
+    copyTo(param:BatchCopyRequest,tagCameraId:string){
+        return this.requestService.axios.post<BatchCopyRequest,Response<BatchResult>>(this.url.copy(tagCameraId),param);
     }
 
 }

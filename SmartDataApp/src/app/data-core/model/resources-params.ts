@@ -21,4 +21,6 @@ export class GetResourcesParams {
     AndLabelIds: string[];
     /**平台ID(可选) */
     PlatformId: string;
+    /**所属区域ID */
+    RegionId:string;
 }

@@ -24,7 +24,8 @@ export class  RegionsResources  extends BaseUrl {
         return this.aiop + `Regions/${id}/Resources`;
     }
 
-    create(regionId: string,resourceId: string): string {
+    create(regionId: string,resourceId: string): string {console.log(this.aiop + `Regions/${regionId}/Resources/${resourceId}`);
+    
         return this.aiop + `Regions/${regionId}/Resources/${resourceId}`;
     }
    

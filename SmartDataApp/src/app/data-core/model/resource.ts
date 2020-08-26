@@ -42,4 +42,6 @@ import { IResource } from "./iresource";
      MapElementId: string;
      /**平台接入信息(可选) */
      PlatformAssociation: PlatformAssociation;
+     /**所属区域ID */
+     RegionId:string;
  }
