@@ -21,9 +21,8 @@ export class PlatformFormComponent implements OnInit {
   }
 
  async ngOnInit() {
-   await this.formService.getProtocols();
+   await this.formService.getProtocols(); 
     this.formService.defaultForm(this.editItem);
-    //this.formService.loadResourceLabel();
   }
   onSubmit() {
     const formField = this.formService.form.value as FormField;

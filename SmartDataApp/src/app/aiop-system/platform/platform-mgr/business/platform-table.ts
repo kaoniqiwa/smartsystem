@@ -79,10 +79,10 @@ export class PlatformTable implements IConverter, IPageTable<Platform> {
   
     set totalCount(val: number) {
         this.dataSource.footArgs.totalRecordCount = val;
-    }
+    }     
 
-    get maxPageIndex() {
-        return !(this.dataSource.footArgs.totalRecordCount == this.dataSource.values.length);
+    set pageCount(val: number) {
+        this.dataSource.footArgs.pageCount = val;
     }
 
     setConfirmDialog(msg:string,okFn:()=>void){
@@ -122,13 +122,13 @@ export class PlatformTable implements IConverter, IPageTable<Platform> {
 
     addItem(item: Platform) {
         this.dataSource.values.push(this.toTableModel(item));
-        //this.addDeviceFn(item);
+        this.addItemFn(item);
         this.dataSource.footArgs.totalRecordCount += 1;
     }
     clearItems() {
-        this.dataSource.values = [];
-        this.dataSource.iconTextTagAttr = [];
+        this.dataSource.values = []; 
         this.dataSource.footArgs.totalRecordCount = 0;
+        this.dataSource.footArgs.pageCount=1;
     }
 
     editItem(item: Platform) {

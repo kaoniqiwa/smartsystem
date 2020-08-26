@@ -11,9 +11,11 @@ export class PlatformMgrComponent implements OnInit {
   @ViewChild('table')
   table: CustomTableComponent;
   constructor(private mgrService:PlatformMgrService) { }
-
- async ngOnInit() {
-    await this.mgrService.getPlatformData(1);   
+  searchFn =async (text:string)=>{  
+    this.mgrService.search.searchText = text;
+    await this.mgrService.searchPlatformData(1);
+ }
+ async ngOnInit() {   
     this.mgrService.table.delItemFn = (id:string)=>{
       this.mgrService.table.setConfirmDialog(`删除1个选择项`,async()=>{
         await this.mgrService.delPlatformsData([id]);      
@@ -31,9 +33,6 @@ export class PlatformMgrComponent implements OnInit {
         this.table.deleteListItem(id);
       this.mgrService.table.confirmDialog_=null;
     });
-  
-    // this.tableService.deviceTable.delItems(this.tableSelectIds);
-    // this.tableService.deviceTable.delAllSelectId();
   }
 
   get tableSelectIds() {
