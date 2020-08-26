@@ -23,7 +23,7 @@
     <button class="hw-green-m-btn m-r-10" (click)="onSubmit()">
       <i class="howell-icon-Check"></i>
     </button>
-    <button class="hw-gray-m-btn" (click)="onCancel()">
+    <button class="hw-gray-m-btn" *ngIf="editItem==null" (click)="onCancel()">
       <i class="howell-icon-Close"></i>
     </button>
   </div>

@@ -10,16 +10,13 @@ import { Region } from "../../../data-core/model/region";
   providers: [RegionMgrService]
 })
 export class RegionMgrComponent implements OnInit {
-
   @ViewChild('tree')
   tree: CustomTreeComponent;
   searchTree = (text: string) => {
     const dataSource = this.regionMgrService.regionTree.filterNodes(text);     
     this.tree.clearNestedNode();
     this.tree.dataSource.data = dataSource;
-    this.tree.defaultItem();
-    // this.regionMgrService.regionTree.filterNodes(text.trim());
-    // this.tree.dataSource.data = this.regionMgrService.regionTree.dataSource;
+    this.tree.defaultItem(); 
   }
   constructor(private regionMgrService: RegionMgrService) { }
 
@@ -54,6 +51,8 @@ export class RegionMgrComponent implements OnInit {
     this.regionMgrService.regionTree.editNodeItem = (node: FlatNode, val: string) => {
       this.tree.editNode(node, val);
     }
+ 
+    
   }
 
   async delBtnClick() {

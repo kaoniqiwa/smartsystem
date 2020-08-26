@@ -71,7 +71,7 @@ export class RegionFormService{
             else if (this.formState == FormStateEnum.edit) {  
                 const response = await this.regionRequestService.set(region); 
                 if (response.status == 200) { 
-                    this.resetForm();
+                    // this.resetForm();
                     this.messageBar.response_success();
                     successFn(true, response.data.Data, this.formState);
                 }

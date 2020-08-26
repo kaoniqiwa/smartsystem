@@ -25,6 +25,10 @@ export class RegionTree {
             this.editNodeItem(this.selectedNode,item.Name);
         }
     }
+    
+    cancelForm =()=>{
+        this.editItem = this.findRegion(this.selectedNodeId);
+    }
     filterNodes: (text: string) => TreeNode[];
     private selectedNode_: FlatNode;
 
@@ -49,6 +53,10 @@ export class RegionTree {
         return this.selectedNode_;
     }
 
+    get delBtnState(){
+        return this.selectedNode_&&this.selectedNode_.level !=0;
+    }
+
     clearSelectedNode() {
         this.selectedNode_ = null;
     }
@@ -61,6 +69,7 @@ export class RegionTree {
         this.formTitle = '添加' + this.formTitle.replace('编辑', '') + ' 下级区域';
         this.editItem_ = null;
     }
+
 
     loadTree(items: Region[]) {
         const addItems = (node: TreeNode, items: Region[]) => {
@@ -89,40 +98,5 @@ export class RegionTree {
             }
         } 
 
-    }
-
-    // filterTree(items: Region[]){
-    //     const  filterDataSource = new Array<TreeNode>();
-    //     const addItems = (node: TreeNode, items: Region[]) => {
-    //         for (const item of items) {
-    //             if (node.id == item.ParentId) {
-    //                 const node_ = new TreeNode();
-    //                 node_.name = item.Name;
-    //                 node_.checked = false;
-    //                 node_.id = item.Id;
-
-    //                 node.children = node.children || new Array<TreeNode>();
-    //                 node.children.push(node_);
-    //                 addItems(node_, items);
-    //             }
-    //         }
-    //     }
-    //     for (const item of items) {
-    //         if (!item.ParentId) {
-    //             const node = new TreeNode();
-    //             node.name = item.Name;
-    //             node.checked = false;
-    //             node.id = item.Id;
-
-    //             filterDataSource.push(node);
-    //             addItems(node, items);
-    //         }
-    //         else {
-
-    //         }
-    //     }
-    //     return filterDataSource;
-    // }
-   
-
+    } 
 }

@@ -34,7 +34,7 @@ export class RegionMgrService extends RegionTreeService {
     async delRegionData(id: string) {
         const item = this.dataSource.find(x => x.Id == id), rootLen = this.dataSource.filter(x => x.IsLeaf == false);
         if (item.IsLeaf == false && rootLen.length == 1) {
-            this.msg.response_warning('至少有一个目录');
+            //this.msg.response_warning('至少有一个目录');
             return false;
         }
         const response = await this.regionRequestService.del(id);
