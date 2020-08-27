@@ -6,51 +6,42 @@ import { PlatformService } from "../../../common/platform-request";
   selector: 'app-encode-device-mgr',
   templateUrl: './encode-device-mgr.component.html',
   styleUrls: ['./encode-device-mgr.component.styl'],
-  providers: [DeviceTableService,PlatformService]
+  providers: [DeviceTableService, PlatformService]
 })
 export class EncodeDeviceMgrComponent implements OnInit {
 
   @ViewChild('table')
   table: CustomTableComponent;
-  searchFn = (text: string) => {
-    this.search(text);
-  }
-  constructor(private tableService: DeviceTableService,private platformService:PlatformService
+
+  constructor(private tableService: DeviceTableService, private platformService: PlatformService
   ) { }
 
-  ngOnInit() {
-
-    this.tableService.requestData(1);
+  async ngOnInit() {
     this.tableService.deviceTable.tableSelectIds = this.tableSelectIds;
     this.tableService.deviceTable.attrBtnFn = () => {
       this.showBindLabels();
     }
+    await this.tableService.requestResourceLabels((items) => {
+      this.tableService.search.toInputTagSelect(items);
+    });
   }
-  async syncBtnClick(){
-    await this.platformService.syncPlatform();
-    this.tableService.deviceTable.labels.messageBar.response_success('完成同步');
-    this.tableService.deviceTable.clearItems();
-    this.tableService.dataSource = [];
-    //this.table.clearScrollDownCount();
-    this.tableService.requestData(1);
-   }
-   
+
+
   onLabelsSubmit() {
-    this.tableService.deviceTable.labels.bind(this.tableService.deviceTable.labels._dataSource);
+    this.tableService.bindLabelsFn(this.tableService._tagSource);
   }
 
   async showBindLabels() {
     if (this.tableSelectIds.length) {
-      await this.tableService.requestResourceLabels();
-      this.tableService.deviceTable.labels.show = true;
-      this.tableService.deviceTable.getSelectItemsLabels();
+      this.tableService.viewShow = true;
+      this.tableService.getSelectItemsLabels(this.tableSelectIds);
     }
-    else this.tableService.deviceTable.labels.messageBar.response_warning('请选择设备');
+    else this.tableService.messageBar.response_warning('请选择设备');
   }
 
   hiddenBindLabels() {
-    this.tableService.deviceTable.labels.show = false;
-    this.tableService.deviceTable.labels.clearDataSource();
+    this.tableService.viewShow = false;
+    this.tableService.clearDataSource();
   }
 
   get tableSelectIds() {
@@ -68,14 +59,10 @@ export class EncodeDeviceMgrComponent implements OnInit {
           this.table.deleteListItem(id);
         this.tableService.deviceTable.confirmDialog_ = null;
       });
-
-    // this.tableService.deviceTable.delItems(this.tableSelectIds);
-    // this.tableService.deviceTable.delAllSelectId();
   }
 
-  search(text: string) {
-    this.tableService.search.text = text;
-    //this.table.clearScrollDownCount();
-    this.tableService.searchData(1);
+  async search() {
+    this.tableService.search.state = true;
+    await this.tableService.searchData(1);
   }
 }

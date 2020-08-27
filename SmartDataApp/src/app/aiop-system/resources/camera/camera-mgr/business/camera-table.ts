@@ -1,17 +1,15 @@
 import { IConverter } from "../../../../../common/interface/IConverter";
 import { IBusinessData } from "../../../../../common/interface/IBusiness";
-import { EnumHelper } from "../../../../../common/tool/enum-helper"; 
+import { EnumHelper } from "../../../../../common/tool/enum-helper";
 import { Camera } from "../../../../../data-core/model/camera";
 import { CustomTableArgs, TableAttr, TableOperationBtn, TableIconTextTagAttr, TableTh } from "../../../../../shared-module/custom-table/custom-table-model";
 import { CustomTableEvent, CustomTableEventEnum } from "../../../../../shared-module/custom-table/custom-table-event";
 import { TableFormControl } from "../../../../../common/tool/table-form-helper";
 import { IPageTable } from "../../../../../common/interface/IPageTable";
 import { EncodeDevice } from "../../../../../data-core/model/encode-device";
-import { ResourceLabel } from "../../../../../data-core/model/resource-label";
 import { ResourcesTable } from '../../../../common/resources-table';
 import { ITableField } from "../../../../common/ITableField";
 import { FormGroup, FormControl } from '@angular/forms';
-import { SearchControl } from "./search";
 export class CameraTable extends ResourcesTable implements IConverter, IPageTable<Camera>{
     dataSource = new CustomTableArgs<TableField>({
         hasTableOperationTd: true,
@@ -50,7 +48,8 @@ export class CameraTable extends ResourcesTable implements IConverter, IPageTabl
                 title: '编辑',
                 callback: (item: TableField) => {
                     this.form.show = true;
-                    this.form.editItem = this.findItemFn(item.id);
+                    this.form.editItem = this.findItemFn(item.id); console.log(this.form.editItem);
+
                 }
             })
         ]
@@ -58,21 +57,20 @@ export class CameraTable extends ResourcesTable implements IConverter, IPageTabl
     updateItemFn: (item: Camera) => void;
     addItemFn: (item: Camera) => void;
     findItemFn: (id: string) => Camera;
-    findDeviceFn: (id: string) => EncodeDevice;     
+    findDeviceFn: (id: string) => EncodeDevice;
     delItemFn: (id: string) => void;
     scrollPageFn: (event: CustomTableEvent) => void;
     form = new TableFormControl<Camera>(this);
-    searchControl = new SearchControl();
     enumHelper = new EnumHelper();
     constructor() {
         super();
         this.searchform = new FormGroup({
-            Name: new FormControl(''), 
-            EncodeDeviceId: new FormControl(''), 
+            Name: new FormControl(''),
+            EncodeDeviceId: new FormControl(''),
             CameraType: new FormControl(''),
             SearchText: new FormControl('')
         });
-    } 
+    }
 
     Convert<Cameras, CustomTableArgs>(input: Cameras, output: CustomTableArgs) {
         const items = new Array<TableField>();
@@ -95,20 +93,20 @@ export class CameraTable extends ResourcesTable implements IConverter, IPageTabl
         return output;
     }
 
-    singleConvert(item:Camera){
-       this.dataSource.values.push(this.toTableModel(item));
-       const tagAttr = new TableIconTextTagAttr();
-       tagAttr.key = item.Id;
-       item.Labels.map(l => {
-           tagAttr.texts.push({ id: l.Id, label: l.Name });
-       });
-       this.dataSource.iconTextTagAttr.push(tagAttr);
+    singleConvert(item: Camera) {
+        this.dataSource.values.push(this.toTableModel(item));
+        const tagAttr = new TableIconTextTagAttr();
+        tagAttr.key = item.Id;
+        item.Labels.map(l => {
+            tagAttr.texts.push({ id: l.Id, label: l.Name });
+        });
+        this.dataSource.iconTextTagAttr.push(tagAttr);
 
     }
- 
+
 
     addItem(item: Camera) {
-        this.singleConvert(item); 
+        this.singleConvert(item);
         this.addItemFn(item);
         this.dataSource.footArgs.totalRecordCount += 1;
     }
@@ -118,11 +116,16 @@ export class CameraTable extends ResourcesTable implements IConverter, IPageTabl
         this.updateItemFn(item);
         const findVal = this.dataSource.values.find(x => x.id == item.Id);
         findVal.name = item.Name;
-        findVal.channelNo = item.ChannelNo + ''; 
+        findVal.channelNo = item.ChannelNo + '';
         findVal.cameraType = this.enumHelper.cameraType.get(item.CameraType);
         const dev = this.findDeviceFn(item.EncodeDeviceId);
         if (dev) findVal.encodeDevice = dev.Name;
-    } 
+        const findTag = this.dataSource.iconTextTagAttr.find(x => x.key == item.Id);
+        findTag.texts = new Array();
+        item.Labels.map(l => {
+            findTag.texts.push({ id: l.Id, label: l.Name });
+        });
+    }
 
     toTableModel(item: Camera) {
         let tableField = new TableField();

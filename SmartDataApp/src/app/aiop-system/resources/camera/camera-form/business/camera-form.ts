@@ -64,6 +64,7 @@ export class CameraFormService extends InputLabelService implements FormAttribut
                 PTZControllable: editItem.PTZControllable == true ? 1 : 0,
                 Storable: editItem.Storable == true ? 1 : 0
             });
+            this.addLabel2=editItem.Labels;
             this.formState = FormStateEnum.edit;
         }
         else {
@@ -111,8 +112,8 @@ export class CameraFormService extends InputLabelService implements FormAttribut
                 const response = await this.cameraRequestService.create(camera);
                 if (response.status == 200) {
                     this.messageBar.response_success();
-                    response.data.Data.Labels = new  Array<ResourceLabel>();
                     
+                    response.data.Data.Labels = new  Array<ResourceLabel>();                    
                     await this.forBindLabelForm(response.data.Data.Id,response.data.Data.Labels,this._tagSource);
                     this.fillResourceLabel(response.data.Data.Labels,this._tagSource);
                     successFn(true, response.data.Data, this.formState);
@@ -121,10 +122,14 @@ export class CameraFormService extends InputLabelService implements FormAttribut
                 }
             }
             else if (this.formState == FormStateEnum.edit) {
-                const response = await this.cameraRequestService.set(camera);
+                const response = await this.cameraRequestService.set(camera); ;
+                camera.Labels = this.editItem.Labels;       
                 if (response.status == 200) {
+                    camera.Id =  response.data.Data.Id;
                     this.messageBar.response_success();
-                    successFn(true, response.data.Data, this.formState);
+                    await this.forBindLabelForm(response.data.Data.Id, camera.Labels,this._tagSource);
+                    this.fillResourceLabel(camera.Labels,this._tagSource);
+                    successFn(true,camera, this.formState);
                 }
             }
         }

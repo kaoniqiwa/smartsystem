@@ -6,14 +6,10 @@ import { Camera } from "../../../../../data-core/model/camera";
 import { GetCamerasParams, GetEncodeDevicesParams } from "../../../../../data-core/model/encode-devices-params";
 import { EncodeDevice } from "../../../../../data-core/model/encode-device";
 import { CustomTableEvent } from "../../../../../shared-module/custom-table/custom-table-event";
-import { GetResourceLabelsParams } from "../../../../../data-core/model/resource-labels-params";
 import { ResourceLabel } from "../../../../../data-core/model/resource-label";
 import { InputTagArea } from "../../../../../shared-module/input-tag-area/input-tag-area";
-import { ResourcesRequest } from "../../../../common/resources-request";
 import "../../../../../common/string/hw-string";
-import { FormGroup } from "@angular/forms";
 import { RegionTree } from "./region-tree";
-import { RegionRequestService } from "../../../../../data-core/repuest/region.service";
 import { InputLabelService } from "../../../../common/input-label";
 import { SearchControl } from "./search";
 @Injectable()
@@ -103,12 +99,13 @@ export class CameraTableService extends InputLabelService {
             this.dataSource = [];
             this.cameraTable.Convert(data, this.cameraTable.dataSource);
             this.cameraTable.totalCount = response.data.Data.Page.TotalRecordCount;
-            this.dataSource = response.data.Data.Data;
+            this.dataSource = response.data.Data.Data; 
+            
         }
     }
 
     async searchCamerasData(pageIndex: number) {
-        if (this.search.state) {debugger
+        if (this.search.state) {
             const response = await this.cameraRequestService.list(this.getRequsetParam(pageIndex, this.search));
             let data = new Cameras();
             data.items = response.data.Data.Data.sort((a, b) => {
@@ -169,7 +166,7 @@ export class CameraTableService extends InputLabelService {
            
             if(s.Name)param.Name = s.Name;
             if(s.EncodeDeviceId) param.EncodeDeviceIds=[s.EncodeDeviceId];
-            if(s.CameraType)param.CameraTypes=[Number.parseInt(s.CameraType)];debugger
+            if(s.CameraType)param.CameraTypes=[Number.parseInt(s.CameraType)];
             if(s.AndLabelIds.length){
                 param.AndLabelIds = s.AndLabelIds;
             }

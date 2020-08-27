@@ -22,7 +22,7 @@ export class EncodeDeviceFormComponent implements OnInit {
 
   ngOnInit() {
     this.formService.defaultForm(this.editItem);
-    //this.formService.loadResourceLabel();
+    this.formService.requestResourceLabels();
   }
   onSubmit() {
     const formField = this.formService.form.value as FormField;

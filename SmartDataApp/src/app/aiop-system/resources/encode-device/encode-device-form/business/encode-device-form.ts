@@ -7,30 +7,25 @@ import { EncodeDeviceRequestService, LabelRequestService, ResourceLabelRequestSe
 import { InputTagArea } from "../../../../../shared-module/input-tag-area/input-tag-area";
 import { ResourceLabel } from "../../../../../data-core/model/resource-label"; 
 import { ListAttribute, FormAttribute, FormStateEnum } from "../../../../../common/tool/table-form-helper"; 
+import { InputLabelService } from "../../../../common/input-label";
 @Injectable()
-export class EncodeDeviceFormService extends ListAttribute implements FormAttribute {
+export class EncodeDeviceFormService extends InputLabelService implements FormAttribute {
     form: FormGroup;
     editItem: EncodeDevice;
     messageBar = new MessageBar();
     inputTagArea = new Array<InputTagArea>();
     protocolTypes = new Array<string>();
     formState: FormStateEnum;
-    resourceLabelFn = async (item: InputTagArea) => {
-        if (this.formState == FormStateEnum.edit && this.editItem && item && item.id) {
-            if (item.checked)
-                await this.bindResourceLabel(this.editItem.Id, item.id);
-            else
-                await this.unbindResourceLabel(this.editItem.Id, item.id);
-        }
+    createLabelFn = async (item: InputTagArea, fn: (id: string) => void) => {
+        await this.createLabel(item, (id) => fn(id));
     }
-    createResourceLabelFn = async (item: InputTagArea, forId: (id: string) => void) => {
-        const id = await this.createResourceLabel(item);
-        forId(id);
+    delLabelFn = async (item: InputTagArea, fn: (success: boolean) => void) => {
+        await this.delLabel(item, (success) => fn(success));
     }
     constructor(private encodeDeviceRequestService: EncodeDeviceRequestService
-        , private resourceLabelRequestService: ResourceLabelRequestService
-        , private labelRequestService: LabelRequestService) {
-        super();
+        , public labelRequestService: LabelRequestService
+        , public resourceLabelRequestService: ResourceLabelRequestService) {
+        super(labelRequestService, resourceLabelRequestService);
         this.form = new FormGroup({
             Name: new FormControl(''),
             TransType: new FormControl(''),
@@ -61,19 +56,7 @@ export class EncodeDeviceFormService extends ListAttribute implements FormAttrib
                 return response.data.Data.Id;
             }
         }
-    }
-
-    async loadResourceLabel() {
-        // const param = new GetResourceLabelsParams();
-        // param.PageIndex = 1;
-        // param.PageSize = this.maxSize;
-        // const response = await this.labelRequestService.list(param);
-        // if (response.status == 200) {
-        //     for (const x of response.data.Data.Data) {
-        //         this.inputTagArea.push(new InputTagArea(x.Id, x.Name, false));
-        //     }
-        // }
-    }
+    } 
 
     async defaultForm(editItem: EncodeDevice) {
         const response = await this.encodeDeviceRequestService.protocol();
@@ -98,6 +81,7 @@ export class EncodeDeviceFormService extends ListAttribute implements FormAttrib
                 HardwareVersion: editItem.HardwareVersion,
                 DeviceType: editItem.DeviceType
             });
+            this.addLabel2=editItem.Labels;
             this.formState = FormStateEnum.edit;
         }
         else {
@@ -169,37 +153,25 @@ export class EncodeDeviceFormService extends ListAttribute implements FormAttrib
                 const response = await this.encodeDeviceRequestService.create(dev);
                 if (response.status == 200) { 
                     this.messageBar.response_success();
+
+                    response.data.Data.Labels = new  Array<ResourceLabel>();                    
+                    await this.forBindLabelForm(response.data.Data.Id,response.data.Data.Labels,this._tagSource);
+                    this.fillResourceLabel(response.data.Data.Labels,this._tagSource);
                     successFn(true, response.data.Data, this.formState);
                 }
             }
             else if (this.formState == FormStateEnum.edit) { 
                 const response = await this.encodeDeviceRequestService.set(dev);
                 if (response.status == 200) { 
+                    dev.Id =  response.data.Data.Id;
                     this.messageBar.response_success();
-                    successFn(true, response.data.Data, this.formState);
+                    await this.forBindLabelForm(response.data.Data.Id, dev.Labels,this._tagSource);
+                    this.fillResourceLabel(dev.Labels,this._tagSource);
+                    successFn(true, dev, this.formState);
                 }
             }
         }
-    }
-
-    bindResourceLabels(resourceId: string) {
-        if (this.formState == FormStateEnum.create) {
-            this.inputTagArea.filter((x) => {
-                return x.checked == true;
-            }).map(async (y) => {
-                await this.resourceLabelRequestService.create(resourceId, y.id);
-            });
-        }
-
-    }
-
-    async bindResourceLabel(resourceId: string, labelId: string) {
-        await this.resourceLabelRequestService.create(resourceId, labelId);
-    }
-
-    async unbindResourceLabel(resourceId: string, labelId: string) {
-        await this.resourceLabelRequestService.del(resourceId, labelId);
-    }
+    } 
 
 }
 

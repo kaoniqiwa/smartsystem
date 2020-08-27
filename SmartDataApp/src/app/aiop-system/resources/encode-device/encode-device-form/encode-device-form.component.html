@@ -93,11 +93,11 @@
           <input class="form-control custom"  formControlName="HardwareVersion">
         </div>
       </div>
-      <!-- <div>
-        <hw-input-tag-area [addTagFn]="formService.createResourceLabelFn" 
-        [outPutTag]="formService.resourceLabelFn"
-        [model]="formService.inputTagArea"></hw-input-tag-area>
-      </div> -->
+      <div  fxLayout="row">
+        <hw-input-tag-area class="fill-width" [model]="formService._tagSource"
+        [addTagFn]="formService.createLabelFn" [delTagFn]="formService.delLabelFn">
+        </hw-input-tag-area>
+      </div>
      
     </div>
   </form>

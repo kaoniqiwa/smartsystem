@@ -6,11 +6,11 @@
       </encode-device-form>
     </div>
   </div>
-  <div class="fill-height fill-width hw-content-mask" *ngIf="tableService.deviceTable.labels.show">
+  <div class="fill-height fill-width hw-content-mask" *ngIf="tableService.viewShow">
     <div class="custom-form-wrap hw-form-wrap" style="width: 800px;height: 620px;">
       <h2>绑定标签</h2>
-      <hw-input-tag-area [model]="tableService.deviceTable.labels._dataSource"
-        [addTagFn]="tableService.deviceTable.labels.createFn" [delTagFn]="tableService.deviceTable.labels.delFn">
+      <hw-input-tag-area [model]="tableService._tagSource" [addTagFn]="tableService.createLabelFn"
+        [delTagFn]="tableService.delLabelFn">
       </hw-input-tag-area>
       <div class="text-center">
         <button class="hw-green-m-btn m-r-10" (click)="onLabelsSubmit()">
@@ -24,7 +24,7 @@
 
   </div>
   <ng-container *ngIf="tableService.deviceTable.confirmDialog_">
-    <div  class="fill-height fill-width hw-content-mask" >
+    <div class="fill-height fill-width hw-content-mask">
       <hw-confirm-dialog [dialog]="tableService.deviceTable.confirmDialog_"></hw-confirm-dialog>
     </div>
   </ng-container>
@@ -37,11 +37,8 @@
         <i class="howell-icon-plus"></i>
         添加
       </button>
-      <button class="hw-blue-btn m-r-10 "  (click)="syncBtnClick()" >
-        <i class="howell-icon-repeat"></i>
-        同步
-      </button>
-      <button class="hw-red-btn  m-r-10" (click)="delBtnClick()" [class.black]="!selectItems" style="font-size: 18px;">
+
+      <button class="hw-red-btn  m-r-10" (click)="delBtnClick()"  [class.gray-text]="!selectItems" [class.black]="!selectItems" style="font-size: 18px;">
         <i class="howell-icon-delete-bin"></i>
         删除
       </button>
@@ -50,11 +47,50 @@
         绑定标签
       </button>
     </div>
-    <div>
-      <hw-input-search [searchEvent]="searchFn" [placeholder]="'名称'"></hw-input-search>
+    <div [formGroup]="tableService.search.searchform">
+      <input type="text" style="width: 300px;" [readonly]="tableService.search.other" formControlName="SearchText" placeholder="输入关键字"
+        class="custom form-control m-r-10">
+      <button type="button" class="hw-blue-btn m-r-10 " (click)="search()">
+        <i class="mdi mdi-magnify"></i>
+        查询
+      </button>
+      <button class="hw-cyan-m-btn"  (click)="tableService.search.other=!tableService.search.other">
+        <i class="mdi mdi-filter-outline"></i>
+      </button>
     </div>
   </div>
-  <div style="height: calc(100% - 130px);">
+  <ng-container *ngIf="tableService.search.other">
+    <div fxLayout="row" [formGroup]="tableService.search.searchform" fxLayoutGap="20px"
+      class="filter-wrap m-b-10 collapse">
+      <div fxFlex="25">
+        <span>名称</span>
+        <input type="text" style="width: calc(100% - 46px);" placeholder="输入关键字" class="custom form-control m-l-10"
+          formControlName="Name">
+      </div>    
+      <div fxFlex="25">
+        <span>地址</span>
+        <input type="text" style="width: calc(100% - 46px);" placeholder="输入关键字" class="custom form-control m-l-10"
+          formControlName="Url">
+      </div>
+      <div fxFlex="25">
+        <span>状态</span>
+        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 46px);"
+          formControlName="OnlineStatus">
+          <option value="">全部</option>
+          <option value="0">正常</option>
+          <option value="1">离线</option>
+        </select>
+      </div>
+      <div fxFlex="25">
+        <span style="top:4px">选择标签</span>
+        <div class="pull-right" style="width: calc(100% - 82px);">
+          <hw-input-tag-select [model]="tableService.search.inputTagSelect"></hw-input-tag-select>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+  <div [ngStyle]="{'height': tableService.search.other ? 'calc(100% - 114px)':'calc(100% - 68px)'}">
     <hw-custom-table #table [model]="tableService.deviceTable.dataSource"></hw-custom-table>
 
     <!-- <div class="table-header-container">
