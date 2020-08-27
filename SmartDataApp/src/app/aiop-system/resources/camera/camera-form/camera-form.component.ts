@@ -14,6 +14,7 @@ export class CameraFormComponent implements OnInit {
   @Input() saveFn:(success:boolean,item:Camera,formState:FormStateEnum)=>void;
   @Input() cancelFn:()=>void;
   @Input() editItem:Camera;
+  @Input() regionId ='';
   @ViewChild('resetBtn')
   resetBtn:ElementRef;
   constructor(private formService:CameraFormService) { 
@@ -21,13 +22,14 @@ export class CameraFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formService.defaultForm(this.editItem); 
+    this.formService.defaultForm(this.editItem);  
+    this.formService.requestResourceLabels()
   }
   onSubmit() {
     const formField = this.formService.form.value as FormField;
     this.formService.saveFrom(formField,(success:boolean,item:Camera,formState: FormStateEnum)=>{
          if(success&&this.saveFn)this.saveFn(success,item,formState);
-    });
+    },this.regionId);
   }
 
   onCancel(){

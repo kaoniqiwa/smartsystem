@@ -5,16 +5,16 @@
   <ng-container *ngIf="formService.editItem">
     <h2>{{formService.editItem.Name}}</h2>
   </ng-container>
-  <form  class="form-content m-b-20 fine" [formGroup]="formService.form" (ngSubmit)="onSubmit()">
-     <div>
+  <form class="form-content m-b-20 fine" [formGroup]="formService.form" (ngSubmit)="onSubmit()">
+    <div>
       <input type="reset" #resetBtn class="collapse" value="">
       <div fxLayout="row" class="form-group">
         <div fxFlex="100">
           <label class="custom control-label tran-input-label">名称</label>
           <span class="text-danger p-t-10">*</span>
           <input class="form-control custom" formControlName="Name">
-        </div> 
-      </div>      
+        </div>
+      </div>
       <div fxLayout="row" class="form-group">
         <div fxFlex="50">
           <label class="custom control-label tran-input-label">类型</label>
@@ -59,7 +59,12 @@
           </select>
         </div>
       </div>
-     </div>
+      <div  fxLayout="row">
+        <hw-input-tag-area class="fill-width" [model]="formService._tagSource"
+        [addTagFn]="formService.createLabelFn" [delTagFn]="formService.delLabelFn">
+        </hw-input-tag-area>
+      </div>
+    </div>
   </form>
 
   <div class="text-center">
