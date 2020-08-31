@@ -1,57 +1,93 @@
 import { Injectable } from "@angular/core";
-import { CameraRequestService, AIModelRequestService as CameraAIModelRequestService }
+import { CameraRequestService, AIModelRequestService as CameraAIModelRequestService, LabelRequestService }
     from "../../../../../data-core/repuest/resources.service";
 import { AIModelRequestService } from "../../../../../data-core/repuest/ai-model.service";
-
+import { RegionRequestService } from "../../../../../data-core/repuest/region.service";
 import { Camera } from "../../../../../data-core/model/camera";
-import { FormGroup } from "@angular/forms";
 import { GetCamerasParams } from "../../../../../data-core/model/encode-devices-params";
 import { TableSearchEnum, ListAttribute } from "../../../../../common/tool/table-form-helper";
 import { CameraAIModel, } from "../../../../../data-core/model/camera-ai-model";
-import { TableAttribute, SearchHelper } from "../../../../../common/tool/table-form-helper";
+import { TableAttribute } from "../../../../../common/tool/table-form-helper";
 import { GetAIModelsParams } from "../../../../../data-core/model/camera-ai-event-records-params";
-import { PanelControl } from "./panel-control";
+import { AICameraPanel } from "./ai-camera-panel";
+import { AIModelsPanel } from "./ai-models-panel";
 import "../../../../../common/string/hw-string";
 import { Page } from "../../../../../data-core/model/page";
 import { ViewPagination } from "../../../../../shared-module/card-list-panel/card-list-panel";
+import { RegionTreeService } from "../../../../common/region-tree.service";
+import { RegionCamera } from "./region-camera";
+import { BatchCopyRequest } from "../../../../../data-core/model/ai-models-params";
+import { ResourceLabel } from "../../../../../data-core/model/resource-label";
+import { GetResourceLabelsParams } from "../../../../../data-core/model/resource-labels-params";
+import { SearchControl } from "./ai-cameras-search";
 @Injectable()
-export class CameraAIModelMgrService extends TableAttribute {
-    cameras = new Array<Camera>();
-    aiModels = new Array<CameraAIModel>();
-    panelControl: PanelControl;
-    constructor(private cameraRequestService: CameraRequestService
-        , private aiModelRequestSerivce: AIModelRequestService
-        , private cameraAIModelRequestService: CameraAIModelRequestService) {
-        super();
-        this.panelControl = new PanelControl();
-        this.panelControl.findCameraAIModel = async (cameraId: string, resultFn: (models: CameraAIModel[]) => void) => {
+export class CameraAIModelMgrService extends RegionTreeService {
+    public cameras = new Array<Camera>();
+    public aiModels = new Array<CameraAIModel>();
+    public regionCamera = new RegionCamera();
+    search = new SearchControl();
+    aiCameraPanel: AICameraPanel;
+    aiModelsPanel: AIModelsPanel;
+    pageIndex = 1; 
+    constructor(public cameraRequestService: CameraRequestService
+        , public aiModelRequestSerivce: AIModelRequestService
+        , public cameraAIModelRequestService: CameraAIModelRequestService
+        , public regionRequestService: RegionRequestService
+        , public labelRequestService: LabelRequestService) {
+        super(regionRequestService);
+        this.search = new SearchControl();
+        this.aiCameraPanel = new AICameraPanel();
+        this.aiModelsPanel = new AIModelsPanel();
+        this.aiCameraPanel.findCameraAIModel = async (cameraId: string, resultFn: (models: CameraAIModel[]) => void) => {
             const data = await this.requsetCameraAIModelData(cameraId);
             resultFn(data);
         }
-        this.panelControl.viewPaginationFn = (page: Page) => {
-            return new ViewPagination(page.PageCount, () => {
+        this.aiCameraPanel.viewPaginationFn = (page: Page) => {
+            return new ViewPagination(page.PageCount, async (index) => {
+                this.pageIndex = index;
+                await this.requestCamerasData(index);
+                this.aiCameraPanel.clearPanelView();
+                this.aiCameraPanel.cardListPanelView = this.cameras;
+                this.aiCameraPanel.underCamerasAIModels = this.cameras;
+
             });
         }
-        this.panelControl.addAIModelToCameraFn= async (cameraId: string, aiModelId: string,successFn:(success:boolean)=>void)=>{
-            const result=await this.addAIModelToCamera(cameraId,aiModelId);
+        this.aiCameraPanel.addAIModelToCameraFn = async (cameraId: string, aiModelId: string, successFn: (success: boolean) => void) => {
+            const result = await this.addAIModelToCamera(cameraId, aiModelId);
             successFn(result);
         }
-        this.panelControl.delAIModelToCameraFn= async (cameraId: string, aiModelId: string,successFn:(success:boolean)=>void)=>{
-            const result=await this.delAIModelToCamera(cameraId,aiModelId);
+        this.aiCameraPanel.delAIModelToCameraFn = async (cameraId: string, aiModelId: string, successFn: (success: boolean) => void) => {
+            const result = await this.delAIModelToCamera(cameraId, aiModelId);
             successFn(result);
+        }
+        this.regionCamera.cameraAIModelCopyToFn = async (tagCameraId, targetCameraIds) => {
+            const success = await this.cameraAIModelsCopyTo(tagCameraId, targetCameraIds);
+            if (success) {               
+                /**刷新当前页 */
+                //更新 view
+                //更新 datasource
+                this.aiCameraPanel.setEditListPanel(tagCameraId, targetCameraIds);
+                this.aiCameraPanel.messageBar.response_success(); 
+            }
+            return success;
         }
     }
 
-    async requestCamerasData(pageIndex: number) {
-        const response = await this.cameraRequestService.list(this.getCameraRequsetParam(TableSearchEnum.none, pageIndex));
+    async requestResourceLabels(callBack?: (items: ResourceLabel[]) => void) {
+        const param = new GetResourceLabelsParams();
+        param.PageIndex = 1;
+        param.PageSize = new ListAttribute().maxSize;
+        const response = await this.labelRequestService.list(param);
+        if (callBack) callBack(response.data.Data.Data);
+    }
+
+    async requestCamerasData(pageIndex: number, callBack?: (items: Camera[], page: Page) => void) {
+        const response = await this.cameraRequestService.list(this.getCameraRequsetParam(pageIndex, this.search));
         this.cameras = response.data.Data.Data.sort((a, b) => {
             return ''.naturalCompare(a.Name, b.Name);
         });
-        if (this.panelControl.viewPaginationFn) {
-            const viewPagination = this.panelControl.viewPaginationFn(response.data.Data.Page);
-            this.panelControl.cardListDataSource.pagination = viewPagination;
-            this.panelControl.cardListDataSource.pagination.totalRecordCount = response.data.Data.Page.TotalRecordCount;
-        }
+        if (callBack) callBack(this.cameras, response.data.Data.Page)
+
     }
 
     async requsetCameraAIModelData(cameraId: string) {
@@ -59,11 +95,28 @@ export class CameraAIModelMgrService extends TableAttribute {
         return response.data.Data;
     }
 
-    async requsetAIModelData(pageIndex: number) {
-        const response = await this.aiModelRequestSerivce.list(this.getAIModelRequsetParam(TableSearchEnum.none, pageIndex));
+    async requestRegionCamerasData(regionId: string) {
+        const response = await this.cameraRequestService.list(this.getCameraRequsetParam(1, null, regionId));
+        const datas = response.data.Data.Data.sort((a, b) => {
+            return ''.naturalCompare(a.Name, b.Name);
+        });
+        return datas;
+    }
+
+    async cameraAIModelsCopyTo(tagCameraId: string, targetCameraId: string[]) {
+        const param = new BatchCopyRequest();
+        param.ResourceIds = targetCameraId;
+        const response = await this.cameraAIModelRequestService.copyTo(param, tagCameraId);
+        console.log(response); 
+        return response.data.FaultReason == 'OK';
+    }
+
+    async requsetAIModelData(pageIndex: number, callBack?: (data: CameraAIModel[]) => void) {
+        const response = await this.aiModelRequestSerivce.list(this.getAIModelRequsetParam(pageIndex));
         this.aiModels = response.data.Data.Data.sort((a, b) => {
             return ''.naturalCompare(a.ModelName, b.ModelName);
         });
+        if (callBack) callBack(this.aiModels);
     }
 
     async addAIModelToCamera(cameraId: string, aiModelId: string) {
@@ -76,28 +129,25 @@ export class CameraAIModelMgrService extends TableAttribute {
         return response.data.FaultReason == 'OK';
     }
 
-    getAIModelRequsetParam(paramType: TableSearchEnum, pageIndex: number, name?: string) {
+    getAIModelRequsetParam(pageIndex: number) {
         let param = new GetAIModelsParams();
         param.PageIndex = pageIndex;
         param.PageSize = new ListAttribute().maxSize;
-        if (paramType == TableSearchEnum.none) {
-
-        }
-        else if (paramType == TableSearchEnum.search) {
-
-        }
         return param;
     }
 
-    getCameraRequsetParam(paramType: TableSearchEnum, pageIndex: number, search?: FormGroup) {
+    getCameraRequsetParam(pageIndex: number, search?: SearchControl, regionId?: string) {
         let param = new GetCamerasParams();
         param.PageIndex = pageIndex;
-        param.PageSize = this.pageSize;
-        if (paramType == TableSearchEnum.none) {
-
+        param.PageSize = new TableAttribute().pageSize;
+        if (search && search.state) {
+            const s = search.toSearchParam();
+            if (s.Name) param.Name = s.Name;
+            if (s.AndLabelIds.length) param.AndLabelIds = s.AndLabelIds;
         }
-        else if (paramType == TableSearchEnum.search) {
-
+        if (regionId) {
+            param.RegionId = regionId;
+            param.PageSize = new ListAttribute().maxSize;
         }
         return param;
     }

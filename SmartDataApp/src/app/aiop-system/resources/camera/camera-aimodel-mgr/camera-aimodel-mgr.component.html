@@ -1,18 +1,23 @@
 <div class="fill-height">
+  <div  class="fill-height fill-width hw-content-mask" *ngIf="mgrService.aiCameraPanel.copyCameraId">
+    <div class="hw-form-wrap" style="height: 650px;">
+      <region-camera-copy  [cancelFn]="close"
+      [tagCameraId]="mgrService.aiCameraPanel.copyCameraId"></region-camera-copy>
+    </div>
+  </div>
   <div class="fill-height">
     <div fxLayout="row" class="fill-height">
       <div fxFlex="320px" class="card-wrap m-r-20">
         <h2 class="m-b-20">模型列表</h2>
         <div class="m-b-20">
-          <hw-input-search [placeholder]="'名称'" [searchEvent]="searchTree"></hw-input-search>
+          <hw-input-search [placeholder]="'名称'" [searchEvent]="mgrService.aiModelsPanel.filterFn"></hw-input-search>
         </div>
 
-        <div cdkDropList id="all" [cdkDropListData]=" mgrService.panelControl.fromList"
-          [cdkDropListConnectedTo]="to"
-          (cdkDropListDropped)="mgrService.panelControl.dropItem($event)" fxLayout="row wrap" class="fine"
+        <div cdkDropList id="all" [cdkDropListData]="mgrService.aiModelsPanel.dataSource" [cdkDropListConnectedTo]="to"
+          (cdkDropListDropped)="mgrService.aiCameraPanel.dropItem($event)" class="fine"
           style="height: calc(100% - 88px);overflow: scroll;">
-          <ng-container *ngFor="let item of mgrService.panelControl.fromList">
-            <div class="model-item-wrap" cdkDrag>
+          <ng-container *ngFor="let item of mgrService.aiModelsPanel.dataSource">
+            <div  [class.in]="!item.hidden" class="model-item-wrap pull-left collapse" cdkDrag>
               <div fxLayoutAlign="center">
                 <div class="middle-round-btn">
                   <i class="howell-icon-home3 fill-height" fxLayoutAlign="center center"
@@ -25,12 +30,37 @@
         </div>
 
       </div>
-      <div fxFlex class="card-wrap" 
-      cdkDropList id="to"
+      <div fxFlex class="card-wrap">
+        <div class="m-b-10" style="height: 36px;">
+          <h2 class="pull-left" style="width: 200px;">AI设备列表</h2>
+          <div class="pull-right"  [formGroup]="mgrService.search.searchform" >
+            <div class="pull-left m-r-10" style="width:332px">
+              <span class="input-label">选择标签</span>
+              <div class="pull-right" style="width: calc(100% - 82px);">
+                <hw-input-tag-select [model]="mgrService.search.inputTagSelect"></hw-input-tag-select>
+              </div>
+            </div>
+            <div class="pull-left" style="width:300px">
+              <span style="color: white;">名称</span>
+              <input type="text" formControlName="Name" style="width: calc(100% - 46px);" placeholder="输入关键字"
+                class="custom form-control m-l-10">
+            </div>
+            <button type="button" class="hw-blue-btn m-l-10 " (click)="search()">
+              <i class="mdi mdi-magnify"></i>
+              查询
+            </button>
+          </div>
+
+        </div>
+        <div style="height: calc(100% - 26px);" cdkDropList id="to" [cdkDropListConnectedTo]="[all]">
+          <hw-card-list-panel #cardListPanel [model]="mgrService.aiCameraPanel.cardListPanelV"></hw-card-list-panel>
+        </div>
+      </div>
+      <!-- <div cdkDropList id="to"
       [cdkDropListConnectedTo]="[all]">
       <hw-card-list-panel #cardListPanel
       [model]="mgrService.panelControl.cardListDataSource"></hw-card-list-panel>
-       <!-- <ng-container *ngFor="let camera of mgrService.cameras">
+     <ng-container *ngFor="let camera of mgrService.cameras">
         <div class="models-list-panel">
           <div class="title-bar">
             <img src="/assets/img/blue-light-spot.png" width="197" height="34" alt="">
@@ -62,8 +92,8 @@
             </ng-container>
           </div>
         </div>
-      </ng-container> -->
-      </div>
+      </ng-container>
+      </div> -->
     </div>
   </div>
 </div>

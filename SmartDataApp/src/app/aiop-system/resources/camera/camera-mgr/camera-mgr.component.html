@@ -49,7 +49,7 @@
         <h2>监控点</h2>
         <div fxLayout="row" fxLayoutAlign="space-between stretch" class="m-b-10">
           <div class="hw-btn-group">
-            <button class="hw-green-btn m-r-10" (click)="tableService.cameraTable.form.show=true">
+            <button class="hw-green-btn m-r-10" (click)="tableService.cameraTable.form.show=tableService.regionTree.isLastNode">
               <i class="howell-icon-plus"></i>
               添加
             </button> 
