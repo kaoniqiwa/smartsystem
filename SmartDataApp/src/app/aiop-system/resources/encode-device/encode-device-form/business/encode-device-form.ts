@@ -49,18 +49,18 @@ export class EncodeDeviceFormService extends InputLabelService implements FormAt
             let model = new ResourceLabel();
             model.Id = '';
             model.Name = item.text;
-            const response = await this.labelRequestService.create(model);
+            const response = await this.labelRequestService.create(model).toPromise();
 
-            if (response.status == 200) {
+            if (response.FaultCode == 0) {
                 this.messageBar.response_success();
-                return response.data.Data.Id;
+                return response.Data.Id;
             }
         }
     } 
 
     async defaultForm(editItem: EncodeDevice) {
-        const response = await this.encodeDeviceRequestService.protocol();
-        for (const item of response.data.Data) 
+        const response = await this.encodeDeviceRequestService.protocol().toPromise();
+        for (const item of response.Data) 
             this.protocolTypes.push(item.ProtocolType);
         var transType = TransTypeEnum.UDP;
         if (editItem) {
@@ -86,7 +86,7 @@ export class EncodeDeviceFormService extends InputLabelService implements FormAt
         }
         else {
             this.formState = FormStateEnum.create;
-            for (const item of response.data.Data) {
+            for (const item of response.Data) {
                 // this.protocolTypes.push(item.ProtocolType);
                 if (item.Url.indexOf('https') > -1)
                     transType = TransTypeEnum.TCP;
@@ -150,22 +150,22 @@ export class EncodeDeviceFormService extends InputLabelService implements FormAt
             if (this.formState == FormStateEnum.create) {
                 dev.Id = '';
                 dev.CreateTime = new Date().toISOString();
-                const response = await this.encodeDeviceRequestService.create(dev);
-                if (response.status == 200) { 
+                const response = await this.encodeDeviceRequestService.create(dev).toPromise();
+                if (response.FaultCode == 0) { 
                     this.messageBar.response_success();
 
-                    response.data.Data.Labels = new  Array<ResourceLabel>();                    
-                    await this.forBindLabelForm(response.data.Data.Id,response.data.Data.Labels,this._tagSource);
-                    this.fillResourceLabel(response.data.Data.Labels,this._tagSource);
-                    successFn(true, response.data.Data, this.formState);
+                    response.Data.Labels = new  Array<ResourceLabel>();                    
+                    await this.forBindLabelForm(response.Data.Id,response.Data.Labels,this._tagSource);
+                    this.fillResourceLabel(response.Data.Labels,this._tagSource);
+                    successFn(true, response.Data, this.formState);
                 }
             }
             else if (this.formState == FormStateEnum.edit) { 
-                const response = await this.encodeDeviceRequestService.set(dev);
-                if (response.status == 200) { 
-                    dev.Id =  response.data.Data.Id;
+                const response = await this.encodeDeviceRequestService.set(dev).toPromise();
+                if (response.FaultCode == 0) { 
+                    dev.Id =  response.Data.Id;
                     this.messageBar.response_success();
-                    await this.forBindLabelForm(response.data.Data.Id, dev.Labels,this._tagSource);
+                    await this.forBindLabelForm(response.Data.Id, dev.Labels,this._tagSource);
                     this.fillResourceLabel(dev.Labels,this._tagSource);
                     successFn(true, dev, this.formState);
                 }

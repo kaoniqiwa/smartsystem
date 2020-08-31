@@ -25,32 +25,32 @@ to {width:70px;}
     margin: 0 0 0 12px;
 
 .sidenav-main-btn.normal
-    background-color: rgba(105,151,255,0.2)
-    box-shadow:inset 0 0 10px 0 rgba(207,215,255, .25)
-    border: 2px rgba(207,215,255, .5) solid
-    color: #a9b5dc
+    background-color: alpha(#6997ff,0.2)
+    box-shadow:inset 0 0 10px 0  alpha(#cfd7ff,0.25)
+    border: 2px  alpha(#cfd7ff,0.2) solid  
+    color: #c4cedb
  
 .sidenav-main-btn.normal:hover 
     color: #ecefff
-    border: 2px rgba(207,215,255, .7) solid
-    background-color: rgba(105,151,255,0.6)
+    border: 2px alpha(#cfd7ff,0.7) solid
+    background-color: alpha(#6997ff,0.3)
     box-shadow: 0 0 25px 0 rgba(58,147,255, .25), inset 0 0 10px 0 rgba(216,244,255, .25)
 
 .sidenav-main-btn.normal:hover  .t-l-angle.normal,
 .sidenav-main-btn.normal:hover  .t-r-angle.normal
 {
-     border-top: 10px solid rgba(207,215,255, .7)
+     border-top: 10px solid  alpha(#cfd7ff,0.7)
 } 
 .sidenav-main-btn.normal:hover  .b-l-angle.normal,
 .sidenav-main-btn.normal:hover  .b-r-angle.normal
 {
-     border-bottom: 10px solid rgba(207,215,255, .7)
+     border-bottom: 10px solid  alpha(#cfd7ff,0.7)
 }
 
 .sidenav-main-btn.highlighted
-    box-shadow: 0 0 20px 10px rgba(58,147,255, .5), inset 0 0 20px 0 rgba(216,244,255, .5)
+    box-shadow: 0 0 20px 10px alpha(#3a93ff, 0.50), inset 0 0 20px 0 alpha(#d8f4ff, 0.35)
     border: 2px #bfd8ff solid
-    background-color: rgba(105,151,255,0.5)
+    background-color: alpha(#6997ff,0.7)
 
 .sidenav-main-btn
     width: 260px
@@ -121,6 +121,13 @@ to {width:70px;}
 .sidenav-menu-btn.selected
     background-image url('/assets/img/menu-btn-focus.png') 
 
+.sidenav-menu-btn.selected a{
+    color:white;
+}
 .sidenav-menu-btn a
     font-size: 24px
-    color: white
+    color: #c4cedb
+    display: block
+    width: 100%;
+    text-align: left
+    padding-left: 64px

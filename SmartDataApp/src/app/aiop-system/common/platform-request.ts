@@ -11,8 +11,8 @@ export class PlatformService  {
         const param = new GetPlatformsParams();
         param.PageIndex = 1;
         param.PageSize = 1;
-        const response = await this.platformRequestSerivce.list(param);
-        for (const d of response.data.Data.Data) 
-          await  this.platformRequestSerivce.sync(d.Id);         
+        const response = await this.platformRequestSerivce.list(param).toPromise();
+        for (const d of response.Data.Data) 
+          await  this.platformRequestSerivce.sync(d.Id).toPromise();         
     }
 }

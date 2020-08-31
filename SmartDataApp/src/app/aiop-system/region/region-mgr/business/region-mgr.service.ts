@@ -27,8 +27,8 @@ export class RegionMgrService extends RegionTreeService {
         region.IsLeaf = false;
         region.RegionType = 1;
         region.CreateTime = new Date().toISOString();
-        const response = await this.regionRequestService.create(region);
-        this.dataSource = [response.data.Data];
+        const response = await this.regionRequestService.create(region).toPromise();
+        this.dataSource = [response.Data];
     }
 
     async delRegionData(id: string) {
@@ -37,8 +37,8 @@ export class RegionMgrService extends RegionTreeService {
             //this.msg.response_warning('至少有一个目录');
             return false;
         }
-        const response = await this.regionRequestService.del(id);
-        if (response.status == 200) {
+        const response = await this.regionRequestService.del(id).toPromise();
+        if (response.FaultCode == 200) {
             this.delItem = id;
             this.msg.response_success();
             return true;

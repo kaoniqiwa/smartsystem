@@ -11,8 +11,8 @@ import { HWPaginationOptions } from "../../common/directive/pagination-directive
 })
 export class CustomTableComponent implements OnInit ,OnChanges{
 
-  @ViewChild('customTable', { read: InfiniteScrollDirective })
-  scrollBar: InfiniteScrollDirective;
+  // @ViewChild('customTable', { read: InfiniteScrollDirective })
+  // scrollBar: InfiniteScrollDirective;
   //注入表格的参数对象
   @Input() model: CustomTableArgs<IBusinessData>;
 
@@ -140,9 +140,10 @@ export class CustomTableComponent implements OnInit ,OnChanges{
 
   //鼠标滚到底事件
   onScrollDown() {
+  }
 
-
-
+  fontColor(text:string){
+     return text == '离线';//rgb(225,94,100)
   }
 
   imgClick(url: string) {

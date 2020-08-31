@@ -77,27 +77,27 @@ export class CameraAIModelMgrService extends RegionTreeService {
         const param = new GetResourceLabelsParams();
         param.PageIndex = 1;
         param.PageSize = new ListAttribute().maxSize;
-        const response = await this.labelRequestService.list(param);
-        if (callBack) callBack(response.data.Data.Data);
+        const response = await this.labelRequestService.list(param).toPromise();;
+        if (callBack) callBack(response.Data.Data);
     }
 
     async requestCamerasData(pageIndex: number, callBack?: (items: Camera[], page: Page) => void) {
-        const response = await this.cameraRequestService.list(this.getCameraRequsetParam(pageIndex, this.search));
-        this.cameras = response.data.Data.Data.sort((a, b) => {
+        const response = await this.cameraRequestService.list(this.getCameraRequsetParam(pageIndex, this.search)).toPromise();;
+        this.cameras = response.Data.Data.sort((a, b) => {
             return ''.naturalCompare(a.Name, b.Name);
         });
-        if (callBack) callBack(this.cameras, response.data.Data.Page)
+        if (callBack) callBack(this.cameras, response.Data.Page)
 
     }
 
     async requsetCameraAIModelData(cameraId: string) {
-        const response = await this.cameraAIModelRequestService.list(cameraId);
-        return response.data.Data;
+        const response = await this.cameraAIModelRequestService.list(cameraId).toPromise();
+        return response.Data;
     }
 
     async requestRegionCamerasData(regionId: string) {
-        const response = await this.cameraRequestService.list(this.getCameraRequsetParam(1, null, regionId));
-        const datas = response.data.Data.Data.sort((a, b) => {
+        const response = await this.cameraRequestService.list(this.getCameraRequsetParam(1, null, regionId)).toPromise();;
+        const datas = response.Data.Data.sort((a, b) => {
             return ''.naturalCompare(a.Name, b.Name);
         });
         return datas;
@@ -106,27 +106,26 @@ export class CameraAIModelMgrService extends RegionTreeService {
     async cameraAIModelsCopyTo(tagCameraId: string, targetCameraId: string[]) {
         const param = new BatchCopyRequest();
         param.ResourceIds = targetCameraId;
-        const response = await this.cameraAIModelRequestService.copyTo(param, tagCameraId);
-        console.log(response); 
-        return response.data.FaultReason == 'OK';
+        const response = await this.cameraAIModelRequestService.copyTo(param, tagCameraId).toPromise();;
+        return response.FaultReason == 'OK';
     }
 
     async requsetAIModelData(pageIndex: number, callBack?: (data: CameraAIModel[]) => void) {
-        const response = await this.aiModelRequestSerivce.list(this.getAIModelRequsetParam(pageIndex));
-        this.aiModels = response.data.Data.Data.sort((a, b) => {
+        const response = await this.aiModelRequestSerivce.list(this.getAIModelRequsetParam(pageIndex)).toPromise();
+        this.aiModels = response.Data.Data.sort((a, b) => {
             return ''.naturalCompare(a.ModelName, b.ModelName);
         });
         if (callBack) callBack(this.aiModels);
     }
 
     async addAIModelToCamera(cameraId: string, aiModelId: string) {
-        const response = await this.cameraAIModelRequestService.create(cameraId, aiModelId);
-        return response.data.FaultReason == 'OK';
+        const response = await this.cameraAIModelRequestService.create(cameraId, aiModelId).toPromise();;
+        return response.FaultReason == 'OK';
     }
 
     async delAIModelToCamera(cameraId: string, aiModelId: string) {
-        const response = await this.cameraAIModelRequestService.del(cameraId, aiModelId);
-        return response.data.FaultReason == 'OK';
+        const response = await this.cameraAIModelRequestService.del(cameraId, aiModelId).toPromise();;
+        return response.FaultReason == 'OK';
     }
 
     getAIModelRequsetParam(pageIndex: number) {

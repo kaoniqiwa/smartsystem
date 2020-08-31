@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { TreeNode, FlatNode,TreeListMode } from "./custom-tree";
+import { TreeNode, FlatNode, TreeListMode, CheckBoxStateEnum } from "./custom-tree";
 @Component({
   selector: 'hw-custom-tree',
   templateUrl: './custom-tree.component.html',
@@ -9,15 +9,16 @@ import { TreeNode, FlatNode,TreeListMode } from "./custom-tree";
 })
 export class CustomTreeComponent implements OnInit {
   listMode = TreeListMode;
+  checkBoxState = CheckBoxStateEnum;
   flatNodeMap = new Map<FlatNode, TreeNode>();
   nestedNodeMap = new Map<TreeNode, FlatNode>();
 
   selectedItems = new Array<FlatNode>();
-  @Input() selectedItemFn: (item: FlatNode,inputVal?:string) => void; 
+  @Input() selectedItemFn: (item: FlatNode, inputVal?: string) => void;
   @Input() treeData: TreeNode[];
   @Input() mode = TreeListMode.nomal;
 
-   ngOnInit() {
+  ngOnInit() {
     this.dataSource.data = this.treeData;
 
   }
@@ -34,8 +35,8 @@ export class CustomTreeComponent implements OnInit {
     else flatNode.expandable = false;
     flatNode.checked = node.checked,
       flatNode.id = node.id
-      flatNode.inputVal=node['inputVal'] ||'';
-      flatNode.label=node['label'] ||'';
+    flatNode.inputVal = node['inputVal'] || '';
+    flatNode.label = node['label'] || '';
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);
     return flatNode;
@@ -49,24 +50,79 @@ export class CustomTreeComponent implements OnInit {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  touchSpinEvent = (val:string)=>{
+  hasChild = (_: number, node: FlatNode) => node.expandable;
+
+  touchSpinEvent = (val: string) => {
     setTimeout(() => {
       const item = this.selectedItems ? this.selectedItems[0] : null;
-      this.selectedItemFn(item,val); 
+      this.selectedItemFn(item, val);
     });
-  
+
   }
   constructor() {
 
   }
 
+  getLevel = (node: FlatNode) => node.level;
+
+  getParentNode(node: FlatNode): FlatNode | null {
+    const currentLevel = this.getLevel(node);
+    if (currentLevel < 1) {
+      return null;
+    }
+    const startIndex = this.treeControl.dataNodes.indexOf(node) - 1;
+    for (let i = startIndex; i >= 0; i--) {
+      const currentNode = this.treeControl.dataNodes[i];
+      if (this.getLevel(currentNode) < currentLevel) {
+        return currentNode;
+      }
+    }
+    return null;
+  }
+
+  sumChildChecked(childNode: FlatNode, checked: boolean) {
+    /**该节点下子元素 */
+    if (childNode.level == 0) return;
+    const childs = this.treeControl.getDescendants(childNode);
+    /**是父节点 */
+    if (childs.length) {
+      childs.map(x => {
+        x.checked = checked;
+        x.checkBoxState = checked ? this.checkBoxState.self : null;
+      });
+      childNode.checkBoxState = checked ? this.checkBoxState.all : null;
+    }
+    else {
+      const parentNode = this.getParentNode(childNode);
+      if (parentNode) {
+        const childs = this.treeControl.getDescendants(parentNode);
+        if (childs.filter(x => x.checked == false).length == childs.length)
+          parentNode.checkBoxState = null;
+        else if (childs.filter(x => x.checked == true).length == childs.length)
+          parentNode.checkBoxState = this.checkBoxState.all;
+        else parentNode.checkBoxState = this.checkBoxState.self;
+      }
+    }
+  }
+
+  get selectedItemClass() {
+    return this.selectedItems.length ? this.selectedItems[0].id : '';
+  }
+
   itemClick(item: FlatNode) {
+
     var d = this.selectedItems.pop();
-    if (d) d.checked = false;
-    item.checked = true;
     this.selectedItems.push(item);
-    
-    if (this.selectedItemFn) this.selectedItemFn(item);
+    if (this.mode == TreeListMode.checkedBox) {
+      item.checked = !item.checked;
+      item.checkBoxState = item.checked == false ? null : this.checkBoxState.self;
+      this.sumChildChecked(item, item.checked);
+    }
+    else if(this.mode == TreeListMode.nomal&&d){
+      d.checked = false;
+      item.checked = true;
+    }
+    if (this.selectedItemFn && this.mode != TreeListMode.checkedBox) this.selectedItemFn(item);
   }
 
   getChildNodes(node: FlatNode) {
@@ -121,12 +177,12 @@ export class CustomTreeComponent implements OnInit {
 
   defaultItem(id?: string) {
     for (let key of this.flatNodeMap.keys()) {
-      if (id && key.id == id) { 
+      if (id && key.id == id) {
         this.itemClick(key);
         this.treeControl.expand(key);
         break;
       }
-      else if(!id){
+      else if (!id) {
         this.itemClick(key);
         this.treeControl.expand(key);
         break;
@@ -144,8 +200,4 @@ export class CustomTreeComponent implements OnInit {
     this.nestedNodeMap = new Map<TreeNode, FlatNode>();
     this.flatNodeMap = new Map<FlatNode, TreeNode>();
   }
-
-  hasChild = (_: number, node: FlatNode) => node.expandable;
-
-
 }

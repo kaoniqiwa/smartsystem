@@ -1,7 +1,7 @@
 
 
 <ng-container *ngIf="model">
-  <div style="height: 500px;">
+  <div  style="height: 500px;">
     <div class="fill-width m-b-10">
       <div class="checkbox-pool-wrap" style="height: 300px;">
         <div style="font-size: 20px;color: #cfd7ff;margin-bottom: 10px;">绑定新标签</div>
@@ -14,9 +14,9 @@
           </button>
         </div>
         <div class="m-t-10" fxLayout="row wrap">  
-          <div class="text-tag-wrap" fxFlex="100" >        
+          <div class="text-tag-wrap green" fxFlex="100" >        
             <a [class.selected]="item.checked" href="javascript:void(0)" (click)="item.checked=!item.checked;$event.stopPropagation();" *ngFor="let item of filter1Checked">
-              <span class="m-r-10">{{item.text}}</span>
+              <label class="m-r-10">{{item.text}}</label>
               <a href="javascript:void(0)" (click)="delFilter1Click(item);$event.stopPropagation();"><i class="howell-icon-Close"></i></a>
             </a> 
           </div>
@@ -33,9 +33,9 @@
      
         </div>
         <div class="m-t-10" fxLayout="row wrap">  
-          <div class="text-tag-wrap" fxFlex="100" >        
+          <div class="text-tag-wrap blue" fxFlex="100" >        
             <a href="javascript:void(0)"  *ngFor="let item of filter2Checked">
-              <span class=" m-r-10">{{item.text}}</span>
+              <label class="m-r-10">{{item.text}}</label>
               <a href="javascript:void(0)" (click)="item.checked=true;item.del=true;$event.stopPropagation();"><i class="howell-icon-Close"></i></a>
             </a> 
           </div>

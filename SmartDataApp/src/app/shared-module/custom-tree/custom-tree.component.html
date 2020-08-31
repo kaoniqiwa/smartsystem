@@ -1,17 +1,28 @@
 <ng-container *ngIf="treeData">
   <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-    <!-- This is the tree node template for leaf nodes -->
+    <!-- This is the tree node template for leaf nodes   bottom: 7px -->
 
-    <mat-tree-node *matTreeNodeDef="let node;" matTreeNodePadding [class.selected]="node.checked">
+    <mat-tree-node *matTreeNodeDef="let node;" matTreeNodePadding [matTreeNodePaddingIndent]="30"
+      [class.selected]="node.id==selectedItemClass">
       <div class="parent-node" (click)="itemClick(node)">
         <button type="button" class="btn to-right" [class.collapse]="node.level"
-          [class.visibility-hidden]="node.level==0">
+          [class.visibility-hidden]="node.level==0" [ngStyle]="{'bottom': mode == listMode.nomal?'7px':'0'}">
           <i class="mdi mdi-menu-down"></i>
         </button>
-        <label class="m-0" style="color: #cfd7ff;position: relative;top: 2px;cursor:pointer">
+        <ng-container *ngIf="mode == listMode.checkedBox&&node.level!=0">
+          <div class="ckbox">
+            <i class="howell-icon-Check" style="font-size: small;" *ngIf="node.checkBoxState==checkBoxState.self"></i>
+            <i class="howell-icon-Square" style="font-size: x-small;position: relative;bottom: 1px;" *ngIf="node.checkBoxState==checkBoxState.all"></i>
+          </div>
+        </ng-container>
+        <label [class.default-label-width]="mode == listMode.nomal"
+        class="m-0" style="color: #cfd7ff;position: relative;top: 4px;cursor:pointer;font-size: 18px;">
+
           <i class="mdi mdi-blur-radial"></i>
           {{node.name}}</label>
-
+        <!-- <ng-container >
+           <label style="color:white" class="m-0">{{sumChildChecked(node)}}</label>
+        </ng-container> -->
         <ng-container *ngIf="listMode.rightInput==mode">
           <div class="pull-right  p-r-10">
             <label class="m-0" style="color:#cfd7ff"> {{node.label}}</label>
@@ -26,17 +37,25 @@
 
     </mat-tree-node>
     <!-- This is the tree node template for expandable nodes -->
-    <mat-tree-node *matTreeNodeDef="let node;when: hasChild" [class.selected]="node.checked"
+    <mat-tree-node *matTreeNodeDef="let node;when: hasChild" [class.selected]="node.id==selectedItemClass"
       matTreeNodePaddingIndent="20" matTreeNodePadding>
       <div class="parent-node" (click)="itemClick(node)">
-        <button type="button" class="btn to-right" matTreeNodeToggle>
+        <button type="button" class="btn to-right" matTreeNodeToggle  [ngStyle]="{'bottom': mode == listMode.nomal?'7px':'0'}">
           <i class="mdi" [class.mdi-menu-right]="!treeControl.isExpanded(node)"
             [class.mdi-menu-down]="treeControl.isExpanded(node)"></i>
         </button>
-        <label class="m-0" style="color: #cfd7ff;position: relative;top: 2px;
-         cursor:pointer">
+        <label [class.default-label-width]="mode == listMode.nomal"
+        class="m-0" style="color: #cfd7ff;position: relative;top: 4px;cursor:pointer;font-size: 18px;">
+          <ng-container *ngIf="mode == listMode.checkedBox">
+            <div class="ckbox">
+              <i class="howell-icon-Check" *ngIf="node.checkBoxState==checkBoxState.all"></i>
+              <i class="howell-icon-Square" style="font-size: x-small;position: relative;bottom: 1px;" *ngIf="node.checkBoxState==checkBoxState.self"></i>
+            </div>
+          </ng-container>
           <i class="mdi mdi-blur-radial"></i>
-          {{node.name}}</label>
+          {{node.name}}
+        </label>
+        <!-- <label style="float: right;color: white;padding-right: 20px;" class="m-0">{{node.checkedChilds}}</label> -->
         <ng-container *ngIf="listMode.rightInput==mode">
           <div class="pull-right  p-r-10">
             <label class="m-0" style="color:#cfd7ff"> {{node.label}}</label>

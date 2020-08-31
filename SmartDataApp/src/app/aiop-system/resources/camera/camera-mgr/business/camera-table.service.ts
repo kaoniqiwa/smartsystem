@@ -84,38 +84,38 @@ export class CameraTableService extends InputLabelService {
         const param = new GetEncodeDevicesParams();
         param.PageIndex = 1;
         param.PageSize = new ListAttribute().maxSize;
-        const response = await this.encodeDeviceRequestService.list(param);
-        this.encodeDevices = response.data.Data.Data;
+        const response = await this.encodeDeviceRequestService.list(param).toPromise();
+        this.encodeDevices = response.Data.Data;
     }
 
     async requestCamerasData(pageIndex: number) { 
         if (this.regionTree.selectedNodeId && this.search.state == false) {
-            const response = await this.cameraRequestService.list(this.getRequsetParam(pageIndex, this.search));
+            const response = await this.cameraRequestService.list(this.getRequsetParam(pageIndex, this.search)).toPromise();
             let data = new Cameras();
-            data.items = response.data.Data.Data.sort((a, b) => {
+            data.items = response.Data.Data.sort((a, b) => {
                 return ''.naturalCompare(a.Name, b.Name);
             });
             this.cameraTable.clearItems();
             this.dataSource = [];
             this.cameraTable.Convert(data, this.cameraTable.dataSource);
-            this.cameraTable.totalCount = response.data.Data.Page.TotalRecordCount;
-            this.dataSource = response.data.Data.Data; 
+            this.cameraTable.totalCount = response.Data.Page.TotalRecordCount;
+            this.dataSource = response.Data.Data; 
             
         }
     }
 
     async searchCamerasData(pageIndex: number) {
         if (this.search.state) {
-            const response = await this.cameraRequestService.list(this.getRequsetParam(pageIndex, this.search));
+            const response = await this.cameraRequestService.list(this.getRequsetParam(pageIndex, this.search)).toPromise();
             let data = new Cameras();
-            data.items = response.data.Data.Data.sort((a, b) => {
+            data.items = response.Data.Data.sort((a, b) => {
                 return ''.naturalCompare(a.Name, b.Name);
             });
             this.cameraTable.clearItems();
             this.dataSource = [];
             this.cameraTable.Convert(data, this.cameraTable.dataSource);
-            this.cameraTable.totalCount = response.data.Data.Page.TotalRecordCount;
-            this.dataSource = response.data.Data.Data;
+            this.cameraTable.totalCount = response.Data.Page.TotalRecordCount;
+            this.dataSource = response.Data.Data;
         }
     }
 

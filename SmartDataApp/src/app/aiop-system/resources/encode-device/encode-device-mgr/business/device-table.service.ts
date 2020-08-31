@@ -68,33 +68,33 @@ export class DeviceTableService  extends InputLabelService {
 
     async requestData(pageIndex: number) {
         if (this.search.state == false) {
-            const response = await this.requestService.list(this.getRequsetParam(pageIndex,this.search));
+            const response = await this.requestService.list(this.getRequsetParam(pageIndex,this.search)).toPromise();
             let data = new EncodeDevices();  
-            data.items = response.data.Data.Data.sort((a,b)=>{
+            data.items = response.Data.Data.sort((a,b)=>{
                 return ''.naturalCompare(a.Name,b.Name);
             }); 
 
             this.deviceTable.clearItems();
             this.dataSource = [];
             this.deviceTable.Convert(data, this.deviceTable.dataSource);
-            this.deviceTable.totalCount = response.data.Data.Page.TotalRecordCount;
-            this.dataSource = response.data.Data.Data;
+            this.deviceTable.totalCount = response.Data.Page.TotalRecordCount;
+            this.dataSource = response.Data.Data;
         }
 
     } 
 
     async searchData(pageIndex: number) {
        if (this.search.state) {
-            const response = await this.requestService.list(this.getRequsetParam(pageIndex,this.search));
+            const response = await this.requestService.list(this.getRequsetParam(pageIndex,this.search)).toPromise();;
             let data = new EncodeDevices();
-            data.items = response.data.Data.Data.sort((a,b)=>{
+            data.items = response.Data.Data.sort((a,b)=>{
                 return ''.naturalCompare(a.Name,b.Name);
             });
             this.deviceTable.clearItems();
             this.dataSource = [];
             this.deviceTable.Convert(data, this.deviceTable.dataSource);
-            this.deviceTable.totalCount = response.data.Data.Page.TotalRecordCount;
-            this.dataSource = response.data.Data.Data;
+            this.deviceTable.totalCount = response.Data.Page.TotalRecordCount;
+            this.dataSource = response.Data.Data;
        }
 
     }

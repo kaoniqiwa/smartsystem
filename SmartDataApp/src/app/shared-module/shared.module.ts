@@ -1,13 +1,15 @@
 
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule, DatePipe } from '@angular/common';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ReactiveFormsModule } from '@angular/forms'; 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {  MatTreeModule,MatSidenavModule,MatToolbarModule ,MatButtonModule,MatMenuModule,MatButtonToggleModule
-  ,MatCheckboxModule,MatSnackBarModule
+  ,MatCheckboxModule,MatSnackBarModule,MatTabsModule
 } from '@angular/material';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { FormTitlePipe,TxtLenPipe } from "../common/tool/howell.pipe";
 import { TouchSpinDirective } from "../common/directive/touch-spin-directive";
 import { HWPaginationDirective } from "../common/directive/pagination-directive";
 import { InputSearchComponent } from './input-search/input-search.component'; 
@@ -20,13 +22,13 @@ import { PicturesDropListComponent } from './pictures-drop-list/pictures-drop-li
 import { CardListPanelComponent } from './card-list-panel/card-list-panel.component'; 
 @NgModule({
   imports: [
-    CommonModule,DragDropModule,
+    CommonModule,DragDropModule, HttpClientModule,
     InfiniteScrollModule,FlexLayoutModule,MatCheckboxModule,MatTreeModule,
-    ReactiveFormsModule ,MatSidenavModule,MatToolbarModule,
+    ReactiveFormsModule ,MatSidenavModule,MatToolbarModule,MatTabsModule,
     MatButtonModule,MatMenuModule,MatButtonToggleModule,MatSnackBarModule
   ],
   declarations: [
-    HWPaginationDirective,TouchSpinDirective,
+    HWPaginationDirective,TouchSpinDirective,FormTitlePipe,TxtLenPipe,
   InputSearchComponent,CustomTableComponent, ConfirmDialogComponent,
   InputTagAreaComponent,
   InputTagSelectComponent,
@@ -35,10 +37,10 @@ import { CardListPanelComponent } from './card-list-panel/card-list-panel.compon
   CardListPanelComponent, 
   ],
   exports: [
-    InfiniteScrollModule,MatTreeModule,DragDropModule,
+    InfiniteScrollModule,MatTreeModule,DragDropModule, HttpClientModule,
     MatSidenavModule,MatToolbarModule,FlexLayoutModule,MatCheckboxModule,ReactiveFormsModule,
-    MatButtonModule,MatMenuModule,MatButtonToggleModule,MatSnackBarModule
-    ,HWPaginationDirective,TouchSpinDirective
+    MatButtonModule,MatMenuModule,MatButtonToggleModule,MatSnackBarModule,MatTabsModule
+    ,HWPaginationDirective,TouchSpinDirective,FormTitlePipe,TxtLenPipe
     ,InputSearchComponent,InputTagAreaComponent,CustomTableComponent,ConfirmDialogComponent
     ,InputTagSelectComponent,CustomTreeComponent,PicturesDropListComponent,CardListPanelComponent
   ],

@@ -1,86 +1,16 @@
- <!-- <nav [class.minimize]="!maximize">
-  <button class="sidenav-main-btn" [class.highlighted]="menusState[3].an" [class.normal]="!menusState[3].an"
-    (click)="menusState[3].an=!menusState[3].an" [class.minimize]="!maximize">
-    <div class="t-l-angle" [class.highlighted]="menusState[3].an" [class.normal]="!menusState[3].an"></div>
-    <div class="t-r-angle" [class.highlighted]="menusState[3].an" [class.normal]="!menusState[3].an"></div>
-    <div class="b-l-angle" [class.highlighted]="menusState[3].an" [class.normal]="!menusState[3].an"></div>
-    <div class="b-r-angle" [class.highlighted]="menusState[3].an" [class.normal]="!menusState[3].an"></div>
-    <i class="howell-icon-device2 pull-left" style="margin-left: 14px;" [class.mm-r-20]="maximize"></i>
-    <span class="pull-left">平台</span>
-  </button>
-  <ul class="collapse" [class.in]="menusState[3].an">
-    <li class="sidenav-menu-btn " routerLinkActive="selected" routerLink="/aiop/platform/platform-mgr">
-      <a routerLink="/aiop/platform/platform-mgr">平台管理</a>
-    </li>
-  </ul>
-</nav>
-<nav [class.minimize]="!maximize">
-  <button class="sidenav-main-btn normal" (click)="menusState[2].an=!menusState[2].an" [class.minimize]="!maximize">
-    <div class="t-l-angle normal"></div>
-    <div class="t-r-angle normal"></div>
-    <div class="b-l-angle normal"></div>
-    <div class="b-r-angle normal"></div>
-    <i class="howell-icon-device2 pull-left" style="margin-left: 14px;" [class.mm-r-20]="maximize"></i>
-    <span class="pull-left">区域</span>
-  </button>
-  <ul class="collapse" [class.in]="menusState[2].an">
-    <li class="sidenav-menu-btn " routerLinkActive="selected" routerLink="/aiop/regions/region-mgr">
-      <a routerLink="/aiop/regions/region-mgr">区域管理</a>
-    </li>
-  </ul>
-</nav>
-<nav [class.m-b-10]="!maximize">
-  <button class="sidenav-main-btn highlighted" [class.highlighted]="menusState[0].an" [class.normal]="!menusState[0].an"
-    (click)="menusState[0].an=!menusState[0].an" [class.minimize]="!maximize">
-    <div class="t-l-angle " [class.highlighted]="menusState[0].an" [class.normal]="!menusState[0].an"></div>
-    <div class="t-r-angle " [class.highlighted]="menusState[0].an" [class.normal]="!menusState[0].an"></div>
-    <div class="b-l-angle " [class.highlighted]="menusState[0].an" [class.normal]="!menusState[0].an"></div>
-    <div class="b-r-angle " [class.highlighted]="menusState[0].an" [class.normal]="!menusState[0].an"></div>
-    <i class="howell-icon-device2 pull-left" style="margin-left: 14px;" [class.mm-r-20]="maximize"></i>
-    <span class="pull-left">设备管理</span>
-  </button>
-  <ul class="collapse" [class.in]="menusState[0].an">
-    <li class="sidenav-menu-btn" routerLinkActive="selected" routerLink="/aiop/resources/camera-mgr"
-      (click)="currentMenus='监控点'">
-      <a routerLink="/aiop/resources/camera-mgr">监控点</a>
-    </li>
-    <li class="sidenav-menu-btn" routerLinkActive="selected" routerLink="/aiop/resources/encode-device-mgr"
-      (click)="currentMenus='编码器'">
-      <a routerLink="/aiop/resources/encode-device-mgr">编码器</a>
-    </li>
-  </ul>
-</nav>
-<nav [class.minimize]="!maximize">
-  <button class="sidenav-main-btn normal" (click)="menusState[1].an=!menusState[1].an" [class.minimize]="!maximize">
-    <div class="t-l-angle normal"></div>
-    <div class="t-r-angle normal"></div>
-    <div class="b-l-angle normal"></div>
-    <div class="b-r-angle normal"></div>
-    <i class="howell-icon-device2 pull-left" style="margin-left: 14px;" [class.mm-r-20]="maximize"></i>
-    <span class="pull-left">AI模型</span>
-  </button>
-  <ul class="collapse" [class.in]="menusState[1].an">
-    <li class="sidenav-menu-btn">
-      <a>AI模型列表</a>
-    </li>
-  </ul>
-</nav>   -->
-
-
-
-<ng-container *ngFor="let item of menuTree">
+ <ng-container *ngFor="let item of menuTree">
   <nav [class.minimize]="!maximize">
-    <button class="sidenav-main-btn" [class.highlighted]="item.an" [class.normal]="!item.an"
-      (click)="item.an=!item.an" [class.minimize]="!maximize">
-      <div class="t-l-angle" [class.highlighted]="item.an" [class.normal]="!item.an"></div>
-      <div class="t-r-angle" [class.highlighted]="item.an" [class.normal]="!item.an"></div>
-      <div class="b-l-angle" [class.highlighted]="item.an" [class.normal]="!item.an"></div>
-      <div class="b-r-angle" [class.highlighted]="item.an" [class.normal]="!item.an"></div>
+    <button class="sidenav-main-btn" [class.highlighted]="highlightedBtn[0]==item.title" [class.normal]="highlightedBtn[0]!=item.title" [class.m-b-10]="!item.an"
+      (click)="mainBtnClick(item)" [class.minimize]="!maximize">
+      <div class="t-l-angle" [class.highlighted]="highlightedBtn[0]==item.title" [class.normal]="highlightedBtn[0]!=item.title"></div>
+      <div class="t-r-angle" [class.highlighted]="highlightedBtn[0]==item.title" [class.normal]="highlightedBtn[0]!=item.title"></div>
+      <div class="b-l-angle" [class.highlighted]="highlightedBtn[0]==item.title" [class.normal]="highlightedBtn[0]!=item.title"></div>
+      <div class="b-r-angle" [class.highlighted]="highlightedBtn[0]==item.title" [class.normal]="highlightedBtn[0]!=item.title"></div>
       <i class="{{ item.icon}} pull-left"  style="margin-left: 14px;" [class.mm-r-20]="maximize"></i>
       <span class="pull-left">{{item.title}}</span>
     </button>
     <ul class="collapse" [class.in]="item.an">
-      <li class="sidenav-menu-btn " *ngFor="let n of item.nodes" routerLinkActive="selected" routerLink="{{n.url}}">
+      <li class="sidenav-menu-btn " (click)="currentMenus=n.text" *ngFor="let n of item.nodes" routerLinkActive="selected" routerLink="{{n.url}}">
         <a routerLink="{{n.url}}">{{n.text}}</a>
       </li>
     </ul>

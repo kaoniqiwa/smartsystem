@@ -14,7 +14,9 @@ export class InputTagAreaComponent implements OnInit {
   @ViewChild('search')
   search: InputSearchComponent;
   filter1Hide = (text: string) => {
-    this.model.map(x => x.hide = true);
+    this.model.map(x => {
+      if(x.type==1)x.hide = true;
+    });
     this.model.filter((x) => {
       return x.text.indexOf(text) > -1 && x.type == 1;
     }).map(x => x.hide = false);
@@ -22,7 +24,9 @@ export class InputTagAreaComponent implements OnInit {
 
   }
   filter2Hide = (text: string) => {
-    this.model.map(x => x.hide = true);
+    this.model.map(x => {
+      if(x.type==2)x.hide = true;
+    });
     this.model.filter((x) => {
       return x.text.indexOf(text) > -1 && x.type == 2;
     }).map(x => x.hide = false);

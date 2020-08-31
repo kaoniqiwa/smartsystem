@@ -5,25 +5,7 @@
       [editItem]="mgrService.table.form.editItem" [saveFn]="mgrService.table.form.successSaveFn">
       </aimodel-form>
     </div>
-  </div>
-    <!--
-  <div class="fill-height fill-width hw-content-mask" *ngIf="tableService.deviceTable.labels.show">
-    <div class="custom-form-wrap hw-form-wrap" style="width: 800px;height: 620px;">
-      <h2>绑定标签</h2>
-      <hw-input-tag-area [model]="tableService.deviceTable.labels._dataSource"
-        [addTagFn]="tableService.deviceTable.labels.createFn" [delTagFn]="tableService.deviceTable.labels.delFn">
-      </hw-input-tag-area>
-      <div class="text-center">
-        <button class="hw-green-m-btn m-r-10" (click)="onLabelsSubmit()">
-          <i class="howell-icon-Check"></i>
-        </button>
-        <button class="hw-gray-m-btn" (click)="hiddenBindLabels()">
-          <i class="howell-icon-Close"></i>
-        </button>
-      </div>
-    </div>
-
-  </div>-->
+  </div> 
   <ng-container *ngIf="mgrService.table.confirmDialog_">
     <div  class="fill-height fill-width hw-content-mask" >
       <hw-confirm-dialog [dialog]="mgrService.table.confirmDialog_"></hw-confirm-dialog>
@@ -38,14 +20,10 @@
         <i class="howell-icon-plus"></i>
         添加
       </button>
-      <button class="hw-red-btn  m-r-10" (click)="delBtnClick()" [class.black]="!selectItems" style="font-size: 18px;">
+      <button class="hw-red-btn  m-r-10" (click)="delBtnClick()" [class.gray-text]="!selectItems" [class.black]="!selectItems" style="font-size: 18px;">
         <i class="howell-icon-delete-bin"></i>
         删除
-      </button>
-      <button class="hw-cyan-btn" (click)="showBindLabels()" [disabled]="!selectItems" [class.black]="!selectItems">
-        <i class="mdi mdi-tag"></i>
-        绑定标签
-      </button>
+      </button> 
     </div>
     <div>
       <hw-input-search [searchEvent]="searchFn" [placeholder]="'名称'"></hw-input-search>

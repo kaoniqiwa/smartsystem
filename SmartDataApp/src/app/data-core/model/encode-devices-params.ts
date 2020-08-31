@@ -4,7 +4,7 @@ import { GetResourcesParams } from "./resources-params";
      * 
      */
 export class GetCamerasParams extends GetResourcesParams {
-   
+    EncodeDeviceIds: string[];
     /**
      * 
      */

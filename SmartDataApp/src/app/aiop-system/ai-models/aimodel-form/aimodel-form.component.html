@@ -1,55 +1,51 @@
-<div class="custom-form-wrap fill-height" style="width: 800px;"> 
-  <ng-container>
-    <h2>添加AI模型</h2>
-  </ng-container>
- 
-  <form  class="form-content  fine m-b-20 "  [formGroup]="formService.form" (ngSubmit)="onSubmit()">
+<div class="custom-form-wrap fill-height" style="width: 800px;">
+  <h2>{{'添加AI模型' | FormTitle:[editItem,'ModelName']}}</h2>
+  <form class="form-content  fine m-b-20 " [formGroup]="formService.form" (ngSubmit)="onSubmit()">
     <div>
-      <input type="reset" #resetBtn class="collapse" value="">   
-  
+      <input type="reset" #resetBtn class="collapse" value="">
+
       <div fxLayout="row" class="form-group">
         <div fxFlex="50">
-          <label class="custom control-label tran-input-label" >模型名称</label>
+          <label class="custom control-label tran-input-label">模型名称</label>
           <span class="text-danger p-t-10">*</span>
-          <input class="form-control custom"  formControlName="ModelName">
+          <input class="form-control custom" formControlName="ModelName">
         </div>
         <div fxFlex fxFlexOffset="10px">
           <label class="custom control-label tran-input-label">模型协议</label>
           <select class="form-control custom custom-select">
-            <option value="AIOP">AIOP</option> 
+            <option value="AIOP">AIOP</option>
           </select>
         </div>
       </div>
       <div fxLayout="row" class="form-group" *ngIf="!editItem">
-        <div fxFlex >
+        <div fxFlex>
           <label class="custom control-label tran-input-label">上传模型</label>
           <span class="text-danger p-t-10">*</span>
           <div class="hw-btn-group">
-            <input type="file"  accept=".json"
-            (change)="changeFile($event)" class="collapse" id="fileInput"> 
-            <input class="form-control custom file" readonly  formControlName="FileModelName">
-            
+            <input type="file" accept=".json" (change)="changeFile($event)" class="collapse" id="fileInput">
+            <input class="form-control custom file" readonly formControlName="FileModelName">
+
             <button class="hw-blue-btn m-r-10 " type="button" (click)="selectFileClick()">
               <i class="howell-icon-repeat"></i>
-              选择模型            
-            </button>       
-            <button class="hw-cyan-btn"  type="button">
+              选择模型
+            </button>
+            <button class="hw-cyan-btn" type="button" (click)="parseFileClick()">
               <i class="mdi mdi-tag"></i>
-               应用模型
+              应用模型
             </button>
           </div>
         </div>
       </div>
       <div fxLayout="row" class="form-group">
         <div fxFlex="50">
-          <label class="custom control-label tran-input-label">模型版本</label> 
-          <input class="form-control custom">
+          <label class="custom control-label tran-input-label">模型版本</label>
+          <input class="form-control custom" readonly formControlName="Version">
         </div>
         <div fxFlex fxFlexOffset="10px">
-          <label class="custom control-label tran-input-label">应用类型</label>      
-          <input class="form-control custom">
+          <label class="custom control-label tran-input-label">应用类型</label>
+          <input class="form-control custom" readonly formControlName="TransformType">
         </div>
-      </div> 
+      </div>
       <div fxLayout="row" class="form-group">
         <div fxFlex>
           <label class="custom control-label tran-input-label">模型图标</label>
@@ -60,11 +56,11 @@
       <div fxLayout="row" class="form-group">
         <div fxFlex>
           <label class="custom control-label tran-input-label">模型属性</label>
-          <div class="fine attr-wrap" >
+          <div class="fine attr-wrap">
             <hw-custom-tree #tree [mode]="formService.treeListMode" [selectedItemFn]="formService.changeModelLabelFn"
-            [treeData]="formService.dtoDataSource"></hw-custom-tree>
+              [treeData]="formService.dtoDataSource"></hw-custom-tree>
           </div>
-        
+
         </div>
       </div>
     </div>

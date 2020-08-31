@@ -7,6 +7,7 @@ import { RegionMgrComponent } from "./region/region-mgr/region-mgr.component";
 import { PlatformMgrComponent } from "./platform/platform-mgr/platform-mgr.component";
 import { AIModelsMgrComponent } from "./ai-models/aimodels-mgr/aimodels-mgr.component";
 import { CameraAIModelMgrComponent } from './resources/camera/camera-aimodel-mgr/camera-aimodel-mgr.component';
+import {  SRServersMgrComponent } from "./sr-server/srservers-mgr/srservers-mgr.component";
 const routes: Routes = [
 
   {
@@ -27,6 +28,9 @@ const routes: Routes = [
         path: 'platform', children: [
           {
             path: 'platform-mgr', component: PlatformMgrComponent
+          },
+          {
+            path: 'sr-service-mgr', component: SRServersMgrComponent
           }
         ]
       }

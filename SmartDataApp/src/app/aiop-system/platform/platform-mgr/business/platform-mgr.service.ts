@@ -50,43 +50,44 @@ export class PlatformMgrService extends TableAttribute {
 
     async getPlatformData(pageIndex: number) {
        if (this.search.state == false) {
-            const response = await this.requestSerivce.list(this.getRequsetParam(TableSearchEnum.none, pageIndex));
+            const response = await this.requestSerivce.list(this.getRequsetParam(TableSearchEnum.none, pageIndex)).toPromise();
             let data = new Platforms(); 
-            data.items = response.data.Data.Data.sort((a, b) => {
+            data.items = response.Data.Data.sort((a, b) => {
                 return ''.naturalCompare(a.Name, b.Name);
             });;
             this.table.clearItems();
             this.dataSource = [];
             this.table.Convert(data, this.table.dataSource);
-            this.table.pageCount = response.data.Data.Page.TotalRecordCount;
-            this.dataSource = response.data.Data.Data;
+            this.table.pageCount = response.Data.Page.TotalRecordCount;
+            this.dataSource = response.Data.Data;
         }
     }
 
     async searchPlatformData(pageIndex: number) {
         if (this.search.state) {
-            const response = await this.requestSerivce.list(this.getRequsetParam(TableSearchEnum.search, pageIndex,this.search.searchText));
+            const response = await this.requestSerivce.
+            list(this.getRequsetParam(TableSearchEnum.search, pageIndex,this.search.searchText)).toPromise();
             let data = new Platforms();
-            data.items = response.data.Data.Data.sort((a,b)=>{
+            data.items = response.Data.Data.sort((a,b)=>{
                 return ''.naturalCompare(a.Name,b.Name);
             });;
             this.table.clearItems();
             this.dataSource = [];
             this.table.Convert(data, this.table.dataSource);
-            this.table.totalCount = response.data.Data.Page.TotalRecordCount;
-            this.table.pageCount = response.data.Data.Page.TotalRecordCount;
-            this.dataSource = response.data.Data.Data;
+            this.table.totalCount = response.Data.Page.TotalRecordCount;
+            this.table.pageCount = response.Data.Page.TotalRecordCount;
+            this.dataSource = response.Data.Data;
        }
     }
 
     async  syncPlatform(id:string){
-        await  this.requestSerivce.sync(id);  
+        await  this.requestSerivce.sync(id).toPromise();  
     }
 
     
     async delPlatformsData(ids: string[]) {
         for (const id of ids) {
-            await this.requestSerivce.del(id);
+            await this.requestSerivce.del(id).toPromise();
             this.delDataItem(id);
             this.table.msg.response_success();
         }

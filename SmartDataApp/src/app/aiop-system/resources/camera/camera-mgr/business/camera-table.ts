@@ -48,8 +48,7 @@ export class CameraTable extends ResourcesTable implements IConverter, IPageTabl
                 title: '编辑',
                 callback: (item: TableField) => {
                     this.form.show = true;
-                    this.form.editItem = this.findItemFn(item.id); console.log(this.form.editItem);
-
+                    this.form.editItem = this.findItemFn(item.id);
                 }
             })
         ]

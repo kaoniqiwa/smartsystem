@@ -1,3 +1,7 @@
+export class CustomExtension{
+
+}
+
 export class TreeNode {
     id:string;
     name: string;
@@ -20,11 +24,19 @@ export class TreeNode {
     id:string;
     label:string;
     inputVal:string;
+    checkBoxState:CheckBoxStateEnum;
+    checkedChilds:number = 0;
+
   } 
   
-
+export enum CheckBoxStateEnum{
+  part,
+  all,
+  self
+}
 
   export enum TreeListMode{
      nomal,
-     rightInput
+     rightInput,
+     checkedBox
   }

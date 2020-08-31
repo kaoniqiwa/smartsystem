@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { PanelView,EventTypeEnum } from "./card-list-panel";
+import { PanelView, EventTypeEnum, CardListPanel } from "./card-list-panel";
 @Component({
   selector: 'hw-card-list-panel',
   templateUrl: './card-list-panel.component.html',
@@ -22,8 +22,8 @@ export class CardListPanelComponent implements OnInit {
     return this.selectedId_;
   }
 
-  listItemDelClick(listId:string,itemId:string){
-   if(this.model.event)this.model.event(EventTypeEnum.ListItemDel,listId,itemId);
+  listItemDelClick(listId: string, itemId: string) {
+    if (this.model.event) this.model.event(EventTypeEnum.ListItemDel, listId, itemId);
   }
 
   //列表项点击事件
@@ -54,5 +54,9 @@ export class CardListPanelComponent implements OnInit {
   //取消列表选中项
   selectCancel(): void {
     this.selectedId = [];
+  }
+
+  toCopy(cardListPanel: CardListPanel) {
+    return cardListPanel.barBody && cardListPanel.barBody.length;
   }
 }

@@ -7,7 +7,7 @@ import { AIModelRequestService } from "../../../../data-core/repuest/ai-model.se
 import { ConfigRequestService } from "../../../../data-core/repuest/config.service";
 import { PicturesDropList } from "../../../../shared-module/pictures-drop-list/pictures-drop-list";
 import { ListAttribute } from "../../../../common/tool/table-form-helper";
-import { TreeListMode, TreeNode, InputTreeNode, FlatNode } from "../../../../shared-module/custom-tree/custom-tree"; 
+import { TreeListMode, TreeNode, InputTreeNode, FlatNode } from "../../../../shared-module/custom-tree/custom-tree";
 @Injectable()
 export class AIModelFormService extends ListAttribute {
     form: FormGroup;
@@ -17,6 +17,7 @@ export class AIModelFormService extends ListAttribute {
     treeListMode = TreeListMode.rightInput;
     modelIcons = new Array<PicturesDropList>();
     dtoDataSource = new Array<InputTreeNode>();
+    parseItem:CameraAIModel;
     changeModelLabelFn = (item: FlatNode, inputVal?: string) => {
         const change = (items: CameraAIModelDTOLabel[], id_index: string[]) => {
             items.map(x => {
@@ -30,14 +31,14 @@ export class AIModelFormService extends ListAttribute {
                 }
             });
         }
-        if (inputVal&&item) {
+        if (inputVal && item) {
             const id_index = item.id.split('_EnumValues_');
             this.editItem.ModelDTO.Labels.map(m1 => {
                 if (m1.LabelId == id_index[0])
                     m1.LabelModelValue = inputVal;
                 change(m1.Labels, id_index);
-            }); 
-            
+            });
+
         }
 
     }
@@ -49,6 +50,8 @@ export class AIModelFormService extends ListAttribute {
             Label: new FormControl('1'),
             FileModelName: new FormControl(''),
             ModelName: new FormControl(''),
+            Version:new FormControl(''),
+            TransformType:new FormControl(''),
             ModelJSON: new FormControl(''),
             ModelType: new FormControl('AIOP')
         });
@@ -61,16 +64,33 @@ export class AIModelFormService extends ListAttribute {
         else if (item.ModelJSON == '') {
             this.messageBar.response_warning('请上传模型文件');
             return false;
-        } 
-        else if(this.modelIcons.find(x=>x.checked) == null){
+        }
+        else if (this.modelIcons.find(x => x.checked) == null) {
             this.messageBar.response_warning('请选择模型图标');
             return false;
         }
         return true;
     }
 
+    async parseJsonModel(base64JSONData: string,callBack:()=>void) {
+        if (base64JSONData) {
+            const response = await this.requestService.parse(base64JSONData).toPromise();
+            if(response&&response.Data){
+                this.form.patchValue({
+                    Version:response.Data.Version,
+                    TransformType:response.Data.TransformType,
+                });
+                this.parseItem = response.Data;
+                this.loadAIModelDTOTree(this.parseItem);
+                callBack();
+            }
+        }
+    }
+
     loadAIModelDTOTree(item: CameraAIModel) {
+    
         const addItems = (node: TreeNode, items: CameraAIModelDTOLabel[]) => {
+            if(items)
             for (const i of items) {
                 const node_ = new InputTreeNode();
                 node_.name = i.LabelName;
@@ -106,18 +126,19 @@ export class AIModelFormService extends ListAttribute {
                 node.label = i.LabelValue;
                 node.inputVal = i.LabelModelValue;
                 this.dtoDataSource.push(node);
-                addItems(node, i.Labels); 
-            }  
+                addItems(node, i.Labels);
+            }
         }
 
 
     }
 
     async modelIconsData() {
-        const response = await this.configService.getAIIcons();
-        if (response.data) {
-            for (const key in response.data) {
-                this.modelIcons.push(new PicturesDropList(key, this.imgUrlRoot + response.data[key]));
+        const response = await this.configService.getAIIcons().toPromise(); 
+
+        if (response) {
+            for (const key in response) {
+                this.modelIcons.push(new PicturesDropList(key, this.imgUrlRoot + response[key]));
             }
             if (this.modelIcons.length)
                 this.modelIcons[0].checked = true;
@@ -131,7 +152,9 @@ export class AIModelFormService extends ListAttribute {
             this.form.patchValue({
                 Label: editItem.Label,
                 ModelName: editItem.ModelName,
-                ModelJSON:editItem.ModelJSON
+                ModelJSON: editItem.ModelJSON,
+                Version:editItem.Version,
+                TransformType:editItem.TransformType,
             });
             this.formState = FormStateEnum.edit;
             this.loadAIModelDTOTree(this.editItem);
@@ -142,29 +165,40 @@ export class AIModelFormService extends ListAttribute {
     }
 
     async saveFrom(item: FormField, successFn: (success: boolean, item: CameraAIModel, formState: FormStateEnum) => void) {
-        const check = this.checkForm(item);
+        const check = this.checkForm(item),save=async (model:CameraAIModel)=>{
+            const response = await this.requestService.create(model).toPromise();
+            if (response.FaultCode ==0) {
+                this.messageBar.response_success();
+                successFn(true, response.Data, this.formState);
+            }
+        };
         var model: CameraAIModel;
         model = (this.editItem && this.formState == FormStateEnum.edit) ? this.editItem : new CameraAIModel();
         if (check) {
-            model.ModelName = item.ModelName;
-            model.ModelJSON = item.ModelJSON;
-            model.Label =  Number.parseInt(this.modelIcons.find(x=>x.checked).id);
-            model.UpdateTime = new Date().toISOString();
+         //   model.ModelName = item.ModelName;
+         //   model.ModelJSON = item.ModelJSON;
+          //  model.Label = Number.parseInt(this.modelIcons.find(x => x.checked).id);
+         //   model.UpdateTime = new Date().toISOString();
             if (this.formState == FormStateEnum.create) {
                 model.Id = '';
                 model.CreateTime = new Date().toISOString();
-                const response = await this.requestService.create(model);  
-
-                if (response.status == 200) {
-                    this.messageBar.response_success();
-                    successFn(true, response.data.Data, this.formState);
+                if(this.parseItem){
+                    this.parseItem.ModelName = item.ModelName;
+                    this.parseItem.Label = Number.parseInt(this.modelIcons.find(x => x.checked).id); 
+                    save(this.parseItem);
                 }
+                else{
+                    save(model);
+                }
+              
             }
             else if (this.formState == FormStateEnum.edit) {
-                const response = await this.requestService.set(model);
-                if (response.status == 200) {
+                //后台要求
+                model.ModelJSON=null;
+                const response = await this.requestService.set(model).toPromise();
+                if (response.FaultCode ==0) {
                     this.messageBar.response_success();
-                    successFn(true, response.data.Data, this.formState);
+                    successFn(true, response.Data, this.formState);
                 }
             }
         }

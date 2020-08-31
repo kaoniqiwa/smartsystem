@@ -22,6 +22,9 @@ import { PlatformFormComponent } from './platform/platform-form/platform-form.co
 import { AIModelsMgrComponent } from './ai-models/aimodels-mgr/aimodels-mgr.component';
 import { AIModelFormComponent } from './ai-models/aimodel-form/aimodel-form.component';
 import { CameraAIModelMgrComponent } from './resources/camera/camera-aimodel-mgr/camera-aimodel-mgr.component';
+import { SRServersMgrComponent } from './sr-server/srservers-mgr/srservers-mgr.component';
+import { SRServerFormComponent } from './sr-server/sr-service-form/srserver-form.component';
+import { RegionCameraCopyComponent } from './resources/camera/region-camera-copy/region-camera-copy.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -33,7 +36,7 @@ import { CameraAIModelMgrComponent } from './resources/camera/camera-aimodel-mgr
   SideNavMenuComponent,HistoryLinkToolComponent,
   CameraFormComponent,  CameraMgrComponent,
   EncodeDeviceMgrComponent,EncodeDeviceFormComponent, RegionMgrComponent,
-  RegionFormComponent, PlatformMgrComponent, PlatformFormComponent, AIModelsMgrComponent, AIModelFormComponent, CameraAIModelMgrComponent ],
+  RegionFormComponent, PlatformMgrComponent, PlatformFormComponent, AIModelsMgrComponent, AIModelFormComponent, CameraAIModelMgrComponent, SRServersMgrComponent, SRServerFormComponent, RegionCameraCopyComponent ],
   exports:[
   ]
 })

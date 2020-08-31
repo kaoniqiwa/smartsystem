@@ -43,9 +43,9 @@ export class CameraFormService extends InputLabelService implements FormAttribut
         const param = new GetEncodeDevicesParams();
         param.PageIndex = 1;
         param.PageSize = new ListAttribute().maxSize;
-        const response = await this.encodeDeviceRequestService.list(param);
-        if (response.status == 200) {
-            for (const x of response.data.Data.Data) {
+        const response = await this.encodeDeviceRequestService.list(param).toPromise();
+        if (response.FaultCode==0) {
+            for (const x of response.Data.Data) {
                 this.encodeDevices.push(x);
             }
         }
@@ -109,25 +109,25 @@ export class CameraFormService extends InputLabelService implements FormAttribut
             if (this.formState == FormStateEnum.create) {
                 camera.Id = '';
                 camera.CreateTime = new Date().toISOString();
-                const response = await this.cameraRequestService.create(camera);
-                if (response.status == 200) {
+                const response = await this.cameraRequestService.create(camera).toPromise();
+                if (response.FaultCode == 0) {
                     this.messageBar.response_success();
                     
-                    response.data.Data.Labels = new  Array<ResourceLabel>();                    
-                    await this.forBindLabelForm(response.data.Data.Id,response.data.Data.Labels,this._tagSource);
-                    this.fillResourceLabel(response.data.Data.Labels,this._tagSource);
-                    successFn(true, response.data.Data, this.formState);
+                    response.Data.Labels = new  Array<ResourceLabel>();                    
+                    await this.forBindLabelForm(response.Data.Id,response.Data.Labels,this._tagSource);
+                    this.fillResourceLabel(response.Data.Labels,this._tagSource);
+                    successFn(true, response.Data, this.formState);
                     if (regionId)                      
-                        this.regionResourceRequestService.create(regionId, response.data.Data.Id);                      
+                        this.regionResourceRequestService.create(regionId, response.Data.Id);                      
                 }
             }
             else if (this.formState == FormStateEnum.edit) {
-                const response = await this.cameraRequestService.set(camera); ;
+                const response = await this.cameraRequestService.set(camera).toPromise();
                 camera.Labels = this.editItem.Labels;       
-                if (response.status == 200) {
-                    camera.Id =  response.data.Data.Id;
+                if (response.FaultCode == 0) {
+                    camera.Id =  response.Data.Id;
                     this.messageBar.response_success();
-                    await this.forBindLabelForm(response.data.Data.Id, camera.Labels,this._tagSource);
+                    await this.forBindLabelForm(response.Data.Id, camera.Labels,this._tagSource);
                     this.fillResourceLabel(camera.Labels,this._tagSource);
                     successFn(true,camera, this.formState);
                 }

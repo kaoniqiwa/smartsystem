@@ -1,5 +1,5 @@
 <ng-container *ngIf="model&&model.listPanel&&model.pagination">
-  <div class="fine" style="overflow: auto;height: calc(100% - 40px);">
+  <div class="fine fill-width"  data-list="hw" style="overflow: auto;height: calc(100% - 45px);">
     <div class="models-list-panel" (click)="itemClick(m.id)"
       [class.selected]="selectedId.indexOf(m.id)>-1" 
       *ngFor="let m of model.listPanel">
@@ -24,9 +24,13 @@
             </a>
           </ng-container>
           <ng-container *ngIf="m.barOtherAccessorys">
-            <a class="m-r-20" href="javascript:void(0)"><i
-                class="{{m.barOtherAccessorys[0].icon}} {{m.barOtherAccessorys[0].colorClass}}"></i></a>
-            <a href=""><i class="{{m.barOtherAccessorys[1].icon}} {{m.barOtherAccessorys[1].colorClass}}"></i></a>
+            <a class="m-r-20" href="javascript:void(0)" *ngIf="toCopy(m)" (click)="m.barOtherAccessorys[0].callBack(m.id)">
+              <i class="{{m.barOtherAccessorys[0].icon}} {{m.barOtherAccessorys[0].colorClass}}"></i>
+            </a>
+            <a class="m-r-20" href="javascript:void(0)"  *ngIf="!toCopy(m)">
+              <i class="{{m.barOtherAccessorys[0].icon}}" style="color: gray;"></i>
+            </a>
+            <a href="javascript:void(0)"><i class="{{m.barOtherAccessorys[1].icon}} {{m.barOtherAccessorys[1].colorClass}}"></i></a>
           </ng-container>
         </div>
       </div>
@@ -40,9 +44,22 @@
               </div>
             </div>
             <label fxLayoutAlign="center">{{b.label}}</label>
-            <a class="collapse" href="javascript:void(0)" (click)="b.id"><i class="howell-icon-Close"></i></a>
+            <a class="collapse" href="javascript:void(0)" (click)="listItemDelClick(m.id,b.id)"><i class="howell-icon-Close"></i></a>
           </div>
+          <ng-container *ngIf="m.barBody.length<3">
+            <div fxFlex="192px" class="gray-item">
+              <div fxLayoutAlign="center">
+                <div class="  gray-round-btn">
+                  <i class="howell-icon-plus fill-height" fxLayoutAlign="center center"
+                    style="font-size: xx-large;color:gray;"></i>
+                </div>
+              </div>
+              <label fxLayoutAlign="center" style="color: gray;">待添加</label>
+            </div>
+          </ng-container>
+        
         </ng-container>
+     
       </div>
     </div>
   </div>  

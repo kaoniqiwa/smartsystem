@@ -4,6 +4,10 @@ export class InputTagArea{
     checked:boolean;
     del:boolean;
     hide = false;
+    /**
+     * 1 上面
+     * 2 下面
+     */
     type: number;
     constructor(id:string,text:string,checked:boolean,type:number){
         this.id=id;

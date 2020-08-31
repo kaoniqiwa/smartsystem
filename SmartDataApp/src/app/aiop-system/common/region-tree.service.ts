@@ -3,21 +3,24 @@ import { Region, GetRegionsParams } from "../../data-core/model/region";
 import { RegionRequestService } from "../../data-core/repuest/region.service";
 import { ListAttribute } from "../../common/tool/table-form-helper";
 import { TreeNode } from "../../shared-module/custom-tree/custom-tree";
+import "../../common/string/hw-string";
 
 @Injectable()
-export class  RegionTreeService extends ListAttribute{
-   public dataSource = new Array<Region>();
+export class RegionTreeService extends ListAttribute {
+    public dataSource = new Array<Region>();
     constructor(public regionRequestService: RegionRequestService) {
-      super();      
+        super();
     }
 
-    
+
     async getRegionData() {
         const param = new GetRegionsParams();
         param.PageIndex = 1;
         param.PageSize = this.maxSize;
-        const response = await this.regionRequestService.list(param);
-        this.dataSource = response.data.Data.Data;
+        const response = await this.regionRequestService.list(param).toPromise();
+        this.dataSource= response.Data.Data.sort((a, b) => {
+            return ''.naturalCompare(a.Name, b.Name);
+        }); 
 
     }
 
@@ -48,14 +51,44 @@ export class  RegionTreeService extends ListAttribute{
                 addItems(node, items);
             }
         }
-       return dataSource;
+        return dataSource;
+    }
+
+    allLastChilds(treeNode: TreeNode[]) {
+        var lastchildren = new Array<TreeNode>();
+        const forxh = (treeNodes: TreeNode[]) => {
+            for (var i = 0; i < treeNodes.length; i++) {
+                var chlist = treeNodes[i];
+                if (chlist.children && chlist.children.length > 0)
+                    forxh(chlist.children);
+                else
+                    lastchildren.push(chlist);
+            }
+        }
+        forxh(treeNode);
+        return lastchildren;
+
     }
 
 
-    filterNodes (text: string) {
-        const list = this.dataSource.filter(x => x.Name.indexOf(text) > -1 && x.ParentId);
+    filterNodes(text: string) {
+        const filterList = this.dataSource.filter(x => x.Name.indexOf(text) > -1 && x.ParentId)
+            , list = new Array<Region>();
+        const findParent = (item: Region) => {
+            /**去除重复 */
+            const find = this.dataSource.find(x => x.Id == item.ParentId && x.IsLeaf);
+            if (find) {
+                const f = filterList.find(g => g.Id == find.Id);
+                if (f == null) {
+                    list.push(find);
+                    findParent(find);
+                }
+            }
+        }
+        filterList.map(x => findParent(x));  
+
         const parentList = this.dataSource.filter(x => !x.ParentId);
-        return this.loadTree([...list, ...parentList]);
+        return this.loadTree([...filterList, ...parentList, ...list]);
     }
 
     set addItem(item: Region) {
@@ -68,7 +101,7 @@ export class  RegionTreeService extends ListAttribute{
             this.dataSource.splice(index, 1);
     }
 
-    noChildNodes(id:string,len:number){           
-        return this.dataSource.filter(x=>x.ParentId == id).length == len;   
-    } 
+    noChildNodes(id: string, len: number) {
+        return this.dataSource.filter(x => x.ParentId == id).length == len;
+    }
 }

@@ -98,7 +98,7 @@ export class AIModelsTable  extends ResourcesTable implements IConverter, IPageT
         tableField.modelName = item.ModelName; 
         tableField.version = item.Version;
         tableField.updateTime = this.datePipe.transform(item.UpdateTime,'yyyy-MM-dd hh:mm');
-        tableField.labelIcon =this.ai_icon ?'assets/img/'+ this.ai_icon.data[item.Label]: ''; 
+        tableField.labelIcon =this.ai_icon ?'assets/img/'+ this.ai_icon[item.Label]: ''; 
         tableField.transformType=item.TransformType;   
         return tableField;
     }
@@ -119,7 +119,7 @@ export class AIModelsTable  extends ResourcesTable implements IConverter, IPageT
         findVal.transformType = item.TransformType;
         findVal.updateTime = this.datePipe.transform(item.UpdateTime,'yyyy-MM-dd hh:mm');
         findVal.modelType = item.ModelType; 
-        findVal.labelIcon = this.ai_icon ?'assets/img/'+ this.ai_icon.data[item.Label]: '';
+        findVal.labelIcon = this.ai_icon ?'assets/img/'+ this.ai_icon[item.Label]: '';
     }
 
 }

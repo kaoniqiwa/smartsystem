@@ -1,10 +1,5 @@
 <div class="custom-form-wrap" style="width: 800px;">
-  <ng-container *ngIf="!formService.editItem">
-    <h2>添加平台</h2>
-  </ng-container>
-  <ng-container *ngIf="formService.editItem">
-    <h2>{{formService.editItem.Name}}</h2>
-  </ng-container>
+  <h2>{{'添加平台' | FormTitle:[editItem,'Name']}}</h2>
   <form  class="form-content m-b-20 " style="height:calc(100% - 86px);" [formGroup]="formService.form" (ngSubmit)="onSubmit()">
      <div class="fill-height">
       <input type="reset" #resetBtn class="collapse" value="">

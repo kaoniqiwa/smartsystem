@@ -6,6 +6,7 @@ import * as url from "../url/maps";
 import { Map as GisMap } from "../model/map";
 import { GetMapElementsParams } from "../model/map-elements-params";
 import { Resource } from "../model/resource";
+import { HowellAuthHttpService } from "./howell-auth-http.service";
 @Injectable({
     providedIn:'root'
 })

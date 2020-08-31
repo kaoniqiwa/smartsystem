@@ -144,8 +144,6 @@ export class SRServiceService {
 
             if (this.formState == FormStateEnum.create) {
                 model.Id = '';
-
-                console.log(model);
                 const response = await this.srRequestSerivce.create(model);
                 if (response.status == 200) {
                     this.messageBar.response_success();

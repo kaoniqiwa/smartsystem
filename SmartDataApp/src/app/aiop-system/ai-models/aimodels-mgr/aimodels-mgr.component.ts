@@ -12,10 +12,13 @@ export class AIModelsMgrComponent implements OnInit {
   @ViewChild('table')
   table: CustomTableComponent;
   constructor(private mgrService: AIModelsMgrService) { }
-
+  searchFn =async (text:string)=>{  
+    this.mgrService.search.searchText = text;
+    await this.mgrService.searchAIModelData(1);
+ }
   async ngOnInit() { 
     await this.mgrService.getAIIcons();
-    await this.mgrService.getAIModelData(1);
+  //  await this.mgrService.getAIModelData(1);
     this.mgrService.table.delItemFn = (id: string) => {
       this.mgrService.table.setConfirmDialog(`删除1个选择项`, async () => {
         await this.mgrService.delAIModelsData([id]);

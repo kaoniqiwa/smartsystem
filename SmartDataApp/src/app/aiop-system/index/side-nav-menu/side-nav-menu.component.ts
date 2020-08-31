@@ -31,16 +31,18 @@ import { Component, OnInit } from '@angular/core'; import {
 export class SideNavMenuComponent implements OnInit {
   maximize = true;
   private currentMenus_ = new Array<string>();
+  private highlightedBtn = new Array<string>();
   menuTree = new Array<MenuTree>();
-  menusState = [
-    { an: false }, { an: false }, { an: false }, { an: true }
-  ]
+ 
   constructor() {
-    var item = new MenuTree('howell-icon-device2','平台');  
-    item.an = true;
+    var item = new MenuTree('howell-icon-device2','平台');   
     item.nodes.push({
       url :'/aiop/platform/platform-mgr',
       text:'平台管理'
+    });
+    item.nodes.push({
+      url :'/aiop/platform/sr-service-mgr',
+      text:'流转服务管理'
     });
     this.menuTree.push(item);
     item = new MenuTree('howell-icon-device2','区域');
@@ -69,6 +71,13 @@ export class SideNavMenuComponent implements OnInit {
       url:'/aiop/ai-models/ai-models-mgr'
     }); 
     this.menuTree.push(item);
+    this.highlightedBtn = [this.menuTree[0].title];
+  }
+
+  mainBtnClick(item:MenuTree){     
+      item.an=!item.an;
+      this.highlightedBtn.pop();
+      this.highlightedBtn = [item.title];
   }
 
   set currentMenus(val: string) {
@@ -88,7 +97,7 @@ export class SideNavMenuComponent implements OnInit {
 
 export class MenuTree {
   icon: string;
-  an = false;
+  an = true;
   title: string;
   nodes: { text: string, url: string }[];
   constructor(icon: string, title: string) {

@@ -61,19 +61,19 @@ export class RegionFormService{
                 region.RegionType=item.ParentId=='' ? 1:2;
                 region.ParentId = item.ParentId;
                 region.CreateTime = new Date().toISOString();
-                const response = await this.regionRequestService.create(region);
-                if (response.status == 200) { 
+                const response = await this.regionRequestService.create(region).toPromise();
+                if (response.FaultCode == 0) { 
                     this.messageBar.response_success();
                     this.resetForm();
-                    successFn(true, response.data.Data, this.formState);
+                    successFn(true, response.Data, this.formState);
                 }
             }
             else if (this.formState == FormStateEnum.edit) {  
-                const response = await this.regionRequestService.set(region); 
-                if (response.status == 200) { 
+                const response = await this.regionRequestService.set(region).toPromise(); 
+                if (response.FaultCode == 0) { 
                     // this.resetForm();
                     this.messageBar.response_success();
-                    successFn(true, response.data.Data, this.formState);
+                    successFn(true, response.Data, this.formState);
                 }
             }
         }

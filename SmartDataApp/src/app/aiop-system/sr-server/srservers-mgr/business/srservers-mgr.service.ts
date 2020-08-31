@@ -47,14 +47,14 @@ export class SRServersService extends TableAttribute {
 
     async getSRServerData() {
         if (this.search.state == false) {
-            const response = await this.requestSerivce.list();
+            const response = await this.requestSerivce.list().toPromise();
             let data = new SRServers();
-            data.items = response.data.Data.sort((a, b) => {
+            data.items = response.Data.sort((a, b) => {
                 return ''.naturalCompare(a.Name, b.Name);
             });
             this.table.Convert(data, this.table.dataSource);
-            this.table.totalCount = response.data.Data.length;
-            this.dataSource = response.data.Data;
+            this.table.totalCount = response.Data.length;
+            this.dataSource = response.Data;
         }
     }
 

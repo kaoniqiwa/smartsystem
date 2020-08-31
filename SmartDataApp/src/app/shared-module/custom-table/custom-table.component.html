@@ -25,9 +25,11 @@
           <tr *ngFor="let item of model.values" [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1"
             (click)='itemClick(item)'>
             <td *ngFor="let attrs of model.tableAttrs" [ngStyle]="{'width':attrs.tdWidth}">
+            
               <span title="{{item[attrs.tdInnerAttrName]}}"
                 class="{{attrs.tdInnerAttrClassName&&item[attrs.tdInnerAttrClassName]?item[attrs.tdInnerAttrClassName]:''}}"
-                *ngIf="!attrs.isImg&&!attrs.isHTML">{{item[attrs.tdInnerAttrName]}}</span>
+                *ngIf="!attrs.isImg&&!attrs.isHTML"
+                [ngStyle]="{'color': fontColor(item[attrs.tdInnerAttrName])?'rgb(225,94,100)':'unset'}">{{item[attrs.tdInnerAttrName]}}</span>
               <img src="{{item[attrs.tdInnerAttrName]}}" *ngIf="attrs.isImg" style="width:20px;height:20px;margin-left:15px">
             </td>
             <td *ngIf="model.iconTextTagAttr&&model.iconTextTagAttr.length&&model.iconTextTh"
@@ -49,7 +51,7 @@
               </div>
             </td>
             <td  *ngIf="model.hasTableOperationTd">
-              <div *ngIf="model.tableOperationBtns&&model.tableOperationBtns.length>0">
+              <div [class.text-center]="model.tableOperationBtns&&model.tableOperationBtns.length==1" *ngIf="model.tableOperationBtns&&model.tableOperationBtns.length>0">
                 <!-- <i *ngFor="let btn of model.tableOperationBtns;let i = index" class="{{btn.css}}"
                   [class.m-r-10]="model.tableOperationBtns.length - 1 > i" title="{{btn.title}}"
                   (click)="btn.callback(item);$event.stopPropagation();">

@@ -9,7 +9,8 @@ import { CustomTableEvent, CustomTableEventEnum } from "../../../../shared-modul
 import { TableFormControl } from "../../../../common/tool/table-form-helper";
 import { ConfirmDialog } from "../../../../shared-module/confirm-dialog/confirm-dialog.component";
 import { MessageBar } from "../../../../common/tool/message-bar";
-export class PlatformTable implements IConverter, IPageTable<Platform> {
+import { BusinessTable  } from "../../../common/business-table";
+export class PlatformTable extends BusinessTable implements IConverter, IPageTable<Platform> {
     form = new TableFormControl<Platform>(this);
     updateItemFn: (item: Platform) => void;
     addItemFn: (item: Platform) => void;
@@ -75,26 +76,10 @@ export class PlatformTable implements IConverter, IPageTable<Platform> {
             }) 
         ]
     });
-    constructor(private datePipe:DatePipe){}
-  
-    set totalCount(val: number) {
-        this.dataSource.footArgs.totalRecordCount = val;
-    }     
-
-    set pageCount(val: number) {
-        this.dataSource.footArgs.pageCount = val;
+    constructor(private datePipe:DatePipe){
+        super();
     }
-
-    setConfirmDialog(msg:string,okFn:()=>void){
-        this.confirmDialog_ = new ConfirmDialog();
-        this.confirmDialog_.cancelFn = ()=>{
-             this.confirmDialog_=null;
-        }
-        this.confirmDialog_.content=msg;
-        this.confirmDialog_.okFn =()=>{
-            okFn();
-        }
-    }
+   
     Convert<Platforms, CustomTableArgs>(input: Platforms, output: CustomTableArgs) {
         const items = new Array<TableField>();       
         if (input instanceof Platforms) 
@@ -116,20 +101,13 @@ export class PlatformTable implements IConverter, IPageTable<Platform> {
         tableField.url = item.Url;
        
         return tableField;
-    }
-
-    
+    }   
 
     addItem(item: Platform) {
         this.dataSource.values.push(this.toTableModel(item));
         this.addItemFn(item);
         this.dataSource.footArgs.totalRecordCount += 1;
-    }
-    clearItems() {
-        this.dataSource.values = []; 
-        this.dataSource.footArgs.totalRecordCount = 0;
-        this.dataSource.footArgs.pageCount=1;
-    }
+    }  
 
     editItem(item: Platform) {
         const findVal = this.dataSource.values.find(x => x.id == item.Id);

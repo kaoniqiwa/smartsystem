@@ -50,9 +50,6 @@ export class RegionCameraCopyComponent implements OnInit {
     }
     this.tree.treeControl.expandAll();
 
-    console.log(treeNodes);
-
-
   }
 
   onSubmit() {

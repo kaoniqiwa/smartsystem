@@ -6,18 +6,15 @@ import { CustomTableArgs, TableAttr, TableOperationBtn } from "../../../../share
 import { IConverter } from "../../../../common/interface/IConverter";
 import { CustomTableEvent, CustomTableEventEnum } from "../../../../shared-module/custom-table/custom-table-event";
 import { TableFormControl } from "../../../../common/tool/table-form-helper";
-import { ConfirmDialog } from "../../../../shared-module/confirm-dialog/confirm-dialog.component";
-import { MessageBar } from "../../../../common/tool/message-bar"; 
-export class SRServiceTable implements IConverter, IPageTable<SRServer>{
+import { BusinessTable } from "../../../common/business-table";
+export class SRServiceTable extends BusinessTable implements IConverter, IPageTable<SRServer>{
     form = new TableFormControl<SRServer>(this);   
     updateItemFn: (item: SRServer) => void;
     addItemFn: (item: SRServer) => void;
     scrollPageFn: (event: CustomTableEvent) => void;
     findItemFn: (id: string) => SRServer;
     delItemFn:(id:string)=>void;
-    syncFn:(id:string)=>void;
-    confirmDialog_:ConfirmDialog;
-    msg = new MessageBar();
+    syncFn:(id:string)=>void;   
     dataSource = new CustomTableArgs<TableField>({
         hasTableOperationTd: true,
         hasHead: true,
@@ -70,27 +67,10 @@ export class SRServiceTable implements IConverter, IPageTable<SRServer>{
             }) 
         ]
     });
-    constructor(){}
+    constructor(){
+        super();
+    }
   
-    set totalCount(val: number) {
-        this.dataSource.footArgs.totalRecordCount = val;
-    }
-
-    get maxPageIndex() {
-        return !(this.dataSource.footArgs.totalRecordCount == this.dataSource.values.length);
-    }
-
-    setConfirmDialog(msg:string,okFn:()=>void){
-        this.confirmDialog_ = new ConfirmDialog();
-        this.confirmDialog_.cancelFn = ()=>{
-             this.confirmDialog_=null;
-        }
-        this.confirmDialog_.content=msg;
-        this.confirmDialog_.okFn =()=>{
-            okFn();
-        }
-    }
-    
     Convert<SRServers, CustomTableArgs>(input: SRServers, output: CustomTableArgs) {
         const items = new Array<TableField>();       
         if (input instanceof SRServers) 
@@ -117,11 +97,7 @@ export class SRServiceTable implements IConverter, IPageTable<SRServer>{
         this.addItemFn(item);
         this.dataSource.footArgs.totalRecordCount += 1;
     }
-    clearItems() {
-        this.dataSource.values = [];
-        this.dataSource.footArgs.totalRecordCount = 0;
-        this.dataSource.footArgs.pageCount=1;
-    }
+  
 
     editItem(item: SRServer) {
         const findVal = this.dataSource.values.find(x => x.id == item.Id);

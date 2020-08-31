@@ -22,7 +22,8 @@ export class Accessory{
     colorClass:string;  
 }
 export class AccessoryIcon  extends Accessory{
-    icon:string  
+    icon:string 
+    callBack:(id:string)=>void;
 }
 
 export class AccessoryIconLabel extends Accessory{

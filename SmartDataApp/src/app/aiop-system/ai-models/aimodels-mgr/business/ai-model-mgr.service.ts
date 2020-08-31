@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { CameraAIModel, } from "../../../../data-core/model/camera-ai-model";
-import { TableSearchEnum, TableAttribute } from "../../../../common/tool/table-form-helper";
+import { TableAttribute } from "../../../../common/tool/table-form-helper";
 import { GetAIModelsParams } from "../../../../data-core/model/camera-ai-event-records-params";
 import { AIModelRequestService } from "../../../../data-core/repuest/ai-model.service";
 import { CameraAIModels } from "./ai-model-table";
@@ -9,11 +9,12 @@ import { AIModelsTable } from "./ai-model-table";
 import { DatePipe } from "@angular/common";
 import { CustomTableEvent } from "../../../../shared-module/custom-table/custom-table-event";
 import { ConfigRequestService } from "../../../../data-core/repuest/config.service"; 
-
+import { SearchControl } from "./search";
 @Injectable()
 export class AIModelsMgrService extends TableAttribute {
     dataSource_ = new Array<CameraAIModel>();
     table = new AIModelsTable(this.datePipe);
+    search =  new SearchControl();
     constructor(private requestSerivce: AIModelRequestService, private datePipe: DatePipe
         , private configService: ConfigRequestService) {
         super();
@@ -34,13 +35,11 @@ export class AIModelsMgrService extends TableAttribute {
         this.table.scrollPageFn = (event: CustomTableEvent) => {
             this.getAIModelData(event.data as any);
             this.searchAIModelData(event.data as any);
-        }
-
-        
+        }        
     }
 
     async getAIIcons() { 
-       this.table.ai_icon = await this.configService.getAIIcons();
+       this.table.ai_icon = await this.configService.getAIIcons().toPromise();
     }
 
 
@@ -54,39 +53,41 @@ export class AIModelsMgrService extends TableAttribute {
     }
 
     async getAIModelData(pageIndex: number) {
-        //if (this.search.state == false) {
-        const response = await this.requestSerivce.list(this.getRequsetParam(TableSearchEnum.none, pageIndex));
+       if (this.search.state == false) {
+        const response = await this.requestSerivce.list(this.getRequsetParam(pageIndex,this.search.searchText)).toPromise();
         let data = new CameraAIModels();  
-        data.items = response.data.Data.Data.sort((a, b) => {
+        data.items = response.Data.Data.sort((a, b) => {
             return ''.naturalCompare(a.ModelName, b.ModelName);
         });;
+        this.table.clearItems();
+        this.dataSource = [];
         this.table.Convert(data, this.table.dataSource);
-        this.table.totalCount = response.data.Data.Page.TotalRecordCount;
-        this.dataSource = response.data.Data.Data;
-        // }
+        this.table.totalCount = response.Data.Page.TotalRecordCount;
+        this.table.pageCount = response.Data.Page.TotalRecordCount;
+        this.dataSource = response.Data.Data;
+        }
     }
 
     async searchAIModelData(pageIndex: number) {
-        // if (this.search.state) {
-        const response = await this.requestSerivce.list(this.getRequsetParam(TableSearchEnum.search, pageIndex, 'param'));
+     if (this.search.state) {
+        const response = await this.requestSerivce.list(this.getRequsetParam(pageIndex, this.search.searchText)).toPromise();
         let data = new CameraAIModels();
-        data.items = response.data.Data.Data.sort((a, b) => {
+        data.items = response.Data.Data.sort((a, b) => {
             return ''.naturalCompare(a.ModelName, b.ModelName);
         });;
-        if (pageIndex == 1) {
-            this.table.clearItems();
-            this.dataSource = [];
-        }
+        this.table.clearItems();
+        this.dataSource = [];
         this.table.Convert(data, this.table.dataSource);
-        this.table.totalCount = response.data.Data.Page.TotalRecordCount;
-        this.dataSource = response.data.Data.Data;
-        // }
+        this.table.totalCount = response.Data.Page.TotalRecordCount;
+        this.table.pageCount = response.Data.Page.TotalRecordCount;
+        this.dataSource = response.Data.Data;
+        }
     }
 
 
     async delAIModelsData(ids: string[]) {
         for (const id of ids) {
-            await this.requestSerivce.del(id);
+            await this.requestSerivce.del(id).toPromise();
             this.delDataItem(id);
             this.table.msg.response_success();
         }
@@ -102,16 +103,11 @@ export class AIModelsMgrService extends TableAttribute {
         return this.dataSource.find(x => x.Id == id);
     }
 
-    getRequsetParam(paramType: TableSearchEnum, pageIndex: number, name?: string) {
+    getRequsetParam(pageIndex: number, name?: string) {
         let param = new GetAIModelsParams();
         param.PageIndex = pageIndex;
         param.PageSize = this.pageSize;
-        if (paramType == TableSearchEnum.none) {
-
-        }
-        else if (paramType == TableSearchEnum.search) {
-
-        }
+        if(name)param.ModelName=name;
         return param;
     }
 }

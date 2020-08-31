@@ -25,8 +25,13 @@ function inputFileRead(domId,loadFileFn){
     }
 }
 
+function scrollTopPostion(domId,postion){
+    $("#"+domId).scrollTop(postion);
+}
+
 
 exports.moveView = moveView; 
 exports.domClick=domClick;
 exports.domClickFn=domClickFn;
 exports.inputFileRead=inputFileRead;
+exports.scrollTopPostion=scrollTopPostion;

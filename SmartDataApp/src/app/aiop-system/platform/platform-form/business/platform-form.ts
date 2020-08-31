@@ -27,8 +27,8 @@ export class  PlatformFormService  extends ListAttribute implements FormAttribut
     }
 
    async getProtocols(){
-       const response = await   this.platformRequestSerivce.protocol();
-       this.protocols=response.data.Data; 
+       const response = await this.platformRequestSerivce.protocol().toPromise();
+       this.protocols=response.Data; 
     } 
  
 
@@ -90,17 +90,17 @@ export class  PlatformFormService  extends ListAttribute implements FormAttribut
             if (this.formState == FormStateEnum.create) {
                 model.Id = '';
                 model.CreateTime = new Date().toISOString(); 
-                const response = await this.platformRequestSerivce.create(model);
-                if (response.status == 200) { 
+                const response = await this.platformRequestSerivce.create(model).toPromise();
+                if (response.FaultCode == 0) { 
                     this.messageBar.response_success();
-                    successFn(true, response.data.Data, this.formState);
+                    successFn(true, response.Data, this.formState);
                 }
             }
             else if (this.formState == FormStateEnum.edit) {  
-                const response = await this.platformRequestSerivce.set(model); 
-                if (response.status == 200) { 
+                const response = await this.platformRequestSerivce.set(model).toPromise(); 
+                if (response.FaultCode == 0) { 
                     this.messageBar.response_success();
-                    successFn(true, response.data.Data, this.formState);
+                    successFn(true, response.Data, this.formState);
                 }
             }
         }

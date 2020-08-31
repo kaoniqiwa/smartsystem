@@ -1,20 +1,22 @@
-import {  BaseUrl,IUrl} from "./IUrl";
-export class AIModel extends BaseUrl implements IUrl{
+import { BaseUrl, IUrl } from "./IUrl";
+export class AIModel extends BaseUrl implements IUrl {
     create(): string {
-         return this.aiop +  'AIModels';
+        return this.aiop + 'AIModels';
     }
-    edit(id:string): string {
+    edit(id: string): string {
         return this.aiop + `AIModels/${id}`
     }
-    del(id:string): string {
+    del(id: string): string {
         return this.aiop + `AIModels/${id}`
     }
-    get(id:string): string {
+    get(id: string): string {
         return this.aiop + `AIModels/${id}`
     }
     list(): string {
         return this.aiop + `AIModels/List`;
-    }   
-  
+    }
 
+    parse() {
+        return this.aiop + `AIModels/Parse`;
+    }
 }

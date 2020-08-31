@@ -5,20 +5,37 @@
 .text-tag-wrap>a
   padding: 5px 10px 5px 10px
   height: 24px
-  margin-right 5px
-  background: rgb(68,76,112)
+  margin-right 5px 
+  max-width:96px
+ 
 
+.text-tag-wrap.blue>a
+  background-color: #3A94FF
+
+.text-tag-wrap.green>a
+   background-color: #1E7925
+
+.text-tag-wrap.green>a:hover 
+    color: #D5FFE0
+ 
 
 .text-tag-wrap>a>a:hover{
   color: rgb(225,94,100)
 }
 
+.text-tag-wrap>a>label
+  white-space: nowrap
+  overflow: hidden
+  max-width: 56px
+  line-height: 12px
+  margin-bottom 0
+
 .text-tag-wrap a  
   color #eaedff
   font-size: 14px
 
-.text-tag-wrap>a.selected 
-   background green
+.text-tag-wrap.green>a.selected 
+  background-color: #27CF37
 
 .checkbox-pool-wrap
     padding: 10px 10px 0px 10px   

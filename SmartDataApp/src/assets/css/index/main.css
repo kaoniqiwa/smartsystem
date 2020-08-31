@@ -192,6 +192,10 @@ h2
     background:#570c0c ;
     cursor:no-drop; 
 }
+.customtab2 li a.nav-link.text.active {
+    background-image: url('/assets/img/blue-tab.png'); 
+}
+
 
 
 .second-title-bg{
@@ -398,4 +402,8 @@ a.td-icon:hover i{
 }
 .light-blue-text{
 color:#cfd7ff
+}
+
+.gray-text{
+    color:gray;
 }

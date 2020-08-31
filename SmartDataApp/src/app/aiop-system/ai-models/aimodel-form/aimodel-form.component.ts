@@ -37,11 +37,18 @@ export class AIModelFormComponent implements OnInit {
       FileModelName: event.target.value
     });
 
-    inputFileRead('#fileInput', (result) => {
-     
+    inputFileRead('#fileInput', (result) => {     
       this.formService.form.patchValue({
         ModelJSON: result.replace('data:application/json;base64,', '')
-      });
+      });       
+    });
+  }
+
+  parseFileClick(){
+    const formField = this.formService.form.value as FormField;
+    this.formService.parseJsonModel(formField.ModelJSON,()=>{
+      this.tree.dataSource.data = this.formService.dtoDataSource;   
+      this.tree.   treeControl.expandAll();
     });
   }
 

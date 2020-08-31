@@ -1,18 +1,18 @@
 import { AxiosDigestInstance } from "howell-http-lib";
 import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
 
+import { Response } from "../model/response";
 @Injectable({
     providedIn: 'root'
 })
 export class ConfigRequestService {
-
-  private  axios: AxiosDigestInstance;
-    constructor() {
-        this.axios = new AxiosDigestInstance(null, null, false);
-    }
-
+ 
+  constructor(private http: HttpClient) {
+} 
+ 
      getAIIcons() {
-        return this.axios.get('assets/ai-icon.json');
+        return this.http.get<any>('assets/ai-icon.json');
     }
 
 }

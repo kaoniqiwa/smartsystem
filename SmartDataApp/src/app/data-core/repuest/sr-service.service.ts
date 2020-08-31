@@ -1,48 +1,49 @@
 import { SRService as SRServiceUrl } from "../url/sr-server";
 import { Response } from "../model/Response";
 import { SRServer } from "../model/sr-server";
-import { VideoUrl ,GetPreviewUrlParams,GetVodUrlParams} from "../model/video-url";
+import { VideoUrl, GetPreviewUrlParams, GetVodUrlParams } from "../model/video-url";
 import { Injectable } from "@angular/core";
-import { RequestService } from "./Request.service"; 
+import { RequestService } from "./Request.service";
+import { HowellAuthHttpService } from "./howell-auth-http.service";
 
 @Injectable({
     providedIn: 'root'
 })
-export class  SRServiceRequestSerivce{
+export class SRServiceRequestSerivce {
     url: SRServiceUrl;
-    constructor(private requestService: RequestService) {
+    constructor(private requestService: HowellAuthHttpService) {
         this.url = new SRServiceUrl();
     }
 
     create(item: SRServer) {
-        return this.requestService.axios.post<SRServer, Response<SRServer>>(this.url.create(), item);
+        return this.requestService.post<SRServer, SRServer>(this.url.create(), item);
     }
 
     get(id: string) {
-        return this.requestService.axios.get<Response<SRServer>>(this.url.get(id));
+        return this.requestService.get<SRServer>(this.url.get(id));
     }
 
-    set(item: SRServer){
-        return this.requestService.axios.put<SRServer, Response<SRServer>>(this.url.edit(item.Id),item);
+    set(item: SRServer) {
+        return this.requestService.put<SRServer, SRServer>(this.url.edit(item.Id), item);
     }
 
     del(id: string) {
-        return this.requestService.axios.delete<Response<SRServer>>(this.url.del(id));
+        return this.requestService.delete<SRServer>(this.url.del(id));
     }
 
-    list(){
-        return this.requestService.axios.get<Response<SRServer[]>>(this.url.list());
-    } 
-
-    sync(id:string){
-        return this.requestService.axios.post< Response<any>>(this.url.sync(id));
+    list() {
+        return this.requestService.get<SRServer[]>(this.url.list());
     }
 
-    preview(item:GetPreviewUrlParams){
-        return this.requestService.axios.post<GetPreviewUrlParams, Response<VideoUrl>>(this.url.list(), item);
+    sync(id: string) {
+        return this.requestService.post<any>(this.url.sync(id));
     }
 
-    vod(item:GetVodUrlParams){
-        return this.requestService.axios.post<GetVodUrlParams, Response<VideoUrl>>(this.url.list(), item);
+    preview(item: GetPreviewUrlParams) {
+        return this.requestService.post<GetPreviewUrlParams, VideoUrl>(this.url.list(), item);
+    }
+
+    vod(item: GetVodUrlParams) {
+        return this.requestService.post<GetVodUrlParams, VideoUrl>(this.url.list(), item);
     }
 }
