@@ -144,17 +144,17 @@ export class SRServiceService {
 
             if (this.formState == FormStateEnum.create) {
                 model.Id = '';
-                const response = await this.srRequestSerivce.create(model);
-                if (response.status == 200) {
+                const response = await this.srRequestSerivce.create(model).toPromise();
+                if (response.FaultCode == 0) {
                     this.messageBar.response_success();
-                    successFn(true, response.data.Data, this.formState);
+                    successFn(true, response.Data, this.formState);
                 }
             }
             else if (this.formState == FormStateEnum.edit) {
-                const response = await this.srRequestSerivce.set(model);
-                if (response.status == 200) {
+                const response = await this.srRequestSerivce.set(model).toPromise();
+                if (response.FaultCode == 0) {
                     this.messageBar.response_success();
-                    successFn(true, response.data.Data, this.formState);
+                    successFn(true, response.Data, this.formState);
                 }
             }
         }

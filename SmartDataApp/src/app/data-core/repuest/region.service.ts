@@ -35,7 +35,7 @@ export class RegionRequestService extends SaveModel{
     }
 
     list(item:GetRegionsParams){
-        return this.requestService.post<GetRegionsParams, PagedList<Region>>(this.url.list(), item);
+        return this.requestService.post<GetRegionsParams, Response<PagedList<Region>>>(this.url.list(), item);
     }
 }
 

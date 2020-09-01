@@ -79,7 +79,7 @@ export class RegionTree {
                     node_.name = item.Name;
                     node_.checked = false;
                     node_.id = item.Id;
-
+                    node_.iconClass='howell-icon-map5';
                     node.children = node.children || new Array<TreeNode>();
                     node.children.push(node_);
                     addItems(node_, items);
@@ -92,11 +92,12 @@ export class RegionTree {
                 node.name = item.Name;
                 node.checked = false;
                 node.id = item.Id;
+                node.iconClass='howell-icon-earth';
 
                 this.dataSource.push(node);
                 addItems(node, items);
             }
-        } 
+        }        
 
     } 
 }

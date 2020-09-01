@@ -14,6 +14,7 @@ export class RegionCamera {
             const node_ = new TreeNode();
             node_.name = x.Name;
             node_.checked = false;
+            node_.iconClass='howell-icon-video';
             node_.id = x.Id + this.treeTypeTage;
             treeNode.children.push(node_);
         });

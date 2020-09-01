@@ -107,6 +107,7 @@ export class AIModelFormService extends ListAttribute {
                         const _ = new InputTreeNode();
                         _.id = i.LabelId + '_EnumValues_' + x;
                         _.name = val.Description;
+                        _.iconClass='howell-icon-file';
                         _.checked = false;
                         _.label = val.Value + '';
                         _.inputVal = val.ModelValue + '';
@@ -124,6 +125,7 @@ export class AIModelFormService extends ListAttribute {
                 node.checked = false;
                 node.id = i.LabelId;
                 node.label = i.LabelValue;
+                node.iconClass='howell-icon-folder';
                 node.inputVal = i.LabelModelValue;
                 this.dtoDataSource.push(node);
                 addItems(node, i.Labels);
@@ -175,10 +177,10 @@ export class AIModelFormService extends ListAttribute {
         var model: CameraAIModel;
         model = (this.editItem && this.formState == FormStateEnum.edit) ? this.editItem : new CameraAIModel();
         if (check) {
-         //   model.ModelName = item.ModelName;
-         //   model.ModelJSON = item.ModelJSON;
-          //  model.Label = Number.parseInt(this.modelIcons.find(x => x.checked).id);
-         //   model.UpdateTime = new Date().toISOString();
+           model.ModelName = item.ModelName;
+           model.ModelJSON = item.ModelJSON;
+           model.Label = Number.parseInt(this.modelIcons.find(x => x.checked).id);
+           model.UpdateTime = new Date().toISOString();
             if (this.formState == FormStateEnum.create) {
                 model.Id = '';
                 model.CreateTime = new Date().toISOString();

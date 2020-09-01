@@ -38,7 +38,7 @@ export class RegionMgrService extends RegionTreeService {
             return false;
         }
         const response = await this.regionRequestService.del(id).toPromise();
-        if (response.FaultCode == 200) {
+        if (response.FaultCode == 0) {
             this.delItem = id;
             this.msg.response_success();
             return true;

@@ -2183,3 +2183,55 @@ a .howell-icon-flip-vertical:before {
 .howell-icon-mask:before {
     content: "\f289";
 }
+
+.howell-icon-edit:before {
+    content: "\f290";
+}
+.howell-icon-tag2:before {
+    content: "\f291";
+}
+.howell-icon-copy:before {
+    content: "\f292";
+}
+.howell-icon-refresh:before {
+    content: "\f293";
+}
+.howell-icon-plus2:before {
+    content: "\f294";
+}
+.howell-icon-no_signal:before {
+    content: "\f295";
+}
+.howell-icon-delete2:before {
+    content: "\f296";
+}
+.howell-icon-search:before {
+    content: "\f297";
+}
+.howell-icon-details:before {
+    content: "\f298";
+}
+.howell-icon-export:before {
+    content: "\f299";
+}
+.howell-icon-folder:before {
+    content: "\f300";
+}
+.howell-icon-file:before {
+    content: "\f301";
+}
+.howell-icon-screen:before {
+    content: "\f302";
+}
+.howell-icon-map5:before {
+    content: "\f303";
+}
+.howell-icon-earth:before {
+    content: "\f304";
+}
+.howell-icon-signal2:before {
+    content: "\f305";
+}
+.howell-icon-move:before {
+    content: "\f306";
+}

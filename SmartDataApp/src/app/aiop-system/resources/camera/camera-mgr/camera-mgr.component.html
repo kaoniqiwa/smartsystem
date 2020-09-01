@@ -49,7 +49,8 @@
         <h2>监控点</h2>
         <div fxLayout="row" fxLayoutAlign="space-between stretch" class="m-b-10">
           <div class="hw-btn-group">
-            <button class="hw-green-btn m-r-10" (click)="tableService.cameraTable.form.show=tableService.regionTree.isLastNode">
+            <button class="hw-green-btn m-r-10" [class.black]="!tableService.regionTree.isLastNode"  [class.gray-text]="!tableService.regionTree.isLastNode"
+             [disabled]="!tableService.regionTree.isLastNode"  (click)="tableService.cameraTable.form.show=tableService.regionTree.isLastNode">
               <i class="howell-icon-plus"></i>
               添加
             </button> 
@@ -57,7 +58,7 @@
               <i class="howell-icon-delete-bin"></i>
               删除
             </button>
-            <button class="hw-cyan-btn" (click)="showBindLabels()" [disabled]="!selectItems"
+            <button class="hw-cyan-btn" (click)="showBindLabels()" [disabled]="!selectItems"  [class.gray-text]="!selectItems"
               [class.black]="!selectItems">
               <i class="mdi mdi-tag"></i>
               绑定标签

@@ -1,10 +1,11 @@
 
-import { NgModule } from '@angular/core';
+import { NgModule } from '@angular/core'; 
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule, DatePipe } from '@angular/common';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ReactiveFormsModule } from '@angular/forms'; 
 import { FlexLayoutModule } from '@angular/flex-layout';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 import {  MatTreeModule,MatSidenavModule,MatToolbarModule ,MatButtonModule,MatMenuModule,MatButtonToggleModule
   ,MatCheckboxModule,MatSnackBarModule,MatTabsModule
 } from '@angular/material';
@@ -22,7 +23,7 @@ import { PicturesDropListComponent } from './pictures-drop-list/pictures-drop-li
 import { CardListPanelComponent } from './card-list-panel/card-list-panel.component'; 
 @NgModule({
   imports: [
-    CommonModule,DragDropModule, HttpClientModule,
+    CommonModule,DragDropModule, HttpClientModule,ScrollingModule,
     InfiniteScrollModule,FlexLayoutModule,MatCheckboxModule,MatTreeModule,
     ReactiveFormsModule ,MatSidenavModule,MatToolbarModule,MatTabsModule,
     MatButtonModule,MatMenuModule,MatButtonToggleModule,MatSnackBarModule
@@ -37,14 +38,15 @@ import { CardListPanelComponent } from './card-list-panel/card-list-panel.compon
   CardListPanelComponent, 
   ],
   exports: [
-    InfiniteScrollModule,MatTreeModule,DragDropModule, HttpClientModule,
+    InfiniteScrollModule,MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,
     MatSidenavModule,MatToolbarModule,FlexLayoutModule,MatCheckboxModule,ReactiveFormsModule,
     MatButtonModule,MatMenuModule,MatButtonToggleModule,MatSnackBarModule,MatTabsModule
     ,HWPaginationDirective,TouchSpinDirective,FormTitlePipe,TxtLenPipe
     ,InputSearchComponent,InputTagAreaComponent,CustomTableComponent,ConfirmDialogComponent
     ,InputTagSelectComponent,CustomTreeComponent,PicturesDropListComponent,CardListPanelComponent
   ],
-  providers: [DatePipe],
+  providers: [DatePipe,
+   ],
   entryComponents: []
   ,
 })

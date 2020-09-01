@@ -55,7 +55,7 @@ handleLoginError<T>(operation = 'operation', result?: T) {
       let digest = new Digest(header, 'api/howell/ver10/aiop_service/');
       var challenge = digest.parseServerChallenge(null);
       let authHeader = digest.generateRequestHeader(1, challenge,'admin','123456', 'GET', this.url);
-      this.httpService.auth<any[]>(this.url, authHeader)        
+      this.httpService.auth(this.url, authHeader)        
       .toPromise();
     }
     return of(result as T);
@@ -65,7 +65,7 @@ handleLoginError<T>(operation = 'operation', result?: T) {
  ngOnInit() {
  this.historyLink.links=  this.navMenu.currentMenus$;
  const auth = async () => { 
-  await this.httpService.auth<any[]>(this.url,
+  await this.httpService.auth(this.url,
     new HttpHeaders({ 'X-WebBrowser-Authentication': 'Forbidden' })
   ).pipe(
     catchError(this.handleLoginError<any>())

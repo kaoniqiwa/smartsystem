@@ -31,6 +31,7 @@ export class CustomTreeComponent implements OnInit {
 
     flatNode.name = node.name;
     flatNode.level = level;
+    flatNode.iconClass = node.iconClass;
     if (node.children && node.children.length) flatNode.expandable = true;
     else flatNode.expandable = false;
     flatNode.checked = node.checked,

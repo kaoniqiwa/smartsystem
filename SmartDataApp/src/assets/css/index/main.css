@@ -171,6 +171,11 @@ h2
 }
 .hw-green-btn:active{
     background-image:url('/assets/img/green-btn-focus.png')
+} 
+
+.hw-green-btn.black{
+    background:#0d5d15 ;
+    cursor:no-drop; 
 }
 
 .hw-red-btn{
@@ -181,7 +186,7 @@ h2
     border: unset;
     background-image:url('/assets/img/red-btn.png')
 }
-.hw-red-btn:hover{
+.hw-red-btn:not(.black):hover{
     background-image:url('/assets/img/red-btn-hover.png')
 }
 .hw-red-btn:active{

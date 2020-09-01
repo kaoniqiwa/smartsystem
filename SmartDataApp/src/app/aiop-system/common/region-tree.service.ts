@@ -33,7 +33,7 @@ export class RegionTreeService extends ListAttribute {
                     node_.name = item.Name;
                     node_.checked = false;
                     node_.id = item.Id;
-
+                    node_.iconClass='howell-icon-map5';
                     node.children = node.children || new Array<TreeNode>();
                     node.children.push(node_);
                     addItems(node_, items);
@@ -46,7 +46,7 @@ export class RegionTreeService extends ListAttribute {
                 node.name = item.Name;
                 node.checked = false;
                 node.id = item.Id;
-
+                node.iconClass='howell-icon-earth';
                 dataSource.push(node);
                 addItems(node, items);
             }

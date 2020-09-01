@@ -16,7 +16,7 @@ export class SRServiceRequestSerivce {
     }
 
     create(item: SRServer) {
-        return this.requestService.post<SRServer, SRServer>(this.url.create(), item);
+        return this.requestService.post<SRServer, Response<SRServer>>(this.url.create(), item);
     }
 
     get(id: string) {
@@ -24,7 +24,7 @@ export class SRServiceRequestSerivce {
     }
 
     set(item: SRServer) {
-        return this.requestService.put<SRServer, SRServer>(this.url.edit(item.Id), item);
+        return this.requestService.put<SRServer, Response<SRServer>>(this.url.edit(item.Id), item);
     }
 
     del(id: string) {
@@ -40,10 +40,10 @@ export class SRServiceRequestSerivce {
     }
 
     preview(item: GetPreviewUrlParams) {
-        return this.requestService.post<GetPreviewUrlParams, VideoUrl>(this.url.list(), item);
+        return this.requestService.post<GetPreviewUrlParams, Response<VideoUrl>>(this.url.list(), item);
     }
 
     vod(item: GetVodUrlParams) {
-        return this.requestService.post<GetVodUrlParams, VideoUrl>(this.url.list(), item);
+        return this.requestService.post<GetVodUrlParams, Response<VideoUrl>>(this.url.list(), item);
     }
 }
