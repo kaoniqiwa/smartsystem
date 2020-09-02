@@ -27,7 +27,7 @@ export class HWPaginationOptions{
     changeFn:(pageIndex:number)=>void;
     viewWidth = 232;
     constructor(total:number,changeFn:(pageIndex:number)=>void){
-        this.total=total;
+        this.total=total == 0 ? 1:total;
         this.viewWidth+= total*20;
         this.changeFn = changeFn;
     }

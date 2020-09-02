@@ -17,6 +17,11 @@ export class EncodeDeviceMgrComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    await this.tableService.requestData(1, (page) => {
+      this.tableService.deviceTable.initPagination(page, async (index) => {
+        await this.tableService.requestData(index);
+      });
+    });
     this.tableService.deviceTable.tableSelectIds = this.tableSelectIds;
     this.tableService.deviceTable.attrBtnFn = () => {
       this.showBindLabels();
@@ -63,6 +68,10 @@ export class EncodeDeviceMgrComponent implements OnInit {
 
   async search() {
     this.tableService.search.state = true;
-    await this.tableService.searchData(1);
+    await this.tableService.searchData(1, (page) => {
+      this.tableService.deviceTable.initPagination(page, async (index) => {
+        await this.tableService.searchData(index);
+      });
+    });
   }
 }

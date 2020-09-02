@@ -80,7 +80,7 @@ export class  PlatformFormService  extends ListAttribute implements FormAttribut
         model = (this.editItem && this.formState == FormStateEnum.edit) ? this.editItem : new Platform();
         if (check) { 
             model.ProtocolType = item.ProtocolType;
-            model.Url = item.Url_ +':'+ item.Port;
+            model.Url = 'http://'+item.Url_ +':'+ item.Port;
             model.Username = item.Username;
             model.Password = item.Password;
             model.Name=item.Name;
@@ -89,7 +89,8 @@ export class  PlatformFormService  extends ListAttribute implements FormAttribut
             model.UpdateTime = new Date().toISOString();
             if (this.formState == FormStateEnum.create) {
                 model.Id = '';
-                model.CreateTime = new Date().toISOString(); 
+                model.CreateTime = new Date().toISOString();  
+                
                 const response = await this.platformRequestSerivce.create(model).toPromise();
                 if (response.FaultCode == 0) { 
                     this.messageBar.response_success();

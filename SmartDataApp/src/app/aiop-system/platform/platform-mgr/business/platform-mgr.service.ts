@@ -8,6 +8,7 @@ import { DatePipe } from "@angular/common";
 import { CustomTableEvent } from "../../../../shared-module/custom-table/custom-table-event";
 import '../../../../common/string/hw-string';
 import { SearchControl } from "./search";
+import { Page } from "../../../../data-core/model/page";
 @Injectable()
 export class PlatformMgrService extends TableAttribute {
     dataSource_ = new Array<Platform>();
@@ -48,7 +49,7 @@ export class PlatformMgrService extends TableAttribute {
         return this.dataSource_;
     }
 
-    async getPlatformData(pageIndex: number) {
+    async getPlatformData(pageIndex: number,callBack?:(page:Page)=>void) {
        if (this.search.state == false) {
             const response = await this.requestSerivce.list(this.getRequsetParam(TableSearchEnum.none, pageIndex)).toPromise();
             let data = new Platforms(); 
@@ -57,13 +58,14 @@ export class PlatformMgrService extends TableAttribute {
             });;
             this.table.clearItems();
             this.dataSource = [];
-            this.table.Convert(data, this.table.dataSource);
-            this.table.pageCount = response.Data.Page.TotalRecordCount;
+            this.table.Convert(data, this.table.dataSource); 
+            this.table.totalCount = response.Data.Page.RecordCount;
             this.dataSource = response.Data.Data;
+            if(callBack)callBack(response.Data.Page);
         }
     }
 
-    async searchPlatformData(pageIndex: number) {
+    async searchPlatformData(pageIndex: number,callBack?:(page:Page)=>void) {
         if (this.search.state) {
             const response = await this.requestSerivce.
             list(this.getRequsetParam(TableSearchEnum.search, pageIndex,this.search.searchText)).toPromise();
@@ -74,9 +76,9 @@ export class PlatformMgrService extends TableAttribute {
             this.table.clearItems();
             this.dataSource = [];
             this.table.Convert(data, this.table.dataSource);
-            this.table.totalCount = response.Data.Page.TotalRecordCount;
-            this.table.pageCount = response.Data.Page.TotalRecordCount;
+            this.table.totalCount = response.Data.Page.RecordCount;           
             this.dataSource = response.Data.Data;
+            if(callBack)callBack(response.Data.Page);
        }
     }
 

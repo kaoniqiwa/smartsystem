@@ -28,7 +28,7 @@ export class CameraAIModelMgrService extends RegionTreeService {
     search = new SearchControl();
     aiCameraPanel: AICameraPanel;
     aiModelsPanel: AIModelsPanel;
-    pageIndex = 1; 
+    pageIndex = 1;
     constructor(public cameraRequestService: CameraRequestService
         , public aiModelRequestSerivce: AIModelRequestService
         , public cameraAIModelRequestService: CameraAIModelRequestService
@@ -44,11 +44,14 @@ export class CameraAIModelMgrService extends RegionTreeService {
         }
         this.aiCameraPanel.viewPaginationFn = (page: Page) => {
             return new ViewPagination(page.PageCount, async (index) => {
-                this.pageIndex = index;
-                await this.requestCamerasData(index);
-                this.aiCameraPanel.clearPanelView();
-                this.aiCameraPanel.cardListPanelView = this.cameras;
-                this.aiCameraPanel.underCamerasAIModels = this.cameras;
+                if (this.pageIndex != index) {
+                    this.pageIndex = index;
+                    await this.requestCamerasData(index);
+                    this.aiCameraPanel.clearPanelView();
+                    this.aiCameraPanel.cardListPanelView = this.cameras;
+                    this.aiCameraPanel.underCamerasAIModels = this.cameras; 
+                    this.aiCameraPanel.cardListPanelV.pagination.totalRecordCount = this.cameras.length;
+                }
 
             });
         }
@@ -60,19 +63,19 @@ export class CameraAIModelMgrService extends RegionTreeService {
             const result = await this.delAIModelToCamera(cameraId, aiModelId);
             successFn(result);
         }
-        this.regionCamera.cameraAIModelCopyToFn = async (tagCameraId, targetCameraIds) => {
+        this.regionCamera.cameraAIModelCopyToFn = async (tagCameraId, targetCameraIds) => {        
             const success = await this.cameraAIModelsCopyTo(tagCameraId, targetCameraIds);
-            if (success) {               
+            if (success) {
                 /**刷新当前页 */
                 //更新 view
                 //更新 datasource
                 this.aiCameraPanel.setEditListPanel(tagCameraId, targetCameraIds);
-                this.aiCameraPanel.messageBar.response_success(); 
+                this.aiCameraPanel.messageBar.response_success();
             }
             return success;
         }
-    }
 
+    } 
     async requestResourceLabels(callBack?: (items: ResourceLabel[]) => void) {
         const param = new GetResourceLabelsParams();
         param.PageIndex = 1;

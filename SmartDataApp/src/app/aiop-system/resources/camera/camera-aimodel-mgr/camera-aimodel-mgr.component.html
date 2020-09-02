@@ -1,8 +1,7 @@
 <div class="fill-height">
   <div  class="fill-height fill-width hw-content-mask" *ngIf="mgrService.aiCameraPanel.copyCameraId">
     <div class="hw-form-wrap" style="height: 650px;">
-      <region-camera-copy  [cancelFn]="close"
-      [tagCameraId]="mgrService.aiCameraPanel.copyCameraId"></region-camera-copy>
+      <region-camera-copy  [cancelFn]="close" [mgrService]="mgrService"></region-camera-copy>
     </div>
   </div>
   <div class="fill-height">
@@ -17,7 +16,7 @@
           (cdkDropListDropped)="mgrService.aiCameraPanel.dropItem($event)" class="fine"
           style="height: calc(100% - 88px);overflow: scroll;">
           <ng-container *ngFor="let item of mgrService.aiModelsPanel.dataSource">
-            <div  [class.in]="!item.hidden" class="model-item-wrap pull-left collapse" cdkDrag>
+            <div  [class.in]="!item.hidden" class="model-item-wrap pull-left collapse" style=" cursor: move;" cdkDrag>
               <div fxLayoutAlign="center">
                 <div class="middle-round-btn">
                   <i class="howell-icon-home3 fill-height" fxLayoutAlign="center center"

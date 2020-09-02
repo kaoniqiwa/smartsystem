@@ -132,7 +132,7 @@ export class EncodeDeviceFormService extends InputLabelService implements FormAt
             if (item.TransType == TransTypeEnum.UDP)
                 dev.Url = 'tcp://' + item.Url_ + ':' + item.Port + '/';
             else if (item.TransType == TransTypeEnum.TCP)
-                dev.Url = 'https://' + item.Url_ + ':' + item.Port + '/';
+                dev.Url = 'http://' + item.Url_ + ':' + item.Port + '/';
             dev.Username = item.Username;
             if (item.TransType)
                 dev.TransType = Number.parseInt(item.TransType);
@@ -149,7 +149,8 @@ export class EncodeDeviceFormService extends InputLabelService implements FormAt
             dev.UpdateTime = new Date().toISOString();
             if (this.formState == FormStateEnum.create) {
                 dev.Id = '';
-                dev.CreateTime = new Date().toISOString();
+                dev.CreateTime = new Date().toISOString(); 
+                
                 const response = await this.encodeDeviceRequestService.create(dev).toPromise();
                 if (response.FaultCode == 0) { 
                     this.messageBar.response_success();

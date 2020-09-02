@@ -18,9 +18,9 @@ export class RegionTreeService extends ListAttribute {
         param.PageIndex = 1;
         param.PageSize = this.maxSize;
         const response = await this.regionRequestService.list(param).toPromise();
-        this.dataSource= response.Data.Data.sort((a, b) => {
+        this.dataSource = response.Data.Data.sort((a, b) => {
             return ''.naturalCompare(a.Name, b.Name);
-        }); 
+        });
 
     }
 
@@ -33,7 +33,7 @@ export class RegionTreeService extends ListAttribute {
                     node_.name = item.Name;
                     node_.checked = false;
                     node_.id = item.Id;
-                    node_.iconClass='howell-icon-map5';
+                    node_.iconClass = 'howell-icon-map5';
                     node.children = node.children || new Array<TreeNode>();
                     node.children.push(node_);
                     addItems(node_, items);
@@ -46,7 +46,7 @@ export class RegionTreeService extends ListAttribute {
                 node.name = item.Name;
                 node.checked = false;
                 node.id = item.Id;
-                node.iconClass='howell-icon-earth';
+                node.iconClass = 'howell-icon-earth';
                 dataSource.push(node);
                 addItems(node, items);
             }
@@ -80,14 +80,17 @@ export class RegionTreeService extends ListAttribute {
             if (find) {
                 const f = filterList.find(g => g.Id == find.Id);
                 if (f == null) {
-                    list.push(find);
+                    const index = list.findIndex(c => c.Id == find.Id);
+                    if (index == -1)
+                        list.push(find);
                     findParent(find);
                 }
             }
         }
-        filterList.map(x => findParent(x));  
+        filterList.map(x => findParent(x));
 
-        const parentList = this.dataSource.filter(x => !x.ParentId);
+
+        const parentList = this.dataSource.filter(x => !x.ParentId);  
         return this.loadTree([...filterList, ...parentList, ...list]);
     }
 

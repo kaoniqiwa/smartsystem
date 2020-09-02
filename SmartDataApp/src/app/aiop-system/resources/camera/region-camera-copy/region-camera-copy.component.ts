@@ -6,17 +6,17 @@ import { TreeListMode, FlatNode } from '../../../../shared-module/custom-tree/cu
 @Component({
   selector: 'region-camera-copy',
   templateUrl: './region-camera-copy.component.html',
-  styleUrls: ['./region-camera-copy.component.styl'],
-  providers: [CameraAIModelMgrService]
+  styleUrls: ['./region-camera-copy.component.styl']
 })
 export class RegionCameraCopyComponent implements OnInit {
   @ViewChild('tree')
   tree: CustomTreeComponent;
 
-  @Input()
-  tagCameraId = "";
+  
   @Input()
   cancelFn: () => void;
+  @Input()
+  mgrService: CameraAIModelMgrService;
   treeMode = TreeListMode.checkedBox;
 
   searchTree = (text: string) => {
@@ -26,12 +26,17 @@ export class RegionCameraCopyComponent implements OnInit {
     this.tree.defaultItem();
     this.tree.treeControl.expandAll();
   }
-  constructor(private mgrService: CameraAIModelMgrService) {
+  constructor() {
 
   }
 
-  async ngOnInit() {
-    this.mgrService.regionCamera.tagCameraId = this.tagCameraId;
+  get title(){
+     const find= this.mgrService.cameras.find(x=>x.Id == this.mgrService.aiCameraPanel.copyCameraId);
+     if(find)return `${find.Name}模型复制`;
+  }
+
+  async ngOnInit() {    
+    this.mgrService.regionCamera.tagCameraId = this.mgrService.aiCameraPanel.copyCameraId;
     /**获取区域 */
     await this.mgrService.getRegionData();
     /**区域树结构 */

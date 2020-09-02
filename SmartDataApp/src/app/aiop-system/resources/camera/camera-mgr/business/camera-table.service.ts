@@ -12,6 +12,7 @@ import "../../../../../common/string/hw-string";
 import { RegionTree } from "./region-tree";
 import { InputLabelService } from "../../../../common/input-label";
 import { SearchControl } from "./search";
+import { Page } from "../../../../../data-core/model/page";
 @Injectable()
 export class CameraTableService extends InputLabelService {
     dataSource_ = new Array<Camera>();
@@ -73,9 +74,13 @@ export class CameraTableService extends InputLabelService {
              this.searchCamerasData(event.data as any);
         }
 
-        this.regionTree.loadRegionCameras = (regionId: string) => { 
+        this.regionTree.loadRegionCameras = async(regionId: string) => { 
             this.search.clearState();
-            this.requestCamerasData(1);
+            await this.requestCamerasData(1, (page) => {
+                this.cameraTable.initPagination(page, async (index) => {
+                    await this.requestCamerasData(index);
+                });
+            });
         }
     }
 
@@ -88,7 +93,7 @@ export class CameraTableService extends InputLabelService {
         this.encodeDevices = response.Data.Data;
     }
 
-    async requestCamerasData(pageIndex: number) { 
+    async requestCamerasData(pageIndex: number,callBack?:(page:Page)=>void) { 
         if (this.regionTree.selectedNodeId && this.search.state == false) {
             const response = await this.cameraRequestService.list(this.getRequsetParam(pageIndex, this.search)).toPromise();
             let data = new Cameras();
@@ -98,13 +103,13 @@ export class CameraTableService extends InputLabelService {
             this.cameraTable.clearItems();
             this.dataSource = [];
             this.cameraTable.Convert(data, this.cameraTable.dataSource);
-            this.cameraTable.totalCount = response.Data.Page.TotalRecordCount;
-            this.dataSource = response.Data.Data; 
-            
+            this.cameraTable.totalCount = response.Data.Page.RecordCount;   
+            this.dataSource = response.Data.Data;  
+            if(callBack)callBack(response.Data.Page);
         }
     }
 
-    async searchCamerasData(pageIndex: number) {
+    async searchCamerasData(pageIndex: number,callBack?:(page:Page)=>void) {
         if (this.search.state) {
             const response = await this.cameraRequestService.list(this.getRequsetParam(pageIndex, this.search)).toPromise();
             let data = new Cameras();
@@ -114,16 +119,18 @@ export class CameraTableService extends InputLabelService {
             this.cameraTable.clearItems();
             this.dataSource = [];
             this.cameraTable.Convert(data, this.cameraTable.dataSource);
-            this.cameraTable.totalCount = response.Data.Page.TotalRecordCount;
+            this.cameraTable.totalCount = response.Data.Page.RecordCount;   
             this.dataSource = response.Data.Data;
+            if(callBack)callBack(response.Data.Page);
         }
     }
 
     async delCamerasData(ids: string[]) {
         for (const id of ids) {
-            await this.cameraRequestService.del(id);
+            await this.cameraRequestService.del(id).toPromise();
             this.delDataItem(id);
         }
+        this.messageBar.response_success();
     }
 
     delDataItem(id: string) {

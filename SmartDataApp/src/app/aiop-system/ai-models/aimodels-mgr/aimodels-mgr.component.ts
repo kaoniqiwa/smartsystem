@@ -13,12 +13,20 @@ export class AIModelsMgrComponent implements OnInit {
   table: CustomTableComponent;
   constructor(private mgrService: AIModelsMgrService) { }
   searchFn =async (text:string)=>{  
-    this.mgrService.search.searchText = text;
-    await this.mgrService.searchAIModelData(1);
+    this.mgrService.search.searchText = text; 
+    await this.mgrService.searchAIModelData(1, (page) => {
+      this.mgrService.table.initPagination(page, async (index) => {
+        await this.mgrService.searchAIModelData(index);
+      });
+    });
  }
   async ngOnInit() { 
-    await this.mgrService.getAIIcons();
-  //  await this.mgrService.getAIModelData(1);
+    await this.mgrService.getAIIcons(); 
+    await this.mgrService.getAIModelData(1, (page) => {
+      this.mgrService.table.initPagination(page, async (index) => {
+        await this.mgrService.getAIModelData(index);
+      });
+    });
     this.mgrService.table.delItemFn = (id: string) => {
       this.mgrService.table.setConfirmDialog(`删除1个选择项`, async () => {
         await this.mgrService.delAIModelsData([id]);
@@ -36,9 +44,7 @@ export class AIModelsMgrComponent implements OnInit {
           this.table.deleteListItem(id);
         this.mgrService.table.confirmDialog_ = null;
       });
-
-    // this.tableService.deviceTable.delItems(this.tableSelectIds);
-    // this.tableService.deviceTable.delAllSelectId();
+ 
   }
 
   get tableSelectIds() {

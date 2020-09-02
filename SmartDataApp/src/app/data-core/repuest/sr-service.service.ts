@@ -5,18 +5,20 @@ import { VideoUrl, GetPreviewUrlParams, GetVodUrlParams } from "../model/video-u
 import { Injectable } from "@angular/core";
 import { RequestService } from "./Request.service";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
+import { SaveModel } from "../model/save-model";
 
 @Injectable({
     providedIn: 'root'
 })
-export class SRServiceRequestSerivce {
+export class SRServiceRequestSerivce extends SaveModel{
     url: SRServiceUrl;
     constructor(private requestService: HowellAuthHttpService) {
+        super();
         this.url = new SRServiceUrl();
     }
 
-    create(item: SRServer) {
-        return this.requestService.post<SRServer, Response<SRServer>>(this.url.create(), item);
+    create(item: SRServer) {    
+        return this.requestService.post<SRServer, Response<SRServer>>(this.url.create(), this.toModel(item,this.formMustField.srServer));
     }
 
     get(id: string) {

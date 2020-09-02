@@ -32,8 +32,8 @@ export class AppInterceptorServiceService implements HttpInterceptor {
         case 400:
           msg.response_Error('操作失败');
           break;
-      case 404:
-
+      case 504:
+        msg.response_Error('操作失败');
         break;
       default:
     }

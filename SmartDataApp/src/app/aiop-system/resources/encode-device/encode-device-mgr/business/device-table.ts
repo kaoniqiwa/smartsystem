@@ -14,7 +14,7 @@ export class DeviceTable extends ResourcesTable implements IConverter, IPageTabl
         isSingleElection: false,
         values: [],
         primaryKey: "id",
-        eventDelegate: (event: CustomTableEvent) => {
+        eventDelegate: (event: CustomTableEvent) => { 
             if (event.eventType == CustomTableEventEnum.ScrollDown)
                 this.scrollPageFn(event);
             else if (event.eventType == CustomTableEventEnum.TagBtn)
@@ -89,6 +89,12 @@ export class DeviceTable extends ResourcesTable implements IConverter, IPageTabl
         this.dataSource.values.push(this.toTableModel(item));
         this.addItemFn(item);
         this.dataSource.footArgs.totalRecordCount += 1;
+        const tagAttr = new TableIconTextTagAttr();
+        tagAttr.key = item.Id;
+        item.Labels.map(l => {
+            tagAttr.texts.push({ id: l.Id, label: l.Name });
+        });
+        this.dataSource.iconTextTagAttr.push(tagAttr);
     }
 
     singleConvert(item:EncodeDevice){

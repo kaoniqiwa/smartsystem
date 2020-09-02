@@ -18,12 +18,12 @@ export class SRServiceService {
         this.baseForm = this.fb.group({
             Name: [''],
             ProtocolType: ['Howell'],
-            Username: ['1'],
-            Password: ['1']
+            Username: [''],
+            Password: ['']
         });
         var address = this.fb.group({
-            IPAddress: ['192.168.1.1'],
-            Port: ['8800'],
+            IPAddress: [''],
+            Port: [''],
             IsInternet: ['1'],
             IsDefault: ['1'],
             RtspPort: ['554'],
@@ -37,8 +37,8 @@ export class SRServiceService {
     plusAddressForm() {
         if (this.addressForm.length < 7) {
             const address = this.fb.group({
-                IPAddress: ['192.168.12.1'],
-                Port: ['8800'],
+                IPAddress: [''],
+                Port: [''],
                 IsInternet: ['1'],
                 IsDefault: ['1'],
                 RtspPort: ['554'],
@@ -102,6 +102,7 @@ export class SRServiceService {
         }
         else if (item.Address) {
             item.Address.map(x => {
+                x.Port = x.Port+'';
                 if (x.IPAddress=='' || x.IPAddress.validIP()==false) {
                     this.messageBar.response_warning('IP地址格式不对');
                     check = false; 

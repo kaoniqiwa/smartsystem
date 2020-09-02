@@ -118,7 +118,7 @@ export class CameraFormService extends InputLabelService implements FormAttribut
                     this.fillResourceLabel(response.Data.Labels,this._tagSource);
                     successFn(true, response.Data, this.formState);
                     if (regionId)                      
-                        this.regionResourceRequestService.create(regionId, response.Data.Id);                      
+                        this.regionResourceRequestService.create(regionId, response.Data.Id).toPromise();                      
                 }
             }
             else if (this.formState == FormStateEnum.edit) {

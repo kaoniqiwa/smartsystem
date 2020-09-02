@@ -33,7 +33,7 @@ export class CameraMgrComponent implements OnInit {
   ) { }
 
 
-  async ngOnInit() {
+  async ngOnInit() {   
     await this.regionTreeService.getRegionData();
     const dataSource = this.regionTreeService.loadTree(this.regionTreeService.dataSource);
     this.tree.dataSource.data = dataSource;
@@ -88,6 +88,10 @@ export class CameraMgrComponent implements OnInit {
 
   async search() {
     this.tableService.search.state = true;  
-    await this.tableService.searchCamerasData(1);
+    await this.tableService.searchCamerasData(1, (page) => {
+      this.tableService.cameraTable.initPagination(page, async (index) => {
+        await this.tableService.searchCamerasData(index);
+      });
+    }); 
   }
 }

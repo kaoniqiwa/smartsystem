@@ -6,6 +6,7 @@ import { SRServer } from "../../../../data-core/model/sr-server";
 import { CustomTableEvent } from "../../../../shared-module/custom-table/custom-table-event";
 import '../../../../common/string/hw-string';
 import { SearchControl } from "./search";
+import { Page } from "../../../../data-core/model/page";
 @Injectable()
 export class SRServersService extends TableAttribute {
     dataSource_ = new Array<SRServer>();
@@ -55,11 +56,14 @@ export class SRServersService extends TableAttribute {
             this.table.Convert(data, this.table.dataSource);
             this.table.totalCount = response.Data.length;
             this.dataSource = response.Data;
+            this.table.initPagination({ PageCount: 1 } as Page, async (index) => {
+
+            });
         }
     }
 
     searchSRServerData() {
-        if (this.search.state) { 
+        if (this.search.state) {
             const flterItems = this.dataSource.filter(x => x.Name.indexOf(this.search.searchText) > -1);
             this.table.clearItems();
             let data = new SRServers();
@@ -68,17 +72,20 @@ export class SRServersService extends TableAttribute {
             });
             this.table.Convert(data, this.table.dataSource);
             this.table.totalCount = flterItems.length;
+            this.table.initPagination({ PageCount: 1 } as Page, async (index) => {
+
+            });
         }
     }
 
     async syncSRService(id: string) {
-        await this.requestSerivce.sync(id);
+        await this.requestSerivce.sync(id).toPromise();
     }
 
 
     async delSRServersData(ids: string[]) {
         for (const id of ids) {
-            await this.requestSerivce.del(id);
+            await this.requestSerivce.del(id).toPromise();
             this.delDataItem(id);
             this.table.msg.response_success();
         }

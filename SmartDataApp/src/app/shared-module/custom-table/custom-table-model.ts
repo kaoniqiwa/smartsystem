@@ -1,6 +1,8 @@
 import { IViewModel } from "../../common/abstract/Base-View";
 import { IBusinessData } from "../../common/Interface/IBusiness";
-import { IViewEvent } from "../../common/interface/IViewEvent"; 
+import { IViewEvent } from "../../common/interface/IViewEvent";
+import { HWPaginationOptions } from "../../common/directive/pagination-directive";
+import { CustomTableEventEnum, CustomTableEvent } from "./custom-table-event";
 
 export class CustomTableArgs<T extends IBusinessData> implements IViewModel {
     //数据源
@@ -31,8 +33,9 @@ export class CustomTableArgs<T extends IBusinessData> implements IViewModel {
     isDisplayDetailImg: boolean;
 
     eventDelegate: (tag: IViewEvent) => void;
-    iconTextTh:TableTh;
-    iconTextTagAttr:TableIconTextTagAttr[];
+    paginationOptions: HWPaginationOptions;
+    iconTextTh: TableTh;
+    iconTextTagAttr: TableIconTextTagAttr[];
     constructor(options: {
         values?: T[],
         primaryKey?: string,
@@ -48,8 +51,8 @@ export class CustomTableArgs<T extends IBusinessData> implements IViewModel {
         tableWidth?: string,
         isDisplayDetailImg?: boolean,
         eventDelegate?: (tag: IViewEvent) => void,
-        iconTextTh?:TableTh,
-        iconTextTagAttr?:TableIconTextTagAttr[]
+        iconTextTh?: TableTh,
+        iconTextTagAttr?: TableIconTextTagAttr[]
     } = {}) {
         this.values = options.values;
         this.primaryKey = options.primaryKey;
@@ -70,7 +73,7 @@ export class CustomTableArgs<T extends IBusinessData> implements IViewModel {
     }
 }
 
-export class TableAttr implements IViewModel{
+export class TableAttr implements IViewModel {
     //表头title名称
     HeadTitleName: string;
     //表格Td宽度 格式如:'20%'
@@ -110,18 +113,18 @@ export class TableAttr implements IViewModel{
 }
 
 export class TableTh {
-    width:string;
-    name:string;
-    constructor (width:string,name:string){
+    width: string;
+    name: string;
+    constructor(width: string, name: string) {
         this.width = width;
-        this.name=name;
+        this.name = name;
     }
 }
 
-export class TableIconTextTagAttr implements IViewModel{ 
-    texts:{ id:string,label:string}[] = new Array<{id:string,label:string}>();
-    key :string;
-    callback: Function = ()=>{};
+export class TableIconTextTagAttr implements IViewModel {
+    texts: { id: string, label: string }[] = new Array<{ id: string, label: string }>();
+    key: string;
+    callback: Function = () => { };
 
 }
 
@@ -143,7 +146,7 @@ export class TableOperationBtn implements IViewModel {
     }
 }
 
-export class FootArgs implements IViewModel{
+export class FootArgs implements IViewModel {
     //是否显示选中数量
     hasSelectCount: boolean;
     //是否有当前数/总数
@@ -165,6 +168,6 @@ export class FootArgs implements IViewModel{
         this.hasCount = options.hasCount == false ? options.hasCount : true;
         this.hasSelectBtn = options.hasSelectBtn == false ? options.hasSelectBtn : true;
         this.totalRecordCount = options.totalRecordCount || 0;
-        this.pageCount=options.pageCount||1;
+        this.pageCount = options.pageCount || 1;
     }
 }

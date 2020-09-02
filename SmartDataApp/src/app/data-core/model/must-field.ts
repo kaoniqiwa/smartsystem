@@ -12,4 +12,8 @@ export class FormMustField{
 
     region = ['Id','Name','IsLeaf','RegionType'];
     
+    platform =['Id','ProtocolType','Url','State'];
+
+    srServer  = ['Id','Name','ProtocolType','Addresses'];
+  
 }

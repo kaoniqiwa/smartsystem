@@ -7,18 +7,20 @@ import { GetPlatformsParams } from "../model/platforms-Params";
 import { PagedList } from "../model/page";
 import { Protocol } from "../model/protocol";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
+import { SaveModel } from "../model/save-model";
 
 @Injectable({
     providedIn: 'root'
 })
-export class PlatformRequestSerivce{
+export class PlatformRequestSerivce extends SaveModel{
     url: PlatformUrl;
     constructor(private requestService: HowellAuthHttpService) {
+        super();
         this.url = new PlatformUrl();
     }
 
     create(item: PlatformModel) {
-        return this.requestService.post<PlatformModel, Response<PlatformModel>>(this.url.create(), item);
+        return this.requestService.post<PlatformModel, Response<PlatformModel>>(this.url.create(), this.toModel(item,this.formMustField.platform));
     }
 
     get(id: string) {

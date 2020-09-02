@@ -50,6 +50,7 @@ export class AICameraPanel {
     delUnderCameraAIModel(cameraId: string, aiModelId: string) {
         var s = this.underCamerasAIModels_.get(cameraId);
         s = s.filter(x => x != aiModelId);
+        this.underCamerasAIModels_.set(cameraId,s);        
     }
 
     delCardListItem(listId: string, itemId: string) {
@@ -78,7 +79,7 @@ export class AICameraPanel {
                         if (ok) this.messageBar.response_success();
                     });
                     this.addCards(i, copyItem);
-                    list.push(i);
+                    list.push(copyItem.id);
                 }
             }
         });
@@ -116,7 +117,7 @@ export class AICameraPanel {
                     icon: icon,
                     label: iconLabel
                 });
-            })
+            });
             card.barOtherAccessorys = new Array();
             var icon = new AccessoryIcon();
             icon.colorClass = 'sky-blue-text';
@@ -127,7 +128,7 @@ export class AICameraPanel {
             card.barOtherAccessorys.push(icon);
             icon = new AccessoryIcon();
             icon.colorClass = 'text-danger';
-            icon.icon = 'mdi mdi-signal';
+            icon.icon = x.OnlineStatus == 0 ? 'howell-icon-signal2' : 'howell-icon-no_signal';
             card.barOtherAccessorys.push(icon);
 
             card.barBody = new Array();
@@ -142,27 +143,28 @@ export class AICameraPanel {
 
             });
             this.cardListPanelView_.listPanel.push(card);
+
         });
     }
 
     setEditListPanel(tagCameraId: string, targetCameraIds: string[]) {
-        // this.cardListPanelView_.listPanel
+
         this.findCameraAIModel(tagCameraId, (models: CameraAIModel[]) => {
             if (models)
-                models.map(m => {
-                    //更新
-                    targetCameraIds.map(x => {
-                        const findItem = this.cardListPanelView_.listPanel.find(f => f.id == x);
-                        if (findItem) {
-                            this.clearUnderCameraAIModel = x;
-                            findItem.barBody = new Array();
+                //更新
+                targetCameraIds.map(x => {
+                    const findItem = this.cardListPanelV.listPanel.find(f => f.id == x);
+                    if (findItem) {
+                        this.clearUnderCameraAIModel = x;
+                        findItem.barBody = new Array();
+                        models.map(m => {
                             findItem.barBody.push({
                                 id: m.Id,
                                 label: m.ModelName
                             });
                             this.setUnderCameraAIModel(x, m.Id);
-                        }
-                    })
+                        });
+                    }
                 });
         });
     }

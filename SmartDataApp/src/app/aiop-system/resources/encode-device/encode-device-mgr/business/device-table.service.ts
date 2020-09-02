@@ -7,11 +7,12 @@ import { EncodeDevice } from "../../../../../data-core/model/encode-device";
 import { CustomTableEvent } from "../../../../../shared-module/custom-table/custom-table-event";
 import { ResourceLabel } from "../../../../../data-core/model/resource-label";
 import { InputTagArea } from "../../../../../shared-module/input-tag-area/input-tag-area";
-import    "../../../../../common/string/hw-string";
+import "../../../../../common/string/hw-string";
 import { InputLabelService } from "../../../../common/input-label";
 import { SearchControl } from "./search";
+import { Page } from "../../../../../data-core/model/page";
 @Injectable()
-export class DeviceTableService  extends InputLabelService {
+export class DeviceTableService extends InputLabelService {
     dataSource_ = new Array<EncodeDevice>();
 
     set dataSource(items: EncodeDevice[]) {
@@ -41,7 +42,7 @@ export class DeviceTableService  extends InputLabelService {
     constructor(private requestService: EncodeDeviceRequestService
         , public labelRequestService: LabelRequestService
         , public resourceLabelRequestService: ResourceLabelRequestService) {
-        super(labelRequestService,resourceLabelRequestService);
+        super(labelRequestService, resourceLabelRequestService);
         this.deviceTable.findItemFn = (id: string) => {
             return this.findDevice(id);
         }
@@ -60,50 +61,53 @@ export class DeviceTableService  extends InputLabelService {
             this.requestData(event.data as any);
             this.searchData(event.data as any);
         }
-        
+
         this.findResourceFn = (id: string) => {
             return this.findDevice(id);
         }
     }
 
-    async requestData(pageIndex: number) {
+    async requestData(pageIndex: number,callBack?:(page:Page)=>void) {
         if (this.search.state == false) {
-            const response = await this.requestService.list(this.getRequsetParam(pageIndex,this.search)).toPromise();
-            let data = new EncodeDevices();  
-            data.items = response.Data.Data.sort((a,b)=>{
-                return ''.naturalCompare(a.Name,b.Name);
-            }); 
+            const response = await this.requestService.list(this.getRequsetParam(pageIndex, this.search)).toPromise();
+            let data = new EncodeDevices();
+            data.items = response.Data.Data.sort((a, b) => {
+                return ''.naturalCompare(a.Name, b.Name);
+            });
 
             this.deviceTable.clearItems();
             this.dataSource = [];
-            this.deviceTable.Convert(data, this.deviceTable.dataSource);
-            this.deviceTable.totalCount = response.Data.Page.TotalRecordCount;
+            this.deviceTable.Convert(data, this.deviceTable.dataSource); 
+            this.deviceTable.totalCount = response.Data.Page.RecordCount;         
             this.dataSource = response.Data.Data;
+            if(callBack)callBack(response.Data.Page);
         }
 
-    } 
+    }
 
-    async searchData(pageIndex: number) {
-       if (this.search.state) {
-            const response = await this.requestService.list(this.getRequsetParam(pageIndex,this.search)).toPromise();;
+    async searchData(pageIndex: number,callBack?:(page:Page)=>void) {
+        if (this.search.state) {
+            const response = await this.requestService.list(this.getRequsetParam(pageIndex, this.search)).toPromise();;
             let data = new EncodeDevices();
-            data.items = response.Data.Data.sort((a,b)=>{
-                return ''.naturalCompare(a.Name,b.Name);
+            data.items = response.Data.Data.sort((a, b) => {
+                return ''.naturalCompare(a.Name, b.Name);
             });
             this.deviceTable.clearItems();
             this.dataSource = [];
             this.deviceTable.Convert(data, this.deviceTable.dataSource);
-            this.deviceTable.totalCount = response.Data.Page.TotalRecordCount;
+            this.deviceTable.totalCount = response.Data.Page.RecordCount; 
             this.dataSource = response.Data.Data;
-       }
+            if(callBack)callBack(response.Data.Page);
+        }
 
     }
 
     async delDevicesData(ids: string[]) {
         for (const id of ids) {
-            await this.requestService.del(id);
+            await this.requestService.del(id).toPromise();
             this.delDataItem(id);
         }
+        this.messageBar.response_success();
     }
 
     delDataItem(id: string) {
@@ -128,25 +132,25 @@ export class DeviceTableService  extends InputLabelService {
     }
 
 
-    getRequsetParam(pageIndex: number, search: SearchControl) { 
+    getRequsetParam(pageIndex: number, search: SearchControl) {
 
         let param = new GetEncodeDevicesParams();
         param.PageIndex = pageIndex;
-        param.PageSize = new TableAttribute().pageSize; 
+        param.PageSize = new TableAttribute().pageSize;
         const s = search.toSearchParam();
-        if (s.SearchText&&search.other==false) {
+        if (s.SearchText && search.other == false) {
             param.Name = s.SearchText;
             //param.Labels = [s.SearchText];
 
         }
-        else {           
-            if(s.Name)param.Name = s.Name;
-            if(s.Url) param.IPAddress=s.Url;
-            if(s.OnlineStatus)param.OnlineStatus=Number.parseInt(s.OnlineStatus);
-            if(s.AndLabelIds.length){
+        else {
+            if (s.Name) param.Name = s.Name;
+            if (s.Url) param.IPAddress = s.Url;
+            if (s.OnlineStatus) param.OnlineStatus = Number.parseInt(s.OnlineStatus);
+            if (s.AndLabelIds.length) {
                 param.AndLabelIds = s.AndLabelIds;
             }
-        } 
+        }
         return param;
     }
 }

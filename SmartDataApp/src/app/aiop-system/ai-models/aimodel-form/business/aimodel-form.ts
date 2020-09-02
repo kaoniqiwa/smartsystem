@@ -19,7 +19,7 @@ export class AIModelFormService extends ListAttribute {
     dtoDataSource = new Array<InputTreeNode>();
     parseItem:CameraAIModel;
     changeModelLabelFn = (item: FlatNode, inputVal?: string) => {
-        const change = (items: CameraAIModelDTOLabel[], id_index: string[]) => {
+        const change = (items: CameraAIModelDTOLabel[], id_index: string[]) => { 
             items.map(x => {
                 if (x.LabelId == id_index[0]) {
                     if (id_index.length == 2)
@@ -33,7 +33,12 @@ export class AIModelFormService extends ListAttribute {
         }
         if (inputVal && item) {
             const id_index = item.id.split('_EnumValues_');
-            this.editItem.ModelDTO.Labels.map(m1 => {
+           if(this.editItem) this.editItem.ModelDTO.Labels.map(m1 => {
+                if (m1.LabelId == id_index[0])
+                    m1.LabelModelValue = inputVal;
+                change(m1.Labels, id_index);
+            });
+            else  if(this.parseItem)this.parseItem.ModelDTO.Labels.map(m1 => {
                 if (m1.LabelId == id_index[0])
                     m1.LabelModelValue = inputVal;
                 change(m1.Labels, id_index);
@@ -61,7 +66,7 @@ export class AIModelFormService extends ListAttribute {
             this.messageBar.response_warning('名称不能为空');
             return false;
         }
-        else if (item.ModelJSON == '') {
+        else if (item.ModelJSON == ''&&this.editItem==null) {
             this.messageBar.response_warning('请上传模型文件');
             return false;
         }
@@ -142,9 +147,12 @@ export class AIModelFormService extends ListAttribute {
             for (const key in response) {
                 this.modelIcons.push(new PicturesDropList(key, this.imgUrlRoot + response[key]));
             }
-            if (this.modelIcons.length)
-                this.modelIcons[0].checked = true;
         }
+    }
+
+    set modelIcon(index:number){
+        if (this.modelIcons.length)
+        this.modelIcons[index].checked = true;
     }
 
     defaultForm(editItem: CameraAIModel) {
@@ -159,15 +167,18 @@ export class AIModelFormService extends ListAttribute {
                 TransformType:editItem.TransformType,
             });
             this.formState = FormStateEnum.edit;
-            this.loadAIModelDTOTree(this.editItem);
+            this.loadAIModelDTOTree(editItem);
+            this.modelIcon=editItem.Label;
         }
-        else {
+        else {            
+            this.modelIcon=0;
             this.formState = FormStateEnum.create;
         }
     }
 
     async saveFrom(item: FormField, successFn: (success: boolean, item: CameraAIModel, formState: FormStateEnum) => void) {
-        const check = this.checkForm(item),save=async (model:CameraAIModel)=>{
+        const check = this.checkForm(item),save=async (model:CameraAIModel)=>{ 
+        
             const response = await this.requestService.create(model).toPromise();
             if (response.FaultCode ==0) {
                 this.messageBar.response_success();
@@ -196,7 +207,7 @@ export class AIModelFormService extends ListAttribute {
             }
             else if (this.formState == FormStateEnum.edit) {
                 //后台要求
-                model.ModelJSON=null;
+                model.ModelJSON='';
                 const response = await this.requestService.set(model).toPromise();
                 if (response.FaultCode ==0) {
                     this.messageBar.response_success();

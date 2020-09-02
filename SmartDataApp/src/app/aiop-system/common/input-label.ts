@@ -67,7 +67,7 @@ export class InputLabelService {
         const param = new GetResourceLabelsParams();
         param.PageIndex = 1;
         param.PageSize = new ListAttribute().maxSize;
-        const response = await this.labelRequestService.list(param).toPromise();
+        const response = await this.labelRequestService.list(param).toPromise(); 
         this.tagSource = response.Data.Data;
         if (callBack) callBack(response.Data.Data);
     }

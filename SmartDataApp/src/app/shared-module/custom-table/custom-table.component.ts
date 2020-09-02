@@ -9,7 +9,7 @@ import { HWPaginationOptions } from "../../common/directive/pagination-directive
   templateUrl: './custom-table.component.html',
   styleUrls: ['./custom-table.component.styl'],
 })
-export class CustomTableComponent implements OnInit ,OnChanges{
+export class CustomTableComponent implements OnInit{
 
   // @ViewChild('customTable', { read: InfiniteScrollDirective })
   // scrollBar: InfiniteScrollDirective;
@@ -20,7 +20,7 @@ export class CustomTableComponent implements OnInit ,OnChanges{
   selectedId: string[] = [];
 
   minusTableHeightStr = "0px";
-  paginationOptions: HWPaginationOptions;
+
   ngOnInit() {
     let tableHeight = 0;
     if (this.model.hasHead) {
@@ -32,12 +32,7 @@ export class CustomTableComponent implements OnInit ,OnChanges{
     this.minusTableHeightStr = tableHeight + "px";
   
   }
-  ngOnChanges(){
-    if (this.model&&this.paginationOptions==null)
-    this.paginationOptions = new HWPaginationOptions(this.model.footArgs.pageCount, (index) => {
-      this.model.eventDelegate(new CustomTableEvent(CustomTableEventEnum.ScrollDown, index));
-    });
-  }
+ 
 
   iconTextTagAttr(id: string) {
     const item = this.model.iconTextTagAttr.find(x => x.key == id);

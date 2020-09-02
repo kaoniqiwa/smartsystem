@@ -19,7 +19,7 @@ export class SRServersMgrComponent implements OnInit {
   constructor(private mgrService:SRServersService) { }
 
  async ngOnInit() {
-    
+  await this.mgrService.getSRServerData();
     this.mgrService.table.delItemFn = (id:string)=>{
       this.mgrService.table.setConfirmDialog(`删除1个选择项`,async()=>{
         await this.mgrService.delSRServersData([id]);      
@@ -37,9 +37,7 @@ export class SRServersMgrComponent implements OnInit {
         this.table.deleteListItem(id);
       this.mgrService.table.confirmDialog_=null;
     });
-  
-    // this.tableService.deviceTable.delItems(this.tableSelectIds);
-    // this.tableService.deviceTable.delAllSelectId();
+   
   }
 
   get tableSelectIds() {

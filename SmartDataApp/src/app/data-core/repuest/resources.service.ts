@@ -55,7 +55,8 @@ export class EncodeDeviceRequestService extends SaveModel{
         super();
         this.url = new url.ResourceEncodeDevice();
     }
-    create(item:EncodeDeviceModel){
+    create(item:EncodeDeviceModel){ 
+    
         return this.requestService.post<EncodeDeviceModel, Response<EncodeDeviceModel>>(this.url.create(), this.toModel(item,this.formMustField.encodeDevice));
     }
 
