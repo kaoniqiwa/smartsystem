@@ -64,7 +64,7 @@ export class CameraAIModelMgrService extends RegionTreeService {
             successFn(result);
         }
         this.regionCamera.cameraAIModelCopyToFn = async (tagCameraId, targetCameraIds) => {        
-            const success = await this.cameraAIModelsCopyTo(tagCameraId, targetCameraIds);
+            const success = await this.cameraAIModelsCopyTo(tagCameraId, targetCameraIds); 
             if (success) {
                 /**刷新当前页 */
                 //更新 view
@@ -109,7 +109,8 @@ export class CameraAIModelMgrService extends RegionTreeService {
     async cameraAIModelsCopyTo(tagCameraId: string, targetCameraId: string[]) {
         const param = new BatchCopyRequest();
         param.ResourceIds = targetCameraId;
-        const response = await this.cameraAIModelRequestService.copyTo(param, tagCameraId).toPromise();;
+        param.DeleteExisted=true;
+        const response = await this.cameraAIModelRequestService.copyTo(param, tagCameraId).toPromise(); 
         return response.FaultReason == 'OK';
     }
 

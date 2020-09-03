@@ -19,6 +19,7 @@ export class RegionTree {
             node.checked = false;
             node.id = item.Id;
             node.name = item.Name;
+            node.iconClass='howell-icon-map5';
             this.addTreeNode(this.selectedNode, node,item);
         }
         else if (formState == FormStateEnum.edit && success){
