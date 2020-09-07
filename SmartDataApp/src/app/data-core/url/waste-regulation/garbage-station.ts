@@ -5,13 +5,13 @@ export class GarbageStations  extends BaseUrl implements IUrl {
         return this.aiop + 'GarbageStations';
     }
     edit(id: string): string {
-        return this.aiop + `GarbageStations/${id}`
+        return this.aiop + `GarbageStations/${id}`;
     }
     del(id: string): string {
-        return this.aiop + `GarbageStations/${id}`
+        return this.aiop + `GarbageStations/${id}`;
     }
     get(id: string): string {
-        return this.aiop + `GarbageStations/${id}`
+        return this.aiop + `GarbageStations/${id}`;
     }
     list(): string {
         return this.aiop + `GarbageStations/List`;
@@ -39,13 +39,13 @@ export class Camera extends BaseUrl implements IUrl {
         return this.aiop + `GarbageStations/${stationId}/Cameras`;
     }
     edit(stationId: string,cameraId:string): string {
-        return this.aiop + `GarbageStations/${stationId}/Cameras/${cameraId}`
+        return this.aiop + `GarbageStations/${stationId}/Cameras/${cameraId}`;
     }
     del(stationId: string,cameraId:string): string {
-        return this.aiop + `GarbageStations/${stationId}/Cameras/${cameraId}`
+        return this.aiop + `GarbageStations/${stationId}/Cameras/${cameraId}`;
     }
     get(stationId: string,cameraId:string): string {
-        return this.aiop + `GarbageStations/${stationId}/Cameras/${cameraId}`
+        return this.aiop + `GarbageStations/${stationId}/Cameras/${cameraId}`;
     }
     list(): string {
         return this.aiop + `GarbageStations/Cameras/List`;
@@ -62,11 +62,11 @@ export class CameraTrashCans extends BaseUrl implements IUrl {
     del(stationId: string,cameraId:string,trashCansId:string): string {
         return this.aiop + `GarbageStations/${stationId}/Cameras/${cameraId}/TrashCans/${trashCansId}`;
     }
-    get(stationId: string,cameraId:string): string {
-        return this.aiop + `GarbageStations/${stationId}/Cameras/${cameraId}/TrashCans`;
+    get(stationId: string,cameraId:string,trashCansId:string): string {
+        return this.aiop + `GarbageStations/${stationId}/Cameras/${cameraId}/TrashCans/${trashCansId}`;
     }
-    list(): string {
-        return this.aiop + `GarbageStations/Cameras/List`;
+    list(stationId: string,cameraId:string): string {
+        return this.aiop + `GarbageStations/${stationId}/Cameras/${cameraId}/TrashCans`;
     }
 }
 

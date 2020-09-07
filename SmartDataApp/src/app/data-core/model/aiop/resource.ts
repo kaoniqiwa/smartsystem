@@ -1,4 +1,4 @@
-import { ResourceLabel } from "./single-result";
+import { ResourceLabel } from "../single-result";
 import { PlatformAssociation } from "./iplatform-access";
 import { GisPoint } from "./igis-point";
 import { IResource } from "./iresource";

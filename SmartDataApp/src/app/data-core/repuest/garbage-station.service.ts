@@ -95,7 +95,38 @@ export class CameraRequestService extends SaveModel{
 @Injectable({
     providedIn:'root'
 })
-export class GarbageStationTrashCansRequestService extends SaveModel{
+export class CameraTrashCanRequestService extends SaveModel{
+    url: url.CameraTrashCans;
+    constructor(private requestService: HowellAuthHttpService) {
+        super();
+        this.url = new url.CameraTrashCans();
+    }
+    create(item:TrashCan){ 
+        return this.requestService.post<TrashCan, Response<TrashCan>>(this.url.create(item.GarbageStationId,item.CameraId),item);
+    } 
+
+    get(garbageStationId:string,cameraId: string,trashCanId:string) {
+        return this.requestService.get<TrashCan>(this.url.get(garbageStationId,cameraId,trashCanId));
+    }
+
+    set(item: TrashCan){
+        return this.requestService.put<TrashCan, Response<TrashCan>>(this.url.edit(item.GarbageStationId,item.CameraId,item.Id), item);
+    }
+
+    del(garbageStationId:string,cameraId: string,trashCanId:string) {
+        return this.requestService.delete<TrashCan>(this.url.del(garbageStationId,cameraId,trashCanId));
+    }
+
+    list(garbageStationId:string,cameraId: string){
+        return this.requestService.get<Response<TrashCan[]>>(this.url.list(garbageStationId,cameraId));
+    } 
+}
+
+
+@Injectable({
+    providedIn:'root'
+})
+export class GarbageStationTrashCanRequestService extends SaveModel{
     url: url.GarbageStationTrashCans;
     constructor(private requestService: HowellAuthHttpService) {
         super();

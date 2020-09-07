@@ -5,13 +5,13 @@ export class Division extends BaseUrl implements IUrl {
         return this.aiop + 'Divisions';
     }
     edit(id: string): string {
-        return this.aiop + `Divisions/${id}`
+        return this.aiop + `Divisions/${id}`;
     }
     del(id: string): string {
-        return this.aiop + `Divisions/${id}`
+        return this.aiop + `Divisions/${id}`;
     }
     get(id: string): string {
-        return this.aiop + `Divisions/${id}`
+        return this.aiop + `Divisions/${id}`;
     }
     list(): string {
         return this.aiop + `Divisions/List`;

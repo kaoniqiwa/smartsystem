@@ -1,7 +1,7 @@
 import { IGisPointElement } from "./igis-point-element";
 import { IMapElement } from "./map-element";
 import { IPlatformAccess } from "./iplatform-access";
-import { ResourceLabel } from "./single-result";
+import { ResourceLabel } from "../single-result";
 
 /**资源信息规范接口 */
 export interface IResource extends IGisPointElement, IMapElement, IPlatformAccess {
