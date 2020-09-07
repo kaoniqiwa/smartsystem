@@ -1,6 +1,6 @@
 
 import { Labels } from "./label"; 
-import { ResourceLabel } from "../../data-core/model/resource-label";
+import { ResourceLabel } from "../../data-core/model/aiop/resource-label";
 import { ConfirmDialog } from "../../shared-module/confirm-dialog/confirm-dialog.component";
 import { FormGroup } from "@angular/forms";
 import {BusinessTable  } from "./business-table";

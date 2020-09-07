@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { RegionRequestService } from "../../../../data-core/repuest/region.service";
-import { Region } from "../../../../data-core/model/region"; 
+import { Region } from "../../../../data-core/model/aiop/region"; 
 import { RegionTree } from "./region-tree";
 import { MessageBar } from "../../../../common/tool/message-bar";
 import { RegionTreeService } from "../../../common/region-tree.service";

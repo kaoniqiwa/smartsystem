@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Region, GetRegionsParams } from "../../data-core/model/region";
+import { Region, GetRegionsParams } from "../../data-core/model/aiop/region";
 import { RegionRequestService } from "../../data-core/repuest/region.service";
 import { ListAttribute } from "../../common/tool/table-form-helper";
 import { TreeNode } from "../../shared-module/custom-tree/custom-tree";

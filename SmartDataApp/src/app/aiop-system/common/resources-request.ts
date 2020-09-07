@@ -1,7 +1,7 @@
 import { TableAttribute } from "../../common/tool/table-form-helper";
 import { Injectable } from "@angular/core";
 import { LabelRequestService, ResourceLabelRequestService } from "../../data-core/repuest/resources.service";
-import { ResourceLabel } from "../../data-core/model/resource-label";
+import { ResourceLabel } from "../../data-core/model/aiop/resource-label";
 @Injectable()
 export class ResourcesRequest<T> extends TableAttribute {
     dataSource_ = new Array<T>(); 

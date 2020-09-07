@@ -3,8 +3,8 @@ import { RequestService } from "./Request.service";
 import { PagedList } from "../model/page";
 import { Response } from "../model/Response";   
 import * as url from "../url/event";
-import { GetCameraAIEventRecordsParams } from "../model/camera-ai-event-records-params";
-import { CameraAIEventRecord } from "../model/camera-ai-event-record";
+import { GetCameraAIEventRecordsParams } from "../model/aiop/camera-ai-event-records-params";
+import { CameraAIEventRecord } from "../model/aiop/camera-ai-event-record";
 @Injectable({
     providedIn:'root'
 })

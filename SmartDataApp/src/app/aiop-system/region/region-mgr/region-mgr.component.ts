@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { RegionMgrService } from "./business/region-mgr.service";
 import { CustomTreeComponent } from "../../../shared-module/custom-tree/custom-tree.component";
 import { TreeNode, FlatNode } from '../../../shared-module/custom-tree/custom-tree';
-import { Region } from "../../../data-core/model/region";
+import { Region } from "../../../data-core/model/aiop/region";
 @Component({
   selector: 'app-region-mgr',
   templateUrl: './region-mgr.component.html',

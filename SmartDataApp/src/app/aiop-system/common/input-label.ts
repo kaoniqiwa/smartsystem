@@ -1,13 +1,11 @@
 import { Injectable } from "@angular/core";
 import { InputTagArea } from "../../shared-module/input-tag-area/input-tag-area";
 import { ListAttribute } from "../../common/tool/table-form-helper";
-import { GetResourceLabelsParams } from "../../data-core/model/resource-labels-params";
+import { GetResourceLabelsParams } from "../../data-core/model/aiop/resource-labels-params";
 import { LabelRequestService, ResourceLabelRequestService } from "../../data-core/repuest/resources.service";
-import { ResourceLabel } from "../../data-core/model/resource-label";
-import { Labels } from "./label";
-import { MessageBar } from "../../common/tool/message-bar";
-import { Camera } from "../../data-core/model/camera";
-import { Resource } from "../../data-core/model/resource";
+import { ResourceLabel } from "../../data-core/model/aiop/resource-label";
+import { MessageBar } from "../../common/tool/message-bar"; 
+import { Resource } from "../../data-core/model/aiop/resource";
 @Injectable()
 export class InputLabelService {
     tagSource_ = new Array<InputTagArea>();

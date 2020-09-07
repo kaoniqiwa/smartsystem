@@ -1,4 +1,4 @@
-import {  IUrl, BaseUrl} from "./IUrl";
+import {  IUrl, BaseUrl} from "../IUrl";
 
 export class Platform extends BaseUrl implements IUrl{
     create(): string {

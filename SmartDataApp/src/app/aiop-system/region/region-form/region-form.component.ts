@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild, Input, ElementRef,OnChanges } from '@angular/core';
 import { RegionFormService } from "./business/region-form";
-import { Region } from '../../../data-core/model/region';
-import { domClick } from "../../../common/tool/jquery-help/jquery-help";
+import { Region } from '../../../data-core/model/aiop/region'; 
 import { FormStateEnum } from "../../../common/tool/table-form-helper"; 
-import {    FormField} from "./business/region-form";
-import { RegionRequestService } from "../../../data-core/repuest/region.service";
+import {    FormField} from "./business/region-form"; 
 @Component({
   selector: 'region-form',
   templateUrl: './region-form.component.html',

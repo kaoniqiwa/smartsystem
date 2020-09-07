@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Input, ElementRef } from '@angular/core';
 import { SRServiceService, ServerAddress } from "./business/srserver-form";
-import { SRServer, SRServerAddress } from "../../../data-core/model/sr-server";
+import { SRServer, SRServerAddress } from "../../../data-core/model/aiop/sr-server";
 import { FormStateEnum } from '../../../common/tool/table-form-helper';
 import { domClick } from '../../../common/tool/jquery-help/jquery-help';
 import { FormField, BaseFiled } from "./business/srserver-form";

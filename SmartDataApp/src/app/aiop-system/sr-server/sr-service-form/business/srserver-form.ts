@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { SRServer, SRServerAddress } from "../../../../data-core/model/sr-server";
+import { SRServer, SRServerAddress } from "../../../../data-core/model/aiop/sr-server";
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { FormStateEnum } from "../../../../common/tool/table-form-helper";
 import { MessageBar } from "../../../../common/tool/message-bar";

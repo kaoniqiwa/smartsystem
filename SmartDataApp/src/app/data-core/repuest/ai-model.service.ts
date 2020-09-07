@@ -2,10 +2,9 @@ import { Injectable } from "@angular/core";
 import { RequestService } from "./Request.service";
 import { PagedList } from "../model/page";
 import { Response } from "../model/Response";
-import { CameraAIModel } from "../model/camera-ai-model";
-import * as url from "../url/ai-models";
-import { ResponseType } from "howell-http-lib";
-import { GetAIModelsParams } from "../model/camera-ai-event-records-params";
+import { CameraAIModel } from "../model/aiop/camera-ai-model";
+import * as url from "../url/aiop/ai-models"; 
+import { GetAIModelsParams } from "../model/aiop/camera-ai-event-records-params";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
 @Injectable({
     providedIn: 'root'

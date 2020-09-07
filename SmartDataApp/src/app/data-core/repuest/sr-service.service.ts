@@ -1,9 +1,8 @@
-import { SRService as SRServiceUrl } from "../url/sr-server";
+import { SRService as SRServiceUrl } from "../url/aiop/sr-server";
 import { Response } from "../model/Response";
-import { SRServer } from "../model/sr-server";
-import { VideoUrl, GetPreviewUrlParams, GetVodUrlParams } from "../model/video-url";
-import { Injectable } from "@angular/core";
-import { RequestService } from "./Request.service";
+import { SRServer } from "../model/aiop/sr-server";
+import { VideoUrl, GetPreviewUrlParams, GetVodUrlParams } from "../model/aiop/video-url";
+import { Injectable } from "@angular/core"; 
 import { HowellAuthHttpService } from "./howell-auth-http.service";
 import { SaveModel } from "../model/save-model";
 

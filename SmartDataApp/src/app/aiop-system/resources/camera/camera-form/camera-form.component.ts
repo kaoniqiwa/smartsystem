@@ -1,5 +1,5 @@
 import { Component, OnInit, Input ,ViewChild,ElementRef} from '@angular/core'; 
-import { Camera } from "../../../../data-core/model/camera";
+import { Camera } from "../../../../data-core/model/aiop/camera";
 import {  CameraFormService ,FormField} from "./business/camera-form";
 import { domClick } from "../../../../common/tool/jquery-help/jquery-help";
 import { FormStateEnum } from "../../../../common/tool/table-form-helper"; 

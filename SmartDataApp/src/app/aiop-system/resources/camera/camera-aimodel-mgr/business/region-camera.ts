@@ -1,4 +1,4 @@
-import { Camera } from "../../../../../data-core/model/camera";
+import { Camera } from "../../../../../data-core/model/aiop/camera";
 import { TreeNode,FlatNode } from "../../../../../shared-module/custom-tree/custom-tree";
  
 export class RegionCamera {

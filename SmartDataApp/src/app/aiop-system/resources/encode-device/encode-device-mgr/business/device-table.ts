@@ -1,6 +1,6 @@
 import { IConverter } from "../../../../../common/interface/IConverter";
 import { IBusinessData } from "../../../../../common/interface/IBusiness";
-import { EncodeDevice } from "../../../../../data-core/model/encode-device";
+import { EncodeDevice } from "../../../../../data-core/model/aiop/encode-device";
 import { CustomTableArgs, TableAttr, TableOperationBtn, TableTh, TableIconTextTagAttr } from "../../../../../shared-module/custom-table/custom-table-model";
 import { TableFormControl } from "../../../../../common/tool/table-form-helper";
 import { IPageTable } from "../../../../../common/interface/IPageTable";

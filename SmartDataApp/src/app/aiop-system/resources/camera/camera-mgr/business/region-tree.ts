@@ -1,6 +1,5 @@
 
-import { TreeNode, FlatNode } from "../../../../../shared-module/custom-tree/custom-tree";
-import { Region } from "../../../../../data-core/model/region";
+import { TreeNode, FlatNode } from "../../../../../shared-module/custom-tree/custom-tree"; 
 import { RegionTreeService } from '../../../../common/region-tree.service'
 export class RegionTree extends RegionTreeService {
     treeNodeSource = new Array<TreeNode>();

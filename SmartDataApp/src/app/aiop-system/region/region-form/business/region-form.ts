@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { FormGroup, FormControl } from "@angular/forms";
 import { FormStateEnum} from "../../../../common/tool/table-form-helper";
-import { Region } from "../../../../data-core/model/region";
+import { Region } from "../../../../data-core/model/aiop/region";
 import { MessageBar } from "../../../../common/tool/message-bar";
 import { RegionRequestService } from "../../../../data-core/repuest/region.service"; 
 @Injectable()

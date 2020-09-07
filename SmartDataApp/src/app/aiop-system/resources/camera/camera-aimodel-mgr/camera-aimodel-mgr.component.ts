@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CameraAIModelMgrService } from "./business/camera-aimodel-mgr.service";
 import { CardListPanelComponent } from '../../../../shared-module/card-list-panel/card-list-panel.component'
 import { Page } from '../../../../data-core/model/page';
-import { Camera } from '../../../../data-core/model/camera';
+import { Camera } from '../../../../data-core/model/aiop/camera';
 
 @Component({
   selector: 'app-camera-aimodel-mgr',

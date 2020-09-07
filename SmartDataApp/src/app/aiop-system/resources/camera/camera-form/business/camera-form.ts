@@ -2,10 +2,10 @@ import { Injectable } from "@angular/core";
 import { FormGroup, FormControl } from '@angular/forms';
 import { FormStateEnum, ListAttribute, FormAttribute } from "../../../../../common/tool/table-form-helper";
 import { MessageBar } from "../../../../../common/tool/message-bar";
-import { Camera } from "../../../../../data-core/model/camera";
+import { Camera } from "../../../../../data-core/model/aiop/camera";
 import { EncodeDeviceRequestService, CameraRequestService, LabelRequestService, ResourceLabelRequestService } from "../../../../../data-core/repuest/resources.service";
-import { GetEncodeDevicesParams } from "../../../../../data-core/model/encode-devices-params";
-import { EncodeDevice } from "../../../../../data-core/model/encode-device";
+import { GetEncodeDevicesParams } from "../../../../../data-core/model/aiop/encode-devices-params";
+import { EncodeDevice } from "../../../../../data-core/model/aiop/encode-device";
 import { RegionResourceRequestService } from "../../../../../data-core/repuest/region.service";
 import { InputLabelService } from "../../../../common/input-label";
 import { InputTagArea } from "../../../../../shared-module/input-tag-area/input-tag-area";
@@ -76,7 +76,7 @@ export class CameraFormService extends InputLabelService implements FormAttribut
         for (const x of this.encodeDevices) {
             this.form.patchValue({
                 EncodeDeviceId: x.Id,
-                Name: 'a' + new Date().valueOf()
+               // Name: 'a' + new Date().valueOf()
             });
             break;
         }

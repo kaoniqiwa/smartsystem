@@ -16,4 +16,7 @@ export class FormMustField{
 
     srServer  = ['Id','Name','ProtocolType','Addresses'];
   
+    division =['Id','Name','IsLeaf','DivisionType'];
+
+    garbageStation=['Id','Name','StationType','MaxDryVolume','MaxWetVolume']
 }

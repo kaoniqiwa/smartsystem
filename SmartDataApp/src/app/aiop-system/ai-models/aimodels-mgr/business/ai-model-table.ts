@@ -1,5 +1,5 @@
 import { IBusinessData } from "../../../../common/Interface/IBusiness";
-import { CameraAIModel } from "../../../../data-core/model/camera-ai-model"; 
+import { CameraAIModel } from "../../../../data-core/model/aiop/camera-ai-model"; 
 import { ITableField } from "../../../common/ITableField";
 import { IPageTable } from "../../../../common/interface/IPageTable";
 import { CustomTableArgs, TableAttr, TableOperationBtn } from "../../../../shared-module/custom-table/custom-table-model";

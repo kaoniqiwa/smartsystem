@@ -1,5 +1,5 @@
 import { Component, OnInit ,Input,ViewChild, ElementRef} from '@angular/core';
-import { Platform } from '../../../data-core/model/platform';
+import { Platform } from '../../../data-core/model/aiop/platform';
 import {  PlatformFormService,FormField} from "./business/platform-form";
 import { FormStateEnum } from '../../../common/tool/table-form-helper';
 import { domClick } from '../../../common/tool/jquery-help/jquery-help';

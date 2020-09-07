@@ -1,6 +1,6 @@
 import { SearchHelper } from "../../common/tool/table-form-helper";
 import { InputTagSelect } from "../../shared-module/input-tag-select/input-tag-select";
-import { ResourceLabel } from "../../data-core/model/resource-label";
+import { ResourceLabel } from "../../data-core/model/aiop/resource-label";
 export class ResourceSearchControl<T extends ResourceSearchParam> extends SearchHelper{
    
     inputTagSelect = Array<InputTagSelect>();

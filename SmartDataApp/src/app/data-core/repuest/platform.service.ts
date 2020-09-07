@@ -1,11 +1,10 @@
-import { Platform as PlatformUrl } from "../url/platforms";
+import { Platform as PlatformUrl } from "../url/aiop/platforms";
 import { Response } from "../model/Response";
-import { Platform as PlatformModel, Platform } from "../model/platform";
-import { Injectable } from "@angular/core";
-import { RequestService } from "./Request.service";
-import { GetPlatformsParams } from "../model/platforms-Params";
+import { Platform as PlatformModel, Platform } from "../model/aiop/platform";
+import { Injectable } from "@angular/core"; 
+import { GetPlatformsParams } from "../model/aiop/platforms-Params";
 import { PagedList } from "../model/page";
-import { Protocol } from "../model/protocol";
+import { Protocol } from "../model/aiop/protocol";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
 import { SaveModel } from "../model/save-model";
 

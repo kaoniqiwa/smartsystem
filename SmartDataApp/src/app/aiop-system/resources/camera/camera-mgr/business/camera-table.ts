@@ -1,12 +1,12 @@
 import { IConverter } from "../../../../../common/interface/IConverter";
 import { IBusinessData } from "../../../../../common/interface/IBusiness";
 import { EnumHelper } from "../../../../../common/tool/enum-helper";
-import { Camera } from "../../../../../data-core/model/camera";
+import { Camera } from "../../../../../data-core/model/aiop/camera";
 import { CustomTableArgs, TableAttr, TableOperationBtn, TableIconTextTagAttr, TableTh } from "../../../../../shared-module/custom-table/custom-table-model";
 import { CustomTableEvent, CustomTableEventEnum } from "../../../../../shared-module/custom-table/custom-table-event";
 import { TableFormControl } from "../../../../../common/tool/table-form-helper";
 import { IPageTable } from "../../../../../common/interface/IPageTable";
-import { EncodeDevice } from "../../../../../data-core/model/encode-device";
+import { EncodeDevice } from "../../../../../data-core/model/aiop/encode-device";
 import { ResourcesTable } from '../../../../common/resources-table';
 import { ITableField } from "../../../../common/ITableField";
 import { FormGroup, FormControl } from '@angular/forms';

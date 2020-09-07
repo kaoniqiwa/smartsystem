@@ -1,4 +1,4 @@
-import { CameraAIModel } from "../../../../../data-core/model/camera-ai-model";
+import { CameraAIModel } from "../../../../../data-core/model/aiop/camera-ai-model";
 import { PanelItem } from "./panel-item";
 export class AIModelsPanel {
     dataSource = new Array<PanelItem>();

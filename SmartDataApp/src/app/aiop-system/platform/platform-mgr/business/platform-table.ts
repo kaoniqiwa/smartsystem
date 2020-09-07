@@ -1,5 +1,5 @@
 import { IBusinessData } from "../../../../common/Interface/IBusiness";
-import { Platform } from "../../../../data-core/model/platform";
+import { Platform } from "../../../../data-core/model/aiop/platform";
 import { ITableField } from "../../../common/ITableField";
 import { IPageTable } from "../../../../common/interface/IPageTable";
 import { CustomTableArgs, TableAttr, TableOperationBtn } from "../../../../shared-module/custom-table/custom-table-model";

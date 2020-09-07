@@ -1,5 +1,5 @@
 import { IBusinessData } from "../../../../common/Interface/IBusiness";
-import { SRServer } from "../../../../data-core/model/sr-server";
+import { SRServer } from "../../../../data-core/model/aiop/sr-server";
 import { ITableField } from "../../../common/ITableField";
 import { IPageTable } from "../../../../common/interface/IPageTable";
 import { CustomTableArgs, TableAttr, TableOperationBtn } from "../../../../shared-module/custom-table/custom-table-model";

@@ -1,4 +1,4 @@
-import { ResourceLabel } from "../../data-core/model/resource-label";
+import { ResourceLabel } from "../../data-core/model/aiop/resource-label";
 import { InputTagArea } from "../../shared-module/input-tag-area/input-tag-area";
 import { MessageBar } from "../../common/tool/message-bar";
 export class Labels{

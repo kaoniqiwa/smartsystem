@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { CameraAIModel, } from "../../../../data-core/model/camera-ai-model";
+import { CameraAIModel, } from "../../../../data-core/model/aiop/camera-ai-model";
 import { TableAttribute } from "../../../../common/tool/table-form-helper";
-import { GetAIModelsParams } from "../../../../data-core/model/camera-ai-event-records-params";
+import { GetAIModelsParams } from "../../../../data-core/model/aiop/camera-ai-event-records-params";
 import { AIModelRequestService } from "../../../../data-core/repuest/ai-model.service";
 import { CameraAIModels } from "./ai-model-table";
 import '../../../../common/string/hw-string';

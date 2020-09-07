@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { SRServiceRequestSerivce } from "../../../../data-core/repuest/sr-service.service";
 import { TableSearchEnum, TableAttribute } from "../../../../common/tool/table-form-helper";
 import { SRServers, SRServiceTable } from "./srservers-table";
-import { SRServer } from "../../../../data-core/model/sr-server";
+import { SRServer } from "../../../../data-core/model/aiop/sr-server";
 import { CustomTableEvent } from "../../../../shared-module/custom-table/custom-table-event";
 import '../../../../common/string/hw-string';
 import { SearchControl } from "./search";

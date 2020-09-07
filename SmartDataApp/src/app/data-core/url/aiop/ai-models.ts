@@ -1,4 +1,4 @@
-import { BaseUrl, IUrl } from "./IUrl";
+import { BaseUrl, IUrl } from "../IUrl";
 export class AIModel extends BaseUrl implements IUrl {
     create(): string {
         return this.aiop + 'AIModels';

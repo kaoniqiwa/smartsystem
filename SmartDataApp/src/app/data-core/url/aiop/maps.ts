@@ -1,4 +1,4 @@
-import {  IUrl} from "./IUrl";
+import {  IUrl} from "../IUrl";
 export class GisMap implements IUrl{
     create(): string {
         throw new Error("Method not implemented.");

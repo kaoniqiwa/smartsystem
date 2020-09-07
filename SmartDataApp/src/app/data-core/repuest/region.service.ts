@@ -1,12 +1,11 @@
 import { Injectable } from "@angular/core";
 import { SaveModel } from "../model/save-model";
-import { Region ,GetRegionsParams} from "../model/region";
-import { RequestService } from "./Request.service";
-import * as url from "../url/region";
+import { Region ,GetRegionsParams} from "../model/aiop/region"; 
+import * as url from "../url/aiop/region";
 import { PagedList } from "../model/page";
 import { Response } from "../model/Response";
 import { BatchRequest,BatchResult,SingleResult } from "../model/batch";
-import { Resource } from "../model/resource";
+import { Resource } from "../model/aiop/resource";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
 @Injectable({
     providedIn:'root'

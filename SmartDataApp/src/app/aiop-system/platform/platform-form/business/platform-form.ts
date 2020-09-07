@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import { FormGroup, FormControl } from "@angular/forms";
-import { Platform } from "../../../../data-core/model/platform"; 
+import { Platform } from "../../../../data-core/model/aiop/platform"; 
 import  "../../../../common/string/hw-string";
 import { MessageBar } from "../../../../common/tool/message-bar";
 import { FormStateEnum, FormAttribute, ListAttribute } from "../../../../common/tool/table-form-helper";
 import {PlatformRequestSerivce  } from "../../../../data-core/repuest/platform.service";
-import { Protocol } from "../../../../data-core/model/protocol";
+import { Protocol } from "../../../../data-core/model/aiop/protocol";
 @Injectable()
 export class  PlatformFormService  extends ListAttribute implements FormAttribute{
     form: FormGroup;

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { PlatformRequestSerivce } from "../../data-core/repuest/platform.service";
-import { GetPlatformsParams } from "../../data-core/model/platforms-Params"; 
+import { GetPlatformsParams } from "../../data-core/model/aiop/platforms-Params"; 
 @Injectable()
 export class PlatformService  {
     constructor(private platformRequestSerivce: PlatformRequestSerivce) {

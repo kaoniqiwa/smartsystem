@@ -1,6 +1,6 @@
 
 import { TreeNode, FlatNode } from "../../../../shared-module/custom-tree/custom-tree";
-import { Region } from "../../../../data-core/model/region";
+import { Region } from "../../../../data-core/model/aiop/region";
 import { FormStateEnum } from "../../../../common/tool/table-form-helper"; 
 export class RegionTree {
     dataSource = new Array<TreeNode>();

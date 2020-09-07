@@ -1,5 +1,5 @@
 import { Component, OnInit, Input ,ViewChild,ElementRef} from '@angular/core'; 
-import { EncodeDevice } from "../../../../data-core/model/encode-device";
+import { EncodeDevice } from "../../../../data-core/model/aiop/encode-device";
 import {  EncodeDeviceFormService ,FormField} from "./business/encode-device-form";
 import { domClick } from "../../../../common/tool/jquery-help/jquery-help";
 import { FormStateEnum } from "../../../../common/tool/table-form-helper"; 

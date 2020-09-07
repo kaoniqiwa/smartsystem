@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
 import { PlatformRequestSerivce } from "../../../../data-core/repuest/platform.service";
 import { TableSearchEnum, TableAttribute } from "../../../../common/tool/table-form-helper";
-import { GetPlatformsParams } from "../../../../data-core/model/platforms-Params";
+import { GetPlatformsParams } from "../../../../data-core/model/aiop/platforms-Params";
 import { Platforms, PlatformTable } from "./platform-table";
-import { Platform } from "../../../../data-core/model/platform";
+import { Platform } from "../../../../data-core/model/aiop/platform";
 import { DatePipe } from "@angular/common";
 import { CustomTableEvent } from "../../../../shared-module/custom-table/custom-table-event";
 import '../../../../common/string/hw-string';

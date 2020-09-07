@@ -1,7 +1,7 @@
 import { Component, OnInit,ViewChild,ElementRef,Input } from '@angular/core';
 import { AIModelFormService,FormField } from "./business/aimodel-form";
 import { domClick, inputFileRead } from '../../../common/tool/jquery-help/jquery-help';
- import { CameraAIModel } from "../.././../data-core/model/camera-ai-model";
+ import { CameraAIModel } from "../.././../data-core/model/aiop/camera-ai-model";
 import { FormStateEnum } from '../../../common/tool/table-form-helper';
 import { CustomTreeComponent } from "../../../shared-module/custom-tree/custom-tree.component";
 @Component({

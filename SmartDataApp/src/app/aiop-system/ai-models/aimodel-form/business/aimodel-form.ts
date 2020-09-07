@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { FormGroup, FormControl } from "@angular/forms";
 import { MessageBar } from "../../../../common/tool/message-bar";
 import { FormStateEnum } from "../../../../common/tool/table-form-helper";
-import { CameraAIModel, CameraAIModelDTOLabel } from "../../../../data-core/model/camera-ai-model";
+import { CameraAIModel, CameraAIModelDTOLabel } from "../../../../data-core/model/aiop/camera-ai-model";
 import { AIModelRequestService } from "../../../../data-core/repuest/ai-model.service";
 import { ConfigRequestService } from "../../../../data-core/repuest/config.service";
 import { PicturesDropList } from "../../../../shared-module/pictures-drop-list/pictures-drop-list";

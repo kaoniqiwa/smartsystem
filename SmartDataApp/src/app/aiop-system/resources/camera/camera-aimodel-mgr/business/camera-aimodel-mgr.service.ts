@@ -3,12 +3,12 @@ import { CameraRequestService, AIModelRequestService as CameraAIModelRequestServ
     from "../../../../../data-core/repuest/resources.service";
 import { AIModelRequestService } from "../../../../../data-core/repuest/ai-model.service";
 import { RegionRequestService } from "../../../../../data-core/repuest/region.service";
-import { Camera } from "../../../../../data-core/model/camera";
-import { GetCamerasParams } from "../../../../../data-core/model/encode-devices-params";
+import { Camera } from "../../../../../data-core/model/aiop/camera";
+import { GetCamerasParams } from "../../../../../data-core/model/aiop/encode-devices-params";
 import { TableSearchEnum, ListAttribute } from "../../../../../common/tool/table-form-helper";
-import { CameraAIModel, } from "../../../../../data-core/model/camera-ai-model";
+import { CameraAIModel, } from "../../../../../data-core/model/aiop/camera-ai-model";
 import { TableAttribute } from "../../../../../common/tool/table-form-helper";
-import { GetAIModelsParams } from "../../../../../data-core/model/camera-ai-event-records-params";
+import { GetAIModelsParams } from "../../../../../data-core/model/aiop/camera-ai-event-records-params";
 import { AICameraPanel } from "./ai-camera-panel";
 import { AIModelsPanel } from "./ai-models-panel";
 import "../../../../../common/string/hw-string";
@@ -16,9 +16,9 @@ import { Page } from "../../../../../data-core/model/page";
 import { ViewPagination } from "../../../../../shared-module/card-list-panel/card-list-panel";
 import { RegionTreeService } from "../../../../common/region-tree.service";
 import { RegionCamera } from "./region-camera";
-import { BatchCopyRequest } from "../../../../../data-core/model/ai-models-params";
-import { ResourceLabel } from "../../../../../data-core/model/resource-label";
-import { GetResourceLabelsParams } from "../../../../../data-core/model/resource-labels-params";
+import { BatchCopyRequest } from "../../../../../data-core/model/aiop/ai-models-params";
+import { ResourceLabel } from "../../../../../data-core/model/aiop/resource-label";
+import { GetResourceLabelsParams } from "../../../../../data-core/model/aiop/resource-labels-params";
 import { SearchControl } from "./ai-cameras-search";
 @Injectable()
 export class CameraAIModelMgrService extends RegionTreeService {

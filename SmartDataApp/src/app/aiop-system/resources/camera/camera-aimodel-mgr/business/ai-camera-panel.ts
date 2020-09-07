@@ -1,6 +1,6 @@
-import { Camera } from "../../../../../data-core/model/camera";
+import { Camera } from "../../../../../data-core/model/aiop/camera";
 import { CardListPanel, AccessoryIcon, AccessoryIconLabel, PanelView, ViewPagination, EventTypeEnum } from "../../../../../shared-module/card-list-panel/card-list-panel";
-import { CameraAIModel } from "../../../../../data-core/model/camera-ai-model";
+import { CameraAIModel } from "../../../../../data-core/model/aiop/camera-ai-model";
 import { Page } from "../../../../../data-core/model/page";
 import { CdkDragDrop } from "@angular/cdk/drag-drop";
 import { PanelItem } from "./panel-item";

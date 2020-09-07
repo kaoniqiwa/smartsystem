@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import { EncodeDeviceRequestService, LabelRequestService, ResourceLabelRequestService } from "../../../../../data-core/repuest/resources.service";
 import { TableAttribute, TableSearchEnum, ListAttribute } from "../../../../../common/tool/table-form-helper";
-import { GetEncodeDevicesParams } from "../../../../../data-core/model/encode-devices-params";
+import { GetEncodeDevicesParams } from "../../../../../data-core/model/aiop/encode-devices-params";
 import { DeviceTable, EncodeDevices } from "./device-table";
-import { EncodeDevice } from "../../../../../data-core/model/encode-device";
+import { EncodeDevice } from "../../../../../data-core/model/aiop/encode-device";
 import { CustomTableEvent } from "../../../../../shared-module/custom-table/custom-table-event";
-import { ResourceLabel } from "../../../../../data-core/model/resource-label";
+import { ResourceLabel } from "../../../../../data-core/model/aiop/resource-label";
 import { InputTagArea } from "../../../../../shared-module/input-tag-area/input-tag-area";
 import "../../../../../common/string/hw-string";
 import { InputLabelService } from "../../../../common/input-label";
