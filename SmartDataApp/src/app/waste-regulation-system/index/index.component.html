@@ -1,0 +1,166 @@
+<mat-toolbar class="example-header">
+  <div class="app-header-wrapper">
+    <div class="d3">
+      <div fxLayout="row" class="fill-height p-l-30 p-r-20">
+        <div fxFlex="33" class="fill-height" fxLayoutAlign=" center">
+          <h3 class="header-title">广中路街道生活垃圾监督平台</h3>
+        </div>
+        <div fxFlex fxLayoutAlign="center center">
+
+          <div class="small-card-wrapper title-number-suffix">
+            <div class="left-angle"></div>
+            <div class="right-angle"></div>
+            <div class="title-label">今日收湿垃圾总量</div>
+            <div>
+              <label class="number-label">7.66</label>
+              <label class="suffix-label">(吨/日)</label>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="33" fxLayoutAlign="end center ">
+          <app-time-tool> </app-time-tool>
+        </div>
+      </div>
+    </div>
+    <div class="d2"></div>
+    <div class="d1"></div>
+  </div>
+
+</mat-toolbar>
+<div class="platform-body">
+
+  <div class="fill-width fill-height" gdGap="10px" gdColumns="1fr 1fr 1fr 1fr" gdRows="repeat(3, 32.4%)">
+    <div gdColumn="auto / span 1" gdRow="auto / span 1">
+      <div class="fill-width fill-height">
+        <div class="edges2-wrapper m-b-5">
+          <div class="left-border"></div>
+          <div class="right-border"></div>
+          <h2 class="light-blue-text m-l-30 m-b-0" style="line-height: 2.5;">
+            <i class="howell-icon-map5 m-r-10 sky-blue-text"></i>
+            广中路街道
+          </h2>
+        </div>
+        <div fxLayout="row wrap " class="fine" style="max-height: 208px;overflow:auto;">
+          <ng-container *ngFor="let item of [].constructor(12)">
+            <div class="edges2-wrapper small-size text-center">
+              <div class="left-border"></div>
+              <div class="right-border"></div>
+              <label class="light-blue-text m-b-0 m-t-10">当代居委</label>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div gdColumn="auto / span 2" gdRow="auto / span 2">
+
+    </div>
+    <div gdColumn="auto / span 1" gdRow="auto / span 1">
+
+    </div>
+    <div gdColumn="auto / span 1" gdRow="auto / span 1">
+      <div class="card-wrapper">
+        <h2>乱扔垃圾行为TOP6</h2>
+        <div class="content-wrapper p-t-20 p-r-30">
+          <div fxLayout="row" style="height: calc(100%/6);">
+            <div fxFlex="12">
+              <div style="width: 30px;height: 24px;background: rgb(243 ,141 ,31);border-radius: 4px;">
+                <h5 style="text-align: center;line-height: 24px;margin: 0;color: #0b1c32;">1</h5>
+              </div>
+            </div>
+            <div fxFlex="50">
+              <h2>商业居委</h2>
+            </div>
+            <div fxFlex="38">
+              <h2 class="m-0" style="text-align: right;color: #d8f4ff;">1</h2>
+            </div>
+          </div>
+          <div fxLayout="row" style="height: calc(100%/6);">
+            <div fxFlex="12">
+              <div style="width: 30px;height: 24px;background: rgb(243 ,141 ,31);border-radius: 4px;">
+                <h5 style="text-align: center;line-height: 24px;margin: 0;color: #0b1c32;">1</h5>
+              </div>
+            </div>
+            <div fxFlex="50">
+              <h2>商业居委</h2>
+            </div>
+            <div fxFlex="38">
+              <h2 class="m-0" style="text-align: right;color: #d8f4ff;">1</h2>
+            </div>
+          </div>
+          <div fxLayout="row" style="height: calc(100%/6);">
+            <div fxFlex="12">
+              <div style="width: 30px;height: 24px;background: rgb(243 ,141 ,31);border-radius: 4px;">
+                <h5 style="text-align: center;line-height: 24px;margin: 0;color: #0b1c32;">1</h5>
+              </div>
+            </div>
+            <div fxFlex="50">
+              <h2>商业居委</h2>
+            </div>
+            <div fxFlex="38">
+              <h2 class="m-0" style="text-align: right;color: #d8f4ff;">1</h2>
+            </div>
+          </div>
+          <div fxLayout="row" style="height: calc(100%/6);">
+            <div fxFlex="12">
+              <div style="width: 30px;height: 24px;background: rgb(46 ,116 ,202);border-radius: 4px;">
+                <h5 style="text-align: center;line-height: 24px;margin: 0;color: #0b1c32;">1</h5>
+              </div>
+            </div>
+            <div fxFlex="50">
+              <h2>商业居委</h2>
+            </div>
+            <div fxFlex="38">
+              <h2 class="m-0" style="text-align: right;color: #d8f4ff;">1</h2>
+            </div>
+          </div>
+          <div fxLayout="row" style="height: calc(100%/6);">
+            <div fxFlex="12">
+              <div style="width: 30px;height: 24px;background: rgb(46 ,116 ,202);border-radius: 4px;">
+                <h5 style="text-align: center;line-height: 24px;margin: 0;color: #0b1c32;">1</h5>
+              </div>
+            </div>
+            <div fxFlex="50">
+              <h2>商业居委</h2>
+            </div>
+            <div fxFlex="38">
+              <h2 class="m-0" style="text-align: right;color: #d8f4ff;">1</h2>
+            </div>
+          </div>
+          <div fxLayout="row" style="height: calc(100%/6);">
+            <div fxFlex="12">
+              <div style="width: 30px;height: 24px;background: rgb(46 ,116 ,202);border-radius: 4px;">
+                <h5 style="text-align: center;line-height: 24px;margin: 0;color: #0b1c32;">1</h5>
+              </div>
+            </div>
+            <div fxFlex="50">
+              <h2>商业居委</h2>
+            </div>
+            <div fxFlex="38">
+              <h2 class="m-0" style="text-align: right;color: #d8f4ff;">1</h2>
+            </div>
+          </div>
+        </div>
+        <div class="card-angle top-left"></div>
+        <div class="card-angle top-right"></div>
+        <div class="card-angle bottom-left"></div>
+        <div class="card-angle bottom-right"></div>
+      </div>
+    </div>
+    <div gdColumn="auto / span 1" gdRow="auto / span 1">
+
+    </div>
+    <div gdColumn="auto / span 1" gdRow="auto / span 1">
+
+    </div>
+    <div gdColumn="auto / span 1" gdRow="auto / span 1">
+
+    </div>
+    <div gdColumn="auto / span 1" gdRow="auto / span 1">
+
+    </div>
+    <div gdColumn="auto / span 1" gdRow="auto / span 1">
+
+    </div>
+
+  </div>
+</div>

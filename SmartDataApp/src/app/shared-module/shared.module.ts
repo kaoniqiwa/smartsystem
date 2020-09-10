@@ -11,6 +11,13 @@ import {  MatTreeModule,MatSidenavModule,MatToolbarModule ,MatButtonModule,MatMe
 } from '@angular/material';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { FormTitlePipe,TxtLenPipe } from "../common/tool/howell.pipe";
+import {  EChartBarDirective} from "../common/directive/echarts/bar-directive";
+import {  EChartLineDirective} from "../common/directive/echarts/line-directive";
+import {  EChartPieOutDirective} from "../common/directive/echarts/pie/pie-out-directive";
+import {  EChartPieInDirective} from "../common/directive/echarts/pie/pie-in-directive";
+import {  EChartPieMiddleDirective} from "../common/directive/echarts/pie/pie-middle-directive";
+import {  EChartProgressBarBoxDirective} from "../common/directive/echarts/pie/progress-bar-box-directive";
+import {  EChartProgressBarDirective} from "../common/directive/echarts/pie/progress-bar-directive";
 import { TouchSpinDirective } from "../common/directive/touch-spin-directive";
 import { HWPaginationDirective } from "../common/directive/pagination-directive";
 import { InputSearchComponent } from './input-search/input-search.component'; 
@@ -29,7 +36,9 @@ import { CardListPanelComponent } from './card-list-panel/card-list-panel.compon
     MatButtonModule,MatMenuModule,MatButtonToggleModule,MatSnackBarModule
   ],
   declarations: [
-    HWPaginationDirective,TouchSpinDirective,FormTitlePipe,TxtLenPipe,
+    HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartLineDirective 
+    ,EChartPieOutDirective,EChartPieInDirective,EChartPieMiddleDirective ,EChartProgressBarBoxDirective,EChartProgressBarDirective
+    ,FormTitlePipe,TxtLenPipe,
   InputSearchComponent,CustomTableComponent, ConfirmDialogComponent,
   InputTagAreaComponent,
   InputTagSelectComponent,
@@ -41,7 +50,9 @@ import { CardListPanelComponent } from './card-list-panel/card-list-panel.compon
     InfiniteScrollModule,MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,
     MatSidenavModule,MatToolbarModule,FlexLayoutModule,MatCheckboxModule,ReactiveFormsModule,
     MatButtonModule,MatMenuModule,MatButtonToggleModule,MatSnackBarModule,MatTabsModule
-    ,HWPaginationDirective,TouchSpinDirective,FormTitlePipe,TxtLenPipe
+    ,HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartLineDirective
+     ,EChartPieOutDirective,EChartPieInDirective,EChartPieMiddleDirective ,EChartProgressBarBoxDirective,EChartProgressBarDirective
+    ,FormTitlePipe,TxtLenPipe
     ,InputSearchComponent,InputTagAreaComponent,CustomTableComponent,ConfirmDialogComponent
     ,InputTagSelectComponent,CustomTreeComponent,PicturesDropListComponent,CardListPanelComponent
   ],

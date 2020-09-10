@@ -1,0 +1,16 @@
+<ng-container *ngIf="service.currentTime">
+  <div class="time-wraper">
+    <div class="left-wraper-label">
+      {{ service.currentTime.HH}}
+      <span  class="colon-font">:</span>
+      {{ service.currentTime.mm}}
+      <span  class="colon-font">:</span>
+      {{ service.currentTime.ss}} 
+    </div>
+    <div class="right-wraper">
+      <p style="padding-bottom: 2px;">星期一</p>
+      <p> {{ service.currentTime.YYYY}}年{{ service.currentTime.MM}}月{{ service.currentTime.dd}}日</p>
+    </div>
+  </div>
+
+</ng-container>
