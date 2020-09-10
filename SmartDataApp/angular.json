@@ -29,7 +29,9 @@
             "styles": [
               "src/styles.styl"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/echarts.min.3x.js"
+            ]
           },
           "configurations": {
             "production": {
