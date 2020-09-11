@@ -13,6 +13,15 @@ export class IndexComponent implements OnInit {
   line = new LineOption();
   pie = new PieOption();
   cardSize :{ width:number,height:number};
+  jw = [
+    '新虹','广中','黄山','花园城','八字桥',
+    '何家宅','商一','同济','恒业','同心',
+    '华昌','广灵','西江湾','广二','广三'
+  ]
+  jw6 = [
+    '新虹','广中','黄山','花园城','八字桥',
+    '何家宅'
+  ]
   constructor(private toolService:ToolService) {    
     this.cardSize = {
       width: toolService.windowScreen.height/4,
@@ -24,18 +33,17 @@ export class IndexComponent implements OnInit {
       [120, 200, 150, 80, 70, 110, 130],
       [90, 120, 60, 10, 30, 98, 60]
     ];
-    this.bar.xAxisData = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    this.bar.xAxisData = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
     this.bar.seriesName = ['干垃圾', '湿垃圾'];
     this.bar.legendData = ['干垃圾', '湿垃圾'];
-    this.line.xAxisData = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    this.line.xAxisData =['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
     this.line.seriesData = [820, 932, 901, 934, 1290, 1330, 1320];
-    this.pie.legendData = ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎'];
+    this.pie.legendData = ['干垃圾', '湿垃圾', '可回收垃圾', '有害垃圾'];
     this.pie.seriesData = [
-      { value: 335, name: '直接访问' },
-      { value: 310, name: '邮件营销' },
-      { value: 234, name: '联盟广告' },
-      { value: 135, name: '视频广告' },
-      { value: 1548, name: '搜索引擎' }
+      { value: 335, name: '干垃圾' },
+      { value: 310, name: '湿垃圾' },
+      { value: 234, name: '可回收垃圾' },
+      { value: 135, name: '有害垃圾' }
     ];
   }
 
