@@ -11,8 +11,9 @@ declare const echarts:any;
     selector: '[EChartProgressBarBox]'
 })
 export class EChartProgressBarBoxDirective implements OnInit {
+    private echarts_: any;
     constructor(private e: ElementRef, private zone: NgZone) {
-
+        window.addEventListener("resize", () =>  this.echarts_.resize());
     }
 
     ngOnInit(): void {
@@ -27,16 +28,16 @@ export class EChartProgressBarBoxDirective implements OnInit {
                 series: [{
                     name: '',
                     type: 'pie', 
-                    radius: ["60%", "32%"],
+                    radius: ["65%", "30%"],
                     center: ['64%', '50%'],
-                    startAngle: -54,
+                    startAngle: -44,
                     labelLine: {
                         normal: {
                             show: false
                         }
                     },
                     data: [{
-                        value: 20,
+                        value: 26,
                         itemStyle: {
                             normal: {
                                 color: "rgba(80,150,224,0)"
@@ -44,7 +45,7 @@ export class EChartProgressBarBoxDirective implements OnInit {
                         }
                     },
                     {
-                        value: 80,
+                        value: 74,
                         itemStyle: {
                             normal: {
                                 color: "rgba(80,150,224,0)",
@@ -62,8 +63,8 @@ export class EChartProgressBarBoxDirective implements OnInit {
             };
         }
         this.zone.runOutsideAngular(() => {
-           const echarts_ = echarts.init(this.e.nativeElement);
-            echarts_.setOption(create(), true);
+           this.echarts_ = echarts.init(this.e.nativeElement);
+           this.echarts_.setOption(create(), true);
         });
     }
 }

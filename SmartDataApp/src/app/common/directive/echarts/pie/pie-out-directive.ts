@@ -16,7 +16,7 @@ export class EChartPieOutDirective implements OnChanges {
     private echarts_: any;
     @Input('options') options: PieOption;
     constructor(private e: ElementRef, private zone: NgZone) {
-
+        window.addEventListener("resize", () =>  this.echarts_.resize());
     }
     ngOnChanges(changes: SimpleChanges): void {
         if (this.options) this.init();
@@ -43,7 +43,7 @@ export class EChartPieOutDirective implements OnChanges {
                     },
                //     itemGap: 8
                 },
-                color: ["#dc442f", "#f6a62b", "#29a1df", "#19af89", "#90bd25", "#a544f7", "#536dfe"],
+                color: ["#979896", "#854D39", "#0068BD", "#E43520", "#90bd25", "#a544f7", "#536dfe"],
                 series: [
                     {
                         name: '',

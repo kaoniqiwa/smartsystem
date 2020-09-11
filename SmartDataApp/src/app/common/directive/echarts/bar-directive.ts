@@ -16,7 +16,7 @@ export class EChartBarDirective implements OnChanges {
     private echarts_:any;
     @Input('options') options: BarOption;
     constructor(private e: ElementRef, private zone: NgZone) {
-      
+        window.addEventListener("resize", () =>  this.echarts_.resize());
     }
     ngOnChanges(changes: SimpleChanges): void {
         if (this.options) this.init();
@@ -62,9 +62,9 @@ export class EChartBarDirective implements OnChanges {
                                 }
                             },
                             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                offset: 0, color: options.color[i] // 0% 处的颜色
+                                offset: 0, color:  options.color[i]// 0% 处的颜色
                             }, {
-                                offset: 1, color:  options.color2[i] // 100% 处的颜色
+                                offset: 1, color:  options.color2[i]  // 100% 处的颜色
                             }], false),
                         }
 
@@ -79,7 +79,7 @@ export class EChartBarDirective implements OnChanges {
                 color: options.color,
                 title: {       
                     subtext: '单位(吨)',
-                    left: 'right',
+                    left: 'right', 
                      subtextStyle:{
                          color:'#7A8DE6'
                      },
@@ -96,9 +96,9 @@ export class EChartBarDirective implements OnChanges {
                 },
                 grid: {
                     left: '0',
-                    top: '18%',
-                    right: '24px',
-                    bottom: '12px',
+                    top: '20%',
+                    right: '10px',
+                    bottom: '10px',
                     containLabel: true
                 },
                 legend: {
@@ -124,7 +124,7 @@ export class EChartBarDirective implements OnChanges {
                         axisTick: {        //刻度线
                             show: false,
                             lineStyle: {
-                                color: 'rgb(53,70,91)'
+                                color: 'rgb(117,134,224,0.5)'
                             }
                         },
                     }
@@ -144,7 +144,7 @@ export class EChartBarDirective implements OnChanges {
                         },
                         splitLine: {
                             lineStyle: {
-                                color: 'rgb(53,70,91)'
+                                color: 'rgb(117,134,224,0.3)'
                             }
                         }
                     }
@@ -154,6 +154,8 @@ export class EChartBarDirective implements OnChanges {
         }
         this.zone.runOutsideAngular(() => {
             this.echarts_ = echarts.init(this.e.nativeElement);
+            console.log(JSON.stringify(create(this.options)));
+            
             this.echarts_.setOption(create(this.options), true);
         });
     }

@@ -10,7 +10,7 @@ export class BarOption implements IEChartOption{
     seriesName = new Array<string>();
     legendData = new Array<string>();
     color = ['#3283e5', '#FEBD00', '#4cabce', '#e5323e'];
-    color2 = ['rgb(50,131,229,0.5)','rgb(254,189,0,0.5)']
+    color2 = ['rgb(50,131,229,0.3)','rgb(254,189,0,0.3)']
     displayScaleIndex:number[]=new Array();
     displayDataIndex:number[]=new Array();
 }

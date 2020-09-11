@@ -16,7 +16,7 @@ export class EChartLineDirective implements OnChanges {
     private echarts_: any;
     @Input('options') options: LineOption;
     constructor(private e: ElementRef, private zone: NgZone) {
-
+        window.addEventListener("resize", () =>  this.echarts_.resize());
     }
     ngOnChanges(changes: SimpleChanges): void {
         if (this.options) this.init();
@@ -27,9 +27,9 @@ export class EChartLineDirective implements OnChanges {
                 return {
                     grid: {
                         left: '0',
-                        top: '0',
-                        right: '0',
-                        bottom: '0',
+                    top: '20%',
+                    right: '10px',
+                    bottom: '10px',
                         containLabel: true
                     },
                     tooltip: {
@@ -42,12 +42,13 @@ export class EChartLineDirective implements OnChanges {
                         type: 'category',
                         data: options.xAxisData,
                         axisLabel: {
-                            color: '#CFD7FE'
+                            color: '#CFD7FE',
+                            fontSize: "16",
                         },
                         axisTick: {        //刻度线
                             show: false,
                             lineStyle: {
-                                color: 'rgb(53,70,91)'
+                                color: 'rgb(117,134,224,0.3)'
                             }
                         },
                     },
@@ -65,7 +66,7 @@ export class EChartLineDirective implements OnChanges {
                         },
                         splitLine: {
                             lineStyle: {
-                                color: 'rgb(53,70,91)'
+                                color: 'rgb(117,134,224,0.3)'
                             }
                         }
                     },
@@ -84,9 +85,9 @@ export class EChartLineDirective implements OnChanges {
                         },
                         itemStyle: {
                             normal: {
-                                color: '#3283e5',
+                                color: '#7586e0',
                                 lineStyle: {
-                                    color: '#3283e5',
+                                    color: '#7586e0',
                                     width: 4
                                 },
                             }
@@ -94,9 +95,9 @@ export class EChartLineDirective implements OnChanges {
                         areaStyle: {
                             normal: {
                                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                    offset: 0, color: '#3283e5' // 0% 处的颜色
+                                    offset: 0, color: '#7586e0' // 0% 处的颜色
                                 }, {
-                                    offset: 1, color: 'rgb(50,131,229,0.5)' // 100% 处的颜色
+                                    offset: 1, color: 'rgb(117,134,224,0.5)' // 100% 处的颜色
                                 }], false)
                             }
                         }
