@@ -401,14 +401,36 @@ a.td-icon:hover i{
 
 }
 
-
+.sky-blue-text2{
+    color: #6997ff
+}
 .sky-blue-text{
     color: #7586e0
 }
 .light-blue-text{
 color:#cfd7ff
 }
-
+.red-text{
+   color: #fd2f2d;
+}
+.light-cyan-text{
+    color:#d8f4ff;
+}
+.cyan-text{
+    color:#32F0F7;
+}
+.green-text{
+    color:#21E452;
+}
 .gray-text{
     color:gray;
+}
+.orange-text{
+    color: #ffba00;
+}
+.light-purple-text{
+    color: #ca98f9;
+}
+.powder-red-text{
+color: #ef6464;
 }

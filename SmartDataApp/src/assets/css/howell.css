@@ -13,6 +13,19 @@ html, body {
     color: #99abb4;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {    
+    font-family: 'Source Han Sans CN Normal'; 
+}
+
+h5{
+    line-height: 1;
+}
+
 a {
     color: #9EA2A9;
 }
