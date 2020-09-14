@@ -58,7 +58,7 @@
     </div>
     <div gdColumn="auto / span 2" gdRow="auto / span 2">
       <div class="card-wrapper2">
-        <div class="m-t-20 p-l-10 p-r-10 fill-width " style="height: 100px;">
+        <div class="m-t-20 p-l-10 p-r-10 fill-width " style="height: 100px; position: absolute;">
           <div fxLayout="row" class="fill-height" fxLayoutAlign="space-between">
             <div class="hint-card">
               <h4 class="m-b-5">垃圾投放点数量</h4>
@@ -81,7 +81,7 @@
               <label class="orange-text">500</label>
             </div>
           </div>
-          <div style="position: absolute;bottom: 0;">
+          <!-- <div style="position: absolute;bottom: 0;">
             <h5 class="hint-label green-text">
               <label class="m-0" style="font-size: xx-small;">●</label>
               正常垃圾桶
@@ -94,8 +94,9 @@
               <label class="m-0" style="font-size: xx-small;">●</label>
               正常垃圾桶
             </h5>
-          </div>
+          </div> -->
         </div>
+        <app-amap></app-amap>
         <div class="card-angle top-left"></div>
         <div class="card-angle top-right"></div>
         <div class="card-angle bottom-left"></div>
