@@ -10,3 +10,12 @@ export class ToolService {
         }
     }
 }
+
+
+export function TheDayTime(date: Date) { 
+    let y = date.getFullYear(),m =date.getMonth()+1,d = date.getDate();
+    return {
+       begin: new Date(y,m,d,0,0,0)
+       ,end :new Date(y,m,d, 23, 59, 59)
+    } 
+  }

@@ -18,6 +18,7 @@ import {  EChartPieInDirective} from "../common/directive/echarts/pie/pie-in-dir
 import {  EChartPieMiddleDirective} from "../common/directive/echarts/pie/pie-middle-directive";
 import {  EChartProgressBarBoxDirective} from "../common/directive/echarts/pie/progress-bar-box-directive";
 import {  EChartProgressBarDirective} from "../common/directive/echarts/pie/progress-bar-directive";
+import { HWSPlayerDirective } from "../common/directive/wsplayer-directive";
 import { TouchSpinDirective } from "../common/directive/touch-spin-directive";
 import { HWPaginationDirective } from "../common/directive/pagination-directive";
 import { InputSearchComponent } from './input-search/input-search.component'; 
@@ -28,6 +29,7 @@ import { InputTagSelectComponent } from './input-tag-select/input-tag-select.com
 import { CustomTreeComponent } from './custom-tree/custom-tree.component';
 import { PicturesDropListComponent } from './pictures-drop-list/pictures-drop-list.component';
 import { CardListPanelComponent } from './card-list-panel/card-list-panel.component'; 
+import { VideoSimpleCardComponent } from './video-simple-card/video-simple-card.component'
 @NgModule({
   imports: [
     CommonModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -36,7 +38,7 @@ import { CardListPanelComponent } from './card-list-panel/card-list-panel.compon
     MatButtonModule,MatMenuModule,MatButtonToggleModule,MatSnackBarModule
   ],
   declarations: [
-    HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartLineDirective 
+    HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartLineDirective ,HWSPlayerDirective
     ,EChartPieOutDirective,EChartPieInDirective,EChartPieMiddleDirective ,EChartProgressBarBoxDirective,EChartProgressBarDirective
     ,FormTitlePipe,TxtLenPipe,
   InputSearchComponent,CustomTableComponent, ConfirmDialogComponent,
@@ -44,17 +46,18 @@ import { CardListPanelComponent } from './card-list-panel/card-list-panel.compon
   InputTagSelectComponent,
   CustomTreeComponent,
   PicturesDropListComponent,
-  CardListPanelComponent, 
+  CardListPanelComponent, VideoSimpleCardComponent
   ],
   exports: [
     InfiniteScrollModule,MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,
     MatSidenavModule,MatToolbarModule,FlexLayoutModule,MatCheckboxModule,ReactiveFormsModule,
     MatButtonModule,MatMenuModule,MatButtonToggleModule,MatSnackBarModule,MatTabsModule
-    ,HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartLineDirective
+    ,HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartLineDirective,HWSPlayerDirective
      ,EChartPieOutDirective,EChartPieInDirective,EChartPieMiddleDirective ,EChartProgressBarBoxDirective,EChartProgressBarDirective
     ,FormTitlePipe,TxtLenPipe
     ,InputSearchComponent,InputTagAreaComponent,CustomTableComponent,ConfirmDialogComponent
     ,InputTagSelectComponent,CustomTreeComponent,PicturesDropListComponent,CardListPanelComponent
+    ,VideoSimpleCardComponent
   ],
   providers: [DatePipe,
    ],
