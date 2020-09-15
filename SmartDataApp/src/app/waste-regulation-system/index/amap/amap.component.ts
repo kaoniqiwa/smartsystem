@@ -1,9 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Camera } from 'src/app/data-core/model/waste-regulation/camera';
-import { GarbageStation, GetGarbageStationsParams } from 'src/app/data-core/model/waste-regulation/garbage-station';
-import { CameraRequestService, GarbageStationRequestService } from 'src/app/data-core/repuest/garbage-station.service';
-
+import { Camera } from '../../../data-core/model/waste-regulation/camera';
+import { GarbageStation, GetGarbageStationsParams } from '../../../data-core/model/waste-regulation/garbage-station';
+import { CameraRequestService, GarbageStationRequestService } from '../../../data-core/repuest/garbage-station.service';
 import { AMapService } from './amap.service';
 
 
@@ -38,13 +37,13 @@ export class AMapComponent implements AfterViewInit, OnInit {
     }
 
     ngOnInit() {
-        // const promise = this.garbageService.list(new GetGarbageStationsParams()).toPromise();
-        // promise.then((response) => {
-        //     this.garbages = response.Data.Data;
-        // });
+        const promise = this.garbageService.list(new GetGarbageStationsParams()).toPromise();
+        promise.then((response) => {
+            this.garbages = response.Data.Data;
+        });
     }
     OnCameraClicked(camera: Camera) {
-
+        console.log(camera);
     }
     ngAfterViewInit() {
         // Detect effects of NgForTrackBy
@@ -60,13 +59,24 @@ export class AMapComponent implements AfterViewInit, OnInit {
         this.client.Events.OnLoaded = () => {
 
 
+            for (const id in this.garbages) {
+                if (this.garbages[id].DryFull || this.garbages[id].WetFull) {
+                    const status = {
+                        id: id,
+                        status: 1
+                    };
+                    console.log(status);
+                    this.client.Point.Status(status);
+                }
+            }
+
 
 
             const villages = this.dataController.Village.Point.List();
             for (const villageId in villages) {
                 if (Object.prototype.hasOwnProperty.call(villages, villageId)) {
                     const village = villages[villageId];
-                    // village.
+
                 }
             }
         };
@@ -79,6 +89,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 list['style'].display = 'block';
                 const promise = this.cameraService.list(id).toPromise();
                 promise.then((response) => {
+                    console.log(response.Data);
                     this.selectedCameras = response.Data;
                 });
             }

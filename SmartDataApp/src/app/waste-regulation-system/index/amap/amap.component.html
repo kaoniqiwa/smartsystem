@@ -5,9 +5,10 @@
   <li class="warm">即将满溢垃圾统</li>
   <li class="error">满溢垃圾桶</li>
 </ul>
-<!--  -->
 <div class="map-bar video-list" style="display: none;">
-  <ng-container *ngFor="let camera of selectedCameras">
-    <div class="video" (click)="OnCameraClicked(camera)"></div>
+  <ng-container >
+    <div class="video" *ngFor="let camera of selectedCameras">
+      {{camera.Name}}
+    </div>
   </ng-container>
 </div>
