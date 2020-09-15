@@ -1,9 +1,11 @@
 'use strict';
 
-var CesiumMapClient = function (iframeId) {
+var CesiumMapClient = function (iframe) {
 
     var that = this;
-    var iframe = document.getElementById(iframeId);
+
+    if (typeof (str) == 'string')
+        iframe = document.getElementById(iframe);
 
     function doing(fn) {
         try {
@@ -270,10 +272,10 @@ var CesiumMapClient = function (iframeId) {
                 iframe.contentWindow.MapController.SetPoint(opts);
             });
         },
-        Status:function(status){
+        Status: function (status) {
             /// <summary>设置点位状态</summary>
             /// <param name="status" type="{id:string, status:number}">点位状态</param>
-            return doing(function(){
+            return doing(function () {
                 iframe.contentWindow.MapController.SetPointStatus(status)
             });
         },
@@ -451,15 +453,14 @@ var CesiumMapClient = function (iframeId) {
                 });
             }
         },
-        Polyline:{
+        Polyline: {
             Drawing: function (positions, opts, over) {
                 return doing(function () {
                     return iframe.contentWindow.MapController.Draw.Polyline.Draw(positions, opts, over);
                 });
             },
-            Redraw:function(id, positions, opts, over)
-            {
-                return doing(function(){
+            Redraw: function (id, positions, opts, over) {
+                return doing(function () {
                     return iframe.contentWindow.MapController.Draw.Polyline.Redraw(id, positions, opts, over);
                 });
             },
@@ -475,9 +476,8 @@ var CesiumMapClient = function (iframeId) {
                     return iframe.contentWindow.MapController.Draw.Polygon.Draw(positions, opts, over);
                 });
             },
-            Redraw:function(id, positions, opts, over)
-            {
-                return doing(function(){
+            Redraw: function (id, positions, opts, over) {
+                return doing(function () {
                     return iframe.contentWindow.MapController.Draw.Polygon.Redraw(id, positions, opts, over);
                 });
             },
@@ -811,6 +811,6 @@ CesiumMapClient.EventArgs = function () {
     this.listener;
 }
 
-CesiumMapClient.Create = function(iframeId){
+CesiumMapClient.Create = function (iframeId) {
     return new CesiumMapClient(iframeId);
 }

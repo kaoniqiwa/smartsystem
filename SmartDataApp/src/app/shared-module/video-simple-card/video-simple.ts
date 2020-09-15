@@ -3,26 +3,28 @@
  * LastUpdateTime 2020/7/7
  */
 import { IViewModel } from '../../common/abstract/base-view';
-export class VideoSimpleMode implements IViewModel{
-    title?:string;
-    //链接地址
+export class VideoSimpleMode implements IViewModel {
+    title?: string;
+    // 链接地址
     host: string;
-    //摄像机id
+    // 端口号
+    port: number;
+    // 摄像机id
     deviceId: string;
-    //通道号
+    // 通道号
     slot: string;
-    //用户名
+    // 用户名
     userName: string;
-    //密码
+    // 密码
     password: string;
-    //模式
+    // 模式
     mode: string;
-    //开始时间
+    // 开始时间
     beginTime: string;
-    //结束时间
+    // 结束时间
     endTime: string;
     constructor(options: {
-        title?:string;
+        title?: string;
         host?: string,
         deviceId?: string,
         slot?: string,
@@ -32,14 +34,14 @@ export class VideoSimpleMode implements IViewModel{
         beginTime?: string,
         endTime?: string
     } = {}) {
-        this.title=options.title||'';
-        this.host = options.host || "";
-        this.deviceId = options.deviceId || "";
-        this.slot = options.slot || "";
-        this.userName = options.userName || "";
-        this.password = options.password || "";
-        this.mode = options.mode || "";
-        this.beginTime = options.beginTime || "";
-        this.endTime = options.endTime || "";
+        this.title = options.title || '';
+        this.host = options.host || '';
+        this.deviceId = options.deviceId || '';
+        this.slot = options.slot || '';
+        this.userName = options.userName || '';
+        this.password = options.password || '';
+        this.mode = options.mode || '';
+        this.beginTime = options.beginTime || '';
+        this.endTime = options.endTime || '';
     }
 }

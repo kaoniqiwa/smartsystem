@@ -136,5 +136,5 @@ declare namespace CesiumMap {
 
 
 declare class CesiumMapClient extends CesiumMap.Client {
-    constructor(iframeId: string);
+    constructor(iframeId: string|HTMLElement);
 }

@@ -1,10 +1,15 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Camera } from '../../../data-core/model/waste-regulation/camera';
-import { GarbageStation, GetGarbageStationsParams } from '../../../data-core/model/waste-regulation/garbage-station';
-import { CameraRequestService, GarbageStationRequestService } from '../../../data-core/repuest/garbage-station.service';
-import { AMapService } from './amap.service';
+import { CameraRequestService as AIOPCameraService, ResourceMediumRequestService } from '../../../data-core/repuest/resources.service';
+import { VideoSimpleCardComponent } from '../../../shared-module/video-simple-card/video-simple-card.component';
 
+import { GarbageStation, GetGarbageStationsParams } from '../../../data-core/model/waste-regulation/garbage-station';
+
+import {
+    CameraRequestService as GarbageStationCameraRequestService, GarbageStationRequestService
+} from '../../../data-core/repuest/garbage-station.service';
+import { AMapService } from './amap.service';
+import { Camera } from 'src/app/data-core/model/aiop/camera';
 
 @Component({
     selector: 'app-amap',
@@ -13,18 +18,21 @@ import { AMapService } from './amap.service';
     providers: [AMapService]
 })
 export class AMapComponent implements AfterViewInit, OnInit {
-
-    selectedCameras: Camera[] = [];
+    @ViewChild('iframe') iframe: ElementRef;
+    @ViewChild('preview') videoCard: VideoSimpleCardComponent;
+    selectedCameras: Camera[];
     garbages: GarbageStation[];
-    // amapSrc: any;
     srcUrl: any;
     dataController: CesiumDataController.Controller; // CesiumDataController.Controller;
     client: CesiumMapClient;
 
     constructor(
         private sanitizer: DomSanitizer,
+        private changeDetectorRef: ChangeDetectorRef,
         private garbageService: GarbageStationRequestService,
-        private cameraService: CameraRequestService
+        private aiopCameraService: AIOPCameraService,
+        private mediaService: ResourceMediumRequestService,
+        private cameraService: GarbageStationCameraRequestService
     ) {
         this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc());
 
@@ -41,24 +49,15 @@ export class AMapComponent implements AfterViewInit, OnInit {
         promise.then((response) => {
             this.garbages = response.Data.Data;
         });
-    }
-    OnCameraClicked(camera: Camera) {
-        console.log(camera);
-    }
-    ngAfterViewInit() {
-        // Detect effects of NgForTrackBy
-        this.client = new CesiumMapClient('iframe');
-        this.client.Events.OnLoading = () => {
-            // for (var i = 0; i < 100; i++) {
-            //     AddAlarm(i * 10);
-            // }
 
-            console.log('client.Events.OnLoading');
+        // Detect effects of NgForTrackBy
+        this.client = new CesiumMapClient(this.iframe.nativeElement);
+        this.client.Events.OnLoading = () => {
             this.dataController = this.client.DataController;
         };
         this.client.Events.OnLoaded = () => {
 
-
+            console.log('this.client.Events.OnLoaded');
             for (const id in this.garbages) {
                 if (this.garbages[id].DryFull || this.garbages[id].WetFull) {
                     const status = {
@@ -81,17 +80,44 @@ export class AMapComponent implements AfterViewInit, OnInit {
             }
         };
 
-        this.client.Events.OnElementsDoubleClicked = (objs) => {
+        this.client.Events.OnElementsDoubleClicked = async (objs) => {
             if (!objs || objs.length <= 0) { return; }
             const id = objs[0].id;
             const list = document.getElementsByClassName('map-bar video-list')[0];
             if (list && objs && objs.length > 0) {
                 list['style'].display = 'block';
-                const promise = this.cameraService.list(id).toPromise();
-                promise.then((response) => {
-                    console.log(response.Data);
-                    this.selectedCameras = response.Data;
-                });
+                try {
+                    const response = await this.cameraService.list(id).toPromise();
+
+                    const p = response.Data.map(async x => {
+                        const camera_response = await this.aiopCameraService.get(x.Id).toPromise();
+                        return camera_response.Data;
+                    });
+                    this.selectedCameras = [];
+                    for (let i = 0; i < response.Data.length; i++) {
+                        try {
+                            const camera_response = await this.aiopCameraService.get(response.Data[i].Id).toPromise();
+                            if (camera_response) {
+                                if (camera_response.Data.ImageUrl) {
+                                    camera_response.Data.ImageUrl = this.mediaService.getData(camera_response.Data.ImageUrl);
+                                } else {
+                                    camera_response.Data.ImageUrl = 'assets/img/timg.jpg';
+                                }
+
+                                this.selectedCameras.push(camera_response.Data);
+                            }
+                        } catch (ex) {
+                            console.error(ex);
+                        }
+                    }
+
+
+                    this.changeDetectorRef.markForCheck();
+                    this.changeDetectorRef.detectChanges();
+                } catch (ex) {
+                    console.error(ex);
+                }
+
             }
 
         };
@@ -102,6 +128,12 @@ export class AMapComponent implements AfterViewInit, OnInit {
             }
         };
     }
+    ngAfterViewInit() {
 
+    }
+
+    OnCameraClicked(camera: Camera) {
+        console.log(camera);
+    }
 }
 
