@@ -26,9 +26,9 @@ export class BusinessViewComponet {
         this.view.setDatas(this.converter.Convert(data,viewModel));
     }
 
-    loadDatas(data: IViewModel=new ViewsModel())
-    {
-      let businessData = this.business.getData(); 
+  async  loadDatas(data: IViewModel=new ViewsModel())
+    { 
+      let businessData =await this.business.getData(); 
         this.view.setDatas(this.converter.Convert(businessData, data));
     }
 
