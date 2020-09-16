@@ -1,5 +1,5 @@
-import { IViewModel } from "../../common/abstract/Base-View";
-import { IBusinessData } from "../../common/Interface/IBusiness";
+import { IViewModel } from "../../common/abstract/base-view";
+import { IBusinessData } from "../../common/interface/IBusiness";
 import { IViewEvent } from "../../common/interface/IViewEvent";
 import { HWPaginationOptions } from "../../common/directive/pagination-directive";
 import { CustomTableEventEnum, CustomTableEvent } from "./custom-table-event";

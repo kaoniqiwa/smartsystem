@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild,OnChanges } from '@angular/core';
 import { CustomTableArgs } from './custom-table-model';
 import { CustomTableEvent, CustomTableEventEnum } from "./custom-table-event";
-import { IBusinessData } from '../../common/Interface/IBusiness';
+import { IBusinessData } from '../../common/interface/IBusiness';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { HWPaginationOptions } from "../../common/directive/pagination-directive";
 @Component({

@@ -1,6 +1,6 @@
 
 import { IViewEvent } from "../../common/interface/IViewEvent";
-import { IBusinessData } from "../../common/Interface/IBusiness";
+import { IBusinessData } from "../../common/interface/IBusiness";
 
 /**
  * 触发事件
