@@ -1,10 +1,10 @@
-import { Resource } from "./Resource";
-import { CameraAIModel } from "./camera-ai-model";
+import { Resource } from './Resource';
+import { CameraAIModel } from './camera-ai-model';
 
 
-    /**
-     * 监控点信息
-     */
+/**
+ * 监控点信息
+ */
 export class Camera extends Resource {
     /**
      * 摄像机类型
@@ -55,4 +55,12 @@ export class Camera extends Resource {
      *  AI模型列表(可选)
      */
     AIModels: CameraAIModel[];
+    // 最近一次的抓图照片地址
+    ImageUrl: string;
+    // 最近一次的抓图时间
+    ImageTime: Date;
+    // 流媒体ID
+    SRSId: string;
+    // 流媒体服务器ID
+    SRServerId: string;
 }
