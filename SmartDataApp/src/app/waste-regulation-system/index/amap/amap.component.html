@@ -7,12 +7,12 @@
 </ul>
 <div class="map-bar video-list" style="display: none;">
   <ng-container *ngFor="let camera of selectedCameras">
-    <div class="video" >
-      <img [src]="camera.ImageUrl" />      
+    <div class="video" (click)="OnCameraClicked(camera)">
+      <img [src]="camera.ImageUrl" [title]="camera.Name"/>      
     </div>
   </ng-container>
 </div>
 
-<div class="amap-video playing" style="display: none;">
+<div class="amap-video playing">
   <app-video-simple-card #play></app-video-simple-card>  
 </div>

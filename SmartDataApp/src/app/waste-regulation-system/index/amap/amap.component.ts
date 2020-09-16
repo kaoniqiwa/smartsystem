@@ -10,6 +10,8 @@ import {
 } from '../../../data-core/repuest/garbage-station.service';
 import { AMapService } from './amap.service';
 import { Camera } from 'src/app/data-core/model/aiop/camera';
+import { VideoSimpleMode } from 'src/app/shared-module/video-simple-card/video-simple';
+import { Id } from 'src/app/common/tool/idProcessing';
 
 @Component({
     selector: 'app-amap',
@@ -133,7 +135,26 @@ export class AMapComponent implements AfterViewInit, OnInit {
     }
 
     OnCameraClicked(camera: Camera) {
+        if (!camera || !camera.SRSId) { return; }
         console.log(camera);
+        const id = new Id(camera.SRSId);
+        const model = new VideoSimpleMode();
+        model.host = document.location.hostname;
+        model.port = parseInt(document.location.port);
+        model.deviceId = camera.SRSId;
+        model.mode = 'live';
+        model.deviceId = id.getDeviceId();
+        model.slot = id.ModuleId.No;
+        model.userName = 
+
+        this.videoCard.model.
+        SRServers/PreviewUrls
+        CameraId	String	监控点ID	M
+StreamType	Int32	流类型：1-主码流，2-子码流	M
+Protocol	String	协议类型：
+rtmp, rtsp, hls, ws-flv, ws-ps	M
+
+
     }
 }
 
