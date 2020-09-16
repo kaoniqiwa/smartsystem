@@ -1,4 +1,4 @@
-import { IBusinessData } from "../../../../common/Interface/IBusiness";
+import { IBusinessData } from "../../../../common/interface/IBusiness";
 import { Platform } from "../../../../data-core/model/aiop/platform";
 import { ITableField } from "../../../common/ITableField";
 import { IPageTable } from "../../../../common/interface/IPageTable";

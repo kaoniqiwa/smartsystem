@@ -1,4 +1,4 @@
-import { IBusinessData } from "../../../../common/Interface/IBusiness";
+import { IBusinessData } from "../../../../common/interface/IBusiness";
 import { SRServer } from "../../../../data-core/model/aiop/sr-server";
 import { ITableField } from "../../../common/ITableField";
 import { IPageTable } from "../../../../common/interface/IPageTable";

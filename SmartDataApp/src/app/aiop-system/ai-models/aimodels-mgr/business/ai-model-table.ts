@@ -1,4 +1,4 @@
-import { IBusinessData } from "../../../../common/Interface/IBusiness";
+import { IBusinessData } from "../../../../common/interface/IBusiness";
 import { CameraAIModel } from "../../../../data-core/model/aiop/camera-ai-model"; 
 import { ITableField } from "../../../common/ITableField";
 import { IPageTable } from "../../../../common/interface/IPageTable";
