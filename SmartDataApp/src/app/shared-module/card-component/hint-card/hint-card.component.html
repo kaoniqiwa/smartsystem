@@ -1,0 +1,10 @@
+<ng-container *ngIf="model">
+  <div fxLayout="row" class="fill-height" fxLayoutAlign="space-between">
+    <ng-container *ngFor="let item of model">
+      <div class="hint-card">
+        <h5 class="m-b-5">{{item.title}}</h5>
+        <label class="{{item.subTitleColor}}">{{item.subTitle}}</label>
+      </div> 
+    </ng-container>
+  </div>
+</ng-container>

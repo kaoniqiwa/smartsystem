@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { EChartCardComponent  } from "../../../common/abstract/base-view";
-
-import { BarOption, LineOption, PieOption } from "../../../common/directive/echarts/echart";
+import { EChartCardComponent, ViewsModel  } from "../../../common/abstract/base-view";
+import { LineECharts } from "./line-echarts";
 @Component({
   selector: 'hw-line-echarts-card',
-  templateUrl: './line-echarts-card.component.html',
-  styleUrls: ['./line-echarts-card.component.styl']
+  templateUrl: './line-echarts-card.component.html'
 })
 export class LineEChartsCardComponent extends EChartCardComponent implements OnInit {
- model:LineOption;
+  model:LineECharts;
   constructor() {
     super();
-   }
-
-  ngOnInit() {
-  }
+   }  
+  ngOnInit(): void {
+    if (this.loadDatas)
+    this.loadDatas(new ViewsModel());
+  } 
 
 }

@@ -1,0 +1,33 @@
+<ng-container *ngIf="model">
+  <h2>{{model.title}}</h2>
+  <div class="content-wrapper p-r-20 p-b-10">
+    <div fxLayout="row" style="height: 60%;">
+      <div fxFlex="50" class="fill-height" style="position: relative;">
+        <div style="position: absolute;" class="fill-height fill-width" EChartProgressBar></div>
+        <div style="position: absolute;" class="fill-height fill-width" EChartProgressBarBox></div>
+        <h4 class="green-text" style="position: absolute;right: 26%;bottom: 10px;margin: 0;"> {{model.stateLabel.state}}</h4>
+      </div>
+      <div fxFlex class="fill-height">
+        <div style="margin-top: 16%;">
+          <h4 class="light-cyan-text">{{model.stateLabel.subTitle}}</h4>
+          <h1 class="green-text">
+            {{model.stateLabel.scaleNumber}}<label class="m-0 light-blue-text" style="font-size: 18px;">%</label>
+          </h1>
+        </div>
+      </div>
+    </div>
+    <div fxLayout="row" style="height: 40%;" fxLayoutAlign="space-between end">
+      <ng-container *ngFor="let item of model.detail">
+        <div fxFlex="130px" style=" height: 80px;background-color: rgb(29,39,95);">
+          <div class="border-background">
+            <div style="padding: 10px 5px 10px 5px;">
+              <h4 class="light-cyan-text text-center">{{item.label}}</h4>
+              <div class="blue-parting-line"></div>
+              <h2 class="text-center m-b-0 m-t-5 sky-blue-text2">{{item.number}}</h2>
+            </div>
+          </div>  
+        </div>
+      </ng-container>      
+    </div>
+  </div>
+</ng-container>

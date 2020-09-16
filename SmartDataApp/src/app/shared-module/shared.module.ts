@@ -21,6 +21,7 @@ import {  EChartProgressBarDirective} from "../common/directive/echarts/pie/prog
 import { HWSPlayerDirective } from "../common/directive/wsplayer-directive";
 import { TouchSpinDirective } from "../common/directive/touch-spin-directive";
 import { HWPaginationDirective } from "../common/directive/pagination-directive";
+import {  CardDirective } from "../common/directive/card-directive";
 import { InputSearchComponent } from './input-search/input-search.component'; 
 import { InputTagAreaComponent } from './input-tag-area/input-tag-area.component';
 import { CustomTableComponent } from "./custom-table/custom-table.component";
@@ -29,7 +30,14 @@ import { InputTagSelectComponent } from './input-tag-select/input-tag-select.com
 import { CustomTreeComponent } from './custom-tree/custom-tree.component';
 import { PicturesDropListComponent } from './pictures-drop-list/pictures-drop-list.component';
 import { CardListPanelComponent } from './card-list-panel/card-list-panel.component'; 
-import { VideoSimpleCardComponent } from './video-simple-card/video-simple-card.component'
+import { VideoSimpleCardComponent } from './video-simple-card/video-simple-card.component';
+import { StateScaleCardComponent } from './card-component/state-scale-card/state-scale-card.component';
+import { CardComponent } from "./card-component/card.component";  
+import { BusinessCardGridComponent } from '../waste-regulation-system/index/business-card-grid/business-card-grid.component';
+import { HeaderSquareListComponent } from './header-square-list/header-square-list.component';
+import { ImageThemeCardComponent } from './card-component/image-theme-card/image-theme-card.component';
+import { HintCardComponent } from './card-component/hint-card/hint-card.component';
+import { OrderTableCardComponent } from './card-component/order-table-card/order-table-card.component';
 @NgModule({
   imports: [
     CommonModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -38,7 +46,7 @@ import { VideoSimpleCardComponent } from './video-simple-card/video-simple-card.
     MatButtonModule,MatMenuModule,MatButtonToggleModule,MatSnackBarModule
   ],
   declarations: [
-    HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartLineDirective ,HWSPlayerDirective
+    HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartLineDirective ,HWSPlayerDirective,CardDirective
     ,EChartPieOutDirective,EChartPieInDirective,EChartPieMiddleDirective ,EChartProgressBarBoxDirective,EChartProgressBarDirective
     ,FormTitlePipe,TxtLenPipe,
   InputSearchComponent,CustomTableComponent, ConfirmDialogComponent,
@@ -46,22 +54,24 @@ import { VideoSimpleCardComponent } from './video-simple-card/video-simple-card.
   InputTagSelectComponent,
   CustomTreeComponent,
   PicturesDropListComponent,
-  CardListPanelComponent, VideoSimpleCardComponent
+  CardListPanelComponent, VideoSimpleCardComponent, StateScaleCardComponent,CardComponent,BusinessCardGridComponent, HeaderSquareListComponent, ImageThemeCardComponent, HintCardComponent, OrderTableCardComponent
   ],
   exports: [
     InfiniteScrollModule,MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,
     MatSidenavModule,MatToolbarModule,FlexLayoutModule,MatCheckboxModule,ReactiveFormsModule,
     MatButtonModule,MatMenuModule,MatButtonToggleModule,MatSnackBarModule,MatTabsModule
-    ,HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartLineDirective,HWSPlayerDirective
+    ,HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartLineDirective,HWSPlayerDirective,CardDirective
      ,EChartPieOutDirective,EChartPieInDirective,EChartPieMiddleDirective ,EChartProgressBarBoxDirective,EChartProgressBarDirective
     ,FormTitlePipe,TxtLenPipe
     ,InputSearchComponent,InputTagAreaComponent,CustomTableComponent,ConfirmDialogComponent
     ,InputTagSelectComponent,CustomTreeComponent,PicturesDropListComponent,CardListPanelComponent
-    ,VideoSimpleCardComponent
+    ,VideoSimpleCardComponent,StateScaleCardComponent,CardComponent,BusinessCardGridComponent
+    ,HeaderSquareListComponent,ImageThemeCardComponent,HintCardComponent,OrderTableCardComponent
   ],
   providers: [DatePipe,
    ],
-  entryComponents: []
+   entryComponents: [CardComponent,ImageThemeCardComponent,StateScaleCardComponent,
+    BusinessCardGridComponent,HeaderSquareListComponent,HintCardComponent]
   ,
 })
 export class SharedModule { }

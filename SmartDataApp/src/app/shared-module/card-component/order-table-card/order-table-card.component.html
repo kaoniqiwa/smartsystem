@@ -1,0 +1,21 @@
+<ng-container *ngIf="model">
+  <h2>{{model.title}}</h2>
+  <div class="content-wrapper p-t-20 p-r-30">
+    <div *ngFor="let item of model.table;let i= index" fxLayout="row" style="height: calc(100%/6);" class="top6-list">
+      <div fxFlex="12">
+        <div class="number-item" [ngStyle]="{'background': i<3?'#ffba00':'#7f94ff'}">
+          <h5 class="item-label">{{ i+1}}</h5>
+        </div>
+      </div>
+      <div fxFlex="50">
+        <h2 class="light-blue-text">{{item.name}}</h2>
+      </div>
+      <div fxFlex="38">
+        <h2 class="m-0 sky-blue-text2 " style="text-align: right;">{{ item.subName}}
+          <label class="number-suffix">{{item.subNameAfter}}</label>
+        </h2>
+      </div>
+    </div>
+  </div>
+
+</ng-container>
