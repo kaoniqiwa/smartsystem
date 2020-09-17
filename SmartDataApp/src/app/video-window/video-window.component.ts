@@ -318,13 +318,13 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     }
 
     playback_click() {
-        if (!this.date || !this.beginTime || !this.endTime) {
-            return;
-        }
+        const date = document.getElementById('txt_date') as HTMLInputElement;
+        const begin = document.getElementById('txt_begin_time') as HTMLInputElement;
+        const end = document.getElementById('txt_end_time') as HTMLInputElement;
 
         this.PlaybackClickedListen.emit({
-            begin: new Date(this.date + ' ' + this.beginTime),
-            end: new Date(this.date + ' ' + this.endTime)
+            begin: new Date(date.value + ' ' + begin.value),
+            end: new Date(date.value + ' ' + end.value)
         });
     }
 

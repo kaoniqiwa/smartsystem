@@ -64,7 +64,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             if (response.Data.DryFull || response.Data.WetFull) {
                 status.status = 1;
             }
-            this.client.Point.Status(status);
+            this.client.Point.Status([status]);
         });
     }
 
@@ -88,6 +88,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         this.client.Events.OnLoaded = () => {
 
             console.log('this.client.Events.OnLoaded');
+            const arrayStatus = new Array();
             for (const id in this.garbages) {
                 if (this.garbages[id].DryFull || this.garbages[id].WetFull) {
                     const status = {
@@ -95,10 +96,10 @@ export class AMapComponent implements AfterViewInit, OnInit {
                         status: 1
                     };
                     console.log(status);
-                    this.client.Point.Status(status);
+                    arrayStatus.push(status);
                 }
             }
-
+            this.client.Point.Status(arrayStatus);
 
 
             const villages = this.dataController.Village.Point.List();
