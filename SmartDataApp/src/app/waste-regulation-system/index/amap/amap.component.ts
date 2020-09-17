@@ -39,8 +39,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     selectedCameras: Camera[];
     garbages: GarbageStation[];
     srcUrl: any;
-    dataController: CesiumDataController.Controller; // CesiumDataController.Controller;
-    @Output()
+    dataController: CesiumDataController.Controller;
     client: CesiumMapClient;
 
     autoCloseWindow: NodeJS.Timer;
@@ -57,7 +56,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     ) {
 
         this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc());
-        eventService.pushIllegalDrop.subscribe(async (event: IllegalDropEventRecord) => {
+        this.eventService.pushIllegalDrop.subscribe(async (event: IllegalDropEventRecord) => {
             const response = await this.garbageService.get(event.Data.StationId).toPromise();
             const status = {
                 id: event.Data.StationId,
