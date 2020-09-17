@@ -9,15 +9,13 @@ import { GarbageStation, GetGarbageStationsParams } from '../../../data-core/mod
 import {
     CameraRequestService as GarbageStationCameraRequestService, GarbageStationRequestService
 } from '../../../data-core/repuest/garbage-station.service';
-import { VideoPlayerService } from './video-player.service';
 import { Camera } from '../../../data-core/model/aiop/camera';
 import { GetPreviewUrlParams, GetVodUrlParams } from '../../../data-core/model/aiop/video-url';
 import { PlayModeEnum, VideoWindowComponent } from '../../../video-window/video-window.component';
 
 import { AMapService } from './amap.service';
-import { MQTTEventService } from 'src/app/common/tool/mqtt-event/mqtt-event.service';
-import { EventPushService } from 'src/app/common/tool/mqtt-event/event-push.service';
-import { IllegalDropEventRecord } from 'src/app/data-core/model/waste-regulation/illegal-drop-event-record';
+import { EventPushService } from '../../../common/tool/mqtt-event/event-push.service';
+import { IllegalDropEventRecord } from '../../../data-core/model/waste-regulation/illegal-drop-event-record';
 
 
 
