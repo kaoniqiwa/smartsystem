@@ -1,6 +1,8 @@
 .player {
-    width: 540px;
-    height: 360px;
+    /* width: 540px;
+    height: 360px; */
+    width:100%;
+    height: 100%;
     background-color: black;
     /* margin: 10px auto; */
     color:rgba(255, 255, 255, 0.8);
@@ -9,8 +11,8 @@
 
 .loading {
     position: relative;
-    width: 2.5em;
-    height: 2.5em;
+    /* width: 2.5em;
+    height: 2.5em; */
     background-color: black;
     /* transform: rotate(165deg); */
   }
@@ -70,7 +72,9 @@
 
 
 
-
+.player .parent-wnd{
+  z-index: 99;
+}
 
 
 

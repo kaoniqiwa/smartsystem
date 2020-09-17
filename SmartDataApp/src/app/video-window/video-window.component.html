@@ -1,0 +1,128 @@
+<div class="alert-window text-no-select">
+  <div class="alert-window-bg p-10">
+    <!-- <div *ngIf="isChangeMode"> -->
+    <div style="font-size: 20px;height: 30px;line-height: 20px;color: white">
+      <div class="pull-left">摄像机名 {{cameraName}}</div>
+      <div class="pull-right">
+        <a href="javascript:void(0)" *ngIf="hasControl" title="预览模式" (click)="changePlayMode(playMode_.live,divId)"
+          [class.hide]="playMode==playMode_.live">
+          <i class="howell-icon-play m-r-10" style="color:rgb(216, 244, 255)">
+          </i>
+        </a>
+        <a href="javascript:void(0)" *ngIf="hasControl" title="回放模式" (click)="changePlayMode(playMode_.vod,divId)"
+          [class.hide]="playMode==playMode_.vod">
+          <i class="howell-icon-replay m-r-10" style="color:rgb(216, 244, 255)">
+          </i>
+        </a>
+        <i class="howell-icon-Close alert-window-close-btn" (click)="closeWindow()"></i>
+      </div>
+    </div>
+    <div class="fill-width" style="height: calc(100% - 20px);" *ngIf="hasControl">
+      <div id="videoWindowView" data-time="0" data-full="0"
+        style="height:calc(100% - 10px);width: 100%;float: left;border: 2px solid #3283E5;">
+        <div style="background-color: black;width: 100%;height:calc(100%) ;">
+          <div id="{{divId}}" *ngIf="divId" class="video-control selected fill-height fill-width player">
+          </div>
+        </div>
+        <!-- <div [style.height]="playMode_.live==playMode?'calc(100% - 30px)':'calc(100% - 68px)'"
+                style="background-color: white;width: 100%;">
+                <div id="{{divId}}" class="video-control selected fill-height fill-width">
+                </div>
+              </div> -->
+        <!-- <div [class.hide]="playMode_.playback!=playMode" class="fill-width m-t-10" style="height: 26px">
+                <div class="play-back-line" style="position: relative;">
+                  <label class="playback-beg" for="">00:00</label>
+                  <input type="range" value="0">
+                  <label class="playback-end" for="">00:00</label>
+                </div>
+      
+              </div> -->
+        <!-- <div style="position: relative">
+          <div style="width:200px;position: absolute;left: 10px;" [style.top]="playMode_.live==playMode?'4px':'0'">
+                  <i class="mdi mdi-bullhorn  pull-left"></i>
+                  <div class="pull-left m-t-10 m-l-10" class="video-sound">
+                    <input type="range" value="0" name="" id="">
+                  </div>
+                </div>
+                <div style="position: absolute;width: 200px;left: 40%;" *ngIf="playMode_.playback==playMode">
+                  <a href="" class="howell-icon-skipprevious"></a>
+                  <a href="" class="howell-icon-Square m-l-20"></a>
+                  <a href="" class="howell-icon-skipbackward m-l-20"></a>
+                  <a href="" class="mdi mdi-google-play m-l-20"></a>
+                  <a href="" class="howell-icon-skipforward  m-l-20"></a>
+                  <a href="" class="howell-icon-skipnext m-l-20"></a>
+                </div>
+                <div style="position: absolute;right: 10px;" [style.top]="playMode_.live==playMode?'2px':'0'" >
+                  <a href="javascript:void(0)" (click)="videoFullscreen()" class="howell-icon-arrowexpandall"></a>
+                </div>
+        </div> -->
+      </div>
+
+      <div class="datetime padded pull-right fill-height border" [class.hide]="playMode_.vod!=playMode">
+        <div action="#" class="form-horizontal2">
+          <label class="pull-left first">日期：</label>
+          <div class="input-group date datepicker" data-date-autoclose="true" data-date-format="dd.mm.yyyy"
+            data-date-start-view="2">
+            <input data-picker="date" autocomplete="off" class="custom form-control" data-date-autoclose="true"
+              data-date-format="yyyy年mm月dd日" id="txt_date" type="text" [value]="date" />
+          </div>
+        </div>
+        <div action="#" class="form-horizontal2">
+          <label class="pull-left">开始时间：</label>
+          <div class="input-group bootstrap-timepicker">
+            <input class="custom form-control" id="txt_begin_time" [value]="beginTime" type="text" />
+          </div>
+        </div>
+        <div action="#" class="form-horizontal2">
+          <label class="pull-left">结束时间：</label>
+          <div class="input-group bootstrap-timepicker">
+            <input class="custom form-control" id="txt_end_time" [value]="endTime" type="text" />
+          </div>
+        </div>
+
+        <div class="form-horizontal2">
+          <!-- <a class="btn full-green custom pull-right" (click)="playback_click()"></a> -->
+          <button class="btn full-green custom " (click)="playback_click()">
+            <span style="font-size: 14px;vertical-align: super;">开始回放</span>
+          </button>
+        </div>
+        <div style="text-align:right">
+          <span id="span_progress"></span>
+          <i class="icon-spinner icon-spin" id="icon_loading" style="display:none"></i>
+        </div>
+      </div>
+
+
+      <!-- <div class="pull-right fill-height" [class.hide]="playMode_.vod!=playMode">
+              <div data-picker="date" class="sm-date"></div>
+              <div class="m-t-10">
+                <button class="btn full-green custom " style="width: 176px;" (click)="searchFilesClick()">
+                  <span style="font-size: 14px;vertical-align: super;">查找</span>
+                </button>
+              </div>
+              <div class="video-list" infinite-scroll [infiniteScrollDistance]="viewModel.scroll.scrollDistance"
+                [infiniteScrollUpDistance]="viewModel.scroll.scrollUpDistance"
+                [infiniteScrollThrottle]="viewModel.scroll.throttle" [scrollWindow]="viewModel.scroll.scrollWindow"
+                style="overflow: auto;height: calc(100% - 252px);">
+                <div class="video-item" [class.selected]="d.isSelect" *ngFor="let d of viewModel.recordFilePage.list">
+                  <a href="javascript:void(0)" (dblclick)="videoItemClick(d)">{{ d.labelText}}</a>
+                </div>
+                <div class="fill-width fill-height text-center" [class.hide]="viewModel.recordFilePage.list.length>0">
+                  <label class="m-b-0" style="line-height: 238px;font-size: 14px;color: rgb(216, 244, 255);"
+                    for="">无录像文件</label>
+                </div>
+              </div>
+      
+            </div> -->
+    </div>
+    <div id="{{screenId}}" style="background-color:black;height:calc(100% - 30px)" *ngIf="!hasControl">
+      <div class="fill-height fill-width">
+        <div id="{{divId}}" class="video-control selected fill-height fill-width">
+        </div>
+      </div>
+    </div>
+    <!-- </div> -->
+
+  </div>
+
+</div>

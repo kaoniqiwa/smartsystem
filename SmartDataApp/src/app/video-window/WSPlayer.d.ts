@@ -5,7 +5,7 @@ declare class WSPlayer {
         elementId: string,
         path?: string,
         mode?: string,
-        url?: ""
+        url?: string
     })
     FullScreen: boolean;
     url: string;

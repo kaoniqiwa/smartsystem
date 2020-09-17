@@ -1,0 +1,281 @@
+.alert-window{
+    border: 3px solid #616ABF;
+    height:100%;
+    width: 100%;
+    box-shadow: #616ABF 0px 0px 30px -1px;
+    border-radius: 4px;
+    background-color:rgba(0,0,0,0.9);
+}
+
+.alert-window-bg{
+    background-color:rgba(45,118,206,0.2);
+    height:100%;
+    width: 100%;
+}
+
+.alert-window-body{
+    padding: 20px;
+    height:100%;
+    width: 100%;
+}
+
+.alert-window-close-btn:hover{
+    color: #e72f2f;
+    cursor: pointer;
+}
+
+.alert-window>.alert-window-bg>.card.custom{
+    border: 0;
+    box-shadow:none;
+    background-color:transparent;
+}
+
+
+
+.text-no-select {  
+    /* Chrome/Safari/Opera */    
+    user-select: none;
+}
+.preset-list::-webkit-scrollbar,.video-list::-webkit-scrollbar{width:5px;}
+
+.video-list div a,.preset-list div a{
+    color: rgb(216, 244, 255);
+}
+.video-list,.preset-list{
+    border: 2px solid #616ABF;
+}
+.video-list .video-item:hover,.preset-list  .li:hover{
+    background-color: rgba(47,117,202,0.6);
+    cursor: pointer;
+}
+
+.video-list .video-item.selected,.preset-list .li.selected{
+   background-color: rgba(47,117,202,0.6);
+}
+
+.video-list .video-item,.preset-list div{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.preset.li .i-a{
+    display: none;
+}
+
+.preset.li:hover .i-a
+ {
+   display: block;
+}    
+
+.slider-box .slider-container{
+    float: left; 
+    margin-top: 10px;
+}
+
+.play-live-box .btn-i{
+    float: left; 
+    padding: 2px 6px;
+    border: 1px solid #616ABF;
+    background: rgba(47,117,202,0.3);
+}
+
+.play-live-box .btn-i>a
+,.play-live-box-b .btn-d>a{
+    color: #69adff;
+}
+
+.play-live-box .btn-i>a:hover
+,.play-live-box-b .btn-d>a:hover{
+    color: #a6e8ff ;
+}
+
+.play-live-box .btn-i>a:active{
+    color: #d8f4ff ;
+}
+
+.speed-input>input[type=text]{
+    width: 30px;
+    vertical-align: sub;
+    height: 20px;
+    font-size: 14px;
+    color: rgb(216, 244, 255);
+    border: 1px solid #616ABF;
+    background: rgba(47,117,202,0.3);
+    text-align: center;
+}
+
+.play-back-line .playback-beg{
+    font-size: 12px;
+    margin-bottom: 0;
+    left: 10px;
+    top: 2px;
+    position: absolute;
+}
+
+
+.play-back-line .playback-end{
+    font-size: 12px;
+    margin-bottom: 0;
+    position: absolute;
+    right: 14px;
+    top: 2px;
+}
+
+.play-live-box-b{    
+    height: 22px;
+    margin-top: 10px;
+    border: 1px solid #616ABF;
+    position: relative;
+}
+
+.play-live-box-b .btn-d{
+    float: left;
+    line-height: 20px;
+    padding: 0px 6.5px;
+    background: rgba(47,117,202,0.3);
+}
+
+.play-live-box-b .line{
+    background: #616ABF;
+    width: 1px;
+    height: 16px;   
+    top: 2px;
+    position: absolute
+}
+.play-live-box-b .line-a{
+    left: 29px;
+}
+.play-live-box-b .line-b{
+    left: 58px;
+}
+.play-live-box-b .line-c{
+    left: 87px;
+}
+.play-live-box-b .line-d{
+    left: 116px;
+}
+.play-live-box-b .line-e{
+    left: 145px;
+}
+
+  /* 清除原有样式 */
+.speed-range>input[type=range]{
+    -webkit-appearance: none;
+    width: 130px;
+}
+.play-back-line>input[type=range]{
+    vertical-align: super;
+    margin-left: 50px;
+    -webkit-appearance: none;
+    width: 610px;
+}
+
+.video-sound>input[type=range]{
+    -webkit-appearance: none;
+    width: 50px;
+    margin-left: 5px;
+    vertical-align: super;
+}
+
+ 
+/*设置滑动条的样式*/
+.speed-range>input[type=range]::-webkit-slider-runnable-track,
+.play-back-line>input[type=range]::-webkit-slider-runnable-track {
+   height: 0.3vh;
+   background: #50565f;
+}
+
+.video-sound>input[type=range]::-webkit-slider-runnable-track{
+    height: 0.2vh;
+    background: #50565f;
+}
+ 
+/*去除获取焦点时的边框*/  
+.speed-range>input[type=range]:focus,
+.play-back-line>input[type=range]:focus,
+.video-sound>input[type=range]:focus{
+    outline: none;
+}
+/*设置滑块样式*/
+.speed-range>input[type=range]::-webkit-slider-thumb,
+.video-sound>input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+      width: 6px;
+    height: 10px;
+    background:  #e7e7e7;
+    margin-top: -4px; 
+    box-sizing: border-box;
+    border: 1px solid #aaa;
+} 
+
+.play-back-line>input[type=range]::-webkit-slider-thumb  {
+    -webkit-appearance: none;
+    width: 8px;
+    height: 12px;
+    background:  #e7e7e7;
+    margin-top: -4px; 
+    box-sizing: border-box;
+    border: 1px solid #aaa;
+}  
+
+.speed-range>input[type=range]>p {
+	position:absolute;
+	top:-2px;
+	left:0;
+	background:#616ABF;
+	height:3px;
+	border-radius:5px 0 0 5px;
+}
+
+
+
+.alert-window .border{
+    border: 2px solid #616ABF !important;
+}
+
+
+.alert-window .datetime{
+    width: 150px;
+    margin-left: 10px;
+    padding: 10px;
+}
+
+.alert-window .datetime .custom.form-control
+{
+    border-radius: 2px;
+    font-size: 16px;
+    min-height: 30px;
+}
+.alert-window .datetime label.first
+{
+    margin-top: 0px;
+}
+.alert-window .datetime label
+{
+    margin-top: 12px;
+    margin-bottom: 4px;
+    color: #cfd7ff ;
+}
+
+.alert-window .pull-right.fill-height{
+    height: calc(100% - 10px);
+}
+
+.alert-window .datetime .btn
+{
+    margin-top: 23px;
+    width: 100%;
+    height: 34px;    
+    border:2px solid #32b43e;
+    box-shadow:#32b43e 0px 0px 18px inset;
+}
+.alert-window .datetime .btn:hover
+{
+    border:2px solid #23e353;
+    box-shadow:#23e353 0px 0px 18px inset;
+}
+.alert-window .datetime .btn:active
+{
+    border:2px solid #33ff66;
+    box-shadow:#33ff66 0px 0px 18px inset;
+}
+
