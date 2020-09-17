@@ -39,8 +39,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     selectedCameras: Camera[];
     garbages: GarbageStation[];
     srcUrl: any;
-    dataController: CesiumDataController.Controller; // CesiumDataController.Controller;
-    @Output()
+    dataController: CesiumDataController.Controller;
     client: CesiumMapClient;
 
     autoCloseWindow: NodeJS.Timer;
