@@ -37,7 +37,7 @@ declare class WSPlayer {
     stop(): Promise<void>;
     // 全屏
     fullScreen(): void;
-    resize(width: number, height: number): void;
+    resize(width?: number, height?: number): void;
     download(filename: string, type: string): void;
 
 

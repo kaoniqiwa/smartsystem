@@ -88,15 +88,24 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         switch (parm) {
             case PlayModeEnum.live:
                 ele.style.width = '100%';
+                if (this.player) {
+                    this.player.resize();
+                }
                 break;
             case PlayModeEnum.vod:
                 ele.style.width = this.videoWidth;
+                if (this.player) {
+                    // tslint:disable-next-line:radix
+                    this.player.resize(parseInt(this.videoWidth) - 4);
+                }
                 break;
             default:
                 break;
         }
         try {
-            this.player.stop();
+            if (this.player) {
+                this.player.stop();
+            }
         } catch (ex) {
             console.error(ex);
         }

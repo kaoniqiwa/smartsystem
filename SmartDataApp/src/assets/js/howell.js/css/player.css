@@ -94,6 +94,7 @@
     clear: both;
     position: relative;
     font-size: 14px;
+    z-index: 100;
 }
 
 .player .tools label{
