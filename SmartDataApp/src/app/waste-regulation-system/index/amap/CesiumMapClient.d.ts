@@ -65,10 +65,15 @@ declare namespace CesiumMap {
         Show: (id: string, style: CesiumDataController.GuideboardStyle) => void;
         Hide: (id: string, style: CesiumDataController.GuideboardStyle) => void;
     }
+    enum PointStatus{
+        normal = 0,
+        alarm = 1
+    }
     interface PointStatusOptions {
         id: string;
-        status: number;
+        status: PointStatus;
     }
+    
     interface PointVisibilityOptions {
         camera?: boolean,
         entrance?: boolean,
