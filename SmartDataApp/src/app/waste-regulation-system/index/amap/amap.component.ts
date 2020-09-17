@@ -29,10 +29,11 @@ import { IllegalDropEventRecord } from '../../../data-core/model/waste-regulatio
 export class AMapComponent implements AfterViewInit, OnInit {
     @ViewChild('iframe') iframe: ElementRef;
     @ViewChild('videoWindow')
-    @Output()
-    mapLoadedEvent: EventEmitter<void> = new EventEmitter();
-
     videoWindow: VideoWindowComponent;
+
+    @Output()
+    mapLoadedEvent: EventEmitter<CesiumMapClient> = new EventEmitter();
+
     isShowVideoView = false;
     currentCamera: Camera;
     maskLayerShow = false;
@@ -102,7 +103,18 @@ export class AMapComponent implements AfterViewInit, OnInit {
             }
             this.client.Point.Status(arrayStatus);
 
-            this.mapLoadedEvent.emit();
+            const villages = this.dataController.Village.List();
+            for (const villageId in villages) {
+                if (Object.prototype.hasOwnProperty.call(villages, villageId)) {
+                    const village = villages[villageId];
+                    if (!village.parentId) {
+                        this.client.Viewer.MoveTo(village.center);
+                        break;
+                    }
+                }
+            }
+
+            this.mapLoadedEvent.emit(this.client);
 
         };
 
