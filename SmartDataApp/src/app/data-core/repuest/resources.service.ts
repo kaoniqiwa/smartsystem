@@ -1,20 +1,22 @@
-import { Injectable } from "@angular/core";
-import { Resource as ResourceModel } from "../model/aiop/resource";
-import { EncodeDevice as EncodeDeviceModel } from "../model/aiop/encode-device";
-import { ResourceLabel as ResourceLabelModel } from "../model/aiop/resource-label";
-import { GetEncodeDevicesParams, GetCamerasParams } from "../model/aiop/encode-devices-params";
-import { Protocol } from "../model/aiop/protocol";
-import { Camera as CameraModel } from "../model/aiop/camera";
-import { CameraAIModel } from "../model/aiop/camera-ai-model";
-import * as url from "../url/aiop/resources";
-import { PagedList } from "../model/page";
-import { Response } from "../model/Response";
-import { GetResourcesParams } from "../model/aiop/resources-params";
-import { GetResourceLabelsParams } from "../model/aiop/resource-labels-params";
-import { SaveModel } from "../model/save-model";
-import { BatchCopyRequest } from "../model/aiop/ai-models-params";
-import { BatchResult } from "../model/batch";
-import { HowellAuthHttpService } from "./howell-auth-http.service";
+import { Injectable } from '@angular/core';
+import { Resource as ResourceModel } from '../model/aiop/resource';
+import { EncodeDevice as EncodeDeviceModel } from '../model/aiop/encode-device';
+import { ResourceLabel as ResourceLabelModel } from '../model/aiop/resource-label';
+import { GetEncodeDevicesParams, GetCamerasParams } from '../model/aiop/encode-devices-params';
+import { Protocol } from '../model/aiop/protocol';
+import { Camera as CameraModel } from '../model/aiop/camera';
+import { CameraAIModel } from '../model/aiop/camera-ai-model';
+import * as url from '../url/aiop/resources';
+import { PagedList } from '../model/page';
+import { Response } from '../model/Response';
+import { GetResourcesParams } from '../model/aiop/resources-params';
+import { GetResourceLabelsParams } from '../model/aiop/resource-labels-params';
+import { SaveModel } from '../model/save-model';
+import { BatchCopyRequest } from '../model/aiop/ai-models-params';
+import { BatchResult } from '../model/batch';
+import { HowellAuthHttpService } from './howell-auth-http.service';
+import { SRService } from '../url/aiop/sr-server';
+import { GetPreviewUrlParams, GetVodUrlParams, VideoUrl } from '../model/aiop/video-url';
 @Injectable({
     providedIn: 'root'
 })
@@ -34,7 +36,8 @@ export class ResourceRequestService extends SaveModel {
     }
 
     set(item: ResourceModel) {
-        return this.requestService.put<ResourceModel, ResourceModel>(this.url.edit(item.Id), this.toModel(item, this.formMustField.resource));
+        return this.requestService.put<ResourceModel,
+            ResourceModel>(this.url.edit(item.Id), this.toModel(item, this.formMustField.resource));
     }
 
     del(id: string) {
@@ -58,7 +61,7 @@ export class EncodeDeviceRequestService extends SaveModel {
     create(item: EncodeDeviceModel) {
 
         return this.requestService.post<EncodeDeviceModel,
-         Response<EncodeDeviceModel>>(this.url.create(), this.toModel(item, this.formMustField.encodeDevice));
+            Response<EncodeDeviceModel>>(this.url.create(), this.toModel(item, this.formMustField.encodeDevice));
     }
 
     get(id: string) {
@@ -66,8 +69,8 @@ export class EncodeDeviceRequestService extends SaveModel {
     }
 
     set(item: EncodeDeviceModel) {
-        return this.requestService.put<EncodeDeviceModel, 
-        Response<EncodeDeviceModel>>(this.url.edit(item.Id), this.toModel(item, this.formMustField.encodeDevice));
+        return this.requestService.put<EncodeDeviceModel,
+            Response<EncodeDeviceModel>>(this.url.edit(item.Id), this.toModel(item, this.formMustField.encodeDevice));
     }
 
     del(id: string) {
@@ -93,8 +96,8 @@ export class CameraRequestService extends SaveModel {
         this.url = new url.ResourceCamera();
     }
     create(item: CameraModel) {
-        return this.requestService.post<CameraModel, 
-        Response<CameraModel>>(this.url.create(), this.toModel(item, this.formMustField.camera));
+        return this.requestService.post<CameraModel,
+            Response<CameraModel>>(this.url.create(), this.toModel(item, this.formMustField.camera));
     }
 
     get(id: string) {
@@ -102,8 +105,8 @@ export class CameraRequestService extends SaveModel {
     }
 
     set(item: CameraModel) {
-        return this.requestService.put<CameraModel, 
-        Response<CameraModel>>(this.url.edit(item.Id), this.toModel(item, this.formMustField.camera));
+        return this.requestService.put<CameraModel,
+            Response<CameraModel>>(this.url.edit(item.Id), this.toModel(item, this.formMustField.camera));
     }
 
     del(id: string) {
@@ -225,3 +228,21 @@ export class ResourceMediumRequestService {
 }
 
 
+@Injectable({
+    providedIn: 'root'
+})
+export class ResourceSRServersRequestService {
+    url: SRService;
+    constructor(private requestService: HowellAuthHttpService) {
+        this.url = new SRService();
+    }
+
+    PreviewUrls(params: GetPreviewUrlParams) {
+        return this.requestService.post<VideoUrl>(this.url.preview(), params);
+    }
+
+    VodUrls(params: GetVodUrlParams) {
+        return this.requestService.post<VideoUrl>(this.url.vod(), params);
+    }
+
+}

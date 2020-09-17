@@ -1,15 +1,26 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { CameraRequestService as AIOPCameraService, ResourceMediumRequestService } from '../../../data-core/repuest/resources.service';
-import { VideoSimpleCardComponent } from '../../../shared-module/video-simple-card/video-simple-card.component';
-
+import {
+    CameraRequestService as AIOPCameraService,
+    ResourceMediumRequestService,
+    ResourceSRServersRequestService
+} from '../../../data-core/repuest/resources.service';
 import { GarbageStation, GetGarbageStationsParams } from '../../../data-core/model/waste-regulation/garbage-station';
-
 import {
     CameraRequestService as GarbageStationCameraRequestService, GarbageStationRequestService
 } from '../../../data-core/repuest/garbage-station.service';
+import { VideoPlayerService } from './video-player.service';
+import { Camera } from '../../../data-core/model/aiop/camera';
+import { GetPreviewUrlParams, GetVodUrlParams } from '../../../data-core/model/aiop/video-url';
+import { PlayModeEnum, VideoWindowComponent } from '../../../video-window/video-window.component';
+
 import { AMapService } from './amap.service';
-import { Camera } from 'src/app/data-core/model/aiop/camera';
+import { MQTTEventService } from 'src/app/common/tool/mqtt-event/mqtt-event.service';
+import { EventPushService } from 'src/app/common/tool/mqtt-event/event-push.service';
+import { IllegalDropEventRecord } from 'src/app/data-core/model/waste-regulation/illegal-drop-event-record';
+
+
+
 
 @Component({
     selector: 'app-amap',
@@ -19,23 +30,46 @@ import { Camera } from 'src/app/data-core/model/aiop/camera';
 })
 export class AMapComponent implements AfterViewInit, OnInit {
     @ViewChild('iframe') iframe: ElementRef;
-    @ViewChild('preview') videoCard: VideoSimpleCardComponent;
+    @ViewChild('videoWindow')
+    @Output()
+    mapLoadedEvent: EventEmitter<void> = new EventEmitter();
+
+    videoWindow: VideoWindowComponent;
+    isShowVideoView = false;
+    currentCamera: Camera;
+    maskLayerShow = false;
     selectedCameras: Camera[];
     garbages: GarbageStation[];
     srcUrl: any;
     dataController: CesiumDataController.Controller; // CesiumDataController.Controller;
+    @Output()
     client: CesiumMapClient;
 
+    autoCloseWindow: NodeJS.Timer;
     constructor(
+        private amapService: AMapService,
         private sanitizer: DomSanitizer,
         private changeDetectorRef: ChangeDetectorRef,
         private garbageService: GarbageStationRequestService,
         private aiopCameraService: AIOPCameraService,
         private mediaService: ResourceMediumRequestService,
-        private cameraService: GarbageStationCameraRequestService
+        private cameraService: GarbageStationCameraRequestService,
+        private srService: ResourceSRServersRequestService,
+        private eventService: EventPushService
     ) {
-        this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc());
 
+        this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc());
+        eventService.pushIllegalDrop.subscribe(async (event: IllegalDropEventRecord) => {
+            const response = await this.garbageService.get(event.Data.StationId).toPromise();
+            const status = {
+                id: event.Data.StationId,
+                status: 0
+            };
+            if (response.Data.DryFull || response.Data.WetFull) {
+                status.status = 1;
+            }
+            this.client.Point.Status([status]);
+        });
     }
 
     getSrc() {
@@ -58,6 +92,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         this.client.Events.OnLoaded = () => {
 
             console.log('this.client.Events.OnLoaded');
+            const arrayStatus = new Array();
             for (const id in this.garbages) {
                 if (this.garbages[id].DryFull || this.garbages[id].WetFull) {
                     const status = {
@@ -65,19 +100,13 @@ export class AMapComponent implements AfterViewInit, OnInit {
                         status: 1
                     };
                     console.log(status);
-                    this.client.Point.Status(status);
+                    arrayStatus.push(status);
                 }
             }
+            this.client.Point.Status(arrayStatus);
 
+            this.mapLoadedEvent.emit();
 
-
-            const villages = this.dataController.Village.Point.List();
-            for (const villageId in villages) {
-                if (Object.prototype.hasOwnProperty.call(villages, villageId)) {
-                    const village = villages[villageId];
-
-                }
-            }
         };
 
         this.client.Events.OnElementsDoubleClicked = async (objs) => {
@@ -132,8 +161,70 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
     }
 
-    OnCameraClicked(camera: Camera) {
+    OnVillageWindowClosed() {
+        const element = document.getElementById('videoPlayer');
+        element.style.display = 'none';
+    }
+
+    async OnCameraClicked(camera: Camera) {
+        if (!camera || !camera.SRSId) { return; }
+        this.currentCamera = camera;
+        this.maskLayerShow = true;
+        this.isShowVideoView = true;
+        const element = document.getElementById('videoPlayer');
+        element.style.display = '';
+
         console.log(camera);
+        const params = new GetPreviewUrlParams();
+        params.CameraId = camera.Id;
+        params.Protocol = 'ws-ps';
+        params.StreamType = 1;
+        const response = await this.srService.PreviewUrls(params).toPromise();
+
+        this.amapService.videoPlayerService.playCameraName = camera.Name;
+        this.amapService.videoPlayerService.playMode = PlayModeEnum.live;
+        this.amapService.videoPlayerService.playVideoVideoId = 'player';
+        // this.videoPlayerService.videoPlayArgs = new VideoPlayArgs();
+        this.amapService.videoPlayerService.url = response.Data.Url;
+        this.videoWindow.url = response.Data.Url;
+        this.videoWindow.playVideo();
+        // this.videoWindow.id
+        // this.videoCard.url = response.Data.Url;
+        // this.videoCard.username = response.Data.Username;
+        // this.videoCard.password = response.Data.Password;
+        // this.videoCard.play();
+
+        this.autoCloseWindow = setTimeout(() => {
+            this.videoWindow.closeWindow();
+        }, 5 * 60 * 1000);
+    }
+
+
+
+    async changePlayMode(mode: PlayModeEnum) {
+
+        this.videoWindow.playMode = mode;
+        if (mode === PlayModeEnum.live) {
+            const params = new GetPreviewUrlParams();
+            params.CameraId = this.currentCamera.Id;
+            params.Protocol = 'ws-ps';
+            params.StreamType = 1;
+            const response = await this.srService.PreviewUrls(params).toPromise();
+            this.videoWindow.playVideo();
+        }
+    }
+
+    async PlaybackClicked(opts: { begin: Date, end: Date }) {
+        const params = new GetVodUrlParams();
+        params.BeginTime = opts.begin;
+        params.EndTime = opts.end;
+        params.Protocol = 'ws-ps';
+        params.StreamType = 1;
+        params.CameraId = this.currentCamera.Id;
+        const response = await this.srService.VodUrls(params).toPromise();
+        this.videoWindow.url = response.Data.Url;
+        this.videoWindow.playVideo();
+        clearTimeout(this.autoCloseWindow);
     }
 }
 

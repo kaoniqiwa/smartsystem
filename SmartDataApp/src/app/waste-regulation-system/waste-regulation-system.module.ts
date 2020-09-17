@@ -6,8 +6,11 @@ import { WasteRegulationSystemRoutingModule } from './waste-regulation-system-ro
 import { IndexComponent } from './index/index.component';
 import { TimeToolComponent } from './index/time/time-tool.component';
 import { AMapComponent } from './index/amap/amap.component';
+import { VideoWindowComponent } from '../video-window/video-window.component';
+
+
 @NgModule({
-  declarations: [IndexComponent, TimeToolComponent, AMapComponent],
+  declarations: [IndexComponent, TimeToolComponent, AMapComponent, VideoWindowComponent],
   imports: [
     CommonModule, SharedModule,
     WasteRegulationSystemRoutingModule

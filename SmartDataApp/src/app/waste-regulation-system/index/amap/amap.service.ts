@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
+import { VideoPlayerService } from './video-player.service';
 
 @Injectable()
 export class AMapService {
 
-    src: string;
+    constructor(
+        public videoPlayerService: VideoPlayerService) {
 
-
-    constructor() {
-        const host = document.location.hostname;
-        const port = 8890;
-        this.src = 'http://' + host + ':' + port + '/amap/map_ts.html?maptype=AMapOffline&v=20191106';
     }
 }

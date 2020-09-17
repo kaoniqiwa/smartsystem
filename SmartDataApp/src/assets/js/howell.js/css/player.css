@@ -1,0 +1,252 @@
+.player {
+    /* width: 540px;
+    height: 360px; */
+    width:100%;
+    height: 100%;
+    background-color: black;
+    /* margin: 10px auto; */
+    color:rgba(255, 255, 255, 0.8);
+}
+
+
+.loading {
+    position: relative;
+    /* width: 2.5em;
+    height: 2.5em; */
+    background-color: black;
+    /* transform: rotate(165deg); */
+  }
+  .loading:before, .loading:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 0.25em;
+    transform: translate(-50%, -50%);
+  }
+  .loading:before {
+    animation: before 2s infinite;
+  }
+  .loading:after {
+    animation: after 2s infinite;
+  }
+  @keyframes before {
+    0% {
+      width: 0.5em;
+      box-shadow: 1em -0.5em rgba(225, 20, 98, 0.75), -1em 0.5em rgba(111, 202, 220, 0.75);
+    }
+    35% {
+      width: 2.5em;
+      box-shadow: 0 -0.5em rgba(225, 20, 98, 0.75), 0 0.5em rgba(111, 202, 220, 0.75);
+    }
+    70% {
+      width: 0.5em;
+      box-shadow: -1em -0.5em rgba(225, 20, 98, 0.75), 1em 0.5em rgba(111, 202, 220, 0.75);
+    }
+    100% {
+      box-shadow: 1em -0.5em rgba(225, 20, 98, 0.75), -1em 0.5em rgba(111, 202, 220, 0.75);
+    }
+  }
+  @keyframes after {
+    0% {
+      height: 0.5em;
+      box-shadow: 0.5em 1em rgba(61, 184, 143, 0.75), -0.5em -1em rgba(233, 169, 32, 0.75);
+    }
+    35% {
+      height: 2.5em;
+      box-shadow: 0.5em 0 rgba(61, 184, 143, 0.75), -0.5em 0 rgba(233, 169, 32, 0.75);
+    }
+    70% {
+      height: 0.5em;
+      box-shadow: 0.5em -1em rgba(61, 184, 143, 0.75), -0.5em 1em rgba(233, 169, 32, 0.75);
+    }
+    100% {
+      box-shadow: 0.5em 1em rgba(61, 184, 143, 0.75), -0.5em -1em rgba(233, 169, 32, 0.75);
+    }
+  }
+
+
+
+
+
+.player .parent-wnd{
+  z-index: 99;
+}
+
+
+
+
+
+
+
+
+.player .tools {        
+    width: 100%;
+    height: 52px;
+    background-color: transparent;
+    
+    margin-top: -52px;
+    line-height: 52px;
+    
+    clear: both;
+    position: relative;
+    font-size: 14px;
+}
+
+.player .tools label{
+    font-size: 12px;
+    line-height: 50px;
+}
+
+
+.player a {
+    color: rgba(255, 255, 255, 0.8);
+    width: 14px;
+    height: 14px;
+    font-size: 14px;
+}
+
+.player a:hover {
+    color: white;
+    cursor: pointer;
+    text-decoration: none;    
+            
+}
+.player a:hover i{    
+    box-shadow: 0px 0px 10px white;
+}
+
+.player .tools .tools-content{
+  padding: 3px 10px;
+  display: none;
+  width: 100%;
+  height: 100%;
+  opacity: 0;  
+  transition:opacity 2s;
+}
+
+
+.player .tools:hover .tools-content{
+  opacity:1;
+  display:block;  
+  background-color: rgba(0, 0, 0, 0.5);
+	animation: anim-in 1s;
+}
+
+
+@keyframes anim-in { 
+	0% {opacity: 0;}
+	100%{opacity:1;}
+}
+@keyframes anim-out { 
+	0% {opacity: 1;}
+  99%{opacity:0;}
+  100%{display: none;}
+}
+
+
+
+
+
+
+.player .tools ul {
+    display: contents;
+    width: 100%;
+}
+
+.player .tools ul li {
+    float: left;
+    list-style: none;
+    margin-right: 3px;
+    height: 100%;
+    width: 25px;
+    text-align: center;
+    line-height: 46px;
+}
+
+
+
+.player a.glyphicon {
+    top: 3px;    
+}
+.player a.glyphicon:empty{
+    width: 12px;
+}
+
+
+.player a.glyphicon-eject {
+    transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    /* Internet Explorer 9*/
+    -moz-transform: rotate(90deg);
+    /* Firefox */
+    -webkit-transform: rotate(90deg);
+    /* Safari 和 Chrome */
+    -o-transform: rotate(90deg);
+    /* Opera */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+
+
+.player .tools .play {
+    width: 32px !important;
+    height: 32px;
+    font-size: 16px;
+    border-radius: 25px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    line-height: 24px;
+    padding-left: 2px;
+}
+.player .tools .play.glyphicon-stop{
+    padding-left: 0;
+    padding-right: 1px;
+}
+
+.player .tools .capturepicture{
+    font-size: 16px;
+}
+
+
+.player .tools .play:hover {
+    border-color: white;
+    box-shadow: 0px 0px 10px white;
+}
+
+
+
+
+
+.player input[type=range] {
+    vertical-align: middle;
+    
+    outline: none;
+    -webkit-appearance: none;
+    /*清除系统默认样式*/
+    width: 100% !important;
+    background: -webkit-linear-gradient(#3283E5, #3283E5) no-repeat, #ddd;
+    background-size: 0% 100%;
+    /*设置左右宽度比例*/
+    height: 3px;
+    /*横条的高度*/
+    box-shadow: 0px 0px 10px #3283E5;
+}
+
+/*拖动块的样式*/
+.player input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    /*清除系统默认样式*/
+    height: 10px;
+    /*拖动块高度*/
+    width: 10px;
+    /*拖动块宽度*/
+    background: rgba(50, 131, 229);
+    /*拖动块背景*/
+    border-radius: 50%;
+    /*外观设置为圆形*/
+    /* border: solid 5px rgba(50,131,229, 0.5); */
+    /*设置边框*/
+    box-shadow: 0px 0px 10px #3283E5;
+}

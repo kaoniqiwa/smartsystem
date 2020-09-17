@@ -7,12 +7,18 @@
 </ul>
 <div class="map-bar video-list" style="display: none;">
   <ng-container *ngFor="let camera of selectedCameras">
-    <div class="video" >
-      <img [src]="camera.ImageUrl" />      
+    <div class="video" (click)="OnCameraClicked(camera)">
+      <img [src]="camera.ImageUrl" [title]="camera.Name" />
     </div>
   </ng-container>
 </div>
 
-<div class="amap-video playing" style="display: none;">
-  <app-video-simple-card #play></app-video-simple-card>  
-</div>
+<!-- <div class="amap-video playing"> -->
+<app-video-window #videoWindow id="videoPlayer" (closeWindowEventListen)="OnVillageWindowClosed()"
+  class="amap-video playing" (PlaybackClickedListen)="PlaybackClicked($event)"
+  [cameraName]="amapService.videoPlayerService.playCameraName" (changeModeEventListen)="changePlayMode($event)"
+  (closeWindowOnloadEventListen)="isShowVideoView=false" [videoPlayArgs]="amapService.videoPlayerService.videoPlayArgs"
+  [playMode]="amapService.videoPlayerService.playMode" [cameraId]="amapService.videoPlayerService.playVideoVideoId"
+  [url]="amapService.videoPlayerService.url" style="height: 344px;width: 617px;z-index:4;display: none;">
+</app-video-window>
+<!-- </div> -->

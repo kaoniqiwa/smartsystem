@@ -90,7 +90,7 @@ declare namespace CesiumMap {
 
         /// <summary>设置点位状态</summary>
         /// <param name="status" type="{id:string, status:number}">点位状态</param>
-        Status: (status: PointStatusOptions) => void;
+        Status: (status: PointStatusOptions[]) => void;
         Remove: (pointId: string) => boolean;
         Display: (id: string, visibility: PointVisibilityOptions) => boolean;
         /// <summary>元素点位筛选</summary>
