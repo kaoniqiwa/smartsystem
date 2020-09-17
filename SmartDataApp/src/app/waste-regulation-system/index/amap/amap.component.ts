@@ -43,7 +43,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     dataController: CesiumDataController.Controller;
     client: CesiumMapClient;
 
-    autoCloseWindow: NodeJS.Timer;
+    autoCloseWindowHandle: NodeJS.Timer;
     constructor(
         private amapService: AMapService,
         private sanitizer: DomSanitizer,
@@ -160,10 +160,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
         };
         this.client.Events.OnElementsClicked = function (objs) {
-            if (!objs || objs.length === 0) {
-                const list = document.getElementsByClassName('map-bar video-list')[0];
-                list['style'].display = 'none';
-            }
+            const list = document.getElementsByClassName('map-bar video-list')[0];
+            list['style'].display = 'none';
         };
     }
     ngAfterViewInit() {
@@ -173,37 +171,46 @@ export class AMapComponent implements AfterViewInit, OnInit {
     OnVillageWindowClosed() {
         const element = document.getElementById('videoPlayer');
         element.style.display = 'none';
+        this.videoWindow.changePlayMode(PlayModeEnum.live, true);
     }
 
     async OnCameraClicked(camera: Camera) {
         if (!camera || !camera.SRSId) { return; }
-        this.currentCamera = camera;
-        this.maskLayerShow = true;
-        this.isShowVideoView = true;
-        const element = document.getElementById('videoPlayer');
-        element.style.display = '';
+        try {
+            this.currentCamera = camera;
+            this.maskLayerShow = true;
+            this.isShowVideoView = true;
+            const element = document.getElementById('videoPlayer');
+            element.style.display = '';
 
-        console.log(camera);
-        const params = new GetPreviewUrlParams();
-        params.CameraId = camera.Id;
-        params.Protocol = 'ws-ps';
-        params.StreamType = 1;
-        const response = await this.srService.PreviewUrls(params).toPromise();
+            console.log(camera);
+            const params = new GetPreviewUrlParams();
+            params.CameraId = camera.Id;
+            params.Protocol = 'ws-ps';
+            params.StreamType = 1;
+            const response = await this.srService.PreviewUrls(params).toPromise();
 
-        this.amapService.videoPlayerService.playCameraName = camera.Name;
-        this.amapService.videoPlayerService.playMode = PlayModeEnum.live;
-        this.amapService.videoPlayerService.playVideoVideoId = 'player';
-        // this.videoPlayerService.videoPlayArgs = new VideoPlayArgs();
-        this.amapService.videoPlayerService.url = response.Data.Url;
-        this.videoWindow.url = response.Data.Url;
-        this.videoWindow.playVideo();
-        // this.videoWindow.id
-        // this.videoCard.url = response.Data.Url;
-        // this.videoCard.username = response.Data.Username;
-        // this.videoCard.password = response.Data.Password;
-        // this.videoCard.play();
+            this.amapService.videoPlayerService.playCameraName = camera.Name;
+            this.amapService.videoPlayerService.playMode = PlayModeEnum.live;
+            this.amapService.videoPlayerService.playVideoVideoId = 'player';
 
-        this.autoCloseWindow = setTimeout(() => {
+            this.amapService.videoPlayerService.url = response.Data.Url;
+            this.videoWindow.url = response.Data.Url;
+            this.videoWindow.playVideo();
+        } catch (ex) {
+            console.error(ex);
+        }
+        finally {
+            this.autoCloseWindow();
+        }
+    }
+
+
+    autoCloseWindow() {
+        if (this.autoCloseWindowHandle) {
+            clearTimeout(this.autoCloseWindowHandle);
+        }
+        this.autoCloseWindowHandle = setTimeout(() => {
             this.videoWindow.closeWindow();
         }, 5 * 60 * 1000);
     }
@@ -211,29 +218,41 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
 
     async changePlayMode(mode: PlayModeEnum) {
+        try {
+            this.videoWindow.playMode = mode;
+            if (mode === PlayModeEnum.live) {
+                const params = new GetPreviewUrlParams();
+                params.CameraId = this.currentCamera.Id;
+                params.Protocol = 'ws-ps';
+                params.StreamType = 1;
+                const response = await this.srService.PreviewUrls(params).toPromise();
+                this.videoWindow.playVideo();
+            }
 
-        this.videoWindow.playMode = mode;
-        if (mode === PlayModeEnum.live) {
-            const params = new GetPreviewUrlParams();
-            params.CameraId = this.currentCamera.Id;
-            params.Protocol = 'ws-ps';
-            params.StreamType = 1;
-            const response = await this.srService.PreviewUrls(params).toPromise();
-            this.videoWindow.playVideo();
+        } catch (ex) {
+            console.error(ex);
+        }
+        finally {
+            this.autoCloseWindow();
         }
     }
 
     async PlaybackClicked(opts: { begin: Date, end: Date }) {
-        const params = new GetVodUrlParams();
-        params.BeginTime = opts.begin;
-        params.EndTime = opts.end;
-        params.Protocol = 'ws-ps';
-        params.StreamType = 1;
-        params.CameraId = this.currentCamera.Id;
-        const response = await this.srService.VodUrls(params).toPromise();
-        this.videoWindow.url = response.Data.Url;
-        this.videoWindow.playVideo();
-        clearTimeout(this.autoCloseWindow);
+        try {
+            const params = new GetVodUrlParams();
+            params.BeginTime = opts.begin;
+            params.EndTime = opts.end;
+            params.Protocol = 'ws-ps';
+            params.StreamType = 1;
+            params.CameraId = this.currentCamera.Id;
+            const response = await this.srService.VodUrls(params).toPromise();
+            this.videoWindow.url = response.Data.Url;
+            this.videoWindow.playVideo();
+        } catch (ex) {
+            console.error(ex);
+        } finally {
+            this.autoCloseWindow();
+        }
     }
 }
 

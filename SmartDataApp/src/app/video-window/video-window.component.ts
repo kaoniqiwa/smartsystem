@@ -27,7 +27,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     isChangeMode = true;
     guid: string = Guid.NewGuid().ToString('N');
 
-    @Input() videoWidth = '431px';
+    @Input() videoWidth = '404px';
 
     beginTime: string;
     endTime: string;
@@ -84,6 +84,8 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
 
 
     changePlayMode(parm: PlayModeEnum, eleId: any) {
+        this.playMode = parm;
+        if (!this.player) { return; }
         const ele = document.getElementById('videoWindowView');
         switch (parm) {
             case PlayModeEnum.live:
@@ -109,9 +111,10 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         } catch (ex) {
             console.error(ex);
         }
-        this.playMode = parm;
         // this.playMode_ = parm;
-        this.changeModeEventListen.emit(parm);
+        if (!eleId) {
+            this.changeModeEventListen.emit(parm);
+        }
 
     }
 
