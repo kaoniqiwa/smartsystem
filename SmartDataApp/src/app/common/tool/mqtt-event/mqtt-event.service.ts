@@ -15,8 +15,13 @@ export class MQTTEventService {
         var topic = 'AIOP/Garbage/Divisions/';
         topic += (divisionsId ? divisionsId : '+') + '/GarbageStations/';
         topic += (garbageStationId ? garbageStationId : '+') + '/Events/1';
-        this.mqtt.subscription(topic,(topic:IllegalDropEventRecord, message)=>{
-            this.pushService.pushIllegalDrop.emit(topic);
+       
+        
+        this.mqtt.subscription(topic,(topic:string, message:string)=>{
+           
+            const msg = JSON.parse(message) as IllegalDropEventRecord;
+            console.log(msg);
+            this.pushService.pushIllegalDrop.emit(msg);
         })
     }
 }

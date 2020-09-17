@@ -5,5 +5,8 @@ import { IllegalDropEventRecord } from "../../../data-core/model/waste-regulatio
     providedIn: 'root'
 })
 export class EventPushService{
-    pushIllegalDrop =new EventEmitter<IllegalDropEventRecord>();
+    pushIllegalDrop:EventEmitter<IllegalDropEventRecord>;
+    constructor(){
+        this.pushIllegalDrop=new EventEmitter<IllegalDropEventRecord>();
+    }
 }

@@ -1,4 +1,8 @@
 import { IBusinessData } from "../../../../../common/interface/IBusiness";
+export class IllegalDropEventInfos implements IBusinessData{
+    items:IllegalDropEventInfo[];
+}
+
 export class IllegalDropEventInfo implements IBusinessData{
    /**事件类型 */
     EventType: number;

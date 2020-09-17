@@ -38,6 +38,7 @@ import { HeaderSquareListComponent } from './header-square-list/header-square-li
 import { ImageThemeCardComponent } from './card-component/image-theme-card/image-theme-card.component';
 import { HintCardComponent } from './card-component/hint-card/hint-card.component';
 import { OrderTableCardComponent } from './card-component/order-table-card/order-table-card.component';
+import { LineEChartsCardComponent } from "./card-component/line-echarts-card/line-echarts-card.component";
 @NgModule({
   imports: [
     CommonModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -55,7 +56,8 @@ import { OrderTableCardComponent } from './card-component/order-table-card/order
   CustomTreeComponent,
   PicturesDropListComponent,
   CardListPanelComponent, VideoSimpleCardComponent, StateScaleCardComponent,CardComponent,BusinessCardGridComponent, HeaderSquareListComponent, ImageThemeCardComponent, HintCardComponent, OrderTableCardComponent
-  ],
+,LineEChartsCardComponent  
+],
   exports: [
     InfiniteScrollModule,MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,
     MatSidenavModule,MatToolbarModule,FlexLayoutModule,MatCheckboxModule,ReactiveFormsModule,
@@ -67,11 +69,12 @@ import { OrderTableCardComponent } from './card-component/order-table-card/order
     ,InputTagSelectComponent,CustomTreeComponent,PicturesDropListComponent,CardListPanelComponent
     ,VideoSimpleCardComponent,StateScaleCardComponent,CardComponent,BusinessCardGridComponent
     ,HeaderSquareListComponent,ImageThemeCardComponent,HintCardComponent,OrderTableCardComponent
+    ,LineEChartsCardComponent
   ],
   providers: [DatePipe,
    ],
-   entryComponents: [CardComponent,ImageThemeCardComponent,StateScaleCardComponent,
-    BusinessCardGridComponent,HeaderSquareListComponent,HintCardComponent]
+   entryComponents: [CardComponent,ImageThemeCardComponent,StateScaleCardComponent,OrderTableCardComponent,
+    BusinessCardGridComponent,HeaderSquareListComponent,HintCardComponent,LineEChartsCardComponent]
   ,
 })
 export class SharedModule { }

@@ -16,11 +16,11 @@ export class BarOption implements IEChartOption{
 }
 
 export class LineOption implements IEChartOption{
-    xAxisData: IEChartsData; 
-    seriesData: IEChartsData;   
+    xAxisData: Array<IEChartsData>; 
+    seriesData: Array<IEChartsData>;   
 }
 
 export class PieOption implements IEChartOption{
-    legendData: IEChartsData; 
-    seriesData: IEChartsData;   
+    legendData:Array<IEChartsData>; 
+    seriesData:Array<IEChartsData>; 
 }

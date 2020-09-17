@@ -3,8 +3,8 @@
   <div class="content-wrapper p-r-20 p-b-10">
     <div fxLayout="row" style="height: 60%;">
       <div fxFlex="50" class="fill-height" style="position: relative;">
-        <div style="position: absolute;" class="fill-height fill-width" EChartProgressBar></div>
-        <div style="position: absolute;" class="fill-height fill-width" EChartProgressBarBox></div>
+        <div style="position: absolute;" [options]="model.arc" class="fill-height fill-width" EChartProgressBar></div>
+        <div style="position: absolute;"   class="fill-height fill-width" EChartProgressBarBox></div>
         <h4 class="green-text" style="position: absolute;right: 26%;bottom: 10px;margin: 0;"> {{model.stateLabel.state}}</h4>
       </div>
       <div fxFlex class="fill-height">

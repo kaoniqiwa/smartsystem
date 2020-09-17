@@ -15,9 +15,9 @@ export class DeviceStatusStatistic   extends BaseBusinessRefresh {
         const divisionsId = this.businessParameter.map.get('divisionsId');
         let model = new DeviceStatus();
        
-        let data = await (this.dataServe as StatisticalDataBufferService).getDivisionStatisticNumber(divisionsId);
-        model.cameraNumber=data.CameraNumber;
-        model.offlineCameraNumber=data.OfflineCameraNumber;
+        let data = await (this.dataServe as StatisticalDataBufferService).getDivisionStatisticNumber(divisionsId); 
+        model.cameraNumber=data.CameraNumber||0;
+        model.offlineCameraNumber=data.OfflineCameraNumber||0;
         return model;
     }
 }

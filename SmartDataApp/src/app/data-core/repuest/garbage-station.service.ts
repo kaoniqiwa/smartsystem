@@ -125,7 +125,7 @@ export class CameraTrashCanRequestService extends SaveModel {
     }
 
     list(garbageStationId: string, cameraId: string) {
-        return this.requestService.get<Response<TrashCan[]>>(this.url.list(garbageStationId, cameraId));
+        return this.requestService.get<TrashCan[]>(this.url.list(garbageStationId, cameraId));
     }
 }
 

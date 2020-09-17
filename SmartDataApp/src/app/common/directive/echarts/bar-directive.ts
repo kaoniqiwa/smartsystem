@@ -153,8 +153,7 @@ export class EChartBarDirective implements OnChanges {
             }
         }
         this.zone.runOutsideAngular(() => {
-            this.echarts_ = echarts.init(this.e.nativeElement);
-            console.log(JSON.stringify(create(this.options)));
+            this.echarts_ = echarts.init(this.e.nativeElement); 
             
             this.echarts_.setOption(create(this.options), true);
         });

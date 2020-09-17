@@ -11,11 +11,8 @@ export class StateScaleCardComponent  extends BasisCardComponent implements OnIn
     super();
    }
 
-
-  
    ngOnInit() {
     this.loadDatas(new ViewsModel());
-  
    }
    
 

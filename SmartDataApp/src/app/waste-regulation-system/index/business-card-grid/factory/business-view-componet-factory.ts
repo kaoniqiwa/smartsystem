@@ -28,7 +28,7 @@ export class BusinessViewComponetFactory {
       
         const create_ = (businessConfig: IBusinessConfig) => {
             card.instance.border = businessConfig.border == null;
-            let converter = this.converterFactory.createConvert(businessConfig);
+            let converter = this.converterFactory.createConvert(businessConfig); 
             let business = this.statisticBusinessInjector.createBusiness(businessConfig);
             if (business && business.timeSpan) {
                 business.timeSpan.interval = businessConfig.dataTime;

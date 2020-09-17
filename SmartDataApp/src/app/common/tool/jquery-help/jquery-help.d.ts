@@ -7,3 +7,5 @@ export declare function domClickFn(domId:string,fn?:()=>void);
 export declare function inputFileRead(domId:string,loadFileFn:(result: string)=>void);
 
 export declare function scrollTopPostion(domId:string,postion:number);
+
+export declare function removeClass(domName:string,className?:string);

@@ -10,14 +10,14 @@
           <div class="small-card-wrapper title-number-suffix" style="margin-right: 60px;">
             <div class="title-label">今日收湿垃圾总量</div>
             <div>
-              <label class="number-label">3</label>
+              <label class="number-label">0</label>
               <label class="suffix-label">(吨/日)</label>
             </div>
           </div>
           <div class="small-card-wrapper title-number-suffix">
             <div class="title-label">今日收干垃圾总量</div>
             <div>
-              <label class="number-label">2.1</label>
+              <label class="number-label">0</label>
               <label class="suffix-label">(吨/日)</label>
             </div>
           </div>
@@ -36,7 +36,9 @@
 
   <div class="fill-width fill-height" gdGap="10px" gdColumns="1fr 1fr 1fr 1fr" gdRows="repeat(3, 32.4%)">
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <div class="fill-width fill-height">
+      <business-card-grid [cardConfig]="divisionConfig">
+      </business-card-grid>
+      <!-- <div class="fill-width fill-height">
         <div class="edges2-wrapper m-b-5">
           <div class="left-border"></div>
           <div class="right-border"></div>
@@ -54,12 +56,16 @@
             </div>
           </ng-container>
         </div>
-      </div>
+      </div> -->
     </div>
     <div gdColumn="auto / span 2" gdRow="auto / span 2">
       <div class="card-wrapper2">
         <div class="m-t-20 p-l-10 p-r-10 fill-width " style="height: 100px; position: absolute;">
-          <div fxLayout="row" class="fill-height" fxLayoutAlign="space-between">
+          <ng-container *ngIf="divisionGarbageSpCardConfig">
+            <business-card-grid [cardConfig]="divisionGarbageSpCardConfig">
+            </business-card-grid>
+          </ng-container>
+          <!-- <div fxLayout="row" class="fill-height" fxLayoutAlign="space-between">
             <div class="hint-card">
               <h4 class="m-b-5">垃圾投放点数量</h4>
               <label class="sky-blue-text2">100</label>
@@ -80,7 +86,7 @@
               <h4 class="m-b-5">混合投放垃圾行为</h4>
               <label class="orange-text">500</label>
             </div>
-          </div>
+          </div> -->
           <!-- <div style="position: absolute;bottom: 0;">
             <h5 class="hint-label green-text">
               <label class="m-0" style="font-size: xx-small;">●</label>
@@ -96,7 +102,7 @@
             </h5>
           </div> -->
         </div>
-        <app-amap></app-amap>
+        <!-- <app-amap></app-amap> -->
         <div class="card-angle top-left"></div>
         <div class="card-angle top-right"></div>
         <div class="card-angle bottom-left"></div>
@@ -106,8 +112,13 @@
 
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <div class="card-wrapper">
-        <h2>设备运行状态</h2>
+      <ng-container *ngIf="devCardConfig">
+        <business-card-grid [cardConfig]="devCardConfig">
+        </business-card-grid>
+      </ng-container>
+    
+        <!-- <div class="card-wrapper">       
+      <h2>设备运行状态</h2>
         <div class="content-wrapper p-r-20 p-b-10">
           <div fxLayout="row" style="height: 60%;">
             <div fxFlex="50" class="fill-height" style="position: relative;">
@@ -159,25 +170,29 @@
         <div class="card-angle top-right"></div>
         <div class="card-angle bottom-left"></div>
         <div class="card-angle bottom-right"></div>
-      </div>
+      </div> -->
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <div class="card-wrapper">
+      <ng-container *ngIf="illegalDropTopCardConfig">
+        <business-card-grid [cardConfig]="illegalDropTopCardConfig">
+        </business-card-grid>
+      </ng-container>
+      <!-- <div class="card-wrapper">
         <h2>乱扔垃圾行为TOP6</h2>
         <div class="content-wrapper p-t-20 p-r-30">
           <div *ngFor="let item of jw6;let i= index" fxLayout="row" style="height: calc(100%/6);" class="top6-list">
             <div fxFlex="12">
               <div class="number-item" [ngStyle]="{'background': i<3?'#ffba00':'#7f94ff'}">
-                <h5 class="item-label">{{ i+1}}</h5>
+                <h4 class="item-label">{{ i+1}}</h4>
               </div>
             </div>
             <div fxFlex="50">
-              <h2 class="light-blue-text">{{item}}居委</h2>
+              <h4 class="light-blue-text">{{item}}居委</h4>
             </div>
             <div fxFlex="38">
-              <h2 class="m-0 sky-blue-text2 " style="text-align: right;">{{ 10+i}}
+              <h4 class="m-0 sky-blue-text2 " style="text-align: right;">{{ 10+i}}
                 <label class="number-suffix">起</label>
-              </h2>
+              </h4>
             </div>
           </div>
         </div>
@@ -185,10 +200,14 @@
         <div class="card-angle top-right"></div>
         <div class="card-angle bottom-left"></div>
         <div class="card-angle bottom-right"></div>
-      </div>
+      </div> -->
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <div class="card-wrapper video-title-desc">
+      <ng-container *ngIf="illegalDropEventCardConfig">
+        <business-card-grid [cardConfig]="illegalDropEventCardConfig">
+        </business-card-grid>
+      </ng-container>
+      <!-- <div class="card-wrapper video-title-desc">
         <h2 class="red-text">乱扔垃圾</h2>
         <div class="time-label-wrapper">
           <h4 class="m-0 light-blue-text">08-07 17:13:45</h4>
@@ -209,23 +228,23 @@
         <div class="card-angle top-right"></div>
         <div class="card-angle bottom-left"></div>
         <div class="card-angle bottom-right"></div>
-      </div>
+      </div> -->
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <div class="card-wrapper">
+      <div class="card-wrapper p-l-20" style="padding-top: 15px;border:1px #5c6ebf solid">
         <div class="fill-height pull-left" style="width: 50%;">
           <h2>垃圾投放量分析</h2>
           <div class="p-l-10" style="height: calc(100% - 34px);">
             <div style="height: 40%;" class="p-t-30">
               <div>
-                <label class="light-blue-text">干垃圾收运</label>
+                <label class="light-blue-text" style="font-size: 18px;">干垃圾收运</label>
                 <label class="light-blue-text" style="font-size: small">(吨)</label>
               </div>
               <div>
-                <label class="cyan-text m-0" style="font-size: 24px;width: 24%;">8.7</label>
-                <label class="m-0 text-right" style="width: 28%;color: #7A8DE6;font-size: 14px;">较昨日</label>
-                <label class="light-blue-text m-0" style="text-align: right;width: 20%;font-size: 14px;">
-                  <i class="mdi mdi-arrow-down-bold green-text"></i>3%
+                <label class="cyan-text m-0" style="font-size: 24px;width: 24%;">0</label>
+                <label class="m-0 text-right" style="width: 28%;color: #7A8DE6;font-size: 16px;">较昨日</label>
+                <label class="light-blue-text m-0" style="text-align: right;width: 20%;font-size: 16px;">
+                  <i class="mdi mdi-arrow-down-bold green-text"></i>0%
                 </label>
               </div>
             </div>
@@ -235,10 +254,10 @@
                 <label class="light-blue-text" style="font-size: small;">(吨)</label>
               </div>
               <div>
-                <label class="cyan-text m-0" style="font-size: 24px;width: 24%;">8.7</label>
-                <label class="m-0 text-right" style="width: 28%;color: #7A8DE6;font-size: 14px;">较昨日</label>
-                <label class="light-blue-text m-0 text-right" style="width: 22%;font-size: 14px;">
-                  <i class="mdi mdi-arrow-up-bold red-text"></i> 3% </label>
+                <label class="cyan-text m-0" style="font-size: 24px;width: 24%;">0</label>
+                <label class="m-0 text-right" style="width: 28%;color: #7A8DE6;font-size: 16px;">较昨日</label>
+                <label class="light-blue-text m-0 text-right" style="width: 22%;font-size: 16px;">
+                  <i class="mdi mdi-arrow-up-bold red-text"></i> 0% </label>
               </div>
             </div>
           </div>
@@ -266,7 +285,7 @@
           </svg>
           <div class="water-wraper">
             <div class="percent-wraper">
-              <label class="percent-label">50</label>
+              <label class="percent-label">0</label>
             </div>
             <div id="water" class="water-svg">
               <svg viewBox="0 0 560 20" class="water_wave water_wave_back">
@@ -293,7 +312,7 @@
 
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <div class="card-wrapper">
+      <div class="card-wrapper p-l-20" style="padding-top: 15px;border:1px #5c6ebf solid">
         <div style="position:absolute;">
           <h2>垃圾投放量比对</h2>
         </div>
@@ -305,7 +324,11 @@
       </div>
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <div class="card-wrapper">
+      <ng-container *ngIf="illegalDropHistoryCardConfig">
+        <business-card-grid [cardConfig]="illegalDropHistoryCardConfig">
+        </business-card-grid>
+      </ng-container>
+      <!-- <div class="card-wrapper">
         <div style="position:absolute;">
           <h2>乱扔垃圾行为</h2>
         </div>
@@ -314,10 +337,10 @@
         <div class="card-angle top-right"></div>
         <div class="card-angle bottom-left"></div>
         <div class="card-angle bottom-right"></div>
-      </div>
+      </div> -->
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <div class="card-wrapper">
+      <div class="card-wrapper p-l-20" style="padding-top: 15px;border:1px #5c6ebf solid">
         <div style="position:absolute;">
           <h2>垃圾收运占比</h2>
         </div>

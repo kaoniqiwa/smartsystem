@@ -1,6 +1,6 @@
-import { IUrl, BaseUrl } from "../IUrl";
+import { IUrl, BaseUrl,GarbageBaseUrl } from "../IUrl";
 
-export class Division extends BaseUrl implements IUrl {
+export class Division extends GarbageBaseUrl implements IUrl {
     create(): string {
         return this.aiop + 'Divisions';
     }

@@ -2,14 +2,14 @@
  * Developer 施文斌
  * LastUpdateTime 
  */
-import { IllegalDropEvent } from '../business/illegal-drop-statistic/data';
+import { IllegalDropEvent } from '../business/illegal-drop-history/data';
 import { DeviceStatus } from "../business/dev/data";
-import { IllegalDropEventInfo } from "../business/illegal-drop-event/data";
+import { IllegalDropEventInfo, IllegalDropEventInfos } from "../business/illegal-drop-event/data";
 import { Divisions, Division, } from "../business/division/data";
 import { IllegalDropOrderInfo, IllegalDropInfo } from "../business/illegal-drop-order/data";
 import { Specification } from "../business/division-garbage-specification/data";
 import { LineECharts } from '../../../../shared-module/card-component/line-echarts-card/line-echarts';
-import { StateScale } from '../../../../shared-module/card-component/state-scale-card/state-scale';
+import { StateScale, Arc } from '../../../../shared-module/card-component/state-scale-card/state-scale';
 import { ImageTheme } from "../../../../shared-module/card-component/image-theme-card/image-theme";
 import { Hint, ColorEnum } from "../../../../shared-module/card-component/hint-card/hint";
 import { OrderTable } from "../../../../shared-module/card-component/order-table-card/order-table";
@@ -17,20 +17,60 @@ import { HeaderSquareList, ItemTypeEnum, SquareItem } from "../../../../shared-m
 import { IViewModel, ViewsModel } from '../../../../common/abstract/base-view';
 import { IConverter } from "../../../../common/interface/IConverter";
 import { Injector, Injectable } from '@angular/core';
-import { PieOption } from '../../../../common/directive/echarts/echart';
+import { LineOption, PieOption } from '../../../../common/directive/echarts/echart';
 import { Percentage } from '../../../../common/tool/tool.service'
 import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
 import { IBusinessData } from '../../../../common/interface/IBusiness';
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
-export class IllegalDropCardConverter implements IConverter {
+import { EventNumber } from '../../../../data-core/model/waste-regulation/event-number';
+export class IllegalDropHistoryCardConverter implements IConverter {
 
     Convert<IllegalDropEvent, ViewsModel>(input: IllegalDropEvent, output: ViewsModel): ViewsModel;
     Convert(input: IllegalDropEvent, output: ViewsModel<LineECharts>): ViewsModel<LineECharts> {
-        output.views = [new LineECharts()];
-        output.pageSize = 1;
+        output.views = [new LineECharts(), new LineECharts()];
+        output.pageSize = 2;
         output.pageIndex = 1;
+        this.joinPart(output.views[0], output.views[1]);
+        var enters1 = new Array<EventNumber>(), enters2 = new Array<EventNumber>();
+
+        for (let i = 0; i < input.datas.length; i++) {
+            if (i < input.datas.length / 2)
+                enters1.push(input.datas[i]);
+            else
+                enters2.push(input.datas[i]);
+        }
+        if (input instanceof IllegalDropEvent) {
+            output.views[0].option.seriesData = [];
+            output.views[1].option.seriesData = [];
+            for (const x of enters1)
+                output.views[0].option.seriesData.push(x.DeltaNumber);
+
+            for (const x of enters2)
+                output.views[1].option.seriesData.push(x.DeltaNumber);
+
+        }
 
         return output;
+    }
+
+    private joinPart(t1: LineECharts, t2: LineECharts) {
+        t1.title = "今日乱扔垃圾", t2.title = '今日乱扔垃圾';
+        t1.option = new LineOption();
+        t2.option = new LineOption();
+        t1.option.xAxisData = [], t2.option.xAxisData = [];
+        for (let i = 0; i <= 11; i++) {
+            if (i < 10)
+                t1.option.xAxisData.push('0' + i + ':00');
+            else
+                t1.option.xAxisData.push(i + ':00');
+        }
+        for (let i = 12; i <= 23; i++) {
+            if (i < 10)
+                t2.option.xAxisData.push('0' + i + ':00');
+            else
+                t2.option.xAxisData.push(i + ':00');
+        }
+        return [t1, t2];
     }
 }
 
@@ -53,18 +93,24 @@ export class DevStatusCardConverter implements IConverter {
                     else
                         return '严重'
                 }, arcVal = (percent: number) => {
-                    if (percent > 90)
-                        return 74;
-                    else if (percent >= 80 && percent < 90)
-                        return 30;
-                    else
-                        return 10
+                    if (percent == 100)
+                        return Arc._100;
+                    else if (percent == 0)
+                        return Arc._0;
+                    else if (percent >= 80 && percent < 100)
+                        return Arc._80;
+                    else if (percent >= 30 && percent <= 40)
+                        return Arc._40;
+                    else if (percent <= 20)
+                        return Arc._20;
+
                 };
+
+            output.views[0].arc = arcVal(percent);
             output.views[0].stateLabel = {
                 subTitle: '系统设备在线比',
                 scaleNumber: percent + '',
                 state: level(percent),
-                arc: arcVal(percent)
             }
             output.views[0].detail.push({
                 label: '全部设备数量',
@@ -95,10 +141,10 @@ export class DivisionListConverter implements IConverter {
                 committees = input.items.filter(x => x.divisionType == DivisionTypeEnum.Committees);
 
             for (let i = 0; i < countys.length; i++)
-                output.views[0].squareItems.push(new SquareItem(countys[i].id, countys[i].name));
+                output.views[0].squareItems.push(new SquareItem(countys[i].id, countys[i].name, DivisionTypeEnum.County));
 
             for (let i = 0; i < committees.length; i++)
-                output.views[0].squareItems.push(new SquareItem(committees[i].id, committees[i].name, committees[i].parentId));
+                output.views[0].squareItems.push(new SquareItem(committees[i].id, committees[i].name, DivisionTypeEnum.Committees, committees[i].parentId));
             if (countys.length)
                 output.views[0].changebodyView = countys[0].id;
         }
@@ -108,19 +154,26 @@ export class DivisionListConverter implements IConverter {
 
 export class IllegalDropEventConverter implements IConverter {
 
-    Convert<IllegalDropEventInfo, ViewsModel>(input: IllegalDropEventInfo, output: ViewsModel): ViewsModel;
-    Convert(input: IllegalDropEventInfo, output: ViewsModel<ImageTheme>): ViewsModel<ImageTheme> {
-        output.views = [new ImageTheme()];
-        output.pageSize = 1;
+    Convert<IllegalDropEventInfos, ViewsModel>(input: IllegalDropEventInfos, output: ViewsModel): ViewsModel;
+    Convert(input: IllegalDropEventInfos, output: ViewsModel<ImageTheme>): ViewsModel<ImageTheme> {
+        output.views=[new ImageTheme()];
+        output.pageSize=1;
         output.pageIndex = 1;
-        if (input instanceof IllegalDropEventInfo) {
-            const pic = new MediumPicture();
+        if (input instanceof IllegalDropEventInfos) {
+            output.pageSize = input.items.length;
+            output.views= new Array();
+            for (let i = 0; i < input.items.length; i++) {
+                output.views.push(new ImageTheme());
+                const pic = new MediumPicture();
 
-            output.views[0].imgDesc1 = input.DivisionName;
-            output.views[0].imgDesc2 = input.StationName;
-            output.views[0].imgSrc = pic.getJPG(input.ImageUrl);
-            output.views[0].title = '乱扔垃圾';
-            output.views[0].subTitle = input.EventTime;
+                output.views[i].imgDesc1 = input.items[i].DivisionName;
+                output.views[i].imgDesc2 = input.items[i].StationName;
+                output.views[i].imgSrc = pic.getJPG(input.items[i].ImageUrl);
+                output.views[i].title = '乱扔垃圾';
+                output.views[i].subTitle = input.items[i].EventTime;
+            }
+
+          
         }
         return output;
     }
@@ -133,16 +186,30 @@ export class IllegalDropOrderConverter implements IConverter {
         output.pageSize = 1;
         output.pageIndex = 1;
         if (input instanceof IllegalDropOrderInfo) {
-            output.views[0].title='';
+            output.views[0].title = '乱扔垃圾行为TOP6';
             output.views[0].table = new Array();
-            for(const x of input.items){
+
+            const sort = input.items.sort((a, b) => {
+                return b.dropNum - a.dropNum
+            });
+            for (const x of sort.slice(0, 6)) {
                 output.views[0].table.push({
-                    name:x.division,
-                    subName:x.dropNum+'',
-                    subNameAfter:'起'
+                    name: x.division,
+                    subName: x.dropNum + '',
+                    subNameAfter: '起'
                 });
             }
-         
+
+            const len = output.views[0].table.length;
+            for (let i = 0; i <= 5 - len; i++) {
+                output.views[0].table.push({
+                    name: '-',
+                    subName: '0',
+                    subNameAfter: '起'
+                });
+
+            }
+
         }
         return output;
     }
@@ -195,11 +262,12 @@ export class ConverterFactory {
     convertInjector: Injector;
     constructor() {
         this.convertInjector = Injector.create([
-            { provide: IllegalDropCardConverter, useValue: new IllegalDropCardConverter() },
+            { provide: IllegalDropHistoryCardConverter, useValue: new IllegalDropHistoryCardConverter() },
             { provide: DevStatusCardConverter, useValue: new DevStatusCardConverter() },
             { provide: DivisionListConverter, useValue: new DivisionListConverter() },
             { provide: IllegalDropEventConverter, useValue: new IllegalDropEventConverter() },
-            { provide: DivisionGarbageSpecificationConverter, useValue: new DivisionGarbageSpecificationConverter() }
+            { provide: DivisionGarbageSpecificationConverter, useValue: new DivisionGarbageSpecificationConverter() },
+            { provide: IllegalDropOrderConverter, useValue: new IllegalDropOrderConverter() }
         ])
     }
 
@@ -212,10 +280,10 @@ export class ConverterFactory {
 }
 
 export const CardBusinessCoverterEnum = {
-    "IllegalDropStatistic": IllegalDropCardConverter,
+    "IllegalDropHistory": IllegalDropHistoryCardConverter,
     "DeviceStatusStatistic": DevStatusCardConverter,
     "DivisionList": DivisionListConverter,
     "IllegalDropEvent": IllegalDropEventConverter,
     "DivisionGarbageSpecification": DivisionGarbageSpecificationConverter,
-    "IllegalDropOrderConverter":IllegalDropOrderConverter
+    "IllegalDropOrder": IllegalDropOrderConverter
 } 

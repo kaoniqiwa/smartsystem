@@ -10,17 +10,22 @@ declare const echarts:any;
 @Directive({
     selector: '[EChartProgressBar]'
 })
-export class EChartProgressBarDirective implements OnInit {
+export class EChartProgressBarDirective implements OnInit ,OnChanges{
     private ele: any;
     private echarts_: any;
-    @Input('options') options: PieOption;
+    @Input('options') options:  {
+        white: number;
+        color: number;
+    };
     constructor(private e: ElementRef, private zone: NgZone) {
         window.addEventListener("resize", () =>  this.echarts_.resize());
     }
     ngOnInit(): void {
          this.init();
     }
-
+ngOnChanges(){
+    this.init();
+}
     init() {
         const create = () => {
             return {
@@ -36,16 +41,16 @@ export class EChartProgressBarDirective implements OnInit {
                             show: false
                         }
                     },
-                    data: [{
-                        value: 30,
+                    data: [{//26
+                        value: this.options.white,
                         itemStyle: {
                             normal: {
                                 color: "rgba(80,150,224,0)"
                             }
                         }
                     },
-                    {
-                        value: 78,
+                    {//74
+                        value: this.options.color,
                         itemStyle: {
                             normal: {
                                 color: {

@@ -3,7 +3,7 @@
     <div class="edges2-wrapper m-b-5">
       <div class="left-border"></div>
       <div class="right-border"></div>        
-      <a  (click)="selectedId=model.headerView.id" href="javascript:void(0)">
+      <a  (click)="itemClick(model.headerView.id,model.headerView.type);$event.stopPropagation();" href="javascript:void(0)">
         <h2 class="light-blue-text m-l-30 m-b-0" style="line-height: 2.5;">
           <i class="howell-icon-map5 m-r-10 sky-blue-text"></i>
           {{model.headerView.label}} 
@@ -12,7 +12,7 @@
     </div>
     <div fxLayout="row wrap " class="fine" style="overflow:auto;height: calc(100% - 60px);">
       <ng-container *ngFor="let item of model.bodyView">
-        <a (click)="selectedId=item.id" href="javascript:void(0)" class="edges2-wrapper small-size  text-center" [class.selected]="selectedId==item.id">
+        <a (click)="itemClick(item.id,item.type);$event.stopPropagation();" href="javascript:void(0)" class="edges2-wrapper small-size  text-center" [class.selected]="selectedId==item.id">
           <div class="left-border"></div>
           <div class="right-border"></div>
           <h4 class="m-b-0" style="margin-top: 12px;cursor: pointer"   [class.text-white]="selectedId==item.id"
