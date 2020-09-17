@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, ChangeDetectorRef, EventEmitter } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
     CameraRequestService as AIOPCameraService,
@@ -31,6 +31,9 @@ import { IllegalDropEventRecord } from 'src/app/data-core/model/waste-regulation
 export class AMapComponent implements AfterViewInit, OnInit {
     @ViewChild('iframe') iframe: ElementRef;
     @ViewChild('videoWindow')
+    @Output()
+    mapLoadedEvent: EventEmitter<void> = new EventEmitter();
+
     videoWindow: VideoWindowComponent;
     isShowVideoView = false;
     currentCamera: Camera;
@@ -39,6 +42,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     garbages: GarbageStation[];
     srcUrl: any;
     dataController: CesiumDataController.Controller; // CesiumDataController.Controller;
+    @Output()
     client: CesiumMapClient;
 
     autoCloseWindow: NodeJS.Timer;
@@ -101,14 +105,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
             }
             this.client.Point.Status(arrayStatus);
 
+            this.mapLoadedEvent.emit();
 
-            const villages = this.dataController.Village.Point.List();
-            for (const villageId in villages) {
-                if (Object.prototype.hasOwnProperty.call(villages, villageId)) {
-                    const village = villages[villageId];
-
-                }
-            }
         };
 
         this.client.Events.OnElementsDoubleClicked = async (objs) => {
@@ -167,8 +165,6 @@ export class AMapComponent implements AfterViewInit, OnInit {
         const element = document.getElementById('videoPlayer');
         element.style.display = 'none';
     }
-
-
 
     async OnCameraClicked(camera: Camera) {
         if (!camera || !camera.SRSId) { return; }
