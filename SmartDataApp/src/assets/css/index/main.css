@@ -38,6 +38,7 @@ h2
 }
 
 .ele-nowrap{
+    text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 }
