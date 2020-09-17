@@ -491,7 +491,7 @@ function WSPlayer(args) {
     this.resize = function (width, height) {
         if (!width)
             width = that.clientWidth;
-        if (!height > 0)
+        if (!height)
             height = that.clientHeight;
         doing(function (args) {
             plugin.JS_Resize(args.width, args.height);
