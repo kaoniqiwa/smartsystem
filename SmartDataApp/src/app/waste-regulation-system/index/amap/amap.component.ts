@@ -139,7 +139,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
                                 if (camera_response.Data.ImageUrl) {
                                     camera_response.Data.ImageUrl = this.mediaService.getData(camera_response.Data.ImageUrl);
                                 } else {
-                                    camera_response.Data.ImageUrl = 'assets/img/timg.jpg';
+                                    camera_response.Data.ImageUrl = 'assets/img/timg.png';
                                 }
 
                                 this.selectedCameras.push(camera_response.Data);
