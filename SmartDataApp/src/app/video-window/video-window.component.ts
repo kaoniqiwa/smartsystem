@@ -181,18 +181,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         if (me.hasControl) {
             me.initDateTimePicker();
             me.initPresetList();
-            setTimeout(() => {
-                $('#ra__').rangeslider({
-                    polyfill: false,
-                    rangeClass: 'rangeslider',
-                    horizontalClass: 'rangeslider--horizontal',
-                    fillClass: 'rangeslider__fill',
-                    handleClass: 'rangeslider__handle',
-                    onSlide: function (position, value) {
-                        me.viewModel.PTZ.speed = value;
-                    }
-                });
-            });
+           
             setTimeout(() => {
                 if (me.playMode === me.playMode_.live) {
                     me.playVideo();

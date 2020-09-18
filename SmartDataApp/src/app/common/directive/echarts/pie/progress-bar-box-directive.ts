@@ -28,16 +28,16 @@ export class EChartProgressBarBoxDirective implements OnInit {
                 series: [{
                     name: '',
                     type: 'pie', 
-                    radius: ["65%", "30%"],
+                    radius: ["67%", "28%"],
                     center: ['64%', '50%'],
-                    startAngle: -44,
+                    startAngle: -50,
                     labelLine: {
                         normal: {
                             show: false
                         }
                     },
                     data: [{
-                        value: 26,
+                        value: 23,
                         itemStyle: {
                             normal: {
                                 color: "rgba(80,150,224,0)"
@@ -45,7 +45,7 @@ export class EChartProgressBarBoxDirective implements OnInit {
                         }
                     },
                     {
-                        value: 74,
+                        value: 77,
                         itemStyle: {
                             normal: {
                                 color: "rgba(80,150,224,0)",

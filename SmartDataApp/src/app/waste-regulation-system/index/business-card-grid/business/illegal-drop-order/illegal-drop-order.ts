@@ -12,12 +12,13 @@ export class IllegalDropOrder extends BaseBusinessRefresh {
     }
 
     async getData() {
-        const divisionsIds = this.businessParameter.map.get('divisionsIds') as string[]
-            , divisionsId = this.businessParameter.map.get('divisionsId') as string
+        var divisionsIds = this.businessParameter.map.get('divisionsIds') as string[];
+        const   divisionsId = this.businessParameter.map.get('divisionsId') as string
             , divisionsType = this.businessParameter.map.get('divisionsType') as DivisionTypeEnum;
  
         const model = new IllegalDropOrderInfo();
         model.items = new Array();
+      
         if (divisionsType == DivisionTypeEnum.Committees) {
             const stations = await (this.dataServe as StatisticalDataBufferService).getGarbageStations(divisionsId)
                 , stationIds = new Array<string>();
@@ -39,7 +40,13 @@ export class IllegalDropOrder extends BaseBusinessRefresh {
             }
            
         }
-        else if (divisionsType == DivisionTypeEnum.County) {
+        else if (divisionsType == DivisionTypeEnum.County || divisionsType == void 0) {
+            if(divisionsId&&divisionsIds == void 0){
+                
+               const divisions=  await (this.dataServe as StatisticalDataBufferService).getDivisions();
+               divisionsIds = new Array(); 
+               divisions.filter(x=>x.DivisionType == DivisionTypeEnum.Committees).map(x=> divisionsIds.push(x.Id));
+            }
             const data = await (this.dataServe as StatisticalDataBufferService).postDivisionStatisticNumbers(divisionsIds);
             for (const x of data) {
                 const info = new IllegalDropInfo();

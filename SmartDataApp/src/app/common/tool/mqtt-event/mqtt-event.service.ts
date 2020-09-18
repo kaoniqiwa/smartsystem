@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core"; 
-import { MqttComponent } from "./mqtt";
+import { MqttComponent, } from "./mqtt";
+import { MqttConnectionState} from 'ngx-mqtt';
 import { EventPushService  } from "./event-push.service";
 import { IllegalDropEventRecord } from "../../../data-core/model/waste-regulation/illegal-drop-event-record";
 @Injectable({
@@ -23,6 +24,10 @@ export class MQTTEventService {
             const msg = JSON.parse(message) as IllegalDropEventRecord;
             console.log(msg);
             this.pushService.pushIllegalDrop.emit(msg);
-        })
+        });
+        this.mqtt.connectionState.subscribe((x)=>{
+            const state = x != MqttConnectionState.CLOSED; 
+            this.pushService.connectionState.emit(state);
+        });
     }
 }

@@ -1,5 +1,6 @@
 <div   class="card-wrapper" [class.p-l-20]="border"
-[ngStyle]="{'padding-top': border ? '15px':'unset','border':border ? '1px #5c6ebf solid':'unset'}">
+[ngStyle]="{'padding-top': border ? '15px':'unset','border':border ? '1px #5c6ebf solid':'unset'
+,'background-color':border?'rgb(6,13,55,0.7)':'unset'}">
   <ng-template card-host></ng-template>
   <ng-container *ngIf="border">
     <div class="card-angle top-left"></div>

@@ -52,8 +52,6 @@ export class StatisticalDataBufferService extends ListAttribute implements IBusi
             param.TimeUnit = timeUnit;
             param.BeginTime = dayTime.begin.toISOString();
             param.EndTime = dayTime.end.toISOString();
-            // param.BeginTime = '2020-09-16T16:00:00.000Z';
-            // param.EndTime = "2020-09-17T15:59:59.000Z";
             param.PageIndex = 1;
             param.PageSize = this.maxSize;
             const response = await this.divisionService.eventNumbersHistory(param, divisionsId).toPromise();

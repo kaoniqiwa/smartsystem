@@ -1,3 +1,4 @@
+import { ColorEnum } from "../card-content-factory";
 export class StateScale {
     title: string;
     stateLabel: {
@@ -14,6 +15,7 @@ export class StateScale {
     detail: {
         label: string;
         number: string;
+        color:ColorEnum;
     }[];
     constructor() {
         this.title = '';

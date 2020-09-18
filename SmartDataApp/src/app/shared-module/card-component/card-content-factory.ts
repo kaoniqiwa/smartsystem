@@ -50,6 +50,18 @@ export class CardContentFactory {
     } 
 }
 
+
+
+
+export enum ColorEnum {
+    'sky-blue-text2' = 'sky-blue-text2',
+    'green-text' = 'green-text',
+    'light-purple-text' = 'light-purple-text',
+    'powder-red-text' = 'powder-red-text',
+    'orange-text' = 'orange-text',
+    'red-text'='red-text'
+}
+
 export const CardComponentEnum = {
     "LineEChartsCardComponent": LineEChartsCardComponent,        
     "StateScaleCardComponent": StateScaleCardComponent,

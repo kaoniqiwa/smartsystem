@@ -11,17 +11,23 @@ import { StatisticalDataBufferService } from "./buffer/statistical-data-buffer";
 })
 export class DivisionBusinessService {
     componets = new Array<BusinessViewComponetConstructor>();
-    committesIds:string[];
+    committesIds: string[];
+    mapClient: CesiumMapClient;
     constructor() {
         setTimeout(() => {
-            for (const x of this.componets) { 
-            
+            for (const x of this.componets) {
+
                 if (x.list[0].view instanceof HeaderSquareListComponent) {
-                    x.list[0].view.btnControl = (val:{id:string,type:DivisionTypeEnum}) => { 
+                    x.list[0].view.btnControl = (val: { id: string, type: DivisionTypeEnum }) => {
                         const param = new BusinessParameter();
                         param.map.set('divisionsId', val.id);
-                        param.map.set('divisionsType',val.type);
-                        param.map.set('divisionsIds',this.committesIds)
+                        param.map.set('divisionsType', val.type);
+                        param.map.set('divisionsIds', this.committesIds);
+                        if (this.mapClient) {
+                            this.mapClient.Village.Select(val.id);
+                            let village = this.mapClient.DataController.Village.Get(val.id);
+                            this.mapClient.Viewer.MoveTo(village.center);
+                        }
                         for (const x of this.componets) {
                             if (x.list[0].view instanceof HeaderSquareListComponent) { }
                             else {
@@ -36,6 +42,6 @@ export class DivisionBusinessService {
                 }
             }
         }, 1000);
-    }   
+    }
 
 }

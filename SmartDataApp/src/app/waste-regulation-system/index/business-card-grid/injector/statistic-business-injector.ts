@@ -40,12 +40,14 @@ export class StatisticBusinessInjector {
 
     createBusiness(businessConfig:Partial< { business: string, dataTime: number
         ,divisionsType:DivisionTypeEnum
+        ,state:boolean
         , divisionsId: string,divisionsIds:string[] }>) {
         if (businessConfig.business) {
             let business = this.businessInjector.get<BaseBusinessRefresh>(CardBusinessEnum[businessConfig.business]);
             business.businessParameter.map.set('divisionsId', businessConfig.divisionsId);
             business.businessParameter.map.set('divisionsIds', businessConfig.divisionsIds);
             business.businessParameter.map.set('divisionsType', businessConfig.divisionsType);
+            business.businessParameter.map.set('state', businessConfig.state);
             if (business.timeSpan)
                 business.timeSpan.interval = businessConfig.dataTime;
             return business;

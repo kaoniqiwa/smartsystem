@@ -3,7 +3,7 @@
  * LastUpdateTime 
  */
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-// import { RefreshTimer } from '../../../common/tool/queue/refresh-timer'; 
+import { RefreshTimer } from '../../../common/tool/queue/refresh-timer'; 
 import { CardDirective } from '../../../common/directive/card-directive';
 import { BusinessCardSlotService, BusinessViewComponetConstructor } from './business-card-slot.service';
 import { BusinessViewComponetFactory } from './factory/business-view-componet-factory';
@@ -30,7 +30,7 @@ export class BusinessCardGridComponent implements OnInit {
 
   constructor(
     private businessViewComponetFactory: BusinessViewComponetFactory
-    // , private refreshTimer: RefreshTimer
+    , private refreshTimer: RefreshTimer
     , private businessCardSlotService: BusinessCardSlotService
     ,private divisionBusinessService:DivisionBusinessService
   ) {
@@ -41,8 +41,8 @@ export class BusinessCardGridComponent implements OnInit {
   
     this.businessCardSlotService.addViews(businessViewComponets);
     this.divisionBusinessService.componets.push(businessViewComponets);
-    // this.refreshTimer.addBusiness(businessViewComponets.getBusinesses());
-    // this.refreshTimer.start();
+     this.refreshTimer.addBusiness(businessViewComponets.getBusinesses());
+     this.refreshTimer.start();
   }
 
 }

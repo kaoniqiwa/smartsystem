@@ -6,7 +6,9 @@ import { IllegalDropEventRecord } from "../../../data-core/model/waste-regulatio
 })
 export class EventPushService{
     pushIllegalDrop:EventEmitter<IllegalDropEventRecord>;
+    connectionState:EventEmitter<boolean>;
     constructor(){
         this.pushIllegalDrop=new EventEmitter<IllegalDropEventRecord>();
+        this.connectionState=new EventEmitter<boolean>();
     }
 }

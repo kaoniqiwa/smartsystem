@@ -15,8 +15,9 @@ export class IllegalDropEvent extends BaseEventRecord {
 
     getData() {
         const events= this.eventsMap.get(this.IllegalDrop)
-        ,datePipe=this.businessParameter.map.get('datePipe') as DatePipe;
-        if (events.length == 0) return null;
+        ,datePipe=this.businessParameter.map.get('datePipe') as DatePipe
+        ,state=this.businessParameter.map.get('state') as boolean;
+        if (events.length == 0) return state;
         else {
             const items = events.reverse().slice(0, 3)as IllegalDropEventRecord[]
             ,infos = new IllegalDropEventInfos();

@@ -11,7 +11,7 @@ import { Specification } from "../business/division-garbage-specification/data";
 import { LineECharts } from '../../../../shared-module/card-component/line-echarts-card/line-echarts';
 import { StateScale, Arc } from '../../../../shared-module/card-component/state-scale-card/state-scale';
 import { ImageTheme } from "../../../../shared-module/card-component/image-theme-card/image-theme";
-import { Hint, ColorEnum } from "../../../../shared-module/card-component/hint-card/hint";
+import { Hint } from "../../../../shared-module/card-component/hint-card/hint";
 import { OrderTable } from "../../../../shared-module/card-component/order-table-card/order-table";
 import { HeaderSquareList, ItemTypeEnum, SquareItem } from "../../../../shared-module/header-square-list/header-square-list";
 import { IViewModel, ViewsModel } from '../../../../common/abstract/base-view';
@@ -19,10 +19,11 @@ import { IConverter } from "../../../../common/interface/IConverter";
 import { Injector, Injectable } from '@angular/core';
 import { LineOption, PieOption } from '../../../../common/directive/echarts/echart';
 import { Percentage } from '../../../../common/tool/tool.service'
-import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
-import { IBusinessData } from '../../../../common/interface/IBusiness';
+import { DivisionTypeEnum } from "../../../../common/tool/enum-helper"; 
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
 import { EventNumber } from '../../../../data-core/model/waste-regulation/event-number';
+import { ColorEnum } from '../../../../shared-module/card-component/card-content-factory';
+import { isBoolean } from 'util';
 export class IllegalDropHistoryCardConverter implements IConverter {
 
     Convert<IllegalDropEvent, ViewsModel>(input: IllegalDropEvent, output: ViewsModel): ViewsModel;
@@ -63,7 +64,7 @@ export class IllegalDropHistoryCardConverter implements IConverter {
                 t1.option.xAxisData.push('0' + i + ':00');
             else
                 t1.option.xAxisData.push(i + ':00');
-        }
+        }        
         for (let i = 12; i <= 23; i++) {
             if (i < 10)
                 t2.option.xAxisData.push('0' + i + ':00');
@@ -114,15 +115,18 @@ export class DevStatusCardConverter implements IConverter {
             }
             output.views[0].detail.push({
                 label: '全部设备数量',
-                number: input.cameraNumber + ''
+                number: input.cameraNumber + '',
+                color:ColorEnum["sky-blue-text2"]
             });
             output.views[0].detail.push({
                 label: '在线设备数量',
-                number: (input.cameraNumber - input.offlineCameraNumber) + ''
+                number: (input.cameraNumber - input.offlineCameraNumber) + '',
+                color:ColorEnum["green-text"]
             });
             output.views[0].detail.push({
                 label: '离线设备数量',
-                number: input.offlineCameraNumber + ''
+                number: input.offlineCameraNumber + '',
+                color:ColorEnum["powder-red-text"]
             });
         }
         return output;
@@ -170,10 +174,13 @@ export class IllegalDropEventConverter implements IConverter {
                 output.views[i].imgDesc2 = input.items[i].StationName;
                 output.views[i].imgSrc = pic.getJPG(input.items[i].ImageUrl);
                 output.views[i].title = '乱扔垃圾';
+                output.views[i].titleColor=ColorEnum["red-text"]
                 output.views[i].subTitle = input.items[i].EventTime;
-            }
-
-          
+            } 
+        }
+        else if (isBoolean(input)){  
+            output.views[0].title = input ==true ?'已连接':'断开';
+            output.views[0].titleColor=input ==true  ?ColorEnum["green-text"]:ColorEnum["red-text"];
         }
         return output;
     }
@@ -186,13 +193,13 @@ export class IllegalDropOrderConverter implements IConverter {
         output.pageSize = 1;
         output.pageIndex = 1;
         if (input instanceof IllegalDropOrderInfo) {
-            output.views[0].title = '乱扔垃圾行为TOP6';
+            output.views[0].title = '乱扔垃圾行为TOP10';
             output.views[0].table = new Array();
 
             const sort = input.items.sort((a, b) => {
                 return b.dropNum - a.dropNum
             });
-            for (const x of sort.slice(0, 6)) {
+            for (const x of sort.slice(0, 10)) {
                 output.views[0].table.push({
                     name: x.division,
                     subName: x.dropNum + '',
@@ -201,7 +208,7 @@ export class IllegalDropOrderConverter implements IConverter {
             }
 
             const len = output.views[0].table.length;
-            for (let i = 0; i <= 5 - len; i++) {
+            for (let i = 0; i <= 9 - len; i++) {
                 output.views[0].table.push({
                     name: '-',
                     subName: '0',

@@ -7,9 +7,13 @@ import { HttpParams, HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { DivisionBusinessService } from "./business-card-grid/division-business.service";
-import { Digest } from '../../data-core/repuest/digest'; 
-import {  MQTTEventService } from '../../common/tool/mqtt-event/mqtt-event.service';
+import { Digest } from '../../data-core/repuest/digest';
+import { MQTTEventService } from '../../common/tool/mqtt-event/mqtt-event.service';
+import { EventPushService } from '../../common/tool/mqtt-event/event-push.service';
 import { DivisionTypeEnum } from '../../common/tool/enum-helper';
+ 
+import { Title } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -22,22 +26,24 @@ export class IndexComponent implements OnInit {
   divisionGarbageSpCardConfig;
   illegalDropTopCardConfig;
   illegalDropHistoryCardConfig;
-  divisionConfig = new Array();
+  divisionConfig ;
   bar = new BarOption();
   line = new LineOption();
   pie = new PieOption();
   cardSize: { width: number, height: number };
-  
+  moveMapSite :()=>void;
   jw6 = [
     '新虹', '广中', '黄山', '花园城', '八字桥',
     '何家宅'
   ]
   readonly url = '/api/howell/ver10/aiop_service/Maps';
   constructor(private httpService: HowellAuthHttpService
-    ,private indexService:IndexService
-    ,private divisionBusinessService:DivisionBusinessService
-    ,private mqttSevice:MQTTEventService) {
-    
+    , private indexService: IndexService
+   , private titleService: Title
+    ,private eventPushService:EventPushService
+    , private divisionBusinessService: DivisionBusinessService
+    , private mqttSevice: MQTTEventService) {
+      titleService.setTitle('生活垃圾监督平台');
     this.bar.seriesData = [
       [0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0]
@@ -53,16 +59,8 @@ export class IndexComponent implements OnInit {
       { value: 0, name: '湿垃圾' },
       { value: 0, name: '可回收垃圾' },
       { value: 0, name: '有害垃圾' }
-    ];
-   
-    this.divisionConfig.push({
-      business: 'DivisionList',
-      cardType: 'HeaderSquareListComponent',
-      border: false
-    }); 
-    const a =  TheDayTime(new Date());
-    console.log(a.begin.toISOString(),a.end.toISOString());
-    
+    ]; 
+
   }
 
 
@@ -80,8 +78,13 @@ export class IndexComponent implements OnInit {
     };
   }
 
-   ngOnInit() {
-    
+  mapLoaded(mapClient: CesiumMapClient) {
+    this.divisionBusinessService.mapClient = mapClient;
+    this.moveMapSite();
+  }
+
+  ngOnInit() {
+
     const auth = async () => {
       await this.httpService.auth(this.url,
         new HttpHeaders({ 'X-WebBrowser-Authentication': 'Forbidden' })
@@ -90,46 +93,68 @@ export class IndexComponent implements OnInit {
       ).toPromise();
     }
 
-    auth();
+    auth(); 
+    this.mqttSevice.listenerIllegalDrop();
+    this.eventPushService.connectionState.subscribe((b)=>{ 
+      this.illegalDropEventCardConfig = new Array();
+      this.illegalDropEventCardConfig.push({
+        business: 'IllegalDropEvent',
+        flipTime:60*2,
+        cardType: 'ImageThemeCardComponent',
+        state:b
+      });
+    });
+    setTimeout(async () => {
+      const county = await this.indexService.getCounty();
 
-   setTimeout(async () => {
-    const county= await this.indexService.getCounty();
+      const committesIds = await this.indexService.getCommittesIds();
+      this.divisionBusinessService.committesIds = committesIds;
+      this.divisionConfig= new Array(); 
+      this.divisionConfig.push({
+        business: 'DivisionList',
+        cardType: 'HeaderSquareListComponent',
+        border: false
+      });
+      this.devCardConfig = new Array();
+      this.devCardConfig.push({
+        business: 'DeviceStatusStatistic',
+        cardType: 'StateScaleCardComponent',
+        dataTime: 60*3,
+        divisionsId: county.Id,
+        defaultViewMoel:this.indexService.getStateScale
+      });
      
-    const committesIds = await this.indexService.getCommittesIds(); 
-    this.divisionBusinessService.committesIds=committesIds;
-    this.mqttSevice.listenerIllegalDrop(county.Id);
-    this.devCardConfig= new Array();
-    this.devCardConfig.push({
-      business: 'DeviceStatusStatistic',
-      cardType: 'StateScaleCardComponent',
-      divisionsId:county.Id
-    });
-    this.illegalDropEventCardConfig = new Array();
-    this.illegalDropEventCardConfig.push({
-      business: 'IllegalDropEvent',
-      cardType: 'ImageThemeCardComponent',
-    });
-    this.divisionGarbageSpCardConfig = new Array();
-    this.divisionGarbageSpCardConfig.push({
-      business: 'DivisionGarbageSpecification',
-      cardType: 'HintCardComponent',
-      divisionsId:county.Id,
-      border: false
-    }); 
-    this.illegalDropTopCardConfig = new Array();
-    this.illegalDropTopCardConfig.push({
-      business: 'IllegalDropOrder',
-      cardType: 'OrderTableCardComponent',
-      divisionsIds:committesIds,
-      divisionsType:DivisionTypeEnum.County,       
-    }); 
-    this.illegalDropHistoryCardConfig= new Array();
-    this.illegalDropHistoryCardConfig.push({
-      business: 'IllegalDropHistory',
-      cardType: 'LineEChartsCardComponent',   
-      divisionsId:county.Id    
-    }); 
-   }, 1000);
+   
+      this.divisionGarbageSpCardConfig = new Array();
+      this.divisionGarbageSpCardConfig.push({
+        business: 'DivisionGarbageSpecification',
+        cardType: 'HintCardComponent',
+        divisionsId: county.Id,
+        dataTime: 60*3,
+        border: false
+      });
+      this.illegalDropTopCardConfig = new Array();
+      this.illegalDropTopCardConfig.push({
+        business: 'IllegalDropOrder',
+        cardType: 'OrderTableCardComponent',
+        divisionsIds: committesIds,
+        dataTime: 6,
+        defaultViewMoel:this.indexService.defaultOrderTable,
+        divisionsType: DivisionTypeEnum.County,
+      });
+      this.illegalDropHistoryCardConfig = new Array();
+      this.illegalDropHistoryCardConfig.push({
+        business: 'IllegalDropHistory',
+        cardType: 'LineEChartsCardComponent',
+        divisionsId: county.Id,
+        flipTime:60*2,
+        dataTime: 60*3
+      }); 
+      this.moveMapSite = ()=>{
+         this.divisionBusinessService.mapClient.Village.Select(county.Id);
+      }
+      
+    }, 500);
   }
 
 

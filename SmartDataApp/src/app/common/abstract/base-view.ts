@@ -84,7 +84,7 @@ export class BasisCardComponent extends CardComponent<ViewsModel<IViewModel>>{
   show_: boolean = true;
   initEchart: () => void;
   reSizeEchart: () => void;
-  set defaultViewData(d:ViewsModel<IViewModel>){debugger
+  set defaultViewData(d:ViewsModel<IViewModel>){ 
     this.model = d.views[d.pageIndex - 1];
       }
   constructor() {

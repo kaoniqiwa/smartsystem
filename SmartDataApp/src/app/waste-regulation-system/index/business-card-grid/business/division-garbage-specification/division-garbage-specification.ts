@@ -14,7 +14,7 @@ export class DivisionGarbageSpecification extends BaseBusinessRefresh {
     async getData() {
         const divisionsIds = this.businessParameter.map.get('divisionsIds') as string[]
             , divisionsId = this.businessParameter.map.get('divisionsId') as string
-            , divisionsType = this.businessParameter.map.get('divisionsType') as DivisionTypeEnum;debugger
+            , divisionsType = this.businessParameter.map.get('divisionsType') as DivisionTypeEnum; 
         let model = new Specification();
 
         let data = await (this.dataServe as StatisticalDataBufferService).getDivisionStatisticNumber(divisionsId);
