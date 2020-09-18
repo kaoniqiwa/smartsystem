@@ -21,9 +21,9 @@ export class TimeToolService {
     }
 
     runTime() {  this.currentTime = this.getTimeForMat(new Date()); 
-        // setInterval(() => {
-        //     this.currentTime = this.getTimeForMat(new Date()); 
+        setInterval(() => {
+            this.currentTime = this.getTimeForMat(new Date()); 
 
-        // }, 1000);
+        }, 1000);
     }
 }

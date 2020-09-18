@@ -15,6 +15,7 @@ export class MQTTEventService {
         var topic = 'AIOP/Garbage/Divisions/';
         topic += (divisionsId ? divisionsId : '+') + '/GarbageStations/';
         topic += (garbageStationId ? garbageStationId : '+') + '/Events/1';
+       console.log(topic);
        
         
         this.mqtt.subscription(topic,(topic:string, message:string)=>{

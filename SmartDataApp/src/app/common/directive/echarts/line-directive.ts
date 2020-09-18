@@ -23,12 +23,13 @@ export class EChartLineDirective implements OnChanges {
     }
 
     init() {
+        
         const   create = (options: LineOption) => {
                 return {
                     grid: {
-                        left: '0',
+                        left: '2px',
                     top: '20%',
-                    right: '10px',
+                    right: '2px',
                     bottom: '10px',
                         containLabel: true
                     },
@@ -44,6 +45,9 @@ export class EChartLineDirective implements OnChanges {
                         axisLabel: {
                             color: '#CFD7FE',
                             fontSize: "16",
+                            interval: function (index: number, value: string) {
+                               return  [0,4,8,11].indexOf(index) > -1;
+                            }
                         },
                         axisTick: {        //刻度线
                             show: false,

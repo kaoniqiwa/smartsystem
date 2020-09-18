@@ -5,6 +5,8 @@
 import { Injectable, ComponentRef, Component } from '@angular/core';
 import { CardContentFactory } from "./card-content-factory";
 import { CardDirective } from '../../common/directive/card-directive';
+import { IBusinessData } from '../../common/interface/IBusiness';
+import { IViewModel } from '../../common/abstract/base-view';
 @Injectable(
     {
         providedIn: 'root'
@@ -29,4 +31,5 @@ export interface IBusinessConfig {
     flipTime: number;
     divisionsId:string;
     border:boolean;
+    defaultViewMoel:IViewModel;
 }

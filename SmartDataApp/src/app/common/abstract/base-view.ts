@@ -20,6 +20,9 @@ export class BaseView<T extends IViewModel> implements IView<T> {
     this.datas = datas;
 
   }
+  set defaultViewData(val:T){
+     
+  }
   timeSpan: PagedTimeSpan;
   loadDatas: (datas: IViewModel) => void;
   viewContrl: (isInit: boolean, isNext: boolean) => boolean;
@@ -81,6 +84,9 @@ export class BasisCardComponent extends CardComponent<ViewsModel<IViewModel>>{
   show_: boolean = true;
   initEchart: () => void;
   reSizeEchart: () => void;
+  set defaultViewData(d:ViewsModel<IViewModel>){debugger
+    this.model = d.views[d.pageIndex - 1];
+      }
   constructor() {
     super();
     this.viewContrl = (isInit: boolean, isNext_: boolean) => {
