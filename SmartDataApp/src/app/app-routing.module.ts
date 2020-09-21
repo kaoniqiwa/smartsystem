@@ -7,10 +7,20 @@ const routes: Routes = [
     redirectTo: 'waste-regulation',
     pathMatch: 'full'
   },
-  { path:'aiop',loadChildren:'./aiop-system/aiop-system.module#AIOPSystemModule'},
+  // { path:'login',loadChildren:'./user-authentication/user-authentication.module#UserAuthenticationModule'},
+  // { path:'aiop',loadChildren:'./aiop-system/aiop-system.module#AIOPSystemModule'},
   { path:'waste-regulation',loadChildren:'./waste-regulation-system/waste-regulation-system.module#WasteRegulationSystemModule'},
 ];
-
+// const routes: Routes = [
+//   {
+//     path: '',
+//     redirectTo: 'login',
+//     pathMatch: 'full'
+//   },
+//   { path:'login',loadChildren:'./user-authentication/user-authentication.module#UserAuthenticationModule'},
+//   // { path:'aiop',loadChildren:'./aiop-system/aiop-system.module#AIOPSystemModule'},
+//   // { path:'waste-regulation',loadChildren:'./waste-regulation-system/waste-regulation-system.module#WasteRegulationSystemModule'},
+// ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

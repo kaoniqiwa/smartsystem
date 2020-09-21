@@ -31,5 +31,5 @@ export interface IBusinessConfig {
     flipTime: number;
     divisionsId:string;
     border:boolean;
-    defaultViewMoel:IViewModel;
+    // defaultViewMoel:IViewModel;
 }

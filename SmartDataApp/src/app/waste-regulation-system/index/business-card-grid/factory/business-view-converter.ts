@@ -19,7 +19,7 @@ import { IConverter } from "../../../../common/interface/IConverter";
 import { Injector, Injectable } from '@angular/core';
 import { LineOption, PieOption } from '../../../../common/directive/echarts/echart';
 import { Percentage } from '../../../../common/tool/tool.service'
-import { DivisionTypeEnum } from "../../../../common/tool/enum-helper"; 
+import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
 import { EventNumber } from '../../../../data-core/model/waste-regulation/event-number';
 import { ColorEnum } from '../../../../shared-module/card-component/card-content-factory';
@@ -28,50 +28,66 @@ export class IllegalDropHistoryCardConverter implements IConverter {
 
     Convert<IllegalDropEvent, ViewsModel>(input: IllegalDropEvent, output: ViewsModel): ViewsModel;
     Convert(input: IllegalDropEvent, output: ViewsModel<LineECharts>): ViewsModel<LineECharts> {
-        output.views = [new LineECharts(), new LineECharts()];
-        output.pageSize = 2;
+        output.views=[];
+        output.pageSize = input.datas.length <= 12 ? 1 : 2;
         output.pageIndex = 1;
-        this.joinPart(output.views[0], output.views[1]);
-        var enters1 = new Array<EventNumber>(), enters2 = new Array<EventNumber>();
-
-        for (let i = 0; i < input.datas.length; i++) {
-            if (i < input.datas.length / 2)
-                enters1.push(input.datas[i]);
-            else
-                enters2.push(input.datas[i]);
-        }
-        if (input instanceof IllegalDropEvent) {
-            output.views[0].option.seriesData = [];
-            output.views[1].option.seriesData = [];
+        if (output.pageSize == 1) {
+            const lc = this.joinPart(new LineECharts(), true);
+            var enters1 = new Array<EventNumber>();
+            for (let i = 0; i < input.datas.length; i++) {
+                if (i < 12)
+                    enters1.push(input.datas[i]);
+            }
             for (const x of enters1)
-                output.views[0].option.seriesData.push(x.DeltaNumber);
-
-            for (const x of enters2)
-                output.views[1].option.seriesData.push(x.DeltaNumber);
-
+                lc.option.seriesData.push(x.DeltaNumber);
+                output.views.push(lc);
         }
+        else {
+            const lc = this.joinPart(new LineECharts(), false);
+            var enters1 = new Array<EventNumber>();
+            for (let i = 0; i < input.datas.length; i++) {
+                if (i > 12)
+                    enters1.push(input.datas[i]);
+            }
+            lc.option.seriesData = new Array();
+            for (const x of enters1)
+                lc.option.seriesData.push(x.DeltaNumber);
+            output.views.push(lc);
 
+            const lc2 = this.joinPart(new LineECharts(), true);
+            var enters2 = new Array<EventNumber>();
+            for (let i = 0; i < input.datas.length; i++) {
+                if (i < 12)
+                    enters2.push(input.datas[i]);
+            }
+            lc2.option.seriesData = new Array();
+            for (const x of enters2)
+                lc2.option.seriesData.push(x.DeltaNumber);
+            output.views.push(lc2);
+        } 
         return output;
     }
 
-    private joinPart(t1: LineECharts, t2: LineECharts) {
-        t1.title = "今日乱扔垃圾", t2.title = '今日乱扔垃圾';
+    private joinPart(t1: LineECharts, moring: boolean) {
+        t1.title = "今日乱扔垃圾";
         t1.option = new LineOption();
-        t2.option = new LineOption();
-        t1.option.xAxisData = [], t2.option.xAxisData = [];
-        for (let i = 0; i <= 11; i++) {
-            if (i < 10)
-                t1.option.xAxisData.push('0' + i + ':00');
-            else
-                t1.option.xAxisData.push(i + ':00');
-        }        
-        for (let i = 12; i <= 23; i++) {
-            if (i < 10)
-                t2.option.xAxisData.push('0' + i + ':00');
-            else
-                t2.option.xAxisData.push(i + ':00');
+        t1.option.xAxisData = [];
+        if (moring) {
+            for (let i = 1; i <= 12; i++) {
+                if (i < 10)
+                    t1.option.xAxisData.push('0' + i + ':00');
+                else
+                    t1.option.xAxisData.push(i + ':00');
+            }
         }
-        return [t1, t2];
+        else
+            for (let i = 13; i <= 24; i++) {
+                if (i == 24)
+                    t1.option.xAxisData.push('00' + ':00');
+                else
+                    t1.option.xAxisData.push(i + ':00');
+            }
+        return t1;
     }
 }
 
@@ -116,17 +132,17 @@ export class DevStatusCardConverter implements IConverter {
             output.views[0].detail.push({
                 label: '全部设备数量',
                 number: input.cameraNumber + '',
-                color:ColorEnum["sky-blue-text2"]
+                color: ColorEnum["sky-blue-text2"]
             });
             output.views[0].detail.push({
                 label: '在线设备数量',
                 number: (input.cameraNumber - input.offlineCameraNumber) + '',
-                color:ColorEnum["green-text"]
+                color: ColorEnum["green-text"]
             });
             output.views[0].detail.push({
                 label: '离线设备数量',
                 number: input.offlineCameraNumber + '',
-                color:ColorEnum["powder-red-text"]
+                color: ColorEnum["powder-red-text"]
             });
         }
         return output;
@@ -160,12 +176,12 @@ export class IllegalDropEventConverter implements IConverter {
 
     Convert<IllegalDropEventInfos, ViewsModel>(input: IllegalDropEventInfos, output: ViewsModel): ViewsModel;
     Convert(input: IllegalDropEventInfos, output: ViewsModel<ImageTheme>): ViewsModel<ImageTheme> {
-        output.views=[new ImageTheme()];
-        output.pageSize=1;
+        output.views = [new ImageTheme()];
+        output.pageSize = 1;
         output.pageIndex = 1;
         if (input instanceof IllegalDropEventInfos) {
             output.pageSize = input.items.length;
-            output.views= new Array();
+            output.views = new Array();
             for (let i = 0; i < input.items.length; i++) {
                 output.views.push(new ImageTheme());
                 const pic = new MediumPicture();
@@ -174,13 +190,13 @@ export class IllegalDropEventConverter implements IConverter {
                 output.views[i].imgDesc2 = input.items[i].StationName;
                 output.views[i].imgSrc = pic.getJPG(input.items[i].ImageUrl);
                 output.views[i].title = '乱扔垃圾';
-                output.views[i].titleColor=ColorEnum["red-text"]
+                output.views[i].titleColor = ColorEnum["red-text"]
                 output.views[i].subTitle = input.items[i].EventTime;
-            } 
+            }
         }
-        else if (isBoolean(input)){  
-            output.views[0].title = input ==true ?'已连接':'断开';
-            output.views[0].titleColor=input ==true  ?ColorEnum["green-text"]:ColorEnum["red-text"];
+        else if (isBoolean(input)) {
+            output.views[0].title = input == true ? '已连接' : '断开';
+            output.views[0].titleColor = input == true ? ColorEnum["green-text"] : ColorEnum["red-text"];
         }
         return output;
     }

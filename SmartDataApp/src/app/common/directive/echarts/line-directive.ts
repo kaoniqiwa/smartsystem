@@ -18,13 +18,16 @@ export class EChartLineDirective implements OnChanges {
     constructor(private e: ElementRef, private zone: NgZone) {
         window.addEventListener("resize", () =>  this.echarts_.resize());
     }
-    ngOnChanges(changes: SimpleChanges): void {
-        if (this.options) this.init();
+    ngOnChanges(changes: SimpleChanges): void {  
+        if (this.options&&this.options.init) 
+            this.init();
+        // if (this.options&&changes.options.previousValue == null) 
+        //     this.init();
     }
 
     init() {
         
-        const   create = (options: LineOption) => {
+        const   create = (options: LineOption) => { 
                 return {
                     grid: {
                         left: '2px',
@@ -39,6 +42,14 @@ export class EChartLineDirective implements OnChanges {
                             type: 'cross'
                         }
                     },
+                    // title: {       
+                    //     subtext: '单位(起)',
+                    //     left: 'right', 
+                    //      subtextStyle:{
+                    //          color:'#7A8DE6'
+                    //      },
+                    //      top:-6
+                    // },
                     xAxis: {
                         type: 'category',
                         data: options.xAxisData,
@@ -46,7 +57,7 @@ export class EChartLineDirective implements OnChanges {
                             color: '#CFD7FE',
                             fontSize: "16",
                             interval: function (index: number, value: string) {
-                               return  [0,4,8,11].indexOf(index) > -1;
+                               return  [0,3,7,11].indexOf(index) > -1;
                             }
                         },
                         axisTick: {        //刻度线

@@ -104,7 +104,7 @@ export class BasisCardComponent extends CardComponent<ViewsModel<IViewModel>>{
             isNext = d.pageIndex > d.pageSize;
           }
           this.model = d.views[d.pageIndex - 1];
-          if (this.reSizeEchart) this.reSizeEchart();
+          // if (this.initEchart) this.initEchart();
         }
       }
       else
@@ -120,7 +120,7 @@ export class BasisCardComponent extends CardComponent<ViewsModel<IViewModel>>{
           let d = this.getDatas();
           d.pageIndex = 1;
           this.model = d.views[d.pageIndex - 1];
-          if (this.reSizeEchart) this.reSizeEchart();
+          // if (this.reSizeEchart) this.reSizeEchart();
         });
       };
       return isNext;

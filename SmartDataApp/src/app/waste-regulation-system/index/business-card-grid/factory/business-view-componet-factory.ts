@@ -36,9 +36,9 @@ export class BusinessViewComponetFactory {
             }
             let content = this.cardContentFactory.create<BaseView<IViewModel>>(card.instance.cardHost, businessConfig.cardType);
             let view = content.instance as BaseView<IViewModel>;
-            if (businessConfig.defaultViewMoel){                 
-                view.defaultViewData=businessConfig.defaultViewMoel;
-            }
+            // if (businessConfig.defaultViewMoel){                 
+            //     view.defaultViewData=businessConfig.defaultViewMoel;
+            // }
             if (view.timeSpan) {
                 view.timeSpan.interval = businessConfig.flipTime;
             }

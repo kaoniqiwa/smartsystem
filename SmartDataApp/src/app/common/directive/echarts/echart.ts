@@ -18,6 +18,7 @@ export class BarOption implements IEChartOption{
 export class LineOption implements IEChartOption{
     xAxisData: Array<IEChartsData>; 
     seriesData: Array<IEChartsData>;   
+    init=true;
 }
 
 export class PieOption implements IEChartOption{

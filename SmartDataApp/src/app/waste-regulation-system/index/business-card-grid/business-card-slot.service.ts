@@ -4,6 +4,7 @@
  */
 
 import { Injectable } from "@angular/core";
+import { interval, of, Subscription } from "rxjs";
 import { BusinessViewComponet } from "../../../common/tool/business-view-component";
 import { IBusiness ,IBusinessData} from "../../../common/interface/IBusiness"; 
 
@@ -86,7 +87,7 @@ export class BusinessCardSlotService {
     stop() {
         window.clearInterval(this.intervalRun);
     }
-}
+} 
 
 export class BusinessViewComponetConstructor {
     list: BusinessViewComponet[] = new Array();

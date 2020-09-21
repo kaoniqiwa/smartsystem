@@ -1,27 +1,26 @@
 <ng-container *ngIf="model">
-  <div class="video-title-desc fill-height fill-width"> 
+  <div class="video-title-desc fill-height fill-width">
     <h2 class="{{model.titleColor}}">{{ model.title}}</h2>
     <div class="time-label-wrapper">
       <h4 class="m-0 light-blue-text">{{model.subTitle}}</h4>
     </div>
     <div class="content-wrapper p-r-20">
-      <div class="fill-height fill-width" style="position: relative;"> 
-        <ng-container *ngIf="model.imgSrc">
-          <img onerror="this.src='../assets/img/timg.jpg'" class="fill-height fill-width" src="{{model.imgSrc}}" alt="">
-          <div class="desc-label-wrapper">
-            <label class="m-0  text-white">
-              <i class="mdi mdi-map-marker"></i>
-              {{model.imgDesc1}}
-            </label>
-            <label class="m-0 text-white pull-right">{{model.imgDesc2}}</label>
+      <div class="fill-height fill-width" style="position: relative;">
+        <ng-container *ngIf="!model.imgSrc">
+          <div class="fill-width fill-height" style="background-color: black;">
           </div>
         </ng-container>
-        <ng-container *ngIf="!model.imgSrc">
-           <div class="fill-width fill-height" style="background-color: black;">
-             
-           </div>
+        <ng-container *ngIf="model.imgSrc">
+          <img onerror="this.src='../assets/img/timg.jpg'" class="fill-height fill-width" src="{{model.imgSrc}}" alt="">         
         </ng-container>
+        <div class="desc-label-wrapper">
+          <label class="m-0  text-white">
+            <i class="{{model.imgDesc1Icon}}"></i>
+            {{model.imgDesc1}}
+          </label>
+          <label class="m-0 text-white pull-right">{{model.imgDesc2}}</label>
+        </div>
       </div>
     </div>
-  </div> 
+  </div>
 </ng-container>

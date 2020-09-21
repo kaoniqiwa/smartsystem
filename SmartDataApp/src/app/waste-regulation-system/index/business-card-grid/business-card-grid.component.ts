@@ -41,8 +41,10 @@ export class BusinessCardGridComponent implements OnInit {
   
     this.businessCardSlotService.addViews(businessViewComponets);
     this.divisionBusinessService.componets.push(businessViewComponets);
+  
      this.refreshTimer.addBusiness(businessViewComponets.getBusinesses());
      this.refreshTimer.start();
+     this.businessCardSlotService.start();
   }
 
 }

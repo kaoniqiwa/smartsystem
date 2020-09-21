@@ -370,7 +370,7 @@ padding-right: 5px;
 
 .blue-parting-line{
   width: 100%;
-  height: 2px;
+  height: 1px;
   background-image: linear-gradient(to right, rgb(0,0,0,0), #6997ff,rgb(0,0,0,0))
 }
 

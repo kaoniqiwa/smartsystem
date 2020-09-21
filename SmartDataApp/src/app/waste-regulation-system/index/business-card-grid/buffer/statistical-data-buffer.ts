@@ -55,7 +55,7 @@ export class StatisticalDataBufferService extends ListAttribute implements IBusi
             param.PageIndex = 1;
             param.PageSize = this.maxSize;
             const response = await this.divisionService.eventNumbersHistory(param, divisionsId).toPromise();
-            result = response.Data.Data;
+            result = response.Data.Data; 
             this.cache.set(this.eventNumbersHistory + divisionsId, result);
         }
         return result;
@@ -112,7 +112,7 @@ export class StatisticalDataBufferService extends ListAttribute implements IBusi
     }
 
     async postGarbageStationStatisticNumbers(divisionsIds: string[]) {
-        console.log(divisionsIds);
+     
         
         var result = this.cache.get<GarbageStationNumberStatistic[]>
             (this.garbageStationStatisticNumberList + Md5.hashStr(divisionsIds.join('-')));

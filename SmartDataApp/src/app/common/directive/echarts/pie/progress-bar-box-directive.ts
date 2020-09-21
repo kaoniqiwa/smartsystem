@@ -48,8 +48,8 @@ export class EChartProgressBarBoxDirective implements OnInit {
                         value: 77,
                         itemStyle: {
                             normal: {
-                                color: "rgba(80,150,224,0)",
-                                borderWidth: 1,
+                                color: "rgba(80,150,224)",
+                                borderWidth: 0,
                                 borderColor: '#235FA4'
                             }
                         }

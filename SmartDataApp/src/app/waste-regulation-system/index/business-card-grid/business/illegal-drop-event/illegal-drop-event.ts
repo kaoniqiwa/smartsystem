@@ -17,22 +17,23 @@ export class IllegalDropEvent extends BaseEventRecord {
         const events= this.eventsMap.get(this.IllegalDrop)
         ,datePipe=this.businessParameter.map.get('datePipe') as DatePipe
         ,state=this.businessParameter.map.get('state') as boolean;
-        if (events.length == 0) return state;
+        if (!events[0]&&!events[1]&&!events[2]) return state;
         else {
-            const items = events.reverse().slice(0, 3)as IllegalDropEventRecord[]
-            ,infos = new IllegalDropEventInfos();
+            var x:IllegalDropEventRecord;
+            if(events[0]&&!events[1])x = events[0] as IllegalDropEventRecord;
+            else   if(events[1]&&!events[2])x = events[1] as IllegalDropEventRecord;
+            else   if(events[2])x = events[2] as IllegalDropEventRecord;
+            const infos = new IllegalDropEventInfos();
             infos.items = new Array();
-            for(const  x of items){
-                const info = new IllegalDropEventInfo();
+            const info = new IllegalDropEventInfo();
             
-                info.EventType = x.EventType;
-                info.EventTime= datePipe.transform(x.EventTime,'MM-dd HH:mm:ss');
-                info.DivisionName=x.Data.DivisionName;
-                info.StationName=x.Data.StationName;
-                info.ImageUrl=x.ImageUrl;
-                info.RecordUrl=x.RecordUrl;
-                infos.items.push(info);
-            }                     
+            info.EventType = x.EventType;
+            info.EventTime= datePipe.transform(x.EventTime,'MM-dd HH:mm:ss');
+            info.DivisionName=x.Data.DivisionName;
+            info.StationName=x.Data.StationName;
+            info.ImageUrl=x.ImageUrl;
+            info.RecordUrl=x.RecordUrl;
+            infos.items.push(info);                    
             return infos;
         }
     }

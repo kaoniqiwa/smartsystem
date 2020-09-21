@@ -4,6 +4,7 @@ export class ImageTheme{
     titleColor:ColorEnum;
     imgSrc:string;
     subTitle:string;
+    imgDesc1Icon:string;
     imgDesc1:string;
     imgDesc2:string;
 }

@@ -54,20 +54,19 @@ ngOnChanges(){
                         itemStyle: {
                             normal: {
                                 color: {
-                                    type: 'linear',
-                                    x: 0,
-                                    y: 0,
-                                    x2: 1,
-                                    y2: 0,
+                                    type: 'radial',
+                                    x: 1,
+                                    y: 1,
+                                    r: 1,
                                     colorStops: [{
-                                        offset: 0,
+                                        offset: 1,
                                         color: '#28ce38' // 0% 处的颜色
                                     },{
                                         offset: 0.5,
                                         color: '#ff9100' // 0% 处的颜色
                                     },
                                     {
-                                        offset: 1,
+                                        offset: 0,
                                         color: '#ec2b2b' // 100% 处的颜色
                                     }],
                                     global: false // 缺省为 false

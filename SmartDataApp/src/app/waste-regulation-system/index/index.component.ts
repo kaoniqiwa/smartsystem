@@ -43,7 +43,7 @@ export class IndexComponent implements OnInit {
     ,private eventPushService:EventPushService
     , private divisionBusinessService: DivisionBusinessService
     , private mqttSevice: MQTTEventService) {
-      titleService.setTitle('生活垃圾监督平台');
+      titleService.setTitle('生活垃圾监管平台');
     this.bar.seriesData = [
       [0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0]
@@ -99,7 +99,7 @@ export class IndexComponent implements OnInit {
       this.illegalDropEventCardConfig = new Array();
       this.illegalDropEventCardConfig.push({
         business: 'IllegalDropEvent',
-        flipTime:60*2,
+        flipTime:60,
         cardType: 'ImageThemeCardComponent',
         state:b
       });
@@ -147,7 +147,7 @@ export class IndexComponent implements OnInit {
         business: 'IllegalDropHistory',
         cardType: 'LineEChartsCardComponent',
         divisionsId: county.Id,
-        flipTime:60*2,
+        flipTime:60*3,
         dataTime: 60*3
       }); 
       this.moveMapSite = ()=>{
