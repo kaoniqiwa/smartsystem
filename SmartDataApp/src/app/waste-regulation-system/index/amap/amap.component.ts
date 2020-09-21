@@ -163,6 +163,11 @@ export class AMapComponent implements AfterViewInit, OnInit {
             const list = document.getElementsByClassName('map-bar video-list')[0];
             list['style'].display = 'none';
         };
+        
+        this.client.Events.OnVillageClicked = (village: CesiumDataController.Village) => {
+            const list = document.getElementsByClassName('map-bar video-list')[0];
+            list['style'].display = 'none';
+        };
     }
     ngAfterViewInit() {
 

@@ -141,6 +141,19 @@ function WSPlayer(args) {
                 that.seek(value);
                 that.resume();
             });
+            that.tools.control.position.addEventListener("mousemove", function(evt){
+                if(!evt)return;
+                var width = evt.target.offsetWidth;
+                var x = evt.offsetX;
+
+                var p = x/width;
+
+                var c = that.tools.control.position.max-that.tools.control.position.min;
+                var current = c*p;
+                var date = new Date(current);
+                date.setUTCHours(date.getUTCHours() - 8);
+                this.title = date.format("HH:mm:ss");                
+            });
         }
 
 
@@ -301,7 +314,7 @@ function WSPlayer(args) {
                             var current = new Date(that.tools.control.position.value - that.tools.control.position.min);
                             current.setUTCHours(current.getUTCHours() - 8);
                             that.tools.control.begin_time.innerText = current.format("HH:mm:ss");
-                            that.tools.control.position.title = current.format("HH:mm:ss");
+                            // that.tools.control.position.title = current.format("HH:mm:ss");
 
                             var val = (that.playback_time.current.getTime() - that.tools.control.position.min) / (that.tools.control.position.max - that.tools.control.position.min);
 
@@ -658,7 +671,7 @@ function WSPlayer(args) {
 
                 var valStr = value * 100 + "% 100%";
                 this.style.backgroundSize = valStr;
-            });
+            });            
 
         };
 
