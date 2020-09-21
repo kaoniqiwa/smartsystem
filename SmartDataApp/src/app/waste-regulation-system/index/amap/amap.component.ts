@@ -169,6 +169,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
     }
 
     OnVillageWindowClosed() {
+        if (this.autoCloseWindowHandle) {
+            clearTimeout(this.autoCloseWindowHandle);
+        }
         const element = document.getElementById('videoPlayer');
         element.style.display = 'none';
         this.videoWindow.changePlayMode(PlayModeEnum.live, true);
@@ -200,9 +203,6 @@ export class AMapComponent implements AfterViewInit, OnInit {
         } catch (ex) {
             console.error(ex);
         }
-        finally {
-            this.autoCloseWindow();
-        }
     }
 
 
@@ -212,13 +212,18 @@ export class AMapComponent implements AfterViewInit, OnInit {
         }
         this.autoCloseWindowHandle = setTimeout(() => {
             this.videoWindow.closeWindow();
-        }, 5 * 60 * 1000);
+        }, 5 * 1000);
     }
 
 
 
     async changePlayMode(mode: PlayModeEnum) {
         try {
+
+            if (this.autoCloseWindowHandle) {
+                clearTimeout(this.autoCloseWindowHandle);
+            }
+
             this.videoWindow.playMode = mode;
             if (mode === PlayModeEnum.live) {
                 const params = new GetPreviewUrlParams();
@@ -226,14 +231,12 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 params.Protocol = 'ws-ps';
                 params.StreamType = 1;
                 const response = await this.srService.PreviewUrls(params).toPromise();
+                this.videoWindow.url = response.Data.Url;
                 this.videoWindow.playVideo();
             }
 
         } catch (ex) {
             console.error(ex);
-        }
-        finally {
-            this.autoCloseWindow();
         }
     }
 
@@ -250,9 +253,14 @@ export class AMapComponent implements AfterViewInit, OnInit {
             this.videoWindow.playVideo();
         } catch (ex) {
             console.error(ex);
-        } finally {
+        }
+    }
+
+    OnVideoPlaying(playing: boolean) {
+        if (playing) {
             this.autoCloseWindow();
         }
     }
+
 }
 

@@ -19,7 +19,7 @@
     </div>
     <div class="fill-width" style="height: calc(100% - 20px);" *ngIf="hasControl">
       <div id="videoWindowView" data-time="0" data-full="0"
-        style="height:calc(100% - 10px);width: 100%;float: left;border: 2px solid #3283E5;">
+        style="height:calc(100% - 10px);width: calc(100% - 190px);float: left;border: 2px solid #3283E5;">
         <div style="background-color: black;width: 100%;height:calc(100%) ;">
           <div id="{{divId}}" *ngIf="divId" class="video-control selected fill-height fill-width player">
           </div>
@@ -91,6 +91,106 @@
           <i class="icon-spinner icon-spin" id="icon_loading" style="display:none"></i>
         </div>
       </div>
+
+
+      <div class="pull-right fill-height"  [class.hide]="playMode_.vod==playMode">
+        <div class="play-live-box">
+          <div class="btn-i m-r-5" title="左上"><a href="javascript:void(0)" class="howell-icon-arrow-left-top"
+              (mouseup)="directionUserControl(viewModel.PTZ.direction.stop,viewModel.PTZ.speed)"
+              (mousedown)="directionUserControl(viewModel.PTZ.direction.up_left,viewModel.PTZ.speed)"></a></div>
+          <div class="btn-i m-r-5" title="上"><a href="javascript:void(0)" class="howell-icon-arrow-top"
+              (mouseup)="directionUserControl(viewModel.PTZ.direction.stop,viewModel.PTZ.speed)"
+              (mousedown)="directionUserControl(viewModel.PTZ.direction.up,viewModel.PTZ.speed)"></a></div>
+          <div class="btn-i m-r-10" title="右上"><a href="javascript:void(0)" class="howell-icon-arrow-right-top"
+              (mouseup)="directionUserControl(viewModel.PTZ.direction.stop,viewModel.PTZ.speed)"
+              (mousedown)="directionUserControl(viewModel.PTZ.direction.up_right,viewModel.PTZ.speed)"></a></div>
+          <div class="btn-i m-r-5" title="镜头-"><a href="javascript:void(0)" class="howell-icon-zoom-decrease"
+              (mouseup)="lenUserControl(viewModel.PTZ.len.stop,viewModel.PTZ.speed)"
+              (mousedown)="lenUserControl(viewModel.PTZ.len.zoom_in,viewModel.PTZ.speed)"></a></div>
+          <div class="btn-i" title="镜头+"><a href="javascript:void(0)" class="howell-icon-zoom-increase"
+              (mouseup)="lenUserControl(viewModel.PTZ.len.stop,viewModel.PTZ.speed)"
+              (mousedown)="lenUserControl(viewModel.PTZ.len.zoom_out,viewModel.PTZ.speed)"></a></div>
+          <div style="clear: both"></div>
+        </div>
+        <div class="play-live-box m-t-5">
+          <div class="btn-i m-r-5" title="左"><a href="javascript:void(0)" class="howell-icon-arrow-left"
+              (mouseup)="directionUserControl(viewModel.PTZ.direction.stop,viewModel.PTZ.speed)"
+              (mousedown)="directionUserControl(viewModel.PTZ.direction.left,viewModel.PTZ.speed)"></a></div>
+          <div class="btn-i m-r-5" title=""><a href="javascript:void(0)" class="howell-icon-restore"></a></div>
+          <div class="btn-i m-r-10" title="右"><a href="javascript:void(0)" class="howell-icon-arrow-right"
+              (mouseup)="directionUserControl(viewModel.PTZ.direction.stop,viewModel.PTZ.speed)"
+              (mousedown)="directionUserControl(viewModel.PTZ.direction.right,viewModel.PTZ.speed)"></a></div>
+          <div class="btn-i m-r-5" title="聚焦-"><a href="javascript:void(0)" class="howell-icon-focus-farness"
+              (mouseup)="lenUserControl(viewModel.PTZ.len.stop,viewModel.PTZ.speed)"
+              (mousedown)="lenUserControl(viewModel.PTZ.len.unfar,viewModel.PTZ.speed)"></a></div>
+          <div class="btn-i" title="聚焦+"><a href="javascript:void(0)" class="howell-icon-focus-nearness"
+              (mouseup)="lenUserControl(viewModel.PTZ.len.stop,viewModel.PTZ.speed)"
+              (mousedown)="lenUserControl(viewModel.PTZ.len.far,viewModel.PTZ.speed)"></a></div>
+          <div style="clear: both"></div>
+        </div>
+        <div class="play-live-box m-t-5">
+          <div class="btn-i m-r-5" title="左下"><a href="javascript:void(0)" class="howell-icon-arrow-left-down"
+              (mouseup)="directionUserControl(viewModel.PTZ.direction.stop,viewModel.PTZ.speed)"
+              (mousedown)="directionUserControl(viewModel.PTZ.direction.down_left,viewModel.PTZ.speed)"></a></div>
+          <div class="btn-i m-r-5" title="下"><a href="javascript:void(0)" class="howell-icon-arrow-down"
+              (mouseup)="directionUserControl(viewModel.PTZ.direction.stop,viewModel.PTZ.speed)"
+              (mousedown)="directionUserControl(viewModel.PTZ.direction.down,viewModel.PTZ.speed)"></a></div>
+          <div class="btn-i m-r-10" title="右下"><a href="javascript:void(0)" class="howell-icon-arrow-right-down"
+              (mouseup)="directionUserControl(viewModel.PTZ.direction.stop,viewModel.PTZ.speed)"
+              (mousedown)="directionUserControl(viewModel.PTZ.direction.down_right,viewModel.PTZ.speed)"></a></div>
+          <div class="btn-i m-r-5" title="光圈-"><a href="javascript:void(0)" class="howell-icon-aperture-decrease"
+              (mouseup)="lenUserControl(viewModel.PTZ.len.stop,viewModel.PTZ.speed)"
+              (mousedown)="lenUserControl(viewModel.PTZ.len.halo_off,viewModel.PTZ.speed)"></a></div>
+          <div class="btn-i" title="光圈+"><a href="javascript:void(0)" class="howell-icon-aperture-increase"
+              (mouseup)="lenUserControl(viewModel.PTZ.len.stop,viewModel.PTZ.speed)"
+              (mousedown)="lenUserControl(viewModel.PTZ.len.halo_on,viewModel.PTZ.speed)"></a></div>
+          <div style="clear: both"></div>
+        </div>
+        <div style="width: 140px; height: 30px; padding-top: 16px;position: relative;">
+          <input id="ra__" type="text" min="1" max="7" step="1" data-orientation="horizontal">
+          <div class="speed-input" style="position: absolute;top: 0;left: 144px;">
+            <input type="text" #SpeedText (change)="changeSpeed(SpeedText.value)" maxlength="1" max="7" min="1"
+              [value]="viewModel.PTZ.speed" name="" id="">
+          </div>
+        </div>
+        <!-- <div class="m-t-10" class="speed-range" style="position: relative">
+          <input type="range" max="7" min="1" [value]="viewModel.PTZ.speed" [(ngModel)]="viewModel.PTZ.speed">
+          <p [style.width]="((viewModel.PTZ.speed-1)*20.5)+'px'" style="position: absolute;background: #69adff;height: 2px;top: 16px;"></p>
+          <div class="speed-input pull-right">
+            <input type="text" #SpeedText (change)="changeSpeed(SpeedText.value)"  maxlength="1" max="7" min="1" [value]="viewModel.PTZ.speed" name="" id="">
+          </div>
+        </div>
+        <div class="play-live-box-b">
+          <div class="btn-d"><a href="javascript:void(0)" class="howell-icon-arrowtopleft"></a></div>
+          <div class="btn-d"><a href="javascript:void(0)" class="howell-icon-arrowtopleft"></a></div>
+          <div class="btn-d"><a href="javascript:void(0)" class="howell-icon-arrowtopleft"></a></div>
+          <div class="btn-d"><a href="javascript:void(0)" class="howell-icon-arrowtopleft"></a></div>
+          <div class="btn-d"><a href="javascript:void(0)" class="howell-icon-arrowtopleft"></a></div>
+          <div class="btn-d"><a href="javascript:void(0)" class="howell-icon-arrowtopleft"></a></div>
+          <p class="line line-a"></p>
+          <p class="line line-b"></p>
+          <p class="line line-c"></p>
+          <p class="line line-d"></p>
+          <p class="line line-e"></p>
+        </div> -->
+        <div class="preset-list m-t-10" style="overflow: auto;height: calc(100% - 140px);">
+
+          <div class="li preset" [class.selected]="i.isSelect" (click)="presetListItemClick(i)"
+            *ngFor="let i of viewModel.PTZ.presetControl;">
+            <a href="javascript:void(0)">预置点{{ i.no }}</a>
+            <div class="pull-right">
+              <a *ngIf="i.isSelect" title="调用" href="javascript:void(0)" class="mdi mdi-redo m-r-10"
+                (click)="presetUserControl(viewModel.PTZ.reset.do,i.no,viewModel.PTZ.speed)"></a>
+              <a *ngIf="i.isSelect" title="设置" href="javascript:void(0)" class="howell-icon-settingoutline"
+                (click)="presetUserControl(viewModel.PTZ.reset.set,i.no,viewModel.PTZ.speed)"></a>
+              <!-- <a *ngIf="i.isSet" href="javascript:void(0)" class="howell-icon-Close"
+                (click)="presetUserControl(viewModel.PTZ.reset.clear,i.no,viewModel.PTZ.speed)"></a> -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+
 
 
       <!-- <div class="pull-right fill-height" [class.hide]="playMode_.vod!=playMode">

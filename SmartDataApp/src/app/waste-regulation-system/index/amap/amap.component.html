@@ -1,9 +1,9 @@
 <iframe class="map" [src]="srcUrl" #iframe width="100%" height="100%"></iframe>
 
 <ul class="map-bar status">
-  <li class="normal">正常垃圾桶</li>
-  <li class="warm">即将满溢垃圾统</li>
-  <li class="error">满溢垃圾桶</li>
+  <li class="normal">正常</li>
+  <li class="warm">满溢</li>
+  <li class="error">异常</li>
 </ul>
 <div class="map-bar video-list" style="display: none;">
   <ng-container *ngFor="let camera of selectedCameras">
@@ -14,11 +14,15 @@
 </div>
 
 <!-- <div class="amap-video playing"> -->
+  <!-- style="height: 364px;width: 590px;z-index:4;display: none;" -->
 <app-video-window #videoWindow id="videoPlayer" (closeWindowEventListen)="OnVillageWindowClosed()"
-  class="amap-video playing" (PlaybackClickedListen)="PlaybackClicked($event)"
+  class="amap-video playing" 
+  (PlaybackClickedListen)="PlaybackClicked($event)"
+  VideoPlayingEventListen="OnVideoPlaying()"
   [cameraName]="amapService.videoPlayerService.playCameraName" (changeModeEventListen)="changePlayMode($event)"
   (closeWindowOnloadEventListen)="isShowVideoView=false" [videoPlayArgs]="amapService.videoPlayerService.videoPlayArgs"
   [playMode]="amapService.videoPlayerService.playMode" [cameraId]="amapService.videoPlayerService.playVideoVideoId"
-  [url]="amapService.videoPlayerService.url" style="height: 364px;width: 590px;z-index:4;display: none;">
+  [url]="amapService.videoPlayerService.url" style="height: 364px;width: 781px;z-index:4;">
 </app-video-window>
+
 <!-- </div> -->
