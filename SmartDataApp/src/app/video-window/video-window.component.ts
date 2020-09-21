@@ -45,6 +45,8 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     @Output() closeWindowOnloadEventListen: EventEmitter<string> = new EventEmitter();
     @Output() changeModeEventListen: EventEmitter<PlayModeEnum> = new EventEmitter();
     @Output() PlaybackClickedListen: EventEmitter<{ begin: Date, end: Date }> = new EventEmitter();
+    @Output() VideoPlayingEventListen: EventEmitter<boolean> = new EventEmitter();
+
     constructor(private datePipe: DatePipe) {
         if (this.hasControl) {
             if (this.viewModel_ == null) {
@@ -86,24 +88,24 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     changePlayMode(parm: PlayModeEnum, eleId: any) {
         this.playMode = parm;
         if (!this.player) { return; }
-        const ele = document.getElementById('videoWindowView');
-        switch (parm) {
-            case PlayModeEnum.live:
-                ele.style.width = '100%';
-                if (this.player) {
-                    this.player.resize();
-                }
-                break;
-            case PlayModeEnum.vod:
-                ele.style.width = this.videoWidth;
-                if (this.player) {
-                    // tslint:disable-next-line:radix
-                    this.player.resize(parseInt(this.videoWidth) - 4);
-                }
-                break;
-            default:
-                break;
-        }
+        // const ele = document.getElementById('videoWindowView');
+        // switch (parm) {
+        //     case PlayModeEnum.live:
+        //         ele.style.width = '100%';
+        //         if (this.player) {
+        //             this.player.resize();
+        //         }
+        //         break;
+        //     case PlayModeEnum.vod:
+        //         ele.style.width = this.videoWidth;
+        //         if (this.player) {
+        //             // tslint:disable-next-line:radix
+        //             this.player.resize(parseInt(this.videoWidth) - 4);
+        //         }
+        //         break;
+        //     default:
+        //         break;
+        // }
         try {
             if (this.player) {
                 this.player.stop();
@@ -223,11 +225,13 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
                 this.player.url = this.url;
                 this.player.name = this.cameraName;
                 this.player.play();
+                this.VideoPlayingEventListen.emit(true);
             } else {
                 this.player.stop().then(() => {
                     this.player.url = this.url;
                     this.player.name = this.cameraName;
                     this.player.play();
+                    this.VideoPlayingEventListen.emit(true);
                 });
             }
 
@@ -238,6 +242,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
             });
             this.player.name = this.cameraName;
             this.player.play();
+            this.VideoPlayingEventListen.emit(true);
         }
 
     }
