@@ -50,6 +50,7 @@ function WSPlayer(args) {
     this.url = current_args.url;
 
     var element = document.getElementById(current_args.elementId);
+    if(!element)return;
     element.style.backgroundColor = "transparent";
     this.clientWidth = parseFloat(element.offsetWidth);
     this.clientHeight = parseFloat(element.offsetHeight);
