@@ -6,6 +6,9 @@ import { DivisionTypeEnum } from "../../../common/tool/enum-helper";
 import { HeaderSquareListComponent } from "../../../shared-module/header-square-list/header-square-list.component";
 import { BusinessViewComponetConstructor } from "./business-card-slot.service";
 import { StatisticalDataBufferService } from "./buffer/statistical-data-buffer";
+import { AMapComponent } from "../amap/amap.component";
+import { CameraRequestService } from "../../../data-core/repuest/resources.service";
+import {  ImageThemeCardComponent} from "../../../shared-module/card-component/image-theme-card/image-theme-card.component";
 @Injectable({
     providedIn: 'root'
 })
@@ -13,7 +16,8 @@ export class DivisionBusinessService {
     componets = new Array<BusinessViewComponetConstructor>();
     committesIds: string[];
     mapClient: CesiumMapClient;
-    constructor() {
+    aMap:AMapComponent;
+    constructor(private cameraService:CameraRequestService) {
         setTimeout(() => {
             for (const x of this.componets) {
 
@@ -37,8 +41,13 @@ export class DivisionBusinessService {
                                 }
                             }
                         }
-                    }
-                    break;
+                    } 
+                }
+                if(x.list[0].view instanceof ImageThemeCardComponent){
+                    x.list[0].view.btnControl =async (val: { stationId: string, cameraId: string }) => {
+                      const respone= await  this.cameraService.get(val.cameraId).toPromise();
+                      this.aMap.OnCameraClicked(respone.Data as any);
+                    } 
                 }
             }
         }, 1000);

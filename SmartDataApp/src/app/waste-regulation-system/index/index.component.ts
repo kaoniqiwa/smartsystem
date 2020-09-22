@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ViewChild} from '@angular/core';
 import { BarOption, LineOption, PieOption } from "../../common/directive/echarts/echart";
 import { TheDayTime, ToolService } from "../../common/tool/tool.service";
 import { HowellAuthHttpService } from '../../data-core/repuest/howell-auth-http.service';
@@ -11,7 +11,7 @@ import { Digest } from '../../data-core/repuest/digest';
 import { MQTTEventService } from '../../common/tool/mqtt-event/mqtt-event.service';
 import { EventPushService } from '../../common/tool/mqtt-event/event-push.service';
 import { DivisionTypeEnum } from '../../common/tool/enum-helper';
- 
+import { AMapComponent } from "./amap/amap.component";
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -36,6 +36,8 @@ export class IndexComponent implements OnInit {
     '新虹', '广中', '黄山', '花园城', '八字桥',
     '何家宅'
   ]
+  @ViewChild('aMap')
+  aMap:AMapComponent;
   readonly url = '/api/howell/ver10/aiop_service/Maps';
   constructor(private httpService: HowellAuthHttpService
     , private indexService: IndexService
@@ -84,7 +86,7 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit() {
-
+   
     const auth = async () => {
       await this.httpService.auth(this.url,
         new HttpHeaders({ 'X-WebBrowser-Authentication': 'Forbidden' })
@@ -119,7 +121,7 @@ export class IndexComponent implements OnInit {
       this.devCardConfig.push({
         business: 'DeviceStatusStatistic',
         cardType: 'StateScaleCardComponent',
-        dataTime: 60*3,
+        dataTime: 60*5,
         divisionsId: county.Id,
         defaultViewMoel:this.indexService.getStateScale
       });
@@ -130,7 +132,7 @@ export class IndexComponent implements OnInit {
         business: 'DivisionGarbageSpecification',
         cardType: 'HintCardComponent',
         divisionsId: county.Id,
-        dataTime: 60*3,
+        dataTime: 60*5,
         border: false
       });
       this.illegalDropTopCardConfig = new Array();
@@ -138,7 +140,7 @@ export class IndexComponent implements OnInit {
         business: 'IllegalDropOrder',
         cardType: 'OrderTableCardComponent',
         divisionsIds: committesIds,
-        dataTime: 6,
+        dataTime: 60*5,
         defaultViewMoel:this.indexService.defaultOrderTable,
         divisionsType: DivisionTypeEnum.County,
       });
@@ -148,10 +150,11 @@ export class IndexComponent implements OnInit {
         cardType: 'LineEChartsCardComponent',
         divisionsId: county.Id,
         flipTime:60*3,
-        dataTime: 60*3
+        dataTime: 60*5
       }); 
       this.moveMapSite = ()=>{
          this.divisionBusinessService.mapClient.Village.Select(county.Id);
+         this.divisionBusinessService.aMap=this.aMap;
       }
       
     }, 500);

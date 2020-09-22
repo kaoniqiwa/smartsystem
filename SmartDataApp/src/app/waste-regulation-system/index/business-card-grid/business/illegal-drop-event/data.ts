@@ -16,4 +16,8 @@ export class IllegalDropEventInfo implements IBusinessData{
     ImageUrl: string;
     /**录像文件ID、录像地址(可选) */
     RecordUrl: string;
+
+    ResourceId:string;
+
+    StationId:string;
 }

@@ -6,7 +6,7 @@ import {ImageTheme  } from "./image-theme";
   templateUrl: './image-theme-card.component.html'
 })
 export class ImageThemeCardComponent extends BasisCardComponent implements OnInit {
-
+ 
   @Input() model:ImageTheme;
   constructor() {
     super();
@@ -16,4 +16,8 @@ export class ImageThemeCardComponent extends BasisCardComponent implements OnIni
     this.loadDatas(new ViewsModel());
   }
 
+  tagClick(){
+     
+    if(this.btnControl&&this.model.tag)this.btnControl(this.model.tag);
+  }
 }

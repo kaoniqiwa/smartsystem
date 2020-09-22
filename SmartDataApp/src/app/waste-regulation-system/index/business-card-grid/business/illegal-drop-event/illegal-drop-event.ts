@@ -33,6 +33,8 @@ export class IllegalDropEvent extends BaseEventRecord {
             info.StationName=x.Data.StationName;
             info.ImageUrl=x.ImageUrl;
             info.RecordUrl=x.RecordUrl;
+            info.ResourceId=x.ResourceId;
+            info.StationId=x.Data.StationId;
             infos.items.push(info);                    
             return infos;
         }

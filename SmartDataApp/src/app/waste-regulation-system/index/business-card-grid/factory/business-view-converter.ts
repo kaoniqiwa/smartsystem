@@ -30,7 +30,7 @@ export class IllegalDropHistoryCardConverter implements IConverter {
     Convert(input: IllegalDropEvent, output: ViewsModel<LineECharts>): ViewsModel<LineECharts> {
         output.views=[];
         output.pageSize = input.datas.length <= 12 ? 1 : 2;
-        output.pageIndex = 1;
+        output.pageIndex = 1; 
         if (output.pageSize == 1) {
             const lc = this.joinPart(new LineECharts(), true);
             var enters1 = new Array<EventNumber>();
@@ -38,6 +38,7 @@ export class IllegalDropHistoryCardConverter implements IConverter {
                 if (i < 12)
                     enters1.push(input.datas[i]);
             }
+            lc.option.seriesData = new Array();
             for (const x of enters1)
                 lc.option.seriesData.push(x.DeltaNumber);
                 output.views.push(lc);
@@ -68,7 +69,7 @@ export class IllegalDropHistoryCardConverter implements IConverter {
         return output;
     }
 
-    private joinPart(t1: LineECharts, moring: boolean) {
+    private joinPart(t1: LineECharts, moring: boolean) { 
         t1.title = "今日乱扔垃圾";
         t1.option = new LineOption();
         t1.option.xAxisData = [];
@@ -190,13 +191,25 @@ export class IllegalDropEventConverter implements IConverter {
                 output.views[i].imgDesc2 = input.items[i].StationName;
                 output.views[i].imgSrc = pic.getJPG(input.items[i].ImageUrl);
                 output.views[i].title = '乱扔垃圾';
-                output.views[i].titleColor = ColorEnum["red-text"]
+                output.views[i].imgDesc1Icon  = 'howell-icon-signal2';
+                output.views[i].imgDesc1IconColor=ColorEnum["green-text"];
+                output.views[i].titleColor = ColorEnum["red-text"];
                 output.views[i].subTitle = input.items[i].EventTime;
+                output.views[i].tag = {
+                    stationId:input.items[i].StationId,
+                    cameraId:input.items[i].ResourceId
+                }
+                // { stationId: string, cameraId: string }
             }
         }
         else if (isBoolean(input)) {
-            output.views[0].title = input == true ? '已连接' : '断开';
-            output.views[0].titleColor = input == true ? ColorEnum["green-text"] : ColorEnum["red-text"];
+            output.views[0].title = '乱扔垃圾';
+            output.views[0].titleColor =  ColorEnum["red-text"];
+            output.views[0].imgDesc1 = '';
+            output.views[0].imgDesc1Icon = input? 'howell-icon-signal2':'howell-icon-no_signal';
+            output.views[0].imgDesc1IconColor=input? ColorEnum["green-text"]:ColorEnum["red-text"];
+            output.views[0].imgDesc2='';
+            output.views[0].subTitle=''
         }
         return output;
     }

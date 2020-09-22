@@ -1,6 +1,9 @@
 <ng-container *ngIf="model">
-  <div style="position:absolute;">
-    <h2>{{model.title}}</h2>
+  <div style="position:absolute;width: 92%;">
+    <h2>{{model.title}}
+      <label class="m-0"  style="font-size: 12px;float: right;color: #7A8DE6;top: 0;">单位(起)</label>
+    </h2>
+    
   </div>
   <div class="height98 fill-width p-r-20" [options]="model.option" EChartLine></div>
 </ng-container>

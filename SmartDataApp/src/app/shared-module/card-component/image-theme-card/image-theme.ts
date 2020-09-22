@@ -5,6 +5,8 @@ export class ImageTheme{
     imgSrc:string;
     subTitle:string;
     imgDesc1Icon:string;
+    imgDesc1IconColor:string;
     imgDesc1:string;
     imgDesc2:string;
+    tag:any;
 }
