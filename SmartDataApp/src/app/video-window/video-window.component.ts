@@ -211,6 +211,24 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
                 });
             });
             setTimeout(() => {
+                const date = new Date();
+
+                $('#txt_end_time').timepicker({
+                    minuteStep: 1,
+                    showSeconds: true,
+                    showMeridian: false,
+                    defaultTime: date.getHours() + ':' + date.getMinutes() + ':' + '00'
+                });
+                date.setMinutes(date.getMinutes() - 5);
+                $('#txt_begin_time').timepicker({
+                    minuteStep: 1,
+                    showSeconds: true,
+                    showMeridian: false,
+                    defaultTime: date.getHours() + ':' + date.getMinutes() + ':' + '00'
+                });
+
+            });
+            setTimeout(() => {
                 if (me.playMode === me.playMode_.live) {
                     me.playVideo();
                 }

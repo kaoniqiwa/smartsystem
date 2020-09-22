@@ -217,6 +217,17 @@ export class AMapComponent implements AfterViewInit, OnInit {
         }
     }
 
+    Playback(camera: Camera, begin: Date, end: Date) {
+        if (!camera) { return; }
+        this.videoWindow.changePlayMode(PlayModeEnum.vod, false);
+        const element = document.getElementById('videoPlayer');
+        element.style.display = '';
+        this.currentCamera = camera;
+        this.PlaybackClicked({ begin: begin, end: end });
+    }
+
+
+
 
     autoCloseWindow() {
         if (this.autoCloseWindowHandle) {
@@ -276,6 +287,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
             this.autoCloseWindow();
         }
     }
+
+
 
 }
 
