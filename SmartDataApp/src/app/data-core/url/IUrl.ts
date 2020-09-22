@@ -8,6 +8,7 @@ export interface IUrl {
 
 export class BaseUrl {
     aiop = '/api/howell/ver10/aiop_service/';
+    user ='/howell/ver10/data_service/user_system/';
 }
 export class GarbageBaseUrl extends BaseUrl {
     aiop = '/api/howell/ver10/aiop_service/garbage_management/';

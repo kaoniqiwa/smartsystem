@@ -8,22 +8,22 @@
 
 <div fxLayout="column wrap" class="fill-width fill-height" style="position: relative;">
   <div fxFlex="36" class="fill-width" fxLayoutAlign="center center">
-    <div style="background-image: url('assets/img/login-panel-header.png');width: 1343px;
-     height: 119px;">
+    <div class="login-panel-header">
       <h2 class="header-title">生活垃圾管平台</h2>
     </div>
   </div>
   <div fxFlex="64" class="fill-width">
-    <div style="width: 50%;height:100;float: left;">
+    <div class="pull-left" style="width: 50%;">
 
     </div>
-    <div style="width: 50%;height:100;float: right;">
-      <div style="background-image: url('assets/img/login-panel.png');width: 610px;
-            height: 400px;margin-left: 4%;">
+    <div class="pull-right" style="width: 50%;">
+      <div class="login-panel">
         <div class="flex-item-center fill-width fill-height" fxLayoutAlign="center">
-           <div style="margin-top:6%" >
-             <h2 class="text-center m-b-20">用户登录</h2>
-             <div class="blue-parting-line"></div>
+          <div style="margin-top:6%">
+            <h2 class="text-center m-b-20">用户登录</h2>
+            <div class="blue-parting-line"></div>
+            <form [formGroup]="userLoginService.form">
+
               <div class="flex-item-center m-t-20">
                 <div class="input-box m-b-30">
                   <div class="icon-box">
@@ -32,7 +32,7 @@
                     </div>
                   </div>
                   <div class="text-box">
-                    <input class="form-control   text" type="text" #userName placeholder="用户名">
+                    <input class="form-control   text" type="text" #userName formControlName="name" placeholder="用户名">
                   </div>
                 </div>
               </div>
@@ -44,26 +44,26 @@
                     </div>
                   </div>
                   <div class="text-box">
-                    <input class="form-control text" type="password" maxlength="20" #pwd placeholder="密码">
+                    <input class="form-control text" type="password" formControlName="pwd" maxlength="20" #pwd
+                      placeholder="密码">
                   </div>
                 </div>
               </div>
-              <div class="fill-width" style="height: 34px;line-height: 1;">
-                <div class="  me m-b-0  pull-left" style="width: 50%;">
-                  <input (click)="pwdCheck()" type="checkbox" class="filled-in chk-col-deep-purple " id="jpwd">
-                  <label for="jpwd" style="color:  #5e6ebf">记住密码</label>
-                </div>
-                <div class="  me m-b-0 pull-right "  style="width: 50%;">
-                  <input (click)="autoLoginCheck()" type="checkbox"   id="auto_login"
-                    class="filled-in chk-col-deep-purple">
-                  <label for="auto_login" style="color:  #5e6ebf">自动登录</label>
-                </div>
+            </form>
+            <div class="fill-width" style="height: 34px;line-height: 1;">
+              <div class="  me m-b-0  pull-left" style="width: 50%;">
+                <input (click)="pwdCheck()" [checked]="userLoginService.jpwd_" type="checkbox" class="filled-in chk-col-deep-purple " id="jpwd">
+                <label for="jpwd" style="color:  #5e6ebf">记住密码</label>
               </div>
-              <div class="flex-item-center m-t-0">
-                <button class="btn"  style="background-color: unset;width: 368px;height: 58px;background-image:url('assets/img/login-btn.png');"
-                  (click)="login(userName.value,pwd.value)">登录</button>
+              <div class="  me m-b-0 pull-right text-right" style="width: 50%;">
+                <input (click)="autoLoginCheck()" [checked]="userLoginService.autoLogin_" type="checkbox" id="auto_login" class="filled-in chk-col-deep-purple">
+                <label for="auto_login" style="color:  #5e6ebf">自动登录</label>
               </div>
             </div>
+            <div class="flex-item-center m-t-0">
+              <button class="btn login-btn" (click)="userLoginService.login()">登录</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
