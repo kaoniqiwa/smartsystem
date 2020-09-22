@@ -18,7 +18,7 @@ import { IViewModel, ViewsModel } from '../../../../common/abstract/base-view';
 import { IConverter } from "../../../../common/interface/IConverter";
 import { Injector, Injectable } from '@angular/core';
 import { LineOption, PieOption } from '../../../../common/directive/echarts/echart';
-import { Percentage } from '../../../../common/tool/tool.service'
+import { Percentage,TimeInterval } from '../../../../common/tool/tool.service' 
 import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
 import { EventNumber } from '../../../../data-core/model/waste-regulation/event-number';
@@ -29,65 +29,37 @@ export class IllegalDropHistoryCardConverter implements IConverter {
     Convert<IllegalDropEvent, ViewsModel>(input: IllegalDropEvent, output: ViewsModel): ViewsModel;
     Convert(input: IllegalDropEvent, output: ViewsModel<LineECharts>): ViewsModel<LineECharts> {
         output.views=[];
-        output.pageSize = input.datas.length <= 12 ? 1 : 2;
+        output.pageSize = 1;
         output.pageIndex = 1; 
-        if (output.pageSize == 1) {
-            const lc = this.joinPart(new LineECharts(), true);
-            var enters1 = new Array<EventNumber>();
-            for (let i = 0; i < input.datas.length; i++) {
-                if (i < 12)
-                    enters1.push(input.datas[i]);
-            }
-            lc.option.seriesData = new Array();
-            for (const x of enters1)
-                lc.option.seriesData.push(x.DeltaNumber);
-                output.views.push(lc);
+        const lc = this.joinPart(new LineECharts());
+        var enters1 = new Array<EventNumber>();
+        for (let i = 0; i < input.datas.length; i++) { 
+                enters1.push(input.datas[i]);
         }
-        else {
-            const lc = this.joinPart(new LineECharts(), false);
-            var enters1 = new Array<EventNumber>();
-            for (let i = 0; i < input.datas.length; i++) {
-                if (i > 12)
-                    enters1.push(input.datas[i]);
-            }
-            lc.option.seriesData = new Array();
-            for (const x of enters1)
-                lc.option.seriesData.push(x.DeltaNumber);
-            output.views.push(lc);
-
-            const lc2 = this.joinPart(new LineECharts(), true);
-            var enters2 = new Array<EventNumber>();
-            for (let i = 0; i < input.datas.length; i++) {
-                if (i < 12)
-                    enters2.push(input.datas[i]);
-            }
-            lc2.option.seriesData = new Array();
-            for (const x of enters2)
-                lc2.option.seriesData.push(x.DeltaNumber);
-            output.views.push(lc2);
-        } 
+        lc.option.seriesData = new Array();
+        for (const x of enters1)
+            lc.option.seriesData.push(x.DeltaNumber);
+         output.views.push(lc);
+       
         return output;
     }
 
-    private joinPart(t1: LineECharts, moring: boolean) { 
+    private joinPart(t1: LineECharts) { 
         t1.title = "今日乱扔垃圾";
         t1.option = new LineOption();
         t1.option.xAxisData = [];
-        if (moring) {
-            for (let i = 1; i <= 12; i++) {
-                if (i < 10)
-                    t1.option.xAxisData.push('0' + i + ':00');
-                else
-                    t1.option.xAxisData.push(i + ':00');
-            }
+        for (let i = 1; i <= 12; i++) {
+            if (i < 10)
+                t1.option.xAxisData.push('0' + i + ':00');
+            else
+                t1.option.xAxisData.push(i + ':00');
         }
-        else
-            for (let i = 13; i <= 24; i++) {
-                if (i == 24)
-                    t1.option.xAxisData.push('00' + ':00');
-                else
-                    t1.option.xAxisData.push(i + ':00');
-            }
+        for (let i = 13; i <= 24; i++) {
+            if (i == 24)
+                t1.option.xAxisData.push('23' + ':59');
+            else
+                t1.option.xAxisData.push(i + ':00');
+        } 
         return t1;
     }
 }
@@ -196,9 +168,10 @@ export class IllegalDropEventConverter implements IConverter {
                 output.views[i].titleColor = ColorEnum["red-text"];
                 output.views[i].subTitle = input.items[i].EventTime;
                 output.views[i].tag = {
-                    stationId:input.items[i].StationId,
+                    timeInterval:TimeInterval(input.items[i].EventTime,-5),
                     cameraId:input.items[i].ResourceId
-                }
+                } 
+                
                 // { stationId: string, cameraId: string }
             }
         }
@@ -209,7 +182,7 @@ export class IllegalDropEventConverter implements IConverter {
             output.views[0].imgDesc1Icon = input? 'howell-icon-signal2':'howell-icon-no_signal';
             output.views[0].imgDesc1IconColor=input? ColorEnum["green-text"]:ColorEnum["red-text"];
             output.views[0].imgDesc2='';
-            output.views[0].subTitle=''
+            output.views[0].subTitle='';
         }
         return output;
     }

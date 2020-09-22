@@ -44,9 +44,10 @@ export class DivisionBusinessService {
                     } 
                 }
                 if(x.list[0].view instanceof ImageThemeCardComponent){
-                    x.list[0].view.btnControl =async (val: { stationId: string, cameraId: string }) => {
-                      const respone= await  this.cameraService.get(val.cameraId).toPromise();
-                      this.aMap.OnCameraClicked(respone.Data as any);
+                    x.list[0].view.btnControl =async (val: { timeInterval: { start:Date,end:Date}, cameraId: string }) => {
+                      const respone= await  this.cameraService.get(val.cameraId).toPromise();console.log(val.timeInterval);
+                      
+                      this.aMap.Playback(respone.Data as any,val.timeInterval.start,val.timeInterval.end);
                     } 
                 }
             }

@@ -26,13 +26,18 @@ export class EChartLineDirective implements OnChanges {
     }
 
     init() {
-        
+        const    checkDataIndex = (index: number,displayDataIndex:number[]): boolean => {
+            if (displayDataIndex.length == 0)
+                return true;
+            const i =displayDataIndex.indexOf(index);
+            return i > -1;
+        }
         const   create = (options: LineOption) => { 
                 return {
                     grid: {
-                        left: '2px',
+                        left: '12px',
                     top: '20%',
-                    right: '2px',
+                    right: '12px',
                     bottom: '10px',
                         containLabel: true
                     },
@@ -57,7 +62,7 @@ export class EChartLineDirective implements OnChanges {
                             color: '#CFD7FE',
                             fontSize: "16",
                             interval: function (index: number, value: string) {
-                               return  [0,3,7,11].indexOf(index) > -1;
+                               return  [0,5,11,17,23].indexOf(index) > -1;
                             }
                         },
                         axisTick: {        //刻度线
@@ -95,7 +100,13 @@ export class EChartLineDirective implements OnChanges {
                                 textStyle: {
                                     fontSize: "16",
                                     color: "#fff"
-                                }
+                                },
+                                 formatter: function (obj:any) {
+                                    let display = checkDataIndex(obj.dataIndex,[0,3,6,9,12,15,18,21]);
+                                    if (!display)
+                                        return ''
+                                       
+                                },
                             }
                         },
                         itemStyle: {
@@ -105,6 +116,7 @@ export class EChartLineDirective implements OnChanges {
                                     color: '#7586e0',
                                     width: 4
                                 },
+                               
                             }
                         },
                         areaStyle: {

@@ -19,6 +19,17 @@ export function TheDayTime(date: Date) {
     }
 }
 
+export function TimeInterval(dateString:string,minutes: number=0,hours: number=0,date:number=0){
+    const start = new Date(dateString),end =  new Date(dateString);
+    start.setMinutes(start.getMinutes()+minutes);
+    start.setHours(start.getHours()+hours);
+    start.setDate(start.getDate()+date);
+    return {
+        start:start,
+        end:end
+    }
+}
+
 
 export function Percentage(num: number, total: number) {
     if (num == 0) return 100;
