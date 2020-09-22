@@ -15,7 +15,6 @@ import { PlayModeEnum, VideoWindowComponent } from '../../../video-window/video-
 
 import { AMapService } from './amap.service';
 import { EventPushService } from '../../../common/tool/mqtt-event/event-push.service';
-import { IllegalDropEventRecord } from '../../../data-core/model/waste-regulation/illegal-drop-event-record';
 
 
 
@@ -57,17 +56,21 @@ export class AMapComponent implements AfterViewInit, OnInit {
     ) {
 
         this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc());
-        this.eventService.pushIllegalDrop.subscribe(async (event: IllegalDropEventRecord) => {
-            const response = await this.garbageService.get(event.Data.StationId).toPromise();
-            const status = {
-                id: event.Data.StationId,
-                status: 0
-            };
-            if (response.Data.DryFull || response.Data.WetFull) {
-                status.status = 1;
-            }
-            this.client.Point.Status([status]);
-        });
+        // this.eventService.pushIllegalDrop.subscribe(async (event: IllegalDropEventRecord) => {
+        //     const response = await this.garbageService.get(event.Data.StationId).toPromise();
+        //     const status = {
+        //         id: event.Data.StationId,
+        //         status: 0
+        //     };
+        //     if (response.Data.DryFull || response.Data.WetFull) {
+        //         status.status = 1;
+        //     }
+        //     this.client.Point.Status([status]);
+        // });
+
+        // setTimeout();
+
+
     }
 
     getSrc() {
@@ -163,7 +166,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             const list = document.getElementsByClassName('map-bar video-list')[0];
             list['style'].display = 'none';
         };
-        
+
         this.client.Events.OnVillageClicked = (village: CesiumDataController.Village) => {
             const list = document.getElementsByClassName('map-bar video-list')[0];
             list['style'].display = 'none';
@@ -185,6 +188,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
     async OnCameraClicked(camera: Camera) {
         if (!camera || !camera.SRSId) { return; }
         try {
+
+            this.videoWindow.changePlayMode(PlayModeEnum.live, true);
+
             this.currentCamera = camera;
             this.maskLayerShow = true;
             this.isShowVideoView = true;
@@ -204,6 +210,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
             this.amapService.videoPlayerService.url = response.Data.Url;
             this.videoWindow.url = response.Data.Url;
+            this.videoWindow.cameraName = camera.Name;
             this.videoWindow.playVideo();
         } catch (ex) {
             console.error(ex);
@@ -217,7 +224,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         }
         this.autoCloseWindowHandle = setTimeout(() => {
             this.videoWindow.closeWindow();
-        }, 5 * 1000);
+        }, 5 * 60 * 1000);
     }
 
 
@@ -237,6 +244,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 params.StreamType = 1;
                 const response = await this.srService.PreviewUrls(params).toPromise();
                 this.videoWindow.url = response.Data.Url;
+                this.videoWindow.cameraName = this.currentCamera.Name;
                 this.videoWindow.playVideo();
             }
 
@@ -255,6 +263,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             params.CameraId = this.currentCamera.Id;
             const response = await this.srService.VodUrls(params).toPromise();
             this.videoWindow.url = response.Data.Url;
+            this.videoWindow.cameraName = this.currentCamera.Name;
             this.videoWindow.playVideo();
         } catch (ex) {
             console.error(ex);
@@ -262,6 +271,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     }
 
     OnVideoPlaying(playing: boolean) {
+        console.log('OnVideoPlaying', playing);
         if (playing) {
             this.autoCloseWindow();
         }

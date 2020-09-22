@@ -15,7 +15,19 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     @Input() playMode: PlayModeEnum;
     @Input() cameraId = ''; // 00310101031111111000003001000003
     @Input() hasControl = true;
-    @Input() cameraName = '';
+    // @Input() cameraName = '';
+
+    protected _cameraName = '';
+    get cameraName(): string {
+        return this._cameraName;
+    }
+    @Input() set cameraName(value: string) {
+        this._cameraName = value;
+    }
+
+
+
+
     @Input() url: string;
 
     @ViewChild('date') txtDate;
@@ -186,7 +198,18 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         if (me.hasControl) {
             me.initDateTimePicker();
             me.initPresetList();
-           
+            setTimeout(() => {
+                $('#ra__').rangeslider({
+                    polyfill: false,
+                    rangeClass: 'rangeslider',
+                    horizontalClass: 'rangeslider--horizontal',
+                    fillClass: 'rangeslider__fill',
+                    handleClass: 'rangeslider__handle',
+                    onSlide: function (position, value) {
+                        me.viewModel.PTZ.speed = value;
+                    }
+                });
+            });
             setTimeout(() => {
                 if (me.playMode === me.playMode_.live) {
                     me.playVideo();

@@ -18,7 +18,7 @@
 <app-video-window #videoWindow id="videoPlayer" (closeWindowEventListen)="OnVillageWindowClosed()"
   class="amap-video playing" 
   (PlaybackClickedListen)="PlaybackClicked($event)"
-  VideoPlayingEventListen="OnVideoPlaying()"
+  (VideoPlayingEventListen)="OnVideoPlaying($event)"
   [cameraName]="amapService.videoPlayerService.playCameraName" (changeModeEventListen)="changePlayMode($event)"
   (closeWindowOnloadEventListen)="isShowVideoView=false" [videoPlayArgs]="amapService.videoPlayerService.videoPlayArgs"
   [playMode]="amapService.videoPlayerService.playMode" [cameraId]="amapService.videoPlayerService.playVideoVideoId"
