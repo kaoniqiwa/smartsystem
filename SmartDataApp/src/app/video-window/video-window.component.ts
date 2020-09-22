@@ -261,6 +261,12 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         if (me.videoPlayArgs) {
             me.url = this.createUrl(me.videoPlayArgs);
         }
+
+        if (!this.url) {
+            return;
+        }
+
+
         if (this.player) {
             if (this.player.status === 255) {
                 this.player.url = this.url;

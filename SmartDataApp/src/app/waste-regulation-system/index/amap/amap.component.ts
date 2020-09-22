@@ -68,9 +68,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         //     this.client.Point.Status([status]);
         // });
 
-        // setTimeout();
-
-
+        setInterval(this.refresh, 5 * 60 * 1000);
     }
 
     getSrc() {
@@ -79,11 +77,29 @@ export class AMapComponent implements AfterViewInit, OnInit {
         return 'http://' + host + ':' + port + '/amap/map_ts.html?maptype=AMapOffline&v=20191106';
     }
 
+    async refresh() {
+        const response = await this.garbageService.list(new GetGarbageStationsParams()).toPromise();
+
+        this.garbages = response.Data.Data;
+
+
+        const arrayStatus = new Array();
+        for (const id in this.garbages) {
+            if (this.garbages[id].DryFull || this.garbages[id].WetFull) {
+                const status = {
+                    id: id,
+                    status: 1
+                };
+                console.log(status);
+                arrayStatus.push(status);
+            }
+        }
+        this.client.Point.Status(arrayStatus);
+    }
+
+
     ngOnInit() {
-        const promise = this.garbageService.list(new GetGarbageStationsParams()).toPromise();
-        promise.then((response) => {
-            this.garbages = response.Data.Data;
-        });
+
 
         // Detect effects of NgForTrackBy
         this.client = new CesiumMapClient(this.iframe.nativeElement);
@@ -93,18 +109,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
         this.client.Events.OnLoaded = () => {
 
             console.log('this.client.Events.OnLoaded');
-            const arrayStatus = new Array();
-            for (const id in this.garbages) {
-                if (this.garbages[id].DryFull || this.garbages[id].WetFull) {
-                    const status = {
-                        id: id,
-                        status: 1
-                    };
-                    console.log(status);
-                    arrayStatus.push(status);
-                }
-            }
-            this.client.Point.Status(arrayStatus);
+
+            this.refresh();
 
             const villages = this.dataController.Village.List();
             for (const villageId in villages) {
