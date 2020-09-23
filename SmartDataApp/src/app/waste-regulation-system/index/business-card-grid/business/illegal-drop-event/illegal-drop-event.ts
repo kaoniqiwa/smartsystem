@@ -28,6 +28,7 @@ export class IllegalDropEvent extends BaseEventRecord {
             const info = new IllegalDropEventInfo();
             
             info.EventType = x.EventType;
+            info.EventTimeAll = x.EventTime +'';
             info.EventTime= datePipe.transform(x.EventTime,'MM-dd HH:mm:ss');
             info.DivisionName=x.Data.DivisionName;
             info.StationName=x.Data.StationName;

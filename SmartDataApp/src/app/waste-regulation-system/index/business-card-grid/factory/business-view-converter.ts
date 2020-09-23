@@ -168,7 +168,7 @@ export class IllegalDropEventConverter implements IConverter {
                 output.views[i].titleColor = ColorEnum["red-text"];
                 output.views[i].subTitle = input.items[i].EventTime;
                 output.views[i].tag = {
-                    timeInterval:TimeInterval(input.items[i].EventTime,-5),
+                    timeInterval:TimeInterval(input.items[i].EventTimeAll,-30),
                     cameraId:input.items[i].ResourceId
                 } 
                 

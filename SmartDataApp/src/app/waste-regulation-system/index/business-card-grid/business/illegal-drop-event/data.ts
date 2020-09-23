@@ -8,6 +8,7 @@ export class IllegalDropEventInfo implements IBusinessData{
     EventType: number;
     /**事件时间 */
     EventTime: string;
+    EventTimeAll: string;
     /**垃圾房名称 */
     StationName: string;
     /**区划名称(可选) */

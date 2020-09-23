@@ -29,12 +29,12 @@ export class StatisticBusinessInjector {
         const businessParameter = new BusinessParameter();
         businessParameter.map.set('datePipe',this.datePipe);
         this.businessInjector = Injector.create([
-            { provide: IllegalDropHistory, useValue: new IllegalDropHistory(this.statisticalDataBufferService, businessParameter), deps: [] },
-            { provide: DeviceStatusStatistic, useValue: new DeviceStatusStatistic(this.statisticalDataBufferService, businessParameter), deps: [] },
-            {provide:DivisionList,useValue:new DivisionList(this.statisticalDataBufferService, businessParameter), deps: [] },
-            {provide:IllegalDropEvent,useValue:new IllegalDropEvent(this.eventPushService, businessParameter), deps: [] },
-            {provide:DivisionGarbageSpecification,useValue:new DivisionGarbageSpecification(this.statisticalDataBufferService, businessParameter), deps: []},
-            {provide:IllegalDropOrder,useValue:new IllegalDropOrder(this.statisticalDataBufferService, businessParameter), deps: []}
+            { provide: IllegalDropHistory, useValue: new IllegalDropHistory(this.statisticalDataBufferService), deps: [] },
+            { provide: DeviceStatusStatistic, useValue: new DeviceStatusStatistic(this.statisticalDataBufferService), deps: [] },
+            {provide:DivisionList,useValue:new DivisionList(this.statisticalDataBufferService), deps: [] },
+            {provide:IllegalDropEvent,useValue:new IllegalDropEvent(this.eventPushService), deps: [] },
+            {provide:DivisionGarbageSpecification,useValue:new DivisionGarbageSpecification(this.statisticalDataBufferService), deps: []},
+            {provide:IllegalDropOrder,useValue:new IllegalDropOrder(this.statisticalDataBufferService), deps: []}
         ]);
     }
 
@@ -44,6 +44,9 @@ export class StatisticBusinessInjector {
         , divisionsId: string,divisionsIds:string[] }>) {
         if (businessConfig.business) {
             let business = this.businessInjector.get<BaseBusinessRefresh>(CardBusinessEnum[businessConfig.business]);
+            const businessParameter = new BusinessParameter();
+            businessParameter.map.set('datePipe',this.datePipe);
+            business.businessParameter = businessParameter;
             business.businessParameter.map.set('divisionsId', businessConfig.divisionsId);
             business.businessParameter.map.set('divisionsIds', businessConfig.divisionsIds);
             business.businessParameter.map.set('divisionsType', businessConfig.divisionsType);
