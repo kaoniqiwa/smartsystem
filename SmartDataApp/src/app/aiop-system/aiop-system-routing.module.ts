@@ -7,7 +7,9 @@ import { RegionMgrComponent } from "./region/region-mgr/region-mgr.component";
 import { PlatformMgrComponent } from "./platform/platform-mgr/platform-mgr.component";
 import { AIModelsMgrComponent } from "./ai-models/aimodels-mgr/aimodels-mgr.component";
 import { CameraAIModelMgrComponent } from './resources/camera/camera-aimodel-mgr/camera-aimodel-mgr.component';
-import {  SRServersMgrComponent } from "./sr-server/srservers-mgr/srservers-mgr.component";
+import { SRServersMgrComponent } from "./sr-server/srservers-mgr/srservers-mgr.component";
+import { EventHistoryComponent } from "./event-history/event-history.component";
+import { DeployCameraComponent } from "./garbage-station/deploy-camera/deploy-camera.component";
 const routes: Routes = [
 
   {
@@ -26,19 +28,19 @@ const routes: Routes = [
       },
       {
         path: 'platform', children: [
-          {
-            path: 'platform-mgr', component: PlatformMgrComponent
-          },
-          {
-            path: 'sr-service-mgr', component: SRServersMgrComponent
-          }
+          { path: 'platform-mgr', component: PlatformMgrComponent },
+          { path: 'sr-service-mgr', component: SRServersMgrComponent }
         ]
       }
       , {
         path: 'ai-models', children: [
-          {
-            path: 'ai-models-mgr', component: AIModelsMgrComponent
-          }
+          { path: 'ai-models-mgr', component: AIModelsMgrComponent }
+        ]
+      }
+      , { path: 'event-history', component: EventHistoryComponent }
+      , {
+        path: 'garbage-station', children: [
+          { path: 'deploy-camera', component: DeployCameraComponent }
         ]
       }
     ]

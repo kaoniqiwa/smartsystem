@@ -36,7 +36,8 @@
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer  class="example-sidenav" [class.minimize]="!maximize" mode="side" opened="true">
     <div class="app-left-sidenav">
-      <div class="d3">
+      <div class="d3 fine" style="max-height: 94%;
+      overflow: auto;">
         <div class="sidenav-viewer">
           <div class="m-l-15">
             <side-nav-menu #navMenu></side-nav-menu>
@@ -45,14 +46,14 @@
       </div>
       <div class="d2"></div>
       <div class="d1"></div>
-      <div class="side-nav-menu-on" [class.collapse]="maximize">
-        <a href="javascript:void(0)" (click)="menuControl(true)" class="howell-icon-hamburger light-blue "></a>
-      </div>
-      <div class="side-nav-menu-off" [class.collapse]="!maximize">
-        <a href="javascript:void(0)" (click)="menuControl(false)" class="mdi mdi-arrow-left-bold light-blue"></a>
-      </div>
     </div>
 
+    <div class="side-nav-menu-on" [class.collapse]="maximize">
+      <a href="javascript:void(0)" (click)="menuControl(true)" class="howell-icon-hamburger light-blue "></a>
+    </div>
+    <div class="side-nav-menu-off" [class.collapse]="!maximize">
+      <a href="javascript:void(0)" style="padding:4px;" (click)="menuControl(false)" class="mdi mdi-arrow-left-bold light-blue"></a>
+    </div>
   </mat-drawer>
 
   <div class="example-sidenav-content fill-height">

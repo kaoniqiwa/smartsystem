@@ -145,7 +145,7 @@ export class AIModelFormService extends ListAttribute {
 
         if (response) {
             for (const key in response) {
-                this.modelIcons.push(new PicturesDropList(key, this.imgUrlRoot + response[key]));
+                this.modelIcons.push(new PicturesDropList(key, this.imgUrlRoot+this.aiModelIcon + response[key]));
             }
         }
     }

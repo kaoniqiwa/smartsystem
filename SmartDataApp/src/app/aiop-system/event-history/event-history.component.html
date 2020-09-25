@@ -1,0 +1,80 @@
+<div style="height: calc(100% - 64px);">
+  <ng-container *ngIf="tableService.eventTable.enlargeImage">
+    <div class="fill-height fill-width hw-content-mask">
+
+      <div fxLayout="row" class="fill-height" fxLayoutAlign="center center">
+        <div fxFlex="50" class="custom-form-wrap" style="height: 50%;">
+          <div style="font-size: 20px;height: 30px;line-height: 20px;color: white">
+            <div class="pull-left">详细图片</div>
+            <div class="pull-right">
+              <a href="javascript:void(0)" (click)="tableService.eventTable.enlargeImage=''">
+                <i class="howell-icon-Close alert-window-close-btn" ></i>
+              </a>
+            
+            </div>
+          </div>
+          <img  width="100%" style="height: calc(100% - 30px);"  src="{{tableService.eventTable.enlargeImage}}" onerror="this.src='../assets/img/timg-pic.jpg'" alt="">
+         </div>
+      
+      </div> 
+
+    </div>
+  </ng-container>
+  <div class="second-title-bg text">
+    AI事件
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between stretch" class="m-b-10">
+    <div></div>
+    <div [formGroup]="tableService.search.searchform">
+      <input type="text" style="width: 300px;" [readonly]="tableService.search.other" formControlName="SearchText"
+        placeholder="输入关键字" class="custom form-control m-r-10">
+      <button type="button" class="hw-blue-btn m-r-10 " (click)="search()">
+        <i class="mdi mdi-magnify"></i>
+        查询
+      </button>
+      <button class="hw-cyan-m-btn" (click)="tableService.search.other=!tableService.search.other">
+        <i class="mdi mdi-filter-outline"></i>
+      </button>
+    </div>
+  </div>
+  <ng-container *ngIf="tableService.search.other">
+    <div fxLayout="row" [formGroup]="tableService.search.searchform" fxLayoutGap="20px"
+      class="filter-wrap m-b-10 collapse">
+      <div fxFlex="25">
+        <span>开始时间</span>
+        <input type="text" DateTimePicker [defaultVal]="tableService.search.beginDate" [changeDate]="startDate"
+          style="width: calc(100% - 82px);" class="custom form-control m-l-10" formControlName="BeginTime">
+      </div>
+      <div fxFlex="25">
+        <span>结束时间</span>
+        <input type="text" DateTimePicker [defaultVal]="tableService.search.endDate" [changeDate]="endDate"
+          style="width: calc(100% - 82px);" class="custom form-control m-l-10" formControlName="EndTime">
+      </div>
+      <div fxFlex="25">
+        <span>事件类型</span>
+        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 82px);"
+          formControlName="EventType">
+          <option value="">全部</option>
+          <option value="1">乱扔垃圾</option>
+          <option value="2">混合投放</option>
+          <option value="3">垃圾容量</option>
+        </select>
+      </div>
+      <div fxFlex="25">
+        <span>AI模型</span>
+        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 62px);"
+          formControlName="ResourceType">
+          <option value="">全部</option>
+          <ng-container *ngFor="let c of tableService.camerasAIModel">
+            <option value="{{c.Id}}">{{c.ModelName}}</option>
+          </ng-container>
+
+        </select>
+      </div>
+    </div>
+
+  </ng-container>
+  <div [ngStyle]="{'height': tableService.search.other ? 'calc(100% - 112px)':'calc(100% - 68px)'}">
+    <hw-custom-table #table [model]="tableService.eventTable.dataSource"></hw-custom-table>
+  </div>
+</div>

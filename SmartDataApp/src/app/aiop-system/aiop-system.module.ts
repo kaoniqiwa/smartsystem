@@ -25,6 +25,8 @@ import { CameraAIModelMgrComponent } from './resources/camera/camera-aimodel-mgr
 import { SRServersMgrComponent } from './sr-server/srservers-mgr/srservers-mgr.component';
 import { SRServerFormComponent } from './sr-server/sr-service-form/srserver-form.component';
 import { RegionCameraCopyComponent } from './resources/camera/region-camera-copy/region-camera-copy.component';
+import { EventHistoryComponent } from './event-history/event-history.component';
+import { DeployCameraComponent } from './garbage-station/deploy-camera/deploy-camera.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -36,7 +38,7 @@ import { RegionCameraCopyComponent } from './resources/camera/region-camera-copy
   SideNavMenuComponent,HistoryLinkToolComponent,
   CameraFormComponent,  CameraMgrComponent,
   EncodeDeviceMgrComponent,EncodeDeviceFormComponent, RegionMgrComponent,
-  RegionFormComponent, PlatformMgrComponent, PlatformFormComponent, AIModelsMgrComponent, AIModelFormComponent, CameraAIModelMgrComponent, SRServersMgrComponent, SRServerFormComponent, RegionCameraCopyComponent ],
+  RegionFormComponent, PlatformMgrComponent, PlatformFormComponent, AIModelsMgrComponent, AIModelFormComponent, CameraAIModelMgrComponent, SRServersMgrComponent, SRServerFormComponent, RegionCameraCopyComponent, EventHistoryComponent, DeployCameraComponent ],
   exports:[
   ]
 })

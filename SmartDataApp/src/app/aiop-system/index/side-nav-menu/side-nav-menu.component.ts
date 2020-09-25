@@ -35,7 +35,8 @@ export class SideNavMenuComponent implements OnInit {
   menuTree = new Array<MenuTree>();
  
   constructor() {
-    var item = new MenuTree('howell-icon-device2','平台');   
+    var item = new MenuTree('howell-icon-device2','平台');  
+    item.an=true; 
     item.nodes.push({
       url :'/aiop/platform/platform-mgr',
       text:'平台管理'
@@ -71,13 +72,31 @@ export class SideNavMenuComponent implements OnInit {
       url:'/aiop/ai-models/ai-models-mgr'
     }); 
     this.menuTree.push(item);
+    item = new MenuTree('howell-icon-device2','事件');
+    item.nodes.push({
+      text:'AI摄像机事件',
+      url:'/aiop/event-history'
+    }); 
+    this.menuTree.push(item);
+    item = new MenuTree('howell-icon-device2','监管平台');
+    item.nodes.push({
+      text:'摄像机布控',
+      url:'/aiop/garbage-station/deploy-camera'
+    }); 
+    this.menuTree.push(item);  
     this.highlightedBtn = [this.menuTree[0].title];
+
+    
   }
 
-  mainBtnClick(item:MenuTree){     
+  mainBtnClick(item:MenuTree){    
+    if(this.maximize) {
+      this.menuTree.map(x=>x.an=false);
       item.an=!item.an;
       this.highlightedBtn.pop();
       this.highlightedBtn = [item.title];
+    }
+    
   }
 
   set currentMenus(val: string) {
@@ -97,7 +116,7 @@ export class SideNavMenuComponent implements OnInit {
 
 export class MenuTree {
   icon: string;
-  an = true;
+  an = false;
   title: string;
   nodes: { text: string, url: string }[];
   constructor(icon: string, title: string) {
