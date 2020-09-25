@@ -50,7 +50,6 @@ function WSPlayer(args) {
     this.url = current_args.url;
 
     var element = document.getElementById(current_args.elementId);
-    if(!element)return;
     element.style.backgroundColor = "transparent";
     this.clientWidth = parseFloat(element.offsetWidth);
     this.clientHeight = parseFloat(element.offsetHeight);
@@ -108,7 +107,10 @@ function WSPlayer(args) {
         }
         if (that.tools.control.fullscreen) {
             that.tools.control.fullscreen.addEventListener("click", function () {
-                that.fullScreen();
+                if (that.FullScreen)
+                that.fullExit();
+            else
+                that.fullScreen();        
             });
         }
 
@@ -142,18 +144,18 @@ function WSPlayer(args) {
                 that.seek(value);
                 that.resume();
             });
-            that.tools.control.position.addEventListener("mousemove", function(evt){
-                if(!evt)return;
+            that.tools.control.position.addEventListener("mousemove", function (evt) {
+                if (!evt) return;
                 var width = evt.target.offsetWidth;
                 var x = evt.offsetX;
 
-                var p = x/width;
+                var p = x / width;
 
-                var c = that.tools.control.position.max-that.tools.control.position.min;
-                var current = c*p;
+                var c = that.tools.control.position.max - that.tools.control.position.min;
+                var current = c * p;
                 var date = new Date(current);
                 date.setUTCHours(date.getUTCHours() - 8);
-                this.title = date.format("HH:mm:ss");                
+                this.title = date.format("HH:mm:ss");
             });
         }
 
@@ -458,6 +460,11 @@ function WSPlayer(args) {
 
     // 停止
     this.stop = function () {
+
+        if (element)
+            element.className = element.className.replace(/ loading/g, "")
+
+
         if (!plugin) return;
 
         switch (that.status) {
@@ -521,15 +528,41 @@ function WSPlayer(args) {
                 that.FullScreen = false;
                 plugin.JS_Resize(that.clientWidth, that.clientHeight);
                 clearInterval(handle);
+                that.tools.control.fullscreen.title = "全屏"
+                
             }
             else if (that.FullScreen == false) {
                 that.FullScreen = true;
                 plugin.JS_Resize(window.screen.width, window.screen.height);
+                that.tools.control.fullscreen.title = "退出"
             }
             else { }
         }, 200)
     }
-
+    this.fullExit = function () {
+        var element = document.documentElement;//若要全屏页面中div，var element= document.getElementById("divID");
+        //IE ActiveXObject
+        if (window.ActiveXObject) {
+            var WsShell = new ActiveXObject('WScript.Shell')
+            WsShell.SendKeys('{ESC}');
+        }
+        //HTML5 W3C 提议
+        else if (element.requestFullScreen) {
+            document.exitFullscreen();
+        }
+        //IE 11
+        else if (element.msRequestFullscreen) {
+            document.msExitFullscreen();
+        }
+        // Webkit (works in Safari5.1 and Chrome 15)
+        else if (element.webkitRequestFullScreen) {
+            document.webkitCancelFullScreen();
+        }
+        // Firefox (works in nightly)
+        else if (element.mozRequestFullScreen) {
+            document.mozCancelFullScreen();
+        }
+    }
 
 
     this.download = function (filename, type) {
@@ -672,7 +705,7 @@ function WSPlayer(args) {
 
                 var valStr = value * 100 + "% 100%";
                 this.style.backgroundSize = valStr;
-            });            
+            });
 
         };
 

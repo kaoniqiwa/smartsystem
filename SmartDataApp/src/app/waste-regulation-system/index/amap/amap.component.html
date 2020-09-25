@@ -6,23 +6,24 @@
   <li class="error">异常</li>
 </ul>
 <div class="map-bar video-list" style="display: none;">
-  <ng-container *ngFor="let camera of selectedCameras">
-    <div class="video" (click)="OnCameraClicked(camera)">
-      <img [src]="camera.ImageUrl" [title]="camera.Name" />
-    </div>
-  </ng-container>
+  <ul class="ul">
+    <ng-container *ngFor="let camera of selectedCameras">
+      <li class="video" (click)="OnCameraClicked(camera)">
+        <img [src]="camera.ImageUrl" [title]="camera.Name" />
+      </li>
+    </ng-container>
+  </ul>
 </div>
 
 <!-- <div class="amap-video playing"> -->
-  <!-- style="height: 364px;width: 590px;z-index:4;display: none;" -->
+<!-- style="height: 364px;width: 590px;z-index:4;display: none;" -->
 <app-video-window #videoWindow id="videoPlayer" (closeWindowEventListen)="OnVillageWindowClosed()"
-  class="amap-video playing" 
-  (PlaybackClickedListen)="PlaybackClicked($event)"
-  (VideoPlayingEventListen)="OnVideoPlaying($event)"
-  [cameraName]="amapService.videoPlayerService.playCameraName" (changeModeEventListen)="changePlayMode($event)"
-  (closeWindowOnloadEventListen)="isShowVideoView=false" [videoPlayArgs]="amapService.videoPlayerService.videoPlayArgs"
-  [playMode]="amapService.videoPlayerService.playMode" [cameraId]="amapService.videoPlayerService.playVideoVideoId"
-  [url]="amapService.videoPlayerService.url" style="height: 382px;width: 794px;z-index:4;display: none;">
+  class="amap-video playing" (PlaybackClickedListen)="PlaybackClicked($event)"
+  (VideoPlayingEventListen)="OnVideoPlaying($event)" [cameraName]="amapService.videoPlayerService.playCameraName"
+  (changeModeEventListen)="changePlayMode($event)" (closeWindowOnloadEventListen)="isShowVideoView=false"
+  [videoPlayArgs]="amapService.videoPlayerService.videoPlayArgs" [playMode]="amapService.videoPlayerService.playMode"
+  [cameraId]="amapService.videoPlayerService.playVideoVideoId" [url]="amapService.videoPlayerService.url"
+  style="height: 382px;width: 794px;z-index:4;display: none;">
 </app-video-window>
 
 <!-- </div> -->
