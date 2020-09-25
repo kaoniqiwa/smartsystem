@@ -442,4 +442,14 @@ color: #ef6464;
     background-color: #0c1729;
     color: #cfd7ff
 }
+.datetimepicker table tr td.day:hover{
+   background: linear-gradient(to left, #7a8de6, #7a8de6) left top no-repeat
+    , linear-gradient(to bottom, #7a8de6, #7a8de6) left top no-repeat,
+     linear-gradient(to left, #7a8de6, #7a8de6) right top no-repeat,
+      linear-gradient(to bottom, #7a8de6, #7a8de6) right top no-repeat, 
+      linear-gradient(to left, #7a8de6, #7a8de6) left bottom no-repeat, 
+      linear-gradient(to bottom, #7a8de6, #7a8de6) left bottom no-repeat, 
+      linear-gradient(to left, #7a8de6, #7a8de6) right bottom no-repeat, 
+      linear-gradient(to left, #7a8de6, #7a8de6) right bottom no-repeat
+}
 /******************* 查志磊 ****************/

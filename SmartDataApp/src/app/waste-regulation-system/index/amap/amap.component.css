@@ -50,9 +50,21 @@
     right: 0;
     bottom: 130px;
     float: right;
-    padding: 10px;    
-  }
-  
+    padding: 10px 0;
+
+    max-width: 640px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 110px;
+
+  }  
+  .map-bar.video-list ul {
+    list-style-type: none;
+    clear: both;
+    display: inline-flex;
+    padding-inline-start: 0;
+    padding:0 10px ;
+}
   .map-bar.video-list .video {
     width: 120px;
     height: 90px;
@@ -71,9 +83,20 @@
     height: 100%;
   }
   
-.amap-logo{
-  display: none;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 .amap-video.playing{
   background-color: black;

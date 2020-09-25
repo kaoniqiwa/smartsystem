@@ -17,7 +17,7 @@ import { AMapService } from './amap.service';
 import { EventPushService } from '../../../common/tool/mqtt-event/event-push.service';
 
 
-
+declare var $: any;
 
 @Component({
     selector: 'app-amap',
@@ -166,6 +166,27 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 }
 
             }
+
+            $('.ul').each(function (index, element) {
+                element.onwheel = function (event) {
+                    const table = $(element).parents('.video-list');
+                    const right = $(element).width() - table[0].offsetWidth;
+                    if (table.scrollLeft() <= right && event.deltaY > 0) {
+                        // 禁止事件默认行为（此处禁止鼠标滚轮行为关联到"屏幕滚动条上下移动"行为）
+                        event.preventDefault();
+                        const left = (table.scrollLeft() + 50);
+                        table.scrollLeft(left);
+                    }
+                    if (table.scrollLeft() >= 0 && event.deltaY < 0) {
+                        // 禁止事件默认行为（此处禁止鼠标滚轮行为关联到"屏幕滚动条上下移动"行为）
+                        event.preventDefault();
+                        const left = (table.scrollLeft() - 50);
+                        table.scrollLeft(left);
+                    }
+                };
+            });
+
+
 
         };
         this.client.Events.OnElementsClicked = function (objs) {
