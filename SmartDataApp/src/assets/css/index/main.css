@@ -46,7 +46,7 @@ h2
 .hw-content-mask{
     position: absolute;
     left:0;top: 0;
-    background-color:rgb(0,0,0,0);
+    background-color:rgb(0,0,0,0.5);
     z-index: 9;
 }
 
@@ -401,6 +401,27 @@ a.td-icon:hover i{
     height: 16px;
 
 }
+
+/******用户登录*********/
+.login-panel-header{
+    background-image: url('/assets/img/login-panel-header.png');
+    width: 1343px;
+    height: 119px;
+}
+.login-panel{
+    background-image: url('/assets/img/login-panel.png');
+    width: 610px;
+    height: 400px;
+    margin-left: 4%;
+}
+
+.login-btn{
+    background-color: unset;
+    width: 368px;
+    height: 58px;
+    background-image:url('/assets/img/login-btn.png');
+}
+
 
 .sky-blue-text2{
     color: #6997ff
