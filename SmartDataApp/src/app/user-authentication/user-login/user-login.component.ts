@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ToolService } from "../../common/tool/tool.service";
+import { enterKeyDown } from "../../common/tool/jquery-help/jquery-help";
 import { UserLoginService } from "./user-login.service";
 @Component({
   selector: 'app-user-login',
@@ -15,12 +15,9 @@ export class UserLoginComponent implements OnInit {
 
   ngOnInit() {
     this.userName.nativeElement.focus();
-    document.onkeyup = (event) => {
-      var e = event || window.event || arguments.callee.caller.arguments[0];
-      if (e && (e.keyCode == 13 || e.keyCode == 108)) {
-        this.userLoginService.login();
-      }
-    };
+    enterKeyDown(()=>{
+      this.userLoginService.login();
+    }) 
     this.userLoginService.fillUserForm();
   }
 

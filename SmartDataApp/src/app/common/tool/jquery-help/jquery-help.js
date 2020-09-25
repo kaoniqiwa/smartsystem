@@ -35,6 +35,18 @@ function scrollTopPostion(domId, postion) {
     $("#" + domId).scrollTop(postion);
 }
 
+function enterKeyDown(fn){
+    document.onkeyup = (event) => {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        if (e && (e.keyCode == 13 || e.keyCode == 108)) {
+            fn();
+        }
+      };
+}
+
+function domCss(domId,css){
+    $('#'+domId).css(css);
+}
 
 exports.moveView = moveView;
 exports.domClick = domClick;
@@ -42,3 +54,5 @@ exports.domClickFn = domClickFn;
 exports.inputFileRead = inputFileRead;
 exports.scrollTopPostion = scrollTopPostion;
 exports.removeClass = removeClass;
+exports.enterKeyDown=enterKeyDown;
+exports.domCss=domCss;

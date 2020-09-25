@@ -1,9 +1,11 @@
 export class EnumHelper {
     cameraType: Map<number, string>;
     cameraState: Map<number, string>;
+    eventType: Map<number, string>;
     constructor() {
         this.cameraState = new Map();
         this.cameraType = new Map();
+        this.eventType = new Map();
         this.cameraType.set(1, '枪机');
         this.cameraType.set(2, '球机');
         this.cameraType.set(3, '半球');
@@ -12,6 +14,9 @@ export class EnumHelper {
         this.cameraState.set(1, '设备故障');
         this.cameraState.set(2, '平台故障');
 
+        this.eventType.set(EventTypeEnum.IllegalDrop, '乱扔垃圾');
+        this.eventType.set(EventTypeEnum.MixedInto, '混合投放');
+        this.eventType.set(EventTypeEnum.GarbageVolume, '垃圾容量');
 
     }
 }
@@ -32,4 +37,23 @@ export enum DivisionTypeEnum {
     Committees,
     Village
 }
+
+export enum CanTypeEnum {
+/** 干垃圾桶*/
+    Dry = 1,
+    /**湿垃圾桶 */
+    Wet,
+    /** 可回收垃圾桶*/
+    Recycle,
+    /** 有害垃圾桶*/
+    Hazard
+}
+
+export enum ResourceTypeEnum {
+    'Camera' = '监控点',
+    'EncodeDevice' = '编码设备',
+    'IoTSensor' = '物联网传感器'
+}
+
+
 

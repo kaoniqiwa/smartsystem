@@ -8,7 +8,7 @@
     </div>
     <div class="p-t-5 p-l-5 list-wrap fine collapse" [class.in]="showList">
         <div fxLayout="row wrap" >
-            <a href="javascript:void(0)" (click)="itemClick(item)" fxLayoutAlign="center center" class="m-r-5 m-b-5 " fxFlex="77px" 
+            <a href="javascript:void(0)" (click)="itemClick(item)" fxLayoutAlign="center center" class="m-r-5 m-b-5 " fxFlex="76px" 
             *ngFor="let item of model">
                 <img  src="{{item.content}}" width="30" height="30" alt="">
                 <strong><i class="howell-icon-Check" *ngIf="item.checked" style="color:rgb(77,207,105)"></i></strong>

@@ -28,6 +28,7 @@ export class TableAttribute {
 export class ListAttribute {
     maxSize = 99999;
     imgUrlRoot = 'assets/img/';
+    aiModelIcon='ai-model/'
 }
 
 export interface FormAttribute {

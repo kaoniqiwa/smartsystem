@@ -1,21 +1,20 @@
-import { Injectable } from "@angular/core";  
-import { RequestService } from "./Request.service";
+import { Injectable } from "@angular/core";   
 import { PagedList } from "../model/page";
 import { Response } from "../model/Response";   
 import * as url from "../url/event";
 import { GetCameraAIEventRecordsParams } from "../model/aiop/camera-ai-event-records-params";
 import { CameraAIEventRecord } from "../model/aiop/camera-ai-event-record";
+import { HowellAuthHttpService } from "./howell-auth-http.service";
 @Injectable({
     providedIn:'root'
 })
-export class MapRequestService{
+export class EventRequestService{
     url: url.EventRecord;
-    constructor(private requestService: RequestService) {
+    constructor(private requestService: HowellAuthHttpService) {      
         this.url = new url.EventRecord();
-    }
-    
+    }    
  
     list(item:GetCameraAIEventRecordsParams){
-        return this.requestService.axios.post<GetCameraAIEventRecordsParams, Response<PagedList<CameraAIEventRecord>>>(this.url.list(), item);
+        return this.requestService.post<GetCameraAIEventRecordsParams, Response<PagedList<CameraAIEventRecord>>>(this.url.list(), item);
     }
 }

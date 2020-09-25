@@ -19,4 +19,5 @@ export class CameraAIData {
      */
     Time: string;
     ModelId: string;
+    ModelName:string;
 }

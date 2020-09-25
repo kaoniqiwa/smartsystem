@@ -11,6 +11,7 @@ import {  MatTreeModule,MatSidenavModule,MatToolbarModule ,MatButtonModule,MatMe
 } from '@angular/material';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { FormTitlePipe,TxtLenPipe } from "../common/tool/howell.pipe";
+import { DateTimePickerDirective } from "../common/directive/date-time-picker.directive";
 import {  EChartBarDirective} from "../common/directive/echarts/bar-directive";
 import {  EChartLineDirective} from "../common/directive/echarts/line-directive";
 import {  EChartPieOutDirective} from "../common/directive/echarts/pie/pie-out-directive";
@@ -47,6 +48,7 @@ import { LineEChartsCardComponent } from "./card-component/line-echarts-card/lin
     MatButtonModule,MatMenuModule,MatButtonToggleModule,MatSnackBarModule
   ],
   declarations: [
+    DateTimePickerDirective,
     HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartLineDirective ,HWSPlayerDirective,CardDirective
     ,EChartPieOutDirective,EChartPieInDirective,EChartPieMiddleDirective ,EChartProgressBarBoxDirective,EChartProgressBarDirective
     ,FormTitlePipe,TxtLenPipe,
@@ -62,6 +64,7 @@ import { LineEChartsCardComponent } from "./card-component/line-echarts-card/lin
     InfiniteScrollModule,MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,
     MatSidenavModule,MatToolbarModule,FlexLayoutModule,MatCheckboxModule,ReactiveFormsModule,
     MatButtonModule,MatMenuModule,MatButtonToggleModule,MatSnackBarModule,MatTabsModule
+    ,DateTimePickerDirective
     ,HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartLineDirective,HWSPlayerDirective,CardDirective
      ,EChartPieOutDirective,EChartPieInDirective,EChartPieMiddleDirective ,EChartProgressBarBoxDirective,EChartProgressBarDirective
     ,FormTitlePipe,TxtLenPipe

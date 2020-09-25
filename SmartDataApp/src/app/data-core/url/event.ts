@@ -1,25 +1,26 @@
+import { BaseUrl } from "./IUrl";
 
-export class EventRecord {
+export class EventRecord extends BaseUrl{
     list() {
-        return 'Events/Records/CameraAI';
+        return this.aiop+'Events/Records/CameraAI/List';
     }
 }
 
-export class WasteRegulationEvent {
+export class WasteRegulationEvent extends BaseUrl{
     infoList() {
-        return `Events/Infos/List`;
+        return this.aiop+`Events/Infos/List`;
     }
 
     infoEventType() {
-        return `Events/Infos/<EventType>`;
+        return this.aiop+`Events/Infos/<EventType>`;
     }
 
     illegalDrop() {
-        return `Events/Records/IllegalDrop/List`;
+        return this.aiop+ `Events/Records/IllegalDrop/List`;
     }
 
     mixedIntoList() {
-        return `Events/Records/MixedInto/List`;
+        return this.aiop+`Events/Records/MixedInto/List`;
     }
 }
 

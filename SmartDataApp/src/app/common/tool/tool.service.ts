@@ -19,8 +19,9 @@ export function TheDayTime(date: Date) {
     }
 }
 
-export function TimeInterval(dateString:string,minutes: number=0,hours: number=0,date:number=0){
+export function TimeInterval(dateString:string,seconds=0,minutes=0,hours=0,date=0){
     const start = new Date(dateString),end =  new Date(dateString);
+    start.setSeconds(start.getSeconds()+seconds);
     start.setMinutes(start.getMinutes()+minutes);
     start.setHours(start.getHours()+hours);
     start.setDate(start.getDate()+date);

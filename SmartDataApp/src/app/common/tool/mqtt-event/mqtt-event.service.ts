@@ -9,7 +9,8 @@ import { IllegalDropEventRecord } from "../../../data-core/model/waste-regulatio
 export class MQTTEventService {
     mqtt: MqttComponent;
     constructor(private pushService:EventPushService) {
-        this.mqtt = new MqttComponent('192.168.21.241', 15883);
+        // this.mqtt = new MqttComponent('192.168.21.241', 15883);
+        this.mqtt = new MqttComponent(document.location.hostname,15883);
     }
 
     listenerIllegalDrop(divisionsId?: string, garbageStationId?: string) {
