@@ -132,7 +132,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             const id = objs[0].id;
             const list = document.getElementsByClassName('map-bar video-list')[0];
             if (list && objs && objs.length > 0) {
-                list['style'].display = 'block';
+
                 try {
                     const response = await this.cameraService.list(id).toPromise();
 
@@ -163,6 +163,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
                     this.changeDetectorRef.detectChanges();
                 } catch (ex) {
                     console.error(ex);
+                }
+                finally {
+                    list['style'].display = 'block';
                 }
 
             }
