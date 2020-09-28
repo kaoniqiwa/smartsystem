@@ -66,8 +66,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         //         status.status = 1;
         //     }
         //     this.client.Point.Status([status]);
-        // });
-        this.refresh();
+        // });        
         setInterval(() => {
             this.refresh();
         }, 5 * 60 * 1000);
