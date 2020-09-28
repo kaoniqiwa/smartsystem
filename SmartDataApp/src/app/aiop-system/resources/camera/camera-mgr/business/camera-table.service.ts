@@ -71,10 +71,10 @@ export class CameraTableService extends InputLabelService {
 
         this.cameraTable.scrollPageFn = (event: CustomTableEvent) => {
             this.requestCamerasData(event.data as any);
-             this.searchCamerasData(event.data as any);
+            this.searchCamerasData(event.data as any);
         }
 
-        this.regionTree.loadRegionCameras = async(regionId: string) => { 
+        this.regionTree.loadRegionCameras = async (regionId: string) => {
             this.search.clearState();
             await this.requestCamerasData(1, (page) => {
                 this.cameraTable.initPagination(page, async (index) => {
@@ -93,8 +93,9 @@ export class CameraTableService extends InputLabelService {
         this.encodeDevices = response.Data.Data;
     }
 
-    async requestCamerasData(pageIndex: number,callBack?:(page:Page)=>void) { 
-        if (this.regionTree.selectedNodeId && this.search.state == false) {
+    async requestCamerasData(pageIndex: number, callBack?: (page: Page) => void) {
+        if (this.search.state == false) {
+
             const response = await this.cameraRequestService.list(this.getRequsetParam(pageIndex, this.search)).toPromise();
             let data = new Cameras();
             data.items = response.Data.Data.sort((a, b) => {
@@ -103,13 +104,13 @@ export class CameraTableService extends InputLabelService {
             this.cameraTable.clearItems();
             this.dataSource = [];
             this.cameraTable.Convert(data, this.cameraTable.dataSource);
-            this.cameraTable.totalCount = response.Data.Page.RecordCount;   
-            this.dataSource = response.Data.Data;  
-            if(callBack)callBack(response.Data.Page);
+            this.cameraTable.totalCount = response.Data.Page.RecordCount;
+            this.dataSource = response.Data.Data;
+            if (callBack) callBack(response.Data.Page);
         }
     }
 
-    async searchCamerasData(pageIndex: number,callBack?:(page:Page)=>void) {
+    async searchCamerasData(pageIndex: number, callBack?: (page: Page) => void) {
         if (this.search.state) {
             const response = await this.cameraRequestService.list(this.getRequsetParam(pageIndex, this.search)).toPromise();
             let data = new Cameras();
@@ -119,10 +120,15 @@ export class CameraTableService extends InputLabelService {
             this.cameraTable.clearItems();
             this.dataSource = [];
             this.cameraTable.Convert(data, this.cameraTable.dataSource);
-            this.cameraTable.totalCount = response.Data.Page.RecordCount;   
+            this.cameraTable.totalCount = response.Data.Page.RecordCount;
             this.dataSource = response.Data.Data;
-            if(callBack)callBack(response.Data.Page);
+            if (callBack) callBack(response.Data.Page);
         }
+    }
+
+    async editCamera(camera: Camera) {
+        const response = await this.cameraRequestService.set(camera).toPromise(); 
+        return response.FaultCode == 0;
     }
 
     async delCamerasData(ids: string[]) {
@@ -162,22 +168,25 @@ export class CameraTableService extends InputLabelService {
         let param = new GetCamerasParams();
         param.PageIndex = pageIndex;
         param.PageSize = new TableAttribute().pageSize;
-        param.RegionId = this.regionTree.selectedNodeId;
+ 
+        if (this.regionTree.selectedNodeId)
+            param.RegionIds = [this.regionTree.selectedNodeId];
+        else param.RegionIdNullable=true;
         const s = search.toSearchParam();
-        if (s.SearchText&&search.other==false) {
+        if (s.SearchText && search.other == false) {
             param.Name = s.SearchText;
             // param.Labels = [s.SearchText];
 
         }
         else {
-           
-            if(s.Name)param.Name = s.Name;
-            if(s.EncodeDeviceId) param.EncodeDeviceIds=[s.EncodeDeviceId];
-            if(s.CameraType)param.CameraTypes=[Number.parseInt(s.CameraType)];
-            if(s.AndLabelIds.length){
+
+            if (s.Name) param.Name = s.Name;
+            if (s.EncodeDeviceId) param.EncodeDeviceIds = [s.EncodeDeviceId];
+            if (s.CameraType) param.CameraTypes = [Number.parseInt(s.CameraType)];
+            if (s.AndLabelIds.length)
                 param.AndLabelIds = s.AndLabelIds;
-            }
-        } 
+
+        }
         return param;
     }
 

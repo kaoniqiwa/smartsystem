@@ -1,11 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CameraTableService } from "./business/camera-table.service";
-import { CustomTableComponent } from '../../../../shared-module/custom-table/custom-table.component';
-import { PlatformService } from "../../../common/platform-request";
-import { CustomTreeComponent } from "../../../../shared-module/custom-tree/custom-tree.component";
-import { FormGroup } from '@angular/forms';
-import { RegionTreeService } from "../../../common/region-tree.service";
-import { InputTagArea } from '../../../../shared-module/input-tag-area/input-tag-area';
+import { CustomTableComponent } from '../../../../shared-module/custom-table/custom-table.component'; 
+import { CustomTreeComponent } from "../../../../shared-module/custom-tree/custom-tree.component"; 
+import { RegionTreeService } from "../../../common/region-tree.service"; 
 
 @Component({
   selector: 'app-camera-mgr',
@@ -27,15 +24,23 @@ export class CameraMgrComponent implements OnInit {
     this.tree.treeControl.expandAll();
   }
 
-
+  cameraRegionMoveView = false;
   moreSearchInput = false;
+  cameraRegionMoveViewCancelFn = ()=>this.cameraRegionMoveView=false;
+  cameraRegionMoveViewSaveFn = ()=>{
+    for (const id of this.tableSelectIds)
+       this.table.deleteListItem(id);
+  }
   constructor(private tableService: CameraTableService, private regionTreeService: RegionTreeService
   ) { }
 
 
   async ngOnInit() {   
-    await this.regionTreeService.getRegionData();
-    const dataSource = this.regionTreeService.loadTree(this.regionTreeService.dataSource);
+    await this.regionTreeService.getRegionData(); 
+    this.tableService.regionTree.dataSource =this.regionTreeService.dataSource;
+    const dataSource = this.regionTreeService.loadTree(this.regionTreeService.dataSource);console.log(dataSource);
+    dataSource.push(this.regionTreeService.singleNode('未分配摄像机','howell-icon-video'));
+    dataSource.reverse();
     this.tree.dataSource.data = dataSource;
     this.tableService.regionTree.treeNodeSource = dataSource;
     this.tree.defaultItem();

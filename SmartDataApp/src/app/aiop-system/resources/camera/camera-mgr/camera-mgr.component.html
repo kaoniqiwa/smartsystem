@@ -29,7 +29,13 @@
     </div>
 
   </div>
- 
+  <div  class="fill-height fill-width hw-content-mask" *ngIf="cameraRegionMoveView">
+    <div class="hw-form-wrap" style="height: 650px;">
+      <camera-region-move [cameraIds]="tableSelectIds" [cancelFn]="cameraRegionMoveViewCancelFn" 
+      [tableService]="tableService" [treeService]="regionTreeService" [saveFn]="cameraRegionMoveViewSaveFn">        
+      </camera-region-move>
+    </div>
+  </div>
 
   <div class="fill-height">
     <div fxLayout="row" class="fill-height">
@@ -40,7 +46,7 @@
             [searchEvent]="searchTree"></hw-input-search>
         </div>
         <div class="fine" style="height: calc(100% - 90px);overflow: scroll;">
-          <hw-custom-tree #tree [treeData]="regionTreeService.dataSource"
+          <hw-custom-tree #tree [treeData]="tableService.regionTree.treeNodeSource"
           [selectedItemFn]="tableService.regionTree.selectedItemFn"></hw-custom-tree>
         </div>
      
@@ -57,11 +63,15 @@
             <button class="hw-red-btn  m-r-10 " (click)="delBtnClick()"  [class.gray-text]="!selectItems" [class.black]="!selectItems">
               <i class="howell-icon-delete-bin"></i>
               删除
-            </button>
-            <button class="hw-cyan-btn" (click)="showBindLabels()" [disabled]="!selectItems"  [class.gray-text]="!selectItems"
+            </button> 
+            <button class="hw-cyan-btn  m-r-10 " (click)="showBindLabels()" [disabled]="!selectItems"  [class.gray-text]="!selectItems"
               [class.black]="!selectItems">
               <i class="mdi mdi-tag"></i>
               绑定标签
+            </button>
+            <button class="hw-blue-btn" [disabled]="!selectItems" [class.black]="!selectItems" [class.gray-text]="!selectItems" (click)="cameraRegionMoveView=true">
+              <i class="howell-icon-swaphorizontal"></i>
+              移动至
             </button>
           </div>
           <div [formGroup]="tableService.search.searchform">

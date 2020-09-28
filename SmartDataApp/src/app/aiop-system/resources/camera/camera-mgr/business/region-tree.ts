@@ -27,7 +27,7 @@ export class RegionTree extends RegionTreeService {
 
 
     get isLastNode() {
-        var is = false;
+        var is = false;debugger
         const nodes = this.allLastChilds(this.treeNodeSource);
         for (const n of nodes)
             if (n.id == this.selectedNodeId)

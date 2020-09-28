@@ -1,0 +1,19 @@
+<div class="custom-form-wrap" style="width: 800px;">
+  <h2 class="m-b-10">移动摄像机</h2>
+  <h5 class="subTitle">{{subTitle}}</h5>
+  <div class="m-b-20">
+    <hw-input-search [placeholder]="'名称'" [searchEvent]="searchTree"></hw-input-search>
+  </div>
+  <div class="fine" style="height: calc(100% - 140px);overflow: scroll;"> 
+    
+    <hw-custom-tree #tree [selectedItemFn]="selectedItemFn"  [treeData]="treeDataSource"></hw-custom-tree>
+  </div>
+  <div class="text-center">
+    <button class="hw-green-m-btn m-r-10" (click)="onSubmit()">
+      <i class="howell-icon-Check"></i>
+    </button>
+    <button class="hw-gray-m-btn" (click)="onCancel()">
+      <i class="howell-icon-Close"></i>
+    </button>
+  </div>
+</div>
