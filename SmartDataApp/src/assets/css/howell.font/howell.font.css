@@ -2235,3 +2235,15 @@ a .howell-icon-flip-vertical:before {
 .howell-icon-move:before {
     content: "\f306";
 }
+.howell-icon-residual:before {
+    content: "\f307";
+}
+.howell-icon-recyclable:before {
+    content: "\f308";
+}
+.howell-icon-kitchen:before {
+    content: "\f309";
+}
+.howell-icon-hazardous:before {
+    content: "\f310";
+}
