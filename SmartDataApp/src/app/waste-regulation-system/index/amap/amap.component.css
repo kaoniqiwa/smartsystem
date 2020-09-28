@@ -74,6 +74,9 @@
     border: black 1px solid;
     cursor: pointer;
   }
+  .map-bar.video-list .video:first-child{
+    margin-left: 0px;
+  }
   .map-bar.video-list .video:hover {
     border: #3a72ce 1px solid;
   }
