@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Directive, HostListener } from '@angular/core';
 import { enterKeyDown } from "../../common/tool/jquery-help/jquery-help";
 import { UserLoginService } from "./user-login.service";
 @Component({

@@ -59,6 +59,15 @@ export class UserLoginService {
         }
     }
 
+    handleLoginError2<T>(operation = 'operation', result?: T) {
+        return (error: any): Observable<T> => {
+            if (error.status == 403) {
+                this.msg.response_Error('账号或密码错误');
+            }
+            return of(result as T);
+        };
+    }
+
     handleLoginError<T>(operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
             if (error.status == 403) {
@@ -66,10 +75,15 @@ export class UserLoginService {
                 let digest = new Digest(header, new BaseUrl().user);
                 var challenge = digest.parseServerChallenge(null);
                 let authHeader = digest.generateRequestHeader(1, challenge, this.formVal.name, this.formVal.pwd, 'GET', userUrl);
-                this.httpService.auth(userUrl, authHeader)
-                    .subscribe((result) => { 
-                        this.router.navigateByUrl('aiop');
-                        this.memory(this.formVal.name, this.formVal.pwd);
+                this.httpService.auth(userUrl, authHeader).pipe(
+                    catchError(this.handleLoginError2<any>())
+                )
+                    .subscribe((result) => {  
+                        if(result){
+
+                            this.router.navigateByUrl('aiop');
+                            this.memory(this.formVal.name, this.formVal.pwd);
+                        } 
                     });
             }
             return of(result as T);

@@ -2,6 +2,7 @@
 button:focus 
 {
     outline: none;
+    box-shadow: unset;
 }
 
 h2 
@@ -422,6 +423,12 @@ a.td-icon:hover i{
     background-image:url('/assets/img/login-btn.png');
 }
 
+.login-btn:hover{
+    background-image:url('/assets/img/login-btn-focus.png')
+}
+.login-btn:active{
+    background-image:url('/assets/img/login-btn-hover.png')
+}
 
 .sky-blue-text2{
     color: #6997ff

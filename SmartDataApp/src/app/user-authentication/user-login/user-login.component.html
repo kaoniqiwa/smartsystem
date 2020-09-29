@@ -1,6 +1,6 @@
 <div class="cov-video-player">
   <div class="video-js">
-    <video class="vjs-tech" tabindex="-1" role="application" preload="metadata" loop muted="muted" autoplay=""
+    <video class="vjs-tech" tabindex="-1" id="videoLogin" role="application" preload="metadata" loop muted="muted" autoplay=""
       src="assets/img/login.webm"></video>
   </div>
 </div>
@@ -9,7 +9,7 @@
 <div fxLayout="column wrap" class="fill-width fill-height" style="position: relative;">
   <div fxFlex="36" class="fill-width" fxLayoutAlign="center center">
     <div class="login-panel-header">
-      <h2 class="header-title">生活垃圾管平台</h2>
+      <h2 class="header-title">生活垃圾监管平台</h2>
     </div>
   </div>
   <div fxFlex="64" class="fill-width">
@@ -61,7 +61,9 @@
               </div>
             </div>
             <div class="flex-item-center m-t-0">
-              <button class="btn login-btn" (click)="userLoginService.login()">登录</button>
+              <button class="btn login-btn" (click)="userLoginService.login()">
+                <h2 class="m-0">登录</h2>
+              </button>
             </div>
           </div>
         </div>

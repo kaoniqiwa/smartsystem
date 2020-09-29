@@ -7,6 +7,11 @@
     left: 0;
     display: inline-block;
 } 
+button:focus 
+{
+    outline: none;
+    box-shadow: unset;
+}
 
 
 .header-title
@@ -28,7 +33,7 @@
 .blue-parting-line{
   width: 100%;
   height: 2px;
-  background-image: linear-gradient(to right, rgb(0,0,0,0), rgb(105,151,255,0.4),rgb(0,0,0,0));
+  background-image: linear-gradient(to right, alpha(#000,0), rgb(105,151,255,0.4),alpha(#000,0));
 }
  
 
