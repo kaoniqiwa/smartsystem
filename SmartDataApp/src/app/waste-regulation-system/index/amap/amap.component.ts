@@ -66,7 +66,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         //         status.status = 1;
         //     }
         //     this.client.Point.Status([status]);
-        // });        
+        // });
         setInterval(() => {
             this.refresh();
         }, 5 * 60 * 1000);
@@ -136,15 +136,17 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
                 try {
                     const response = await this.cameraService.list(id).toPromise();
-
-                    const p = response.Data.map(async x => {
+                    const datas = response.Data.sort((a, b) => {
+                        return a.Name.length - b.Name.length || a.Name.localeCompare(b.Name);
+                    });
+                    const p = datas.map(async x => {
                         const camera_response = await this.aiopCameraService.get(x.Id).toPromise();
                         return camera_response.Data;
                     });
                     this.selectedCameras = [];
-                    for (let i = 0; i < response.Data.length; i++) {
+                    for (let i = 0; i < datas.length; i++) {
                         try {
-                            const camera_response = await this.aiopCameraService.get(response.Data[i].Id).toPromise();
+                            const camera_response = await this.aiopCameraService.get(datas[i].Id).toPromise();
                             if (camera_response) {
                                 if (camera_response.Data.ImageUrl) {
                                     camera_response.Data.ImageUrl = this.mediaService.getData(camera_response.Data.ImageUrl);
