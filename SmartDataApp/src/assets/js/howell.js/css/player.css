@@ -206,6 +206,9 @@
     padding-left: 0;
     padding-right: 1px;
 }
+.player .tools .jump_back.glyphicon-share-alt {
+  transform: rotateY(180deg);   /* 水平镜像翻转 */
+}
 
 .player .tools .capturepicture{
     font-size: 16px;

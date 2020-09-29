@@ -108,9 +108,9 @@ function WSPlayer(args) {
         if (that.tools.control.fullscreen) {
             that.tools.control.fullscreen.addEventListener("click", function () {
                 if (that.FullScreen)
-                that.fullExit();
-            else
-                that.fullScreen();        
+                    that.fullExit();
+                else
+                    that.fullScreen();
             });
         }
 
@@ -156,6 +156,30 @@ function WSPlayer(args) {
                 var date = new Date(current);
                 date.setUTCHours(date.getUTCHours() - 8);
                 this.title = date.format("HH:mm:ss");
+            });
+        }
+        if (that.tools.control.jump_back) {
+            that.tools.control.jump_back.addEventListener("click", function () {
+                if (that.playback_time.current) {
+                    var date = new Date(that.playback_time.current.getTime());
+                    date.setSeconds(date.getSeconds() - 30);
+                    var value = date.getTime() - that.tools.control.position.min;
+                    if (value <= 0)
+                        value = 0;
+                    that.seek(value);
+                }
+            });
+        }
+        if (that.tools.control.jump_forward) {
+            that.tools.control.jump_forward.addEventListener("click", function () {
+                if (that.playback_time.current) {
+                    var date = new Date(that.playback_time.current.getTime());
+                    date.setSeconds(date.getSeconds() + 30);
+                    var value = date.getTime() - that.tools.control.position.min;
+                    if (value >= that.tools.control.position.max)
+                        return;
+                    that.seek(value);
+                }
             });
         }
 
@@ -529,7 +553,7 @@ function WSPlayer(args) {
                 plugin.JS_Resize(that.clientWidth, that.clientHeight);
                 clearInterval(handle);
                 that.tools.control.fullscreen.title = "全屏"
-                
+
             }
             else if (that.FullScreen == false) {
                 that.FullScreen = true;
@@ -635,22 +659,25 @@ function WSPlayer(args) {
 
             //that_tools.control.stop = createElement(ul, "a", {}, { className: "stop glyphicon glyphicon-stop", title: "停止" });
             //that_tools.control.pause = createElement(ul, "a", {}, { className: "pause glyphicon glyphicon-pause", title: "暂停" });
-            that_tools.control.slow = createElement(ul, "a", {}, { className: "slow glyphicon glyphicon glyphicon-backward", title: "慢放" });
+            that_tools.control.slow = createElement(ul, "a", {}, { className: "slow glyphicon glyphicon-backward", title: "慢放" });
             that_tools.control.fast = createElement(ul, "a", {}, { className: "fast glyphicon glyphicon-forward", title: "快进" });
             //that_tools.control.forward = createElement(ul, "a", {}, { className: "glyphicon glyphicon glyphicon-eject", title: "单帧进" });
 
+            that_tools.control.jump_back = createElement(ul, "a", {}, { className: "jump_back glyphicon glyphicon-share-alt", title: "退30秒" });
+            that_tools.control.jump_forward = createElement(ul, "a", {}, { className: "jump_forward glyphicon glyphicon-share-alt", title: "进30秒" });
 
             that_tools.control.begin_time = createElement(ul, "label", { width: "60px" }, {
                 className: "begin_time",
                 innerText: "00:00:00",
                 title: "当前时间"
             });
-            that_tools.control.position = createElement(ul, "input", { width: "calc(100% - 315px)" }, {
+            that_tools.control.position = createElement(ul, "input", { width: "calc(100% - 371px)" }, {
                 className: "position",
                 title: "00:00:00",
                 type: "range"
             });
             that_tools.control.end_time = createElement(ul, "label", { width: "60px" }, { className: "end_time", title: "结束时间", innerText: "00:00:00", });
+
 
 
 
@@ -716,11 +743,14 @@ function WSPlayer(args) {
             forward: null,
             fast: null,
             slow: null,
+
             begin_time: null,
             end_time: null,
             position: null,
             fullscreen: null,
-            capturepicture: null
+            capturepicture: null,
+            jump_forward: null,
+            jump_back: null
         }
 
 
