@@ -3,12 +3,13 @@ import { Injectable } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { Observable, of } from "rxjs";
 import { catchError } from "rxjs/operators";
-import { Md5 } from 'ts-md5/dist/md5';
 import { MessageBar } from "../../common/tool/message-bar";
 import { Digest } from "../../data-core/repuest/digest";
 import { HowellAuthHttpService } from "../../data-core/repuest/howell-auth-http.service";
 import { User } from "../../data-core/url/user-url";
 import { BaseUrl } from "../../data-core/url/IUrl";
+import { SessionUser } from "../../common/tool/session-user"; 
+import {   Router } from '@angular/router';
 @Injectable()
 export class UserLoginService {
     sessionUser: SessionUser;
@@ -17,7 +18,8 @@ export class UserLoginService {
     formVal: { name: string, pwd: string };
     autoLogin_ = false;
     jpwd_ = false;
-    constructor(private httpService: HowellAuthHttpService) {
+    constructor(private httpService: HowellAuthHttpService
+        ,private router: Router) {
         this.sessionUser = new SessionUser();
         this.form = new FormGroup({
             name: new FormControl(''),
@@ -48,7 +50,13 @@ export class UserLoginService {
             this.autoLogin_=true;
             this.login();
         }
-        else if(this.jpwd_) this.jpwd_=true;
+        else if(this.sessionUser.memoryPwd){
+            this.form.patchValue({
+                name: this.sessionUser.name,
+                pwd: this.sessionUser.pwd
+            });
+            this.jpwd_=true;
+        }
     }
 
     handleLoginError<T>(operation = 'operation', result?: T) {
@@ -59,8 +67,8 @@ export class UserLoginService {
                 var challenge = digest.parseServerChallenge(null);
                 let authHeader = digest.generateRequestHeader(1, challenge, this.formVal.name, this.formVal.pwd, 'GET', userUrl);
                 this.httpService.auth(userUrl, authHeader)
-                    .subscribe((result) => {
-                        console.log(result);
+                    .subscribe((result) => { 
+                        this.router.navigateByUrl('aiop');
                         this.memory(this.formVal.name, this.formVal.pwd);
                     });
             }
@@ -69,15 +77,10 @@ export class UserLoginService {
     }
 
     memory(name: string, pwd: string) {
-        if (this.autoLogin_) {
-            this.sessionUser.autoLogin = true;
-            this.sessionUser.name = name;
-        }
-        else {
-            this.sessionUser.autoLogin = false;
-            this.sessionUser.name = '';
-        }
-        this.sessionUser.pwd = this.jpwd_ ? pwd : '';
+        this.sessionUser.autoLogin = this.autoLogin_;
+        this.sessionUser.memoryPwd = this.jpwd_;
+        this.sessionUser.name = name;
+        this.sessionUser.pwd = pwd;
 
     }
 
@@ -91,47 +94,3 @@ export class UserLoginService {
 }
 
 
-export class SessionUser {
-    get suffix() {
-        return Md5.hashStr('&*^').toString();
-    }
-    set user(val: { name: string, pwd: string }) {
-        this.pwd = val.pwd;
-        this.name = val.name;
-    }
-
-    get user() {
-        return {
-            name: this.name,
-            pwd: this.pwd
-        }
-    }
-
-    set autoLogin(yes: boolean) {
-        localStorage.setItem('autoLogin', yes ? '1' : '0');
-    }
-
-    get autoLogin() {
-        return localStorage.getItem('autoLogin') == '1';
-    }
-
-    set name(val: string) {
-        if (val == '') localStorage.removeItem('name');
-        else localStorage.setItem('name', val + this.suffix);
-    }
-
-    get name() {
-        const n = localStorage.getItem('name');
-        return n ? n.split(this.suffix)[0] : '';
-    }
-
-    set pwd(val: string) {
-        if (val == '') localStorage.removeItem('pwd');
-        else localStorage.setItem('pwd', val + this.suffix);
-    }
-
-    get pwd() {
-        const n = localStorage.getItem('pwd');
-        return n ? n.split(this.suffix)[0] : '';
-    }
-}

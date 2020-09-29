@@ -1,13 +1,13 @@
 <a class="nav-link waves-effect waves-dark p-t-0 p-b-0" href="" data-toggle="dropdown" aria-haspopup="true"
   aria-expanded="true">
   <i class="howell-icon-account m-r-10 light-blue text-icon"></i>
-  <span class="text-white" style="font-size:14px">对对</span>
+  <span class="text-white" style="font-size:14px">{{sessionUser.name}}</span>
   <i class="mdi mdi-menu-down text-white text-icon"></i>
 </a>
 <div style="background-color: transparent" class="dropdown-menu mailbox dropdown-menu-right scale-up">
   <div class="user-out">
     <div class="" x-placement="bottom-start">
-      <a href="#" class="dropdown-item">
+      <a href="#" class="dropdown-item" (click)="checkOut()">
         <i class="mdi mdi-logout p-r-5"></i>退出登录</a>
     </div>
   </div>
