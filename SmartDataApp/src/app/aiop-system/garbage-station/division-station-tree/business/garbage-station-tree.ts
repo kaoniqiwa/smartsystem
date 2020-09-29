@@ -33,7 +33,7 @@ export class StationTreeService extends TreeService{
     convertStationTreeNode(){ 
        const nodeA= this.convertTreeNode(this.garbageStations),
        nodeB= this.convertTreeNode(this.divisions); 
-        this.dataSource = [...nodeA,...nodeB]; console.log(this.dataSource );
+        this.dataSource = [...nodeA,...nodeB]; 
         
     }
 

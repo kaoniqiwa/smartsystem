@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { CustomTreeComponent } from "../../../shared-module/custom-tree/custom-tree.component";
 import { StationTreeService } from "./business/garbage-station-tree";
 import { DataService } from "./business/data-service";
+import { NodeTypeEnum } from '../../common/tree.service';
 @Component({
   selector: 'hw-division-station-tree',
   templateUrl: './division-station-tree.component.html',
@@ -11,6 +12,13 @@ export class DivisionStationTreeComponent implements OnInit {
     
   @ViewChild('garbageStationTree')
   garbageStationTree: CustomTreeComponent;
+
+  searchTree = (text: string) => {
+    const dataSource = this.stationTreeService.filterNodes(text,NodeTypeEnum.station);     
+    this.garbageStationTree.clearNestedNode();
+    this.garbageStationTree.dataSource.data = dataSource;
+    this.garbageStationTree.treeControl.expandAll();
+  }
   constructor(private stationTreeService: StationTreeService
     , private dataService: DataService) { }
 
