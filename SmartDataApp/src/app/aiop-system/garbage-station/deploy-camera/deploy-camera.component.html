@@ -1,7 +1,7 @@
 <div class="fill-height fill-width">
   <div style="width:320px" class="card-wrap m-r-20 pull-left">
     <h2 class="m-b-20">投放点列表</h2>
-
+    <hw-division-station-tree></hw-division-station-tree>
   </div>
   <div style="width: calc(100% - 680px);padding: 10px;" class="card-wrap   m-r-20 pull-left">
     <h2 class="m-b-20 p-l-10 p-t-10">摄像机绑定</h2>
@@ -12,9 +12,10 @@
       </div>
       <div fxFlex="43">
         <span class="text-white">投放口数量</span>
-        <select  #trashbox (change)="changeTrashNum(trashbox.value)" class="form-control custom custom-select m-l-10" style="width: calc(100% - 106px);">
+        <select #trashbox (change)="changeTrashNum(trashbox.value)" class="form-control custom custom-select m-l-10"
+          style="width: calc(100% - 106px);">
           <option *ngFor="let i of configGarbageTrash" value="{{i}}">{{i}}</option>
-        
+
         </select>
       </div>
       <div fxFlex="23">
@@ -23,165 +24,19 @@
       </div>
     </div>
     <div fxLayout="row" style="height: calc(100% - 88px);" fxLayoutAlign="center center">
-      <div style="overflow-x: auto;overflow-y: auto;position: relative;">
-        <table>
-          <tbody>
-            <tr>
-              <td>
-                <img src="assets/img/wall-1.png" alt="">
-              </td>
-              <ng-container *ngFor="let h of house.interior">
-                <td style="position: relative;">
-                  <img src="assets/img/wall-2.png" alt="">
-                  <img src="assets/img/{{h.door}}.png" class="bg-house-door" alt="">
-                  <img src="assets/img/{{h.trash}}.png" class="bg-house-trash" alt="">
-                </td>
-              </ng-container>
-              <td> <img src="assets/img/wall-3.png" alt=""></td>
-            </tr>
-          </tbody>
-
-        </table>
-        <table class="deploy-table" [ngStyle]="{'width': tableW+'px'}">
-          <tbody>
-            <td style="position: relative;">
-              <img src="assets/img/wall-1.png" style="visibility: hidden;" alt="">
-              <div class="outside-square-left-top">
-                <div class="plus-square m-l-20">
-                  <a class="howell-icon-plus light-blue-text" href=""></a></div>
-                <div class="text-square outside">
-                  <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">{{outSidePosition.left.up.position}}</h5>
-                </div>
-              </div>
-              <div class="outside-square-left-bottom">
-                <div class="plus-square m-l-20">
-                  <a class="howell-icon-plus light-blue-text" href=""></a></div>
-                <div class="text-square outside">
-                  <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">{{outSidePosition.left.down.position}}</h5>
-                </div>
-              </div>
-            </td>
-            <td [ngStyle]="{'width': tableTdW+'px'}" style="position: relative;">
-              <div style="position: absolute;left: 0px;bottom: 160px;width: 100%;">
-                 <table>
-                    <tr>
-                      <td>
-                        <div style="width: 142px;height: 74px;text-align: center;">
-                           <img src="assets/img/ai-model/ai-m9.png" alt="">
-                        </div>
-                      </td>
-                      <td>
-                        <div style="width: 142px;height: 74px;text-align: center;">
-                          <img src="assets/img/ai-model/ai-m9.png" alt=""></div>
-                      </td>
-                      <td>
-                        <div style="width: 142px;height: 74px;text-align: center;">
-                          <img src="assets/img/ai-model/ai-m9.png" alt="">
-                        </div>
-                      </td>
-                      <td>
-                        <div style="width: 142px;height: 74px;text-align: center;">
-                          <img src="assets/img/ai-model/ai-m9.png" alt=""></div>
-                      </td>
-                    </tr>
-                 </table>
-                 <div style="position: absolute;background-color: black;width: 60px;height: 200px;">
-
-                 </div>
-              </div>
-              <div class="inside-group1-square">
-                <div fxLayout="row">
-                  <ng-container *ngFor="let li of house.cameraPosition.inside.li1;let i=index">
-                    <div [ngSwitch]="i">
-                      <div *ngSwitchCase="0" fxFlex="112px" style="height: 30px;">
-                        <div class="plus-square pull-left">
-                          <a href="" class="howell-icon-plus light-blue-text"></a>
-                        </div>
-                        <div class="line-square p-l-20">
-                          <div class="line right">
-                          </div>
-                        </div>
-                      </div>
-                      <div *ngSwitchCase="house.cameraPosition.inside.li1.length-1" fxFlex="112px" style="height: 30px;">
-                        <div class="line-square p-l-10">
-                          <div class="line left">
-                          </div>
-                        </div>
-                        <div class="plus-square pull-left">
-                          <a href="" class="howell-icon-plus light-blue-text"></a>
-                        </div>
-                      </div>
-                      
-                      <div *ngSwitchDefault fxFlex="142px" style="height: 30px;">
-                        <div class="line-square p-l-10">
-                          <div class="line left">
-                          </div>
-                        </div>
-                        <div class="plus-square pull-left">
-                          <a href="" class="howell-icon-plus light-blue-text"></a>
-                        </div>
-                        <div class="line-square p-l-20">
-                          <div class="line right">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </ng-container>
-                </div>
-              </div>
-              <div class="inside-group1-line-square" [ngStyle]="{'width': insideGroup1LineSquareW+'px'}">
-                <div fxLayout="row" fxLayoutAlign="space-between end">
-                  <ng-container *ngFor="let li of house.cameraPosition.inside.li1;let i=index">
-                    <div fxFlex="70px" class="text-square">
-                      <h5 style="margin-top: 4px;" class="light-blue-text m-b-0">{{li.position}}</h5>
-                    </div>
-                  </ng-container> 
-                 
-                </div>
-              </div>
-              <div class="inside-group2-square" [ngStyle]="{'width': insideGroup2SquareW+'px'}">
-                <div fxLayout="row" fxLayoutAlign="space-between end">
-                  <ng-container *ngFor="let li of house.cameraPosition.inside.li2;let i=index">
-                    <div fxFlex="30px" class="plus-square">
-                      <a href="" class="howell-icon-plus light-blue-text"></a>
-                    </div>
-                  </ng-container> 
-                </div>
-              </div>
-              <div class="inside-group2-line-square" [ngStyle]="{'width': insideGroup2LineSquareW+'px'}">
-                <div fxLayout="row" fxLayoutAlign="space-between end">
-                  <ng-container *ngFor="let li of house.cameraPosition.inside.li2;let i=index">
-                    <div fxFlex="70px" class="text-square">
-                      <h5 style="margin-top: 4px;" class="light-blue-text m-b-0">{{li.position}}</h5>
-                    </div>
-                  </ng-container> 
-                </div>
-              </div>
-            </td>
-            <td style="position:relative;width: 158px;">
-              <div class="outside-square-right-top">
-                <div class="plus-square m-l-20">
-                  <a class="howell-icon-plus light-blue-text" href=""></a></div>
-                <div class="text-square outside">
-                  <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">{{outSidePosition.right.up.position}}</h5>
-                </div>
-              </div>
-              <div class="outside-square-right-bottom">
-                <div class="plus-square m-l-20">
-                  <a class="howell-icon-plus light-blue-text" href=""></a></div>
-                <div class="text-square outside">
-                  <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">{{outSidePosition.right.down.position}}</h5>
-                </div>
-              </div>
-            </td>
-          </tbody>
-        </table>
-      </div>
+      <hw-garbage-chart></hw-garbage-chart>
     </div>
 
   </div>
   <div style="width:320px" class="card-wrap pull-left">
     <h2 class="m-b-20">摄像机列表</h2>
-
+    <hw-region-camera-tree></hw-region-camera-tree>
+    <!-- <div class="m-b-20">
+      <hw-input-search [placeholder]="'名称'" [searchEvent]="searchTree"></hw-input-search>
+    </div>
+    <div class="fine" style="height: calc(100% - 90px);overflow: scroll;">
+      <hw-custom-tree [mode]="treeListMode" #cameraTree [treeData]="deployCameraService.cameraTree.treeNode"
+        [selectedItemFn]=""></hw-custom-tree>
+    </div> -->
   </div>
 </div>

@@ -1,0 +1,156 @@
+<div style="overflow-x: auto;overflow-y: auto;position: relative;height: 500px;">
+  <table >
+    <tbody>
+      <tr>
+        <td>
+          <img src="assets/img/wall-1.png" alt="">
+        </td>
+        <ng-container *ngFor="let h of stationChart.house.interior">
+          <td style="position: relative;">
+            <img src="assets/img/wall-2.png" alt="">
+            <img src="assets/img/{{h.door}}.png" class="bg-house-door" alt="">
+            <img src="assets/img/{{h.trash}}.png" class="bg-house-trash" alt="">
+          </td>
+        </ng-container>
+        <td> <img src="assets/img/wall-3.png" alt=""></td>
+      </tr>
+    </tbody>
+
+  </table>
+  <table class="deploy-table" [ngStyle]="{'width': tableW+'px'}">
+    <tbody>
+      <td style="position:relative;width: 158px;">       
+        <ng-container *ngIf="chartMode==houseModeEnum.TrashCamera">
+        <div class="outside-square-left-top">
+          <div class="plus-square m-l-20">
+            <a class="howell-icon-plus light-blue-text" href=""></a></div>
+          <div class="text-square outside">
+            <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">{{stationChart.outSidePosition.left.up.position}}
+            </h5>
+          </div>
+        </div>
+        <div class="outside-square-left-bottom">
+          <div class="plus-square m-l-20">
+            <a class="howell-icon-plus light-blue-text" href=""></a></div>
+          <div class="text-square outside">
+            <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">
+              {{stationChart.outSidePosition.left.down.position}}</h5>
+          </div>
+        </div></ng-container> 
+      </td>
+      <td [ngStyle]="{'width': stationChart.tableTdW+'px'}" style="position: relative;">
+        <div style="position: absolute;left: 0px;bottom: 160px;width: 100%;z-index: 41;">
+          <table>
+            <tr>
+              <ng-container *ngFor="let h of stationChart.house.interior;let i=index">
+                <td>
+                  <div class="icon-wrapper">
+                    <a (click)="stationChart.trashIconClick(trashIconA,i);$event.stopPropagation();" #trashIconA
+                      href="javascript:void(0)" class="{{h.icon}} text-white"
+                      style="font-size: xxx-large;position: relative;">
+                      <i class="mdi mdi-menu-down down-icon"></i>
+                    </a>
+                  </div>
+                </td>
+              </ng-container>
+            </tr>
+          </table>
+          <hw-trash-icons-list [model]="stationChart.trashIcons" [itemClickFn]="stationChart.itemClickFn">
+          </hw-trash-icons-list>
+        </div>
+        <ng-container *ngIf="chartMode==houseModeEnum.TrashCamera">
+          <div class="inside-group1-square">
+            <div fxLayout="row">
+              <ng-container *ngFor="let li of stationChart.house.cameraPosition.inside.li1;let i=index">
+                <div [ngSwitch]="i">
+                  <div *ngSwitchCase="0" fxFlex="112px" style="height: 30px;">
+                    <div class="plus-square pull-left">
+                      <a href="" class="howell-icon-plus light-blue-text"></a>
+                    </div>
+                    <div class="line-square p-l-20">
+                      <div class="line right">
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngSwitchCase="stationChart.house.cameraPosition.inside.li1.length-1" fxFlex="112px"
+                    style="height: 30px;">
+                    <div class="line-square p-l-10">
+                      <div class="line left">
+                      </div>
+                    </div>
+                    <div class="plus-square pull-left">
+                      <a href="" class="howell-icon-plus light-blue-text"></a>
+                    </div>
+                  </div>
+
+                  <div *ngSwitchDefault fxFlex="142px" style="height: 30px;">
+                    <div class="line-square p-l-10">
+                      <div class="line left">
+                      </div>
+                    </div>
+                    <div class="plus-square pull-left">
+                      <a href="" class="howell-icon-plus light-blue-text"></a>
+                    </div>
+                    <div class="line-square p-l-20">
+                      <div class="line right">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <div class="inside-group1-line-square" [ngStyle]="{'width': stationChart.insideGroup1LineSquareW+'px'}">
+            <div fxLayout="row" fxLayoutAlign="space-between end">
+              <ng-container *ngFor="let li of stationChart.house.cameraPosition.inside.li1;let i=index">
+                <div fxFlex="70px" class="text-square">
+                  <h5 style="margin-top: 4px;" class="light-blue-text m-b-0">{{li.position}}</h5>
+                </div>
+              </ng-container>
+
+            </div>
+          </div>
+          <div class="inside-group2-square" [ngStyle]="{'width': stationChart.insideGroup2SquareW+'px'}">
+            <div fxLayout="row" fxLayoutAlign="space-between end">
+              <ng-container *ngFor="let li of stationChart.house.cameraPosition.inside.li2;let i=index">
+                <div fxFlex="30px" class="plus-square">
+                  <a href="" class="howell-icon-plus light-blue-text"></a>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <div class="inside-group2-line-square" [ngStyle]="{'width': stationChart.insideGroup2LineSquareW+'px'}">
+            <div fxLayout="row" fxLayoutAlign="space-between end">
+              <ng-container *ngFor="let li of stationChart.house.cameraPosition.inside.li2;let i=index">
+                <div fxFlex="70px" class="text-square">
+                  <h5 style="margin-top: 4px;" class="light-blue-text m-b-0">{{li.position}}</h5>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+      </td>
+      <td style="position:relative;width: 158px;">
+        <ng-container *ngIf="chartMode==houseModeEnum.TrashCamera">
+          <div class="outside-square-right-top">
+            <div class="plus-square m-l-20">
+              <a class="howell-icon-plus light-blue-text" href=""></a></div>
+            <div class="text-square outside">
+              <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">
+                {{stationChart.outSidePosition.right.up.position}}</h5>
+            </div>
+          </div>
+          <div class="outside-square-right-bottom">
+            <div class="plus-square m-l-20">
+              <a class="howell-icon-plus light-blue-text" href=""></a></div>
+            <div class="text-square outside">
+              <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">
+                {{stationChart.outSidePosition.right.down.position}}
+              </h5>
+            </div>
+          </div>
+        </ng-container>
+      </td>
+    </tbody>
+  </table>
+</div>

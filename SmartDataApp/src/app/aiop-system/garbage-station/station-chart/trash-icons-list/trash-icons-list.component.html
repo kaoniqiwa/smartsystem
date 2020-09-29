@@ -1,0 +1,12 @@
+<ng-container *ngIf="model">
+  <div  class="icon-list-wrapper collapse " id="iconList">
+    <table class="fill-width fill-height">
+      <tr *ngFor="let item of model">
+        <td class="text-center"><a href="javascript:void(0)" style="position: relative;"  
+          class="{{item.icon}} text-white icon-item" (click)="trashIconListClick(item)">
+          <i class="howell-icon-Check collapse green-text" [class.in]="item.selected"></i>
+        </a></td>
+      </tr> 
+    </table>
+  </div>
+</ng-container>

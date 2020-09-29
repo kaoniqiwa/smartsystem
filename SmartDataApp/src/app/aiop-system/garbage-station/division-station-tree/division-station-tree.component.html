@@ -1,0 +1,9 @@
+<div class="m-b-20">
+  <hw-input-search [placeholder]="'名称'" [searchEvent]="searchTree"></hw-input-search>
+</div>
+<div class="fine" style="height: calc(100% - 90px);overflow: scroll;">
+  <ng-container *ngIf="dataService.divisions&&dataService.garbageStations">
+    <hw-custom-tree #garbageStationTree [treeData]="stationTreeService.treeNode" [selectedItemFn]="">
+    </hw-custom-tree>
+  </ng-container>
+</div>
