@@ -689,6 +689,11 @@ function WSPlayer(args) {
                 that_tools.control.slow.style.display = "none";
                 that_tools.control.fast.style.display = "none";
                 //that_tools.control.forward.style.display = "none";
+
+                that_tools.control.jump_back.style.display = "none";
+                that_tools.control.jump_forward.style.display = "none";
+
+
                 that_tools.control.begin_time.style.display = "none";
                 that_tools.control.position.style.display = "none";
                 that_tools.control.end_time.style.display = "none";
