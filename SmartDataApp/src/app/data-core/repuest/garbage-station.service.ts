@@ -13,6 +13,7 @@ import { GetGarbageStationnEventNumbersParams, EventNumberStatistic } from '../m
 import {
     GarbageStationNumberStatistic, GetGarbageStationStatisticNumbersParams
 } from '../model/waste-regulation/garbage-station-number-statistic';
+import { GarbageStationType } from "../model/waste-regulation/garbage-station-type";
 @Injectable({
     providedIn: 'root'
 })
@@ -157,5 +158,37 @@ export class GarbageStationTrashCanRequestService extends SaveModel {
 
     list(item: GetGarbageStationTrashCansParams) {
         return this.requestService.post<GetGarbageStationTrashCansParams, Response<PagedList<TrashCan>>>(this.url.postList(), item);
+    }
+}
+
+
+
+@Injectable({
+    providedIn: 'root'
+})
+export class GarbageStationTypeRequestService extends SaveModel {
+    url: url.GarbageStationType;
+    constructor(private requestService: HowellAuthHttpService) {
+        super();
+        this.url = new url.GarbageStationType();
+    }
+    create(item: GarbageStationType) {
+        return this.requestService.post<GarbageStationType, Response<GarbageStationType>>(this.url.create(), this.toModel(item, this.formMustField.garbageStationType));
+    }
+
+    get(type: string) {
+        return this.requestService.get<GarbageStationType>(this.url.get(type));
+    }
+
+    set(item: GarbageStationType) {
+        return this.requestService.put<GarbageStationType, Response<GarbageStationType>>(this.url.edit(item.Type+''), this.toModel(item, this.formMustField.garbageStationType));
+    }
+
+    del(type:string) {
+        return this.requestService.delete<GarbageStationType>(this.url.del(type));
+    }
+
+    list() {
+        return this.requestService.get<GarbageStationType[]>(this.url.list());
     }
 }

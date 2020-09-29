@@ -1,5 +1,5 @@
 
- /**获取资源信息请求参数 */
+/**获取资源信息请求参数 */
 export class GetResourcesParams {
     /**页码[1-n](可选) */
     PageIndex: number | null;
@@ -22,5 +22,7 @@ export class GetResourcesParams {
     /**平台ID(可选) */
     PlatformId: string;
     /**所属区域ID */
-    RegionId:string;
+    RegionIds: string[];
+    /**区域ID必须为NULL */
+    RegionIdNullable: boolean;
 }

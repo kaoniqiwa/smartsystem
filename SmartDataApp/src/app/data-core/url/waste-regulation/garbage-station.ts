@@ -91,3 +91,21 @@ export class GarbageStationTrashCans extends GarbageBaseUrl implements IUrl {
         return this.aiop + `GarbageStations/${stationId}/TrashCans`;
     }
 }
+
+export class GarbageStationType  extends GarbageBaseUrl implements IUrl {
+    create(): string {
+        return this.aiop + 'GarbageStations/Types';
+    }
+    edit(id: string): string {
+        return this.aiop + `GarbageStations/Types/${id}`;
+    }
+    del(id: string): string {
+        return this.aiop + `GarbageStations/Types/${id}`;
+    }
+    get(id: string): string {
+        return this.aiop + `GarbageStations/Types/${id}`;
+    }
+    list(){
+        return this.aiop + 'GarbageStations/Types';
+    }
+}

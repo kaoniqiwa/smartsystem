@@ -18,5 +18,7 @@ export class FormMustField{
   
     division =['Id','Name','IsLeaf','DivisionType'];
 
-    garbageStation=['Id','Name','StationType','MaxDryVolume','MaxWetVolume']
+    garbageStation=['Id','Name','StationType','MaxDryVolume','MaxWetVolume'];
+
+    garbageStationType=['Type','Name','No','CanType','CameraUsage'];
 }
