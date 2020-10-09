@@ -212,20 +212,30 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
             });
             setTimeout(() => {
                 const date = new Date();
-
-                $('#txt_end_time').timepicker({
-                    minuteStep: 1,
-                    showSeconds: true,
-                    showMeridian: false,
-                    defaultTime: date.getHours() + ':' + date.getMinutes() + ':' + '00'
+                $('#txt_end_time').wickedpicker({
+                    now: date.getHours() + ':' + date.getMinutes() + ':' + '00',
+                    twentyFour: true,
+                    showSeconds: true
                 });
                 date.setMinutes(date.getMinutes() - 5);
-                $('#txt_begin_time').timepicker({
-                    minuteStep: 1,
-                    showSeconds: true,
-                    showMeridian: false,
-                    defaultTime: date.getHours() + ':' + date.getMinutes() + ':' + '00'
+                $('#txt_begin_time').wickedpicker({
+                    now: date.getHours() + ':' + date.getMinutes() + ':' + '00',
+                    twentyFour: true,
+                    showSeconds: true
                 });
+                // $('#txt_end_time').timepicker({
+                //     minuteStep: 1,
+                //     showSeconds: true,
+                //     showMeridian: false,
+                //     defaultTime: date.getHours() + ':' + date.getMinutes() + ':' + '00'
+                // });
+                // date.setMinutes(date.getMinutes() - 5);
+                // $('#txt_begin_time').timepicker({
+                //     minuteStep: 1,
+                //     showSeconds: true,
+                //     showMeridian: false,
+                //     defaultTime: date.getHours() + ':' + date.getMinutes() + ':' + '00'
+                // });
 
             });
             setTimeout(() => {
