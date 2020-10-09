@@ -9,7 +9,7 @@
   <ul class="ul">
     <ng-container *ngFor="let camera of selectedCameras">
       <li class="video" (click)="OnCameraClicked(camera)">
-        <img [src]="camera.ImageUrl" [title]="camera.Name" />
+        <img [src]="camera.ImageUrl" (error)="OnImageError($event)" [title]="camera.Name" />
       </li>
     </ng-container>
   </ul>

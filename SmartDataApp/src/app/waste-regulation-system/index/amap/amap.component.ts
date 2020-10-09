@@ -149,7 +149,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
                             const camera_response = await this.aiopCameraService.get(datas[i].Id).toPromise();
                             if (camera_response) {
                                 if (camera_response.Data.ImageUrl) {
-                                    camera_response.Data.ImageUrl = this.mediaService.getData(camera_response.Data.ImageUrl);
+                                    camera_response.Data.ImageUrl = this.mediaService.getData(camera_response.Data.ImageUrl) + 'ssss';
                                 } else {
                                     camera_response.Data.ImageUrl = 'assets/img/timg.png';
                                 }
@@ -207,6 +207,10 @@ export class AMapComponent implements AfterViewInit, OnInit {
     }
     ngAfterViewInit() {
 
+    }
+
+    OnImageError(evt: Event) {
+        (evt.currentTarget as HTMLImageElement).src = 'assets/img/timg.png';
     }
 
     OnVillageWindowClosed() {
