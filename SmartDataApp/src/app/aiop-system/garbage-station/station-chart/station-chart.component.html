@@ -1,5 +1,5 @@
-<div style="overflow-x: auto;overflow-y: auto;position: relative;height: 500px;">
-  <table >
+<div  style="overflow-x: auto;max-width: 1100px;;overflow-y: auto;position: relative;height: 500px;">
+  <table>
     <tbody>
       <tr>
         <td>
@@ -17,26 +17,34 @@
     </tbody>
 
   </table>
-  <table class="deploy-table" [ngStyle]="{'width': tableW+'px'}">
+  <table class="deploy-table" [ngStyle]="{'width': stationChart.tableW+'px'}">
     <tbody>
-      <td style="position:relative;width: 158px;">       
+      <td style="position:relative;width: 158px;">
         <ng-container *ngIf="chartMode==houseModeEnum.TrashCamera">
-        <div class="outside-square-left-top">
-          <div class="plus-square m-l-20">
-            <a class="howell-icon-plus light-blue-text" href=""></a></div>
-          <div class="text-square outside">
-            <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">{{stationChart.outSidePosition.left.up.position}}
-            </h5>
-          </div>
-        </div>
-        <div class="outside-square-left-bottom">
-          <div class="plus-square m-l-20">
-            <a class="howell-icon-plus light-blue-text" href=""></a></div>
-          <div class="text-square outside">
-            <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">
-              {{stationChart.outSidePosition.left.down.position}}</h5>
-          </div>
-        </div></ng-container> 
+          <form [formGroup]="stationChart.cameraPostionForm">
+
+            <div class="outside-square-left-top">
+              <div class="plus-square m-l-20">
+                <a class="howell-icon-plus light-blue-text" href="javascript:void(0)"></a></div>
+              <div class="text-square outside" formArrayName="outside">
+                <input type="text" class="custom form-control mini" [formControlName]="0" maxlength="2"
+                  placeholder="编号">
+                <!-- <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">{{stationChart.outSidePosition.left.up.position}}
+            </h5> -->
+              </div>
+            </div>
+            <div class="outside-square-left-bottom">
+              <div class="plus-square m-l-20">
+                <a class="howell-icon-plus light-blue-text" href="javascript:void(0)"></a></div>
+              <div class="text-square outside" formArrayName="outside">
+                <input type="text" class="custom form-control mini" [formControlName]="2" maxlength="2"
+                  placeholder="编号">
+                <!-- <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">
+                  {{stationChart.outSidePosition.left.down.position}}</h5> -->
+              </div>
+            </div>
+          </form>
+        </ng-container>
       </td>
       <td [ngStyle]="{'width': stationChart.tableTdW+'px'}" style="position: relative;">
         <div style="position: absolute;left: 0px;bottom: 160px;width: 100%;z-index: 41;">
@@ -65,7 +73,7 @@
                 <div [ngSwitch]="i">
                   <div *ngSwitchCase="0" fxFlex="112px" style="height: 30px;">
                     <div class="plus-square pull-left">
-                      <a href="" class="howell-icon-plus light-blue-text"></a>
+                      <a href="javascript:void(0)" class="howell-icon-plus light-blue-text"></a>
                     </div>
                     <div class="line-square p-l-20">
                       <div class="line right">
@@ -79,7 +87,7 @@
                       </div>
                     </div>
                     <div class="plus-square pull-left">
-                      <a href="" class="howell-icon-plus light-blue-text"></a>
+                      <a href="javascript:void(0)" class="howell-icon-plus light-blue-text"></a>
                     </div>
                   </div>
 
@@ -89,7 +97,7 @@
                       </div>
                     </div>
                     <div class="plus-square pull-left">
-                      <a href="" class="howell-icon-plus light-blue-text"></a>
+                      <a href="javascript:void(0)" class="howell-icon-plus light-blue-text"></a>
                     </div>
                     <div class="line-square p-l-20">
                       <div class="line right">
@@ -100,55 +108,68 @@
               </ng-container>
             </div>
           </div>
-          <div class="inside-group1-line-square" [ngStyle]="{'width': stationChart.insideGroup1LineSquareW+'px'}">
-            <div fxLayout="row" fxLayoutAlign="space-between end">
-              <ng-container *ngFor="let li of stationChart.house.cameraPosition.inside.li1;let i=index">
-                <div fxFlex="70px" class="text-square">
-                  <h5 style="margin-top: 4px;" class="light-blue-text m-b-0">{{li.position}}</h5>
-                </div>
-              </ng-container>
+          <div class="inside-group1-line-square" style="z-index: 2;" [ngStyle]="{'width': stationChart.insideGroup1LineSquareW+'px'}">
+            <form [formGroup]="stationChart.cameraPostionForm">
+              <div fxLayout="row" fxLayoutAlign="space-between end">
 
-            </div>
+                <ng-container formArrayName="insideLi1">
+                  <div fxFlex="70px" class="text-square" *ngFor="let l of insideLi1.controls; let i=index">
+                    <input type="text" class="custom form-control mini" [formControlName]="i" maxlength="2"
+                      placeholder="编号">
+                    <!-- <h5 style="margin-top: 4px;" class="light-blue-text m-b-0">{{li.position}}</h5> -->
+                  </div>
+                </ng-container>
+              </div>
+            </form>
           </div>
-          <div class="inside-group2-square" [ngStyle]="{'width': stationChart.insideGroup2SquareW+'px'}">
+          <div class="inside-group2-square" style="z-index: 1;" [ngStyle]="{'width': stationChart.insideGroup2SquareW+'px'}">
             <div fxLayout="row" fxLayoutAlign="space-between end">
               <ng-container *ngFor="let li of stationChart.house.cameraPosition.inside.li2;let i=index">
                 <div fxFlex="30px" class="plus-square">
-                  <a href="" class="howell-icon-plus light-blue-text"></a>
+                  <a href="javascript:void(0)" class="howell-icon-plus light-blue-text"></a>
                 </div>
               </ng-container>
             </div>
           </div>
           <div class="inside-group2-line-square" [ngStyle]="{'width': stationChart.insideGroup2LineSquareW+'px'}">
+            <form [formGroup]="stationChart.cameraPostionForm">
             <div fxLayout="row" fxLayoutAlign="space-between end">
-              <ng-container *ngFor="let li of stationChart.house.cameraPosition.inside.li2;let i=index">
-                <div fxFlex="70px" class="text-square">
-                  <h5 style="margin-top: 4px;" class="light-blue-text m-b-0">{{li.position}}</h5>
+              <ng-container formArrayName="insideLi2">
+                <div fxFlex="70px" class="text-square"  *ngFor="let l of insideLi2.controls; let i=index">
+                  <input type="text" class="custom form-control mini" [formControlName]="i" maxlength="2"
+                  placeholder="编号">
+                  <!-- <h5 style="margin-top: 4px;" class="light-blue-text m-b-0">{{li.position}}</h5> -->
                 </div>
               </ng-container>
-            </div>
+            </div></form>
           </div>
         </ng-container>
       </td>
       <td style="position:relative;width: 158px;">
         <ng-container *ngIf="chartMode==houseModeEnum.TrashCamera">
-          <div class="outside-square-right-top">
-            <div class="plus-square m-l-20">
-              <a class="howell-icon-plus light-blue-text" href=""></a></div>
-            <div class="text-square outside">
-              <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">
-                {{stationChart.outSidePosition.right.up.position}}</h5>
+          <form [formGroup]="stationChart.cameraPostionForm">
+            <div class="outside-square-right-top">
+              <div class="plus-square m-l-20">
+                <a class="howell-icon-plus light-blue-text" href="javascript:void(0)"></a></div>
+              <div class="text-square outside" formArrayName="outside">
+                <input type="text" class="custom form-control mini" [formControlName]="1" maxlength="2"
+                  placeholder="编号">
+                <!-- <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">
+                {{stationChart.outSidePosition.right.up.position}}</h5> -->
+              </div>
             </div>
-          </div>
-          <div class="outside-square-right-bottom">
-            <div class="plus-square m-l-20">
-              <a class="howell-icon-plus light-blue-text" href=""></a></div>
-            <div class="text-square outside">
-              <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">
+            <div class="outside-square-right-bottom">
+              <div class="plus-square m-l-20">
+                <a class="howell-icon-plus light-blue-text" href="javascript:void(0)"></a></div>
+              <div class="text-square outside" formArrayName="outside">
+                <input type="text" class="custom form-control mini" [formControlName]="3" maxlength="2"
+                  placeholder="编号">
+                <!-- <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">
                 {{stationChart.outSidePosition.right.down.position}}
-              </h5>
+              </h5> -->
+              </div>
             </div>
-          </div>
+          </form>
         </ng-container>
       </td>
     </tbody>
