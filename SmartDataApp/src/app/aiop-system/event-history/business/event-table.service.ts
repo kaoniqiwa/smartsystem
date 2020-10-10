@@ -90,7 +90,7 @@ export class EventTableService{
         param.PageIndex = pageIndex;
         param.PageSize = new TableAttribute().pageSize;
         param.BeginTime = day.begin.toISOString();
-        param.EndTime=day.end.toISOString(); debugger
+        param.EndTime=day.end.toISOString();  
         const s = search.toSearchParam();
         if (s.SearchText && search.other == false) {
             param.ResourceName = s.SearchText;  
