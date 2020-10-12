@@ -1,0 +1,37 @@
+<div class="custom-form-wrap" style="width: 800px;">
+  <h2 class="m-b-20">{{'添加垃圾房' | FormTitle:[editItem,'Name']}}</h2> 
+  <form class="form-content m-b-20" [formGroup]="formService.form" (ngSubmit)="onSubmit()">
+    <div>
+      <input type="reset" #resetBtn class="collapse" value="">
+      <div fxLayout="row" class="form-group">
+        <div fxFlex="50">
+          <label class="custom control-label tran-input-label">名称</label>
+          <span class="text-danger p-t-10">*</span>
+          <input class="form-control custom" #name_ formControlName="Name">
+        </div>
+        <div fxFlex fxFlexOffset="10px">
+          <label class="custom control-label tran-input-label">类型</label>
+          <select #stationType_ (change)="changeStationType(stationType_.value)" class="form-control custom custom-select" formControlName="StationType">
+            <option [value]="p.Type" *ngFor="let p of stationType">{{p.Name}}</option>
+          </select>
+        </div>
+      </div>
+      <div fxLayout="row"  class="form-group" style="height: 400px;position: relative;transform: scale(0.5);" fxLayoutAlign="center center">
+        <div class="fill-width mask-chart ">
+  
+        </div>
+        <hw-garbage-chart #garbageChart [maxWidth]="'100%'"></hw-garbage-chart>
+  
+      </div>
+    </div>
+  </form>
+
+  <div  class="text-center">
+    <button class="hw-green-m-btn m-r-10" (click)="onSubmit()">
+      <i class="howell-icon-Check"></i>
+    </button>
+    <button class="hw-gray-m-btn"(click)="onCancel()">
+      <i class="howell-icon-Close"></i>
+    </button>
+  </div>
+</div>
