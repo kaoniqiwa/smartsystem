@@ -21,7 +21,7 @@
         <div class="parent-node" *ngIf="d.show" (click)="treeNodeClick(d)"
           [ngStyle]="{'background': stationList.selectedNode&&d.id==stationList.selectedNode.id ? '#2d76ce':'unset'}">
           <a href="javascript:void(0)">
-            <label class="m-0 default-label light-blue-text ele-nowrap default-label-width">
+            <label [class.text-white]="stationList.selectedNode&&d.id==stationList.selectedNode.id" class="m-0 default-label light-blue-text ele-nowrap default-label-width">
               <i class="howell-icon-map5"></i>
               {{d.name}}</label>
           </a>
@@ -31,9 +31,9 @@
   </div>
 
   <div style="width: calc(100% - 340px);" class="p-10 card-wrap   pull-left">
-    <h2 class="m-b-20 p-l-10 p-t-10">{{stationList.subTitle}}</h2>
+    <h2 class="m-b-20">{{stationList.subTitle}}</h2>
     <div fxLayout="row" class="filter-wrap m-b-10 collapse">
-      <div fxFlex="26" class="m-r-20  p-l-10 ">
+      <div fxFlex="26" class="m-r-20">
         <span class="text-white">名称</span>
         <input [readonly]="stationList.selectedNode" type="text" [value]="stationList.firstNameText" #typeName style="width: calc(100% - 46px);"
           class="custom form-control m-l-10">

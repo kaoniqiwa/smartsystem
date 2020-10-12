@@ -59,8 +59,11 @@ export class GarbageStationComponent implements OnInit {
   }
 
   addBtnClick() {
-    this.stationList.clearFirsNode();
-    this.chartComponent.initChart();
+    /** 防止反复初始化 */
+    if(this.stationList.selectedNode){
+      this.stationList.clearFirsNode();
+      this.chartComponent.initChart();
+    }  
   }
 
   async saveBtnClick(typeName: string) {
