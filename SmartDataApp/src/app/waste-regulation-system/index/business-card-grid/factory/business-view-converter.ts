@@ -18,7 +18,7 @@ import { IViewModel, ViewsModel } from '../../../../common/abstract/base-view';
 import { IConverter } from "../../../../common/interface/IConverter";
 import { Injector, Injectable } from '@angular/core';
 import { LineOption, PieOption } from '../../../../common/directive/echarts/echart';
-import { Percentage,TimeInterval } from '../../../../common/tool/tool.service' 
+import { Percentage, TimeInterval } from '../../../../common/tool/tool.service'
 import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
 import { EventNumber } from '../../../../data-core/model/waste-regulation/event-number';
@@ -28,23 +28,23 @@ export class IllegalDropHistoryCardConverter implements IConverter {
 
     Convert<IllegalDropEvent, ViewsModel>(input: IllegalDropEvent, output: ViewsModel): ViewsModel;
     Convert(input: IllegalDropEvent, output: ViewsModel<LineECharts>): ViewsModel<LineECharts> {
-        output.views=[];
+        output.views = [];
         output.pageSize = 1;
-        output.pageIndex = 1; 
+        output.pageIndex = 1;
         const lc = this.joinPart(new LineECharts());
         var enters1 = new Array<EventNumber>();
-        for (let i = 0; i < input.datas.length; i++) { 
-                enters1.push(input.datas[i]);
+        for (let i = 0; i < input.datas.length; i++) {
+            enters1.push(input.datas[i]);
         }
         lc.option.seriesData = new Array();
         for (const x of enters1)
             lc.option.seriesData.push(x.DeltaNumber);
-         output.views.push(lc);
-       
+        output.views.push(lc);
+
         return output;
     }
 
-    private joinPart(t1: LineECharts) { 
+    private joinPart(t1: LineECharts) {
         t1.title = "今日乱扔垃圾";
         t1.option = new LineOption();
         t1.option.xAxisData = [];
@@ -59,7 +59,7 @@ export class IllegalDropHistoryCardConverter implements IConverter {
                 t1.option.xAxisData.push('23' + ':59');
             else
                 t1.option.xAxisData.push(i + ':00');
-        } 
+        }
         return t1;
     }
 }
@@ -74,7 +74,7 @@ export class DevStatusCardConverter implements IConverter {
         output.pageIndex = 1;
         output.views[0].title = '设备运行状态';
         if (input instanceof DeviceStatus) {
-            const percent = Percentage(input.offlineCameraNumber, input.cameraNumber)
+            const percent = Percentage(input.cameraNumber - input.offlineCameraNumber, input.cameraNumber)
                 , level = (percent: number) => {
                     if (percent > 90)
                         return '正常';
@@ -89,9 +89,9 @@ export class DevStatusCardConverter implements IConverter {
                         return Arc._0;
                     else if (percent >= 80 && percent < 100)
                         return Arc._80;
-                    else if (percent >= 30 && percent <= 40)
+                    else if (percent >= 30 && percent < 80)
                         return Arc._40;
-                    else if (percent <= 20)
+                    else if (percent < 30)
                         return Arc._20;
 
                 };
@@ -163,26 +163,26 @@ export class IllegalDropEventConverter implements IConverter {
                 output.views[i].imgDesc2 = input.items[i].StationName;
                 output.views[i].imgSrc = pic.getJPG(input.items[i].ImageUrl);
                 output.views[i].title = '乱扔垃圾';
-                output.views[i].imgDesc1Icon  = 'howell-icon-signal2';
-                output.views[i].imgDesc1IconColor=ColorEnum["green-text"];
+                output.views[i].imgDesc1Icon = 'howell-icon-signal2';
+                output.views[i].imgDesc1IconColor = ColorEnum["green-text"];
                 output.views[i].titleColor = ColorEnum["red-text"];
                 output.views[i].subTitle = input.items[i].EventTime;
                 output.views[i].tag = {
-                    timeInterval:TimeInterval(input.items[i].EventTimeAll,-30),
-                    cameraId:input.items[i].ResourceId
-                } 
-                
+                    timeInterval: TimeInterval(input.items[i].EventTimeAll, -30),
+                    cameraId: input.items[i].ResourceId
+                }
+
                 // { stationId: string, cameraId: string }
             }
         }
         else if (isBoolean(input)) {
             output.views[0].title = '乱扔垃圾';
-            output.views[0].titleColor =  ColorEnum["red-text"];
+            output.views[0].titleColor = ColorEnum["red-text"];
             output.views[0].imgDesc1 = '';
-            output.views[0].imgDesc1Icon = input? 'howell-icon-signal2':'howell-icon-no_signal';
-            output.views[0].imgDesc1IconColor=input? ColorEnum["green-text"]:ColorEnum["red-text"];
-            output.views[0].imgDesc2='';
-            output.views[0].subTitle='';
+            output.views[0].imgDesc1Icon = input ? 'howell-icon-signal2' : 'howell-icon-no_signal';
+            output.views[0].imgDesc1IconColor = input ? ColorEnum["green-text"] : ColorEnum["red-text"];
+            output.views[0].imgDesc2 = '';
+            output.views[0].subTitle = '';
         }
         return output;
     }

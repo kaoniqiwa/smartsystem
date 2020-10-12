@@ -25,10 +25,12 @@ function inputFileRead(domId, loadFileFn) {
     }
 }
 
-function removeClass(domName, className) {
-    if (className)
-        $(domName).removeClass(className);
-    else $(domName).removeClass(domName);
+function hasClassName(domId, className) {  
+    return $('#'+domId).hasClass(className);
+ }
+
+function removeClass(domId, className) { 
+   $('#'+domId).removeClass(className);
 }
 
 function scrollTopPostion(domId, postion) {
@@ -44,8 +46,12 @@ function enterKeyDown(fn){
       };
 }
 
-function domCss(domId,css){
+function domCss(domId,css){ 
     $('#'+domId).css(css);
+}
+
+function addClass(domId, className) { 
+    $('#'+domId).addClass(className);
 }
 
 exports.moveView = moveView;
@@ -56,3 +62,5 @@ exports.scrollTopPostion = scrollTopPostion;
 exports.removeClass = removeClass;
 exports.enterKeyDown=enterKeyDown;
 exports.domCss=domCss;
+exports.addClass=addClass;
+exports.hasClassName=hasClassName;

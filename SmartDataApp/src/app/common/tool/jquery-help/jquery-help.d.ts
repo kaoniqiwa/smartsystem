@@ -10,6 +10,10 @@ export declare function scrollTopPostion(domId:string,postion:number);
 
 export declare function enterKeyDown(fn:()=>void);
 
-export declare function removeClass(domName:string,className?:string);
+export declare function removeClass(domId:string,className?:string);
 
 export declare function domCss(domId:string,css:any);
+
+export declare function addClass(domId:string,className:string);
+
+export declare function hasClassName(domId:string,className:string);

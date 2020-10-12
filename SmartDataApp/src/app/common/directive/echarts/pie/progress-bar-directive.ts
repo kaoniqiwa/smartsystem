@@ -62,7 +62,7 @@ ngOnChanges(){
                                         offset: 1,
                                         color: '#28ce38' // 0% 处的颜色
                                     },{
-                                        offset: 0.5,
+                                        offset: 0.7,
                                         color: '#ff9100' // 0% 处的颜色
                                     },
                                     {
