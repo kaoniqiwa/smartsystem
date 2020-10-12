@@ -209,6 +209,10 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
     }
 
+    OnImageError(evt: Event) {
+        (evt.currentTarget as HTMLImageElement).src = 'assets/img/timg.png';
+    }
+
     OnVillageWindowClosed() {
         if (this.autoCloseWindowHandle) {
             clearTimeout(this.autoCloseWindowHandle);
