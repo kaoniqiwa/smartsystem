@@ -29,6 +29,7 @@ export class CameraTableService extends InputLabelService {
     regionTree = new RegionTree(null);
     encodeDevices = Array<EncodeDevice>();
     search = new SearchControl();
+    clearTableSelectItemFn :()=>void;
     createLabelFn = async (item: InputTagArea, fn: (id: string) => void) => {
         await this.createLabel(item, (id) => fn(id));
     }
@@ -76,6 +77,7 @@ export class CameraTableService extends InputLabelService {
 
         this.regionTree.loadRegionCameras = async (regionId: string) => {
             this.search.clearState();
+            this.clearTableSelectItemFn();
             await this.requestCamerasData(1, (page) => {
                 this.cameraTable.initPagination(page, async (index) => {
                     await this.requestCamerasData(index);

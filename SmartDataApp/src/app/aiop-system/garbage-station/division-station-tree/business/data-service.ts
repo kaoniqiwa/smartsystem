@@ -7,29 +7,34 @@ import { Division, GetDivisionsParams } from "../../../../data-core/model/waste-
 import { GarbageStation, GetGarbageStationsParams } from "../../../../data-core/model/waste-regulation/garbage-station";
 @Injectable()
 export class DataService {
-   
+
     divisions = new Array<Division>();
     garbageStations = new Array<GarbageStation>();
-  
+
     constructor(private divisionService: DivisionRequestService
-        , private garbageStationService: GarbageStationRequestService ) {
+        , private garbageStationService: GarbageStationRequestService) {
 
-    } 
+    }
 
-    async requestGarbageStation(ancestorId: string) {
+    async requestGarbageStation(ancestorId: string, divisionId?: string) {
         const param = new GetGarbageStationsParams();
-        param.PageIndex = 1; 
-        param.AncestorId = ancestorId
+        param.PageIndex = 1;
+        if (ancestorId)
+            param.AncestorId = ancestorId;
+        if (divisionId)
+            param.DivisionId = divisionId;
         param.PageSize = new ListAttribute().maxSize;
         const response = await this.garbageStationService.list(param).toPromise();
         return response.Data.Data;
-    } 
+    }
+
+
 
     async requestDivision() {
         const param = new GetDivisionsParams();
         param.PageIndex = 1;
         param.PageSize = new ListAttribute().maxSize;
         const response = await this.divisionService.list(param).toPromise();
-        return   response.Data.Data;
-    }  
+        return response.Data.Data;
+    }
 }

@@ -1,4 +1,4 @@
-<div  style="overflow-x: auto;max-width: 1100px;;overflow-y: auto;position: relative;height: 500px;">
+<div [ngStyle]="{'max-width': maxWidth}" style="overflow-x: auto;overflow-y: auto;position: relative;height: 500px;">
   <table>
     <tbody>
       <tr>
@@ -20,15 +20,15 @@
   <table class="deploy-table" [ngStyle]="{'width': stationChart.tableW+'px'}">
     <tbody>
       <td style="position:relative;width: 158px;">
-        <ng-container *ngIf="chartMode==houseModeEnum.TrashCamera">
+        <ng-container>
           <form [formGroup]="stationChart.cameraPostionForm">
 
             <div class="outside-square-left-top">
               <div class="plus-square m-l-20">
                 <a class="howell-icon-plus light-blue-text" href="javascript:void(0)"></a></div>
               <div class="text-square outside" formArrayName="outside">
-                <input type="text" class="custom form-control mini" [formControlName]="0" maxlength="2"
-                  placeholder="编号">
+                <input type="text" [readonly]="chartMode!=houseModeEnum.Trash" class="custom form-control mini"
+                  [formControlName]="0" maxlength="2" placeholder="编号">
                 <!-- <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">{{stationChart.outSidePosition.left.up.position}}
             </h5> -->
               </div>
@@ -37,8 +37,8 @@
               <div class="plus-square m-l-20">
                 <a class="howell-icon-plus light-blue-text" href="javascript:void(0)"></a></div>
               <div class="text-square outside" formArrayName="outside">
-                <input type="text" class="custom form-control mini" [formControlName]="2" maxlength="2"
-                  placeholder="编号">
+                <input type="text" [readonly]="chartMode!=houseModeEnum.Trash" class="custom form-control mini"
+                  [formControlName]="2" maxlength="2" placeholder="编号">
                 <!-- <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">
                   {{stationChart.outSidePosition.left.down.position}}</h5> -->
               </div>
@@ -66,14 +66,18 @@
           <hw-trash-icons-list [model]="stationChart.trashIcons" [itemClickFn]="stationChart.itemClickFn">
           </hw-trash-icons-list>
         </div>
-        <ng-container *ngIf="chartMode==houseModeEnum.TrashCamera">
+        <ng-container>
           <div class="inside-group1-square">
             <div fxLayout="row">
               <ng-container *ngFor="let li of stationChart.house.cameraPosition.inside.li1;let i=index">
                 <div [ngSwitch]="i">
                   <div *ngSwitchCase="0" fxFlex="112px" style="height: 30px;">
-                    <div class="plus-square pull-left">
-                      <a href="javascript:void(0)" class="howell-icon-plus light-blue-text"></a>
+                    <div class="plus-square pull-left" [class.sky-blue-border]="!li.id" [class.green-border]="li.id"
+                      (click)="plusSquareClick(li)">
+                      <a href="javascript:void(0)">
+                        <i [class.howell-icon-video]="li.id" [class.howell-icon-plus]="!li.id"
+                          [class.green-text]="li.id" [class.light-blue-text]="!li.id"></i>
+                      </a>
                     </div>
                     <div class="line-square p-l-20">
                       <div class="line right">
@@ -86,8 +90,12 @@
                       <div class="line left">
                       </div>
                     </div>
-                    <div class="plus-square pull-left">
-                      <a href="javascript:void(0)" class="howell-icon-plus light-blue-text"></a>
+                    <div class="plus-square pull-left" [class.sky-blue-border]="!li.id" [class.green-border]="li.id"
+                      (click)="plusSquareClick(li)">
+                      <a href="javascript:void(0)">
+                        <i [class.howell-icon-video]="li.id" [class.howell-icon-plus]="!li.id"
+                          [class.green-text]="li.id" [class.light-blue-text]="!li.id"></i>
+                      </a>
                     </div>
                   </div>
 
@@ -96,8 +104,12 @@
                       <div class="line left">
                       </div>
                     </div>
-                    <div class="plus-square pull-left">
-                      <a href="javascript:void(0)" class="howell-icon-plus light-blue-text"></a>
+                    <div class="plus-square pull-left" [class.sky-blue-border]="!li.id" [class.green-border]="li.id"
+                      (click)="plusSquareClick(li)">
+                      <a href="javascript:void(0)">
+                        <i [class.howell-icon-video]="li.id" [class.howell-icon-plus]="!li.id"
+                          [class.green-text]="li.id" [class.light-blue-text]="!li.id"></i>
+                      </a>
                     </div>
                     <div class="line-square p-l-20">
                       <div class="line right">
@@ -108,21 +120,23 @@
               </ng-container>
             </div>
           </div>
-          <div class="inside-group1-line-square" style="z-index: 2;" [ngStyle]="{'width': stationChart.insideGroup1LineSquareW+'px'}">
+          <div class="inside-group1-line-square"
+            [ngStyle]="{'width': stationChart.insideGroup1LineSquareW+'px','z-index': chartMode!=houseModeEnum.TrashCamera?2:1}">
             <form [formGroup]="stationChart.cameraPostionForm">
               <div fxLayout="row" fxLayoutAlign="space-between end">
 
                 <ng-container formArrayName="insideLi1">
                   <div fxFlex="70px" class="text-square" *ngFor="let l of insideLi1.controls; let i=index">
                     <input type="text" class="custom form-control mini" [formControlName]="i" maxlength="2"
-                      placeholder="编号">
+                      placeholder="编号" [readonly]="chartMode!=houseModeEnum.Trash">
                     <!-- <h5 style="margin-top: 4px;" class="light-blue-text m-b-0">{{li.position}}</h5> -->
                   </div>
                 </ng-container>
               </div>
             </form>
           </div>
-          <div class="inside-group2-square" style="z-index: 1;" [ngStyle]="{'width': stationChart.insideGroup2SquareW+'px'}">
+          <div class="inside-group2-square"
+            [ngStyle]="{'width': stationChart.insideGroup2SquareW+'px','z-index': chartMode!=houseModeEnum.TrashCamera?1:2}">
             <div fxLayout="row" fxLayoutAlign="space-between end">
               <ng-container *ngFor="let li of stationChart.house.cameraPosition.inside.li2;let i=index">
                 <div fxFlex="30px" class="plus-square">
@@ -133,27 +147,28 @@
           </div>
           <div class="inside-group2-line-square" [ngStyle]="{'width': stationChart.insideGroup2LineSquareW+'px'}">
             <form [formGroup]="stationChart.cameraPostionForm">
-            <div fxLayout="row" fxLayoutAlign="space-between end">
-              <ng-container formArrayName="insideLi2">
-                <div fxFlex="70px" class="text-square"  *ngFor="let l of insideLi2.controls; let i=index">
-                  <input type="text" class="custom form-control mini" [formControlName]="i" maxlength="2"
-                  placeholder="编号">
-                  <!-- <h5 style="margin-top: 4px;" class="light-blue-text m-b-0">{{li.position}}</h5> -->
-                </div>
-              </ng-container>
-            </div></form>
+              <div fxLayout="row" fxLayoutAlign="space-between end">
+                <ng-container formArrayName="insideLi2">
+                  <div fxFlex="70px" class="text-square" *ngFor="let l of insideLi2.controls; let i=index">
+                    <input type="text" class="custom form-control mini" [formControlName]="i" maxlength="2"
+                      placeholder="编号" [readonly]="chartMode!=houseModeEnum.Trash">
+                    <!-- <h5 style="margin-top: 4px;" class="light-blue-text m-b-0">{{li.position}}</h5> -->
+                  </div>
+                </ng-container>
+              </div>
+            </form>
           </div>
         </ng-container>
       </td>
       <td style="position:relative;width: 158px;">
-        <ng-container *ngIf="chartMode==houseModeEnum.TrashCamera">
+        <ng-container>
           <form [formGroup]="stationChart.cameraPostionForm">
             <div class="outside-square-right-top">
               <div class="plus-square m-l-20">
                 <a class="howell-icon-plus light-blue-text" href="javascript:void(0)"></a></div>
               <div class="text-square outside" formArrayName="outside">
-                <input type="text" class="custom form-control mini" [formControlName]="1" maxlength="2"
-                  placeholder="编号">
+                <input type="text" [readonly]="chartMode!=houseModeEnum.Trash" class="custom form-control mini"
+                  [formControlName]="1" maxlength="2" placeholder="编号">
                 <!-- <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">
                 {{stationChart.outSidePosition.right.up.position}}</h5> -->
               </div>
@@ -162,8 +177,8 @@
               <div class="plus-square m-l-20">
                 <a class="howell-icon-plus light-blue-text" href="javascript:void(0)"></a></div>
               <div class="text-square outside" formArrayName="outside">
-                <input type="text" class="custom form-control mini" [formControlName]="3" maxlength="2"
-                  placeholder="编号">
+                <input type="text" [readonly]="chartMode!=houseModeEnum.Trash" class="custom form-control mini"
+                  [formControlName]="3" maxlength="2" placeholder="编号">
                 <!-- <h5 style="margin-top: 2px;" class="light-blue-text m-b-0">
                 {{stationChart.outSidePosition.right.down.position}}
               </h5> -->

@@ -3,6 +3,7 @@ import { CustomTreeComponent } from '../../../shared-module/custom-tree/custom-t
 import { DataService } from "./business/data.service";
 import { GarbageStationList } from "./business/garbage-station-list";
 import { StationChartComponent } from "../station-chart/station-chart.component";
+import { HouseModeEnum } from "../station-chart/business/station-chart";
 import { GarbageStationType } from "../../../data-core/model/waste-regulation/garbage-station-type";
 import { MessageBar } from "../../../common/tool/message-bar";
 import { DivisionTreeNode } from '../../common/tree.service';
@@ -14,6 +15,7 @@ import { DivisionTreeNode } from '../../common/tree.service';
 })
 export class GarbageStationComponent implements OnInit {
   stationList: GarbageStationList;
+  trashMode=HouseModeEnum.Trash;
 
   @ViewChild('stationTree')
   cameraTree: CustomTreeComponent;
@@ -49,7 +51,7 @@ export class GarbageStationComponent implements OnInit {
     this.stationList.selectNode(node);
     this.chartComponent.stationChart.changeTrashNum(type.Windows.length + '')
     this.chartComponent.stationChart.changeHouseType = type;
-
+console.log(this.chartComponent.stationChart.house);
 
   }
 

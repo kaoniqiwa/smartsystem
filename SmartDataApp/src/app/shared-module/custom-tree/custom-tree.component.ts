@@ -15,13 +15,14 @@ export class CustomTreeComponent implements OnInit {
 
   selectedItems = new Array<FlatNode>();
   @Input() selectedItemFn: (item: FlatNode, inputVal?: string) => void;
+  @Input() rightBtnFn: (item: FlatNode) => void;
   @Input() treeData: TreeNode[];
   @Input() mode = TreeListMode.nomal;
 
   ngOnInit() {
     this.dataSource.data = this.treeData;
 
-  }
+  } 
   private transformer = (node: TreeNode, level: number) => {
 
     const existingNode = this.nestedNodeMap.get(node);
@@ -38,8 +39,10 @@ export class CustomTreeComponent implements OnInit {
       flatNode.id = node.id
     flatNode.inputVal = node['inputVal'] || '';
     flatNode.label = node['label'] || '';
+    flatNode.rightClassBtn=node.rightClassBtn;
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);
+    
     return flatNode;
   }
 
@@ -107,7 +110,11 @@ export class CustomTreeComponent implements OnInit {
   }
 
   get selectedItemClass() {
-    return this.selectedItems.length ? this.selectedItems[0].id : '';
+    return this.selectedItems.length ? this.selectedItems[0].id : null;
+  }
+
+  rightBtnClick(item: FlatNode){ 
+    if (this.rightBtnFn && this.mode == TreeListMode.rightBtn) this.rightBtnFn(item);
   }
 
   itemClick(item: FlatNode) {

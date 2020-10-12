@@ -107,4 +107,13 @@ export class RegionTreeService extends ListAttribute {
     noChildNodes(id: string, len: number) {
         return this.dataSource.filter(x => x.ParentId == id).length == len;
     }
+
+    singleNode(name:string,icon:string){
+        const node = new TreeNode();
+        node.name = name ;
+        node.checked = false;
+        node.id = '';
+        node.iconClass = icon;
+        return node; 
+    }
 }

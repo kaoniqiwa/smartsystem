@@ -80,6 +80,14 @@ export class SideNavMenuComponent implements OnInit {
     this.menuTree.push(item);
     item = new MenuTree('howell-icon-device2','监管平台');
     item.nodes.push({
+      text:'垃圾厢房',
+      url:'/aiop/garbage-station/index'
+    }); 
+    item.nodes.push({
+      text:'垃圾厢房管理',
+      url:'/aiop/garbage-station/garbage-station-mgr'
+    }); 
+    item.nodes.push({
       text:'摄像机布控',
       url:'/aiop/garbage-station/deploy-camera'
     }); 

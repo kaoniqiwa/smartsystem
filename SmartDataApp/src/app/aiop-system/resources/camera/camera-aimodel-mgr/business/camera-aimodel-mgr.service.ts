@@ -149,7 +149,7 @@ export class CameraAIModelMgrService extends RegionTreeService {
             if (s.AndLabelIds.length) param.AndLabelIds = s.AndLabelIds;
         }
         if (regionId) {
-            param.RegionId = regionId;
+            param.RegionIds = [regionId];
             param.PageSize = new ListAttribute().maxSize;
         }
         return param;

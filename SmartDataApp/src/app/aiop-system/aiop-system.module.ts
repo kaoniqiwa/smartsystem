@@ -27,6 +27,14 @@ import { SRServerFormComponent } from './sr-server/sr-service-form/srserver-form
 import { RegionCameraCopyComponent } from './resources/camera/region-camera-copy/region-camera-copy.component';
 import { EventHistoryComponent } from './event-history/event-history.component';
 import { DeployCameraComponent } from './garbage-station/deploy-camera/deploy-camera.component';
+import { TrashIconsListComponent } from './garbage-station/station-chart/trash-icons-list/trash-icons-list.component';
+import { CameraRegionMoveComponent } from './resources/camera/camera-region-move/camera-region-move.component';
+import { GarbageStationMgrComponent } from './garbage-station/garbage-station-mgr/garbage-station-mgr.component';
+import { StationChartComponent } from './garbage-station/station-chart/station-chart.component';
+import { DivisionStationTreeComponent } from './garbage-station/division-station-tree/division-station-tree.component';
+import { RegionCameraTreeComponent } from './garbage-station/region-camera-tree/region-camera-tree.component';
+import { GarbageStationComponent } from './garbage-station/garbage-station/garbage-station.component';
+import { GarbageStationFormComponent } from './garbage-station/garbage-station-form/garbage-station-form.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -38,7 +46,10 @@ import { DeployCameraComponent } from './garbage-station/deploy-camera/deploy-ca
   SideNavMenuComponent,HistoryLinkToolComponent,
   CameraFormComponent,  CameraMgrComponent,
   EncodeDeviceMgrComponent,EncodeDeviceFormComponent, RegionMgrComponent,
-  RegionFormComponent, PlatformMgrComponent, PlatformFormComponent, AIModelsMgrComponent, AIModelFormComponent, CameraAIModelMgrComponent, SRServersMgrComponent, SRServerFormComponent, RegionCameraCopyComponent, EventHistoryComponent, DeployCameraComponent ],
+  RegionFormComponent, PlatformMgrComponent, PlatformFormComponent, AIModelsMgrComponent, AIModelFormComponent
+  , CameraAIModelMgrComponent, SRServersMgrComponent, SRServerFormComponent, RegionCameraCopyComponent, EventHistoryComponent
+  , DeployCameraComponent, TrashIconsListComponent
+  , CameraRegionMoveComponent, GarbageStationMgrComponent, StationChartComponent, DivisionStationTreeComponent, RegionCameraTreeComponent, GarbageStationComponent, GarbageStationFormComponent ],
   exports:[
   ]
 })

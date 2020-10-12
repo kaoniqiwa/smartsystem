@@ -7,6 +7,7 @@ export class TreeNode {
     name: string;
     checked:boolean;
     iconClass:string;
+    rightClassBtn:string[];
     children?: TreeNode[];
   }
 
@@ -26,6 +27,7 @@ export class TreeNode {
     label:string;
     inputVal:string;
     iconClass:string;
+    rightClassBtn:string[];
     checkBoxState:CheckBoxStateEnum;
     checkedChilds:number = 0;
 
@@ -40,5 +42,6 @@ export enum CheckBoxStateEnum{
   export enum TreeListMode{
      nomal,
      rightInput,
-     checkedBox
+     checkedBox,
+     rightBtn
   }

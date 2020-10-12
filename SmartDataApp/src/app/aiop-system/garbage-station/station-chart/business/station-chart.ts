@@ -70,6 +70,7 @@ export class StationChart {
         const outside = this.cameraPostionForm.get('outside') as FormArray
             , insideLi1 = this.cameraPostionForm.get('insideLi1') as FormArray
             , insideLi2 = this.cameraPostionForm.get('insideLi2') as FormArray;
+       
         if (type) {
             for (let i = 0; i < type.Windows.length; i++) {
                 type.Windows = type.Windows.sort(function (a, b) {
@@ -86,13 +87,17 @@ export class StationChart {
                 const slot = type.CameraSlots[i];
                 if (i <= 3) {
                     outside.controls[i].setValue(slot.PositionNo);
-
+                    this.house.cameraPosition.outside[i].position =slot.PositionNo;
                 }
-                else if (i > 3 && i <= this.house.interior.length + 3)
+                else if (i > 3 && i <= this.house.interior.length + 3){
                     insideLi1.controls[i - 4].setValue(slot.PositionNo);
-
-                else
+                    this.house.cameraPosition.inside.li1[i-4].position =slot.PositionNo;
+                }                  
+                else{
                     insideLi2.controls[i - (this.house.interior.length + 4)].setValue(slot.PositionNo);
+                    this.house.cameraPosition.inside.li2[i - (this.house.interior.length + 4)].position =slot.PositionNo;
+                }
+                   
             }
         }
     }

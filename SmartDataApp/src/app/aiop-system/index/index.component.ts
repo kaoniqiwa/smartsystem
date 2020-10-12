@@ -44,9 +44,14 @@ export class IndexComponent implements OnInit {
   maximize = true;
   constructor(private router:Router) {
     const u = new SessionUser();
-    if(u.user.name || u.user.pwd)this.router.navigateByUrl('login');
+    if(u.user.name=='' || u.user.pwd=='')this.router.navigateByUrl('login');
   }
   ngOnInit() {
 
+  }
+
+  menuControl(maximize:boolean){ 
+    this.maximize=maximize;
+   this.navMenu.maximize=maximize; 
   }
 }

@@ -14,7 +14,7 @@
             <i class="howell-icon-Square" style="font-size: x-small;position: relative;bottom: 3px;" *ngIf="node.checkBoxState==checkBoxState.all"></i>
           </div>
         </ng-container>
-        <label [class.default-label-width]="mode == listMode.nomal" [ngStyle]="{'color': node.id==selectedItemClass?'white':'#cfd7ff'}"
+        <label title="{{node.name}}" [class.default-label-width]="mode == listMode.nomal||listMode.rightBtn==mode" [ngStyle]="{'color': node.id==selectedItemClass?'white':'#cfd7ff'}"
         class="m-0 default-label">
 
           <i  class="{{node.iconClass}}"></i>
@@ -30,6 +30,13 @@
               <input type="text" value=" {{node.inputVal}}" [event]="touchSpinEvent" NgTouchSpin
                 class="form-control custom touchspin">
             </div>
+          </div>
+        </ng-container> 
+        <ng-container *ngIf="listMode.rightBtn==mode">
+          <div class="pull-right  p-r-10 right-btn-wrapper">
+            <ng-container *ngFor="let b of node.rightClassBtn">
+              <a href="javascript:void(0)" (click)="rightBtnClick(node)"  class="{{b}} "></a>
+           </ng-container> 
           </div>
         </ng-container>
       </div>

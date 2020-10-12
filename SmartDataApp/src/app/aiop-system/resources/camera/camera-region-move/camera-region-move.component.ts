@@ -28,9 +28,12 @@ export class CameraRegionMoveComponent implements OnInit {
   treeDataSource: TreeNode[] = new Array();
   searchTree = (text: string) => {
     const dataSource = this.tableService.regionTree.filterNodes(text);
+    if (this.tableService.regionTree.selectedNodeId) {
+      dataSource.push(this.treeService.singleNode('未分配摄像机', 'howell-icon-video'));
+      dataSource.reverse();
+    }
     this.tree.clearNestedNode();
-    this.tree.dataSource.data = dataSource;
-    this.tree.defaultItem();
+    this.tree.dataSource.data = dataSource; 
     this.tree.treeControl.expandAll();
   }
   selectedNode: FlatNode;
@@ -60,8 +63,8 @@ export class CameraRegionMoveComponent implements OnInit {
       dataSource.reverse();
     }
     this.treeDataSource = dataSource;
-    this.tree.dataSource.data = dataSource;
-
+    this.tree.dataSource.data = dataSource; 
+ 
   }
 
   async onSubmit() {

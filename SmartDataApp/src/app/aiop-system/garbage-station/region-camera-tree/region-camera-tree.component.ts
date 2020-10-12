@@ -1,8 +1,9 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit,ViewChild ,Input} from '@angular/core';
 import {  DataService } from "./business/data-service";
 import {RegionCameraTree  } from "./business/region-camera-tree";
 import { CustomTreeComponent } from "../../../shared-module/custom-tree/custom-tree.component";
 import { NodeTypeEnum } from '../../common/tree.service';
+import { FlatNode } from '../../../shared-module/custom-tree/custom-tree';
 
 @Component({
   selector: 'hw-region-camera-tree',
@@ -14,6 +15,13 @@ export class RegionCameraTreeComponent implements OnInit {
  @ViewChild('cameraTree')
   cameraTree:CustomTreeComponent;
 
+  @Input()
+  selectedItemFn:(item: FlatNode)=>void;
+
+  selectedItemClick = (item: FlatNode)=>{ 
+    if(this.selectedItemFn)this.selectedItemFn(item);
+  }
+
   searchTree = (text: string) => {
     const dataSource = this.regionCameraTree.filterNodes(text,NodeTypeEnum.camera);     
     this.cameraTree.clearNestedNode();
@@ -22,7 +30,7 @@ export class RegionCameraTreeComponent implements OnInit {
   }
 
   constructor(private regionCameraTree: RegionCameraTree
-    , private dataService: DataService) { }
+    , public dataService: DataService) { }
 
   async ngOnInit() {
     this.dataService.regions = await this.dataService.requestRegion();

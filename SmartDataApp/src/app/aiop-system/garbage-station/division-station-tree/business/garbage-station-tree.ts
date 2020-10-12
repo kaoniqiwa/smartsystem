@@ -33,8 +33,7 @@ export class StationTreeService extends TreeService{
     convertStationTreeNode(){ 
        const nodeA= this.convertTreeNode(this.garbageStations),
        nodeB= this.convertTreeNode(this.divisions); 
-        this.dataSource = [...nodeA,...nodeB]; 
-        
+        this.dataSource = [...nodeA,...nodeB];         
     }
 
     loadStationTree(){
@@ -69,7 +68,14 @@ export class StationTreeService extends TreeService{
         }  
     }
    
-
+    isLastNode(nodeId:string) {
+        var is = false; 
+        const nodes = this.allLastChilds(this.treeNode);
+        for (const n of nodes)
+            if (n.id == nodeId)
+                is = true;
+        return is;
+    }
 }
 
 export class GarbageStationDao{

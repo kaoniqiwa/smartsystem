@@ -10,6 +10,8 @@ import { CameraAIModelMgrComponent } from './resources/camera/camera-aimodel-mgr
 import { SRServersMgrComponent } from "./sr-server/srservers-mgr/srservers-mgr.component";
 import { EventHistoryComponent } from "./event-history/event-history.component";
 import { DeployCameraComponent } from "./garbage-station/deploy-camera/deploy-camera.component";
+import {GarbageStationMgrComponent} from './garbage-station/garbage-station-mgr/garbage-station-mgr.component';
+import { GarbageStationComponent } from "./garbage-station/garbage-station/garbage-station.component";
 const routes: Routes = [
 
   {
@@ -40,7 +42,9 @@ const routes: Routes = [
       , { path: 'event-history', component: EventHistoryComponent }
       , {
         path: 'garbage-station', children: [
-          { path: 'deploy-camera', component: DeployCameraComponent }
+          { path: 'deploy-camera', component: DeployCameraComponent },
+          { path:'garbage-station-mgr',component:GarbageStationMgrComponent},
+          { path:'index',component:GarbageStationComponent}
         ]
       }
     ]
