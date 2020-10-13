@@ -71,7 +71,7 @@
     float: right;
     margin-left: 5px;
     background-color: black;
-    border: black 1px solid;
+    border: transparent 2px solid;
     cursor: pointer;
   }
   .map-bar.video-list .video:first-child{
@@ -86,7 +86,7 @@
       filter: gray;  
   }
   .map-bar.video-list .video:hover {
-    border: #3a72ce 1px solid;
+    border: #2d76ce 2px solid;
   }
 
   .map-bar.video-list .video .howell-icon-no_signal{
