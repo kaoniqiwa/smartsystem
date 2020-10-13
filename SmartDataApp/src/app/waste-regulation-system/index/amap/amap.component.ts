@@ -93,17 +93,14 @@ export class AMapComponent implements AfterViewInit, OnInit {
         // tslint:disable-next-line:forin
         for (const id in this.garbages) {
             try {
-
-
-                if (this.garbages[id].DryFull || this.garbages[id].WetFull) {
+                if (this.garbages[id].StationState > 0) {
                     const status = {
                         id: id,
-                        status: 1
+                        status: this.garbages[id].StationState === 1 ? 1 : 2
                     };
                     console.log(status);
                     arrayStatus.push(status);
                 }
-
             } catch (ex) {
                 console.error(ex);
             }
