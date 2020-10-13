@@ -33,78 +33,82 @@ export class SideNavMenuComponent implements OnInit {
   private currentMenus_ = new Array<string>();
   private highlightedBtn = new Array<string>();
   menuTree = new Array<MenuTree>();
- 
+
   constructor() {
-    var item = new MenuTree('howell-icon-device2','平台');  
-    item.an=true; 
+    let item = new MenuTree('howell-icon-device2', '平台');
+    item.an = true;
     item.nodes.push({
-      url :'/aiop/platform/platform-mgr',
-      text:'平台管理'
+      url: '/aiop/platform/platform-mgr',
+      text: '平台管理'
     });
     item.nodes.push({
-      url :'/aiop/platform/sr-service-mgr',
-      text:'流转服务管理'
+      url: '/aiop/platform/sr-service-mgr',
+      text: '流转服务管理'
     });
     this.menuTree.push(item);
-    item = new MenuTree('howell-icon-device2','区域');
+    item = new MenuTree('howell-icon-device2', '区域');
     item.nodes.push({
-      text:'区域管理',
-      url:'/aiop/regions/region-mgr'
-    }); 
-    this.menuTree.push(item); 
-    item = new MenuTree('howell-icon-device2','设备管理');
-    item.nodes.push({
-      text:'监控点',
-      url:'/aiop/resources/camera-mgr'
-    });
-    item.nodes.push({
-      text:'编码器',
-      url:'/aiop/resources/encode-device-mgr'
-    }); 
-    item.nodes.push({
-      text:'监控点模型',
-      url:'/aiop/resources/camera-ai-model-mgr'
+      text: '区域管理',
+      url: '/aiop/regions/region-mgr'
     });
     this.menuTree.push(item);
-    item = new MenuTree('howell-icon-device2','AI模型');
+    item = new MenuTree('howell-icon-device2', '设备管理');
     item.nodes.push({
-      text:'AI模型列表',
-      url:'/aiop/ai-models/ai-models-mgr'
-    }); 
+      text: '监控点',
+      url: '/aiop/resources/camera-mgr'
+    });
+    item.nodes.push({
+      text: '编码器',
+      url: '/aiop/resources/encode-device-mgr'
+    });
+    item.nodes.push({
+      text: '监控点模型',
+      url: '/aiop/resources/camera-ai-model-mgr'
+    });
     this.menuTree.push(item);
-    item = new MenuTree('howell-icon-device2','事件');
+    item = new MenuTree('howell-icon-device2', 'AI模型');
     item.nodes.push({
-      text:'AI摄像机事件',
-      url:'/aiop/event-history'
-    }); 
+      text: 'AI模型列表',
+      url: '/aiop/ai-models/ai-models-mgr'
+    });
     this.menuTree.push(item);
-    item = new MenuTree('howell-icon-device2','监管平台');
+    item = new MenuTree('howell-icon-device2', '事件');
     item.nodes.push({
-      text:'垃圾厢房',
-      url:'/aiop/garbage-station/index'
-    }); 
+      text: 'AI摄像机事件',
+      url: '/aiop/event-history'
+    });
+    this.menuTree.push(item);
+    item = new MenuTree('howell-icon-device2', '监管平台');
     item.nodes.push({
-      text:'垃圾厢房管理',
-      url:'/aiop/garbage-station/garbage-station-mgr'
-    }); 
+      text: '垃圾厢房',
+      url: '/aiop/garbage-station/index'
+    });
     item.nodes.push({
-      text:'摄像机布控',
-      url:'/aiop/garbage-station/deploy-camera'
-    }); 
-    this.menuTree.push(item);  
+      text: '垃圾厢房管理',
+      url: '/aiop/garbage-station/garbage-station-mgr'
+    });
+    item.nodes.push({
+      text: '摄像机布控',
+      url: '/aiop/garbage-station/deploy-camera'
+    });
+    item.nodes.push({
+      text: '地图布控',
+      url: '/aiop/garbage-station/map-deploy'
+    });
+    this.menuTree.push(item);
     this.highlightedBtn = [this.menuTree[0].title];
 
-    
+
   }
 
-  mainBtnClick(item:MenuTree){    
-    if(this.maximize) {
-      this.menuTree.map(x=>x.an=false);
-      item.an=!item.an;
+  mainBtnClick(item: MenuTree) {
+    if (this.maximize) {
+      this.menuTree.map(x => x.an = false);
+      item.an = !item.an;
       this.highlightedBtn.pop();
       this.highlightedBtn = [item.title];
     }
-    
+
   }
 
   set currentMenus(val: string) {

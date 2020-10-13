@@ -35,6 +35,7 @@ import { DivisionStationTreeComponent } from './garbage-station/division-station
 import { RegionCameraTreeComponent } from './garbage-station/region-camera-tree/region-camera-tree.component';
 import { GarbageStationComponent } from './garbage-station/garbage-station/garbage-station.component';
 import { GarbageStationFormComponent } from './garbage-station/garbage-station-form/garbage-station-form.component';
+import { MapDeployComponent } from './garbage-station/map-deploy/map-deploy.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -48,7 +49,7 @@ import { GarbageStationFormComponent } from './garbage-station/garbage-station-f
   EncodeDeviceMgrComponent,EncodeDeviceFormComponent, RegionMgrComponent,
   RegionFormComponent, PlatformMgrComponent, PlatformFormComponent, AIModelsMgrComponent, AIModelFormComponent
   , CameraAIModelMgrComponent, SRServersMgrComponent, SRServerFormComponent, RegionCameraCopyComponent, EventHistoryComponent
-  , DeployCameraComponent, TrashIconsListComponent
+  , DeployCameraComponent, TrashIconsListComponent, MapDeployComponent
   , CameraRegionMoveComponent, GarbageStationMgrComponent, StationChartComponent, DivisionStationTreeComponent, RegionCameraTreeComponent, GarbageStationComponent, GarbageStationFormComponent ],
   exports:[
   ]

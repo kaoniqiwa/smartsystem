@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
-import { CanTypeEnum, CameraUsageEnum } from "../../../../common/tool/enum-helper";
-import { domCss, addClass } from "../../../../common/tool/jquery-help/jquery-help";
-import { GarbageStationWindow } from "../../../../data-core/model/waste-regulation/garbage-station-window";
-import { CameraSlot } from "../../../../data-core/model/waste-regulation/camera-slot";
-import { MessageBar } from "../../../../common/tool/message-bar";
-import { GarbageStationType } from "../../../../data-core/model/waste-regulation/garbage-station-type";
+import { CanTypeEnum, CameraUsageEnum } from '../../../../common/tool/enum-helper';
+import { domCss, addClass } from '../../../../common/tool/jquery-help/jquery-help';
+import { GarbageStationWindow } from '../../../../data-core/model/waste-regulation/garbage-station-window';
+import { CameraSlot } from '../../../../data-core/model/waste-regulation/camera-slot';
+import { MessageBar } from '../../../../common/tool/message-bar';
+import { GarbageStationType } from '../../../../data-core/model/waste-regulation/garbage-station-type';
 @Injectable()
 export class StationChart {
     house = new House();

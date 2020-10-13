@@ -1,0 +1,10 @@
+<div class="fill-height fill-width">
+  <div style="width:320px" class="card-wrap m-r-20 pull-left">
+    <h2 class="m-b-20">投放点列表</h2>
+    <hw-division-station-tree #stationTree [treeHeight]="'calc(100% - 80px)'"
+    [selectedItemFn]="selectDivisionClick"></hw-division-station-tree>
+  </div>
+  <div style="width: calc(100% - 320px);padding:10px" class="card-wrap   m-r-20 pull-left">
+    <iframe class="map" [src]="srcUrl" #iframe width="100%" height="100%"></iframe>
+  </div>  
+</div>
