@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { TreeNode, FlatNode, TreeListMode, CheckBoxStateEnum } from "./custom-tree";
+import { TreeNode, FlatNode, TreeListMode, CheckBoxStateEnum ,ColorEnum} from "./custom-tree";
 @Component({
   selector: 'hw-custom-tree',
   templateUrl: './custom-tree.component.html',
@@ -38,7 +38,8 @@ export class CustomTreeComponent implements OnInit {
     flatNode.checked = node.checked,
       flatNode.id = node.id
     flatNode.inputVal = node['inputVal'] || '';
-    flatNode.label = node['label'] || '';
+    flatNode.label = node['label'] || '';    
+    flatNode.labelColor=node.color || ColorEnum.lightbBlue;
     flatNode.rightClassBtn=node.rightClassBtn;
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);

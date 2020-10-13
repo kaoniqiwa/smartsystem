@@ -14,8 +14,9 @@
             <i class="howell-icon-Square" style="font-size: x-small;position: relative;bottom: 3px;" *ngIf="node.checkBoxState==checkBoxState.all"></i>
           </div>
         </ng-container>
-        <label title="{{node.name}}" [class.default-label-width]="mode == listMode.nomal||listMode.rightBtn==mode" [ngStyle]="{'color': node.id==selectedItemClass?'white':'#cfd7ff'}"
-        class="m-0 default-label">
+        <label title="{{node.name}}" [class.light-blue-text]="node.id!=selectedItemClass" [class.text-white]="node.id==selectedItemClass"
+        [class.default-label-width]="mode==listMode.nomal||listMode.rightBtn==mode"
+        class="m-0 default-label default-label-width {{node.labelColor}}">
 
           <i  class="{{node.iconClass}}"></i>
           {{node.name}}</label>
@@ -50,8 +51,9 @@
           <i class="mdi" [class.mdi-menu-right]="!treeControl.isExpanded(node)"
             [class.mdi-menu-down]="treeControl.isExpanded(node)"></i>
         </button>
-        <label [class.default-label-width]="mode == listMode.nomal" [ngStyle]="{'color': node.id==selectedItemClass?'white':'#cfd7ff'}"
-        class="m-0 default-label">
+        <label [class.default-label-width]="mode==listMode.nomal||listMode.rightBtn==mode"
+        [class.light-blue-text]="node.id!=selectedItemClass" [class.text-white]="node.id==selectedItemClass"
+        class="m-0 default-label {{node.labelColor}}">
           <ng-container *ngIf="mode == listMode.checkedBox">
             <div class="ckbox" style="margin-top:2px;">
               <i class="howell-icon-Check" style="font-size: small;position: relative;bottom: 2px;"  *ngIf="node.checkBoxState==checkBoxState.all"></i>
