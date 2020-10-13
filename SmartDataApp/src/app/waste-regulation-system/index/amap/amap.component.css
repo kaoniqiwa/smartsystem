@@ -77,9 +77,23 @@
   .map-bar.video-list .video:first-child{
     margin-left: 0px;
   }
+  .map-bar.video-list .video.error{  
+      -webkit-filter: grayscale(100%);
+      -moz-filter: grayscale(100%);
+      -ms-filter: grayscale(100%);
+      -o-filter: grayscale(100%);      
+      filter: grayscale(100%);    
+      filter: gray;  
+  }
   .map-bar.video-list .video:hover {
     border: #3a72ce 1px solid;
   }
+
+  .map-bar.video-list .video .howell-icon-no_signal{
+    position: absolute;
+    bottom: -3px;
+  }
+
 
   .map-bar.video-list .video img {
     width:100%;
@@ -87,6 +101,11 @@
   }
   
 
+  .map-bar.garbage-list{
+    position: absolute;
+    top:100px;
+    right: 0;
+  }
 
 
 

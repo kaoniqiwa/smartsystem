@@ -9,7 +9,7 @@ import { GarbageStation, GetGarbageStationsParams } from '../../../data-core/mod
 import {
     CameraRequestService as GarbageStationCameraRequestService, GarbageStationRequestService
 } from '../../../data-core/repuest/garbage-station.service';
-import { Camera } from '../../../data-core/model/aiop/camera';
+import { Camera, CameraState } from '../../../data-core/model/aiop/camera';
 import { GetPreviewUrlParams, GetVodUrlParams } from '../../../data-core/model/aiop/video-url';
 import { PlayModeEnum, VideoWindowComponent } from '../../../video-window/video-window.component';
 
@@ -30,6 +30,11 @@ export class AMapComponent implements AfterViewInit, OnInit {
     @ViewChild('videoWindow')
     videoWindow: VideoWindowComponent;
 
+    @ViewChild('villageTreeList')
+    villageTreeList: any;
+
+
+
     @Output()
     mapLoadedEvent: EventEmitter<CesiumMapClient> = new EventEmitter();
 
@@ -38,6 +43,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     maskLayerShow = false;
     selectedCameras: Camera[];
     garbages: GarbageStation[];
+
     srcUrl: any;
     dataController: CesiumDataController.Controller;
     client: CesiumMapClient;
@@ -83,17 +89,25 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
         this.garbages = response.Data.Data;
 
-
         const arrayStatus = new Array();
+        // tslint:disable-next-line:forin
         for (const id in this.garbages) {
-            if (this.garbages[id].DryFull || this.garbages[id].WetFull) {
-                const status = {
-                    id: id,
-                    status: 1
-                };
-                console.log(status);
-                arrayStatus.push(status);
+            try {
+
+
+                if (this.garbages[id].DryFull || this.garbages[id].WetFull) {
+                    const status = {
+                        id: id,
+                        status: 1
+                    };
+                    console.log(status);
+                    arrayStatus.push(status);
+                }
+
+            } catch (ex) {
+                console.error(ex);
             }
+
         }
         this.client.Point.Status(arrayStatus);
     }
@@ -155,6 +169,16 @@ export class AMapComponent implements AfterViewInit, OnInit {
                                 }
 
                                 this.selectedCameras.push(camera_response.Data);
+                            }
+                            switch (camera_response.Data.CameraState) {
+                                case CameraState.DeviceError:
+                                    camera_response.Data.Name += ' 设备故障';
+                                    break;
+                                case CameraState.PlatformError:
+                                    camera_response.Data.Name += ' 平台故障';
+                                    break;
+                                default:
+                                    break;
                             }
                         } catch (ex) {
                             console.error(ex);

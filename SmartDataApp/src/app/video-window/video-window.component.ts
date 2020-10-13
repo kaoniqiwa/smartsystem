@@ -386,8 +386,8 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         const end = document.getElementById('txt_end_time') as HTMLInputElement;
 
         this.PlaybackClickedListen.emit({
-            begin: new Date(date.value + ' ' + begin.value),
-            end: new Date(date.value + ' ' + end.value)
+            begin: new Date(date.value + ' ' + begin.value.replace(/ /g, '')),
+            end: new Date(date.value + ' ' + end.value.replace(/ /g, ''))
         });
     }
 
