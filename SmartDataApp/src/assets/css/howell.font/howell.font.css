@@ -2247,3 +2247,10 @@ a .howell-icon-flip-vertical:before {
 .howell-icon-hazardous:before {
     content: "\f310";
 }
+.howell-icon-move2:before {
+    content: "\f311";
+}
+
+.howell-icon-garbage:before {
+    content: "\f312";
+}
