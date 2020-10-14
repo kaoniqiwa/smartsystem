@@ -45,10 +45,10 @@ export class DivisionStationTreeComponent implements OnInit {
   }
   constructor(private stationTreeService: StationTreeService
     , public dataService: DataService) {
-      this.stationTreeService.treeListMode= this.link ?TreeListMode.rightBtn: TreeListMode.nomal;
      }
 
   async ngOnInit() {
+    this.stationTreeService.treeListMode= this.link ?TreeListMode.rightBtn: TreeListMode.nomal;
     this.stationTreeService.link=this.link;
     this.dataService.divisions = await this.dataService.requestDivision();
     const ancestorDivision = this.dataService.divisions.find(x => x.ParentId == void 0);
