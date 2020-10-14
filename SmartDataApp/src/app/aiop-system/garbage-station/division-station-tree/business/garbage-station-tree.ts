@@ -1,9 +1,9 @@
 
-import { GarbageStationMini ,GarbageStations,Divisions,DivisionMini,TreeService}from "../../../common/tree.service";  
+import { GarbageStationMini ,GarbageStations,Divisions,DivisionMini,TreeService, NodeTypeEnum}from "../../../common/tree.service";  
 import { GarbageStation} from "../../../../data-core/model/waste-regulation/garbage-station"; 
 import { Division} from "../../../../data-core/model/waste-regulation/division";  
-import { TreeNode } from "../../../../shared-module/custom-tree/custom-tree";
-import { Injectable } from "@angular/core";
+import { TreeListMode, TreeNode } from "../../../../shared-module/custom-tree/custom-tree";
+import { Injectable } from "@angular/core"; 
 
 @Injectable()
 export class StationTreeService extends TreeService{
@@ -11,10 +11,13 @@ export class StationTreeService extends TreeService{
     treeNode:TreeNode[] = new Array();
     garbageStations = new GarbageStations();
     divisions = new Divisions();
+    treeListMode:TreeListMode ;
+    link = false;
     constructor(){
         super();
         this.garbageStations.items = new Array();
         this.divisions.items=new Array();
+       
     }
 
     set garbageStationModel(models:GarbageStation[]){
@@ -51,7 +54,10 @@ export class StationTreeService extends TreeService{
                 mini.id=item.Id;
                 mini.name=item.Name;
                 mini.divisionId=item.DivisionId;
-                mini.stationType=item.StationType;    
+                mini.stationType=item.StationType;  
+                /** 右侧 按钮 */
+                if(this.link)
+                  mini.nodeType=  NodeTypeEnum.stationLink;
                 this.garbageStations.items.push(mini);
             }
         }

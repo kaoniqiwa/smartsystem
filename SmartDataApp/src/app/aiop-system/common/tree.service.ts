@@ -37,7 +37,7 @@ export class TreeService extends ListAttribute {
                 const node = new DivisionTreeNode();
                 node.id = item.id;
                 node.name = item.name; 
-                node.isLeaf = true; 
+                node.isLeaf = true;                 
                 node.type= NodeTypeEnum.map;
                 nodes.push(node);
             }
@@ -49,7 +49,7 @@ export class TreeService extends ListAttribute {
                 node.name = item.name;
                 node.parentId = item.divisionId;
                 node.isLeaf = true;  
-                node.type=NodeTypeEnum.station;
+                node.type= item.nodeType;
                 nodes.push(node);
             }
         }
@@ -67,7 +67,8 @@ export class TreeService extends ListAttribute {
         return nodes;
     }
 
-    loadTree(items: DivisionTreeNode[]) {
+    loadTree(items: DivisionTreeNode[]) { 
+    
         const dataSource = new Array<TreeNode>();
         const addItems = (node: TreeNode, items: DivisionTreeNode[]) => {
             for (const item of items) {
@@ -77,10 +78,11 @@ export class TreeService extends ListAttribute {
                     node_.checked = false;
                     node_.id = item.id;
                     node_.iconClass = this.nodeIconType.get(item.type);
-                    node_.rightClassBtn =item.type == NodeTypeEnum.camera? ['howell-icon-Link']:[];
+                    node_.rightClassBtn =(item.type == NodeTypeEnum.camera || item.type == NodeTypeEnum.stationLink)? ['howell-icon-Link']:[];
                     node.children = node.children || new Array<TreeNode>();
                     node.children.push(node_);
                     addItems(node_, items); 
+                    console.log(node_);
                     
                 }
             }
@@ -90,7 +92,8 @@ export class TreeService extends ListAttribute {
                 const node = new TreeNode();
                 node.name = item.name;
                 node.checked = false;
-                node.rightClassBtn =item.type == NodeTypeEnum.camera? ['howell-icon-Link']:[];
+                node.rightClassBtn =(item.type == NodeTypeEnum.camera || item.type == NodeTypeEnum.stationLink)
+                ? ['howell-icon-Link']:[];
                 node.id = item.id;
                 node.iconClass = this.nodeIconType.get(item.type);
                 dataSource.push(node);
@@ -152,7 +155,8 @@ export enum NodeTypeEnum{
     root=1,
     map,
     camera,
-    station
+    station,
+    stationLink
 }
  
 export class DivisionTreeNode {
@@ -184,6 +188,8 @@ export class GarbageStationMini {
     stationType: number; 
     /**所属区划ID(可选) */
     divisionId: string;
+
+    nodeType:NodeTypeEnum;
 }
 
 export class CameraMini{

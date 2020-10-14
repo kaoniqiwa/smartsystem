@@ -3,7 +3,7 @@ import { CustomTreeComponent } from "../../../shared-module/custom-tree/custom-t
 import { StationTreeService } from "./business/garbage-station-tree";
 import { DataService } from "./business/data-service";
 import { NodeTypeEnum } from '../../common/tree.service';
-import { FlatNode } from '../../../shared-module/custom-tree/custom-tree';
+import { FlatNode, TreeListMode } from '../../../shared-module/custom-tree/custom-tree';
 @Component({
   selector: 'hw-division-station-tree',
   templateUrl: './division-station-tree.component.html',
@@ -27,7 +27,15 @@ export class DivisionStationTreeComponent implements OnInit {
     if(this.selectedItemFn)this.selectedItemFn(item,this.stationTreeService.isLastNode(item.id));
   }
 
+  @Input()
+  link  = false;
 
+  @Input()
+  rightBtnFn: (item: FlatNode) => void;
+
+  rightBtnClick = (item: FlatNode) => {
+    if (this.rightBtnFn) this.rightBtnFn(item);
+  } 
   searchTree = (text: string) => {
     const nodeType = this.onlyDivisionNode ? NodeTypeEnum.map:NodeTypeEnum.station;
     const dataSource = this.stationTreeService.filterNodes(text, nodeType);
@@ -36,9 +44,12 @@ export class DivisionStationTreeComponent implements OnInit {
     this.garbageStationTree.treeControl.expandAll();
   }
   constructor(private stationTreeService: StationTreeService
-    , public dataService: DataService) { }
+    , public dataService: DataService) {
+      this.stationTreeService.treeListMode= this.link ?TreeListMode.rightBtn: TreeListMode.nomal;
+     }
 
   async ngOnInit() {
+    this.stationTreeService.link=this.link;
     this.dataService.divisions = await this.dataService.requestDivision();
     const ancestorDivision = this.dataService.divisions.find(x => x.ParentId == void 0);
     this.stationTreeService.divisionModel = this.dataService.divisions; 

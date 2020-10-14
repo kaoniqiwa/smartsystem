@@ -29,12 +29,12 @@
 
     </div>
   </ng-container>
-  <div class="second-title-bg text">
-    AI事件
-  </div>
-  <div fxLayout="row" fxLayoutAlign="space-between stretch" class="m-b-10">
-    <div></div>
-    <div [formGroup]="tableService.search.searchform">
+
+  <div fxLayout="row" fxLayoutAlign="space-between stretch">
+    <div class="second-title-bg text">
+      AI事件
+    </div>
+    <div [formGroup]="tableService.search.searchform" fxLayoutAlign="center center">
       <input type="text" style="width: 300px;" [readonly]="tableService.search.other" formControlName="SearchText"
         placeholder="输入关键字" class="custom form-control m-r-10">
       <button type="button" class="hw-blue-btn m-r-10 " (click)="search()">
@@ -83,7 +83,7 @@
     </div>
 
   </ng-container>
-  <div [ngStyle]="{'height': tableService.search.other ? 'calc(100% - 112px)':'calc(100% - 68px)'}">
+  <div [ngStyle]="{'height': tableService.search.other ? 'calc(100% - 66px)':'calc(100% - 21px)'}">
     <hw-custom-table #table [model]="tableService.eventTable.dataSource"></hw-custom-table>
   </div>  
 </div>
