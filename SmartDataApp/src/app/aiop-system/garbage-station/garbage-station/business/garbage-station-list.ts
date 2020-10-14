@@ -84,7 +84,7 @@ export class GarbageStationList extends TreeService {
         if (success) {
             this.msg.response_success();
             const index = this.dataSource.findIndex(x => x.id == id);
-            this.dataSource.splice(index);
+            this.dataSource.splice(index,1);
             if (this.dataSource.length) this.selectedNode = this.dataSource[0];
         }
     }

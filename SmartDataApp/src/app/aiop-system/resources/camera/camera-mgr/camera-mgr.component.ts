@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CameraTableService } from "./business/camera-table.service";
-import { CustomTableComponent } from '../../../../shared-module/custom-table/custom-table.component'; 
-import { CustomTreeComponent } from "../../../../shared-module/custom-tree/custom-tree.component"; 
-import { RegionTreeService } from "../../../common/region-tree.service"; 
+import { CustomTableComponent } from '../../../../shared-module/custom-table/custom-table.component';
+import { CustomTreeComponent } from "../../../../shared-module/custom-tree/custom-tree.component";
+import { RegionTreeService } from "../../../common/region-tree.service";
 
 @Component({
   selector: 'app-camera-mgr',
@@ -26,23 +26,27 @@ export class CameraMgrComponent implements OnInit {
 
   cameraRegionMoveView = false;
   moreSearchInput = false;
-  cameraRegionMoveViewCancelFn = ()=>this.cameraRegionMoveView=false;
-  cameraRegionMoveViewSaveFn = ()=>{
-    for (const id of this.tableSelectIds)
-       this.table.deleteListItem(id);
+  cameraRegionMoveViewCancelFn = () => this.cameraRegionMoveView = false;
+  cameraRegionMoveViewSaveFn = () => {
+    const ids = Array.from(this.tableSelectIds);
+
+    for (const id of ids)
+      this.table.deleteListItem(id);
+    this.tableService.cameraTable.delItems(ids);
+
   }
   constructor(private tableService: CameraTableService, private regionTreeService: RegionTreeService
   ) { }
 
 
   async ngOnInit() {
-    this.tableService.clearTableSelectItemFn=()=>{
+    this.tableService.clearTableSelectItemFn = () => {
       this.table.selectCancel();
-    }   
-    await this.regionTreeService.getRegionData(); 
-    this.tableService.regionTree.dataSource =this.regionTreeService.dataSource;
-    const dataSource = this.regionTreeService.loadTree(this.regionTreeService.dataSource);console.log(dataSource);
-    dataSource.push(this.regionTreeService.singleNode('未分配摄像机','howell-icon-video'));
+    }
+    await this.regionTreeService.getRegionData();
+    this.tableService.regionTree.dataSource = this.regionTreeService.dataSource;
+    const dataSource = this.regionTreeService.loadTree(this.regionTreeService.dataSource); console.log(dataSource);
+    dataSource.push(this.regionTreeService.singleNode('未分配摄像机', 'howell-icon-video'));
     dataSource.reverse();
     this.tree.dataSource.data = dataSource;
     this.tableService.regionTree.treeNodeSource = dataSource;
@@ -54,8 +58,8 @@ export class CameraMgrComponent implements OnInit {
       this.showBindLabels();
     }
     await this.tableService.requestResourceLabels((items) => {
-      
-        this.tableService.search.toInputTagSelect(items);
+
+      this.tableService.search.toInputTagSelect(items);
     });
   }
 
@@ -95,11 +99,11 @@ export class CameraMgrComponent implements OnInit {
   }
 
   async search() {
-    this.tableService.search.state = true;  
+    this.tableService.search.state = true;
     await this.tableService.searchCamerasData(1, (page) => {
       this.tableService.cameraTable.initPagination(page, async (index) => {
         await this.tableService.searchCamerasData(index);
       });
-    }); 
+    });
   }
 }

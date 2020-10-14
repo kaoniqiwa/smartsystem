@@ -19,8 +19,7 @@ export class EventHistoryComponent implements OnInit {
   endDate= (b:Date)=>{
     this.tableService.search.formEndDate = b;
   }
-  constructor(private tableService:EventTableService) {
-     this.tableService.eventTable.enlargeImage
+  constructor(private tableService:EventTableService) { 
    }
 
    async ngOnInit() {

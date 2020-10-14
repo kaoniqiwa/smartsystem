@@ -36,6 +36,9 @@ export class EventTableService{
             this.requestData(event.data as any);
             this.searchData(event.data as any);
         } 
+        this.eventTable.findEventFn = (id)=>{
+            return this.dataSource.find(x=>x.EventId == id);
+        }
     }
 
   async  getAIModels(){

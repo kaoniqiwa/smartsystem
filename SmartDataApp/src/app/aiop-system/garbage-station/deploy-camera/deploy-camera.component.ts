@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { StationChartComponent } from '../station-chart/station-chart.component';
 import { DivisionStationTreeComponent } from "../division-station-tree/division-station-tree.component";
-import {RegionCameraTreeComponent  } from "../region-camera-tree/region-camera-tree.component";
+import { RegionCameraTreeComponent } from "../region-camera-tree/region-camera-tree.component";
 import { FlatNode } from '../../../shared-module/custom-tree/custom-tree';
 import { DataService as TypeDataService } from "../garbage-station/business/data.service";
 import { BusinessService } from "./business/business.service";
@@ -10,7 +10,7 @@ import { DataService as CameraDataService } from "./business/data.service";
   selector: 'app-deploy-camera',
   templateUrl: './deploy-camera.component.html',
   styleUrls: ['./deploy-camera.component.styl'],
-  providers: [TypeDataService,BusinessService,CameraDataService]
+  providers: [TypeDataService, BusinessService, CameraDataService]
 })
 export class DeployCameraComponent implements OnInit {
 
@@ -23,32 +23,53 @@ export class DeployCameraComponent implements OnInit {
   @ViewChild('garbageChart')
   chartComponent: StationChartComponent;
 
+  showHouse = false;
   selectDivisionClick = async (item: FlatNode, lastNode: boolean) => {
     const station = this.stationTree.dataService.garbageStations.find(x => x.Id == item.id);
-    const type = await this.findStationType(station.StationType);
-    if (type) {
-      this.chartComponent.stationChart.changeTrashNum(type.Windows.length + '')
-      this.chartComponent.stationChart.changeHouseType = type;
+
+    if (station) {
+      this.businessService.station=station;
+      const type = await this.findStationType(station.StationType);
+      this.showHouse = type != null;
+      if (type) {
+        this.chartComponent.stationChart.changeTrashNum(type.Windows.length + '')
+        this.chartComponent.stationChart.changeHouseType = type;
+       await  this.businessService.fillHouseCameraPostion( this.chartComponent.stationChart.house,station.Id);
+       this.reloadState();
+      }
     }
+
+  }
+
+  reloadState = ()=>{
+    this.businessService.cameraNodesFn=  ()=>{
+      return  this.cameraTree.findBindCameraNode(false);
+    }
+    this.businessService.fillCameraTreeState(this.cameraDataService.cameras);
   }
 
   selectCameraClick = async (item: FlatNode) => {
-    this.businessService.bindingCamera = this.cameraTree.dataService.cameras.find(x=>x.Id == item.id);
+    this.businessService.bindItem = item;
+    this.businessService.bindingCamera = this.cameraTree.dataService.cameras.find(x => x.Id == item.id);
   }
 
-  bindingItemClick = (liItem:{ id: string, position: number })=>{
- 
-     liItem.id =this.businessService.bindingCamera ? this.businessService.bindingCamera.Id : '';
-     this.businessService.bindingCamera=null
+  bindingItemClick = (liItem: { id: string, name: string, position: number,no:number }) => {
+    this.businessService.bindingItem(liItem);
   }
+
 
   constructor(private typeDataService: TypeDataService
-   ,private cameraDataService:CameraDataService
-    ,private businessService:BusinessService) {
+    , private cameraDataService: CameraDataService
+    , private businessService: BusinessService) {
+    businessService.cameraDataService = cameraDataService;
   }
 
   async ngOnInit() {
+    this.businessService.findNodeFn = (id: string) => {
+      return this.cameraTree.findNode(id);
+    }
 
+  
   }
 
   async findStationType(stationType: number) {

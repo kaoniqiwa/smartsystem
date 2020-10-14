@@ -35,13 +35,9 @@ export class GarbageStationFormComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.name.nativeElement.focus();
-  
-    
-    this.formService.defaultForm(this.editItem);debugger
+    this.name.nativeElement.focus(); 
+    this.formService.defaultForm(this.editItem);
     if(this.editItem)    this.changeStationType(this.editItem.StationType);
-
-
   }
 
   onSubmit() {

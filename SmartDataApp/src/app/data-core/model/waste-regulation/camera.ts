@@ -13,7 +13,14 @@
         UpdateTime: Date | string;
         /**垃圾桶房ID */
         GarbageStationId: string;
-
+        /**位置编号，
+箱外：1-9
+箱内：11-19
+11,15：干垃圾
+12：湿垃圾
+13：可回收垃圾
+14：有害垃圾 */
+        PositionNo:number;
     }
 
      /**获取摄像机列表参数 */

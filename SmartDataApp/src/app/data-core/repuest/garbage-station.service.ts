@@ -94,7 +94,7 @@ export class CameraRequestService extends SaveModel {
         return this.requestService.delete<Camera>(this.url.del(garbageStationId, cameraId));
     }
 
-    postList(item: GetGarbageStationsParams) {
+    postList(item: GetGarbageStationCamerasParams) {
         return this.requestService.post<GetGarbageStationCamerasParams, Response<PagedList<Camera>>>(this.url.list(), item);
     }
 }

@@ -18,7 +18,7 @@ import { GarbageStation, GetGarbageStationsParams } from '../../../../data-core/
 })
 export class StatisticalDataBufferService extends ListAttribute implements IBusinessService {
 
-    cache = new AppCaChe(60 * 1000);
+    cache = new AppCaChe(5*60 * 1000);
 
     readonly eventNumbersHistory = 'EventNumbersHistory_';
     readonly statisticNumber = 'StatisticNumber_';

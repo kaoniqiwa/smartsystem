@@ -11,7 +11,7 @@ export class TreeService extends ListAttribute {
         this.nodeIconType.set(1,'howell-icon-earth');
         this.nodeIconType.set(2,'howell-icon-map5');
         this.nodeIconType.set(3,'howell-icon-video');
-        this.nodeIconType.set(4,'howell-icon-delete2');
+        this.nodeIconType.set(4,'howell-icon-garbage');
     } 
 
     convertTreeNode<GarbageStationTypes>(input: GarbageStationTypes): DivisionTreeNode[];

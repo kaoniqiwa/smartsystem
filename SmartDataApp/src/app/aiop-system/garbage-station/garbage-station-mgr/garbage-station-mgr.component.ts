@@ -42,6 +42,7 @@ export class GarbageStationMgrComponent implements OnInit {
     , private dataService: DataService
     , private stationTypeDataService: StationTypeDataService
     , private businessService: BusinessService) {
+      this.businessService.stationTypeDataService =stationTypeDataService;
     this.businessService.divisionStationDataService = this.divisionStationDataService;
   }
 

@@ -16,7 +16,7 @@ export class StationChartComponent implements OnInit {
   maxWidth = '1100px';
 
   @Input()
-  plusSquareFn:(liItem:{ id: string, position: number })=>void;
+  plusSquareFn: (liItem: { id: string, position: number }) => string;
 
   houseModeEnum = HouseModeEnum;
   constructor(public stationChart: StationChart) {
@@ -28,19 +28,19 @@ export class StationChartComponent implements OnInit {
     this.stationChart.trashIcons = this.stationChart.initTrashIcon();
   }
 
-  ngOnInit() {
+  ngOnInit() { 
   }
 
 
   get insideLi1() {
     return this.stationChart.cameraPostionForm.get('insideLi1') as FormArray;
   }
-  get insideLi2() {
-    return this.stationChart.cameraPostionForm.get('insideLi2') as FormArray;
-  }
+  // get insideLi2() {
+  //   return this.stationChart.cameraPostionForm.get('insideLi2') as FormArray;
+  // }
 
-  plusSquareClick(liItem: { id: string, position: number }) {
-      this.plusSquareFn(liItem);
+  plusSquareClick(liItem: { id: string,name:string, position: number,no:number }) {
+    this.plusSquareFn(liItem);
   }
 
 }

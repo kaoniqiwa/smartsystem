@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
-import { CanTypeEnum, CameraUsageEnum } from '../../../../common/tool/enum-helper';
+import { CanTypeEnum, CameraUsageDataEnum } from '../../../../common/tool/enum-helper';
 import { domCss, addClass } from '../../../../common/tool/jquery-help/jquery-help';
 import { GarbageStationWindow } from '../../../../data-core/model/waste-regulation/garbage-station-window';
 import { CameraSlot } from '../../../../data-core/model/waste-regulation/camera-slot';
@@ -49,28 +49,47 @@ export class StationChart {
         const slots = new Array<CameraSlot>(),
             outside = this.cameraPostionForm.get('outside') as FormArray
             , insideLi1 = this.cameraPostionForm.get('insideLi1') as FormArray
-            , insideLi2 = this.cameraPostionForm.get('insideLi2') as FormArray
-            , fillSlots = (arr: FormArray) => {
+            // , insideLi2 = this.cameraPostionForm.get('insideLi2') as FormArray
+            , fillSlots = (arr: FormArray, outSide: boolean, moreWindow: boolean) => {
+                var i = 0;
                 for (const x of arr.controls) {
                     const slot = new CameraSlot();
                     slot.No = no;
-                    slot.CameraUsage = CameraUsageEnum.GarbageFull;
+
                     slot.PositionNo = x.value;
+                    slot.Inside = outSide;
+                    slot.Windows = new Array();
+                    if (outSide)
+                        slot.CameraUsage = CameraUsageDataEnum.Other;
+                    else {
+                        slot.Windows.push(i);
+                        /** 顺序编号 */
+                        if (moreWindow)
+                            slot.Windows.push(i + 1);
+
+                        if (this.positionNoMap.get(CanTypeEnum.Dry) == x.value || this.multifacetedPostion == x.value)
+                            slot.CameraUsage = CameraUsageDataEnum.Dry;
+                        else if (this.positionNoMap.get(CanTypeEnum.Wet) == x.value)
+                            slot.CameraUsage = CameraUsageDataEnum.Wet;
+                        else slot.CameraUsage = CameraUsageDataEnum.Recycle;
+                    }
+
                     slots.push(slot);
                     no++;
+                    i++;
                 }
             };
-        fillSlots(outside);
-        fillSlots(insideLi1);
-        fillSlots(insideLi2);
+        fillSlots(outside, true, false);
+        fillSlots(insideLi1, false, false);
+        // fillSlots(insideLi2, false,true);
         return slots;
     }
 
     set changeHouseType(type: GarbageStationType) {
         const outside = this.cameraPostionForm.get('outside') as FormArray
-            , insideLi1 = this.cameraPostionForm.get('insideLi1') as FormArray
-            , insideLi2 = this.cameraPostionForm.get('insideLi2') as FormArray;
-       
+            , insideLi1 = this.cameraPostionForm.get('insideLi1') as FormArray;
+        // , insideLi2 = this.cameraPostionForm.get('insideLi2') as FormArray;
+
         if (type) {
             for (let i = 0; i < type.Windows.length; i++) {
                 type.Windows = type.Windows.sort(function (a, b) {
@@ -87,17 +106,17 @@ export class StationChart {
                 const slot = type.CameraSlots[i];
                 if (i <= 3) {
                     outside.controls[i].setValue(slot.PositionNo);
-                    this.house.cameraPosition.outside[i].position =slot.PositionNo;
+                    this.house.cameraPosition.outside[i].position = slot.PositionNo;
                 }
-                else if (i > 3 && i <= this.house.interior.length + 3){
+                else if (i > 3 && i <= this.house.interior.length + 3) {
                     insideLi1.controls[i - 4].setValue(slot.PositionNo);
-                    this.house.cameraPosition.inside.li1[i-4].position =slot.PositionNo;
-                }                  
-                else{
-                    insideLi2.controls[i - (this.house.interior.length + 4)].setValue(slot.PositionNo);
-                    this.house.cameraPosition.inside.li2[i - (this.house.interior.length + 4)].position =slot.PositionNo;
+                    this.house.cameraPosition.inside.li1[i - 4].position = slot.PositionNo;
                 }
-                   
+                // else {
+                //     insideLi2.controls[i - (this.house.interior.length + 4)].setValue(slot.PositionNo);
+                //     this.house.cameraPosition.inside.li2[i - (this.house.interior.length + 4)].position = slot.PositionNo;
+                // }
+
             }
         }
     }
@@ -106,7 +125,7 @@ export class StationChart {
         var check = false;
         const outside = this.cameraPostionForm.get('outside') as FormArray
             , insideLi1 = this.cameraPostionForm.get('insideLi1') as FormArray
-            , insideLi2 = this.cameraPostionForm.get('insideLi2') as FormArray
+            // , insideLi2 = this.cameraPostionForm.get('insideLi2') as FormArray
             , fillSlots = (arr: FormArray) => {
                 for (const x of arr.controls) {
                     if ((x.value >= 0 && x.value <= 9)
@@ -121,7 +140,7 @@ export class StationChart {
             };
         fillSlots(outside);
         fillSlots(insideLi1);
-        fillSlots(insideLi2);
+        // fillSlots(insideLi2);
         return check;
     }
 
@@ -134,7 +153,7 @@ export class StationChart {
             li2.push(this.fb.control(15));
         const form = this.fb.group({
             insideLi1: this.fb.array(li1),
-            insideLi2: this.fb.array(li2),
+            // insideLi2: this.fb.array(li2),
             outside: this.fb.array([
                 this.fb.control(1),
                 this.fb.control(2),
@@ -157,21 +176,24 @@ export class StationChart {
                 outside: new Array(),
                 inside: {
                     li1: new Array(),
-                    li2: new Array()
+                    // li2: new Array()
                 }
             };
             house.cameraPosition.outside = [
-                { id: '', name: '', position: 1 },
-                { id: '', name: '', position: 2 },
-                { id: '', name: '', position: 3 },
-                { id: '', name: '', position: 4 }
+                { id: '', name: '', position: 1, no: 1 },
+                { id: '', name: '', position: 2, no: 2 },
+                { id: '', name: '', position: 3, no: 3 },
+                { id: '', name: '', position: 4, no: 4 }
             ];
 
-            for (let i = outSideMax; i < (outSideMax + size); i++)
-                house.cameraPosition.inside.li1.push({ id: '', name: '', position: 11 });
+            var no = 5;
+            for (let i = outSideMax; i < (outSideMax + size); i++) {
+                house.cameraPosition.inside.li1.push({ id: '', name: '', position: 11, no: no });
+                no++;
+            }
 
-            for (let i = (outSideMax + size); i < (outSideMax + size * 2 - 1); i++)
-                house.cameraPosition.inside.li2.push({ id: '', name: '', position: 15 });
+            // for (let i = (outSideMax + size); i < (outSideMax + size * 2 - 1); i++)
+            //     house.cameraPosition.inside.li2.push({ id: '', name: '', position: 15 });
         }
         initInterior();
         camera();
@@ -275,7 +297,7 @@ export class StationChart {
         this.house.cameraPosition.inside.li1[this.cameraPositionIndex].position
             = this.positionNoMap.get(item.doorTrashs.type);
         this.setInsideLi1Form(this.cameraPositionIndex, this.positionNoMap.get(item.doorTrashs.type));
-        this.cameraPositionInsideLi2();
+        // this.cameraPositionInsideLi2();
     }
 
     setInsideLi1Form(index: number, val: number) {
@@ -289,20 +311,20 @@ export class StationChart {
     }
 
     /**设置 监控1--1 个槽位 */
-    cameraPositionInsideLi2() {
-        for (let i = 0; i < this.house.cameraPosition.inside.li2.length; i++) {
-            const li2 = this.house.cameraPosition.inside.li2[i];
-            if (this.house.cameraPosition.inside.li1[i].position == this.positionNoMap.get(CanTypeEnum.Dry) &&
-                this.house.cameraPosition.inside.li1[i + 1].position == this.positionNoMap.get(CanTypeEnum.Dry)) {
-                li2.position = this.multifacetedPostion;
-                this.setInsideLi2Form(i, this.multifacetedPostion);
-            }
-            else {
-                li2.position = 0;
-                this.setInsideLi2Form(i, 0);
-            }
-        }
-    }
+    // cameraPositionInsideLi2() {
+    //     for (let i = 0; i < this.house.cameraPosition.inside.li2.length; i++) {
+    //         const li2 = this.house.cameraPosition.inside.li2[i];
+    //         if (this.house.cameraPosition.inside.li1[i].position == this.positionNoMap.get(CanTypeEnum.Dry) &&
+    //             this.house.cameraPosition.inside.li1[i + 1].position == this.positionNoMap.get(CanTypeEnum.Dry)) {
+    //             li2.position = this.multifacetedPostion;
+    //             this.setInsideLi2Form(i, this.multifacetedPostion);
+    //         }
+    //         else {
+    //             li2.position = 0;
+    //             this.setInsideLi2Form(i, 0);
+    //         }
+    //     }
+    // }
 
     set trashSelected(index: number) {
         this.trashSelected_ = this.house.interior[index];
@@ -346,20 +368,46 @@ export class StationChart {
         }
     }
 
-
-    get insideGroup2SquareW() {
-        const baseW = 320, poor = 142, baseNum = 3;
-        return baseW + (this.house.cameraPosition.inside.li2.length - baseNum) * poor;
+    get positionLUp(){
+      return  this.house.cameraPosition.outside[0];
     }
 
-    get insideGroup2LineSquareW() {
-        const baseW = 361, poor = 142, baseNum = 3;
-        return baseW + (this.house.cameraPosition.inside.li2.length - baseNum) * poor;
-    }
+    
+    get positionRUp(){
+        return  this.house.cameraPosition.outside[1];
+      }
+
+      
+    get positionLDown(){
+        return  this.house.cameraPosition.outside[2];
+      }
+
+      
+    get positionRDown(){
+        return  this.house.cameraPosition.outside[3];
+      }
+
+
+
+
+    // get insideGroup2SquareW() {
+    //     const baseW = 320, poor = 142, baseNum = 3;
+    //     return baseW + (this.house.cameraPosition.inside.li2.length - baseNum) * poor;
+    // }
+
+    // get insideGroup2LineSquareW() {
+    //     const baseW = 361, poor = 142, baseNum = 3;
+    //     return baseW + (this.house.cameraPosition.inside.li2.length - baseNum) * poor;
+    // }
 
     get insideGroup1LineSquareW() {
         const baseW = 498, poor = 142, baseNum = 4;
         return baseW + (this.house.cameraPosition.inside.li1.length - baseNum) * poor;
+    }
+
+    get insideGroup1LineSquareW2() {
+        const poor = 142, padding = 10;
+        return this.house.cameraPosition.inside.li1.length * poor - padding;
     }
 
     get tableTdW() {
@@ -375,10 +423,10 @@ export class StationChart {
 export class House {
     interior: { door: string, trash: string, icon: string, type: CanTypeEnum }[] = new Array();
     cameraPosition: {
-        outside: { id: string, name: string, position: number }[],
+        outside: { id: string, name: string, position: number, no: number }[],
         inside: {
-            li1: { id: string, name: string, position: number }[],
-            li2: { id: string, name: string, position: number }[]
+            li1: { id: string, name: string, position: number, no: number }[],
+            // li2: { id: string, name: string, position: number }[]
         }
     };
 }

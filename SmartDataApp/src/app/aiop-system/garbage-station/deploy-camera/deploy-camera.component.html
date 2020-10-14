@@ -6,33 +6,18 @@
   </div>
   <div style="width: calc(100% - 680px);padding: 10px;" class="card-wrap   m-r-20 pull-left">
     <h2 class="m-b-20 p-l-10 p-t-10">摄像机绑定</h2>
-    <div fxLayout="row" class="filter-wrap m-b-10 collapse">
-      <div fxFlex="34" class="m-r-20  p-l-10 ">
-        <span class="text-white">名称</span>
-        <input type="text" style="width: calc(100% - 46px);" placeholder="输入关键字" class="custom form-control m-l-10">
-      </div>
-      <div fxFlex="43">
-        <span class="text-white">垃圾厢房类型</span>
-        <select #trashbox (change)="changeTrashNum(trashbox.value)" class="form-control custom custom-select m-l-10"
-          style="width: calc(100% - 106px);">
-          <option *ngFor="let i of configGarbageTrash" value="{{i}}">{{i}}</option>
+    <div fxLayout="row" style="height: calc(100% - 88px);position: relative;" fxLayoutAlign="center center">
+      <div  class="fill-width mask-chart ">
 
-        </select>
       </div>
-      <div fxFlex="23">
-        <button class="hw-green-btn m-r-10"  style="font-size: 18px;">
-          <i class="howell-icon-save"></i>保存</button>
-      </div>
-    </div>
-    <div fxLayout="row" style="height: calc(100% - 88px);" fxLayoutAlign="center center">
-      <hw-garbage-chart [plusSquareFn]="bindingItemClick"
+      <hw-garbage-chart [plusSquareFn]="bindingItemClick" class="collapse" [class.in]="showHouse"
       [maxWidth]="'850px'" #garbageChart ></hw-garbage-chart>
     </div>
 
   </div>
   <div style="width:320px" class="card-wrap pull-left">
     <h2 class="m-b-20">摄像机列表</h2>
-    <hw-region-camera-tree #cameraTree [selectedItemFn]="selectCameraClick"
+    <hw-region-camera-tree #cameraTree [selectedItemFn]="selectCameraClick" [reloadStateFn]="reloadState"
     ></hw-region-camera-tree>
     <!-- <div class="m-b-20">
       <hw-input-search [placeholder]="'名称'" [searchEvent]="searchTree"></hw-input-search>

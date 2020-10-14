@@ -5,6 +5,10 @@ th,td {
    padding: 0
 }
 
+.text-nowrap
+  overflow: hidden
+  white-space: nowrap
+
 .bg-house-door
   position: absolute
   left: 0
@@ -29,57 +33,85 @@ th,td {
   background-color:rgb(18,33,79)
   // border:1px #6997ff solid
 
+
 .sky-blue-border
  border: 1px #6997ff solid
 
 .green-border
  border: 1px #21E452 solid
-   
+
+
+
 
 .text-square
   text-align: center
   height: 26px
-  width: 70px
+  width: 130px
   // margin-top: 4px
   background-color: alpha(#000,0.5)
 
+
+.plus-square.hint:hover
+  border 1px  #3a93ff solid 
+
+.plus-square.hint:hover .howell-icon-plus
+  color white  
+
+.minus-square
+  position: absolute
+  color: #fd2f2d
+  width: 28px
+  top: 0px
+  left: 0px
+  background-color: alpha(#000,0.2)
+  height: 28px 
+  display: none
+
+.minus-square i 
+  position relative
+  top 2px
+
+.plus-square.green-border:hover .minus-square
+  display:  block
+
+
 .text-square.outside
   margin-top: 4px
-  padding-top: 1px
+  padding-top: 3px
 
 .outside-square-left-top
   position:absolute
   top: 14px
-  left: 54px
-  width: 70px
+  left: 30px
+  width: 160px
 
 .outside-square-left-bottom
   position:absolute
   bottom: 14px
-  left: 32px
-  width: 70px
+  left: 10px
+  width: 160px
 
 .outside-square-right-top
   position:absolute
   top: 14px
-  right 40px
-  width: 70px
+  right 0px
+  width: 130px
 
 .outside-square-right-bottom
   position:absolute
   bottom: 14px
-  right  20px
-  width: 70px
+  right: -22px;
+  width: 130px;
 
 .inside-group1-square
   position: absolute
   width: 100%
-  left: 54px
+  left: 58px
   bottom: 92px
 
 .inside-group1-line-square
   position: absolute 
-  left: 34px;
+
   bottom: 62px
 
 .inside-group2-square
@@ -127,3 +159,12 @@ th,td {
   background-color: rgba(29,35,59,0)
   text-align: center
   padding: 0
+
+.position-tag
+  position: absolute
+  background-color: #2d76ce
+  color: white
+  top: 8px
+  left: 29px
+  padding: 0 3px
+  font-size: 14px

@@ -9,13 +9,15 @@ import { GarbageStation } from "../../../../data-core/model/waste-regulation/gar
 import { Injectable } from "@angular/core";
 import { BusinessTable } from "../../../common/business-table";
 import { Page } from "../../../../data-core/model/page";
+import { DataService as StationTypeDataService } from "../../garbage-station/business/data.service";
 import { DataService as DivisionStationDataService } from "../../division-station-tree/business/data-service";
 
 @Injectable()
 export class BusinessService {
     divisionStationDataService: DivisionStationDataService;
-    table = new GarbageStationTable();  
-    constructor() {      
+    stationTypeDataService: StationTypeDataService;
+    table = new GarbageStationTable();
+    constructor() {
 
         this.table.findItemFn = (id: string) => {
             return this.divisionStationDataService.garbageStations.find(x => x.Id == id);
@@ -29,6 +31,14 @@ export class BusinessService {
                 for (var key in item)
                     findItem[key] = item[key];
             }
+        }
+        this.table.findStationTypeFn = (type) => {
+            var val = '';
+            if (this.stationTypeDataService) {
+                const find = this.stationTypeDataService.types.find(x => x.Type == type);
+                if (find) val = find.Name;
+            }
+            return val;
         }
     }
     loadTableData(stations: GarbageStation[]) {
@@ -55,7 +65,7 @@ export class GarbageStationTable extends BusinessTable implements IConverter, IP
         values: [],
         primaryKey: "id",
         eventDelegate: (event: CustomTableEvent) => {
-          
+
         },
         tableAttrs: [new TableAttr({
             HeadTitleName: "名称",
@@ -84,6 +94,7 @@ export class GarbageStationTable extends BusinessTable implements IConverter, IP
     findItemFn: (id: string) => GarbageStation;
     delItemFn: (id: string) => void;
     form = new TableFormControl<GarbageStation>(this);
+    findStationTypeFn: (type: number) => string;
     constructor() {
         super();
     }
@@ -115,14 +126,15 @@ export class GarbageStationTable extends BusinessTable implements IConverter, IP
     editItem(item: GarbageStation) {
         const findVal = this.dataSource.values.find(x => x.id == item.Id);
         findVal.name = item.Name;
-        findVal.stationType = item.StationType;
+        findVal.stationType = this.findStationTypeFn(item.StationType);
     }
 
     toTableModel(item: GarbageStation) {
         let tableField = new TableField();
         tableField.id = item.Id;
         tableField.name = item.Name;
-        tableField.stationType = item.StationType;
+
+        tableField.stationType = this.findStationTypeFn(item.StationType);
         return tableField;
     }
 }
@@ -135,5 +147,5 @@ export class TableField implements ITableField {
     id: string;
     name: string;
     /** 类型(可选) */
-    stationType: number;
+    stationType: string;
 }

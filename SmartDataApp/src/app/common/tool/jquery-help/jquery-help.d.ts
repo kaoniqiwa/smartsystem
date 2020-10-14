@@ -17,3 +17,8 @@ export declare function domCss(domId:string,css:any);
 export declare function addClass(domId:string,className:string);
 
 export declare function hasClassName(domId:string,className:string);
+
+export declare function domSize(domId:string):{width:number,height:number};
+ 
+export declare function drawRectangle(canvasId:string,point1:{x:number,y:number}
+    , point2:{x:number,y:number}, point3:{x:number,y:number}, point4:{x:number,y:number});

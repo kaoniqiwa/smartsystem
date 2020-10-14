@@ -7,6 +7,7 @@ import { HouseModeEnum } from "../station-chart/business/station-chart";
 import { GarbageStationType } from "../../../data-core/model/waste-regulation/garbage-station-type";
 import { MessageBar } from "../../../common/tool/message-bar";
 import { DivisionTreeNode } from '../../common/tree.service';
+import { getBitNo } from "../../../common/tool/bit-set";
 @Component({
   selector: 'app-garbage-station',
   templateUrl: './garbage-station.component.html',
@@ -47,11 +48,12 @@ export class GarbageStationComponent implements OnInit {
   }
 
   treeNodeClick(node: DivisionTreeNode) {
-    const type = this.dataService.types.find(x => x.Type + '' == node.id);
+    const type = this.dataService.types.find(x => x.Type + '' == node.id);console.log(type);
+    
     this.stationList.selectNode(node);
     this.chartComponent.stationChart.changeTrashNum(type.Windows.length + '')
     this.chartComponent.stationChart.changeHouseType = type;
-console.log(this.chartComponent.stationChart.house);
+ 
 
   }
 

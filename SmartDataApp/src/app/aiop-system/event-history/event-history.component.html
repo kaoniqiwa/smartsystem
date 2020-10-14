@@ -5,7 +5,10 @@
       <div fxLayout="row" class="fill-height" fxLayoutAlign="center center">
         <div fxFlex="50" class="custom-form-wrap" style="height: 50%;">
           <div style="font-size: 20px;height: 30px;line-height: 20px;color: white">
-            <div class="pull-left">详细图片</div>
+            <div class="pull-left">详细图片
+              <label class="m-b-0" style="font-size: 14px;">id:{{tableService.eventTable.enlargeId}}</label>&nbsp;
+              <label class="m-b-0" style="font-size: 14px;">置信度:{{tableService.eventTable.enlargeConfidence}}%</label>
+            </div>
             <div class="pull-right">
               <a href="javascript:void(0)" (click)="tableService.eventTable.enlargeImage=''">
                 <i class="howell-icon-Close alert-window-close-btn" ></i>
@@ -13,7 +16,13 @@
             
             </div>
           </div>
-          <img  width="100%" style="height: calc(100% - 30px);"  src="{{tableService.eventTable.enlargeImage}}" onerror="this.src='../assets/img/timg-pic.jpg'" alt="">
+          <div class="fill-width"  style="height: calc(100% - 30px);position: relative;">
+            <img id="enlargeImage" width="100%" class="fill-height "  src="{{tableService.eventTable.enlargeImage}}" onerror="this.src='../assets/img/timg-pic.jpg'" alt="">
+            <canvas id="polygonCanvas" width="{{tableService.eventTable.enlargeImageSize.width}}" 
+            height="{{ tableService.eventTable.enlargeImageSize.height}}" style="position:absolute;left: 0;top: 0;"></canvas>
+          </div>
+        
+      
          </div>
       
       </div> 
@@ -76,5 +85,5 @@
   </ng-container>
   <div [ngStyle]="{'height': tableService.search.other ? 'calc(100% - 112px)':'calc(100% - 68px)'}">
     <hw-custom-table #table [model]="tableService.eventTable.dataSource"></hw-custom-table>
-  </div>
+  </div>  
 </div>

@@ -1,8 +1,7 @@
 export class EnumHelper {
     cameraType: Map<number, string>;
     cameraState: Map<number, string>;
-    eventType: Map<number, string>;
-    stationsType: Map<number, string>;
+    eventType: Map<number, string>; 
     constructor() {
         this.cameraState = new Map();
         this.cameraType = new Map();
@@ -18,8 +17,7 @@ export class EnumHelper {
         this.eventType.set(EventTypeEnum.IllegalDrop, '乱扔垃圾');
         this.eventType.set(EventTypeEnum.MixedInto, '混合投放');
         this.eventType.set(EventTypeEnum.GarbageVolume, '垃圾容量');
-
-        this.stationsType=new Map();
+ 
     }
 }
 
@@ -50,7 +48,7 @@ export enum CanTypeEnum {
     /** 有害垃圾桶*/
     Hazard
 }
-
+ 
 export enum ResourceTypeEnum {
     'Camera' = '监控点',
     'EncodeDevice' = '编码设备',
@@ -66,6 +64,19 @@ export enum CameraUsageEnum {
     IllegalDrop,
     /**垃圾满溢 */
     GarbageFull,
+}
+
+export enum CameraUsageDataEnum {
+    /** 干垃圾桶*/
+    Dry = 9,
+    /**湿垃圾桶 */
+    Wet=11,
+    /** 可回收垃圾桶*/
+    Recycle=9,
+    /** 有害垃圾桶*/
+    Hazard=9,
+    
+    Other=4
 }
 
 

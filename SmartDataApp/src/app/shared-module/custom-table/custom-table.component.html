@@ -30,8 +30,8 @@
                 class="{{attrs.tdInnerAttrClassName&&item[attrs.tdInnerAttrClassName]?item[attrs.tdInnerAttrClassName]:''}}"
                 *ngIf="!attrs.isImg&&!attrs.isHTML"
                 [ngStyle]="{'color': fontColor(item[attrs.tdInnerAttrName])?'rgb(225,94,100)':'unset'}">{{item[attrs.tdInnerAttrName]}}</span>
-              <img src="{{item[attrs.tdInnerAttrName]}}" onerror="this.src='../assets/img/timg-pic.jpg'"  (click)="imgClick(item[attrs.tdInnerAttrName])"
-              *ngIf="attrs.isImg" style="width:20px;height:20px;margin-left:15px">
+              <img src="{{item[attrs.tdInnerAttrName]}}" onerror="this.src='../assets/img/timg-pic.jpg'"  (click)="imgClick(item)"
+              *ngIf="attrs.isImg" style="width:50px;height:30px;">
             </td>
             <td *ngIf="model.iconTextTagAttr&&model.iconTextTagAttr.length&&model.iconTextTh"
               [ngStyle]="{'width':model.iconTextTh.width}">
