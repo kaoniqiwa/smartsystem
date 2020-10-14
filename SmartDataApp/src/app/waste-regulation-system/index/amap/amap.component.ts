@@ -90,13 +90,13 @@ export class AMapComponent implements AfterViewInit, OnInit {
         this.garbages = response.Data.Data;
 
         const arrayStatus = new Array();
-        // tslint:disable-next-line:forin
-        for (const id in this.garbages) {
+        for (let i = 0; i < this.garbages.length; i++) {
+            const garbage = this.garbages[i];
             try {
-                if (this.garbages[id].StationState > 0) {
+                if (this.garbages[i].StationState > 0) {
                     const status = {
-                        id: id,
-                        status: this.garbages[id].StationState === 1 ? 1 : 2
+                        id: this.garbages[i].Id,
+                        status: this.garbages[i].StationState === 1 ? 1 : 2
                     };
                     console.log(status);
                     arrayStatus.push(status);
@@ -104,7 +104,6 @@ export class AMapComponent implements AfterViewInit, OnInit {
             } catch (ex) {
                 console.error(ex);
             }
-
         }
         this.client.Point.Status(arrayStatus);
     }
