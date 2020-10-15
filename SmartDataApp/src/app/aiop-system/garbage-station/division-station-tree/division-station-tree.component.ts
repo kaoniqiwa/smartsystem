@@ -3,7 +3,7 @@ import { CustomTreeComponent } from "../../../shared-module/custom-tree/custom-t
 import { StationTreeService } from "./business/garbage-station-tree";
 import { DataService } from "./business/data-service";
 import { NodeTypeEnum } from '../../common/tree.service';
-import { FlatNode, TreeListMode } from '../../../shared-module/custom-tree/custom-tree';
+import { FlatNode, TreeListMode,RightBtn } from '../../../shared-module/custom-tree/custom-tree';
 @Component({
   selector: 'hw-division-station-tree',
   templateUrl: './division-station-tree.component.html',
@@ -31,7 +31,7 @@ export class DivisionStationTreeComponent implements OnInit {
   treeListMode = TreeListMode.rightBtn;
 
   @Input()
-  btn: {iconClass: string, btnClass: string };
+  rightBtn: {iconClass: string, btns: RightBtn[] };
 
   @Input()
   rightBtnFn: (item: FlatNode) => void;
@@ -68,7 +68,7 @@ export class DivisionStationTreeComponent implements OnInit {
     this.stationTreeService.loadStationTree();
     this.garbageStationTree.dataSource.data = this.stationTreeService.treeNode;
 
-    this.addNodeRightBtn(this.btn);
+    this.addNodeRightBtn(this.rightBtn);
   }
 
   findNode(id: string) {
@@ -86,11 +86,11 @@ export class DivisionStationTreeComponent implements OnInit {
     return nodes;
   }
 
-  addNodeRightBtn(btnItem:{iconClass: string, btnClass: string}) {
-    if(this.treeListMode == TreeListMode.rightBtn &&btnItem){
-      const nodes = this.findBindNode(btnItem.iconClass);
+  addNodeRightBtn(item:{iconClass: string, btns: RightBtn[]}) {
+    if(this.treeListMode == TreeListMode.rightBtn &&item){
+      const nodes = this.findBindNode(item.iconClass);
       for (const n of nodes)
-        n.rightClassBtn = [btnItem.btnClass];
+        n.rightClassBtn = item.btns;
     }  
   }
 }

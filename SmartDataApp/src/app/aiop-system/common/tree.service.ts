@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ListAttribute } from "../../common/tool/table-form-helper";
-import { TreeNode } from "../../shared-module/custom-tree/custom-tree";
+import { TreeNode ,RightBtn} from "../../shared-module/custom-tree/custom-tree";
 @Injectable()
 export class TreeService extends ListAttribute {
     public dataSource = new Array<DivisionTreeNode>();
@@ -78,7 +78,7 @@ export class TreeService extends ListAttribute {
                     node_.checked = false;
                     node_.id = item.id;
                     node_.iconClass = this.nodeIconType.get(item.type);
-                    node_.rightClassBtn =item.type == NodeTypeEnum.camera? ['howell-icon-Link']:[];
+                    node_.rightClassBtn =item.type == NodeTypeEnum.camera? [new RightBtn('howell-icon-Link','1')]:[];
                     node.children = node.children || new Array<TreeNode>();
                     node.children.push(node_);
                     addItems(node_, items); 
@@ -92,7 +92,7 @@ export class TreeService extends ListAttribute {
                 const node = new TreeNode();
                 node.name = item.name;
                 node.checked = false;
-                node.rightClassBtn = item.type == NodeTypeEnum.camera? ['howell-icon-Link']:[];
+                node.rightClassBtn = item.type == NodeTypeEnum.camera? [new RightBtn('howell-icon-Link','1')]:[];
                 node.id = item.id;
                 node.iconClass = this.nodeIconType.get(item.type);
                 dataSource.push(node);

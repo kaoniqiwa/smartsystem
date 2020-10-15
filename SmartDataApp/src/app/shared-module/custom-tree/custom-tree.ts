@@ -5,10 +5,10 @@ export class CustomExtension {
 export class TreeNode {
   id: string;
   name: string;
-  color:ColorEnum;
+  color: ColorEnum;
   checked: boolean;
   iconClass: string;
-  rightClassBtn: string[];
+  rightClassBtn: RightBtn[];
   children?: TreeNode[];
 }
 
@@ -26,10 +26,10 @@ export class FlatNode {
   checked: boolean;
   id: string;
   label: string;
-  labelColor:ColorEnum;
+  labelColor: ColorEnum;
   inputVal: string;
   iconClass: string;
-  rightClassBtn: string[];
+  rightClassBtn: RightBtn[];
   checkBoxState: CheckBoxStateEnum;
   checkedChilds: number = 0;
 
@@ -51,5 +51,14 @@ export enum TreeListMode {
 export enum ColorEnum {
   'white' = 'text-white',
   'lightbBlue' = 'light-blue-text',
-  'green'='green-text'
+  'green' = 'green-text'
+}
+
+export class RightBtn {
+  cssClass: string;
+  tag: string;
+  constructor(cssClass: string, tag: string) {
+    this.cssClass = cssClass;
+    this.tag = tag;
+  }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { TreeNode, FlatNode, TreeListMode, CheckBoxStateEnum ,ColorEnum} from "./custom-tree";
+import { TreeNode, FlatNode, TreeListMode, CheckBoxStateEnum ,ColorEnum,RightBtn} from "./custom-tree";
 @Component({
   selector: 'hw-custom-tree',
   templateUrl: './custom-tree.component.html',
@@ -15,7 +15,7 @@ export class CustomTreeComponent implements OnInit {
 
   selectedItems = new Array<FlatNode>();
   @Input() selectedItemFn: (item: FlatNode, inputVal?: string) => void;
-  @Input() rightBtnFn: (item: FlatNode) => void;
+  @Input() rightBtnFn: (item: FlatNode,btn:RightBtn) => void;
   @Input() treeData: TreeNode[];
   @Input() mode = TreeListMode.nomal;
 
@@ -114,8 +114,8 @@ export class CustomTreeComponent implements OnInit {
     return this.selectedItems.length ? this.selectedItems[0].id : null;
   }
 
-  rightBtnClick(item: FlatNode){ 
-    if (this.rightBtnFn && this.mode == TreeListMode.rightBtn) this.rightBtnFn(item);
+  rightBtnClick(item: FlatNode,btn:RightBtn){ 
+    if (this.rightBtnFn && this.mode == TreeListMode.rightBtn) this.rightBtnFn(item,btn);
   }
 
   itemClick(item: FlatNode) {

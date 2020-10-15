@@ -34,9 +34,10 @@
           </div>
         </ng-container> 
         <ng-container *ngIf="listMode.rightBtn==mode">
-          <div class="pull-right  p-r-10 right-btn-wrapper">
-            <ng-container *ngFor="let b of node.rightClassBtn">
-              <a href="javascript:void(0)" (click)="rightBtnClick(node)"  class="{{b}} "></a>
+          <div class="pull-right   right-btn-wrapper">
+            <ng-container *ngFor="let b of node.rightClassBtn;let i=index">
+              <a href="javascript:void(0)" [ngStyle]="{'padding-left': i>0?'2px':'unset'}"
+              (click)="rightBtnClick(node,b)"  class="{{b.cssClass}} "></a>
            </ng-container> 
           </div>
         </ng-container>
