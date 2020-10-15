@@ -17,14 +17,15 @@ export class EnumHelper {
         this.eventType.set(EventTypeEnum.IllegalDrop, '乱扔垃圾');
         this.eventType.set(EventTypeEnum.MixedInto, '混合投放');
         this.eventType.set(EventTypeEnum.GarbageVolume, '垃圾容量');
- 
+        this.eventType.set(EventTypeEnum.GarbageFull,'垃圾满溢');
     }
 }
 
 export enum EventTypeEnum {
     IllegalDrop = 1,
     MixedInto,
-    GarbageVolume
+    GarbageVolume,
+    GarbageFull
 }
 
 export enum DivisionTypeEnum {

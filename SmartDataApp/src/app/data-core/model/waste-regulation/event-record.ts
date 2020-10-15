@@ -20,6 +20,7 @@
     /**事件记录 */
     export interface EventRecord extends IEventRecord
     {
+        EventId:string;
         /**事件ID */
         Id: string;
         /**事件时间 */

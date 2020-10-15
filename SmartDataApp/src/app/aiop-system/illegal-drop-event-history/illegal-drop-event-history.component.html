@@ -23,18 +23,14 @@
               height="{{ tableService.eventTable.enlargeImageSize.height}}"
               style="position:absolute;left: 0;top: 0;"></canvas>
           </div>
-
-
         </div>
-
       </div>
-
     </div>
   </ng-container>
 
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
     <div class="second-title-bg text">
-      AI事件
+      乱扔垃圾事件
     </div>
     <div [formGroup]="tableService.search.searchform" fxLayoutAlign="center center">
       <input type="text" style="width: 300px;" [readonly]="tableService.search.other" formControlName="SearchText"
@@ -60,26 +56,25 @@
         <span>结束时间</span>
         <input type="text" DateTimePicker [defaultVal]="tableService.search.endDate" [changeDate]="endDate"
           style="width: calc(100% - 82px);" class="custom form-control m-l-10" formControlName="EndTime">
-      </div>
+      </div> 
       <div fxFlex="25">
-        <span>事件类型</span>
-        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 82px);"
-          formControlName="EventType">
+        <span>区划</span>
+        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 62px);"
+          formControlName="DivisionId">
           <option value="">全部</option>
-          <option value="1">乱扔垃圾</option>
-          <option value="2">混合投放</option>
-          <option value="3">垃圾容量</option>
+          <ng-container *ngFor="let c of tableService.divisions">
+            <option value="{{c.Id}}">{{c.Name}}</option>
+          </ng-container>
         </select>
       </div>
       <div fxFlex="25">
-        <span>AI模型</span>
-        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 62px);"
-          formControlName="ResourceType">
+        <span>垃圾房</span>
+        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 64px);"
+          formControlName="StationId">
           <option value="">全部</option>
-          <ng-container *ngFor="let c of tableService.camerasAIModel">
-            <option value="{{c.Id}}">{{c.ModelName}}</option>
+          <ng-container *ngFor="let c of tableService.garbageStations">
+            <option value="{{c.Id}}">{{c.Name}}</option>
           </ng-container>
-
         </select>
       </div>
     </div>
