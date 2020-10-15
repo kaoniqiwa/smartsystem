@@ -99,6 +99,15 @@ export class MapDeployComponent implements OnInit {
       try {
         const point = this.dataController.Village.Point.Get(data[0].DivisionId, data[0].Id);
         this.client.Viewer.MoveTo(point.position);
+
+        this.client.Point.Name.Hide();
+
+        setTimeout(() => {
+          this.client.Point.Name.Show(point.id);
+        }, 500);
+
+
+
       } catch (error) {
         const village = this.dataController.Village.Get(data[0].DivisionId);
         this.client.Viewer.MoveTo(village.center);

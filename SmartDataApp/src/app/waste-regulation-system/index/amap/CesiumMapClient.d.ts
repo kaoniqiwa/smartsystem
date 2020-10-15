@@ -62,8 +62,8 @@ declare namespace CesiumMap {
         Select: (villageId: string) => string;
     }
     interface PointNameController {
-        Show: (id: string, style: CesiumDataController.GuideboardStyle) => void;
-        Hide: (id: string, style: CesiumDataController.GuideboardStyle) => void;
+        Show: (id?: string, style?: CesiumDataController.GuideboardStyle) => void;
+        Hide: (id?: string, style?: CesiumDataController.GuideboardStyle) => void;
     }
     enum PointStatus {
         normal = 0,
