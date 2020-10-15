@@ -1,0 +1,14 @@
+.card-wrap{
+  background-color: #2448a50d;  
+  border: 2px #7586e00f solid;
+  height:  100%;
+  padding: 20px;
+}
+.map {  
+  border: none;  
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: block;  
+  background-color: #0c1127;
+}

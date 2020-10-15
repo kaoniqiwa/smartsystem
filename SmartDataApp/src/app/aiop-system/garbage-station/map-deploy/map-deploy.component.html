@@ -1,10 +1,28 @@
 <div class="fill-height fill-width">
   <div style="width:320px" class="card-wrap m-r-20 pull-left">
     <h2 class="m-b-20">投放点列表</h2>
-    <hw-division-station-tree #stationTree [treeHeight]="'calc(100% - 80px)'"
-    [selectedItemFn]="selectDivisionClick"></hw-division-station-tree>
+    <hw-division-station-tree #stationTree [treeHeight]="'calc(100% - 80px)'" [rightBtn]="rightBtn"
+      [rightBtnFn]="rightBtnFn" [selectedItemFn]="selectDivisionClick"></hw-division-station-tree>
   </div>
-  <div style="width: calc(100% - 320px);padding:10px" class="card-wrap   m-r-20 pull-left">
+  <div style="width: calc(100% - 340px);padding:10px" class="card-wrap pull-left">
     <iframe class="map" [src]="srcUrl" #iframe width="100%" height="100%"></iframe>
-  </div>  
+  </div>
+
+  <div #confirm style="display: none;" class="fill-height fill-width hw-content-mask">
+    <div class="hw-form-wrap" style="height: 150px;">
+      <div class="custom-form-wrap text-center" style="width: 400px;">
+        <h2 class="center message">{{confirmMessage}}</h2>
+        <div class="text-center" style="margin-top: 40px;">
+          <button class="hw-green-m-btn m-r-10" (click)="ConfirmSave()">
+            <i class="howell-icon-Check"></i>
+          </button>
+          <button class="hw-gray-m-btn" (click)="ConfirmCancel()">
+            <i class="howell-icon-Close"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 </div>
