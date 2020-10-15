@@ -266,8 +266,9 @@ export class MapDeployComponent implements OnInit {
           this.DragendPoint.position = position;
           try {
             this.dataController.Village.Point.Update(this.DragendPoint.parentId, this.DragendPoint.id, this.DragendPoint);
-          } catch (error) {
             new MessageBar().response_success('地图数据修改成功');
+          } catch (error) {
+            new MessageBar().response_Error('地图数据修改失败');
           }
 
           this.points[this.DragendPoint.id] = this.DragendPoint as CesiumDataController.Point;
