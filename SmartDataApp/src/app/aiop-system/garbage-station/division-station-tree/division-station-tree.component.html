@@ -4,7 +4,7 @@
 <div class="fine" [ngStyle]="{'height': treeHeight}" style="overflow: scroll;">
   <ng-container *ngIf="dataService.divisions&&dataService.garbageStations">
     <hw-custom-tree #garbageStationTree [treeData]="stationTreeService.treeNode" 
-    [mode]="stationTreeService.treeListMode"
+    [mode]="treeListMode"
     [rightBtnFn]="rightBtnClick"
     [selectedItemFn]="selectedItemClick">
     </hw-custom-tree>

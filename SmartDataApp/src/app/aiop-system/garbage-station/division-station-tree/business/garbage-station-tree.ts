@@ -11,8 +11,8 @@ export class StationTreeService extends TreeService{
     treeNode:TreeNode[] = new Array();
     garbageStations = new GarbageStations();
     divisions = new Divisions();
-    treeListMode:TreeListMode ;
-    link = false;
+   
+     
     constructor(){
         super();
         this.garbageStations.items = new Array();
@@ -55,9 +55,6 @@ export class StationTreeService extends TreeService{
                 mini.name=item.Name;
                 mini.divisionId=item.DivisionId;
                 mini.stationType=item.StationType;  
-                /** 右侧 按钮 */
-                if(this.link)
-                  mini.nodeType=  NodeTypeEnum.stationLink;
                 this.garbageStations.items.push(mini);
             }
         }

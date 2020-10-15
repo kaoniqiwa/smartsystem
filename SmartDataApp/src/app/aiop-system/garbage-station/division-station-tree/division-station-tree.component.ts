@@ -21,23 +21,26 @@ export class DivisionStationTreeComponent implements OnInit {
   treeHeight = 'calc(100% - 20px)';
 
   @Input()
-  selectedItemFn:(item: FlatNode,lastNode:boolean)=>void;
+  selectedItemFn: (item: FlatNode, lastNode: boolean) => void;
 
-  selectedItemClick = (item: FlatNode)=>{
-    if(this.selectedItemFn)this.selectedItemFn(item,this.stationTreeService.isLastNode(item.id));
+  selectedItemClick = (item: FlatNode) => {
+    if (this.selectedItemFn) this.selectedItemFn(item, this.stationTreeService.isLastNode(item.id));
   }
 
   @Input()
-  link  = false;
+  treeListMode = TreeListMode.rightBtn;
+
+  @Input()
+  btn: {iconClass: string, btnClass: string };
 
   @Input()
   rightBtnFn: (item: FlatNode) => void;
 
   rightBtnClick = (item: FlatNode) => {
     if (this.rightBtnFn) this.rightBtnFn(item);
-  } 
+  }
   searchTree = (text: string) => {
-    const nodeType = this.onlyDivisionNode ? NodeTypeEnum.map:NodeTypeEnum.station;
+    const nodeType = this.onlyDivisionNode ? NodeTypeEnum.map : NodeTypeEnum.station;
     const dataSource = this.stationTreeService.filterNodes(text, nodeType);
     this.garbageStationTree.clearNestedNode();
     this.garbageStationTree.dataSource.data = dataSource;
@@ -45,16 +48,15 @@ export class DivisionStationTreeComponent implements OnInit {
   }
   constructor(private stationTreeService: StationTreeService
     , public dataService: DataService) {
-     }
+  }
 
   async ngOnInit() {
-    this.stationTreeService.treeListMode= this.link ?TreeListMode.rightBtn: TreeListMode.nomal;
-    this.stationTreeService.link=this.link;
+
     this.dataService.divisions = await this.dataService.requestDivision();
     const ancestorDivision = this.dataService.divisions.find(x => x.ParentId == void 0);
-    this.stationTreeService.divisionModel = this.dataService.divisions; 
+    this.stationTreeService.divisionModel = this.dataService.divisions;
     if (this.onlyDivisionNode) {
-      const nodes =this.stationTreeService.convertTreeNode(this.stationTreeService.divisions);
+      const nodes = this.stationTreeService.convertTreeNode(this.stationTreeService.divisions);
       this.stationTreeService.dataSource = nodes;
     }
     else {
@@ -62,10 +64,33 @@ export class DivisionStationTreeComponent implements OnInit {
         this.dataService.garbageStations = await this.dataService.requestGarbageStation(ancestorDivision.Id);
       this.stationTreeService.garbageStationModel = this.dataService.garbageStations;
       this.stationTreeService.convertStationTreeNode();
-    } 
+    }
     this.stationTreeService.loadStationTree();
     this.garbageStationTree.dataSource.data = this.stationTreeService.treeNode;
 
+    this.addNodeRightBtn(this.btn);
   }
 
+  findNode(id: string) {
+    for (let key of this.garbageStationTree.flatNodeMap.keys())
+      if (key.id == id)
+        return key;
+  }
+
+  findBindNode(iconClass: string) {
+    const nodes = new Array<FlatNode>();
+    for (let key of this.garbageStationTree.flatNodeMap.keys()) {
+      if (key.iconClass == iconClass && key.rightClassBtn.length == 0)
+        nodes.push(key);
+    }
+    return nodes;
+  }
+
+  addNodeRightBtn(btnItem:{iconClass: string, btnClass: string}) {
+    if(this.treeListMode == TreeListMode.rightBtn &&btnItem){
+      const nodes = this.findBindNode(btnItem.iconClass);
+      for (const n of nodes)
+        n.rightClassBtn = [btnItem.btnClass];
+    }  
+  }
 }

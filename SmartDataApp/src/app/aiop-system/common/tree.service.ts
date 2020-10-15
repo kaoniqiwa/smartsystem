@@ -47,9 +47,9 @@ export class TreeService extends ListAttribute {
                 const node = new DivisionTreeNode();
                 node.id = item.id;
                 node.name = item.name;
+                node.type=NodeTypeEnum.station;
                 node.parentId = item.divisionId;
-                node.isLeaf = true;  
-                node.type= item.nodeType;
+                node.isLeaf = true;   
                 nodes.push(node);
             }
         }
@@ -78,7 +78,7 @@ export class TreeService extends ListAttribute {
                     node_.checked = false;
                     node_.id = item.id;
                     node_.iconClass = this.nodeIconType.get(item.type);
-                    node_.rightClassBtn =(item.type == NodeTypeEnum.camera || item.type == NodeTypeEnum.stationLink)? ['howell-icon-Link']:[];
+                    node_.rightClassBtn =item.type == NodeTypeEnum.camera? ['howell-icon-Link']:[];
                     node.children = node.children || new Array<TreeNode>();
                     node.children.push(node_);
                     addItems(node_, items); 
@@ -92,8 +92,7 @@ export class TreeService extends ListAttribute {
                 const node = new TreeNode();
                 node.name = item.name;
                 node.checked = false;
-                node.rightClassBtn =(item.type == NodeTypeEnum.camera || item.type == NodeTypeEnum.stationLink)
-                ? ['howell-icon-Link']:[];
+                node.rightClassBtn = item.type == NodeTypeEnum.camera? ['howell-icon-Link']:[];
                 node.id = item.id;
                 node.iconClass = this.nodeIconType.get(item.type);
                 dataSource.push(node);
@@ -155,8 +154,7 @@ export enum NodeTypeEnum{
     root=1,
     map,
     camera,
-    station,
-    stationLink
+    station
 }
  
 export class DivisionTreeNode {
@@ -187,9 +185,7 @@ export class GarbageStationMini {
      */
     stationType: number; 
     /**所属区划ID(可选) */
-    divisionId: string;
-
-    nodeType:NodeTypeEnum;
+    divisionId: string; 
 }
 
 export class CameraMini{
