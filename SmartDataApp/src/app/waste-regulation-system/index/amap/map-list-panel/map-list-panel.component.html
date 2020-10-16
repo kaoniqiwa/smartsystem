@@ -1,0 +1,14 @@
+<div class="btn" (click)="ButtonClick()">
+    <div class="inner">
+        <i class="howell-icon-ul"></i>
+    </div>
+</div>
+<div class="panel" [ngStyle]="{display:visibility?'':'none'}">
+    <div class="background">
+        <div class="inner">
+            <ng-container *ngFor="let item of dataSource">
+                <div class="item" (click)="itemClick(item)">{{item.Name}}</div>
+            </ng-container>
+        </div>
+    </div>
+</div>

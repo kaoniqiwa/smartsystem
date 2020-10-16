@@ -20,8 +20,9 @@
   
   .map-bar.status {    
     line-height: 16px;
-    left: -15px;
+    left: -30px;
     float: left;
+    list-style: none;
   }
   
   .map-bar.status li {
@@ -31,17 +32,34 @@
     float: right;
     width: 100%;
   }
+  .map-bar.status li div {
+    width: 10px;
+    height: 10px;
+    float: left;
+    margin-top: 2px;
+    margin-right: 5px;
+    border-radius: 50%;
+}
   
   .map-bar.status .normal {
     color: #2bcf38;
   }
+  .map-bar.status .normal div{
+    background-color: #2bcf38;
+  }
   
   .map-bar.status .warm {
     color: #febd00;
+  } 
+  .map-bar.status .warm div{
+    background-color: #febd00;
   }
   
   .map-bar.status .error {
     color: #eb2d2c;
+  }
+  .map-bar.status .error div{
+    background-color: #eb2d2c;
   }
   
   .map-bar.video-list {
@@ -84,6 +102,19 @@
       filter: grayscale(100%);    
       filter: gray;  
   }
+  .map-bar.video-list .video .error{  
+    background-color: rgba(0, 0, 0, 0.3);
+    color:white;
+    width: 120px;
+    height: 90px;
+    line-height: 90px;
+    text-align: center;
+    position: absolute;
+}
+
+
+
+
   .map-bar.video-list .video:hover {
     border: #2d76ce 2px solid;
   }
@@ -107,7 +138,11 @@
   }
 
 
-
+.map-bar.list-panel
+{
+  bottom: 95px;
+  left: -200px;
+}
 
 
 

@@ -3,19 +3,25 @@
 
 
 
-
+<app-map-list-panel class="map-bar list-panel"
+[dataSource]="garbages"
+(OnVisibilityChanged)="OnPanelVisibilityChanged($event)"
+(OnItemClicked)="OnPanelItemClicked($event)"
+></app-map-list-panel>
 
 
 <ul class="map-bar status">
-  <li class="normal">正常</li>
-  <li class="warm">满溢</li>
-  <li class="error">异常</li>
+  <li class="normal"><div></div>正常</li>
+  <li class="warm"><div></div>满溢</li>
+  <li class="error"><div></div>异常</li>
 </ul>
 <div class="map-bar video-list" style="display: none;">
   <ul class="ul">
     <ng-container *ngFor="let camera of selectedCameras">
-      
-      <li class="video" [ngClass]="{'error': camera.CameraState>0}" (click)="OnCameraClicked(camera)">        
+      <!-- [ngClass]="{'error': camera.CameraState>0}" -->
+      <li class="video"  (click)="OnCameraClicked(camera)">    
+
+        <div *ngIf="camera.CameraState>0" class="error">NO SIGNAL</div>
         <img [src]="camera.ImageUrl" (error)="OnImageError($event)" [title]="camera.Name" />
       </li>
     </ng-container>
