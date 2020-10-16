@@ -38,7 +38,8 @@ export class PlatformMgrComponent implements OnInit {
     if (this.tableSelectIds.length)
       this.mgrService.table.setConfirmDialog(`删除${this.tableSelectIds.length}个选择项`, async () => {
         await this.mgrService.delPlatformsData(this.tableSelectIds);
-        for (const id of this.tableSelectIds)
+        const ids = Array.from(this.tableSelectIds);
+        for (const id of ids)
           this.table.deleteListItem(id);
         this.mgrService.table.confirmDialog_ = null;
       });

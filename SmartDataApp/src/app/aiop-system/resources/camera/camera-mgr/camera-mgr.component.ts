@@ -92,7 +92,8 @@ export class CameraMgrComponent implements OnInit {
     if (this.tableSelectIds.length)
       this.tableService.cameraTable.setConfirmDialog(`删除${this.tableSelectIds.length}个选择项`, async () => {
         await this.tableService.delCamerasData(this.tableSelectIds);
-        for (const id of this.tableSelectIds)
+        const ids = Array.from(this.tableSelectIds);
+        for (const id of ids)
           this.table.deleteListItem(id);
         this.tableService.cameraTable.confirmDialog_ = null;
       });
