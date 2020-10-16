@@ -44,6 +44,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
     selectedCameras: Camera[];
     garbages: GarbageStation[];
 
+    villageGarbages: GarbageStation[];
+
+
     srcUrl: any;
     dataController: CesiumDataController.Controller;
     client: CesiumMapClient;
@@ -88,7 +91,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
         const response = await this.garbageService.list(new GetGarbageStationsParams()).toPromise();
 
         this.garbages = response.Data.Data;
-
+        if (!this.villageGarbages) {
+            this.villageGarbages = this.garbages;
+        }
         const arrayStatus = new Array();
         for (let i = 0; i < this.garbages.length; i++) {
             const garbage = this.garbages[i];
@@ -222,9 +227,13 @@ export class AMapComponent implements AfterViewInit, OnInit {
             list['style'].display = 'none';
         };
 
-        this.client.Events.OnVillageClicked = (village: CesiumDataController.Village) => {
+        this.client.Events.OnVillageClicked = async (village: CesiumDataController.Village) => {
             const list = document.getElementsByClassName('map-bar video-list')[0];
             list['style'].display = 'none';
+            const params = new GetGarbageStationsParams();
+            params.DivisionId = village.id;
+            const response = await this.garbageService.list(params).toPromise();
+            this.villageGarbages = response.Data.Data;
         };
     }
     ngAfterViewInit() {
