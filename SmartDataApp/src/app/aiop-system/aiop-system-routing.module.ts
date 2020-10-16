@@ -13,6 +13,8 @@ import { DeployCameraComponent } from "./garbage-station/deploy-camera/deploy-ca
 import { GarbageStationMgrComponent } from './garbage-station/garbage-station-mgr/garbage-station-mgr.component';
 import { GarbageStationComponent } from "./garbage-station/garbage-station/garbage-station.component";
 import { MapDeployComponent } from './garbage-station/map-deploy/map-deploy.component';
+import {FullTrashCanComponent  } from './garbage-station/full-trash-can/full-trash-can.component';
+import { IllegalDropEventHistoryComponent } from "./illegal-drop-event-history/illegal-drop-event-history.component";
 const routes: Routes = [
 
   {
@@ -41,12 +43,15 @@ const routes: Routes = [
         ]
       }
       , { path: 'event-history', component: EventHistoryComponent }
+      , { path: 'illegal-drop-event-history', component: IllegalDropEventHistoryComponent }
       , {
         path: 'garbage-station', children: [
           { path: 'map-deploy', component: MapDeployComponent },
           { path: 'deploy-camera', component: DeployCameraComponent },
           { path: 'garbage-station-mgr', component: GarbageStationMgrComponent },
-          { path: 'index', component: GarbageStationComponent }
+          { path: 'index', component: GarbageStationComponent },
+          { path:'full-trashcan',component:FullTrashCanComponent}
+         
         ]
       }
     ]

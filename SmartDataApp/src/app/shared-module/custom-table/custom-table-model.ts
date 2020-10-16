@@ -36,6 +36,7 @@ export class CustomTableArgs<T extends IBusinessData> implements IViewModel {
     paginationOptions: HWPaginationOptions;
     iconTextTh: TableTh;
     iconTextTagAttr: TableIconTextTagAttr[];
+    iconTd: TdIconsAttr[];
     constructor(options: {
         values?: T[],
         primaryKey?: string,
@@ -52,7 +53,8 @@ export class CustomTableArgs<T extends IBusinessData> implements IViewModel {
         isDisplayDetailImg?: boolean,
         eventDelegate?: (tag: IViewEvent) => void,
         iconTextTh?: TableTh,
-        iconTextTagAttr?: TableIconTextTagAttr[]
+        iconTextTagAttr?: TableIconTextTagAttr[],
+        iconTd?: TdIconsAttr[]
     } = {}) {
         this.values = options.values;
         this.primaryKey = options.primaryKey;
@@ -70,6 +72,7 @@ export class CustomTableArgs<T extends IBusinessData> implements IViewModel {
         this.eventDelegate = options.eventDelegate;
         this.iconTextTh = options.iconTextTh;
         this.iconTextTagAttr = options.iconTextTagAttr;
+        this.iconTd = options.iconTd;
     }
 }
 
@@ -128,6 +131,16 @@ export class TableIconTextTagAttr implements IViewModel {
 
 }
 
+export class TdIconsAttr implements IViewModel {
+    width: string;
+    key: string;
+    icons: {
+        colorClass: string;
+        iconClass: string;
+        width:string;
+        bgColorClass:string;
+    }[];
+}
 export class TableOperationBtn implements IViewModel {
     //按钮样式
     css: string;

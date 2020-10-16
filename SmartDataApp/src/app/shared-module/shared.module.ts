@@ -2,12 +2,11 @@
 import { NgModule } from '@angular/core'; 
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule, DatePipe } from '@angular/common';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ReactiveFormsModule } from '@angular/forms'; 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {  MatTreeModule,MatSidenavModule,MatToolbarModule ,MatButtonModule,MatMenuModule,MatButtonToggleModule
-  ,MatCheckboxModule,MatSnackBarModule,MatTabsModule
+  ,MatSnackBarModule,MatTabsModule
 } from '@angular/material';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { FormTitlePipe,TxtLenPipe } from "../common/tool/howell.pipe";
@@ -40,10 +39,11 @@ import { ImageThemeCardComponent } from './card-component/image-theme-card/image
 import { HintCardComponent } from './card-component/hint-card/hint-card.component';
 import { OrderTableCardComponent } from './card-component/order-table-card/order-table-card.component';
 import { LineEChartsCardComponent } from "./card-component/line-echarts-card/line-echarts-card.component";
+import { SwitchComponent } from './switch/switch.component';
 @NgModule({
   imports: [
     CommonModule,DragDropModule, HttpClientModule,ScrollingModule,
-    InfiniteScrollModule,FlexLayoutModule,MatCheckboxModule,MatTreeModule,
+    FlexLayoutModule,MatTreeModule,
     ReactiveFormsModule ,MatSidenavModule,MatToolbarModule,MatTabsModule,
     MatButtonModule,MatMenuModule,MatButtonToggleModule,MatSnackBarModule
   ],
@@ -58,11 +58,11 @@ import { LineEChartsCardComponent } from "./card-component/line-echarts-card/lin
   CustomTreeComponent,
   PicturesDropListComponent,
   CardListPanelComponent, VideoSimpleCardComponent, StateScaleCardComponent,CardComponent,BusinessCardGridComponent, HeaderSquareListComponent, ImageThemeCardComponent, HintCardComponent, OrderTableCardComponent
-,LineEChartsCardComponent  
+,LineEChartsCardComponent, SwitchComponent  
 ],
   exports: [
-    InfiniteScrollModule,MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,
-    MatSidenavModule,MatToolbarModule,FlexLayoutModule,MatCheckboxModule,ReactiveFormsModule,
+    MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,
+    MatSidenavModule,MatToolbarModule,FlexLayoutModule,ReactiveFormsModule,
     MatButtonModule,MatMenuModule,MatButtonToggleModule,MatSnackBarModule,MatTabsModule
     ,DateTimePickerDirective
     ,HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartLineDirective,HWSPlayerDirective,CardDirective
@@ -72,7 +72,7 @@ import { LineEChartsCardComponent } from "./card-component/line-echarts-card/lin
     ,InputTagSelectComponent,CustomTreeComponent,PicturesDropListComponent,CardListPanelComponent
     ,VideoSimpleCardComponent,StateScaleCardComponent,CardComponent,BusinessCardGridComponent
     ,HeaderSquareListComponent,ImageThemeCardComponent,HintCardComponent,OrderTableCardComponent
-    ,LineEChartsCardComponent
+    ,LineEChartsCardComponent,SwitchComponent
   ],
   providers: [DatePipe,
    ],

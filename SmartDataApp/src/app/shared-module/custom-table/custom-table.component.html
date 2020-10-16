@@ -25,13 +25,13 @@
           <tr *ngFor="let item of model.values" [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1"
             (click)='itemClick(item)'>
             <td *ngFor="let attrs of model.tableAttrs" [ngStyle]="{'width':attrs.tdWidth}">
-            
+
               <span title="{{item[attrs.tdInnerAttrName]}}"
                 class="{{attrs.tdInnerAttrClassName&&item[attrs.tdInnerAttrClassName]?item[attrs.tdInnerAttrClassName]:''}}"
                 *ngIf="!attrs.isImg&&!attrs.isHTML"
                 [ngStyle]="{'color': fontColor(item[attrs.tdInnerAttrName])?'rgb(225,94,100)':'unset'}">{{item[attrs.tdInnerAttrName]}}</span>
-              <img src="{{item[attrs.tdInnerAttrName]}}" onerror="this.src='../assets/img/timg-pic.jpg'"  (click)="imgClick(item)"
-              *ngIf="attrs.isImg" style="width:50px;height:30px;">
+              <img src="{{item[attrs.tdInnerAttrName]}}" onerror="this.src='../assets/img/timg-pic.jpg'"
+                (click)="imgClick(item)" *ngIf="attrs.isImg" style="width:50px;height:30px;">
             </td>
             <td *ngIf="model.iconTextTagAttr&&model.iconTextTagAttr.length&&model.iconTextTh"
               [ngStyle]="{'width':model.iconTextTh.width}">
@@ -51,15 +51,33 @@
                 </a>
               </div>
             </td>
-            <td  *ngIf="model.hasTableOperationTd">
-              <div [class.text-center]="model.tableOperationBtns&&model.tableOperationBtns.length==1" *ngIf="model.tableOperationBtns&&model.tableOperationBtns.length>0">
+            <ng-container *ngIf="model.iconTd">
+              <td>
+                <ng-container *ngFor="let i of iconTdAttr(item[model.primaryKey])">
+                  <div [ngStyle]="{'width':i.width,'height':i.width}" style="position: relative;" 
+                  [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1"
+                  class="{{i.bgColorClass}} td-wrapper text-center pull-left m-r-20">
+                    <i  [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1" class="{{i.colorClass}} {{i.iconClass}}"
+                       style="font-size: 24px;position: relative;top: 2px;"></i>
+                    <div class="card-angle td top-left"></div>
+                    <div class="card-angle td top-right"></div>
+                    <div class="card-angle td bottom-left"></div>
+                    <div class="card-angle td bottom-right"></div>
+                  </div>
+                </ng-container>
+              </td>
+            </ng-container>
+            <td *ngIf="model.hasTableOperationTd">
+              <div [class.text-center]="model.tableOperationBtns&&model.tableOperationBtns.length==1"
+                *ngIf="model.tableOperationBtns&&model.tableOperationBtns.length>0">
                 <!-- <i *ngFor="let btn of model.tableOperationBtns;let i = index" class="{{btn.css}}"
                   [class.m-r-10]="model.tableOperationBtns.length - 1 > i" title="{{btn.title}}"
                   (click)="btn.callback(item);$event.stopPropagation();">
                 </i> -->
                 <a href="javascript:void(0)" *ngFor="let btn of model.tableOperationBtns;let i = index"
                   title="{{btn.title}}" (click)="btn.callback(item);$event.stopPropagation();"
-                  [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1" class="td-icon p-t-10 p-b-10" style="padding-right: 5px;">
+                  [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1" class="td-icon p-t-10 p-b-10"
+                  style="padding-right: 5px;">
                   <i class="{{btn.css}}" class="td-icon"></i></a>
               </div>
             </td>
@@ -76,10 +94,10 @@
           <a href="javascript:void(0)" (click)="selectInvert()" class="m-r-10">反选</a>
           <a href="javascript:void(0)" (click)="selectCancel()">取消</a>
         </div>
-      </ng-container>     
+      </ng-container>
     </div>
-    <div fxFlex="60" style="position: relative;" >
-      <ng-container  *ngIf="model.paginationOptions">
+    <div fxFlex="60" style="position: relative;">
+      <ng-container *ngIf="model.paginationOptions">
         <div style="position: absolute;" [ngStyle]="{'right': model.paginationOptions.viewWidth+30+'px'}">
           <!-- <div class="left-text m-r-10 pull-left">
             <span class="m-r-10">当前数量</span>
@@ -90,16 +108,16 @@
               <span class="m-r-10">已选择</span>
               <span>{{selectedId.length}}</span>
             </div>
-          </ng-container>          
+          </ng-container>
           <div class="left-text m-r-10  pull-left">
             <span class="m-r-10">总数量</span>
             <span> {{model.footArgs.totalRecordCount}}</span>
           </div>
-  
+
         </div>
         <div HWPagination [options]="model.paginationOptions" class="page fill-height"></div>
       </ng-container>
-    
+
     </div>
 
   </div>

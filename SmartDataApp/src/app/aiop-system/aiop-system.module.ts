@@ -36,6 +36,9 @@ import { RegionCameraTreeComponent } from './garbage-station/region-camera-tree/
 import { GarbageStationComponent } from './garbage-station/garbage-station/garbage-station.component';
 import { GarbageStationFormComponent } from './garbage-station/garbage-station-form/garbage-station-form.component';
 import { MapDeployComponent } from './garbage-station/map-deploy/map-deploy.component';
+import { FullTrashCanComponent } from './garbage-station/full-trash-can/full-trash-can.component';
+import { IllegalDropEventHistoryComponent } from './illegal-drop-event-history/illegal-drop-event-history.component';
+import { GalleryTargetComponent } from './common/component/gallery-target/gallery-target.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -50,7 +53,7 @@ import { MapDeployComponent } from './garbage-station/map-deploy/map-deploy.comp
   RegionFormComponent, PlatformMgrComponent, PlatformFormComponent, AIModelsMgrComponent, AIModelFormComponent
   , CameraAIModelMgrComponent, SRServersMgrComponent, SRServerFormComponent, RegionCameraCopyComponent, EventHistoryComponent
   , DeployCameraComponent, TrashIconsListComponent, MapDeployComponent
-  , CameraRegionMoveComponent, GarbageStationMgrComponent, StationChartComponent, DivisionStationTreeComponent, RegionCameraTreeComponent, GarbageStationComponent, GarbageStationFormComponent ],
+  , CameraRegionMoveComponent, GarbageStationMgrComponent, StationChartComponent, DivisionStationTreeComponent, RegionCameraTreeComponent, GarbageStationComponent, GarbageStationFormComponent, FullTrashCanComponent, IllegalDropEventHistoryComponent, GalleryTargetComponent ],
   exports:[
   ]
 })

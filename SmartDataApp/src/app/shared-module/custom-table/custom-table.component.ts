@@ -32,6 +32,13 @@ export class CustomTableComponent implements OnInit{
     this.minusTableHeightStr = tableHeight + "px";
   
   }
+
+  iconTdAttr(id: string) {
+    const item = this.model.iconTd.find(x => x.key == id);
+     
+    
+    return item .icons ;
+  }
  
 
   iconTextTagAttr(id: string) {

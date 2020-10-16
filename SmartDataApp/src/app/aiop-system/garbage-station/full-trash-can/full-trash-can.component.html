@@ -1,0 +1,14 @@
+<div style="height: calc(100% - 64px);"> 
+
+  <div fxLayout="row" fxLayoutAlign="space-between stretch">
+    <div class="second-title-bg text">
+      垃圾房状态
+    </div>
+    <div fxLayoutAlign="center center">
+      <hw-input-search [searchEvent]="searchFn" [placeholder]="'名称'"></hw-input-search>     
+    </div>
+  </div> 
+  <div style="height: calc(100% - 21px);">
+    <hw-custom-table #table [model]="businessService.table.dataSource"></hw-custom-table>
+  </div>
+</div>
