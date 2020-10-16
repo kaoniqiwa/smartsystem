@@ -18,6 +18,10 @@ export class EventHistoryComponent implements OnInit {
   endDate= (b:Date)=>{
     this.tableService.search.formEndDate = b;
   }
+
+  galleryTargetFn = ()=>{
+    this.tableService.eventTable.galleryTarget = null;
+  }
   constructor(private tableService:EventTableService) { 
    }
 

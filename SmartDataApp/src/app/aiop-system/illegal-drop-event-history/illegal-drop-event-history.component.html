@@ -1,30 +1,7 @@
 <div style="height: calc(100% - 64px);">
-  <ng-container *ngIf="tableService.eventTable.enlargeImage">
+  <ng-container *ngIf="tableService.eventTable.galleryTarget">
     <div class="fill-height fill-width hw-content-mask">
-
-      <div fxLayout="row" class="fill-height" fxLayoutAlign="center center">
-        <div fxFlex="50" class="custom-form-wrap" style="height: 50%;">
-          <div style="font-size: 20px;height: 30px;line-height: 20px;color: white">
-            <div class="pull-left">详细图片
-              <label class="m-b-0" style="font-size: 14px;">id:{{tableService.eventTable.enlargeId}}</label>&nbsp;
-              <label class="m-b-0" style="font-size: 14px;">置信度:{{tableService.eventTable.enlargeConfidence}}%</label>
-            </div>
-            <div class="pull-right"> 
-              <a href="javascript:void(0)" (click)="tableService.eventTable.enlargeImage=''">
-                <i class="howell-icon-Close alert-window-close-btn"></i>
-              </a>
-
-            </div>
-          </div>
-          <div class="fill-width" style="height: calc(100% - 30px);position: relative;">
-            <img id="enlargeImage" width="100%" class="fill-height " src="{{tableService.eventTable.enlargeImage}}"
-              onerror="this.src='../assets/img/timg-pic.jpg'" alt="">
-            <canvas id="polygonCanvas" width="{{tableService.eventTable.enlargeImageSize.width}}"
-              height="{{ tableService.eventTable.enlargeImageSize.height}}"
-              style="position:absolute;left: 0;top: 0;"></canvas>
-          </div>
-        </div>
-      </div>
+      <hw-gallery-target [closeViewFn]="galleryTargetFn" [model]="tableService.eventTable.galleryTarget"></hw-gallery-target>
     </div>
   </ng-container>
 

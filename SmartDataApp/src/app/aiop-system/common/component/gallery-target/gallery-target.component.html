@@ -1,0 +1,27 @@
+<div fxLayout="row" class="fill-height" fxLayoutAlign="center center">
+  <div fxFlex="50" class="custom-form-wrap" style="height: 50%;">
+    <div class="title-wrap">
+      <div class="pull-left" style="width: 220px;">详细图片
+        <label [ngStyle]="{'visibility':onDesc? 'visible':'hidden'}"  class="m-b-0" style="font-size: 14px;">id:{{model.enlargeId}}</label>&nbsp;
+        <label class="m-b-0" [ngStyle]="{'visibility':onDesc? 'visible':'hidden'}"  style="font-size: 14px;">置信度:{{model.enlargeConfidence}}%</label>
+      </div>
+      <div class="pull-right">
+        <div class="switch-wrap">
+          <label class="m-b-0 m-r-10" style="font-size: 14px;">目标信息</label>
+          <hw-switch [onFn]="onDescFn"></hw-switch>
+        </div>
+        <a href="javascript:void(0)" class="close-winow" (click)="closeViewClick()">
+          <i class="howell-icon-Close alert-window-close-btn"></i>
+        </a>
+      </div>
+    </div>
+    <div class="fill-width img-wrap">
+      <img id="enlargeImage" width="100%" class="fill-height " src="{{model.enlargeImage}}"
+        onerror="this.src='../assets/img/timg-pic.jpg'" alt="">
+        <canvas  class="collapse canvas-position" [class.in]="onDesc" id="polygonCanvas" 
+        width="{{enlargeImageSize.width}}" height="{{ enlargeImageSize.height}}"></canvas>
+
+    </div>
+  </div>
+
+</div>

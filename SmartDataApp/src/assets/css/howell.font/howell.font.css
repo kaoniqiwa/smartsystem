@@ -2250,7 +2250,30 @@ a .howell-icon-flip-vertical:before {
 .howell-icon-move2:before {
     content: "\f311";
 }
-
 .howell-icon-garbage:before {
     content: "\f312";
+}
+.howell-icon-map6:before {
+    content: "\f313";
+}
+.howell-icon-intelligence:before {
+    content: "\f314";
+}
+.howell-icon-save2:before {
+    content: "\f315";
+}
+.howell-icon-computer:before {
+    content: "\f316";
+}
+.howell-icon-device3:before {
+    content: "\f317";
+}
+.howell-icon-howellsmart:before {
+    content: "\f318";
+}
+.howell-icon-empty:before {
+    content: "\f319";
+}
+.howell-icon-full:before {
+    content: "\f320";
 }

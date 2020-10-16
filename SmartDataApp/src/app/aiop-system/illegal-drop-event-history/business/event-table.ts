@@ -7,12 +7,11 @@ import { ITableField } from "../../common/ITableField";
 import { EnumHelper, ResourceTypeEnum } from "../../../common/tool/enum-helper";
 import { MediumPicture } from "../../../data-core/url/aiop/resources";
 import { IBusinessData } from "../../../common/interface/IBusiness";
-import { BusinessTable } from "../../common/business-table";
-import { domSize, drawRectangle } from "../../../common/tool/jquery-help/jquery-help";
+import { BusinessTable } from "../../common/business-table"; 
+import { GalleryTarget } from "../../common/component/gallery-target/gallery-target";
 export class EventTable extends BusinessTable implements IConverter {
-    enlargeImage = '';
-    enlargeConfidence = '';
-    enlargeId = '';
+    
+    galleryTarget:GalleryTarget;
     findEventFn: (id: string) => IllegalDropEventRecord;
     enlargeImageSize = {
         width: 0,
@@ -30,30 +29,10 @@ export class EventTable extends BusinessTable implements IConverter {
                 this.scrollPageFn(event);
             else if (event.eventType == CustomTableEventEnum.Img) {
 
-                this.enlargeImage = event.data['imageUrl'] + '';
-                setTimeout(() => {
-                    const size = domSize('enlargeImage');
-                    this.enlargeImageSize = size;
-                    const findEvent = this.findEventFn(event.data['id']),
-                        point1 = {
-                            x: findEvent.Data.Objects[0].Polygon[0].X * size.width,
-                            y: findEvent.Data.Objects[0].Polygon[0].Y * size.height,
-                        }, point2 = {
-                            x: findEvent.Data.Objects[0].Polygon[1].X * size.width,
-                            y: findEvent.Data.Objects[0].Polygon[1].Y * size.height,
-                        }, point3 = {
-                            x: findEvent.Data.Objects[0].Polygon[2].X * size.width,
-                            y: findEvent.Data.Objects[0].Polygon[2].Y * size.height,
-                        }, point4 = {
-                            x: findEvent.Data.Objects[0].Polygon[3].X * size.width,
-                            y: findEvent.Data.Objects[0].Polygon[3].Y * size.height,
-                        }
-                        this.enlargeId=findEvent.Data.Objects[0].Id;
-                        this.enlargeConfidence=findEvent.Data.Objects[0].Confidence+'';
-                    setTimeout(() => {
-                        drawRectangle('polygonCanvas', point1, point2, point3, point4);
-                    });
-                });
+                const findEvent = this.findEventFn(event.data['id'])
+                ,enlargeImage = event.data['imageUrl'] + '';
+                this.galleryTarget= new GalleryTarget(findEvent.Data.Objects[0].Id
+                    ,findEvent.Data.Objects[0].Confidence+'',enlargeImage,findEvent.Data.Objects[0].Polygon);
             }
         },
         tableAttrs: [new TableAttr({
@@ -91,7 +70,6 @@ export class EventTable extends BusinessTable implements IConverter {
     scrollPageFn: (event: CustomTableEvent) => void;
     Convert<IllegalDropEventsRecord, CustomTableArgs>(input: IllegalDropEventsRecord, output: CustomTableArgs) {
         const items = new Array<TableField>();
-console.log(input);
 
         if (input instanceof IllegalDropEventsRecord)
             for (const item of input.items) {
