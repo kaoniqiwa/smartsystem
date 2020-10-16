@@ -2,7 +2,7 @@
 import { Injectable } from "@angular/core";
 import { Camera } from "../../../../data-core/model/aiop/camera";
 import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
-import { FlatNode, ColorEnum } from "../../../../shared-module/custom-tree/custom-tree";
+import { FlatNode, ColorEnum ,RightBtn} from "../../../../shared-module/custom-tree/custom-tree";
 import { DataService as CameraDataService } from "../business/data.service";
 import { Camera as StationCamera } from "../../../../data-core/model/waste-regulation/camera";
 import { CameraUsageDataEnum, CameraUsageEnum, CanTypeEnum } from "../../../../common/tool/enum-helper";
@@ -13,7 +13,7 @@ export class BusinessService {
     bindItem: FlatNode;
     bindingCamera: Camera;
     station: GarbageStation;
-    readonly link = ['howell-icon-Link'];
+    readonly link = [new RightBtn('howell-icon-Link','1')];
     findNodeFn: (id: string) => FlatNode;
     cameraNodesFn: () => FlatNode[];
     cameraDataService: CameraDataService;

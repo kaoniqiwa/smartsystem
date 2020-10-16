@@ -34,10 +34,10 @@ export class DivisionStationTreeComponent implements OnInit {
   rightBtn: {iconClass: string, btns: RightBtn[] };
 
   @Input()
-  rightBtnFn: (item: FlatNode) => void;
+  rightBtnFn: (item: FlatNode,btn:RightBtn) => void;
 
-  rightBtnClick = (item: FlatNode) => {
-    if (this.rightBtnFn) this.rightBtnFn(item);
+  rightBtnClick = (item: FlatNode,btn:RightBtn) => {
+    if (this.rightBtnFn) this.rightBtnFn(item,btn);
   }
   searchTree = (text: string) => {
     const nodeType = this.onlyDivisionNode ? NodeTypeEnum.map : NodeTypeEnum.station;
