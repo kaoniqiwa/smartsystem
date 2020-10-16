@@ -88,7 +88,7 @@ var CesiumMapClient = function (iframe) {
                 return doing(function () {
                     iframe.contentWindow.MapController.Alarm.Point.Focus(alarmId);
                 });
-            },
+            }
         },
         Line: {
             Start: function (id, color) {
@@ -318,6 +318,11 @@ var CesiumMapClient = function (iframe) {
                         that.Point.Visibility[key] = false;
                 }
                 iframe.contentWindow.MapController.PointFilter(that.Point.Visibility);
+            });
+        },
+        Draggable: function (draggable) {
+            return doing(function () {
+                return iframe.contentWindow.MapController.PointDraggable(draggable);
             });
         }
 
@@ -681,6 +686,47 @@ var CesiumMapClient = function (iframe) {
             }
             catch (ex) {
                 queue.OnCameraMoveEnd = _onCameraMoveEnd;
+                lazy_loading();
+            }
+        });
+
+
+        var _onElementDragend;
+        this.__defineGetter__("OnElementDragend", function () { return _onElementDragend; });
+        this.__defineSetter__("OnElementDragend", function (val) {
+            _onElementDragend = val;
+            try {
+                iframe.contentWindow.MapTools.Events.OnElementDragend = _onElementDragend;
+            }
+            catch (ex) {
+                queue.OnElementDragend = _onElementDragend;
+                lazy_loading();
+            }
+        });
+
+
+        var _onMouseClick;
+        this.__defineGetter__("OnMouseClick", function () { return _onMouseClick; });
+        this.__defineSetter__("OnMouseClick", function (val) {
+            _onMouseClick = val;
+            try {
+                iframe.contentWindow.MapTools.Events.OnMouseClick = _onMouseClick;
+            }
+            catch (ex) {
+                queue.OnMouseClick = _onMouseClick;
+                lazy_loading();
+            }
+        });
+
+        var _onMouseDoubleClick;
+        this.__defineGetter__("OnMouseDoubleClick", function () { return _onMouseDoubleClick; });
+        this.__defineSetter__("OnMouseDoubleClick", function (val) {
+            _onMouseDoubleClick = val;
+            try {
+                iframe.contentWindow.MapTools.Events.OnMouseDoubleClick = _onMouseDoubleClick;
+            }
+            catch (ex) {
+                queue.OnMouseDoubleClick = _onMouseDoubleClick;
                 lazy_loading();
             }
         });

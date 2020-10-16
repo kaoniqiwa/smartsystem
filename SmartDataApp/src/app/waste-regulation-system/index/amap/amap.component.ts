@@ -44,6 +44,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
     selectedCameras: Camera[];
     garbages: GarbageStation[];
 
+    villageGarbages: GarbageStation[];
+
+
     srcUrl: any;
     dataController: CesiumDataController.Controller;
     client: CesiumMapClient;
@@ -75,7 +78,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         // });
         setInterval(() => {
             this.refresh();
-        }, 5 * 60 * 1000);
+        }, 1 * 60 * 1000);
     }
 
     getSrc() {
@@ -88,7 +91,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
         const response = await this.garbageService.list(new GetGarbageStationsParams()).toPromise();
 
         this.garbages = response.Data.Data;
-
+        if (!this.villageGarbages) {
+            this.villageGarbages = this.garbages;
+        }
         const arrayStatus = new Array();
         for (let i = 0; i < this.garbages.length; i++) {
             const garbage = this.garbages[i];
@@ -138,7 +143,19 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
         };
 
+
+        this.client.Events.OnMouseClick = async (position) => {
+
+        };
+        this.client.Events.OnMouseDoubleClick = async (position) => {
+
+        };
+        this.client.Events.OnElementsClicked = async (objs) => {
+
+        };
+
         this.client.Events.OnElementsDoubleClicked = async (objs) => {
+
             if (!objs || objs.length <= 0) { return; }
             const id = objs[0].id;
             const list = document.getElementsByClassName('map-bar video-list')[0];
@@ -163,19 +180,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
                                 } else {
                                     camera_response.Data.ImageUrl = 'assets/img/timg.png';
                                 }
-
                                 this.selectedCameras.push(camera_response.Data);
                             }
-                            switch (camera_response.Data.CameraState) {
-                                case CameraState.DeviceError:
-                                    camera_response.Data.Name += ' 设备故障';
-                                    break;
-                                case CameraState.PlatformError:
-                                    camera_response.Data.Name += ' 平台故障';
-                                    break;
-                                default:
-                                    break;
-                            }
+
                         } catch (ex) {
                             console.error(ex);
                         }
@@ -220,9 +227,13 @@ export class AMapComponent implements AfterViewInit, OnInit {
             list['style'].display = 'none';
         };
 
-        this.client.Events.OnVillageClicked = (village: CesiumDataController.Village) => {
+        this.client.Events.OnVillageClicked = async (village: CesiumDataController.Village) => {
             const list = document.getElementsByClassName('map-bar video-list')[0];
             list['style'].display = 'none';
+            const params = new GetGarbageStationsParams();
+            params.DivisionId = village.id;
+            const response = await this.garbageService.list(params).toPromise();
+            this.villageGarbages = response.Data.Data;
         };
     }
     ngAfterViewInit() {
@@ -343,6 +354,23 @@ export class AMapComponent implements AfterViewInit, OnInit {
         if (playing) {
             this.autoCloseWindow();
         }
+    }
+
+    OnPanelItemClicked(item: GarbageStation) {
+        if (!item) { return; }
+        try {
+            const point = this.dataController.Village.Point.Get(item.DivisionId, item.Id);
+            this.client.Viewer.MoveTo(point.position);
+        } catch (ex) {
+
+        }
+
+    }
+
+    VisibilityChange() { }
+
+    OnPanelVisibilityChanged(visibility: boolean) {
+
     }
 
 

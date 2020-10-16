@@ -62,10 +62,10 @@ declare namespace CesiumMap {
         Select: (villageId: string) => string;
     }
     interface PointNameController {
-        Show: (id: string, style: CesiumDataController.GuideboardStyle) => void;
-        Hide: (id: string, style: CesiumDataController.GuideboardStyle) => void;
+        Show: (id?: string, style?: CesiumDataController.GuideboardStyle) => void;
+        Hide: (id?: string, style?: CesiumDataController.GuideboardStyle) => void;
     }
-    enum PointStatus{
+    enum PointStatus {
         normal = 0,
         alarm = 1
     }
@@ -73,7 +73,7 @@ declare namespace CesiumMap {
         id: string;
         status: PointStatus;
     }
-    
+
     interface PointVisibilityOptions {
         camera?: boolean,
         entrance?: boolean,
@@ -101,6 +101,9 @@ declare namespace CesiumMap {
         /// <summary>元素点位筛选</summary>
         /// <param name="filter" type="json">筛选参数 (camera, entrance, annunciator, sensor)</param>
         Filter: (filter: PointVisibilityOptions) => void;
+
+        Draggable: (draggable: boolean) => void;
+
     }
 
 
@@ -117,6 +120,9 @@ declare namespace CesiumMap {
         OnError: (sender: any, error: any) => void;
         OnShapesDisplayed: (shapes: any[]) => void;
         OnCameraMoveEnd: () => void;
+        OnElementDragend: (element: CesiumDataController.Element, position: CesiumDataController.Position) => void;
+        OnMouseClick: (position: CesiumDataController.Position) => void;
+        OnMouseDoubleClick: (position: CesiumDataController.Position) => void;
     }
 
 
@@ -141,5 +147,5 @@ declare namespace CesiumMap {
 
 
 declare class CesiumMapClient extends CesiumMap.Client {
-    constructor(iframeId: string|HTMLElement);
+    constructor(iframeId: string | HTMLElement);
 }

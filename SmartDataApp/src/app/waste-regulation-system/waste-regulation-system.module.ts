@@ -7,10 +7,11 @@ import { IndexComponent } from './index/index.component';
 import { TimeToolComponent } from './index/time/time-tool.component';
 import { AMapComponent } from './index/amap/amap.component';
 import { VideoWindowComponent } from '../video-window/video-window.component';
+import { MapListPanelComponent } from './index/amap/map-list-panel/map-list-panel.component';
 
 
 @NgModule({
-  declarations: [IndexComponent, TimeToolComponent, AMapComponent, VideoWindowComponent],
+  declarations: [IndexComponent, TimeToolComponent, AMapComponent, VideoWindowComponent, MapListPanelComponent],
   imports: [
     CommonModule, SharedModule,
     WasteRegulationSystemRoutingModule
