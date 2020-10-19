@@ -4,7 +4,7 @@
 
 
 <app-map-list-panel class="map-bar list-panel"
-[dataSource]="garbages"
+[dataSource]="this.amapService.childrenOfList"
 (OnVisibilityChanged)="OnPanelVisibilityChanged($event)"
 (OnItemClicked)="OnPanelItemClicked($event)"
 ></app-map-list-panel>

@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Division } from 'src/app/data-core/model/waste-regulation/division';
 import { GarbageStation } from 'src/app/data-core/model/waste-regulation/garbage-station';
+import { MapListItem } from './map-list-item';
 
 
 
@@ -14,10 +16,10 @@ export class MapListPanelComponent implements OnInit {
     visibility: boolean;
 
     @Input()
-    dataSource: GarbageStation[];
+    dataSource: Array<MapListItem<Division | GarbageStation>>;
 
     @Output()
-    OnItemClicked: EventEmitter<GarbageStation> = new EventEmitter();
+    OnItemClicked: EventEmitter<MapListItem<Division | GarbageStation>> = new EventEmitter();
 
 
     @Input()
@@ -40,7 +42,7 @@ export class MapListPanelComponent implements OnInit {
         this.visibility = !this.visibility;
     }
 
-    itemClick(item: GarbageStation) {
+    itemClick(item: MapListItem<Division | GarbageStation>) {
         if (this.OnItemClicked) {
             this.OnItemClicked.emit(item);
         }

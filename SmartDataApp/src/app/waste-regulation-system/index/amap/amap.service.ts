@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
+import { from } from 'rxjs';
+import { Division } from 'src/app/data-core/model/waste-regulation/division';
+import { GarbageStation } from 'src/app/data-core/model/waste-regulation/garbage-station';
+import { MapListItem } from './map-list-panel/map-list-item';
+
 import { VideoPlayerService } from './video-player.service';
+
 
 @Injectable()
 export class AMapService {
@@ -8,4 +14,7 @@ export class AMapService {
         public videoPlayerService: VideoPlayerService) {
 
     }
+
+    childrenOfList: Array<MapListItem<Division|GarbageStation>> = [];
+
 }
