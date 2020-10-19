@@ -284,12 +284,14 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
                 this.player.play();
                 this.VideoPlayingEventListen.emit(true);
             } else {
-                this.player.stop().then(() => {
-                    this.player.url = this.url;
-                    this.player.name = this.cameraName;
-                    this.player.play();
-                    this.VideoPlayingEventListen.emit(true);
-                });
+                try {
+                    this.player.stop().then(() => {
+                        this.player.url = this.url;
+                        this.player.name = this.cameraName;
+                        this.player.play();
+                        this.VideoPlayingEventListen.emit(true);
+                    });
+                } catch (ex) { }
             }
 
         } else {

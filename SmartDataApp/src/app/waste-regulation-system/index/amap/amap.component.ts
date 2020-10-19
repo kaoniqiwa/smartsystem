@@ -228,6 +228,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         };
 
         this.client.Events.OnVillageClicked = async (village: CesiumDataController.Village) => {
+            if (!village) { return; }
             const list = document.getElementsByClassName('map-bar video-list')[0];
             list['style'].display = 'none';
             const params = new GetGarbageStationsParams();

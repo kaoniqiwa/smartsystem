@@ -10,6 +10,9 @@ function WSPlayer(args) {
         live: "live"
     }
 
+
+    var waitHandle;
+
     var wsPlayerState = {
         ready: 0,
         playing: 1,
@@ -278,6 +281,7 @@ function WSPlayer(args) {
 
 
 
+
         console.log("status:", that.status);
         that.status = wsPlayerState.opening;
 
@@ -394,6 +398,7 @@ function WSPlayer(args) {
 
     // 快进
     this.fast = function () {
+
         var status = getStatus();
         console.log(status);
         if (status.iRate >= 4) return;
@@ -403,6 +408,7 @@ function WSPlayer(args) {
     }
     // 慢放
     this.slow = function () {
+
         var status = getStatus();
         console.log(status);
         if (status.iRate <= -4) return;
@@ -448,11 +454,13 @@ function WSPlayer(args) {
 
     // 暂停
     this.pause = function () {
+
         doing(plugin.JS_Pause, 0);
         that.status = wsPlayerState.pause;
     }
 
     this.speedResume = function () {
+
         doing(function () {
             var status = getStatus();
             if (status.iRate > 1) {
@@ -472,11 +480,13 @@ function WSPlayer(args) {
 
     // 恢复
     this.resume = function () {
+
         doing(plugin.JS_Resume, 0);
         that.status = wsPlayerState.playing;
     }
     // 单帧
     this.frame = function () {
+
         doing(plugin.JS_FrameForward, 0);
         that.status = wsPlayerState.pause;
     }
@@ -484,42 +494,55 @@ function WSPlayer(args) {
 
     // 停止
     this.stop = function () {
+        try {
+            if (this.waitHandle)
+                throw new Error("短时间内重复调用");
+            if (element)
+                element.className = element.className.replace(/ loading/g, "")
 
-        if (element)
-            element.className = element.className.replace(/ loading/g, "")
+
+            if (!plugin) return;
+
+            switch (that.status) {
+                case wsPlayerState.closing:
+                case wsPlayerState.closed:
+                    return;
+                default: break;
+            }
 
 
-        if (!plugin) return;
+            console.log("stop");
 
-        switch (that.status) {
-            case wsPlayerState.closing:
-            case wsPlayerState.closed:
-                return;
-            default: break;
+            clearTimeout(this.waitHandle);
+            this.waitHandle = null;
+
+            return plugin.JS_Stop(0).then(() => {
+                that.status = wsPlayerState.closed;
+                var tools = element.getElementsByClassName("tools");
+                if (tools && tools[0]) {
+                    element.removeChild(tools[0]);
+                    that.tools = null;
+                }
+            }).catch(ex => {
+                that.status = wsPlayerState.closed;
+                var tools = element.getElementsByClassName("tools");
+                if (tools && tools[0]) {
+                    element.removeChild(tools[0]);
+                    that.tools = null;
+                }
+            });
+        }
+        finally {
+            this.waitHandle = setTimeout(() => {
+                clearTimeout(this.waitHandle);
+                this.waitHandle = null;
+            }, 1000);
         }
 
-
-        console.log("stop");
-
-        return plugin.JS_Stop(0).then(() => {
-            that.status = wsPlayerState.closed;
-            var tools = element.getElementsByClassName("tools");
-            if (tools && tools[0]) {
-                element.removeChild(tools[0]);
-                that.tools = null;
-            }
-        }).catch(ex => {
-            console.error(ex);
-            that.status = wsPlayerState.closed;
-            var tools = element.getElementsByClassName("tools");
-            if (tools && tools[0]) {
-                element.removeChild(tools[0]);
-                that.tools = null;
-            }
-        });
     }
     // 全屏
     this.fullScreen = function () {
+
         doing(function () {
             try {
                 plugin.JS_FullScreenSingle(0);
@@ -534,6 +557,7 @@ function WSPlayer(args) {
     }
 
     this.resize = function (width, height) {
+
         if (!width)
             width = that.clientWidth;
         if (!height)
@@ -564,6 +588,7 @@ function WSPlayer(args) {
         }, 200)
     }
     this.fullExit = function () {
+
         var element = document.documentElement;//若要全屏页面中div，var element= document.getElementById("divID");
         //IE ActiveXObject
         if (window.ActiveXObject) {
@@ -590,6 +615,7 @@ function WSPlayer(args) {
 
 
     this.download = function (filename, type) {
+
         if (current_args.mode == wsPlayerMode.vod)
             doing(function (args) {
                 plugin.JS_Download(args.filename, args.type);
