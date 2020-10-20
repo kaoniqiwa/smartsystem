@@ -81,8 +81,7 @@ export class TreeService extends ListAttribute {
                     node_.rightClassBtn =item.type == NodeTypeEnum.camera? [new RightBtn('howell-icon-Link','1')]:[];
                     node.children = node.children || new Array<TreeNode>();
                     node.children.push(node_);
-                    addItems(node_, items); 
-                    console.log(node_);
+                    addItems(node_, items);  
                     
                 }
             }
