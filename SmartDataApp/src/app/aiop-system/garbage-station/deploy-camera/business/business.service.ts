@@ -15,7 +15,7 @@ export class BusinessService {
     station: GarbageStation;
     readonly link = [new RightBtn('howell-icon-Link','1')];
     findNodeFn: (id: string) => FlatNode;
-    cameraNodesFn: () => FlatNode[];
+    // cameraNodesFn: () => FlatNode[];
     cameraDataService: CameraDataService;
     msg = new MessageBar();
     positionNoMap = new Map<CanTypeEnum, number>();
@@ -70,7 +70,8 @@ export class BusinessService {
             camera.CameraUsage = CameraUsageDataEnum.Wet;
         else camera.CameraUsage = CameraUsageDataEnum.Recycle;
 
-        var result = false;
+        var result = false;  
+        
         if (edit) result = await this.cameraDataService.editStationCamera(camera);
         else result = await this.cameraDataService.addStationCamera(camera);
         if (result)
@@ -79,33 +80,29 @@ export class BusinessService {
 
     async delCamera(cameraId: string) {
         const camera = this.cameraDataService.cameras.find(x => x.Id == cameraId);
-
-        camera.UpdateTime = new Date().toISOString();
-
-        camera.PositionNo = null;
-        const result = await this.cameraDataService.editStationCamera(camera);
+        const result = await this.cameraDataService.delStationCamera(camera.GarbageStationId,camera.Id);
         if (result)
             this.msg.response_success();
     }
 
-    fillCameraTreeState(cameras: StationCamera[]) {
-        const nodes = this.cameraNodesFn();
-        if (cameras) {
-            for (const c of cameras) {
-                const node = nodes.find(x => x.id == c.Id);
-                if (node && c.PositionNo) {
-                    node.labelColor = ColorEnum.green;
-                    node.rightClassBtn = new Array();
-                }
-            }
-        }
-    }
+    // fillCameraTreeState(cameras: StationCamera[]) {
+    //     const nodes = this.cameraNodesFn();
+    //     if (cameras) {
+    //         for (const c of cameras) {
+    //             const node = nodes.find(x => x.id == c.Id);
+    //             if (node && c.PositionNo) {
+    //                 node.labelColor = ColorEnum.green;
+    //                 node.rightClassBtn = new Array();
+    //             }
+    //         }
+    //     }
+    // }
 
     async fillHouseCameraPostion(house: House, stationId: string) {
         var cameras = await this.cameraDataService.getStationCameras(stationId);
         cameras = cameras.sort(function (a, b) {
             return a.PositionNo - b.PositionNo;
-        }); console.log(cameras);
+        });  
 
         this.cameraDataService.cameras = cameras;
 

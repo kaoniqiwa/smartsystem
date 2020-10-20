@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { CameraRequestService } from "../../../../data-core/repuest/garbage-station.service";
+import { ListAttribute } from "../../../../common/tool/table-form-helper";
 import { Camera, GetGarbageStationCamerasParams } from "../../../../data-core/model/waste-regulation/camera";
-import { GetGarbageStationsParams } from "../../../../data-core/model/waste-regulation/garbage-station";
 @Injectable()
 export class DataService {
 
@@ -20,11 +20,17 @@ export class DataService {
         return result.FaultCode == 0;
     }
 
-    async getCamera(stationId:string,cameraId:string){
+    async getCamera(stationId: string, cameraId: string) {
         const param = new GetGarbageStationCamerasParams();
-        param.Ids=[cameraId];
-        param.GarbageStationIds=[stationId];
-        const result = await this.cameraRequestService.postList(param).toPromise();
+       
+        param.PageIndex =1;
+        param.PageSize=new ListAttribute().maxSize;
+        if (stationId)
+            param.GarbageStationIds = [stationId];
+        if(cameraId)
+            param.Ids = [cameraId];
+        
+        const result = await this.cameraRequestService.postList(param).toPromise(); 
         return result.Data.Data;
     }
     async editStationCamera(item: Camera) {

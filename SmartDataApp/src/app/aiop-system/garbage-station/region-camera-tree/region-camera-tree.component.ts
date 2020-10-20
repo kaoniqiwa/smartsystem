@@ -3,12 +3,13 @@ import { DataService } from "./business/data-service";
 import { RegionCameraTree } from "./business/region-camera-tree";
 import { CustomTreeComponent } from "../../../shared-module/custom-tree/custom-tree.component";
 import { NodeTypeEnum } from '../../common/tree.service';
-import { FlatNode } from '../../../shared-module/custom-tree/custom-tree';
-
+import { ColorEnum, FlatNode } from '../../../shared-module/custom-tree/custom-tree';
+import { DataService as  StationCameraDataService} from "../deploy-camera/business/data.service";
+import { Camera, GetGarbageStationCamerasParams } from "../../../data-core/model/waste-regulation/camera";
 @Component({
   selector: 'hw-region-camera-tree',
   templateUrl: './region-camera-tree.component.html',
-  providers: [DataService, RegionCameraTree]
+  providers: [DataService, RegionCameraTree,StationCameraDataService]
 })
 export class RegionCameraTreeComponent implements OnInit {
 
@@ -33,6 +34,7 @@ export class RegionCameraTreeComponent implements OnInit {
   }
 
   constructor(private regionCameraTree: RegionCameraTree
+    ,private stationCameraDataService:StationCameraDataService
     , public dataService: DataService) { }
 
   async ngOnInit() {
@@ -44,7 +46,22 @@ export class RegionCameraTreeComponent implements OnInit {
     this.regionCameraTree.loadCameraTree();
     this.cameraTree.dataSource.data = this.regionCameraTree.treeNode;
 
+    const cameras=await this.stationCameraDataService.getCamera(null,null);
+this.fillCameraTreeState(cameras);
   }
+
+  fillCameraTreeState(cameras: Camera[]) {
+    const nodes = this.findBindCameraNode(false);
+    if (cameras) {
+        for (const c of cameras) {
+            const node = nodes.find(x => x.id == c.Id);
+            if (node && c.PositionNo) {
+                node.labelColor = ColorEnum.green;
+                node.rightClassBtn = new Array();
+            }
+        }
+    }
+}
 
   findNode(id: string) {
     for (let key of this.cameraTree.flatNodeMap.keys())

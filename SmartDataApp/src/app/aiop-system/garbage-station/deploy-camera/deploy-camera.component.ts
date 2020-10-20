@@ -35,18 +35,18 @@ export class DeployCameraComponent implements OnInit {
         this.chartComponent.stationChart.changeTrashNum(type.Windows.length + '')
         this.chartComponent.stationChart.changeHouseType = type;
        await  this.businessService.fillHouseCameraPostion( this.chartComponent.stationChart.house,station.Id);
-       this.reloadState();
+      // this.reloadState();
       }
     }
 
   }
 
-  reloadState = ()=>{
-    this.businessService.cameraNodesFn=  ()=>{
-      return  this.cameraTree.findBindCameraNode(false);
-    }
-    this.businessService.fillCameraTreeState(this.cameraDataService.cameras);
-  }
+  // reloadState = ()=>{
+  //   this.businessService.cameraNodesFn=  ()=>{
+  //     return  this.cameraTree.findBindCameraNode(false);
+  //   }
+  //   this.businessService.fillCameraTreeState(this.cameraDataService.cameras);
+  // }
 
   selectCameraClick = async (item: FlatNode) => {
     this.businessService.bindItem = item;

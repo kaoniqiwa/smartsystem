@@ -30,8 +30,8 @@ export class EventTable extends BusinessTable implements IConverter {
             else if (event.eventType == CustomTableEventEnum.Img) {
                 const findEvent = this.findEventFn(event.data['id'])
                 ,enlargeImage = event.data['imageUrl'] + '';
-                this.galleryTarget= new GalleryTarget(findEvent.Data.Objects[0].Id
-                    ,findEvent.Data.Objects[0].Confidence+'',enlargeImage,findEvent.Data.Objects[0].Polygon);
+                // this.galleryTarget= new GalleryTarget(findEvent.Data.Objects[0].Id
+                //     ,findEvent.Data.Objects[0].Confidence+'',enlargeImage,findEvent.Data.Objects[0].Polygon);
             }
         },
         tableAttrs: [new TableAttr({
