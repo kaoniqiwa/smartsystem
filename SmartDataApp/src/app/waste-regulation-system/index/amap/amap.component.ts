@@ -20,6 +20,7 @@ import { Division, GetDivisionsParams } from '../../../data-core/model/waste-reg
 import { PagedList } from '../../../data-core/model/page';
 import { Response } from '../../../data-core/model/Response';
 import { MapListItem, MapListItemType } from './map-list-panel/map-list-item';
+import { constants } from 'os';
 
 declare var $: any;
 
@@ -103,14 +104,15 @@ export class AMapComponent implements AfterViewInit, OnInit {
         for (let i = 0; i < this.garbages.length; i++) {
             const garbage = this.garbages[i];
             try {
+                const status = {
+                    id: this.garbages[i].Id,
+                    status: 0
+                };
                 if (this.garbages[i].StationState > 0) {
-                    const status = {
-                        id: this.garbages[i].Id,
-                        status: this.garbages[i].StationState === 1 ? 1 : 2
-                    };
-                    console.log(status);
-                    arrayStatus.push(status);
+                    status.status = this.garbages[i].StationState === 1 ? 1 : 2;
                 }
+                console.log(status);
+                arrayStatus.push(status);
             } catch (ex) {
                 console.error(ex);
             }
