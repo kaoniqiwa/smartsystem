@@ -1,0 +1,35 @@
+<ng-container *ngIf="model">
+  <div class="fill-width"   style="overflow: auto;height: calc(100% - 45px);">
+
+    <div fxLayout="row wrap">
+      <ng-container *ngFor="let item of model.value;let i=index">
+        <div fxFlex="20" (click)="itemClick(item)" style="height: 242px;" [class.p-r-10]="i%5!=4" class="p-b-10">
+          <hw-image-desc-card1 [model]="item"></hw-image-desc-card1>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  
+    <div fxLayout="row" class="table-foot-wrap">
+      <div fxFlex="40">
+
+      </div>
+      <div fxFlex="60" style="position: relative;" class="m-t-10">
+        <ng-container *ngIf="model.pagination">
+          <div style="position: absolute;top:2px" [ngStyle]="{'right': model.pagination.viewWidth+30+'px'}">
+            <div class="left-text m-r-10  pull-left text-white">
+              <span class="m-r-10">当前数量</span>
+              <span> {{model.value.length}}</span>
+             </div>
+            <div class="left-text m-r-10 text-white pull-left">
+              <span class="m-r-10">总数量</span>
+              <span> {{model.totalRecordCount}}</span>
+            </div>
+
+          </div>
+          <div HWPagination [options]="model.pagination" class="page fill-height"></div>
+        </ng-container>
+      </div>
+
+    </div>
+</ng-container>

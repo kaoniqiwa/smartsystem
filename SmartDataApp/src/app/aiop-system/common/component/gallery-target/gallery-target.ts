@@ -5,13 +5,26 @@ export class GalleryTarget {
     enlargeConfidence: string;
     enlargeImage: string;
     polygon: Point[];
-    constructor(id: string,
+    id:string;
+    imgPrev:boolean;
+    imgNext:boolean;
+    constructor(enlargeId: string,
         confidence: string,
         imgSrc: string,
-        polygon: Point[]) {
-        this.enlargeId = id;
+        polygon: Point[],
+        id:string) {
+        this.enlargeId = enlargeId;
         this.enlargeConfidence = confidence;
         this.enlargeImage = imgSrc;
+        this.id=id;
         this.polygon = polygon;
+        this.imgNext=true;
+        this.imgPrev=true;
     }
+}
+
+export enum ImageEventEnum{
+    prev,
+    next,
+    none
 }

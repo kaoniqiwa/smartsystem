@@ -31,7 +31,7 @@
                 *ngIf="!attrs.isImg&&!attrs.isHTML"
                 [ngStyle]="{'color': fontColor(item[attrs.tdInnerAttrName])?'rgb(225,94,100)':'unset'}">{{item[attrs.tdInnerAttrName]}}</span>
               <img src="{{item[attrs.tdInnerAttrName]}}" onerror="this.src='../assets/img/timg-pic.jpg'"
-                (click)="imgClick(item)" *ngIf="attrs.isImg" style="width:50px;height:30px;">
+                (click)="imgClick(item)" *ngIf="attrs.isImg"  [class.small]="attrs.isSmallImg" [class.hover-big]="attrs.isHoverBig">
             </td>
             <td *ngIf="model.iconTextTagAttr&&model.iconTextTagAttr.length&&model.iconTextTh"
               [ngStyle]="{'width':model.iconTextTh.width}">
@@ -98,17 +98,17 @@
     </div>
     <div fxFlex="60" style="position: relative;">
       <ng-container *ngIf="model.paginationOptions">
-        <div style="position: absolute;" [ngStyle]="{'right': model.paginationOptions.viewWidth+30+'px'}">
-          <!-- <div class="left-text m-r-10 pull-left">
-            <span class="m-r-10">当前数量</span>
-            <span>{{model.values.length}}</span>
-          </div> -->
+        <div style="position: absolute;top: 2px;" [ngStyle]="{'right': model.paginationOptions.viewWidth+30+'px'}">     
           <ng-container *ngIf="model.footArgs.hasSelectCount">
             <div class="left-text pull-left m-r-30">
               <span class="m-r-10">已选择</span>
               <span>{{selectedId.length}}</span>
             </div>
           </ng-container>
+          <div class="left-text m-r-10  pull-left">
+            <span class="m-r-10">当前数量</span>
+            <span> {{model.values.length}}</span>
+           </div>
           <div class="left-text m-r-10  pull-left">
             <span class="m-r-10">总数量</span>
             <span> {{model.footArgs.totalRecordCount}}</span>

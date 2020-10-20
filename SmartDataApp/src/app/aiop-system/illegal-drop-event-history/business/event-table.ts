@@ -4,19 +4,14 @@ import { IllegalDropEventRecord } from "../../../data-core/model/waste-regulatio
 import { CustomTableEvent, CustomTableEventEnum } from "../../../shared-module/custom-table/custom-table-event";
 import { CustomTableArgs, FootArgs, TableAttr } from "../../../shared-module/custom-table/custom-table-model";
 import { ITableField } from "../../common/ITableField";
-import { EnumHelper, ResourceTypeEnum } from "../../../common/tool/enum-helper";
 import { MediumPicture } from "../../../data-core/url/aiop/resources";
 import { IBusinessData } from "../../../common/interface/IBusiness";
-import { BusinessTable } from "../../common/business-table"; 
+import { BusinessTable } from "../../common/business-table";
 import { GalleryTarget } from "../../common/component/gallery-target/gallery-target";
+import { ImageEventEnum } from "../../common/component/gallery-target/gallery-target";
 export class EventTable extends BusinessTable implements IConverter {
-    
-    galleryTarget:GalleryTarget;
     findEventFn: (id: string) => IllegalDropEventRecord;
-    enlargeImageSize = {
-        width: 0,
-        height: 0
-    }
+    initGalleryTargetFn:(event:IllegalDropEventRecord)=>void;
     dataSource = new CustomTableArgs<any>({
         hasTableOperationTd: false,
         hasHead: true,
@@ -29,21 +24,21 @@ export class EventTable extends BusinessTable implements IConverter {
                 this.scrollPageFn(event);
             else if (event.eventType == CustomTableEventEnum.Img) {
 
-                const findEvent = this.findEventFn(event.data['id'])
-                ,enlargeImage = event.data['imageUrl'] + '';
-                this.galleryTarget= new GalleryTarget(findEvent.Data.Objects[0].Id
-                    ,findEvent.Data.Objects[0].Confidence+'',enlargeImage,findEvent.Data.Objects[0].Polygon);
+                const findEvent = this.findEventFn(event.data['id']);
+                this.initGalleryTargetFn(findEvent);
             }
         },
         tableAttrs: [new TableAttr({
             HeadTitleName: "图片",
             tdWidth: "15%",
+            isHoverBig: true,
+            isSmallImg: true,
             tdInnerAttrName: "imageUrl",
             isImg: true
         }), new TableAttr({
-            HeadTitleName: "事件类型",
+            HeadTitleName: "资源名称",
             tdWidth: "15%",
-            tdInnerAttrName: "eventType"
+            tdInnerAttrName: "resourceName"
         }), new TableAttr({
             HeadTitleName: "区划名称",
             tdWidth: "20%",
@@ -68,6 +63,8 @@ export class EventTable extends BusinessTable implements IConverter {
         super();
     }
     scrollPageFn: (event: CustomTableEvent) => void;
+
+   
     Convert<IllegalDropEventsRecord, CustomTableArgs>(input: IllegalDropEventsRecord, output: CustomTableArgs) {
         const items = new Array<TableField>();
 
@@ -76,7 +73,8 @@ export class EventTable extends BusinessTable implements IConverter {
                 items.push(this.toTableModel(item));
             }
         if (output instanceof CustomTableArgs)
-            output.values = items; 
+            output.values = items;
+
         return output;
     }
 
@@ -84,10 +82,10 @@ export class EventTable extends BusinessTable implements IConverter {
         let tableField = new TableField();
         tableField.id = item.EventId;
         tableField.eventTime = this.datePipe.transform(item.EventTime, 'yyyy-MM-dd HH:mm:ss');
-        tableField.eventType = new EnumHelper().eventType.get(item.EventType);
+        tableField.resourceName = item.ResourceName
         tableField.imageUrl = new MediumPicture().getJPG(item.ImageUrl);
         tableField.stationName = item.Data.StationName;
-        tableField.divisionName = item.Data.DivisionName; 
+        tableField.divisionName = item.Data.DivisionName;
 
         return tableField;
     }
@@ -100,7 +98,7 @@ export class IllegalDropEventsRecord implements IBusinessData {
 export class TableField implements ITableField {
     id: string;
     eventTime: string;
-    eventType: string;
+    resourceName: string;
     stationName: string;
     divisionName: string;
     imageUrl: string;

@@ -1,0 +1,26 @@
+
+<ng-container *ngIf="model">
+  <div class="fill-width fill-height p-15 card-wrap" 
+   [class.selected]="model.selected">
+    <div class="pull-left" style="width: 50%;">
+      <h4 class="ele-nowrap m-b-0 light-blue-text" style="line-height: 1;" title="{{model.leftDesc[0]}}">{{model.leftDesc[0]}}</h4>
+    </div>
+    <div class="pull-right">   
+       <h6 class=" m-b-0" style="line-height: 1;">
+        <a  href="javascript:void(0)" style="font-size: 18px;"><i class="m-r-10 howell-icon-video sky-blue-text2"></i></a> 
+        <label class="m-b-0 light-blue-text" style="position: relative;bottom: 2px;">  {{model.rightDesc[0]}}</label>
+        </h6>
+    </div>
+    <div style="clear:both;"></div>
+    <div class="fill-width" style="height: 150px;margin: 10px 0;">
+      <img width="100%" class="fill-height " src="{{model.imgSrc}}"
+      onerror="this.src='../assets/img/timg-pic.jpg'" alt="">
+    </div>
+    <div class="pull-left" style="width: 50%;">
+      <h6 class="ele-nowrap light-blue-text m-b-0" style="line-height: 1;">{{model.leftDesc[1]}}</h6>
+    </div>
+    <div class="pull-right">   
+      <h6 class="ele-nowrap light-blue-text m-b-0" style="line-height: 1;">{{model.rightDesc[1]}}</h6>
+    </div>
+  </div>
+</ng-container>

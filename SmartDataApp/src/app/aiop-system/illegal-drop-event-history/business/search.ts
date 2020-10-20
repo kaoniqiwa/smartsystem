@@ -9,28 +9,28 @@ export class SearchControl extends SearchHelper {
 
     constructor(private datePipe:DatePipe) {
         super();
-        const day = TimeInterval(datePipe.transform(new Date(),'yyyy-MM-dd'),0,0,0,-1);
-        this.beginDate= datePipe.transform(day.start,'yyyy-MM-dd');
-        this.endDate=datePipe.transform(day.end,'yyyy-MM-dd');
+        const day = new Date();
+        this.beginDate= datePipe.transform(day,'yyyy-MM-dd')+' 00:00';
+        this.endDate=datePipe.transform(day,'yyyy-MM-dd')+' 23:59';
         this.searchform = new FormGroup({
             BeginTime: new FormControl(''),
             EndTime: new FormControl(''),
             DivisionId: new FormControl(''),
             StationId: new FormControl(''),
             SearchText: new FormControl(''),
-            EventType: new FormControl(''),
+            ResourceId: new FormControl(''),
         });
     }
 
     set formBeginDate(v:Date){
         this.searchform.patchValue({
-            BeginTime: this.datePipe.transform(v,'yyyy-MM-dd')
+            BeginTime: this.datePipe.transform(v,'yyyy-MM-dd HH:mm')
         });
     }
 
     set formEndDate(v:Date){
-        this.searchform.patchValue({
-            EndTime: this.datePipe.transform(v,'yyyy-MM-dd')
+        this.searchform.patchValue({ 
+            EndTime: this.datePipe.transform(v,'yyyy-MM-dd HH:mm')
         });
     }
 
@@ -41,7 +41,7 @@ export class SearchControl extends SearchHelper {
             EndTime: '',
             DivisionId: '',
             StationId: '',
-            EventType:''
+            ResourceId:''
         });
     }
 
@@ -58,5 +58,5 @@ export class SearchParam {
     DivisionId: string;
     StationId: string;    
     SearchText:string;
-    EventType:string;
+    ResourceId:string;
 }

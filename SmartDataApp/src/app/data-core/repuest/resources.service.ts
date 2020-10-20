@@ -45,7 +45,7 @@ export class ResourceRequestService extends SaveModel {
     }
 
     list(item: GetResourcesParams) {
-        return this.requestService.post<GetResourcesParams, PagedList<ResourceModel>>(this.url.list(), item);
+        return this.requestService.post<GetResourcesParams, Response<PagedList<ResourceModel>>>(this.url.list(), item);
     }
 }
 

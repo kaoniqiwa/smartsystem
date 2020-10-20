@@ -140,7 +140,11 @@
 	left: 5px;
 	top: 3px;
 	z-index: 2;
-	background-color: #fff
+	background-color: #5e6fbe
+}
+
+.Switch.Switch_Flat.On .SwitchButton{
+	background-color: #cfd7ff
 }
 
  

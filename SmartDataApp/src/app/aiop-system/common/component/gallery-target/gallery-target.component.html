@@ -1,9 +1,7 @@
 <div fxLayout="row" class="fill-height" fxLayoutAlign="center center">
-  <div fxFlex="50" class="custom-form-wrap" style="height: 50%;">
+  <div fxFlex="92" class="custom-form-wrap" style="height: 92%;">
     <div class="title-wrap">
       <div class="pull-left" style="width: 220px;">详细图片
-        <label [ngStyle]="{'visibility':onDesc? 'visible':'hidden'}"  class="m-b-0" style="font-size: 14px;">id:{{model.enlargeId}}</label>&nbsp;
-        <label class="m-b-0" [ngStyle]="{'visibility':onDesc? 'visible':'hidden'}"  style="font-size: 14px;">置信度:{{model.enlargeConfidence}}%</label>
       </div>
       <div class="pull-right">
         <div class="switch-wrap">
@@ -16,11 +14,21 @@
       </div>
     </div>
     <div class="fill-width img-wrap">
-      <img id="enlargeImage" width="100%" class="fill-height " src="{{model.enlargeImage}}"
-        onerror="this.src='../assets/img/timg-pic.jpg'" alt="">
-        <canvas  class="collapse canvas-position" [class.in]="onDesc" id="polygonCanvas" 
-        width="{{enlargeImageSize.width}}" height="{{ enlargeImageSize.height}}"></canvas>
-
+      <ng-container *ngIf="model">
+        <img id="enlargeImage" width="100%" class="fill-height " src="{{model.enlargeImage}}"
+          onerror="this.src='../assets/img/timg-pic.jpg'" alt="">
+        <canvas class="collapse canvas-position" [class.in]="onDesc"  id="polygonCanvas"
+          width="{{enlargeImageSize.width}}" height="{{ enlargeImageSize.height}}"></canvas>
+        <a class="carousel-control-prev" 
+        [ngStyle]="{'visibility': model.imgPrev ?'visible':'hidden'}"
+        href="javascript:void(0)" (click)="imgPageClick(imgEvent.prev)">
+          <span style="font-size: xxx-large;" class="howell-icon-arrowleftbold blue-text"></span>
+        </a>
+        <a class="carousel-control-next"    [ngStyle]="{'visibility': model.imgNext ?'visible':'hidden'}"
+        (click)="imgPageClick(imgEvent.next)">
+          <span  style="font-size: xxx-large;" class="howell-icon-arrowrightbold blue-text"></span>
+        </a>
+      </ng-container>
     </div>
   </div>
 
