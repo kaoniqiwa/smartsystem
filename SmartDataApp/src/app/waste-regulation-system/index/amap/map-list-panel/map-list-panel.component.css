@@ -53,8 +53,8 @@
         100% 5px,
         100% calc(100% - 10px),
         calc(100% - 5px) calc(100% - 5px),
-        30% calc(100% - 5px),
-        calc(30% - 5px) 100%,
+        60% calc(100% - 5px),
+        calc(60% - 5px) 100%,
         16px 100%,
         10px calc(100% - 10px),
         0% calc(100% - 10px)
@@ -83,8 +83,8 @@
         100% 5px,
         100% calc(100% - 10px),
         calc(100% - 5px) calc(100% - 5px),
-        calc(30% - 1px) calc(100% - 5px),
-        calc(30% - 6px) 100%,
+        calc(60% - 1px) calc(100% - 5px),
+        calc(60% - 6px) 100%,
         16px 100%,
         10px calc(100% - 10px),
         0% calc(100% - 10px)
