@@ -1,12 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { StationChartComponent } from '../station-chart/station-chart.component';
 import { DivisionStationTreeComponent } from '../division-station-tree/division-station-tree.component';
-import { RegionCameraTreeComponent } from '../region-camera-tree/region-camera-tree.component';
 import { FlatNode, RightBtn } from '../../../shared-module/custom-tree/custom-tree';
 import { DataService as TypeDataService } from '../garbage-station/business/data.service';
 import { DataService as CameraDataService } from './business/data.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { async } from 'rxjs/internal/scheduler/async';
 import { Division } from 'src/app/data-core/model/waste-regulation/division';
 import { GarbageStation } from 'src/app/data-core/model/waste-regulation/garbage-station';
 import { MessageBar } from 'src/app/common/tool/message-bar';
@@ -274,7 +271,11 @@ export class MapDeployComponent implements OnInit {
           );
           this.DragendPoint.position = position;
           try {
-            this.dataController.Village.Point.Update(this.DragendPoint.parentId, this.DragendPoint.id, this.DragendPoint);
+            this.dataController.Village.Point.Update(
+              this.DragendPoint.parentId,
+              this.DragendPoint.id,
+              (this.DragendPoint as CesiumDataController.Point)
+            );
             new MessageBar().response_success('地图数据修改成功');
           } catch (error) {
             new MessageBar().response_Error('地图数据修改失败');

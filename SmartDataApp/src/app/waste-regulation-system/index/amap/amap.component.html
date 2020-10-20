@@ -4,9 +4,10 @@
 
 
 <app-map-list-panel class="map-bar list-panel"
-[dataSource]="garbages"
+[dataSource]="this.amapService.childrenOfList"
 (OnVisibilityChanged)="OnPanelVisibilityChanged($event)"
 (OnItemClicked)="OnPanelItemClicked($event)"
+(OnItemDoubleClicked)="OnPanelItemDoubleClicked($event)"
 ></app-map-list-panel>
 
 

@@ -15,7 +15,12 @@ import { PlayModeEnum, VideoWindowComponent } from '../../../video-window/video-
 
 import { AMapService } from './amap.service';
 import { EventPushService } from '../../../common/tool/mqtt-event/event-push.service';
-
+import { DivisionRequestService } from '../../../data-core/repuest/division.service';
+import { Division, GetDivisionsParams } from '../../../data-core/model/waste-regulation/division';
+import { PagedList } from '../../../data-core/model/page';
+import { Response } from '../../../data-core/model/Response';
+import { MapListItem, MapListItemType } from './map-list-panel/map-list-item';
+import { constants } from 'os';
 
 declare var $: any;
 
@@ -38,6 +43,10 @@ export class AMapComponent implements AfterViewInit, OnInit {
     @Output()
     mapLoadedEvent: EventEmitter<CesiumMapClient> = new EventEmitter();
 
+    @Output()
+    mapPanelListItemClickedEvent: EventEmitter<MapListItem<Division | GarbageStation>> = new EventEmitter();
+
+
     isShowVideoView = false;
     currentCamera: Camera;
     maskLayerShow = false;
@@ -57,6 +66,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         private sanitizer: DomSanitizer,
         private changeDetectorRef: ChangeDetectorRef,
         private garbageService: GarbageStationRequestService,
+        private divisionService: DivisionRequestService,
         private aiopCameraService: AIOPCameraService,
         private mediaService: ResourceMediumRequestService,
         private cameraService: GarbageStationCameraRequestService,
@@ -98,18 +108,20 @@ export class AMapComponent implements AfterViewInit, OnInit {
         for (let i = 0; i < this.garbages.length; i++) {
             const garbage = this.garbages[i];
             try {
+                const status = {
+                    id: this.garbages[i].Id,
+                    status: 0
+                };
                 if (this.garbages[i].StationState > 0) {
-                    const status = {
-                        id: this.garbages[i].Id,
-                        status: this.garbages[i].StationState === 1 ? 1 : 2
-                    };
-                    console.log(status);
-                    arrayStatus.push(status);
+                    status.status = this.garbages[i].StationState === 1 ? 1 : 2;
                 }
+
+                arrayStatus.push(status);
             } catch (ex) {
                 console.error(ex);
             }
         }
+        console.log(arrayStatus);
         this.client.Point.Status(arrayStatus);
     }
 
@@ -228,12 +240,32 @@ export class AMapComponent implements AfterViewInit, OnInit {
         };
 
         this.client.Events.OnVillageClicked = async (village: CesiumDataController.Village) => {
+            if (!village) { return; }
             const list = document.getElementsByClassName('map-bar video-list')[0];
             list['style'].display = 'none';
-            const params = new GetGarbageStationsParams();
-            params.DivisionId = village.id;
-            const response = await this.garbageService.list(params).toPromise();
-            this.villageGarbages = response.Data.Data;
+
+            let params: GetDivisionsParams | GetGarbageStationsParams;
+            let response: Response<PagedList<Division | GarbageStation>>;
+
+            params = new GetDivisionsParams();
+            params.ParentId = village.id;
+            response = await this.divisionService.list(params).toPromise();
+            if (response.Data.Page.TotalRecordCount > 0) {
+                this.amapService.childrenOfList = (response as Response<PagedList<Division>>).Data.Data.map(x => {
+                    return new MapListItem(x.Id, x.Name, MapListItemType.Division, x);
+                });
+
+            } else {
+                params = new GetGarbageStationsParams();
+                params.DivisionId = village.id;
+                response = await this.garbageService.list(params).toPromise();
+                this.amapService.childrenOfList = (response as Response<PagedList<GarbageStation>>).Data.Data.map(x => {
+                    return new MapListItem(x.Id, x.Name, MapListItemType.GarbageStation, x);
+                });
+
+                const parent = new MapListItem(village.parentId, '上一级', MapListItemType.Parent, null);
+                this.amapService.childrenOfList.unshift(parent);
+            }
         };
     }
     ngAfterViewInit() {
@@ -356,16 +388,49 @@ export class AMapComponent implements AfterViewInit, OnInit {
         }
     }
 
-    OnPanelItemClicked(item: GarbageStation) {
+    OnPanelItemClicked(item: MapListItem<Division | GarbageStation>) {
         if (!item) { return; }
-        try {
-            const point = this.dataController.Village.Point.Get(item.DivisionId, item.Id);
-            this.client.Viewer.MoveTo(point.position);
-        } catch (ex) {
+        let position: CesiumDataController.Position;
 
+        switch (item.type) {
+            case MapListItemType.Parent:
+            case MapListItemType.Division:
+                const village = this.dataController.Village.Get(item.Id);
+                this.client.Village.Select(village.id);
+                position = village.center;
+                break;
+            case MapListItemType.GarbageStation:
+                try {
+                    const point = this.dataController.Village.Point.Get((item.Data as GarbageStation).DivisionId, item.Id);
+                    position = point.position;
+                } catch (ex) {
+
+                }
+                break;
+            default:
+                return;
         }
-
+        this.client.Viewer.MoveTo(position);
+        if (this.mapPanelListItemClickedEvent) {
+            this.mapPanelListItemClickedEvent.emit(item);
+        }
     }
+
+    OnPanelItemDoubleClicked(item: MapListItem<Division | GarbageStation>) {
+        if (!item) { return; }
+
+        switch (item.type) {
+            case MapListItemType.GarbageStation:
+                const data = item.Data as GarbageStation;
+                const point = this.dataController.Village.Point.Get(data.DivisionId, data.Id);
+                this.client.Events.OnElementsDoubleClicked([point]);
+                break;
+            default:
+                break;
+        }
+    }
+
+
 
     VisibilityChange() { }
 
