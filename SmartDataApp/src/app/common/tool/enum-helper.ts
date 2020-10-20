@@ -80,4 +80,10 @@ export enum CameraUsageDataEnum {
     Other=4
 }
 
-
+/**
+ * 页面数据显示模式
+ */
+export enum PageListMode{
+    table,
+    list
+}

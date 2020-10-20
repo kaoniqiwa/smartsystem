@@ -10,6 +10,8 @@ export class DateTimePickerDirective implements AfterContentInit{
   @Input('format') format='yyyy-mm-dd';
   @Input('defaultVal') defaultVal='';
   @Input('changeDate') changeDate:(val:any)=>void;
+  @Input('startView') startView=2;
+  @Input('minView') minView=2;
   constructor(e: ElementRef) { 
     this.ele = e.nativeElement; 
   }
@@ -19,8 +21,8 @@ export class DateTimePickerDirective implements AfterContentInit{
       format: this.format,
       weekStart: 1,
       autoclose: true,
-      startView: 2,
-      minView: 2,
+      startView: this.startView,
+      minView: this.minView,
       forceParse: false,
       language: 'zh-CN',
       initialDate: this.defaultVal ? this.defaultVal : new Date(),
