@@ -406,6 +406,22 @@ export class AMapComponent implements AfterViewInit, OnInit {
         this.client.Viewer.MoveTo(position);
     }
 
+    OnPanelItemDoubleClicked(item: MapListItem<Division | GarbageStation>) {
+        if (!item) { return; }
+
+        switch (item.type) {
+            case MapListItemType.GarbageStation:
+                const data = item.Data as GarbageStation;
+                const point = this.dataController.Village.Point.Get(data.DivisionId, data.Id);
+                this.client.Events.OnElementsDoubleClicked([point]);
+                break;
+            default:
+                break;
+        }
+    }
+
+
+
     VisibilityChange() { }
 
     OnPanelVisibilityChanged(visibility: boolean) {

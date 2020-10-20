@@ -7,7 +7,7 @@
     <div class="background">
         <div class="inner">
             <ng-container *ngFor="let item of dataSource">
-                <div class="item" [title]="item.Name" (click)="itemClick(item)">{{item.Name}}</div>
+                <div class="item" [title]="item.Name" (click)="itemClick(item)" (dblclick)="itemDoubleClick(item)">{{item.Name}}</div>
             </ng-container>
         </div>
     </div>

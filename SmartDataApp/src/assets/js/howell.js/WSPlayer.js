@@ -494,28 +494,28 @@ function WSPlayer(args) {
 
     // 停止
     this.stop = function () {
+
+        if (this.waitHandle)
+            throw new Error("短时间内重复调用");
+        if (element)
+            element.className = element.className.replace(/ loading/g, "")
+
+
+        if (!plugin) return;
+
+        switch (that.status) {
+            case wsPlayerState.closing:
+            case wsPlayerState.closed:
+                return;
+            default: break;
+        }
+
+
+        console.log("stop");
+
+        clearTimeout(this.waitHandle);
+        this.waitHandle = null;
         try {
-            if (this.waitHandle)
-                throw new Error("短时间内重复调用");
-            if (element)
-                element.className = element.className.replace(/ loading/g, "")
-
-
-            if (!plugin) return;
-
-            switch (that.status) {
-                case wsPlayerState.closing:
-                case wsPlayerState.closed:
-                    return;
-                default: break;
-            }
-
-
-            console.log("stop");
-
-            clearTimeout(this.waitHandle);
-            this.waitHandle = null;
-
             return plugin.JS_Stop(0).then(() => {
                 that.status = wsPlayerState.closed;
                 var tools = element.getElementsByClassName("tools");

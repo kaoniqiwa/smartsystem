@@ -21,6 +21,8 @@ export class MapListPanelComponent implements OnInit {
     @Output()
     OnItemClicked: EventEmitter<MapListItem<Division | GarbageStation>> = new EventEmitter();
 
+    @Output()
+    OnItemDoubleClicked: EventEmitter<MapListItem<Division | GarbageStation>> = new EventEmitter();
 
     @Input()
     VisibilityChange = (val: boolean) => {
@@ -45,6 +47,12 @@ export class MapListPanelComponent implements OnInit {
     itemClick(item: MapListItem<Division | GarbageStation>) {
         if (this.OnItemClicked) {
             this.OnItemClicked.emit(item);
+        }
+    }
+
+    itemDoubleClick(item: MapListItem<Division | GarbageStation>) {
+        if (this.OnItemDoubleClicked) {
+            this.OnItemDoubleClicked.emit(item);
         }
     }
 

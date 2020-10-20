@@ -15,6 +15,13 @@ declare namespace CesiumDataController {
 
     export type Dictionary<T> = { [key: string]: T; }
 
+    class VillagePointController {
+        List: (villageId: string) => Dictionary<Point>;
+        Get: (villageId: string, pointId: string) => Point;
+        Create: (villageId: string, pointId: string, village: Point) => boolean;
+        Update: (villageId: string, pointId: string, village: Point) => boolean;
+        Remove: (villageId: string, pointId: string) => boolean;
+    }
 
     class VillageController {
         GetIds: () => void;
@@ -25,7 +32,7 @@ declare namespace CesiumDataController {
         Remove: (villageId: string) => boolean;
         GetByBuildingId: (buildingId: string) => Building;
         Asyn: AsynVillageController;
-        Point: any;
+        Point: VillagePointController;
         Polyline: any;
         Ellipsoid: any;
     }
@@ -178,7 +185,7 @@ declare namespace CesiumDataController {
     class DrawLineOptions extends DrawOptions {
         extrudedHeight: number;
         width: number;
-        img:string;
+        img: string;
     }
 
 
@@ -314,7 +321,7 @@ declare namespace CesiumDataController {
         parentId: string;
         name: string;
         position: CesiumDataController.Position;
-        Instantiate<T extends BaseElement>(obj:T):T;
+        Instantiate<T extends BaseElement>(obj: T): T;
         constructor(id?: string)
     }
 
@@ -357,7 +364,7 @@ declare namespace CesiumDataController {
         extrudedHeight: number;
         width: number;
         outline: Outline;
-        img:string;
+        img: string;
         /**
          *
          */
