@@ -111,12 +111,13 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 if (this.garbages[i].StationState > 0) {
                     status.status = this.garbages[i].StationState === 1 ? 1 : 2;
                 }
-                console.log(status);
+                
                 arrayStatus.push(status);
             } catch (ex) {
                 console.error(ex);
             }
         }
+        console.log(arrayStatus);
         this.client.Point.Status(arrayStatus);
     }
 
