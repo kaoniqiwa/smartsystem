@@ -25,7 +25,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         this._cameraName = value;
     }
 
-
+    delayPlayHandle: NodeJS.Timer;
 
 
     @Input() url: string;
@@ -292,7 +292,15 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
                         this.VideoPlayingEventListen.emit(true);
                     });
                 } catch (ex) {
-                    setTimeout(() => {
+                    if (this.delayPlayHandle) {
+                        clearTimeout(this.delayPlayHandle);
+                        this.delayPlayHandle = null;
+                    }
+                    this.delayPlayHandle = setTimeout(() => {
+                        if (this.delayPlayHandle) {
+                            clearTimeout(this.delayPlayHandle);
+                            this.delayPlayHandle = null;
+                        }
                         this.player.url = this.url;
                         this.player.name = this.cameraName;
                         this.player.play();
