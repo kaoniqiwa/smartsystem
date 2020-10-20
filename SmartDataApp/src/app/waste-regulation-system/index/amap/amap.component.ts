@@ -43,6 +43,10 @@ export class AMapComponent implements AfterViewInit, OnInit {
     @Output()
     mapLoadedEvent: EventEmitter<CesiumMapClient> = new EventEmitter();
 
+    @Output()
+    mapPanelListItemClickedEvent: EventEmitter<MapListItem<Division | GarbageStation>> = new EventEmitter();
+
+
     isShowVideoView = false;
     currentCamera: Camera;
     maskLayerShow = false;
@@ -111,7 +115,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 if (this.garbages[i].StationState > 0) {
                     status.status = this.garbages[i].StationState === 1 ? 1 : 2;
                 }
-                
+
                 arrayStatus.push(status);
             } catch (ex) {
                 console.error(ex);
@@ -407,6 +411,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 return;
         }
         this.client.Viewer.MoveTo(position);
+        if (this.mapPanelListItemClickedEvent) {
+            this.mapPanelListItemClickedEvent.emit(item);
+        }
     }
 
     OnPanelItemDoubleClicked(item: MapListItem<Division | GarbageStation>) {
