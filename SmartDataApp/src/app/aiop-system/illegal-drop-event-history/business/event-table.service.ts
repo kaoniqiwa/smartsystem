@@ -3,7 +3,8 @@ import { CustomTableEvent } from "../../../shared-module/custom-table/custom-tab
 import { EventTable, IllegalDropEventsRecord } from "./event-table";
 import { SearchControl } from "./search";
 import "../../../common/string/hw-string";
-import { TheDayTime } from "../../../common/tool/tool.service";
+import { TheDayTime, TimeInterval } from "../../../common/tool/tool.service";
+import { PlayVideo } from "../../common/play-video";
 import { Page } from "../../../data-core/model/page";
 import { TableAttribute, ListAttribute } from "../../../common/tool/table-form-helper";
 import { DatePipe } from "@angular/common";
@@ -12,7 +13,7 @@ import { EventRequestService } from "../../../data-core/repuest/Illegal-drop-eve
 import { GetDivisionsParams, Division } from "../../../data-core/model/waste-regulation/division";
 import { GarbageStationRequestService } from "../../../data-core/repuest/garbage-station.service";
 import { GetGarbageStationsParams, GarbageStation } from "../../../data-core/model/waste-regulation/garbage-station";
-import { ResourceRequestService } from "../../../data-core/repuest/resources.service";
+import { ResourceRequestService, ResourceSRServersRequestService } from "../../../data-core/repuest/resources.service";
 import { Resource } from "../../../data-core/model/aiop/resource";
 import { GetEventRecordsParams, IllegalDropEventRecord } from "../../../data-core/model/waste-regulation/illegal-drop-event-record";
 import { GetResourcesParams } from "../../../data-core/model/aiop/resources-params";
@@ -20,6 +21,8 @@ import { ImageEventEnum } from "../../common/component/gallery-target/gallery-ta
 import { EventCards } from "./event-cards";
 import { ViewPagination } from "../../../shared-module/card-list-panel/card-list-panel";
 import { GalleryTargetView } from "./gallery-target";
+import { GetPreviewUrlParams, GetVodUrlParams } from "../../../data-core/model/aiop/video-url";
+import { SideNavService } from '../../index/sidenav.service'
 @Injectable()
 export class EventTableService extends ListAttribute {
     dataSource_ = new Array<IllegalDropEventRecord>();
@@ -39,10 +42,13 @@ export class EventTableService extends ListAttribute {
     divisions = new Array<Division>();
     garbageStations = new Array<GarbageStation>();
     resources = new Array<Resource>();
+    playVideo: PlayVideo;
     constructor(private eventRequestService: EventRequestService
         , private divisionService: DivisionRequestService
         , private garbageStationService: GarbageStationRequestService
         , private resourceService: ResourceRequestService
+        , private srService: ResourceSRServersRequestService
+        ,private navService:SideNavService
         , private datePipe: DatePipe) {
         super();
         this.eventTable.scrollPageFn = (event: CustomTableEvent) => {
@@ -64,31 +70,31 @@ export class EventTableService extends ListAttribute {
             });
         }
 
-        this.eventTable.initGalleryTargetFn = (event)=>{
+        this.eventTable.initGalleryTargetFn = (event) => {
             this.galleryTargetView.initGalleryTarget(event);
         }
 
         this.galleryTargetView.neighborEventFn = (id, e: ImageEventEnum) => {
-            var index = this.dataSource.findIndex(x => x.EventId == id); 
-            var prev = true, next= true
+            var index = this.dataSource.findIndex(x => x.EventId == id);
+            var prev = true, next = true
                 , item: IllegalDropEventRecord;
-            
+
             if (e == ImageEventEnum.none) {
-                if (index == 0) 
-                    prev = false;                
-                else if (index == this.dataSource.length - 1) 
-                    next = false;               
+                if (index == 0)
+                    prev = false;
+                else if (index == this.dataSource.length - 1)
+                    next = false;
                 return {
                     item: null,
                     prev: prev,
                     next: next
                 }
             }
-            else if (e == ImageEventEnum.next) { 
+            else if (e == ImageEventEnum.next) {
                 index += 1;
                 item = this.dataSource[index];
-                if (index == this.dataSource.length - 1) 
-                   next = false;               
+                if (index == this.dataSource.length - 1)
+                    next = false;
                 return {
                     item: item,
                     prev: prev,
@@ -98,8 +104,8 @@ export class EventTableService extends ListAttribute {
             else if (e == ImageEventEnum.prev) {
                 index -= 1;
                 item = this.dataSource[index];
-                if (index == 0) 
-                prev = false;    
+                if (index == 0)
+                    prev = false;
                 return {
                     item: item,
                     prev: prev,
@@ -107,7 +113,26 @@ export class EventTableService extends ListAttribute {
                 }
             }
         }
-        
+
+        this.eventTable.playVideoFn = async (id) => {
+            const event = this.eventTable.findEventFn(id),
+                time=   TimeInterval(event.EventTime+'', -30),
+                video = await this.requestVideoUrl(time.start,time.end,event.ResourceId);                
+            this.playVideo = new PlayVideo(video.Url, event.ResourceName); 
+            this.navService.playVideoBug.emit(true);
+        }
+
+    }
+
+    async requestVideoUrl(begin: Date, end: Date, cameraId: string) {
+        const params = new GetVodUrlParams();
+        params.BeginTime = begin;
+        params.EndTime = end;
+        params.Protocol = 'ws-ps';
+        params.StreamType = 1;
+        params.CameraId = cameraId;
+        const response = await this.srService.VodUrls(params).toPromise();
+        return response.Data;
     }
 
     async requestResource() {
@@ -142,7 +167,7 @@ export class EventTableService extends ListAttribute {
             data.items = response.Data.Data.sort((a, b) => {
                 return ''.naturalCompare(a.EventTime, b.EventTime);
             });
-            
+
             this.eventCards.clearData();
             this.eventCards.Convert(data.items);
 
@@ -165,7 +190,7 @@ export class EventTableService extends ListAttribute {
                 return ''.naturalCompare(a.EventTime, b.EventTime);
             });
 
-                
+
             this.eventCards.clearData();
             this.eventCards.Convert(data.items);
 

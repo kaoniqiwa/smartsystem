@@ -2,7 +2,7 @@ import { DatePipe } from "@angular/common";
 import { IConverter } from "../../../common/interface/IConverter";
 import { IllegalDropEventRecord } from "../../../data-core/model/waste-regulation/illegal-drop-event-record";
 import { CustomTableEvent, CustomTableEventEnum } from "../../../shared-module/custom-table/custom-table-event";
-import { CustomTableArgs, FootArgs, TableAttr } from "../../../shared-module/custom-table/custom-table-model";
+import { CustomTableArgs, FootArgs, TableAttr, TableOperationBtn } from "../../../shared-module/custom-table/custom-table-model";
 import { ITableField } from "../../common/ITableField";
 import { MediumPicture } from "../../../data-core/url/aiop/resources";
 import { IBusinessData } from "../../../common/interface/IBusiness";
@@ -12,10 +12,11 @@ import { ImageEventEnum } from "../../common/component/gallery-target/gallery-ta
 export class EventTable extends BusinessTable implements IConverter {
     findEventFn: (id: string) => IllegalDropEventRecord;
     initGalleryTargetFn:(event:IllegalDropEventRecord)=>void;
+    playVideoFn: (id: string) =>void;
     dataSource = new CustomTableArgs<any>({
-        hasTableOperationTd: false,
+        hasTableOperationTd: true,
         hasHead: true,
-        isSingleElection: false,
+        isSingleElection: true,
         values: [],
         primaryKey: "id",
         isDisplayDetailImg: true,
@@ -37,7 +38,7 @@ export class EventTable extends BusinessTable implements IConverter {
             isImg: true
         }), new TableAttr({
             HeadTitleName: "资源名称",
-            tdWidth: "15%",
+            tdWidth: "18%",
             tdInnerAttrName: "resourceName"
         }), new TableAttr({
             HeadTitleName: "区划名称",
@@ -51,7 +52,16 @@ export class EventTable extends BusinessTable implements IConverter {
             HeadTitleName: "上报时间",
             tdWidth: "20%",
             tdInnerAttrName: "eventTime"
-        })],
+        })]
+        , tableOperationBtns: [
+            new TableOperationBtn({
+                css: 'howell-icon-video td-icon',
+                title: '视频',
+                callback: (item: TableField) => {
+                    this.playVideoFn(item.id);
+                }
+            })
+        ],
         footArgs: new FootArgs({
             hasSelectBtn: false,
             hasSelectCount: false

@@ -31,6 +31,10 @@ export class IllegalDropEventHistoryComponent implements OnInit {
     const event=  this.tableService.eventTable.findEventFn(val.id);
     this.tableService.galleryTargetView.initGalleryTarget(event);
   }
+
+  videoClose = ()=>{
+     this.tableService.playVideo=null;
+  }
   constructor(private tableService: EventTableService) {
   }
 

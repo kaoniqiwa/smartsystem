@@ -1,8 +1,23 @@
 <div style="height: calc(100% - 64px);">
-  <div class="fill-height fill-width hw-content-mask collapse" [class.in]="tableService.galleryTargetView.galleryTarget">
-    <hw-gallery-target [closeViewFn]="galleryTargetFn" [model]="tableService.galleryTargetView.galleryTarget"
+  <div class="fill-height fill-width hw-content-mask collapse"
+    [class.in]="tableService.galleryTargetView.galleryTarget">
+    <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
+      <hw-gallery-target [closeViewFn]="galleryTargetFn" [model]="tableService.galleryTargetView.galleryTarget"
       [imgEventFn]="tableService.galleryTargetView.galleryTargetPageFn">
     </hw-gallery-target>
+    </div>
+  </div>
+
+  <div class="fill-height fill-width hw-content-mask collapse"   [class.in]="tableService.playVideo">
+ 
+      <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
+        <ng-container *ngIf="tableService.playVideo">
+          <hw-video-simple-card   [closeFn]="videoClose" 
+      [url]="tableService.playVideo.url" [autostart]="true" [cameraName]="tableService.playVideo.name"></hw-video-simple-card>
+        </ng-container>
+ 
+      </div> 
+    
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
     <div class="second-title-bg text">
@@ -16,28 +31,28 @@
         查询
       </button>
       <button type="button" class="hw-blue-m-btn m-r-10 " (click)="listTypeView=!listTypeView">
-        <i style="margin-left: 2px;"
-       [class.howell-icon-ul]="listMode==pageListMode.table"    [class.howell-icon-cam-all1]="listMode==pageListMode.list" ></i>
+        <i style="margin-left: 2px;" [class.howell-icon-ul]="listMode==pageListMode.table"
+          [class.howell-icon-cam-all1]="listMode==pageListMode.list"></i>
         <i class="mdi mdi-menu-down"></i>
       </button>
       <button class="hw-cyan-m-btn" (click)="tableService.search.other=!tableService.search.other">
         <i class="mdi mdi-filter-outline"></i>
       </button>
       <div class="list-attr-wrap collapse" [class.in]="listTypeView">
-        <ul  class="p-l-0">
-           <li>
+        <ul class="p-l-0">
+          <li>
             <a href="javascript:void(0)" (click)="changeListMode(pageListMode.table)" class="list-li light-blue-text">
               <i class="howell-icon-ul"></i>
               列表
             </a>
-           </li>
-           <li>
+          </li>
+          <li>
             <a href="javascript:void(0)" class="list-li light-blue-text" (click)="changeListMode(pageListMode.list)">
               <i class="howell-icon-cam-all1"></i>
               卡片 </a>
-           </li>
+          </li>
         </ul>
-       
+
       </div>
     </div>
   </div>
@@ -89,15 +104,16 @@
     </div>
 
   </ng-container>
-  
+
   <div [ngStyle]="{'height': tableService.search.other ? 'calc(100% - 66px)':'calc(100% - 21px)'}">
-     <ng-container *ngIf="listMode==pageListMode.table">
+    <ng-container *ngIf="listMode==pageListMode.table">
       <hw-custom-table #table [model]="tableService.eventTable.dataSource"></hw-custom-table>
-     </ng-container>
-     <ng-container *ngIf="listMode==pageListMode.list">
-      <hw-illegal-drop-event-card-list [model]="tableService.eventCards.cards"
-      [itemFn]="listGalleryTargetFn"></hw-illegal-drop-event-card-list>
-     </ng-container>
-    
+    </ng-container>
+    <ng-container *ngIf="listMode==pageListMode.list">
+      <hw-illegal-drop-event-card-list [model]="tableService.eventCards.cards" [itemFn]="listGalleryTargetFn"
+      [playVideoFn]="tableService.eventTable.playVideoFn">
+      </hw-illegal-drop-event-card-list>
+    </ng-container>
+
   </div>
 </div>
