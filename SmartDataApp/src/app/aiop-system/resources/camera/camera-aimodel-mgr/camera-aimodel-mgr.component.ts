@@ -24,7 +24,7 @@ export class CameraAIModelMgrComponent implements OnInit {
     this.mgrService.aiCameraPanel.underCamerasAIModels =data;
     const viewPagination = this.mgrService.aiCameraPanel.viewPaginationFn(page);
     this.mgrService.aiCameraPanel.cardListPanelV.pagination = viewPagination;
-    this.mgrService.aiCameraPanel.cardListPanelV.pagination.totalRecordCount = page.RecordCount;
+    this.mgrService.aiCameraPanel.cardListPanelV.pagination.totalRecordCount = page.TotalRecordCount;
   }
   async ngOnInit() {
      

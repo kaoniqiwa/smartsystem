@@ -38,7 +38,9 @@ export class EventTable extends BusinessTable implements IConverter {
             HeadTitleName: "图片",
             tdWidth: "15%",
             tdInnerAttrName: "imageUrl",
-            isImg: true
+            isImg: true,
+            isHoverBig:true,
+            isSmallImg:true
         }), new TableAttr({
             HeadTitleName: "事件类型",
             tdWidth: "10%",

@@ -6,7 +6,7 @@ import { CustomTableArgs, TableAttr, TableOperationBtn } from "../../../../share
 import { DatePipe } from "@angular/common";
 import { IConverter } from "../../../../common/interface/IConverter";
 import { CustomTableEvent, CustomTableEventEnum } from "../../../../shared-module/custom-table/custom-table-event";
-import { TableFormControl } from "../../../../common/tool/table-form-helper";
+import { ListAttribute, TableFormControl } from "../../../../common/tool/table-form-helper";
 import { ConfirmDialog } from "../../../../shared-module/confirm-dialog/confirm-dialog.component";
 import { MessageBar } from "../../../../common/tool/message-bar";
 import { ResourcesTable } from '../../../common/resources-table';
@@ -34,7 +34,9 @@ export class AIModelsTable  extends ResourcesTable implements IConverter, IPageT
             HeadTitleName: "图标",
             tdWidth: "10%",
             tdInnerAttrName: "labelIcon",
-            isImg:true
+            isImg:true,
+            isSmallImg:true,
+            isHoverBig:true
         }), new TableAttr({
             HeadTitleName: "名称",
             tdWidth: "25%",
@@ -92,14 +94,15 @@ export class AIModelsTable  extends ResourcesTable implements IConverter, IPageT
     }
 
     toTableModel(item: CameraAIModel) {
-        let tableField = new TableField();
+        const tableField = new TableField(),l = new ListAttribute();
         tableField.id = item.Id;
         tableField.modelType = item.ModelType;
         tableField.modelName = item.ModelName; 
         tableField.version = item.Version;
         tableField.updateTime = this.datePipe.transform(item.UpdateTime,'yyyy-MM-dd hh:mm');
-        tableField.labelIcon =this.ai_icon ?'assets/img/'+ this.ai_icon[item.Label]: ''; 
-        tableField.transformType=item.TransformType;   
+        tableField.labelIcon =this.ai_icon ? l.imgUrlRoot+l.aiModelIcon+ this.ai_icon[item.Label]: ''; 
+        tableField.transformType=item.TransformType;   console.log(tableField);
+        
         return tableField;
     }
 
@@ -113,13 +116,13 @@ export class AIModelsTable  extends ResourcesTable implements IConverter, IPageT
   
 
     editItem(item: CameraAIModel) {
-        const findVal = this.dataSource.values.find(x => x.id == item.Id);
+        const findVal = this.dataSource.values.find(x => x.id == item.Id),l = new ListAttribute();
         findVal.modelName = item.ModelName;
         findVal.version = item.Version;
         findVal.transformType = item.TransformType;
         findVal.updateTime = this.datePipe.transform(item.UpdateTime,'yyyy-MM-dd hh:mm');
         findVal.modelType = item.ModelType; 
-        findVal.labelIcon = this.ai_icon ?'assets/img/'+ this.ai_icon[item.Label]: '';
+        findVal.labelIcon = this.ai_icon ? l.imgUrlRoot+l.aiModelIcon+ this.ai_icon[item.Label]: '';
     }
 
 }

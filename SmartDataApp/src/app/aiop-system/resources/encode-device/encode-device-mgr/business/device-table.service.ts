@@ -78,7 +78,7 @@ export class DeviceTableService extends InputLabelService {
             this.deviceTable.clearItems();
             this.dataSource = [];
             this.deviceTable.Convert(data, this.deviceTable.dataSource); 
-            this.deviceTable.totalCount = response.Data.Page.RecordCount;         
+            this.deviceTable.totalCount = response.Data.Page.TotalRecordCount;         
             this.dataSource = response.Data.Data;
             if(callBack)callBack(response.Data.Page);
         }
@@ -95,7 +95,7 @@ export class DeviceTableService extends InputLabelService {
             this.deviceTable.clearItems();
             this.dataSource = [];
             this.deviceTable.Convert(data, this.deviceTable.dataSource);
-            this.deviceTable.totalCount = response.Data.Page.RecordCount; 
+            this.deviceTable.totalCount = response.Data.Page.TotalRecordCount; 
             this.dataSource = response.Data.Data;
             if(callBack)callBack(response.Data.Page);
         }

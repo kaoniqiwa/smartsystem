@@ -106,7 +106,7 @@ export class CameraTableService extends InputLabelService {
             this.cameraTable.clearItems();
             this.dataSource = [];
             this.cameraTable.Convert(data, this.cameraTable.dataSource);
-            this.cameraTable.totalCount = response.Data.Page.RecordCount;
+            this.cameraTable.totalCount = response.Data.Page.TotalRecordCount;
             this.dataSource = response.Data.Data;
             if (callBack) callBack(response.Data.Page);
         }
@@ -122,7 +122,7 @@ export class CameraTableService extends InputLabelService {
             this.cameraTable.clearItems();
             this.dataSource = [];
             this.cameraTable.Convert(data, this.cameraTable.dataSource);
-            this.cameraTable.totalCount = response.Data.Page.RecordCount;
+            this.cameraTable.totalCount = response.Data.Page.TotalRecordCount;
             this.dataSource = response.Data.Data;
             if (callBack) callBack(response.Data.Page);
         }

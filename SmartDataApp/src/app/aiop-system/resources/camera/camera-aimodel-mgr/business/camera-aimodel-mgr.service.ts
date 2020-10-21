@@ -50,7 +50,6 @@ export class CameraAIModelMgrService extends RegionTreeService {
                     this.aiCameraPanel.clearPanelView();
                     this.aiCameraPanel.cardListPanelView = this.cameras;
                     this.aiCameraPanel.underCamerasAIModels = this.cameras; 
-                    this.aiCameraPanel.cardListPanelV.pagination.totalRecordCount = this.cameras.length;
                 }
 
             });

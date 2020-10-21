@@ -54,45 +54,7 @@
         <div style="height: calc(100% - 26px);" cdkDropList id="to" [cdkDropListConnectedTo]="[all]">
           <hw-card-list-panel #cardListPanel [model]="mgrService.aiCameraPanel.cardListPanelV"></hw-card-list-panel>
         </div>
-      </div>
-      <!-- <div cdkDropList id="to"
-      [cdkDropListConnectedTo]="[all]">
-      <hw-card-list-panel #cardListPanel
-      [model]="mgrService.panelControl.cardListDataSource"></hw-card-list-panel>
-     <ng-container *ngFor="let camera of mgrService.cameras">
-        <div class="models-list-panel">
-          <div class="title-bar">
-            <img src="/assets/img/blue-light-spot.png" width="197" height="34" alt="">
-            <div class="left-wrap">
-              <i class="howell-icon-video light-blue-text"></i>
-              <label>{{camera.Name}}</label>
-            </div>
-            <div class="right-wrap">
-              <a class="m-r-20">
-                <i class="mdi mdi-tag sky-blue-text"></i>
-                <label class="light-blue-text m-0">标签1</label>
-              </a>
-              <a class="m-r-20"><i class="mdi mdi-content-copy sky-blue-text"></i></a>
-              <a href=""><i class="mdi mdi-signal" style="color: red;"></i></a>
-            </div>
-          </div>
-          <div class="body-bar" fxLayout="row">
-            <ng-container *ngFor="let label of to">
-              <div fxFlex="192px" class="item">
-                <div fxLayoutAlign="center">
-                  <div class="  blue-round-btn">
-                    <i class="howell-icon-home3 fill-height" fxLayoutAlign="center center"
-                      style="font-size: xx-large;color:white;"></i>
-                  </div>
-                </div>
-                <label fxLayoutAlign="center">{{label}}</label>
-                <a class="collapse"><i class="howell-icon-Close"></i></a>
-              </div>
-            </ng-container>
-          </div>
-        </div>
-      </ng-container>
-      </div> -->
+      </div> 
     </div>
   </div>
 </div>

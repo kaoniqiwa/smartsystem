@@ -27,7 +27,7 @@ export class CustomTableComponent implements OnInit{
       tableHeight += 70;
     }
     if (this.model.hasFoot) {
-      tableHeight += 30;
+      tableHeight += 42;
     }
     this.minusTableHeightStr = tableHeight + "px";
   

@@ -1,5 +1,5 @@
 <ng-container *ngIf="model&&model.listPanel&&model.pagination">
-  <div class="fill-width"  data-list="hw" style="overflow: auto;height: calc(100% - 45px);">
+  <div class="fill-width"  data-list="hw" style="overflow: auto;height: calc(100% - 50px);">
     <div class="models-list-panel" (click)="itemClick(m.id)"
       [class.selected]="selectedId.indexOf(m.id)>-1" 
       *ngFor="let m of model.listPanel">
@@ -72,11 +72,15 @@
       </div>
     </div>
     <div fxFlex="60" style="position: relative;">
-      <div style="position: absolute;" [ngStyle]="{'right': model.pagination.viewWidth+30+'px'}">
+      <div style="position: absolute;top:2px" [ngStyle]="{'right': model.pagination.viewWidth+30+'px'}">
         <div class="left-text pull-left m-r-30">
           <span class="m-r-10">已选择</span>
           <span>{{selectedId.length}}</span>
         </div>
+        <div class="left-text m-r-10  pull-left">
+          <span class="m-r-10">当前数量</span>
+          <span> {{model.listPanel.length}}</span>
+         </div>
         <div class="left-text m-r-10  pull-left">
           <span class="m-r-10">总数量</span>
           <span> {{model.pagination.totalRecordCount}}</span>

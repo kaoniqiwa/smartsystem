@@ -63,7 +63,7 @@ export class AIModelsMgrService extends TableAttribute {
         this.table.clearItems();
         this.dataSource = [];
         this.table.Convert(data, this.table.dataSource);
-        this.table.totalCount = response.Data.Page.RecordCount;
+        this.table.totalCount = response.Data.Page.TotalRecordCount;
         this.dataSource = response.Data.Data;
         if(callBack)callBack(response.Data.Page);
         }
@@ -79,7 +79,7 @@ export class AIModelsMgrService extends TableAttribute {
         this.table.clearItems();
         this.dataSource = [];
         this.table.Convert(data, this.table.dataSource);
-        this.table.totalCount = response.Data.Page.RecordCount;
+        this.table.totalCount = response.Data.Page.TotalRecordCount;
         this.dataSource = response.Data.Data;
         if(callBack)callBack(response.Data.Page);
         }
