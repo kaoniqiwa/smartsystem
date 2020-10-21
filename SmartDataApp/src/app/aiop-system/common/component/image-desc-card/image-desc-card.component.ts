@@ -15,4 +15,8 @@ export class ImageDescCardComponent implements OnInit {
   ngOnInit() {
   }
 
+  videoClick(){
+   if(this.videoFn) this.videoFn(this.model.id);
+  }
+
 }

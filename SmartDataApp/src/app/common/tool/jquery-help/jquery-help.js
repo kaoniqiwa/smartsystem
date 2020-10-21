@@ -60,8 +60,9 @@ function enterKeyDown(fn) {
     };
 }
 
-function domCss(domId, css) {
-    $('#' + domId).css(css);
+function domCss(domId, css,symbol) {
+    symbol = symbol ? symbol :'#';
+    $(symbol + domId).css(css);
 }
 
 function addClass(domId, className) {

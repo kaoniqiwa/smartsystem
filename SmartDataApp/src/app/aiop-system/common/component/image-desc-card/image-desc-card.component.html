@@ -7,7 +7,8 @@
     </div>
     <div class="pull-right">   
        <h6 class=" m-b-0" style="line-height: 1;">
-        <a  href="javascript:void(0)" style="font-size: 18px;"><i class="m-r-10 howell-icon-video sky-blue-text2"></i></a> 
+        <a  href="javascript:void(0)" style="font-size: 18px;" (click)="videoClick();$event.stopPropagation();"
+        ><i class="m-r-10 howell-icon-video sky-blue-text2"></i></a> 
         <label class="m-b-0 light-blue-text" style="position: relative;bottom: 2px;">  {{model.rightDesc[0]}}</label>
         </h6>
     </div>
