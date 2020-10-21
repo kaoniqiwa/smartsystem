@@ -24,7 +24,7 @@
           <form [formGroup]="stationChart.cameraPostionForm">
 
             <div class="outside-square-left-top">
-              <div class="plus-square m-l-40" [class.sky-blue-border]="!stationChart.positionLUp.id"
+              <div class="plus-square m-l-30" [class.sky-blue-border]="!stationChart.positionLUp.id"
                 [class.green-border]="stationChart.positionLUp.id" (click)="plusSquareClick(stationChart.positionLUp)"
                 [class.hint]="!stationChart.positionLUp.id">
                 <a href="javascript:void(0)">
@@ -294,7 +294,7 @@
                 </div>
               </ng-container>
               <ng-container *ngIf="chartMode!=houseModeEnum.Trash">
-                <div class="text-square outside">
+                <div class="text-square outside" style="width: 90px;">
                   <h6 style="margin-top: 2px;"
                     [title]="stationChart.positionRDown.name ? stationChart.positionRDown.name :stationChart.positionRDown.position"
                     class="light-blue-text m-b-0 text-nowrap">
