@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
-import { VideoPlayArgs } from './mode';
+import { VideoPlayArgs } from '../video/mode';
 import { DatePipe } from '@angular/common';
 
 declare var $: any;

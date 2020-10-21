@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { VideoPlayArgs } from '../../../video-window/mode';
+import { VideoPlayArgs } from '../../../video/mode';
 import { PlayModeEnum } from '../../../video-window/video-window.component';
 
 @Injectable({
