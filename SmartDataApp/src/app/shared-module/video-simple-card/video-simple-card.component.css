@@ -1,0 +1,38 @@
+.alert-window{
+    border: 3px solid #616ABF;
+    height:100%;
+    width: 100%;
+    box-shadow: #616ABF 0px 0px 30px -1px;
+    border-radius: 4px;
+    background-color:rgba(0,0,0,0.9);
+}
+
+.alert-window-bg{
+    background-color:rgba(45,118,206,0.2);
+    height:100%;
+    width: 100%;
+}
+
+.alert-window-body{
+    padding: 20px;
+    height:100%;
+    width: 100%;
+}
+
+.alert-window-close-btn:hover{
+    color: #e72f2f;
+    cursor: pointer;
+}
+
+.alert-window>.alert-window-bg>.card.custom{
+    border: 0;
+    box-shadow:none;
+    background-color:transparent;
+}
+
+
+
+.text-no-select {  
+    /* Chrome/Safari/Opera */    
+    user-select: none;
+} 

@@ -92,6 +92,14 @@ export class SideNavMenuComponent implements OnInit {
       url: '/aiop/garbage-station/deploy-camera'
     });
     item.nodes.push({
+      text: '垃圾厢房状态',
+      url: '/aiop/garbage-station/full-trashcan'
+    });
+    item.nodes.push({
+      text: '乱扔垃圾事件',
+      url: '/aiop/illegal-drop-event-history'
+    });
+    item.nodes.push({
       text: '地图布控',
       url: '/aiop/garbage-station/map-deploy'
     });

@@ -1,19 +1,18 @@
-<div class="fill-width fill-height">
-    <div fxLayout="row wrap" class="fill-height">
-    
-        <div fxFlex="100" style="height: 30px;padding: 2px 4px;" *ngIf="model&&!model.show_&&(model.btnControl||model.title)">
-            <div class="pull-left" *ngIf="model&&model.title&&!model.show_" style="font-size: 16px;color: white;">摄像机名 {{model!.title!}}</div>
-            <div (click)="closeTagClick()" class="pull-right" style="font-size: 16px;color: white;" *ngIf="closeTag">
-                <i class="howell-icon-Close alert-window-close-btn"></i>
+<div class="alert-window text-no-select">
+    <div class="alert-window-bg p-10">
+        <div style="font-size: 20px;height: 30px;line-height: 20px;color: white">
+            <div class="pull-left">摄像机名 {{cameraName}}</div>
+            <div class="pull-right">
+                <a href="javascript:void(0)" (click)="closeWindow()">
+                    <i class="howell-icon-Close alert-window-close-btn"></i>
+                </a>
             </div>
         </div>
-        <div fxFlex="100" [ngStyle]="{'height': model&&model.title&&!model.show_ ? 'calc(100% - 30px)': '100%'}">
-            <div HWSPlayer id="{{eleId}}" [options]="playerOptions">
-                <div class="video">
-
+        <div class="fill-width" style="height: calc(100% - 30px);border: 2px solid #3283E5;">
+            <div style="background-color: black;width: 100%;height:calc(100%) ;">
+                <div id="{{divId}}" class="video-control selected fill-height fill-width player">
                 </div>
-            </div>          
-        </div> 
+            </div>
+        </div>
     </div>
-    
-</div>
+</div> 
