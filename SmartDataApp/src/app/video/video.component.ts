@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { VideoPlayArgs } from './mode';
 
 declare var $: any;
@@ -13,6 +13,7 @@ export class VideoComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() url: string;
     @Input() cameraName: string;
     @Input() autostart: boolean;
+    @ViewChild('player') element: ElementRef;
 
     private delayPlayHandle: NodeJS.Timer;
 
@@ -20,8 +21,8 @@ export class VideoComponent implements OnInit, OnDestroy, AfterViewInit {
 
     guid: string = Guid.NewGuid().ToString('N');
 
-    @Input() width = '404px';
-
+    width: number;
+    height: number;
 
     divId = '';
 
@@ -34,6 +35,7 @@ export class VideoComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.autostart) {
             this.play();
         }
+
     }
 
     formatDate(date: Date) {
@@ -103,6 +105,18 @@ export class VideoComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit() {
         this.divId = 'div_' + this.guid;
+        setInterval(() => {
+            if (this.width !== this.element.nativeElement.parentElement.offsetWidth) {
+                this.width = this.element.nativeElement.parentElement.offsetWidth;
+                console.log('width:', this.width);
+                this.resize(this.width);
+            }
+            if (this.height !== this.element.nativeElement.parentElement.offsetHeight) {
+                this.height = this.element.nativeElement.parentElement.offsetHeight;
+                this.resize(null, this.height);
+                console.log('height:', this.width);
+            }
+        }, 500);
     }
 
 
