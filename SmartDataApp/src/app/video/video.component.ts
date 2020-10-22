@@ -20,7 +20,7 @@ export class VideoComponent implements OnInit, OnDestroy, AfterViewInit {
 
     guid: string = Guid.NewGuid().ToString('N');
 
-    @Input() videoWidth = '404px';
+    @Input() width = '404px';
 
 
     divId = '';
@@ -116,13 +116,17 @@ export class VideoComponent implements OnInit, OnDestroy, AfterViewInit {
         return this.url;
     }
 
-    play(url?: string, cameraName?: string) {
-
-        if (url) {
-            this.url = url;
-        }
-        if (cameraName) {
-            this.cameraName = cameraName;
+    play(opts?: { url?: string, cameraName?: string, width?: number }) {
+        if (opts) {
+            if (opts.url) {
+                this.url = opts.url;
+            }
+            if (opts.cameraName) {
+                this.cameraName = opts.cameraName;
+            }
+            if (opts.width) {
+                this.player.clientWidth = opts.width;
+            }
         }
 
 

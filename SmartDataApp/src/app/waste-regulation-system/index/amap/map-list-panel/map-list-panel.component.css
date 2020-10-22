@@ -1,5 +1,5 @@
 .btn {
-    position: absolute;
+    position: relative;
     
     bottom: 0px;
     left: 0px;
@@ -39,8 +39,8 @@
 .panel {
     height: 255px;
     width: 161px;
-    position: absolute;
-    bottom: 20px;
+    position: relative;
+    bottom: -7px;
     left: 14px;
     
     background-color: #2d76ce;
