@@ -1,5 +1,5 @@
-import { Component, Input, OnInit ,OnChanges,Output,EventEmitter} from '@angular/core';
-import { domSize, drawRectangle ,clearCanvas} from '../../../../common/tool/jquery-help/jquery-help';
+import { Component, Input, OnInit ,OnChanges} from '@angular/core';
+import { domSize, drawRectangle ,clearCanvas} from '../../common/tool/jquery-help/jquery-help';
 import { GalleryTarget ,ImageEventEnum} from "./gallery-target";
 @Component({
   selector: 'hw-gallery-target',

@@ -1,4 +1,4 @@
-import { Point } from "../../../../data-core/model/Point";
+import { Point } from "../../data-core/model/Point";
 
 export class GalleryTarget {
     enlargeId: string;

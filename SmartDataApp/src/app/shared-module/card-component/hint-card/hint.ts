@@ -3,6 +3,7 @@ export class Hint {
     title: string;
     subTitle: string;
     subTitleColor: ColorEnum;
+    tag:any;
 }
 
 export class HintList{

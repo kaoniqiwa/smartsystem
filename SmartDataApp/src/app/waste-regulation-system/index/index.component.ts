@@ -62,7 +62,7 @@ export class IndexComponent implements OnInit {
       { value: 0, name: '可回收垃圾' },
       { value: 0, name: '有害垃圾' }
     ]; 
-
+    
   }
 
 
@@ -82,6 +82,7 @@ export class IndexComponent implements OnInit {
 
   mapLoaded(mapClient: CesiumMapClient) {
     this.divisionBusinessService.mapClient = mapClient;
+    this.divisionBusinessService.aMap=this.aMap;
     this.moveMapSite();
   }
 
@@ -121,7 +122,7 @@ export class IndexComponent implements OnInit {
       this.devCardConfig.push({
         business: 'DeviceStatusStatistic',
         cardType: 'StateScaleCardComponent',
-        dataTime: 60*5,
+        dataTime: 60,
         divisionsId: county.Id,
         defaultViewMoel:this.indexService.getStateScale
       });
@@ -132,7 +133,7 @@ export class IndexComponent implements OnInit {
         business: 'DivisionGarbageSpecification',
         cardType: 'HintCardComponent',
         divisionsId: county.Id,
-        dataTime: 60*5,
+        dataTime: 60,
         border: false
       });
       this.illegalDropTopCardConfig = new Array();
@@ -140,7 +141,7 @@ export class IndexComponent implements OnInit {
         business: 'IllegalDropOrder',
         cardType: 'OrderTableCardComponent',
         divisionsIds: committesIds,
-        dataTime: 60*5,
+        dataTime: 60,
         defaultViewMoel:this.indexService.defaultOrderTable,
         divisionsType: DivisionTypeEnum.County,
       });
@@ -150,11 +151,11 @@ export class IndexComponent implements OnInit {
         cardType: 'LineEChartsCardComponent',
         divisionsId: county.Id,
         flipTime:60*3,
-        dataTime: 60*5
+        dataTime: 60
       }); 
       this.moveMapSite = ()=>{
          this.divisionBusinessService.mapClient.Village.Select(county.Id);
-         this.divisionBusinessService.aMap=this.aMap;
+       
       }
       
     }, 500);

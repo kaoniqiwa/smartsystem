@@ -40,6 +40,11 @@ import { HintCardComponent } from './card-component/hint-card/hint-card.componen
 import { OrderTableCardComponent } from './card-component/order-table-card/order-table-card.component';
 import { LineEChartsCardComponent } from "./card-component/line-echarts-card/line-echarts-card.component";
 import { SwitchComponent } from './switch/switch.component';
+import { TimeToolComponent } from "./time/time-tool.component";
+import { GalleryTargetComponent } from "./gallery-target/gallery-target.component";
+import { ImageDescCardComponent } from './image-desc-card/image-desc-card.component';
+import { IllegalDropEventHistoryComponent } from "./illegal-drop-event-history/illegal-drop-event-history.component";
+import { IllegalDropEventCardListComponent } from "./illegal-drop-event-history/illegal-drop-event-card-list/illegal-drop-event-card-list.component";
 @NgModule({
   imports: [
     CommonModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -58,7 +63,8 @@ import { SwitchComponent } from './switch/switch.component';
   CustomTreeComponent,
   PicturesDropListComponent,
   CardListPanelComponent, VideoSimpleCardComponent, StateScaleCardComponent,CardComponent,BusinessCardGridComponent, HeaderSquareListComponent, ImageThemeCardComponent, HintCardComponent, OrderTableCardComponent
-,LineEChartsCardComponent, SwitchComponent  
+,LineEChartsCardComponent, SwitchComponent  ,TimeToolComponent
+,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventCardListComponent
 ],
   exports: [
     MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -72,7 +78,8 @@ import { SwitchComponent } from './switch/switch.component';
     ,InputTagSelectComponent,CustomTreeComponent,PicturesDropListComponent,CardListPanelComponent
     ,VideoSimpleCardComponent,StateScaleCardComponent,CardComponent,BusinessCardGridComponent
     ,HeaderSquareListComponent,ImageThemeCardComponent,HintCardComponent,OrderTableCardComponent
-    ,LineEChartsCardComponent,SwitchComponent
+    ,LineEChartsCardComponent,SwitchComponent,TimeToolComponent
+    ,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventCardListComponent
   ],
   providers: [DatePipe,
    ],

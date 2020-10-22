@@ -1,6 +1,6 @@
 import { IBusinessData } from "../../../common/interface/IBusiness";
 import { DatePipe } from "@angular/common";
-import { ImageDesc } from "../../common/component/image-desc-card/image-desc";
+import { ImageDesc } from "../../image-desc-card/image-desc";
 import { IllegalDropEventRecord } from "../../../data-core/model/waste-regulation/illegal-drop-event-record";
 import { MediumPicture } from "../../../data-core/url/aiop/resources";
 import { ViewPagination } from "../../../shared-module/card-list-panel/card-list-panel";

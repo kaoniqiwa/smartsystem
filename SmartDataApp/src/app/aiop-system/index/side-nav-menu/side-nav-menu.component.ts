@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core'; import {
   transition,
   // ...
 } from '@angular/animations';
+import { ActivatedRoute } from '@angular/router';
+import {  MenuTree ,MenuTreeMap} from "./menu-tree"; 
+import { SideNavService } from "../../../common/tool/sidenav.service";
 @Component({
   selector: 'side-nav-menu',
   templateUrl: './side-nav-menu.component.html',
@@ -34,76 +37,11 @@ export class SideNavMenuComponent implements OnInit {
   private highlightedBtn = new Array<string>();
   menuTree = new Array<MenuTree>();
 
-  constructor() {
-    let item = new MenuTree('howell-icon-device2', '平台');
-    item.an = true;
-    item.nodes.push({
-      url: '/aiop/platform/platform-mgr',
-      text: '平台管理'
-    });
-    item.nodes.push({
-      url: '/aiop/platform/sr-service-mgr',
-      text: '流转服务管理'
-    });
-    this.menuTree.push(item);
-    item = new MenuTree('howell-icon-device2', '区域');
-    item.nodes.push({
-      text: '区域管理',
-      url: '/aiop/regions/region-mgr'
-    });
-    this.menuTree.push(item);
-    item = new MenuTree('howell-icon-device2', '设备管理');
-    item.nodes.push({
-      text: '监控点',
-      url: '/aiop/resources/camera-mgr'
-    });
-    item.nodes.push({
-      text: '编码器',
-      url: '/aiop/resources/encode-device-mgr'
-    });
-    item.nodes.push({
-      text: '监控点模型',
-      url: '/aiop/resources/camera-ai-model-mgr'
-    });
-    this.menuTree.push(item);
-    item = new MenuTree('howell-icon-device2', 'AI模型');
-    item.nodes.push({
-      text: 'AI模型列表',
-      url: '/aiop/ai-models/ai-models-mgr'
-    });
-    this.menuTree.push(item);
-    item = new MenuTree('howell-icon-device2', '事件');
-    item.nodes.push({
-      text: 'AI摄像机事件',
-      url: '/aiop/event-history'
-    });
-    this.menuTree.push(item);
-    item = new MenuTree('howell-icon-device2', '监管平台');
-    item.nodes.push({
-      text: '垃圾厢房',
-      url: '/aiop/garbage-station/index'
-    });
-    item.nodes.push({
-      text: '垃圾厢房管理',
-      url: '/aiop/garbage-station/garbage-station-mgr'
-    });
-    item.nodes.push({
-      text: '摄像机布控',
-      url: '/aiop/garbage-station/deploy-camera'
-    });
-    item.nodes.push({
-      text: '垃圾厢房状态',
-      url: '/aiop/garbage-station/full-trashcan'
-    });
-    item.nodes.push({
-      text: '乱扔垃圾事件',
-      url: '/aiop/illegal-drop-event-history'
-    });
-    item.nodes.push({
-      text: '地图布控',
-      url: '/aiop/garbage-station/map-deploy'
-    });
-    this.menuTree.push(item);
+  constructor(private route: ActivatedRoute, private navService: SideNavService) {
+    const  
+     menuTreeMap = new MenuTreeMap();
+     menuTreeMap.init();
+     this.menuTree =menuTreeMap.map.get(navService.systemMode);
     this.highlightedBtn = [this.menuTree[0].title];
 
 
@@ -134,15 +72,4 @@ export class SideNavMenuComponent implements OnInit {
 }
 
 
-export class MenuTree {
-  icon: string;
-  an = false;
-  title: string;
-  nodes: { text: string, url: string }[];
-  constructor(icon: string, title: string) {
-    this.icon = icon;
-    this.title = title;
-    this.nodes = new Array();
-  }
-}
 

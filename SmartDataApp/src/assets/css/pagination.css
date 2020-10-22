@@ -14,7 +14,7 @@
 	height: 30px;
 	color: #666;
 	text-align: center;
-	font-size: 14px;
+	font-size: 16px;
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -22,7 +22,7 @@
 
 .page .custom-pagination ul {
 	float: left;
-	height: 30px;
+	height:  30px;
 	list-style: none;
 	padding: 0;
 	margin: 0;
@@ -33,11 +33,11 @@
 
 .page .custom-pagination ul li {
 	display: inline-block;
-	font-size: 14px;
-	min-width: 22px;
+	font-size: 16px;
+	min-width: 30px;
 	padding: 0;
-	height: 22px;
-	line-height: 22px;
+	height: 30px;;
+	line-height: 30px;
 	margin-left: 1px; 
 	color: #cfd7ff;
 	cursor: pointer;
@@ -52,7 +52,7 @@
 	background-color: #68ADFD;
 	color: #fff;
 	border: 0;
-	line-height: 22px
+	line-height: 30px;
 }
 
 .page .custom-pagination ul li:hover {
@@ -63,9 +63,9 @@
 .page .custom-pagination a.prev-page,.custom-pagination a.next-page {
 	display: block;
 	float: left;
-	width: 22px;
-	height: 22px;
-	line-height: 22px;
+	width: 30px;
+	height:  30px;
+	line-height:  30px;
 	background-color: rgba(105,151,255,0.2);
 	cursor: pointer;
 	vertical-align: middle;
@@ -90,8 +90,8 @@
 	background-color: transparent;
 	border: 0;
 	cursor: default;
-	line-height: 22px;
-	font-size: 14px;
+	line-height: 30px;
+	font-size: 16px;
 	color: #cfd7ff;
 }
 
@@ -105,9 +105,9 @@
 } */
 
 .page .custom-pagination .page-to {
-	width: 166px;
-	height: 22px;
-	line-height: 22px;
+	width: 170px;
+	height: 30px;
+	line-height: 30px;
 	float: left;
 	color: #cfd7ff;
 	margin-left: 0px;
@@ -116,8 +116,8 @@
 .page .custom-pagination .page-to input {
 	display: inline-block;
 	width: 40px;
-	height: 22px;
-	line-height: 28px;
+	height: 24px;
+	line-height: 24px;
 	background-color: #1d233b;
 	border: 0;
     border: 1px solid #5e6ebf;
@@ -137,9 +137,9 @@
 .page .custom-pagination .page-to span {
 	vertical-align: middle;
 	display: inline-block;
-	width: 40px;
-	height: 22px;
-	line-height: 22px;
+	width: 46px;
+	height: 30px;
+	line-height: 30px;
 	background-color: rgba(105,151,255,0.2);
 	color: #cfd7ff;
 	cursor: pointer;

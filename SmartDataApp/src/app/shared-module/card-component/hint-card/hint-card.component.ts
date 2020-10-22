@@ -15,4 +15,8 @@ export class HintCardComponent extends BasisCardComponent implements OnInit {
     this.loadDatas(new ViewsModel());
   }
 
+  tagClick(){     
+    if(this.btnControl&&this.model)this.btnControl(null);
+  }
+
 }

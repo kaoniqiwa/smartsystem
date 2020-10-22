@@ -4,7 +4,36 @@
       <div fxLayout="row" class="fill-height p-l-30 p-r-20">
         <div fxFlex="33" class="fill-height" fxLayoutAlign=" center">
           <div style="position: relative;top: 4px;">
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 812.86 900.54"   width="36px" height="36px"><defs><style>.cls-1{fill:url(#渐变);}.cls-2{fill:none;stroke:#fff;stroke-linecap:round;stroke-miterlimit:10;stroke-width:60px;}</style><linearGradient id="渐变" x1="499.33" y1="949.65" x2="499.33" y2="49.1" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#037700"/><stop offset="1" stop-color="#6aff73"/></linearGradient></defs><title>皓维智能</title><path class="cls-1" d="M131.63,151.66c68.68-2.3,214.22-17.28,346.28-96.87a39.79,39.79,0,0,1,40.94,0c133.32,79.87,280.66,94.7,346.65,97.09a40,40,0,0,1,38.43,37.61c8.1,137.89,6.41,617-390.92,757.91a40,40,0,0,1-28.9-.87C142,802,104.76,518,92.93,193.13A40.11,40.11,0,0,1,131.63,151.66Z" transform="translate(-92.9 -49.1)"/><path class="cls-2" d="M377.45,281.27V388.6s5.92,110.91,122.7,111.14S621.09,610.9,621.09,610.9V718.23" transform="translate(-92.9 -49.1)"/><path class="cls-2" d="M621.09,281.27V388.6s-5.8,110.91-122.58,111.14S377.45,610.9,377.45,610.9V718.23" transform="translate(-92.9 -49.1)"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 812.86 900.54" width="36px" height="36px">
+              <defs>
+                <style>
+                  .cls-1 {
+                    fill: url(#渐变);
+                  }
+
+                  .cls-2 {
+                    fill: none;
+                    stroke: #fff;
+                    stroke-linecap: round;
+                    stroke-miterlimit: 10;
+                    stroke-width: 60px;
+                  }
+                </style>
+                <linearGradient id="渐变" x1="499.33" y1="949.65" x2="499.33" y2="49.1" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#037700" />
+                  <stop offset="1" stop-color="#6aff73" />
+                </linearGradient>
+              </defs>
+              <title>皓维智能</title>
+              <path class="cls-1"
+                d="M131.63,151.66c68.68-2.3,214.22-17.28,346.28-96.87a39.79,39.79,0,0,1,40.94,0c133.32,79.87,280.66,94.7,346.65,97.09a40,40,0,0,1,38.43,37.61c8.1,137.89,6.41,617-390.92,757.91a40,40,0,0,1-28.9-.87C142,802,104.76,518,92.93,193.13A40.11,40.11,0,0,1,131.63,151.66Z"
+                transform="translate(-92.9 -49.1)" />
+              <path class="cls-2" d="M377.45,281.27V388.6s5.92,110.91,122.7,111.14S621.09,610.9,621.09,610.9V718.23"
+                transform="translate(-92.9 -49.1)" />
+              <path class="cls-2" d="M621.09,281.27V388.6s-5.8,110.91-122.58,111.14S377.45,610.9,377.45,610.9V718.23"
+                transform="translate(-92.9 -49.1)" />
+            </svg>
           </div>
           <h3 class="header-title m-l-20">生活垃圾监管平台</h3>
         </div>
@@ -36,33 +65,24 @@
 
 </mat-toolbar>
 <div class="platform-body">
+  <div class="fill-height fill-width hw-content-mask" *ngIf="divisionBusinessService.eventHistoryView">
+    <div class="hw-form-wrap" style="width: 80%;height: 90%;">
 
+      <a class="close-winow" (click)="divisionBusinessService.eventHistoryView=false" href="javascript:void(0)" style="position: absolute;right: 20px;top: 10px;">
+        <i class="howell-icon-Close alert-window-close-btn"></i>
+      </a>
+      <div class="custom-form-wrap">
+        <hw-illegal-drop-event-history [divisionId]="divisionBusinessService.divisionsId">
+        </hw-illegal-drop-event-history>
+      </div>
+    </div>
+  </div>
   <div class="fill-width fill-height" gdGap="10px" gdColumns="1fr 1fr 1fr 1fr" gdRows="repeat(3, 32.4%)">
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
       <ng-container *ngIf="divisionConfig">
         <business-card-grid [cardConfig]="divisionConfig">
         </business-card-grid>
       </ng-container>
-      
-      <!-- <div class="fill-width fill-height">
-        <div class="edges2-wrapper m-b-5">
-          <div class="left-border"></div>
-          <div class="right-border"></div>
-          <h2 class="light-blue-text m-l-30 m-b-0" style="line-height: 2.5;">
-            <i class="howell-icon-map5 m-r-10 sky-blue-text"></i>
-            广中路街道
-          </h2>
-        </div>
-        <div fxLayout="row wrap " class="fine" style="overflow:auto;height: calc(100% - 57px);">
-          <ng-container *ngFor="let item of jw">
-            <div class="edges2-wrapper small-size text-center">
-              <div class="left-border"></div>
-              <div class="right-border"></div>
-              <label class="light-blue-text m-b-0 m-t-10">{{item}}居委</label>
-            </div>
-          </ng-container>
-        </div>
-      </div> -->
     </div>
     <div gdColumn="auto / span 2" gdRow="auto / span 2">
       <div class="card-wrapper2">
@@ -71,170 +91,31 @@
             <business-card-grid [cardConfig]="divisionGarbageSpCardConfig">
             </business-card-grid>
           </ng-container>
-          <!-- <div fxLayout="row" class="fill-height" fxLayoutAlign="space-between">
-            <div class="hint-card">
-              <h4 class="m-b-5">垃圾投放点数量</h4>
-              <label class="sky-blue-text2">100</label>
-            </div>
-            <div class="hint-card">
-              <h4 class="m-b-5">垃圾桶数量</h4>
-              <label class="green-text">500</label>
-            </div>
-            <div class="hint-card">
-              <h4 class="m-b-5">已满溢投放点数量</h4>
-              <label class="light-purple-text">50</label>
-            </div>
-            <div class="hint-card">
-              <h4 class="m-b-5">乱丢垃圾行为</h4>
-              <label class="powder-red-text">300</label>
-            </div>
-            <div class="hint-card">
-              <h4 class="m-b-5">混合投放垃圾行为</h4>
-              <label class="orange-text">500</label>
-            </div>
-          </div> -->
-          <!-- <div style="position: absolute;bottom: 0;">
-            <h5 class="hint-label green-text">
-              <label class="m-0" style="font-size: xx-small;">●</label>
-              正常垃圾桶
-            </h5>
-            <h5 class="hint-label orange-text">
-              <label class="m-0" style="font-size: xx-small;">●</label>
-              正常垃圾桶
-            </h5>
-            <h5 class="hint-label red-text">
-              <label class="m-0" style="font-size: xx-small;">●</label>
-              正常垃圾桶
-            </h5>
-          </div> -->
         </div>
-        <app-amap  #aMap (mapLoadedEvent)="mapLoaded($event)" ></app-amap>
+        <app-amap #aMap (mapLoadedEvent)="mapLoaded($event)"></app-amap>
         <div class="card-angle top-left"></div>
         <div class="card-angle top-right"></div>
         <div class="card-angle bottom-left"></div>
         <div class="card-angle bottom-right"></div>
       </div>
-
-
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
       <ng-container *ngIf="devCardConfig">
         <business-card-grid [cardConfig]="devCardConfig">
         </business-card-grid>
       </ng-container>
-    
-        <!-- <div class="card-wrapper">       
-      <h2>设备运行状态</h2>
-        <div class="content-wrapper p-r-20 p-b-10">
-          <div fxLayout="row" style="height: 60%;">
-            <div fxFlex="50" class="fill-height" style="position: relative;">
-              <div style="position: absolute;" class="fill-height fill-width" EChartProgressBar></div>
-              <div style="position: absolute;" class="fill-height fill-width" EChartProgressBarBox></div>
-              <h4 class="green-text" style="position: absolute;right: 26%;bottom: 10px;margin: 0;">正常</h4>
-            </div>
-            <div fxFlex class="fill-height">
-              <div style="margin-top: 16%;">
-                <h3 class="light-cyan-text">系统设备在线比</h3>
-                <h1 class="green-text">
-                  96<label class="m-0 light-blue-text" style="font-size: 18px;">%</label>
-                </h1>
-              </div>
-            </div>
-          </div>
-          <div fxLayout="row" style="height: 40%;" fxLayoutAlign="space-between end">
-            <div fxFlex="130px" style=" height: 80px;background-color: rgb(29,39,95);">
-              <div class="border-background">
-                <div style="padding: 10px 5px 10px 5px;">
-                  <h4 class="light-cyan-text text-center">全部设备数量</h4>
-                  <div class="blue-parting-line"></div>
-                  <h2 class="text-center m-b-0 m-t-5 sky-blue-text2">60</h2>
-                </div>
-              </div>
-
-            </div>
-            <div fxFlex="130px" style=" height: 80px;background-color: rgb(29,39,95);">
-              <div class="border-background">
-                <div style="padding: 10px 5px 10px 5px;">
-                  <h4 class="light-cyan-text text-center">在线设备数量</h4>
-                  <div class="blue-parting-line"></div>
-                  <h2 class="text-center m-b-0 m-t-5 green-text">60</h2>
-                </div>
-              </div>
-            </div>
-            <div fxFlex="130px" style=" height: 80px;background-color: rgb(29,39,95);">
-              <div class="border-background">
-                <div style="padding: 10px 5px 10px 5px;">
-                  <h4 class="light-cyan-text text-center">离线设备数量</h4>
-                  <div class="blue-parting-line"></div>
-                  <h2 class="text-center m-b-0 m-t-5 orange-text">60</h2>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card-angle top-left"></div>
-        <div class="card-angle top-right"></div>
-        <div class="card-angle bottom-left"></div>
-        <div class="card-angle bottom-right"></div>
-      </div> -->
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
       <ng-container *ngIf="illegalDropTopCardConfig">
         <business-card-grid [cardConfig]="illegalDropTopCardConfig">
         </business-card-grid>
       </ng-container>
-      <!-- <div class="card-wrapper">
-        <h2>乱扔垃圾行为TOP6</h2>
-        <div class="content-wrapper p-t-20 p-r-30">
-          <div *ngFor="let item of jw6;let i= index" fxLayout="row" style="height: calc(100%/6);" class="top6-list">
-            <div fxFlex="12">
-              <div class="number-item" [ngStyle]="{'background': i<3?'#ffba00':'#7f94ff'}">
-                <h4 class="item-label">{{ i+1}}</h4>
-              </div>
-            </div>
-            <div fxFlex="50">
-              <h4 class="light-blue-text">{{item}}居委</h4>
-            </div>
-            <div fxFlex="38">
-              <h4 class="m-0 sky-blue-text2 " style="text-align: right;">{{ 10+i}}
-                <label class="number-suffix">起</label>
-              </h4>
-            </div>
-          </div>
-        </div>
-        <div class="card-angle top-left"></div>
-        <div class="card-angle top-right"></div>
-        <div class="card-angle bottom-left"></div>
-        <div class="card-angle bottom-right"></div>
-      </div> -->
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
       <ng-container *ngIf="illegalDropEventCardConfig">
         <business-card-grid [cardConfig]="illegalDropEventCardConfig">
         </business-card-grid>
       </ng-container>
-      <!-- <div class="card-wrapper video-title-desc">
-        <h2 class="red-text">乱扔垃圾</h2>
-        <div class="time-label-wrapper">
-          <h4 class="m-0 light-blue-text">08-07 17:13:45</h4>
-        </div>
-        <div class="content-wrapper p-r-20">
-          <div class="fill-height fill-width" style="position: relative;">
-            <img class="fill-height fill-width" src="/assets/img/lrlj.jpg" alt="">
-            <div class="desc-label-wrapper">
-              <label class="m-0  text-white">
-                <i class="mdi mdi-map-marker"></i>
-                花苑城居委
-              </label>
-              <label class="m-0 text-white pull-right">2号垃圾投放点</label>
-            </div>
-          </div>
-        </div>
-        <div class="card-angle top-left"></div>
-        <div class="card-angle top-right"></div>
-        <div class="card-angle bottom-left"></div>
-        <div class="card-angle bottom-right"></div>
-      </div> -->
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
       <div class="card-wrapper p-l-20" style="padding-top: 15px;border:1px #5c6ebf solid">
@@ -334,16 +215,6 @@
         <business-card-grid [cardConfig]="illegalDropHistoryCardConfig">
         </business-card-grid>
       </ng-container>
-      <!-- <div class="card-wrapper">
-        <div style="position:absolute;">
-          <h2>乱扔垃圾行为</h2>
-        </div>
-        <div class="height98 fill-width" [options]="line" EChartLine></div>
-        <div class="card-angle top-left"></div>
-        <div class="card-angle top-right"></div>
-        <div class="card-angle bottom-left"></div>
-        <div class="card-angle bottom-right"></div>
-      </div> -->
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
       <div class="card-wrapper p-l-20" style="padding-top: 15px;border:1px #5c6ebf solid">

@@ -22,6 +22,12 @@ export class SearchControl extends SearchHelper {
         });
     }
 
+    set divisionId(val:string){
+        this.searchform.patchValue({
+            DivisionId: val,
+        });  
+    }
+
     set formBeginDate(v:Date){
         this.searchform.patchValue({
             BeginTime: this.datePipe.transform(v,'yyyy-MM-dd HH:mm')

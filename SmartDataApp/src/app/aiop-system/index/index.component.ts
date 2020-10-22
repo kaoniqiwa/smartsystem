@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HistoryLinkToolComponent } from "./history-link-tool/history-link-tool.component";
 
-import { Router } from '@angular/router';
-import { SideNavService } from "./sidenav.service";
+import { ActivatedRoute, Router } from '@angular/router';
+import { SideNavService } from "../../common/tool/sidenav.service";
 import { domCss } from "../../common/tool/jquery-help/jquery-help";
 import { SideNavMenuComponent } from "./side-nav-menu/side-nav-menu.component";
 import {
@@ -50,7 +50,7 @@ export class IndexComponent implements OnInit {
     if (u.user.name == '' || u.user.pwd == '') this.router.navigateByUrl('login');
   }
   ngOnInit() {
-
+   
     this.navService.playVideoBug.subscribe((x: boolean) => {
       this.bug = x;
     });

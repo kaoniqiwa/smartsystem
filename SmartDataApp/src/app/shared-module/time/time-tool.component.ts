@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'; 
-import { TimeToolService } from '../../../common/tool/time.service';
+import { TimeToolService } from '../../common/tool/time.service';
 @Component({
   selector: 'app-time-tool',
   templateUrl: './time-tool.component.html',

@@ -7,8 +7,8 @@ import { ITableField } from "../../common/ITableField";
 import { EnumHelper, ResourceTypeEnum } from "../../../common/tool/enum-helper";
 import { MediumPicture } from "../../../data-core/url/aiop/resources";
 import { IBusinessData } from "../../../common/interface/IBusiness";
-import { BusinessTable } from "../../common/business-table";
-import {  GalleryTarget } from "../../common/component/gallery-target/gallery-target";
+import { BusinessTable } from "../../common/business-table";  
+import { GalleryTarget } from "../../../shared-module/gallery-target/gallery-target";
 export class EventTable extends BusinessTable implements IConverter {
    
     galleryTarget:GalleryTarget;

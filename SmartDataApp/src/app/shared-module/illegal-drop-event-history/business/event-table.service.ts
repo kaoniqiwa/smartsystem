@@ -4,7 +4,7 @@ import { EventTable, IllegalDropEventsRecord } from "./event-table";
 import { SearchControl } from "./search";
 import "../../../common/string/hw-string";
 import { TheDayTime, TimeInterval } from "../../../common/tool/tool.service";
-import { PlayVideo } from "../../common/play-video";
+import { PlayVideo } from "../../../aiop-system/common/play-video";
 import { Page } from "../../../data-core/model/page";
 import { TableAttribute, ListAttribute } from "../../../common/tool/table-form-helper";
 import { DatePipe } from "@angular/common";
@@ -17,12 +17,11 @@ import { ResourceRequestService, ResourceSRServersRequestService } from "../../.
 import { Resource } from "../../../data-core/model/aiop/resource";
 import { GetEventRecordsParams, IllegalDropEventRecord } from "../../../data-core/model/waste-regulation/illegal-drop-event-record";
 import { GetResourcesParams } from "../../../data-core/model/aiop/resources-params";
-import { ImageEventEnum } from "../../common/component/gallery-target/gallery-target";
+import { ImageEventEnum } from "../../gallery-target/gallery-target";
 import { EventCards } from "./event-cards";
 import { ViewPagination } from "../../../shared-module/card-list-panel/card-list-panel";
 import { GalleryTargetView } from "./gallery-target";
-import { GetPreviewUrlParams, GetVodUrlParams } from "../../../data-core/model/aiop/video-url";
-import { SideNavService } from '../../index/sidenav.service'
+import { GetVodUrlParams } from "../../../data-core/model/aiop/video-url"; 
 @Injectable()
 export class EventTableService extends ListAttribute {
     dataSource_ = new Array<IllegalDropEventRecord>();
@@ -48,7 +47,7 @@ export class EventTableService extends ListAttribute {
         , private garbageStationService: GarbageStationRequestService
         , private resourceService: ResourceRequestService
         , private srService: ResourceSRServersRequestService
-        ,private navService:SideNavService
+        // ,private navService:SideNavService
         , private datePipe: DatePipe) {
         super();
         this.eventTable.scrollPageFn = (event: CustomTableEvent) => {
@@ -119,7 +118,7 @@ export class EventTableService extends ListAttribute {
                 time=   TimeInterval(event.EventTime+'', -30),
                 video = await this.requestVideoUrl(time.start,time.end,event.ResourceId);                
             this.playVideo = new PlayVideo(video.Url, event.ResourceName); 
-            this.navService.playVideoBug.emit(true);
+            // this.navService.playVideoBug.emit(true);
         }
 
     }

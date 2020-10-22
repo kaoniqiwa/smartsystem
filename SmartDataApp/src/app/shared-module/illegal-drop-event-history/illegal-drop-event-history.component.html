@@ -3,21 +3,21 @@
     [class.in]="tableService.galleryTargetView.galleryTarget">
     <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
       <hw-gallery-target [closeViewFn]="galleryTargetFn" [model]="tableService.galleryTargetView.galleryTarget"
-      [imgEventFn]="tableService.galleryTargetView.galleryTargetPageFn">
-    </hw-gallery-target>
+        [imgEventFn]="tableService.galleryTargetView.galleryTargetPageFn">
+      </hw-gallery-target>
     </div>
   </div>
 
-  <div class="fill-height fill-width hw-content-mask collapse"   [class.in]="tableService.playVideo">
- 
-      <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
-        <ng-container *ngIf="tableService.playVideo">
-          <hw-video-simple-card   [closeFn]="videoClose" 
-      [url]="tableService.playVideo.url" [autostart]="true" [cameraName]="tableService.playVideo.name"></hw-video-simple-card>
-        </ng-container>
- 
-      </div> 
-    
+  <div class="fill-height fill-width hw-content-mask collapse" [class.in]="tableService.playVideo">
+
+    <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
+      <ng-container *ngIf="tableService.playVideo">
+        <hw-video-simple-card [closeFn]="videoClose" [url]="tableService.playVideo.url" [autostart]="true"
+          [cameraName]="tableService.playVideo.name"></hw-video-simple-card>
+      </ng-container>
+
+    </div>
+
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
     <div class="second-title-bg text">
@@ -111,7 +111,7 @@
     </ng-container>
     <ng-container *ngIf="listMode==pageListMode.list">
       <hw-illegal-drop-event-card-list [model]="tableService.eventCards.cards" [itemFn]="listGalleryTargetFn"
-      [playVideoFn]="tableService.eventTable.playVideoFn">
+        [playVideoFn]="tableService.eventTable.playVideoFn">
       </hw-illegal-drop-event-card-list>
     </ng-container>
 

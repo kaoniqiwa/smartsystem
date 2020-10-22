@@ -1,6 +1,6 @@
 import { Component, OnInit,Input } from '@angular/core';
 import {  CardList } from "./card-list";
-import { ImageDesc } from "../../common/component/image-desc-card/image-desc";
+import { ImageDesc } from "../../image-desc-card/image-desc";
 @Component({
   selector: 'hw-illegal-drop-event-card-list',
   templateUrl: './illegal-drop-event-card-list.component.html',

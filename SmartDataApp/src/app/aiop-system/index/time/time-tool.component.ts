@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'; 
 import { TimeToolService } from '../../../common/tool/time.service';
 @Component({
-  selector: 'app-time-tool',
+  selector: 'time-tool',
   templateUrl: './time-tool.component.html',
   styleUrls: ['./time-tool.component.styl'],
   providers:[TimeToolService]

@@ -38,25 +38,33 @@ padding-right: 5px;
   border-width: 2px;
 }
 
-.card-wrapper .card-angle.top-left,.card-wrapper2 .card-angle.top-left{
+.td-wrapper .card-angle.td{
+  width: 6px;
+  position: absolute;
+  height: 6px;
+  border-color:#6898ff;
+  border-width:1px;
+}
+
+.card-wrapper .card-angle.top-left,.card-wrapper2 .card-angle.top-left,.td-wrapper .card-angle.top-left{
   border-left-style: solid;
   border-top-style: solid;
   top:-1px;
   left: -1px;
 }
-.card-wrapper .card-angle.top-right,.card-wrapper2 .card-angle.top-right{
+.card-wrapper .card-angle.top-right,.card-wrapper2 .card-angle.top-right,.td-wrapper .card-angle.top-right{
   border-right-style: solid;
   border-top-style: solid;
   top: -1px;
   right:-1px;
 }
-.card-wrapper .card-angle.bottom-left,.card-wrapper2 .card-angle.bottom-left{
+.card-wrapper .card-angle.bottom-left,.card-wrapper2 .card-angle.bottom-left,.td-wrapper .card-angle.bottom-left{
   border-left-style: solid;
   border-bottom-style: solid;
   left: -1px;
   bottom:-1px;
 }
-.card-wrapper .card-angle.bottom-right,.card-wrapper2 .card-angle.bottom-right{
+.card-wrapper .card-angle.bottom-right,.card-wrapper2 .card-angle.bottom-right,.td-wrapper .card-angle.bottom-right{
   border-right-style: solid;
   border-bottom-style: solid;
   right:-1px;
@@ -100,8 +108,7 @@ padding-right: 5px;
   bottom: 0;
   padding: 6px 10px;
   width: 100%;
-  background-color: rgb(0,0,0,.5);
-  z-index: 24;
+  background-color: rgb(0,0,0,.5); 
   height: 34px;
 }
 
@@ -194,7 +201,7 @@ padding-right: 5px;
     width: 20px;
     left: -3px;
     top: -6px;
-    z-index: 14;
+ 
     transform: rotate(-45deg);
     height: 1px;
     position: absolute;
@@ -215,7 +222,7 @@ padding-right: 5px;
     width: 20px;
     right: -3px;
     bottom: -7px;
-    z-index: 14;
+ 
     transform: rotate(-45deg);
     height: 1px;
     position: absolute;

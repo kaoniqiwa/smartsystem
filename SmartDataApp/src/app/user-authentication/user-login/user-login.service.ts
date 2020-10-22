@@ -78,10 +78,19 @@ export class UserLoginService {
                 this.httpService.auth(userUrl, authHeader).pipe(
                     catchError(this.handleLoginError2<any>())
                 )
-                    .subscribe((result) => {  
+                    .subscribe((result:{ Role:{PictureData: number
+                        PrivacyData: number
+                        StaticData: number                         
+                        UserData: number}[]}) => {  
                         if(result){
-
-                            this.router.navigateByUrl('aiop');
+                            console.log(result);
+                           if(result.Role[0].PictureData==1
+                            &&result.Role[0].PrivacyData==1
+                            &&result.Role[0].StaticData==1
+                            &&result.Role[0].UserData==1)
+                            this.router.navigateByUrl('system-mode'); 
+                           else this.router.navigateByUrl('waste-regulation');
+                          
                             this.memory(this.formVal.name, this.formVal.pwd);
                         } 
                     });

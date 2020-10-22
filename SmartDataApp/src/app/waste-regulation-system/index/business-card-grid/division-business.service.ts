@@ -8,7 +8,8 @@ import { BusinessViewComponetConstructor } from "./business-card-slot.service";
 import { StatisticalDataBufferService } from "./buffer/statistical-data-buffer";
 import { AMapComponent } from "../amap/amap.component";
 import { CameraRequestService } from "../../../data-core/repuest/resources.service";
-import {  ImageThemeCardComponent} from "../../../shared-module/card-component/image-theme-card/image-theme-card.component";
+import { ImageThemeCardComponent } from "../../../shared-module/card-component/image-theme-card/image-theme-card.component";
+import { HintCardComponent } from "../../../shared-module/card-component/hint-card/hint-card.component";
 @Injectable({
     providedIn: 'root'
 })
@@ -16,9 +17,12 @@ export class DivisionBusinessService {
     componets = new Array<BusinessViewComponetConstructor>();
     committesIds: string[];
     mapClient: CesiumMapClient;
-    aMap:AMapComponent;
-    constructor(private cameraService:CameraRequestService) {
-        setTimeout(() => {
+    aMap: AMapComponent;
+    /**区划 */
+    divisionsId = '';
+    eventHistoryView = false;
+    constructor(private cameraService: CameraRequestService) {
+        setTimeout(() => {console.log(this.componets);
             for (const x of this.componets) {
 
                 if (x.list[0].view instanceof HeaderSquareListComponent) {
@@ -41,14 +45,26 @@ export class DivisionBusinessService {
                                 }
                             }
                         }
-                    } 
+                    }
                 }
-                if(x.list[0].view instanceof ImageThemeCardComponent){
-                    x.list[0].view.btnControl =async (val: { timeInterval: { start:Date,end:Date}, cameraId: string }) => {
-                      const respone= await  this.cameraService.get(val.cameraId).toPromise(); 
-                      
-                      this.aMap.Playback(respone.Data as any,val.timeInterval.start,val.timeInterval.end);
-                    } 
+                if (x.list[0].view instanceof ImageThemeCardComponent) {
+                    x.list[0].view.btnControl = async (val: { timeInterval: { start: Date, end: Date }, cameraId: string }) => {
+                        const respone = await this.cameraService.get(val.cameraId).toPromise();
+
+                        this.aMap.Playback(respone.Data as any, val.timeInterval.start, val.timeInterval.end);
+                    }
+                }
+                if (x.list[0].view instanceof HintCardComponent) {
+                    
+                    
+                    x.list[0].view.btnControl = () => {
+                        if (x.list[0].business instanceof BaseBusinessRefresh)
+                        {
+                            this.divisionsId=x.list[0].business.businessParameter.map.get("divisionsId");
+                            this.eventHistoryView=true;
+                        }
+                        
+                    }
                 }
             }
         }, 1000);

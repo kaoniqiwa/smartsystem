@@ -6,7 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 //     redirectTo: 'aiop',
 //     pathMatch: 'full'
 //   }, 
-//    { path:'',loadChildren:'./aiop-system/aiop-system.module#AIOPSystemModule'},
+//   { path:'aiop',loadChildren:'./aiop-system/aiop-system.module#AIOPSystemModule'},
 // ];
 // const routes: Routes = [
 //   {
@@ -22,8 +22,10 @@ const routes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full'
   },
+  { path:'system-mode',loadChildren:'./system-module/system.module#SystemModule'},
   { path:'login',loadChildren:'./user-authentication/user-authentication.module#UserAuthenticationModule'},
   { path:'aiop',loadChildren:'./aiop-system/aiop-system.module#AIOPSystemModule'},
+  { path:'waste-regulation',loadChildren:'./waste-regulation-system/waste-regulation-system.module#WasteRegulationSystemModule'}
  ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

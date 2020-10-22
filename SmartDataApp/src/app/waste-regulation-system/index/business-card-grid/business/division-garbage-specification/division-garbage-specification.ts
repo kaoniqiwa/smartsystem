@@ -18,7 +18,7 @@ export class DivisionGarbageSpecification extends BaseBusinessRefresh {
         let model = new Specification();
 
         let data = await (this.dataServe as StatisticalDataBufferService).getDivisionStatisticNumber(divisionsId);
-        model.fullPushNumber = 0;
+        model.fullPushNumber = data.DryFullStationNumber+data.WetFullStationNumber;
         model.garbageBarrelNumber = data.TrashCanNumber || 0;
         model.garbagePushNumber = data.StationNumber || 0;
         model.hybridPushNumber = 0;
