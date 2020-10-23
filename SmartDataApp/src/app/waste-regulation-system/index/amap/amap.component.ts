@@ -410,7 +410,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
             default:
                 return;
         }
-        this.client.Viewer.MoveTo(position);
+        if (position) {
+            this.client.Viewer.MoveTo(position);
+        }
         if (this.mapPanelListItemClickedEvent) {
             this.mapPanelListItemClickedEvent.emit(item);
         }
