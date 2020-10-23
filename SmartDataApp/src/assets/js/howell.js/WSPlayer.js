@@ -11,7 +11,8 @@ function WSPlayer(args) {
     }
 
 
-    var waitHandle;
+    var waitStopHandle;
+    var waitStopHandle;
 
     var wsPlayerState = {
         ready: 0,
@@ -53,7 +54,7 @@ function WSPlayer(args) {
     this.url = current_args.url;
 
     var element = document.getElementById(current_args.elementId);
-    element.style.backgroundColor = "transparent";
+    element.style.backgroundColor = "transparent";    
     this.clientWidth = parseFloat(element.offsetWidth);
     this.clientHeight = parseFloat(element.offsetHeight);
 
@@ -187,6 +188,11 @@ function WSPlayer(args) {
         }
 
 
+        var p = document.getElementsByClassName("parent-wnd")[0];        
+        p.addEventListener("dblclick", function(){
+            console.log("dblclick");
+            that.fullScreen();
+        });
 
         document.addEventListener('fullscreenchange', function () { plugin.JS_Resize(window.screen.width, window.screen.height); });
         document.addEventListener('webkitfullscreenchange', function () { console.log('fullscreenchange') });
@@ -495,8 +501,8 @@ function WSPlayer(args) {
     // 停止
     this.stop = function () {
 
-        if (this.waitHandle)
-            throw new Error("短时间内重复调用");
+        if (waitStopHandle)
+            throw new Error("waiting for stop");
         if (element)
             element.className = element.className.replace(/ loading/g, "")
 
@@ -513,8 +519,8 @@ function WSPlayer(args) {
 
         console.log("stop");
 
-        clearTimeout(this.waitHandle);
-        this.waitHandle = null;
+        clearTimeout(waitStopHandle);
+        waitStopHandle = null;
         try {
             return plugin.JS_Stop(0).then(() => {
                 that.status = wsPlayerState.closed;
@@ -533,10 +539,10 @@ function WSPlayer(args) {
             });
         }
         finally {
-            this.waitHandle = setTimeout(() => {
-                clearTimeout(this.waitHandle);
-                this.waitHandle = null;
-            }, 1000);
+            waitStopHandle = setTimeout(() => {
+                clearTimeout(waitStopHandle);
+                waitStopHandle = null;
+            }, 1500);
         }
 
     }
