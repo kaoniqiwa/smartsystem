@@ -1,5 +1,5 @@
-<div   class="fill-height fill-width">
-  <div   class="custom-form-wrap">
+<div class="fill-height fill-width">
+  <div class="custom-form-wrap">
     <div class="title-wrap">
       <div class="pull-left" style="width: 220px;">详细图片
       </div>
@@ -8,6 +8,15 @@
           <label class="m-b-0 m-r-10" style="font-size: 14px;">目标信息</label>
           <hw-switch [onFn]="onDescFn"></hw-switch>
         </div>
+
+        <ng-container *ngIf="model">
+          <a href="{{model.enlargeImage}}" title="下载图片" class="m-r-10" download="图片.png">
+            <i class="howell-icon-download sky-blue-text"></i>
+          </a>
+          <a href="javascript:void(0)"  class="m-r-10" (click)="videoClick()">
+            <i class="howell-icon-video sky-blue-text"></i>
+          </a>        
+        </ng-container>
         <a href="javascript:void(0)" class="close-winow" (click)="closeViewClick()">
           <i class="howell-icon-Close alert-window-close-btn"></i>
         </a>
@@ -17,16 +26,15 @@
       <ng-container *ngIf="model">
         <img id="enlargeImage" width="100%" class="fill-height " src="{{model.enlargeImage}}"
           onerror="this.src='../assets/img/timg-pic.jpg'" alt="">
-        <canvas class="collapse canvas-position" [class.in]="onDesc"  id="polygonCanvas"
+        <canvas class="collapse canvas-position" [class.in]="onDesc" id="polygonCanvas"
           width="{{enlargeImageSize.width}}" height="{{ enlargeImageSize.height}}"></canvas>
-        <a class="carousel-control-prev" 
-        [ngStyle]="{'visibility': model.imgPrev ?'visible':'hidden'}"
-        href="javascript:void(0)" (click)="imgPageClick(imgEvent.prev)">
+        <a class="carousel-control-prev" [ngStyle]="{'visibility': model.imgPrev ?'visible':'hidden'}"
+          href="javascript:void(0)" (click)="imgPageClick(imgEvent.prev)">
           <span style="font-size: xxx-large;" class="howell-icon-arrowleftbold blue-text"></span>
         </a>
-        <a class="carousel-control-next"    [ngStyle]="{'visibility': model.imgNext ?'visible':'hidden'}"
-        (click)="imgPageClick(imgEvent.next)">
-          <span  style="font-size: xxx-large;" class="howell-icon-arrowrightbold blue-text"></span>
+        <a class="carousel-control-next" [ngStyle]="{'visibility': model.imgNext ?'visible':'hidden'}"
+          (click)="imgPageClick(imgEvent.next)">
+          <span style="font-size: xxx-large;" class="howell-icon-arrowrightbold blue-text"></span>
         </a>
       </ng-container>
     </div>

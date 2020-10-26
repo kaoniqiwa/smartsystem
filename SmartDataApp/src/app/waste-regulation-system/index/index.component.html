@@ -56,6 +56,9 @@
         </div>
         <div fxFlex="33" fxLayoutAlign="end center ">
           <app-time-tool> </app-time-tool>
+          <a routerLink="/login" title="登出" class="logout" (click)="logOut()">
+            <i class="mdi mdi-logout sky-blue-text"></i>
+          </a>
         </div>
       </div>
     </div>
@@ -66,13 +69,13 @@
 </mat-toolbar>
 <div class="platform-body">
   <div class="fill-height fill-width hw-content-mask" *ngIf="divisionBusinessService.eventHistoryView">
-    <div class="hw-form-wrap" style="width: 80%;height: 90%;">
+    <div class="hw-form-wrap"  style="width: 90%;height:886px;">
 
-      <a class="close-winow" (click)="divisionBusinessService.eventHistoryView=false" href="javascript:void(0)" style="position: absolute;right: 20px;top: 10px;">
+      <a class="close-winow event-history-view-close" (click)="divisionBusinessService.eventHistoryView=false" href="javascript:void(0)">
         <i class="howell-icon-Close alert-window-close-btn"></i>
       </a>
       <div class="custom-form-wrap">
-        <hw-illegal-drop-event-history [divisionId]="divisionBusinessService.divisionsId">
+        <hw-illegal-drop-event-history [fillMode]="divisionBusinessService.fillMode">
         </hw-illegal-drop-event-history>
       </div>
     </div>

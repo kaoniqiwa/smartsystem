@@ -90,7 +90,7 @@ export class GarbageStationList extends TreeService {
     }
 
     async getGarbageStationType() {
-        const types = await this.dataService.requestGarbageStationType(); console.log(types);
+        const types = await this.dataService.requestGarbageStationType();
 
         this.dataService.types = types;
     }

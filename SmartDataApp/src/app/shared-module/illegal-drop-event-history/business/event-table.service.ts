@@ -8,23 +8,27 @@ import { PlayVideo } from "../../../aiop-system/common/play-video";
 import { Page } from "../../../data-core/model/page";
 import { TableAttribute, ListAttribute } from "../../../common/tool/table-form-helper";
 import { DatePipe } from "@angular/common";
-import { DivisionRequestService } from "../../../data-core/repuest/division.service";
+import { DivisionRequestService } from "../../../data-core/repuest/division.service"; 
 import { EventRequestService } from "../../../data-core/repuest/Illegal-drop-event-record";
 import { GetDivisionsParams, Division } from "../../../data-core/model/waste-regulation/division";
-import { GarbageStationRequestService } from "../../../data-core/repuest/garbage-station.service";
+import { GarbageStationRequestService,CameraRequestService } from "../../../data-core/repuest/garbage-station.service";
 import { GetGarbageStationsParams, GarbageStation } from "../../../data-core/model/waste-regulation/garbage-station";
-import { ResourceRequestService, ResourceSRServersRequestService } from "../../../data-core/repuest/resources.service";
-import { Resource } from "../../../data-core/model/aiop/resource";
+import { ResourceSRServersRequestService } from "../../../data-core/repuest/resources.service";
+import { Camera } from "../../../data-core/model/waste-regulation/camera";
 import { GetEventRecordsParams, IllegalDropEventRecord } from "../../../data-core/model/waste-regulation/illegal-drop-event-record";
-import { GetResourcesParams } from "../../../data-core/model/aiop/resources-params";
 import { ImageEventEnum } from "../../gallery-target/gallery-target";
 import { EventCards } from "./event-cards";
-import { ViewPagination } from "../../../shared-module/card-list-panel/card-list-panel";
 import { GalleryTargetView } from "./gallery-target";
-import { GetVodUrlParams } from "../../../data-core/model/aiop/video-url"; 
+import { GetVodUrlParams } from "../../../data-core/model/aiop/video-url";
+import { PageListMode } from "../../../common/tool/enum-helper";
+import { DivisionListView } from "./division-list-view";
+import { GetCamerasParams } from "../../../data-core/model/aiop/encode-devices-params";
+import { GetGarbageStationCamerasParams } from "../../../data-core/model/waste-regulation/camera";
 @Injectable()
 export class EventTableService extends ListAttribute {
     dataSource_ = new Array<IllegalDropEventRecord>();
+
+    allDataSource = new Array<IllegalDropEventRecord>();
 
     set dataSource(items: IllegalDropEventRecord[]) {
         for (const x of items)
@@ -40,12 +44,14 @@ export class EventTableService extends ListAttribute {
     galleryTargetView = new GalleryTargetView();
     divisions = new Array<Division>();
     garbageStations = new Array<GarbageStation>();
-    resources = new Array<Resource>();
+    resources = new Array<Camera>();
+    divisionListView = new DivisionListView();
     playVideo: PlayVideo;
+    fillMode: FillMode;
     constructor(private eventRequestService: EventRequestService
         , private divisionService: DivisionRequestService
         , private garbageStationService: GarbageStationRequestService
-        , private resourceService: ResourceRequestService
+       , private resourceService: CameraRequestService
         , private srService: ResourceSRServersRequestService
         // ,private navService:SideNavService
         , private datePipe: DatePipe) {
@@ -58,30 +64,30 @@ export class EventTableService extends ListAttribute {
             return this.dataSource.find(x => x.EventId == id);
         }
 
-        this.eventCards.viewPaginationFn = (page: Page) => {
-            return new ViewPagination(page.PageCount, async (index) => {
-                if (this.eventCards.pageIndex != index) {
-                    this.eventCards.pageIndex = index;
-                    await this.requestData(index);
-                    this.eventCards.cardList = this.eventCards.dataSource;
-                }
+        // this.eventCards.viewPaginationFn = (page: Page) => {
+        //     return new ViewPagination(page.PageCount, async (index) => {
+        //         if (this.eventCards.pageIndex != index) {
+        //             this.eventCards.pageIndex = index;
+        //             await this.requestData(index);
+        //             this.eventCards.cardList = this.eventCards.dataSource;
+        //         }
 
-            });
-        }
+        //     });
+        // }
 
         this.eventTable.initGalleryTargetFn = (event) => {
             this.galleryTargetView.initGalleryTarget(event);
         }
 
-        this.galleryTargetView.neighborEventFn = (id, e: ImageEventEnum) => {
-            var index = this.dataSource.findIndex(x => x.EventId == id);
+        this.galleryTargetView.neighborEventFn= (id, e: ImageEventEnum) => {   
+            var index = this.allDataSource.findIndex(x => x.EventId == id);
             var prev = true, next = true
                 , item: IllegalDropEventRecord;
 
             if (e == ImageEventEnum.none) {
                 if (index == 0)
                     prev = false;
-                else if (index == this.dataSource.length - 1)
+                else if (index == this.allDataSource.length - 1)
                     next = false;
                 return {
                     item: null,
@@ -91,8 +97,8 @@ export class EventTableService extends ListAttribute {
             }
             else if (e == ImageEventEnum.next) {
                 index += 1;
-                item = this.dataSource[index];
-                if (index == this.dataSource.length - 1)
+                item = this.allDataSource[index];
+                if (index == this.allDataSource.length - 1)
                     next = false;
                 return {
                     item: item,
@@ -102,7 +108,7 @@ export class EventTableService extends ListAttribute {
             }
             else if (e == ImageEventEnum.prev) {
                 index -= 1;
-                item = this.dataSource[index];
+                item = this.allDataSource[index];
                 if (index == 0)
                     prev = false;
                 return {
@@ -115,9 +121,9 @@ export class EventTableService extends ListAttribute {
 
         this.eventTable.playVideoFn = async (id) => {
             const event = this.eventTable.findEventFn(id),
-                time=   TimeInterval(event.EventTime+'', -30),
-                video = await this.requestVideoUrl(time.start,time.end,event.ResourceId);                
-            this.playVideo = new PlayVideo(video.Url, event.ResourceName); 
+                time = TimeInterval(event.EventTime + '', -30),
+                video = await this.requestVideoUrl(time.start, time.end, event.ResourceId);
+            this.playVideo = new PlayVideo(video.Url, event.ResourceName);
             // this.navService.playVideoBug.emit(true);
         }
 
@@ -135,10 +141,10 @@ export class EventTableService extends ListAttribute {
     }
 
     async requestResource() {
-        const param = new GetResourcesParams();
+        const param = new GetGarbageStationCamerasParams();
         param.PageIndex = 1;
         param.PageSize = this.maxSize;
-        const result = await this.resourceService.list(param).toPromise();
+        const result = await this.resourceService.postList(param).toPromise();
         return result.Data.Data;
     }
 
@@ -180,6 +186,22 @@ export class EventTableService extends ListAttribute {
 
     }
 
+    async requestDataX(pageIndex: number, callBack?: (page: Page) => void) {
+        if (this.search.state == false) {
+            const response = await this.eventRequestService.list(this.getRequsetParam(pageIndex, this.search,15)).toPromise();
+            let data = new IllegalDropEventsRecord();
+            data.items = response.Data.Data.sort((a, b) => {
+                return ''.naturalCompare(a.EventTime, b.EventTime);
+            });
+            this.eventCards.clearData();
+            this.eventCards.Convert(data.items); 
+            this.eventCards.cardList = this.eventCards.dataSource;
+            this.dataSource = response.Data.Data;
+            if (callBack) callBack(response.Data.Page);
+        }
+
+    }
+
     async searchData(pageIndex: number, callBack?: (page: Page) => void) {
         if (this.search.state) {
             const response = await this.eventRequestService.list(this.getRequsetParam(pageIndex, this.search)).toPromise();
@@ -187,12 +209,7 @@ export class EventTableService extends ListAttribute {
             let data = new IllegalDropEventsRecord();
             data.items = response.Data.Data.sort((a, b) => {
                 return ''.naturalCompare(a.EventTime, b.EventTime);
-            });
-
-
-            this.eventCards.clearData();
-            this.eventCards.Convert(data.items);
-
+            }); 
             this.eventTable.clearItems();
             this.dataSource_ = new Array();
             this.eventTable.Convert(data, this.eventTable.dataSource);
@@ -200,17 +217,47 @@ export class EventTableService extends ListAttribute {
             this.dataSource = response.Data.Data;
             if (callBack) callBack(response.Data.Page);
         }
+    }
 
+    async searchDataX(pageIndex: number, callBack?: (page: Page) => void) {
+        if (this.search.state) {
+            const response = await this.eventRequestService.list(this.getRequsetParam(pageIndex, this.search)).toPromise();
+
+            let data = new IllegalDropEventsRecord();
+            data.items = response.Data.Data.sort((a, b) => {
+                return ''.naturalCompare(a.EventTime, b.EventTime);
+            });
+            this.eventCards.clearData();
+            this.eventCards.Convert(data.items);       
+            this.eventCards.cardList = this.eventCards.dataSource;       
+            this.dataSource = response.Data.Data;
+            if (callBack) callBack(response.Data.Page);
+        }
+    }
+
+    async allEventsRecordData() {
+        const response = await this.eventRequestService.list(this.getRequsetParam(1, this.search,new ListAttribute().maxSize)).toPromise();
+        let data = new IllegalDropEventsRecord();
+        data.items = response.Data.Data.sort((a, b) => {
+            return ''.naturalCompare(a.EventTime, b.EventTime);
+        });      
+        this.allDataSource = response.Data.Data;
     }
 
 
-    getRequsetParam(pageIndex: number, search: SearchControl) {
+    getRequsetParam(pageIndex: number, search: SearchControl, pageSize?: number) {
 
         const param = new GetEventRecordsParams(), day = TheDayTime(new Date());
         param.PageIndex = pageIndex;
-        param.PageSize = new TableAttribute().pageSize;
         param.BeginTime = day.begin.toISOString();
         param.EndTime = day.end.toISOString();
+        if (pageSize)  param.PageSize=pageSize;
+        else {
+            if (this.fillMode)
+                param.PageSize = this.fillMode.pageListMode == PageListMode.list
+                    ? this.fillMode.cardPageSize : this.fillMode.tablePageSize;
+            else param.PageSize = new TableAttribute().pageSize;
+        }
         const s = search.toSearchParam();
         if (s.SearchText && search.other == false) {
             param.StationName = s.SearchText;
@@ -225,3 +272,19 @@ export class EventTableService extends ListAttribute {
         return param;
     }
 }
+
+export class FillMode {
+    divisionId: string = '';
+    tablePageSize: number = 10;
+    cardPageSize: number = 15;
+    pageListMode_: PageListMode;
+    readonly sessionTag = 'illegal-drop-event-history';
+    get pageListMode() {
+        const val = sessionStorage.getItem(this.sessionTag);
+        return val ? val : PageListMode.table;
+    }
+
+    set pageListMode(val: any) {
+        sessionStorage.setItem(this.sessionTag, val + '');
+    }
+} 

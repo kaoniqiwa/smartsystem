@@ -9,8 +9,7 @@ import { CardList } from "../illegal-drop-event-card-list/card-list";
 export class EventCards {
     dataSource = new Array<ImageDesc>();
     cardList_: CardList;
-    pageIndex = 1;
-    viewPaginationFn: (page: Page) => ViewPagination;
+    pageIndex = 1; 
     constructor(private datePipe: DatePipe) {
         this.cardList_ = new CardList();
     }
@@ -20,11 +19,17 @@ export class EventCards {
         }
     }
 
-    initPagination(page: Page){
-        const viewPagination = this.viewPaginationFn(page);        
-        this.cardList_.pagination = viewPagination;
+    
+    initPagination(page: Page, requestData: (index: number, ...any) => void) {
         this.cardList_.totalRecordCount = page.TotalRecordCount;
-    }
+        this.cardList_.pagination = new ViewPagination(page.PageCount, (index) => {
+ 
+            if (this.pageIndex != index) {
+                requestData(index);
+                this.pageIndex = index;
+            }
+        });
+    } 
 
     set cardList(value:ImageDesc[]){
       

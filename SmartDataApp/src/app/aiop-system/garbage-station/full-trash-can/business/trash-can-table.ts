@@ -83,7 +83,7 @@ export class StatisticTable extends BusinessTable implements IConverter, IPageTa
         if (output instanceof CustomTableArgs) {
             output.iconTd = tds;
             output.values = [...output.values, ...items];
-        }console.log(output);
+        }
         
         return output;
     }

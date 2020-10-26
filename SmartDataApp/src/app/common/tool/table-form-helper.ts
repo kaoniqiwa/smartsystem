@@ -66,6 +66,7 @@ export enum FormStateEnum {
 }
 
 export enum SystemModeEnum{
+    gisSmartData,
     /**监督平台 */
     supervision,
     /**乱扔垃圾事件 */

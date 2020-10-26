@@ -45,6 +45,7 @@ import { GalleryTargetComponent } from "./gallery-target/gallery-target.componen
 import { ImageDescCardComponent } from './image-desc-card/image-desc-card.component';
 import { IllegalDropEventHistoryComponent } from "./illegal-drop-event-history/illegal-drop-event-history.component";
 import { IllegalDropEventCardListComponent } from "./illegal-drop-event-history/illegal-drop-event-card-list/illegal-drop-event-card-list.component";
+import { LevelListPanelComponent } from './illegal-drop-event-history/level-list-panel/level-list-panel.component';
 @NgModule({
   imports: [
     CommonModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -64,7 +65,7 @@ import { IllegalDropEventCardListComponent } from "./illegal-drop-event-history/
   PicturesDropListComponent,
   CardListPanelComponent, VideoSimpleCardComponent, StateScaleCardComponent,CardComponent,BusinessCardGridComponent, HeaderSquareListComponent, ImageThemeCardComponent, HintCardComponent, OrderTableCardComponent
 ,LineEChartsCardComponent, SwitchComponent  ,TimeToolComponent
-,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventCardListComponent
+,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventCardListComponent, LevelListPanelComponent
 ],
   exports: [
     MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,

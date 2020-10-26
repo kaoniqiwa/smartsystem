@@ -1,3 +1,5 @@
+import { EventDataObject } from "../../../data-core/model/waste-regulation/event-data-object";
+
 export declare function moveView(targetDomId:string,moveDomId:string,offsetX:number,offsetY:number);
 
 export declare function domClick(domId:string);
@@ -20,7 +22,7 @@ export declare function hasClassName(domId:string,className:string);
 
 export declare function domSize(domId:string):{width:number,height:number};
  
-export declare function drawRectangle(canvasId:string,point1:{x:number,y:number}
-    , point2:{x:number,y:number}, point3:{x:number,y:number}, point4:{x:number,y:number},desc:string);
+export declare function drawRectangle(canvasId:string,points:EventDataObject[]
+  ,size:{width:number,height:number});
 
 export declare function clearCanvas(canvasId:string);

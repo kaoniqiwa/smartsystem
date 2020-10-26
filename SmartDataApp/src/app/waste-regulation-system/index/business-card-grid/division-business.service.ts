@@ -10,6 +10,7 @@ import { AMapComponent } from "../amap/amap.component";
 import { CameraRequestService } from "../../../data-core/repuest/resources.service";
 import { ImageThemeCardComponent } from "../../../shared-module/card-component/image-theme-card/image-theme-card.component";
 import { HintCardComponent } from "../../../shared-module/card-component/hint-card/hint-card.component";
+import { FillMode } from "../../../shared-module/illegal-drop-event-history/business/event-table.service";
 @Injectable({
     providedIn: 'root'
 })
@@ -19,10 +20,10 @@ export class DivisionBusinessService {
     mapClient: CesiumMapClient;
     aMap: AMapComponent;
     /**区划 */
-    divisionsId = '';
+    fillMode=new FillMode(); 
     eventHistoryView = false;
     constructor(private cameraService: CameraRequestService) {
-        setTimeout(() => {console.log(this.componets);
+        setTimeout(() => {
             for (const x of this.componets) {
 
                 if (x.list[0].view instanceof HeaderSquareListComponent) {
@@ -60,7 +61,7 @@ export class DivisionBusinessService {
                     x.list[0].view.btnControl = () => {
                         if (x.list[0].business instanceof BaseBusinessRefresh)
                         {
-                            this.divisionsId=x.list[0].business.businessParameter.map.get("divisionsId");
+                            this.fillMode.divisionId=x.list[0].business.businessParameter.map.get("divisionsId");
                             this.eventHistoryView=true;
                         }
                         

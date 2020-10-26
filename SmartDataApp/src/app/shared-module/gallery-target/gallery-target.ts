@@ -1,17 +1,18 @@
 import { Point } from "../../data-core/model/Point";
+import { EventDataObject } from "../../data-core/model/waste-regulation/event-data-object";
 
 export class GalleryTarget {
     enlargeId: string;
     enlargeConfidence: string;
     enlargeImage: string;
-    polygon: Point[];
+    polygon: EventDataObject[];
     id:string;
     imgPrev:boolean;
     imgNext:boolean;
     constructor(enlargeId: string,
         confidence: string,
         imgSrc: string,
-        polygon: Point[],
+        polygon: EventDataObject[],
         id:string) {
         this.enlargeId = enlargeId;
         this.enlargeConfidence = confidence;

@@ -48,7 +48,7 @@ export class GarbageStationComponent implements OnInit {
   }
 
   treeNodeClick(node: DivisionTreeNode) {
-    const type = this.dataService.types.find(x => x.Type + '' == node.id);console.log(type);
+    const type = this.dataService.types.find(x => x.Type + '' == node.id);
     
     this.stationList.selectNode(node);
     this.chartComponent.stationChart.changeTrashNum(type.Windows.length + '')

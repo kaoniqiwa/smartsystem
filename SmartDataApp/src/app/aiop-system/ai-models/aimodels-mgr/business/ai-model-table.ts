@@ -101,12 +101,9 @@ export class AIModelsTable  extends ResourcesTable implements IConverter, IPageT
         tableField.version = item.Version;
         tableField.updateTime = this.datePipe.transform(item.UpdateTime,'yyyy-MM-dd hh:mm');
         tableField.labelIcon =this.ai_icon ? l.imgUrlRoot+l.aiModelIcon+ this.ai_icon[item.Label]: ''; 
-        tableField.transformType=item.TransformType;   console.log(tableField);
-        
+        tableField.transformType=item.TransformType;          
         return tableField;
-    }
-
-    
+    }    
 
     addItem(item: CameraAIModel) {
         this.dataSource.values.push(this.toTableModel(item));

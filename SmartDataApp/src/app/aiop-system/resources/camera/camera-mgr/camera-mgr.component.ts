@@ -45,7 +45,7 @@ export class CameraMgrComponent implements OnInit {
     }
     await this.regionTreeService.getRegionData();
     this.tableService.regionTree.dataSource = this.regionTreeService.dataSource;
-    const dataSource = this.regionTreeService.loadTree(this.regionTreeService.dataSource); console.log(dataSource);
+    const dataSource = this.regionTreeService.loadTree(this.regionTreeService.dataSource); 
     dataSource.push(this.regionTreeService.singleNode('未分配摄像机', 'howell-icon-video'));
     dataSource.reverse();
     this.tree.dataSource.data = dataSource;

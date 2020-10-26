@@ -60,8 +60,8 @@ function enterKeyDown(fn) {
     };
 }
 
-function domCss(domId, css,symbol) {
-    symbol = symbol ? symbol :'#';
+function domCss(domId, css, symbol) {
+    symbol = symbol ? symbol : '#';
     $(symbol + domId).css(css);
 }
 
@@ -69,31 +69,36 @@ function addClass(domId, className) {
     $('#' + domId).addClass(className);
 }
 
-function drawRectangle(canvasId, point1, point2, point3, point4,desc) {
+function drawRectangle(canvasId, points, size) {
     var c = document.getElementById(canvasId);
     var ctx = c.getContext("2d");
-   
-    ctx.fillStyle ="red";
+
+    ctx.fillStyle = "red";
     ctx.font = "18px Source Han Sans CN Normal";
-    ctx.fillText(desc, point1.x, point1.y);
+
     ctx.strokeStyle = 'red';
     ctx.beginPath();
-    ctx.moveTo(point1.x, point1.y);
-    ctx.lineTo(point2.x, point2.y);
-    ctx.moveTo(point2.x, point2.y);
-    ctx.lineTo(point3.x, point3.y);
-    ctx.moveTo(point3.x, point3.y);
-    ctx.lineTo(point4.x, point4.y);
-    ctx.moveTo(point4.x, point4.y);
-    ctx.lineTo(point1.x, point1.y);
+    for (const a of points) {
+        ctx.fillText(a.Id + ' ' + a.Confidence + '%', a.Polygon[0].X * size.width, a.Polygon[0].Y * size.height);
+        ctx.moveTo(a.Polygon[0].X * size.width, a.Polygon[0].Y * size.height);
+        ctx.lineTo(a.Polygon[1].X * size.width, a.Polygon[1].Y * size.height);
+        ctx.moveTo(a.Polygon[1].X * size.width, a.Polygon[1].Y * size.height);
+        ctx.lineTo(a.Polygon[2].X * size.width, a.Polygon[2].Y * size.height);
+        ctx.moveTo(a.Polygon[2].X * size.width, a.Polygon[2].Y * size.height);
+        ctx.lineTo(a.Polygon[3].X * size.width, a.Polygon[3].Y * size.height);
+        ctx.moveTo(a.Polygon[3].X * size.width, a.Polygon[3].Y * size.height);
+        ctx.lineTo(a.Polygon[0].X * size.width, a.Polygon[0].Y * size.height);
+    }
+
+
     ctx.closePath();
-    ctx.stroke();  
+    ctx.stroke();
 }
 
-function clearCanvas(canvasId){
+function clearCanvas(canvasId) {
     var c = document.getElementById(canvasId);
     var cxt = c.getContext("2d");
-    cxt.clearRect(0,0,c.width,c.height);  
+    cxt.clearRect(0, 0, c.width, c.height);
 }
 
 exports.moveView = moveView;
@@ -108,4 +113,4 @@ exports.addClass = addClass;
 exports.hasClassName = hasClassName;
 exports.drawRectangle = drawRectangle;
 exports.domSize = domSize;
-exports.clearCanvas=clearCanvas;
+exports.clearCanvas = clearCanvas;

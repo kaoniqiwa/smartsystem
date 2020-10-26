@@ -24,8 +24,8 @@
   <div class="fill-width fill-height" style="padding:100px" fxLayout="row" fxLayoutAlign="center center">
        <div fxFlex="100" class="fill-heigth" fxLayoutAlign="space-between end">
         <ng-container *ngFor="let s of systems">
-          <div fxFlex="290px" style="height: 410px;position: relative;" (click)="go(s.systemMode)">
-              <img src="" alt="" src="{{s.imgName}}.png"> 
+          <div class="shield-wrap" fxFlex="290px" style="height: 410px;position: relative;" (click)="go(s.systemMode)">
+              <!-- <img src="" alt="" src="{{s.imgName}}.png">  -->
               <div class="shield-icon">
                  <i class="{{s.icon}}"></i>
               </div>

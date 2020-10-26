@@ -2,11 +2,15 @@ import { DatePipe } from "@angular/common";
 import { FormGroup, FormControl } from "@angular/forms";
 import { SearchHelper } from "../../../common/tool/table-form-helper";
 import {TimeInterval  } from "../../../common/tool/tool.service";
+import {Camera  } from "../../../data-core/model/waste-regulation/camera";
+import { GarbageStation } from "../../../data-core/model/waste-regulation/garbage-station";
 export class SearchControl extends SearchHelper {
    
     beginDate='';
     endDate='';
 
+    resourcesDropList  = new Array<{id:string,name:string}>();
+    stationsDropList  = new Array<{id:string,name:string}>();
     constructor(private datePipe:DatePipe) {
         super();
         const day = new Date();
@@ -20,6 +24,29 @@ export class SearchControl extends SearchHelper {
             SearchText: new FormControl(''),
             ResourceId: new FormControl(''),
         });
+    }
+ 
+
+    set toResourcesDropList(cameras:Camera[]){
+        if(cameras){
+            this.resourcesDropList = new Array();
+            for(const x of cameras)
+                this.resourcesDropList.push({
+                    name:x.Name,
+                    id:x.Id
+                });
+        }
+    }
+
+    set toStationsDropList(station:GarbageStation[]){
+        if(station){
+            this.stationsDropList = new Array();
+            for(const x of station)
+                this.stationsDropList.push({
+                    name:x.Name,
+                    id:x.Id
+                });
+        }
     }
 
     set divisionId(val:string){

@@ -1,18 +1,19 @@
 <ng-container *ngIf="model">
   <div fxLayout="row" class="fill-height" fxLayoutAlign="space-between">
     <ng-container *ngFor="let item of model">
-      <div class="hint-card">
-        <h5 class="m-b-5">{{item.title}}</h5>
-        <ng-container *ngIf="item.tag">
-          <a href="javascript:void(0)">
-            <label  style="cursor: pointer;" (click)="tagClick()" class="{{item.subTitleColor}}">{{item.subTitle}}</label>
-          </a>
-        </ng-container>
-        <ng-container *ngIf="!item.tag">
-          <label   class="{{item.subTitleColor}}">{{item.subTitle}}</label>
-        </ng-container>
-       
-      </div> 
+    
+      <ng-container *ngIf="item.tag">
+        <div class="hint-card move" style="cursor: pointer;" (click)="tagClick()">
+          <h5 class="m-b-5">{{item.title}}</h5>
+          <label  class="{{item.subTitleColor}}">{{item.subTitle}}</label>
+        </div> 
+      </ng-container>
+      <ng-container *ngIf="!item.tag">
+        <div class="hint-card">
+          <h5 class="m-b-5">{{item.title}}</h5>
+          <label class="{{item.subTitleColor}}">{{item.subTitle}}</label>
+        </div> 
+      </ng-container>
     </ng-container>
   </div>
 </ng-container>

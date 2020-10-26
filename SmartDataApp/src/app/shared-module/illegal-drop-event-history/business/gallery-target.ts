@@ -6,7 +6,7 @@ export class GalleryTargetView {
     galleryTarget: GalleryTarget;
     galleryTargetBox = false;
 
-    neighborEventFn: (id: string, e: ImageEventEnum) => {
+     neighborEventFn: (id: string, e: ImageEventEnum) => {
         prev: boolean,
         next: boolean,
         item: IllegalDropEventRecord
@@ -31,14 +31,14 @@ export class GalleryTargetView {
         if (e == ImageEventEnum.next && page.next.item) {
             const enlargeImage = new MediumPicture().getJPG(page.next.item.ImageUrl);
             this.galleryTarget = new GalleryTarget(page.next.item.Data.Objects[0].Id
-                , page.next.item.Data.Objects[0].Confidence + '', enlargeImage, page.next.item.Data.Objects[0].Polygon
+                , page.next.item.Data.Objects[0].Confidence + '', enlargeImage, page.next.item.Data.Objects
                 , page.next.item.EventId);
 
         }
         else if (e == ImageEventEnum.prev && page.prev.item) {
             const enlargeImage = new MediumPicture().getJPG(page.prev.item.ImageUrl);
             this.galleryTarget = new GalleryTarget(page.prev.item.Data.Objects[0].Id
-                , page.prev.item.Data.Objects[0].Confidence + '', enlargeImage, page.prev.item.Data.Objects[0].Polygon
+                , page.prev.item.Data.Objects[0].Confidence + '', enlargeImage, page.prev.item.Data.Objects
                 , page.prev.item.EventId);
 
         }
@@ -52,7 +52,7 @@ export class GalleryTargetView {
         const enlargeImage = new MediumPicture().getJPG(event.ImageUrl)
             , page = this.showImagePage(event.EventId, ImageEventEnum.none);
         this.galleryTarget = new GalleryTarget(event.Data.Objects[0].Id
-            , event.Data.Objects[0].Confidence + '', enlargeImage, event.Data.Objects[0].Polygon
+            , event.Data.Objects[0].Confidence + '', enlargeImage, event.Data.Objects
             , event.EventId);
         this.galleryTarget.imgNext = page.next.show;
         this.galleryTarget.imgPrev = page.prev.show;
