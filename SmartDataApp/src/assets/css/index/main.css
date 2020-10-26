@@ -223,6 +223,13 @@ h2
     background-image: url('/assets/img/blue-tab.png'); 
 }
 
+.shield-wrap{
+    cursor: pointer;
+    background-image: url('/assets/img/shield.png'); 
+}
+.shield-wrap:hover{
+    background-image: url('/assets/img/shield-hover.png'); 
+}
 
 
 .second-title-bg{
@@ -323,6 +330,7 @@ select.custom.form-control:not([size]):not([multiple]) {
 {
     background: rgb(117,134,224,.15);
     font-size :18px;
+    height: 100%;
 }
 
 .table.body.stylish-table tbody td {
@@ -375,6 +383,7 @@ a.td-icon:hover i{
 .table.body.stylish-table tbody tr:hover .td-wrapper .gray-text2{
     color:#c4d0db ;
 }
+ 
 
 /* .table.body.stylish-table tbody tr:hover .td-wrapper.selected{
     background-color:rgb(94,110,191,0.5) ;

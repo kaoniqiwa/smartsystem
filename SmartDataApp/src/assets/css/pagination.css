@@ -49,14 +49,14 @@
 }
 
 .page .custom-pagination ul li.current-page {
-	background-color: #68ADFD;
+	background-color: #2d76ce;
 	color: #fff;
 	border: 0;
 	line-height: 30px;
 }
 
 .page .custom-pagination ul li:hover {
-	background-color: #68ADFD;
+	background-color: #2d76ce;
 	color: #fff
 }
 
@@ -82,7 +82,7 @@
 }
 
 .page .custom-pagination a.prev-page:hover,.page .custom-pagination a.next-page:hover {
-	background-color: #4596ce;
+	background-color: #2d76ce;
 	color: #fff
 }
 
@@ -91,7 +91,7 @@
 	border: 0;
 	cursor: default;
 	line-height: 30px;
-	font-size: 16px;
+	font-size: 14px;
 	color: #cfd7ff;
 }
 
@@ -110,7 +110,7 @@
 	line-height: 30px;
 	float: left;
 	color: #cfd7ff;
-	margin-left: 0px;
+	margin-left: 10px;
 }
 
 .page .custom-pagination .page-to input {
@@ -147,6 +147,6 @@
 }
 
 .page .custom-pagination .page-to span:hover {
-	background-color: #4596ce;
+	background-color: #2d76ce;
 	color: #fff
 }

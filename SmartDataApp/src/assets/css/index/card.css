@@ -406,6 +406,10 @@ padding-right: 5px;
     line-height: 1;
   }
 
+  .hint-card.move:hover{
+    background-image: url('/assets/img/hint-card-hover.png');
+  }
+
   .height98{
     height: 98%;
   }
