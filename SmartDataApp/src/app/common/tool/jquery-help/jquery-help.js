@@ -101,6 +101,17 @@ function clearCanvas(canvasId) {
     cxt.clearRect(0, 0, c.width, c.height);
 }
 
+function createVideo(forId,src,parentDomId){
+    var _video = document.createElement("video");
+    _video.id = forId;
+    _video.muted = true; // this is important to the policy
+    _video.src = src;
+    _video.autoplay = true;
+    _video.loop = true; 
+    _video.setAttribute('playsinline', '');  
+    document.getElementById(parentDomId).appendChild(_video);
+}
+
 exports.moveView = moveView;
 exports.domClick = domClick;
 exports.domClickFn = domClickFn;
@@ -114,3 +125,4 @@ exports.hasClassName = hasClassName;
 exports.drawRectangle = drawRectangle;
 exports.domSize = domSize;
 exports.clearCanvas = clearCanvas;
+exports.createVideo=createVideo;

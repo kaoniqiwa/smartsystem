@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ListAttribute } from "../../common/tool/table-form-helper";
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core'; 
+import { Router } from '@angular/router';
 import { SystemModeEnum } from "../../common/tool/table-form-helper";
+import { Title } from '@angular/platform-browser';
 import { SideNavService } from "../../common/tool/sidenav.service";
 @Component({
   selector: 'app-system-mode',
@@ -12,9 +12,9 @@ export class SystemModeComponent implements OnInit {
 
   systems = new Array<SystemMode>();
   constructor(private route: Router
-    , private sideNavService: SideNavService
-    , private activatedRoute: ActivatedRoute) {
-     
+    ,titleService:Title
+    , private sideNavService: SideNavService) {
+      titleService.setTitle('生活垃圾监管平台');
     this.systems.push(new SystemMode(
       'howell-icon-cam-all1'
      , 'GIS大数据统计', 68, SystemModeEnum.gisSmartData));

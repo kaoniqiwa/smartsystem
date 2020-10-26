@@ -32,12 +32,18 @@ export class IllegalDropEventHistoryComponent implements OnInit {
  
 
   changeDivisionFn = (divisionId: string) => {
-    const garbageStations = this.tableService.garbageStations.filter(x => x.DivisionId == divisionId);
-    this.tableService.search.toStationsDropList = garbageStations;
-    garbageStations.map(x => {
-      this.tableService.search.toResourcesDropList =
-        this.tableService.resources.filter(r => r.GarbageStationId == x.Id);
-    })
+    if(divisionId){
+      const garbageStations = this.tableService.garbageStations.filter(x => x.DivisionId == divisionId);
+      this.tableService.search.toStationsDropList = garbageStations;
+      garbageStations.map(x => {
+        this.tableService.search.toResourcesDropList =
+          this.tableService.resources.filter(r => r.GarbageStationId == x.Id);
+      })
+    }
+    else{
+      this.tableService.search.toResourcesDropList = this.tableService.resources;
+      this.tableService.search.toStationsDropList = this.tableService.garbageStations;
+    }
 
   }
 

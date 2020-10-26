@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef, Directive, HostListener } from '@angular/core';
-import { enterKeyDown } from "../../common/tool/jquery-help/jquery-help";
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { enterKeyDown ,createVideo} from "../../common/tool/jquery-help/jquery-help";
 import { UserLoginService } from "./user-login.service";
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-user-login',
   templateUrl: './user-login.component.html',
@@ -10,15 +11,23 @@ import { UserLoginService } from "./user-login.service";
 export class UserLoginComponent implements OnInit {
   @ViewChild('userName')
   userName: ElementRef;
+
+  showBg=true;
  
-  constructor(private userLoginService: UserLoginService) { }
+  constructor(private userLoginService: UserLoginService   ,titleService:Title) {
+    titleService.setTitle('用户登录');
+   }
 
   ngOnInit() {
-    this.userName.nativeElement.focus();
+   this.userName.nativeElement.focus();
     enterKeyDown(()=>{
       this.userLoginService.login();
     }) 
     this.userLoginService.fillUserForm();
+     createVideo('videoLogin','assets/img/login.webm','videoWrap');
+     setTimeout(() => {
+      this.showBg=false;
+     }, 1000);
   }
 
   autoLoginCheck(){

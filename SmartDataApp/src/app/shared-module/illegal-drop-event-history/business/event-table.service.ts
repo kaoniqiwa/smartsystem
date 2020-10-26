@@ -22,7 +22,7 @@ import { GalleryTargetView } from "./gallery-target";
 import { GetVodUrlParams } from "../../../data-core/model/aiop/video-url";
 import { PageListMode } from "../../../common/tool/enum-helper";
 import { DivisionListView } from "./division-list-view";
-import { GetCamerasParams } from "../../../data-core/model/aiop/encode-devices-params";
+import { SideNavService } from "../../../common/tool/sidenav.service";
 import { GetGarbageStationCamerasParams } from "../../../data-core/model/waste-regulation/camera";
 @Injectable()
 export class EventTableService extends ListAttribute {
@@ -53,7 +53,7 @@ export class EventTableService extends ListAttribute {
         , private garbageStationService: GarbageStationRequestService
        , private resourceService: CameraRequestService
         , private srService: ResourceSRServersRequestService
-        // ,private navService:SideNavService
+       ,private navService:SideNavService
         , private datePipe: DatePipe) {
         super();
         this.eventTable.scrollPageFn = (event: CustomTableEvent) => {
@@ -120,11 +120,12 @@ export class EventTableService extends ListAttribute {
         }
 
         this.eventTable.playVideoFn = async (id) => {
-            const event = this.eventTable.findEventFn(id),
-                time = TimeInterval(event.EventTime + '', -30),
+            var event =  this.eventTable.findEventFn(id);
+            if(event==null)event=this.allDataSource.find(x=>x.EventId==id);
+            const time = TimeInterval(event.EventTime + '', -30),
                 video = await this.requestVideoUrl(time.start, time.end, event.ResourceId);
             this.playVideo = new PlayVideo(video.Url, event.ResourceName);
-            // this.navService.playVideoBug.emit(true);
+            this.navService.playVideoBug.emit(true);
         }
 
     }

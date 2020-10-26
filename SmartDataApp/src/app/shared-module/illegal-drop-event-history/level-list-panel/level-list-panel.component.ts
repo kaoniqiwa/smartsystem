@@ -32,7 +32,7 @@ export class LevelListPanelComponent implements OnInit {
   }
 
   itemClick(val: ListNode) {
-    if(val.id){
+   // if(val.id){
       this.selectedItem=val.name;
       if(this.selectedFn)this.selectedFn(val.id);
       const filter = this.model.listNodes.filter(x => x.parentId == val.id);
@@ -40,7 +40,7 @@ export class LevelListPanelComponent implements OnInit {
         this.nodes = filter;
         this.prevItem = true;
       }
-    }
+    //}
    
   }
 

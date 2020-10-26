@@ -75,8 +75,10 @@
         <i class="howell-icon-Close alert-window-close-btn"></i>
       </a>
       <div class="custom-form-wrap">
-        <hw-illegal-drop-event-history [fillMode]="divisionBusinessService.fillMode">
-        </hw-illegal-drop-event-history>
+        <ng-container *ngIf="divisionBusinessService.fillMode">
+          <hw-illegal-drop-event-history [fillMode]="divisionBusinessService.fillMode">
+          </hw-illegal-drop-event-history>
+        </ng-container>       
       </div>
     </div>
   </div>

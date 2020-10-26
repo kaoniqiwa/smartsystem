@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HistoryLinkToolComponent } from "./history-link-tool/history-link-tool.component";
-
 import { ActivatedRoute, Router } from '@angular/router';
 import { SideNavService } from "../../common/tool/sidenav.service";
 import { domCss } from "../../common/tool/jquery-help/jquery-help";
@@ -14,6 +13,7 @@ import {
   // ...
 } from '@angular/animations';
 import { SessionUser } from "../../common/tool/session-user";
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -45,7 +45,10 @@ export class IndexComponent implements OnInit {
 
   maximize = true;
   bug = false;
-  constructor(private router: Router, private navService: SideNavService) {
+  constructor(private router: Router
+    ,titleService:Title
+    , private navService: SideNavService) {
+      titleService.setTitle('生活垃圾监管平台');
     const u = new SessionUser();
     if (u.user.name == '' || u.user.pwd == '') this.router.navigateByUrl('login');
   }

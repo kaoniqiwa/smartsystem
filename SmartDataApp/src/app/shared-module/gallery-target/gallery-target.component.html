@@ -30,11 +30,11 @@
           width="{{enlargeImageSize.width}}" height="{{ enlargeImageSize.height}}"></canvas>
         <a class="carousel-control-prev" [ngStyle]="{'visibility': model.imgPrev ?'visible':'hidden'}"
           href="javascript:void(0)" (click)="imgPageClick(imgEvent.prev)">
-          <span style="font-size: xxx-large;" class="howell-icon-arrowleftbold blue-text"></span>
+          <div  class="howell-icon-arrowleftbold blue-text arrow-wrap"></div>
         </a>
         <a class="carousel-control-next" [ngStyle]="{'visibility': model.imgNext ?'visible':'hidden'}"
           (click)="imgPageClick(imgEvent.next)">
-          <span style="font-size: xxx-large;" class="howell-icon-arrowrightbold blue-text"></span>
+          <div   class="howell-icon-arrowrightbold blue-text arrow-wrap"></div>
         </a>
       </ng-container>
     </div>

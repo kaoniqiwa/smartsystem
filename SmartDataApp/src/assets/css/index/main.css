@@ -164,6 +164,11 @@ h2
     background-image:url('/assets/img/blue-btn-focus.png')
 }
 
+.hw-blue-btn.black{
+    background:#194076;
+    cursor:no-drop; 
+}
+
 .hw-blue-m-btn{
     width: 46px;
     cursor: pointer;
