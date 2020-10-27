@@ -123,7 +123,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
                 this.player.stop();
             }
         } catch (ex) {
-            console.error(ex);
+            console.warn(ex);
         }
         // this.playMode_ = parm;
         if (!eleId) {

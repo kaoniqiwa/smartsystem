@@ -323,6 +323,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
         const element = document.getElementById('videoPlayer');
         element.style.display = '';
         this.currentCamera = camera;
+        this.videoWindow.date = this.videoWindow.formatDate(begin);
+        this.videoWindow.beginTime = this.videoWindow.formatTime(begin);
+        this.videoWindow.endTime = this.videoWindow.formatTime(end);
         this.PlaybackClicked({ begin: begin, end: end });
     }
 
@@ -389,6 +392,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     }
 
     OnPanelItemClicked(item: MapListItem<Division | GarbageStation>) {
+
         if (!item) { return; }
         let position: CesiumDataController.Position;
 
@@ -410,7 +414,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
             default:
                 return;
         }
-        this.client.Viewer.MoveTo(position);
+        if (position) {
+            this.client.Viewer.MoveTo(position);
+        }
         if (this.mapPanelListItemClickedEvent) {
             this.mapPanelListItemClickedEvent.emit(item);
         }

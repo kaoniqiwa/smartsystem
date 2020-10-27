@@ -11,7 +11,8 @@ function WSPlayer(args) {
     }
 
 
-    var waitHandle;
+    var waitStopHandle;
+    var waitStopHandle;
 
     var wsPlayerState = {
         ready: 0,
@@ -141,8 +142,10 @@ function WSPlayer(args) {
         if (that.tools.control.position) {
             that.tools.control.position.addEventListener("mousedown", function () {
                 that.pause();
+                that.tools.control.isMoudseDown = true;
             });
             that.tools.control.position.addEventListener("mouseup", function () {
+                that.tools.control.isMoudseDown = false;
                 var value = that.tools.control.position.value - that.tools.control.position.min;
                 that.seek(value);
                 that.resume();
@@ -156,9 +159,13 @@ function WSPlayer(args) {
 
                 var c = that.tools.control.position.max - that.tools.control.position.min;
                 var current = c * p;
+                if(current<0)
+                    current = 0;
                 var date = new Date(current);
                 date.setUTCHours(date.getUTCHours() - 8);
                 this.title = date.format("HH:mm:ss");
+                if (that.tools.control.isMoudseDown )
+                    that.tools.control.begin_time.innerText = date.format("HH:mm:ss");
             });
         }
         if (that.tools.control.jump_back) {
@@ -187,6 +194,10 @@ function WSPlayer(args) {
         }
 
 
+        var p = document.getElementsByClassName("parent-wnd")[0];
+        p.addEventListener("dblclick", function () {            
+            that.fullScreen();
+        });
 
         document.addEventListener('fullscreenchange', function () { plugin.JS_Resize(window.screen.width, window.screen.height); });
         document.addEventListener('webkitfullscreenchange', function () { console.log('fullscreenchange') });
@@ -419,6 +430,7 @@ function WSPlayer(args) {
     this.name = "";
     // 截图
     this.capturePicture = function () {
+
         //"ws://192.168.21.241:8800/ws/video/howellps/vod/dev_id/slot/stream/begin_end/vod.mp4?user=howell&password=123456";
 
         doing(function () {
@@ -437,12 +449,13 @@ function WSPlayer(args) {
             if (that.playback_time.current) {
                 date = that.playback_time.current;
             }
+            var v;
             name += ("_" + date.getFullYear());
-            name += ("_" + (date.getMonth() + 1));
-            name += ("_" + date.getDate());
-            name += ("_" + date.getHours());
-            name += ("_" + date.getMinutes());
-            name += ("_" + date.getSeconds());
+            name += ("_" + ((v = (date.getMonth() + 1)) < 10 ? '0' + v : v));
+            name += ("_" + ((v = date.getDate()) < 10 ? '0' + v : v));
+            name += ("_" + ((v = date.getHours()) < 10 ? '0' + v : v));
+            name += ("_" + ((v = date.getMinutes()) < 10 ? '0' + v : v));
+            name += ("_" + ((v = date.getSeconds()) < 10 ? '0' + v : v));
 
             plugin.JS_CapturePicture(0, name);
         });
@@ -495,8 +508,8 @@ function WSPlayer(args) {
     // 停止
     this.stop = function () {
 
-        if (this.waitHandle)
-            throw new Error("短时间内重复调用");
+        if (waitStopHandle)
+            throw new Error("waiting for stop");
         if (element)
             element.className = element.className.replace(/ loading/g, "")
 
@@ -513,8 +526,8 @@ function WSPlayer(args) {
 
         console.log("stop");
 
-        clearTimeout(this.waitHandle);
-        this.waitHandle = null;
+        clearTimeout(waitStopHandle);
+        waitStopHandle = null;
         try {
             return plugin.JS_Stop(0).then(() => {
                 that.status = wsPlayerState.closed;
@@ -533,10 +546,10 @@ function WSPlayer(args) {
             });
         }
         finally {
-            this.waitHandle = setTimeout(() => {
-                clearTimeout(this.waitHandle);
-                this.waitHandle = null;
-            }, 1000);
+            waitStopHandle = setTimeout(() => {
+                clearTimeout(waitStopHandle);
+                waitStopHandle = null;
+            }, 1500);
         }
 
     }
