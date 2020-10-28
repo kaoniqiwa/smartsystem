@@ -42,10 +42,10 @@ import { LineEChartsCardComponent } from "./card-component/line-echarts-card/lin
 import { SwitchComponent } from './switch/switch.component';
 import { TimeToolComponent } from "./time/time-tool.component";
 import { GalleryTargetComponent } from "./gallery-target/gallery-target.component";
-import { ImageDescCardComponent } from './image-desc-card/image-desc-card.component';
-import { IllegalDropEventHistoryComponent } from "./illegal-drop-event-history/illegal-drop-event-history.component";
-import { IllegalDropEventCardListComponent } from "./illegal-drop-event-history/illegal-drop-event-card-list/illegal-drop-event-card-list.component";
-import { LevelListPanelComponent } from './illegal-drop-event-history/level-list-panel/level-list-panel.component';
+import { ImageDescCardComponent } from './image-desc-card/image-desc-card.component'; 
+import { IllegalDropEventHistoryComponent } from "./event-history/illegal-drop-event-history/illegal-drop-event-history.component";
+import { IllegalDropEventCardListComponent } from "./event-history/illegal-drop-event-card-list/illegal-drop-event-card-list.component";
+import { LevelListPanelComponent } from './event-history/level-list-panel/level-list-panel.component';
 @NgModule({
   imports: [
     CommonModule,DragDropModule, HttpClientModule,ScrollingModule,

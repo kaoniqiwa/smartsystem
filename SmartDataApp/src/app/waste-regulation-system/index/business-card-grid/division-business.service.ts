@@ -5,12 +5,11 @@ import { BaseBusinessRefresh } from "../../../common/tool/base-business-refresh"
 import { DivisionTypeEnum } from "../../../common/tool/enum-helper";
 import { HeaderSquareListComponent } from "../../../shared-module/header-square-list/header-square-list.component";
 import { BusinessViewComponetConstructor } from "./business-card-slot.service";
-import { StatisticalDataBufferService } from "./buffer/statistical-data-buffer";
 import { AMapComponent } from "../amap/amap.component";
 import { CameraRequestService } from "../../../data-core/repuest/resources.service";
 import { ImageThemeCardComponent } from "../../../shared-module/card-component/image-theme-card/image-theme-card.component";
 import { HintCardComponent } from "../../../shared-module/card-component/hint-card/hint-card.component";
-import { FillMode } from "../../../shared-module/illegal-drop-event-history/business/event-table.service";
+import { FillMode } from "../../../shared-module/event-history/illegal-drop-event-history/business/event-table.service";
 import { ColorEnum } from "../../../shared-module/card-component/card-content-factory";
 @Injectable({
     providedIn: 'root'

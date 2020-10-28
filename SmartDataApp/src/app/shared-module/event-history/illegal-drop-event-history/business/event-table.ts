@@ -1,12 +1,12 @@
 import { DatePipe } from "@angular/common";
-import { IConverter } from "../../../common/interface/IConverter";
-import { IllegalDropEventRecord } from "../../../data-core/model/waste-regulation/illegal-drop-event-record";
-import { CustomTableEvent, CustomTableEventEnum } from "../../../shared-module/custom-table/custom-table-event";
-import { CustomTableArgs, FootArgs, TableAttr, TableOperationBtn } from "../../../shared-module/custom-table/custom-table-model";
-import { ITableField } from "../../../aiop-system/common/ITableField";
-import { MediumPicture } from "../../../data-core/url/aiop/resources";
-import { IBusinessData } from "../../../common/interface/IBusiness";
-import { BusinessTable } from "../../../aiop-system/common/business-table"; 
+import { IConverter } from "../../../../common/interface/IConverter";
+import { IllegalDropEventRecord } from "../../../../data-core/model/waste-regulation/illegal-drop-event-record";
+import { CustomTableEvent, CustomTableEventEnum } from "../../../../shared-module/custom-table/custom-table-event";
+import { CustomTableArgs, FootArgs, TableAttr, TableOperationBtn } from "../../../../shared-module/custom-table/custom-table-model";
+import { ITableField } from "../../../../aiop-system/common/ITableField";
+import { MediumPicture } from "../../../../data-core/url/aiop/resources";
+import { IBusinessData } from "../../../../common/interface/IBusiness";
+import { BusinessTable } from "../../../../aiop-system/common/business-table"; 
 export class EventTable extends BusinessTable implements IConverter {
     findEventFn: (id: string) => IllegalDropEventRecord;
     initGalleryTargetFn:(event:IllegalDropEventRecord)=>void;

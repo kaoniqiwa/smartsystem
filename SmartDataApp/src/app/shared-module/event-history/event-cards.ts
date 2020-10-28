@@ -1,11 +1,10 @@
-import { IBusinessData } from "../../../common/interface/IBusiness";
 import { DatePipe } from "@angular/common";
-import { ImageDesc } from "../../image-desc-card/image-desc";
-import { IllegalDropEventRecord } from "../../../data-core/model/waste-regulation/illegal-drop-event-record";
-import { MediumPicture } from "../../../data-core/url/aiop/resources";
-import { ViewPagination } from "../../../shared-module/card-list-panel/card-list-panel";
-import { Page } from "../../../data-core/model/page";
-import { CardList } from "../illegal-drop-event-card-list/card-list";
+import { ImageDesc } from "../image-desc-card/image-desc";
+import { IllegalDropEventRecord } from "../../data-core/model/waste-regulation/illegal-drop-event-record";
+import { MediumPicture } from "../../data-core/url/aiop/resources";
+import { ViewPagination } from "../../shared-module/card-list-panel/card-list-panel";
+import { Page } from "../../data-core/model/page";
+import { CardList } from "./illegal-drop-event-card-list/card-list";
 export class EventCards {
     dataSource = new Array<ImageDesc>();
     cardList_: CardList;

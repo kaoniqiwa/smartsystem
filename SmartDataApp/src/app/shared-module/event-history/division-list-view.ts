@@ -1,5 +1,5 @@
-import { Division } from "../../../data-core/model/waste-regulation/division";
-import {  LevelListPanel,ListNode} from "../level-list-panel/level-list-panel";
+import { Division } from "../../data-core/model/waste-regulation/division";
+import {  LevelListPanel,ListNode} from "./level-list-panel/level-list-panel";
 export class DivisionListView{
     dataSource:LevelListPanel;
     constructor(){

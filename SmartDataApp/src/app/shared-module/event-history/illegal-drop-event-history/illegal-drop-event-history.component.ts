@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { CustomTableComponent } from '../../shared-module/custom-table/custom-table.component';
+import { CustomTableComponent } from '../../../shared-module/custom-table/custom-table.component';
 import { EventTableService, FillMode } from "./business/event-table.service";
-import { PageListMode } from "../../common/tool/enum-helper";
-import { ImageDesc } from '../image-desc-card/image-desc';
+import { PageListMode } from "../../../common/tool/enum-helper";
+import { ImageDesc } from '../../image-desc-card/image-desc';
 @Component({
   selector: 'hw-illegal-drop-event-history',
   templateUrl: './illegal-drop-event-history.component.html',

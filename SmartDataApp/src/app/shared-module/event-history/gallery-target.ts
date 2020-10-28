@@ -1,7 +1,7 @@
 import { DatePipe } from "@angular/common";
-import { IllegalDropEventRecord } from "../../../data-core/model/waste-regulation/illegal-drop-event-record";
-import { MediumPicture } from "../../../data-core/url/aiop/resources";
-import { GalleryTarget, ImageEventEnum } from "../../gallery-target/gallery-target";
+import { IllegalDropEventRecord } from "../../data-core/model/waste-regulation/illegal-drop-event-record";
+import { MediumPicture } from "../../data-core/url/aiop/resources";
+import { GalleryTarget, ImageEventEnum } from "../gallery-target/gallery-target";
 
 export class GalleryTargetView {
     galleryTarget: GalleryTarget;
