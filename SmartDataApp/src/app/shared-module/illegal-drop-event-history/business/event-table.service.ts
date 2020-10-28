@@ -41,7 +41,7 @@ export class EventTableService extends ListAttribute {
     search = new SearchControl(this.datePipe);
     eventTable = new EventTable(this.datePipe);
     eventCards = new EventCards(this.datePipe);
-    galleryTargetView = new GalleryTargetView();
+    galleryTargetView = new GalleryTargetView(this.datePipe);
     divisions = new Array<Division>();
     garbageStations = new Array<GarbageStation>();
     resources = new Array<Camera>();
@@ -289,3 +289,4 @@ export class FillMode {
         sessionStorage.setItem(this.sessionTag, val + '');
     }
 } 
+ 

@@ -11,6 +11,7 @@ import { CameraRequestService } from "../../../data-core/repuest/resources.servi
 import { ImageThemeCardComponent } from "../../../shared-module/card-component/image-theme-card/image-theme-card.component";
 import { HintCardComponent } from "../../../shared-module/card-component/hint-card/hint-card.component";
 import { FillMode } from "../../../shared-module/illegal-drop-event-history/business/event-table.service";
+import { ColorEnum } from "../../../shared-module/card-component/card-content-factory";
 @Injectable({
     providedIn: 'root'
 })
@@ -71,4 +72,13 @@ export class DivisionBusinessService {
         }, 1000);
     }
 
+    changeMqttState(state:boolean){
+        for (const x of this.componets) {
+
+            if (x.list[0].view instanceof ImageThemeCardComponent) {
+                x.list[0].view.model.imgDesc1Icon = state? 'howell-icon-signal2' :'howell-icon-no_signal';
+                x.list[0].view.model.imgDesc1IconColor = state ? ColorEnum["green-text"] : ColorEnum["red-text"];
+            }
+        }
+    }
 }

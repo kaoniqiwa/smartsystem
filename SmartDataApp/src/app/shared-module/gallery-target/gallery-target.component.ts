@@ -15,10 +15,11 @@ export class GalleryTargetComponent implements OnInit, OnChanges {
 
   @Input() imgEventFn: (e: ImageEventEnum, id: string) => number;
 
-  @Input() videoFn:(id:string)=>void;
+  @Input() videoFn: (id: string) => void;
 
   onDescFn = (on: boolean) => {
-    this.onDesc = on;
+    this.onDesc=on;
+    this.imgCanvas = on;
   }
 
   imgEvent = ImageEventEnum;
@@ -33,10 +34,23 @@ export class GalleryTargetComponent implements OnInit, OnChanges {
     height: 0
   }
 
-  onDesc = false;
+  onDesc = this.imgCanvas;
   ngOnChanges() {
 
     this.load();
+  }
+
+
+  readonly sessionCanvas = 'session-event-canvas';
+
+  get imgCanvas() {
+    const val = sessionStorage.getItem(this.sessionCanvas);
+    return val == '1';
+  }
+
+  set imgCanvas(val: boolean) {
+    const v = val ? '1' : '0';
+    sessionStorage.setItem(this.sessionCanvas, v);
   }
 
   imgPageClick(e: ImageEventEnum) {
@@ -49,8 +63,8 @@ export class GalleryTargetComponent implements OnInit, OnChanges {
     window.addEventListener("resize", () => this.load());
   }
 
-  videoClick(){
-    if(this.videoFn)this.videoFn(this.model.id);
+  videoClick() {
+    if (this.videoFn) this.videoFn(this.model.id);
   }
 
   load() {
@@ -58,11 +72,11 @@ export class GalleryTargetComponent implements OnInit, OnChanges {
       setTimeout(() => {
         const size = domSize('enlargeImage');
         this.enlargeImageSize.width = size.width;
-        this.enlargeImageSize.height = size.height;   
+        this.enlargeImageSize.height = size.height;
         setTimeout(() => {
           clearCanvas('polygonCanvas');
-         
-          drawRectangle('polygonCanvas',this.model.polygon, size);
+
+          drawRectangle('polygonCanvas', this.model.polygon, size);
         });
       });
     }

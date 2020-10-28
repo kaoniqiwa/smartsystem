@@ -1,14 +1,13 @@
-<a class="nav-link waves-effect waves-dark p-t-0 p-b-0" href="" data-toggle="dropdown" aria-haspopup="true"
-  aria-expanded="true">
-  <i class="howell-icon-account m-r-10 light-blue text-icon"></i>
-  <span class="text-white" style="font-size:14px">{{sessionUser.name}}</span>
-  <i class="mdi mdi-menu-down text-white text-icon"></i>
-</a>
-<div style="background-color: transparent" class="dropdown-menu mailbox dropdown-menu-right scale-up">
-  <div class="user-out">
-    <div class="" x-placement="bottom-start">
-      <a href="#" class="dropdown-item" (click)="checkOut()">
-        <i class="mdi mdi-logout p-r-5"></i>退出登录</a>
-    </div>
+<a class="nav-link waves-effect waves-dark logout p-t-0 p-b-0"  style="padding-right: 20px;" href="javascript:void(0)"
+ data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <i class="howell-icon-account m-r-10 light-blue text-icon"></i>   
+</a> 
+<div class="dropdown-menu p-b-0 p-t-0 m-t-10 list-wrap" x-placement="bottom-start">
+  <div  class=" light-blue-text ele-nowrap user-name">
+      <i class="howell-icon-account m-r-5">
+      </i>
+      {{sessionUser.name}}
   </div>
+  <a routerLink="/login" class="dropdown-item light-blue-text" style="font-size: 16px;" (click)="logOut()">
+    <i class="mdi mdi-logout p-r-5"></i>退出登录</a>
 </div>

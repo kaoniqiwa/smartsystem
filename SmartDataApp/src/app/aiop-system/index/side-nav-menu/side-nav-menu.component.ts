@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core'; import {
   transition,
   // ...
 } from '@angular/animations';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {  MenuTree ,MenuTreeMap} from "./menu-tree"; 
 import { SideNavService } from "../../../common/tool/sidenav.service";
 @Component({
@@ -37,13 +37,14 @@ export class SideNavMenuComponent implements OnInit {
   private highlightedBtn = new Array<string>();
   menuTree = new Array<MenuTree>();
 
-  constructor(private route: ActivatedRoute, private navService: SideNavService) {
+  constructor(private router: Router, private navService: SideNavService) {
     const  
      menuTreeMap = new MenuTreeMap();
      menuTreeMap.init();
      this.menuTree =menuTreeMap.map.get(navService.systemMode);
     this.highlightedBtn = [this.menuTree[0].title];
-
+   
+     router.navigate([this.menuTree[0].nodes[0].url])
 
   }
 

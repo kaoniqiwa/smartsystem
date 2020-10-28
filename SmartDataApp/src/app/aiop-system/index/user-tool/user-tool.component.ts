@@ -17,7 +17,7 @@ export class UserToolComponent implements OnInit {
 
   }
 
-  checkOut() {
+  logOut() {
     this.sessionUser.clear = true;
     this.router.navigateByUrl('login');
   }

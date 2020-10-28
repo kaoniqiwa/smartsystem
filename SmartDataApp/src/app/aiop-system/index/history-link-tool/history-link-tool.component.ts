@@ -6,7 +6,6 @@ import { Component, OnInit ,Input} from '@angular/core';
 })
 export class HistoryLinkToolComponent implements OnInit {
   
- @Input() links = new Array<string>();
   constructor() {
     
     

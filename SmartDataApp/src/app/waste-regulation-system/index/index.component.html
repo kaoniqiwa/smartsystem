@@ -55,10 +55,19 @@
           </div>
         </div>
         <div fxFlex="33" fxLayoutAlign="end center ">
-          <app-time-tool> </app-time-tool>
-          <a routerLink="/login" title="登出" class="logout" (click)="logOut()">
-            <i class="mdi mdi-logout sky-blue-text"></i>
-          </a>
+          <app-time-tool> </app-time-tool>      
+          <a class="nav-link waves-effect waves-dark logout p-t-0 p-b-0"  href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="howell-icon-account m-r-10 light-blue text-icon"></i>   
+          </a> 
+          <div class="dropdown-menu p-b-0 p-t-0 m-t-10 list-wrap" x-placement="bottom-start">
+            <div  class=" light-blue-text ele-nowrap user-name">
+                <i class="howell-icon-account m-r-5">
+                </i>
+                {{user.name}}
+            </div>
+            <a routerLink="/login" class="dropdown-item light-blue-text" style="font-size: 16px;" (click)="logOut()">
+              <i class="mdi mdi-logout p-r-5"></i>退出登录</a>
+          </div>
         </div>
       </div>
     </div>
@@ -69,16 +78,17 @@
 </mat-toolbar>
 <div class="platform-body">
   <div class="fill-height fill-width hw-content-mask" *ngIf="divisionBusinessService.eventHistoryView">
-    <div class="hw-form-wrap"  style="width: 90%;height:886px;">
+    <div class="hw-form-wrap" style="width: 90%;height:886px;">
 
-      <a class="close-winow event-history-view-close" (click)="divisionBusinessService.eventHistoryView=false" href="javascript:void(0)">
+      <a class="close-winow event-history-view-close" (click)="divisionBusinessService.eventHistoryView=false"
+        href="javascript:void(0)">
         <i class="howell-icon-Close alert-window-close-btn"></i>
       </a>
       <div class="custom-form-wrap">
         <ng-container *ngIf="divisionBusinessService.fillMode">
           <hw-illegal-drop-event-history [fillMode]="divisionBusinessService.fillMode">
           </hw-illegal-drop-event-history>
-        </ng-container>       
+        </ng-container>
       </div>
     </div>
   </div>

@@ -7,7 +7,7 @@ import { EventPushService } from '../../common/tool/mqtt-event/event-push.servic
 import { DivisionTypeEnum } from '../../common/tool/enum-helper';
 import { AMapComponent } from "./amap/amap.component";
 import { Title } from '@angular/platform-browser';
-import { SessionUser } from "../../common/tool/session-user";
+import { SessionUser } from "../../common/tool/session-user"; 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -26,6 +26,7 @@ export class IndexComponent implements OnInit {
   pie = new PieOption();
   cardSize: { width: number, height: number };
   moveMapSite: () => void;
+  user = new SessionUser();
   jw6 = [
     '新虹', '广中', '黄山', '花园城', '八字桥',
     '何家宅'
@@ -62,8 +63,9 @@ export class IndexComponent implements OnInit {
     this.divisionBusinessService.aMap = this.aMap;
     this.moveMapSite();
   }
-
- async ngOnInit() {
+  
+  
+ async ngOnInit() { 
   this.illegalDropEventCardConfig = new Array();
   this.illegalDropEventCardConfig.push({
     business: 'IllegalDropEvent',
@@ -72,14 +74,8 @@ export class IndexComponent implements OnInit {
     state: false
   });
     this.mqttSevice.listenerIllegalDrop();
-    this.eventPushService.connectionState.subscribe((b) => {
-      this.illegalDropEventCardConfig = new Array();
-      this.illegalDropEventCardConfig.push({
-        business: 'IllegalDropEvent',
-        flipTime: 60,
-        cardType: 'ImageThemeCardComponent',
-        state: b
-      });
+    this.eventPushService.connectionState.subscribe((b) => {   
+      this.divisionBusinessService.changeMqttState(b);
     });
    
     const county = await this.indexService.getCounty();
@@ -133,9 +129,8 @@ export class IndexComponent implements OnInit {
     }
   }
 
-  logOut(){
-    const u = new SessionUser();
-    u.clear=null;
+  logOut(){ 
+    this.user.clear=null;
   }
 
 }

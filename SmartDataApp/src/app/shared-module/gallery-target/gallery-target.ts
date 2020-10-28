@@ -7,13 +7,15 @@ export class GalleryTarget {
     enlargeImage: string;
     polygon: EventDataObject[];
     id:string;
+    downloadImgName:string;
     imgPrev:boolean;
     imgNext:boolean;
     constructor(enlargeId: string,
         confidence: string,
         imgSrc: string,
         polygon: EventDataObject[],
-        id:string) {
+        id:string,
+        downloadImgName:string) {
         this.enlargeId = enlargeId;
         this.enlargeConfidence = confidence;
         this.enlargeImage = imgSrc;
@@ -21,6 +23,7 @@ export class GalleryTarget {
         this.polygon = polygon;
         this.imgNext=true;
         this.imgPrev=true;
+        this.downloadImgName=downloadImgName;
     }
 }
 
