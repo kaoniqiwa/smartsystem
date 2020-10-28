@@ -14,7 +14,7 @@ import { GarbageStationMgrComponent } from './garbage-station/garbage-station-mg
 import { GarbageStationComponent } from "./garbage-station/garbage-station/garbage-station.component";
 import { MapDeployComponent } from './garbage-station/map-deploy/map-deploy.component';
 import {FullTrashCanComponent  } from './garbage-station/full-trash-can/full-trash-can.component';
-import { IllegalDropEventHistoryComponent } from "../shared-module/event-history/illegal-drop-event-history/illegal-drop-event-history.component";
+import { IllegalDropEventHistoryComponent } from "../shared-module/business-component/event-history/illegal-drop-event-history/illegal-drop-event-history.component";
 
 const routes: Routes = [
 

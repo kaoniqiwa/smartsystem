@@ -1,36 +1,37 @@
 import { Injectable } from "@angular/core";
-import { CustomTableEvent } from "../../../../shared-module/custom-table/custom-table-event";
-import { EventTable, IllegalDropEventsRecord } from "./event-table";
+import { CustomTableEvent } from "../../../../../shared-module/custom-table/custom-table-event";
+import { EventTable, MixedIntoEventsRecord } from "./event-table";
 import { SearchControl } from "../../search";
-import "../../../../common/string/hw-string";
-import { TheDayTime, TimeInterval } from "../../../../common/tool/tool.service";
-import { PlayVideo } from "../../../../aiop-system/common/play-video";
-import { Page } from "../../../../data-core/model/page";
-import { TableAttribute, ListAttribute } from "../../../../common/tool/table-form-helper";
+import "../../../../../common/string/hw-string";
+import { TheDayTime, TimeInterval } from "../../../../../common/tool/tool.service";
+import { PlayVideo } from "../../../../../aiop-system/common/play-video";
+import { Page } from "../../../../../data-core/model/page";
+import { TableAttribute, ListAttribute } from "../../../../../common/tool/table-form-helper";
 import { DatePipe } from "@angular/common";
-import { DivisionRequestService } from "../../../../data-core/repuest/division.service"; 
-import { EventRequestService } from "../../../../data-core/repuest/Illegal-drop-event-record";
-import { GetDivisionsParams, Division } from "../../../../data-core/model/waste-regulation/division";
-import { GarbageStationRequestService,CameraRequestService } from "../../../../data-core/repuest/garbage-station.service";
-import { GetGarbageStationsParams, GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
-import { ResourceSRServersRequestService } from "../../../../data-core/repuest/resources.service";
-import { Camera } from "../../../../data-core/model/waste-regulation/camera";
-import { GetEventRecordsParams, IllegalDropEventRecord } from "../../../../data-core/model/waste-regulation/illegal-drop-event-record";
-import { ImageEventEnum } from "../../../gallery-target/gallery-target";
+import { DivisionRequestService } from "../../../../../data-core/repuest/division.service"; 
+import { EventRequestService } from "../../../../../data-core/repuest/mixed-into-event-record";
+import { GetDivisionsParams, Division } from "../../../../../data-core/model/waste-regulation/division";
+import { GarbageStationRequestService,CameraRequestService } from "../../../../../data-core/repuest/garbage-station.service";
+import { GetGarbageStationsParams, GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station";
+import { ResourceSRServersRequestService } from "../../../../../data-core/repuest/resources.service";
+import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
+import { MixedIntoEventRecord} from "../../../../../data-core/model/waste-regulation/mixed-into-event-record";
+import { GetEventRecordsParams } from "../../../../../data-core/model/waste-regulation/illegal-drop-event-record";
+import { ImageEventEnum } from "../../../../gallery-target/gallery-target";
 import { EventCards } from "../../event-cards";
 import { GalleryTargetView } from "../../gallery-target";
-import { GetVodUrlParams } from "../../../../data-core/model/aiop/video-url";
-import { PageListMode } from "../../../../common/tool/enum-helper";
+import { GetVodUrlParams } from "../../../../../data-core/model/aiop/video-url";
+import { PageListMode } from "../../../../../common/tool/enum-helper";
 import { DivisionListView } from "../../division-list-view";
-import { SideNavService } from "../../../../common/tool/sidenav.service";
-import { GetGarbageStationCamerasParams } from "../../../../data-core/model/waste-regulation/camera";
+import { SideNavService } from "../../../../../common/tool/sidenav.service";
+import { GetGarbageStationCamerasParams } from "../../../../../data-core/model/waste-regulation/camera";
 @Injectable()
 export class EventTableService extends ListAttribute {
-    dataSource_ = new Array<IllegalDropEventRecord>();
+    dataSource_ = new Array<MixedIntoEventRecord>();
 
-    allDataSource = new Array<IllegalDropEventRecord>();
+    allDataSource = new Array<MixedIntoEventRecord>();
 
-    set dataSource(items: IllegalDropEventRecord[]) {
+    set dataSource(items: MixedIntoEventRecord[]) {
         for (const x of items)
             this.dataSource_.push(x);
     }
@@ -82,7 +83,7 @@ export class EventTableService extends ListAttribute {
         this.galleryTargetView.neighborEventFn= (id, e: ImageEventEnum) => {   
             var index = this.allDataSource.findIndex(x => x.EventId == id);
             var prev = true, next = true
-                , item: IllegalDropEventRecord;
+                , item: MixedIntoEventRecord;
 
             if (e == ImageEventEnum.none) {
                 if (index == 0)
@@ -169,7 +170,7 @@ export class EventTableService extends ListAttribute {
     async requestData(pageIndex: number, callBack?: (page: Page) => void) {
         if (this.search.state == false) {
             const response = await this.eventRequestService.list(this.getRequsetParam(pageIndex, this.search)).toPromise();
-            let data = new IllegalDropEventsRecord();
+            let data = new MixedIntoEventsRecord();
             data.items = response.Data.Data.sort((a, b) => {
                 return ''.naturalCompare(a.EventTime, b.EventTime);
             });
@@ -190,7 +191,7 @@ export class EventTableService extends ListAttribute {
     async requestDataX(pageIndex: number, callBack?: (page: Page) => void) {
         if (this.search.state == false) {
             const response = await this.eventRequestService.list(this.getRequsetParam(pageIndex, this.search,15)).toPromise();
-            let data = new IllegalDropEventsRecord();
+            let data = new MixedIntoEventsRecord();
             data.items = response.Data.Data.sort((a, b) => {
                 return ''.naturalCompare(a.EventTime, b.EventTime);
             });
@@ -207,7 +208,7 @@ export class EventTableService extends ListAttribute {
         if (this.search.state) {
             const response = await this.eventRequestService.list(this.getRequsetParam(pageIndex, this.search)).toPromise();
 
-            let data = new IllegalDropEventsRecord();
+            let data = new MixedIntoEventsRecord();
             data.items = response.Data.Data.sort((a, b) => {
                 return ''.naturalCompare(a.EventTime, b.EventTime);
             }); 
@@ -224,7 +225,7 @@ export class EventTableService extends ListAttribute {
         if (this.search.state) {
             const response = await this.eventRequestService.list(this.getRequsetParam(pageIndex, this.search)).toPromise();
 
-            let data = new IllegalDropEventsRecord();
+            let data = new MixedIntoEventsRecord();
             data.items = response.Data.Data.sort((a, b) => {
                 return ''.naturalCompare(a.EventTime, b.EventTime);
             });
@@ -238,7 +239,7 @@ export class EventTableService extends ListAttribute {
 
     async allEventsRecordData() {
         const response = await this.eventRequestService.list(this.getRequsetParam(1, this.search,new ListAttribute().maxSize)).toPromise();
-        let data = new IllegalDropEventsRecord();
+        let data = new MixedIntoEventsRecord();
         data.items = response.Data.Data.sort((a, b) => {
             return ''.naturalCompare(a.EventTime, b.EventTime);
         });      

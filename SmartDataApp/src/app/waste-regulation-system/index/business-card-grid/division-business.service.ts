@@ -10,7 +10,7 @@ import { CameraRequestService } from "../../../data-core/repuest/resources.servi
 import { ImageThemeCardComponent } from "../../../shared-module/card-component/image-theme-card/image-theme-card.component";
 import { HintCardComponent } from "../../../shared-module/card-component/hint-card/hint-card.component";
 import { HintTag } from "../../../shared-module/card-component/hint-card/hint";
-import { FillMode } from "../../../shared-module/event-history/illegal-drop-event-history/business/event-table.service";
+import { FillMode } from "../../../shared-module/business-component/event-history/illegal-drop-event-history/business/event-table.service";
 import { ColorEnum } from "../../../shared-module/card-component/card-content-factory";
 @Injectable({
     providedIn: 'root'

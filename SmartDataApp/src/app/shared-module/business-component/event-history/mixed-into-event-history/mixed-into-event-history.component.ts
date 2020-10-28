@@ -1,15 +1,16 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { CustomTableComponent } from '../../../shared-module/custom-table/custom-table.component';
+import { CustomTableComponent } from '../../../../shared-module/custom-table/custom-table.component';
 import { EventTableService, FillMode } from "./business/event-table.service";
-import { PageListMode } from "../../../common/tool/enum-helper";
-import { ImageDesc } from '../../image-desc-card/image-desc';
+import { PageListMode } from "../../../../common/tool/enum-helper";
+import { ImageDesc } from '../../../image-desc-card/image-desc';
 @Component({
-  selector: 'hw-illegal-drop-event-history',
-  templateUrl: './illegal-drop-event-history.component.html',
-  styleUrls: ['./illegal-drop-event-history.component.styl'],
+  selector: 'hw-mixed-into-event-history',
+  templateUrl: './mixed-into-event-history.component.html',
+  styleUrls: ['./mixed-into-event-history.component.styl'],
   providers: [EventTableService]
 })
-export class IllegalDropEventHistoryComponent implements OnInit {
+export class MixedIntoEventHistoryComponent implements OnInit {
+
   listTypeView = false;
   listMode = PageListMode.table;
   pageListMode = PageListMode;
@@ -129,6 +130,4 @@ export class IllegalDropEventHistoryComponent implements OnInit {
       });
     await this.tableService.allEventsRecordData();
   }
-
-
 }

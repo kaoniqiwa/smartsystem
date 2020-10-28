@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { LevelListPanel, ListNode } from "./level-list-panel";
-import { domClickFn } from '../../../common/tool/jquery-help/jquery-help'; 
+import { domClickFn } from '../../../../common/tool/jquery-help/jquery-help'; 
 @Component({
   selector: 'hw-level-list-panel',
   templateUrl: './level-list-panel.component.html',

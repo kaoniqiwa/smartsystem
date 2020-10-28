@@ -1,15 +1,15 @@
 import { DatePipe } from "@angular/common";
-import { IConverter } from "../../../../common/interface/IConverter";
-import { IllegalDropEventRecord } from "../../../../data-core/model/waste-regulation/illegal-drop-event-record";
-import { CustomTableEvent, CustomTableEventEnum } from "../../../../shared-module/custom-table/custom-table-event";
-import { CustomTableArgs, FootArgs, TableAttr, TableOperationBtn } from "../../../../shared-module/custom-table/custom-table-model";
-import { ITableField } from "../../../../aiop-system/common/ITableField";
-import { MediumPicture } from "../../../../data-core/url/aiop/resources";
-import { IBusinessData } from "../../../../common/interface/IBusiness";
-import { BusinessTable } from "../../../../aiop-system/common/business-table"; 
+import { IConverter } from "../../../../../common/interface/IConverter";
+import { MixedIntoEventRecord } from "../../../../../data-core/model/waste-regulation/mixed-into-event-record";
+import { CustomTableEvent, CustomTableEventEnum } from "../../../../../shared-module/custom-table/custom-table-event";
+import { CustomTableArgs, FootArgs, TableAttr, TableOperationBtn } from "../../../../../shared-module/custom-table/custom-table-model";
+import { ITableField } from "../../../../../aiop-system/common/ITableField";
+import { MediumPicture } from "../../../../../data-core/url/aiop/resources";
+import { IBusinessData } from "../../../../../common/interface/IBusiness";
+import { BusinessTable } from "../../../../../aiop-system/common/business-table"; 
 export class EventTable extends BusinessTable implements IConverter {
-    findEventFn: (id: string) => IllegalDropEventRecord;
-    initGalleryTargetFn:(event:IllegalDropEventRecord)=>void;
+    findEventFn: (id: string) => MixedIntoEventRecord;
+    initGalleryTargetFn:(event:MixedIntoEventRecord)=>void;
     playVideoFn: (id: string) =>void;
     dataSource = new CustomTableArgs<any>({
         hasTableOperationTd: true,
@@ -73,10 +73,10 @@ export class EventTable extends BusinessTable implements IConverter {
     scrollPageFn: (event: CustomTableEvent) => void;
 
    
-    Convert<IllegalDropEventsRecord, CustomTableArgs>(input: IllegalDropEventsRecord, output: CustomTableArgs) {
+    Convert<MixedIntoEventsRecord, CustomTableArgs>(input: MixedIntoEventsRecord, output: CustomTableArgs) {
         const items = new Array<TableField>();
 
-        if (input instanceof IllegalDropEventsRecord)
+        if (input instanceof MixedIntoEventsRecord)
             for (const item of input.items) {
                 items.push(this.toTableModel(item));
             }
@@ -86,7 +86,7 @@ export class EventTable extends BusinessTable implements IConverter {
         return output;
     }
 
-    toTableModel(item: IllegalDropEventRecord) {
+    toTableModel(item: MixedIntoEventRecord) {
         let tableField = new TableField();
         tableField.id = item.EventId;
         tableField.eventTime = this.datePipe.transform(item.EventTime, 'yyyy-MM-dd HH:mm:ss');
@@ -99,8 +99,8 @@ export class EventTable extends BusinessTable implements IConverter {
     }
 }
 
-export class IllegalDropEventsRecord implements IBusinessData {
-    items: IllegalDropEventRecord[];
+export class MixedIntoEventsRecord implements IBusinessData {
+    items: MixedIntoEventRecord[];
 }
 
 export class TableField implements ITableField {
