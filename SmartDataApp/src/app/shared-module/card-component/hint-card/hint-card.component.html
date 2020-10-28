@@ -3,7 +3,7 @@
     <ng-container *ngFor="let item of model">
     
       <ng-container *ngIf="item.tag">
-        <div class="hint-card move" style="cursor: pointer;" (click)="tagClick()">
+        <div class="hint-card move" style="cursor: pointer;" (click)="tagClick(item.tag)">
           <h5 class="m-b-5">{{item.title}}</h5>
           <label  class="{{item.subTitleColor}}">{{item.subTitle}}</label>
         </div> 

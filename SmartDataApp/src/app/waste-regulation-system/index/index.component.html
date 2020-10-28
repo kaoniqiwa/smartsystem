@@ -80,14 +80,18 @@
   <div class="fill-height fill-width hw-content-mask" *ngIf="divisionBusinessService.eventHistoryView">
     <div class="hw-form-wrap" style="width: 90%;height:886px;">
 
-      <a class="close-winow event-history-view-close" (click)="divisionBusinessService.eventHistoryView=false"
+      <a class="close-winow event-history-view-close" (click)="divisionBusinessService.clearEventView()"
         href="javascript:void(0)">
         <i class="howell-icon-Close alert-window-close-btn"></i>
       </a>
       <div class="custom-form-wrap">
-        <ng-container *ngIf="divisionBusinessService.fillMode">
-          <hw-illegal-drop-event-history [fillMode]="divisionBusinessService.fillMode">
+        <ng-container *ngIf="divisionBusinessService.illegalDropMode">
+          <hw-illegal-drop-event-history [fillMode]="divisionBusinessService.illegalDropMode">
           </hw-illegal-drop-event-history>
+        </ng-container>
+        <ng-container *ngIf="divisionBusinessService.mixedIntoMode">
+          <hw-mixed-into-event-history [fillMode]="divisionBusinessService.mixedIntoMode">
+          </hw-mixed-into-event-history>
         </ng-container>
       </div>
     </div>

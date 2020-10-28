@@ -4,20 +4,20 @@
  */
 import { IllegalDropEvent } from '../business/illegal-drop-history/data';
 import { DeviceStatus } from "../business/dev/data";
-import { IllegalDropEventInfo, IllegalDropEventInfos } from "../business/illegal-drop-event/data";
-import { Divisions, Division, } from "../business/division/data";
-import { IllegalDropOrderInfo, IllegalDropInfo } from "../business/illegal-drop-order/data";
+import { IllegalDropEventInfos } from "../business/illegal-drop-event/data";
+import { Divisions } from "../business/division/data";
+import { IllegalDropOrderInfo } from "../business/illegal-drop-order/data";
 import { Specification } from "../business/division-garbage-specification/data";
 import { LineECharts } from '../../../../shared-module/card-component/line-echarts-card/line-echarts';
 import { StateScale, Arc } from '../../../../shared-module/card-component/state-scale-card/state-scale';
 import { ImageTheme } from "../../../../shared-module/card-component/image-theme-card/image-theme";
-import { Hint } from "../../../../shared-module/card-component/hint-card/hint";
+import { Hint,HintTag } from "../../../../shared-module/card-component/hint-card/hint";
 import { OrderTable } from "../../../../shared-module/card-component/order-table-card/order-table";
-import { HeaderSquareList, ItemTypeEnum, SquareItem } from "../../../../shared-module/header-square-list/header-square-list";
-import { IViewModel, ViewsModel } from '../../../../common/abstract/base-view';
+import { HeaderSquareList, SquareItem } from "../../../../shared-module/header-square-list/header-square-list";
+import { ViewsModel } from '../../../../common/abstract/base-view';
 import { IConverter } from "../../../../common/interface/IConverter";
 import { Injector, Injectable } from '@angular/core';
-import { LineOption, PieOption } from '../../../../common/directive/echarts/echart';
+import { LineOption } from '../../../../common/directive/echarts/echart';
 import { Percentage, TimeInterval } from '../../../../common/tool/tool.service'
 import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
@@ -251,11 +251,11 @@ export class DivisionGarbageSpecificationConverter implements IConverter {
             hint.title = '乱丢垃圾';
             hint.subTitleColor = ColorEnum["powder-red-text"];
             hint.subTitle = input.illegalDropNumber + '';
-            hint.tag=true;
+            hint.tag=HintTag.IllegalDrop;
             hints.push(hint);
             hint = new Hint();
             hint.title = '混合投放垃圾';
-            hint.tag=true;
+            hint.tag=HintTag.MixedInto;
             hint.subTitleColor =  ColorEnum["light-purple-text"];
             hint.subTitle = input.hybridPushNumber + '';
             hints.push(hint);

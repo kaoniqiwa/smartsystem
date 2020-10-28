@@ -9,6 +9,7 @@ import { AMapComponent } from "../amap/amap.component";
 import { CameraRequestService } from "../../../data-core/repuest/resources.service";
 import { ImageThemeCardComponent } from "../../../shared-module/card-component/image-theme-card/image-theme-card.component";
 import { HintCardComponent } from "../../../shared-module/card-component/hint-card/hint-card.component";
+import { HintTag } from "../../../shared-module/card-component/hint-card/hint";
 import { FillMode } from "../../../shared-module/event-history/illegal-drop-event-history/business/event-table.service";
 import { ColorEnum } from "../../../shared-module/card-component/card-content-factory";
 @Injectable({
@@ -20,7 +21,8 @@ export class DivisionBusinessService {
     mapClient: CesiumMapClient;
     aMap: AMapComponent;
     /**区划 */
-    fillMode=new FillMode(); 
+    illegalDropMode: FillMode;
+    mixedIntoMode: FillMode;
     eventHistoryView = false;
     constructor(private cameraService: CameraRequestService) {
         setTimeout(() => {
@@ -56,28 +58,40 @@ export class DivisionBusinessService {
                     }
                 }
                 if (x.list[0].view instanceof HintCardComponent) {
-                    
-                    
-                    x.list[0].view.btnControl = () => {
-                        if (x.list[0].business instanceof BaseBusinessRefresh)
-                        {
-                            this.fillMode.divisionId=x.list[0].business.businessParameter.map.get("divisionsId");
-                            this.eventHistoryView=true;
+
+                    x.list[0].view.btnControl = (tag) => {
+                        if (x.list[0].business instanceof BaseBusinessRefresh) {
+                            if (tag == HintTag.IllegalDrop) {
+                                this.illegalDropMode = new FillMode();
+                                this.illegalDropMode.divisionId = x.list[0].business.businessParameter.map.get("divisionsId");
+
+                            }
+                            else if (tag == HintTag.MixedInto) {
+                                this.mixedIntoMode = new FillMode();
+                                this.mixedIntoMode.divisionId = x.list[0].business.businessParameter.map.get("divisionsId");
+                            }
+                            this.eventHistoryView = true;
                         }
-                        
+
                     }
                 }
             }
         }, 1000);
     }
 
-    changeMqttState(state:boolean){
+    changeMqttState(state: boolean) {
         for (const x of this.componets) {
 
             if (x.list[0].view instanceof ImageThemeCardComponent) {
-                x.list[0].view.model.imgDesc1Icon = state? 'howell-icon-signal2' :'howell-icon-no_signal';
+                x.list[0].view.model.imgDesc1Icon = state ? 'howell-icon-signal2' : 'howell-icon-no_signal';
                 x.list[0].view.model.imgDesc1IconColor = state ? ColorEnum["green-text"] : ColorEnum["red-text"];
             }
         }
+    }
+
+    clearEventView(){
+this.mixedIntoMode=null;
+this.illegalDropMode=null;
+this.eventHistoryView=false;
     }
 }

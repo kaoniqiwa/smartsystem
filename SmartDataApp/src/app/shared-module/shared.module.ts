@@ -46,6 +46,7 @@ import { ImageDescCardComponent } from './image-desc-card/image-desc-card.compon
 import { IllegalDropEventHistoryComponent } from "./event-history/illegal-drop-event-history/illegal-drop-event-history.component";
 import { IllegalDropEventCardListComponent } from "./event-history/illegal-drop-event-card-list/illegal-drop-event-card-list.component";
 import { LevelListPanelComponent } from './event-history/level-list-panel/level-list-panel.component';
+import { MixedIntoEventHistoryComponent } from './event-history/mixed-into-event-history/mixed-into-event-history.component';
 @NgModule({
   imports: [
     CommonModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -65,7 +66,7 @@ import { LevelListPanelComponent } from './event-history/level-list-panel/level-
   PicturesDropListComponent,
   CardListPanelComponent, VideoSimpleCardComponent, StateScaleCardComponent,CardComponent,BusinessCardGridComponent, HeaderSquareListComponent, ImageThemeCardComponent, HintCardComponent, OrderTableCardComponent
 ,LineEChartsCardComponent, SwitchComponent  ,TimeToolComponent
-,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventCardListComponent, LevelListPanelComponent
+,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventCardListComponent, LevelListPanelComponent, MixedIntoEventHistoryComponent
 ],
   exports: [
     MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -81,6 +82,7 @@ import { LevelListPanelComponent } from './event-history/level-list-panel/level-
     ,HeaderSquareListComponent,ImageThemeCardComponent,HintCardComponent,OrderTableCardComponent
     ,LineEChartsCardComponent,SwitchComponent,TimeToolComponent
     ,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventCardListComponent
+    ,MixedIntoEventHistoryComponent
   ],
   providers: [DatePipe,
    ],

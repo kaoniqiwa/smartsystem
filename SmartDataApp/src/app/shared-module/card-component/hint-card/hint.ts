@@ -9,3 +9,8 @@ export class Hint {
 export class HintList{
     items:Hint[];
 }
+
+export enum HintTag{
+    IllegalDrop=1,
+    MixedInto
+}

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BasisCardComponent, ViewsModel } from '../../../common/abstract/base-view';
-import { Hint} from "./hint";
+import { Hint,HintTag} from "./hint";
 @Component({
   selector: 'app-hint-card',
   templateUrl: './hint-card.component.html'
@@ -15,8 +15,8 @@ export class HintCardComponent extends BasisCardComponent implements OnInit {
     this.loadDatas(new ViewsModel());
   }
 
-  tagClick(){     
-    if(this.btnControl&&this.model)this.btnControl(null);
+  tagClick(tag:HintTag){     
+    if(this.btnControl&&this.model)this.btnControl(tag);
   }
 
 }
