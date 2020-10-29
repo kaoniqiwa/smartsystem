@@ -23,6 +23,7 @@ import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
 import { EventNumber } from '../../../../data-core/model/waste-regulation/event-number';
 import { ColorEnum } from '../../../../shared-module/card-component/card-content-factory';
+import { CameraStateTableEnum } from "../../../../shared-module/business-component/garbage-station-cameras/business/camera-table.service";
 import { isBoolean } from 'util';
 export class IllegalDropHistoryCardConverter implements IConverter {
 
@@ -105,17 +106,20 @@ export class DevStatusCardConverter implements IConverter {
             output.views[0].detail.push({
                 label: '全部设备数量',
                 number: input.cameraNumber + '',
-                color: ColorEnum["sky-blue-text2"]
+                color: ColorEnum["sky-blue-text2"],
+                tag:CameraStateTableEnum.none
             });
             output.views[0].detail.push({
                 label: '在线设备数量',
                 number: (input.cameraNumber - input.offlineCameraNumber) + '',
-                color: ColorEnum["green-text"]
+                color: ColorEnum["green-text"],
+                tag :CameraStateTableEnum.online
             });
             output.views[0].detail.push({
                 label: '离线设备数量',
                 number: input.offlineCameraNumber + '',
-                color: ColorEnum["powder-red-text"]
+                color: ColorEnum["powder-red-text"],
+                tag:CameraStateTableEnum.offline
             });
         }
         return output;
@@ -236,6 +240,7 @@ export class DivisionGarbageSpecificationConverter implements IConverter {
             hint.title = '垃圾投放点数量';
             hint.subTitleColor = ColorEnum["sky-blue-text2"];
             hint.subTitle = input.garbagePushNumber + '';
+            hint.tag=HintTag.GarbageStation;
             hints.push(hint);
             hint = new Hint();
             hint.title = '垃圾桶数量';
@@ -246,6 +251,7 @@ export class DivisionGarbageSpecificationConverter implements IConverter {
             hint.title = '已满溢投放点数量';
             hint.subTitleColor =ColorEnum["orange-text"];
             hint.subTitle = input.fullPushNumber + '';
+            hint.tag=HintTag.FullStation;
             hints.push(hint);
             hint = new Hint();
             hint.title = '乱丢垃圾';

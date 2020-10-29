@@ -47,6 +47,9 @@ import { IllegalDropEventHistoryComponent } from "./business-component/event-his
 import { IllegalDropEventCardListComponent } from "./business-component/event-history/illegal-drop-event-card-list/illegal-drop-event-card-list.component";
 import { LevelListPanelComponent } from './business-component/event-history/level-list-panel/level-list-panel.component';
 import { MixedIntoEventHistoryComponent } from './business-component/event-history/mixed-into-event-history/mixed-into-event-history.component';
+import { FullGarbageStationComponent } from './business-component/full-garbage-station/full-garbage-station.component';
+import { GarbageStationComponent } from './business-component/garbage-station/garbage-station.component';
+import { GarbageStationCamerasComponent } from './business-component/garbage-station-cameras/garbage-station-cameras.component';
 @NgModule({
   imports: [
     CommonModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -66,7 +69,8 @@ import { MixedIntoEventHistoryComponent } from './business-component/event-histo
   PicturesDropListComponent,
   CardListPanelComponent, VideoSimpleCardComponent, StateScaleCardComponent,CardComponent,BusinessCardGridComponent, HeaderSquareListComponent, ImageThemeCardComponent, HintCardComponent, OrderTableCardComponent
 ,LineEChartsCardComponent, SwitchComponent  ,TimeToolComponent
-,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventCardListComponent, LevelListPanelComponent, MixedIntoEventHistoryComponent
+,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventCardListComponent
+, LevelListPanelComponent, MixedIntoEventHistoryComponent, FullGarbageStationComponent, GarbageStationComponent, GarbageStationCamerasComponent
 ],
   exports: [
     MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -82,7 +86,7 @@ import { MixedIntoEventHistoryComponent } from './business-component/event-histo
     ,HeaderSquareListComponent,ImageThemeCardComponent,HintCardComponent,OrderTableCardComponent
     ,LineEChartsCardComponent,SwitchComponent,TimeToolComponent
     ,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventCardListComponent
-    ,MixedIntoEventHistoryComponent
+    ,MixedIntoEventHistoryComponent,FullGarbageStationComponent,GarbageStationComponent,GarbageStationCamerasComponent
   ],
   providers: [DatePipe,
    ],

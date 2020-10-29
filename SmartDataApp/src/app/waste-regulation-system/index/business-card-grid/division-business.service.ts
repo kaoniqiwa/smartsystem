@@ -7,11 +7,13 @@ import { HeaderSquareListComponent } from "../../../shared-module/header-square-
 import { BusinessViewComponetConstructor } from "./business-card-slot.service";
 import { AMapComponent } from "../amap/amap.component";
 import { CameraRequestService } from "../../../data-core/repuest/resources.service";
+import { StateScaleCardComponent } from "../../../shared-module/card-component/state-scale-card/state-scale-card.component";
 import { ImageThemeCardComponent } from "../../../shared-module/card-component/image-theme-card/image-theme-card.component";
 import { HintCardComponent } from "../../../shared-module/card-component/hint-card/hint-card.component";
 import { HintTag } from "../../../shared-module/card-component/hint-card/hint";
 import { FillMode } from "../../../shared-module/business-component/event-history/illegal-drop-event-history/business/event-table.service";
 import { ColorEnum } from "../../../shared-module/card-component/card-content-factory";
+import {CameraStateTableEnum  } from "../../../shared-module/business-component/garbage-station-cameras/business/camera-table.service";
 @Injectable({
     providedIn: 'root'
 })
@@ -23,7 +25,11 @@ export class DivisionBusinessService {
     /**区划 */
     illegalDropMode: FillMode;
     mixedIntoMode: FillMode;
+    fullStationsView = false;
+    stationListView = false;
     eventHistoryView = false;
+    stationCameraView = false;
+    stationCameraStateTable:CameraStateTableEnum;
     constructor(private cameraService: CameraRequestService) {
         setTimeout(() => {
             for (const x of this.componets) {
@@ -70,8 +76,20 @@ export class DivisionBusinessService {
                                 this.mixedIntoMode = new FillMode();
                                 this.mixedIntoMode.divisionId = x.list[0].business.businessParameter.map.get("divisionsId");
                             }
+                            else if (tag == HintTag.FullStation)
+                                this.fullStationsView = true;
+                            else if (tag == HintTag.GarbageStation)
+                                this.stationListView = true;
                             this.eventHistoryView = true;
                         }
+
+                    }
+                }
+                if(x.list[0].view instanceof StateScaleCardComponent) {
+                    x.list[0].view.btnControl = (item:{ tag:CameraStateTableEnum}) => {
+                        this.stationCameraStateTable=item.tag;
+                        this.stationCameraView=true;
+                        this.eventHistoryView = true;
 
                     }
                 }
@@ -89,9 +107,12 @@ export class DivisionBusinessService {
         }
     }
 
-    clearEventView(){
-this.mixedIntoMode=null;
-this.illegalDropMode=null;
-this.eventHistoryView=false;
+    clearEventView() {
+        this.mixedIntoMode = null;
+        this.illegalDropMode = null;
+        this.fullStationsView = false;
+        this.eventHistoryView = false;
+        this.stationListView = false;
+        this.stationCameraView = false;
     }
 }

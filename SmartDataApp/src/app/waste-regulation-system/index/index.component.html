@@ -93,6 +93,17 @@
           <hw-mixed-into-event-history [fillMode]="divisionBusinessService.mixedIntoMode">
           </hw-mixed-into-event-history>
         </ng-container>
+        <ng-container *ngIf="divisionBusinessService.fullStationsView">
+          <hw-full-garbage-station></hw-full-garbage-station>
+        </ng-container>
+        <ng-container *ngIf="divisionBusinessService.stationListView">
+          <hw-garbage-station></hw-garbage-station>
+        </ng-container>
+        <ng-container *ngIf="divisionBusinessService.stationCameraView">
+          <hw-garbage-station-cameras [cameraStateTable]="divisionBusinessService.stationCameraStateTable"></hw-garbage-station-cameras>
+        </ng-container>
+      
+      
       </div>
     </div>
   </div>

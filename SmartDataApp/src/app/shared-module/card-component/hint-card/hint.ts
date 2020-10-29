@@ -12,5 +12,7 @@ export class HintList{
 
 export enum HintTag{
     IllegalDrop=1,
-    MixedInto
+    MixedInto,
+    FullStation,
+    GarbageStation 
 }

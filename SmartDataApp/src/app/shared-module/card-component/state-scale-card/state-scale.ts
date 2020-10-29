@@ -16,6 +16,7 @@ export class StateScale {
         label: string;
         number: string;
         color:ColorEnum;
+        tag:any;
     }[];
     constructor() {
         this.title = '';

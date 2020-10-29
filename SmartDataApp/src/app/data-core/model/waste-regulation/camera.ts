@@ -38,5 +38,6 @@
         Name: string;
         /**摄像机用途(可选) */
         CameraUsage: number | null;
-
+        
+        OnlineStatus:number;
     }

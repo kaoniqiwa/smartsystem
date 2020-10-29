@@ -80,6 +80,12 @@ export enum CameraUsageDataEnum {
     Other=4
 }
 
+export enum StationStateEnum{
+    '-'=0,
+    '满溢',
+    '异常'
+}
+
 /**
  * 页面数据显示模式
  */

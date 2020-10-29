@@ -18,7 +18,7 @@
     </div>
     <div fxLayout="row" style="height: 40%;" fxLayoutAlign="space-between end">
       <ng-container *ngFor="let item of model.detail">
-        <div fxFlex="130px" style=" height: 80px;background-color: rgb(29,39,95);">
+        <div fxFlex="130px" (click)="itemClick(item)"  style=" height: 80px;background-color: rgb(29,39,95);">
           <div class="border-background">
             <div style="padding: 10px 5px 10px 5px;">
               <h4 class="light-blue-text text-center">{{item.label}}</h4>

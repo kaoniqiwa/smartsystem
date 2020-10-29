@@ -14,6 +14,8 @@ export class StateScaleCardComponent  extends BasisCardComponent implements OnIn
    ngOnInit() {
     this.loadDatas(new ViewsModel());
    }
-   
+   itemClick(item: {   tag:any; }){     
+    if(this.btnControl&&this.model)this.btnControl(item);
+  }
 
 }
