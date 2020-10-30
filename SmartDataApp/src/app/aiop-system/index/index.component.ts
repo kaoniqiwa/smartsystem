@@ -71,4 +71,8 @@ export class IndexComponent implements OnInit {
     }
 
   }
+
+  changeMenuLink(val:string){
+    this.historyLink.links=[val];
+  }
 }

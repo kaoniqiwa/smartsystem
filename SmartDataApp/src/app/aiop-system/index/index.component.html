@@ -41,7 +41,7 @@
       overflow: auto;">
         <div class="sidenav-viewer">
           <div class="m-l-15">
-            <side-nav-menu #navMenu></side-nav-menu>
+            <side-nav-menu #navMenu (menuEvent)="changeMenuLink($event)"></side-nav-menu>
           </div>
         </div>
       </div>

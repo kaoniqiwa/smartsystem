@@ -35,8 +35,7 @@ export class AIModelsTable  extends ResourcesTable implements IConverter, IPageT
             tdWidth: "10%",
             tdInnerAttrName: "labelIcon",
             isImg:true,
-            isSmallImg:true,
-            isHoverBig:true
+            isSmallImg:true
         }), new TableAttr({
             HeadTitleName: "名称",
             tdWidth: "25%",

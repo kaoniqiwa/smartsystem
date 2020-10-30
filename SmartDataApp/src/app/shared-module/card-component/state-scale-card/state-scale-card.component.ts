@@ -3,7 +3,8 @@ import { BasisCardComponent, ViewsModel } from '../../../common/abstract/base-vi
 import { StateScale } from "./state-scale";
 @Component({
   selector: 'app-state-scale-card',
-  templateUrl: './state-scale-card.component.html'
+  templateUrl: './state-scale-card.component.html',
+  styleUrls:['./state-scale-card.component.css']
 })
 export class StateScaleCardComponent  extends BasisCardComponent implements OnInit {
    model: StateScale;

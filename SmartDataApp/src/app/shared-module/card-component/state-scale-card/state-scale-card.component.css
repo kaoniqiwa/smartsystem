@@ -1,0 +1,24 @@
+.foot-wrap{
+    height: 80px;
+    background-color: #1D275F;
+    cursor: pointer;
+}
+
+.foot-wrap:hover .border-background{
+    background: 
+    linear-gradient(to left, #cfd7ff, #cfd7ff) left top no-repeat
+    , linear-gradient(to bottom, #cfd7ff, #cfd7ff) left top no-repeat,
+     linear-gradient(to left, #cfd7ff, #cfd7ff) right top no-repeat,
+      linear-gradient(to bottom, #cfd7ff, #cfd7ff) right top no-repeat, 
+      linear-gradient(to left, #cfd7ff, #cfd7ff) left bottom no-repeat, 
+      linear-gradient(to bottom, #cfd7ff, #cfd7ff) left bottom no-repeat, 
+      linear-gradient(to left, #cfd7ff, #cfd7ff) right bottom no-repeat, 
+      linear-gradient(to left, #cfd7ff, #cfd7ff) right bottom no-repeat;
+}
+
+
+ 
+.foot-wrap:hover .border-background  .light-blue-text{
+    color: white;
+  }
+   

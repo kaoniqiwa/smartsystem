@@ -151,8 +151,8 @@ export class AIModelFormService extends ListAttribute {
     }
 
     set modelIcon(index:number){
-        if (this.modelIcons.length)
-        this.modelIcons[index].checked = true;
+        if (this.modelIcons.length&&index>0)
+         this.modelIcons.find(x=>x.id==index+'').checked=true; 
     }
 
     defaultForm(editItem: CameraAIModel) {

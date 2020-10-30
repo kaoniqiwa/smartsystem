@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'; import {
+import { Component, OnInit,Output,EventEmitter } from '@angular/core'; import {
   trigger,
   state,
   style,
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core'; import {
   transition,
   // ...
 } from '@angular/animations';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import {  MenuTree ,MenuTreeMap} from "./menu-tree"; 
 import { SideNavService } from "../../../common/tool/sidenav.service";
 @Component({
@@ -33,17 +33,17 @@ import { SideNavService } from "../../../common/tool/sidenav.service";
 })
 export class SideNavMenuComponent implements OnInit {
   maximize = true;
-  private currentMenus_ = new Array<string>();
   private highlightedBtn = new Array<string>();
   menuTree = new Array<MenuTree>();
 
-  constructor(private router: Router, private navService: SideNavService) {
+  @Output() menuEvent = new EventEmitter<string>();
+
+  constructor(router: Router, navService: SideNavService) {
     const  
      menuTreeMap = new MenuTreeMap();
      menuTreeMap.init();
      this.menuTree =menuTreeMap.map.get(navService.systemMode);
     this.highlightedBtn = [this.menuTree[0].title];
-   
      router.navigate([this.menuTree[0].nodes[0].url])
 
   }
@@ -58,16 +58,13 @@ export class SideNavMenuComponent implements OnInit {
 
   }
 
-  set currentMenus(val: string) {
-    this.currentMenus_.pop();
-    this.currentMenus_.push(val);
+  set currentMenus(val: string) { 
+    this.menuEvent.emit(val);
   }
 
-  get currentMenus$() {
-    return this.currentMenus_;
-  }
-  ngOnInit() {
+    ngOnInit() {
 
+      this.currentMenus=this.menuTree[0].nodes[0].text;
   }
 
 }

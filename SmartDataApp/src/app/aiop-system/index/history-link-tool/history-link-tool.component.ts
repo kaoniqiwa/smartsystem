@@ -5,7 +5,7 @@ import { Component, OnInit ,Input} from '@angular/core';
   styleUrls: ['./history-link-tool.component.styl']
 })
 export class HistoryLinkToolComponent implements OnInit {
-  
+  links = new Array<string>();
   constructor() {
     
     
