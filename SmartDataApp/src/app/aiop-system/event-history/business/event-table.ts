@@ -2,23 +2,23 @@ import { DatePipe } from "@angular/common";
 import { IConverter } from "../../../common/interface/IConverter";
 import { CameraAIEventRecord } from "../../../data-core/model/aiop/camera-ai-event-record";
 import { CustomTableEvent, CustomTableEventEnum } from "../../../shared-module/custom-table/custom-table-event";
-import { CustomTableArgs, FootArgs, TableAttr } from "../../../shared-module/custom-table/custom-table-model";
+import { CustomTableArgs, FootArgs, TableAttr, TableOperationBtn } from "../../../shared-module/custom-table/custom-table-model";
 import { ITableField } from "../../common/ITableField";
 import { EnumHelper, ResourceTypeEnum } from "../../../common/tool/enum-helper";
 import { MediumPicture } from "../../../data-core/url/aiop/resources";
 import { IBusinessData } from "../../../common/interface/IBusiness";
-import { BusinessTable } from "../../common/business-table";  
-import { GalleryTarget } from "../../../shared-module/gallery-target/gallery-target";
+import { BusinessTable } from "../../common/business-table";   
 export class EventTable extends BusinessTable implements IConverter {
-   
-    galleryTarget:GalleryTarget;
+    
+    initGalleryTargetFn:(event:CameraAIEventRecord)=>void;
     findEventFn: (id: string) => CameraAIEventRecord;
+    playVideoFn: (id: string) =>void;
     enlargeImageSize = {
         width: 0,
         height: 0
     }
     dataSource = new CustomTableArgs<any>({
-        hasTableOperationTd: false,
+        hasTableOperationTd: true,
         hasHead: true,
         isSingleElection: false,
         values: [],
@@ -27,12 +27,11 @@ export class EventTable extends BusinessTable implements IConverter {
         eventDelegate: (event: CustomTableEvent) => {
             if (event.eventType == CustomTableEventEnum.ScrollDown)
                 this.scrollPageFn(event);
-            else if (event.eventType == CustomTableEventEnum.Img) {
-                const findEvent = this.findEventFn(event.data['id'])
-                ,enlargeImage = event.data['imageUrl'] + '';
-                // this.galleryTarget= new GalleryTarget(findEvent.Data.Objects[0].Id
-                //     ,findEvent.Data.Objects[0].Confidence+'',enlargeImage,findEvent.Data.Objects[0].Polygon);
-            }
+                else if (event.eventType == CustomTableEventEnum.Img) {
+
+                    const findEvent = this.findEventFn(event.data['id']);
+                    this.initGalleryTargetFn(findEvent);
+                }
         },
         tableAttrs: [new TableAttr({
             HeadTitleName: "图片",
@@ -43,7 +42,7 @@ export class EventTable extends BusinessTable implements IConverter {
             isSmallImg:true
         }), new TableAttr({
             HeadTitleName: "事件类型",
-            tdWidth: "10%",
+            tdWidth: "13%",
             tdInnerAttrName: "eventType"
         }), new TableAttr({
             HeadTitleName: "模型名称",
@@ -61,7 +60,16 @@ export class EventTable extends BusinessTable implements IConverter {
             HeadTitleName: "上报时间",
             tdWidth: "20%",
             tdInnerAttrName: "eventTime"
-        })],
+        })]
+        , tableOperationBtns: [
+            new TableOperationBtn({
+                css: 'howell-icon-video td-icon',
+                title: '视频',
+                callback: (item: TableField) => {
+                    this.playVideoFn(item.id);
+                }
+            })
+        ],
         footArgs: new FootArgs({
             hasSelectBtn: false,
             hasSelectCount: false
@@ -82,12 +90,6 @@ export class EventTable extends BusinessTable implements IConverter {
             }
         if (output instanceof CustomTableArgs)
             output.values = items;
-
-        // drawRectangle('polygonCanvas',{x: 553.9,
-        //         y: 246.168387},{x: 592.896088,
-        //         y: 246.168387},{x: 592.896088,
-        //         y: 263.420244},{x: 553.9,
-        //         y: 263.420244})
         return output;
     }
 

@@ -56,34 +56,34 @@ export class IndexService {
         return view;
     }
 
-    get getStateScale(){
+    // get getStateScale(){
 
-         const model=new StateScale();
-         const view = new ViewsModel();
-         view.views = [model];
-         model.title='设备运行状态';
-         model.stateLabel = {
-             subTitle:'系统设备在线比',
-             scaleNumber:'0',
-             state:''
-         }
-         model.arc =Arc._0;
-         model.detail = new Array();
-         model.detail.push({
-             label:'全部设备数量',
-             number:'0',
-             color:ColorEnum["sky-blue-text2"]
-         });
-         model.detail.push({
-             label:'在线设备数量',
-             number:'0',
-             color:ColorEnum["green-text"]
-         })         
-         model.detail.push({
-            label:'离线设备数量',
-            number:'0',
-            color:ColorEnum["powder-red-text"]
-        });
-        return view;
-    }
+    //      const model=new StateScale();
+    //      const view = new ViewsModel();
+    //      view.views = [model];
+    //      model.title='设备运行状态';
+    //      model.stateLabel = {
+    //          subTitle:'系统设备在线比',
+    //          scaleNumber:'0',
+    //          state:''
+    //      }
+    //      model.arc =Arc._0;
+    //      model.detail = new Array();
+    //      model.detail.push({
+    //          label:'全部设备数量',
+    //          number:'0',
+    //          color:ColorEnum["sky-blue-text2"]
+    //      });
+    //      model.detail.push({
+    //          label:'在线设备数量',
+    //          number:'0',
+    //          color:ColorEnum["green-text"]
+    //      })         
+    //      model.detail.push({
+    //         label:'离线设备数量',
+    //         number:'0',
+    //         color:ColorEnum["powder-red-text"]
+    //     });
+    //     return view;
+    // }
 }

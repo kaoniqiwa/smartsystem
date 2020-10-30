@@ -3,6 +3,7 @@ import { CustomTableComponent } from '../../../../shared-module/custom-table/cus
 import { EventTableService, FillMode } from "./business/event-table.service";
 import { PageListMode } from "../../../../common/tool/enum-helper";
 import { ImageDesc } from '../../../image-desc-card/image-desc';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'hw-illegal-drop-event-history',
   templateUrl: './illegal-drop-event-history.component.html',
@@ -13,6 +14,7 @@ export class IllegalDropEventHistoryComponent implements OnInit {
   listTypeView = false;
   listMode = PageListMode.table;
   pageListMode = PageListMode;
+  tableMinusHeight = 'calc(100% - 0px)';
   @ViewChild('table')
   table: CustomTableComponent;
 
@@ -55,7 +57,21 @@ export class IllegalDropEventHistoryComponent implements OnInit {
   videoClose = () => {
     this.tableService.playVideo = null;
   }
-  constructor(private tableService: EventTableService) {
+ 
+  constructor(private tableService: EventTableService    , private route: ActivatedRoute) {
+    route.data.subscribe(async (data) => {
+      /**
+       * 该组件用于页面
+       * 或弹出框
+       */
+        if (data.val) {
+           this.tableMinusHeight= 'calc(100% - 20px)';
+           this.fillMode=new FillMode();
+           this.fillMode.tablePageSize=9;
+           this.fillMode.cardPageSize=10;
+        }
+      });
+    
   }
 
   async ngOnInit() {
@@ -131,4 +147,9 @@ export class IllegalDropEventHistoryComponent implements OnInit {
   }
 
 
+}
+
+export enum ContentModeEnum{
+  View,
+  Page
 }

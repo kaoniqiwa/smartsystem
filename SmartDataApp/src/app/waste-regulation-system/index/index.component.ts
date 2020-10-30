@@ -94,7 +94,7 @@ export class IndexComponent implements OnInit {
       cardType: 'StateScaleCardComponent',
       dataTime: 60,
       divisionsId: county.Id,
-      defaultViewMoel: this.indexService.getStateScale
+      // defaultViewMoel: this.indexService.getStateScale
     });
 
 
@@ -112,7 +112,7 @@ export class IndexComponent implements OnInit {
       cardType: 'OrderTableCardComponent',
       divisionsIds: committesIds,
       dataTime: 60,
-      defaultViewMoel: this.indexService.defaultOrderTable,
+      // defaultViewMoel: this.indexService.defaultOrderTable,
       divisionsType: DivisionTypeEnum.County,
     });
     this.illegalDropHistoryCardConfig = new Array();

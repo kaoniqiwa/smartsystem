@@ -63,17 +63,7 @@ export class EventTableService extends ListAttribute {
         this.eventTable.findEventFn = (id) => {
             return this.dataSource.find(x => x.EventId == id);
         }
-
-        // this.eventCards.viewPaginationFn = (page: Page) => {
-        //     return new ViewPagination(page.PageCount, async (index) => {
-        //         if (this.eventCards.pageIndex != index) {
-        //             this.eventCards.pageIndex = index;
-        //             await this.requestData(index);
-        //             this.eventCards.cardList = this.eventCards.dataSource;
-        //         }
-
-        //     });
-        // }
+ 
 
         this.eventTable.initGalleryTargetFn = (event) => {
             this.galleryTargetView.initGalleryTarget(event);

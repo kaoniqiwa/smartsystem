@@ -45,6 +45,7 @@ export class IndexComponent implements OnInit {
 
   maximize = true;
   bug = false;
+  contentLeft = 0;
   constructor(private router: Router
     ,titleService:Title
     , private navService: SideNavService) {
@@ -59,19 +60,15 @@ export class IndexComponent implements OnInit {
     });
   }
 
-  get leftSize() {
-    var left = 0;
-    if (this.bug&&this.maximize==false) {
-      left = this.maximize ? 296 : 100;
-      domCss('mat-drawer-content',{
-        'margin-left':0
-      },'.')
-    }
-    return left;
-  }
-
   menuControl(maximize: boolean) {
     this.maximize = maximize;
     this.navMenu.maximize = maximize;
+    if (this.bug) {
+      this.contentLeft = this.maximize ? 296 : 100;
+      domCss('mat-drawer-content',{
+        'margin-left':0
+      },'.');
+    }
+
   }
 }
