@@ -50,6 +50,7 @@ import { MixedIntoEventHistoryComponent } from './business-component/event-histo
 import { FullGarbageStationComponent } from './business-component/full-garbage-station/full-garbage-station.component';
 import { GarbageStationComponent } from './business-component/garbage-station/garbage-station.component';
 import { GarbageStationCamerasComponent } from './business-component/garbage-station-cameras/garbage-station-cameras.component';
+import { UserToolComponent } from "./business-component/user-tool/user-tool.component";
 @NgModule({
   imports: [
     CommonModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -70,6 +71,7 @@ import { GarbageStationCamerasComponent } from './business-component/garbage-sta
   CardListPanelComponent, VideoSimpleCardComponent, StateScaleCardComponent,CardComponent,BusinessCardGridComponent, HeaderSquareListComponent, ImageThemeCardComponent, HintCardComponent, OrderTableCardComponent
 ,LineEChartsCardComponent, SwitchComponent  ,TimeToolComponent
 ,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventCardListComponent
+,UserToolComponent
 , LevelListPanelComponent, MixedIntoEventHistoryComponent, FullGarbageStationComponent, GarbageStationComponent, GarbageStationCamerasComponent
 ],
   exports: [
@@ -87,6 +89,7 @@ import { GarbageStationCamerasComponent } from './business-component/garbage-sta
     ,LineEChartsCardComponent,SwitchComponent,TimeToolComponent
     ,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventCardListComponent
     ,MixedIntoEventHistoryComponent,FullGarbageStationComponent,GarbageStationComponent,GarbageStationCamerasComponent
+    ,UserToolComponent
   ],
   providers: [DatePipe,
    ],

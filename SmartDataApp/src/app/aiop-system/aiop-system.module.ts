@@ -3,8 +3,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { SharedModule } from '../shared-module/shared.module';
 import { IndexComponent } from './index/index.component';
-import { TimeToolComponent } from "./index/time/time-tool.component";
-import { UserToolComponent } from "./index/user-tool/user-tool.component";
 import { AlarmPointToolComponent } from "./index/alarm-point-tool/alarm-point-tool.component";
 import { SideNavMenuComponent } from "./index/side-nav-menu/side-nav-menu.component";
 import {HistoryLinkToolComponent} from './index/history-link-tool/history-link-tool.component'
@@ -24,8 +22,7 @@ import { AIModelFormComponent } from './ai-models/aimodel-form/aimodel-form.comp
 import { CameraAIModelMgrComponent } from './resources/camera/camera-aimodel-mgr/camera-aimodel-mgr.component';
 import { SRServersMgrComponent } from './sr-server/srservers-mgr/srservers-mgr.component';
 import { SRServerFormComponent } from './sr-server/sr-service-form/srserver-form.component';
-import { RegionCameraCopyComponent } from './resources/camera/region-camera-copy/region-camera-copy.component';
-import { EventHistoryComponent } from './event-history/event-history.component';
+import { RegionCameraCopyComponent } from './resources/camera/region-camera-copy/region-camera-copy.component'; 
 import { DeployCameraComponent } from './garbage-station/deploy-camera/deploy-camera.component';
 import { TrashIconsListComponent } from './garbage-station/station-chart/trash-icons-list/trash-icons-list.component';
 import { CameraRegionMoveComponent } from './resources/camera/camera-region-move/camera-region-move.component';
@@ -37,6 +34,8 @@ import { GarbageStationComponent } from './garbage-station/garbage-station/garba
 import { GarbageStationFormComponent } from './garbage-station/garbage-station-form/garbage-station-form.component';
 import { MapDeployComponent } from './garbage-station/map-deploy/map-deploy.component';
 import { FullTrashCanComponent } from './garbage-station/full-trash-can/full-trash-can.component';
+import { AIModelEventComponent } from './event-history/aimodel-event/aimodel-event.component';
+import { IllegalDropEventAnalyzeComponent } from './event-history/illegal-drop-event-analyze/illegal-drop-event-analyze.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -44,15 +43,15 @@ import { FullTrashCanComponent } from './garbage-station/full-trash-can/full-tra
     SharedModule,
   ],
   declarations: [
-  IndexComponent,TimeToolComponent,UserToolComponent,AlarmPointToolComponent,
+  IndexComponent,AlarmPointToolComponent,
   SideNavMenuComponent,HistoryLinkToolComponent,
   CameraFormComponent,  CameraMgrComponent,
   EncodeDeviceMgrComponent,EncodeDeviceFormComponent, RegionMgrComponent,
   RegionFormComponent, PlatformMgrComponent, PlatformFormComponent, AIModelsMgrComponent, AIModelFormComponent
-  , CameraAIModelMgrComponent, SRServersMgrComponent, SRServerFormComponent, RegionCameraCopyComponent, EventHistoryComponent
+  , CameraAIModelMgrComponent, SRServersMgrComponent, SRServerFormComponent, RegionCameraCopyComponent
   , DeployCameraComponent, TrashIconsListComponent, MapDeployComponent
   , CameraRegionMoveComponent, GarbageStationMgrComponent, StationChartComponent, DivisionStationTreeComponent
-  , RegionCameraTreeComponent, GarbageStationComponent, GarbageStationFormComponent,FullTrashCanComponent],
+  , RegionCameraTreeComponent, GarbageStationComponent, GarbageStationFormComponent,FullTrashCanComponent, AIModelEventComponent, IllegalDropEventAnalyzeComponent],
   exports:[
   ]
 })

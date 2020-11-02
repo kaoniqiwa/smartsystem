@@ -5,25 +5,13 @@
         <div fxFlex="320px" fxFlexOffset="15px" class="fill-height" fxLayoutAlign=" center">
           <img src="../../../assets/img/logo.png" alt="">
         </div>
-        <div fxFlex fxFlexOffset="55px" class="fill-height" fxLayoutAlign=" center">
-          
-          <div fxFlex>
-            <time-tool></time-tool>
-          </div>
-          <div fxFlex="200px">
-            <nav class="navbar top-navbar navbar-expand-md navbar-light p-t-0 p-b-0" style="z-index: 2;">
-              <div class="navbar-collapse">
-                <ul class="navbar-nav my-lg-0">
-                  <!-- <li class="nav-item dropdown p-t-0 p-b-0" id="indexAlarmBtn" style="line-height: 54px;">
-                    <app-alarm-point-tool></app-alarm-point-tool>
-                  </li> -->
-                  <li class="nav-item dropdown p-t-0 p-b-0">
-                    <app-user-tool></app-user-tool>
-                  </li>
+        <div fxFlex>
 
-                </ul>
-              </div>
-            </nav>
+        </div>
+        <div fxFlex="33" fxFlexOffset="55px" class="fill-height" fxLayoutAlign="end center"> 
+          <app-time-tool></app-time-tool>
+          <div class="m-r-10">
+            <app-user-tool></app-user-tool>
           </div>
 
         </div>
@@ -35,7 +23,7 @@
 
 </mat-toolbar>
 <mat-drawer-container class="example-container" autosize>
-  <mat-drawer #drawer  class="example-sidenav" [class.minimize]="!maximize" mode="side" opened="true">
+  <mat-drawer #drawer class="example-sidenav" [class.minimize]="!maximize" mode="side" opened="true">
     <div class="app-left-sidenav">
       <div class="d3 fine" style="max-height: 94%;
       overflow: auto;">
@@ -53,11 +41,12 @@
       <a href="javascript:void(0)" (click)="menuControl(true)" class="howell-icon-hamburger light-blue "></a>
     </div>
     <div class="side-nav-menu-off" [class.collapse]="!maximize">
-      <a href="javascript:void(0)" style="padding:4px;" (click)="menuControl(false)" class="mdi mdi-arrow-left-bold light-blue"></a>
+      <a href="javascript:void(0)" style="padding:4px;" (click)="menuControl(false)"
+        class="mdi mdi-arrow-left-bold light-blue"></a>
     </div>
   </mat-drawer>
 
-  <div class="example-sidenav-content fill-height"  [ngStyle]="{'margin-left': contentLeft+'px'}">
+  <div class="example-sidenav-content fill-height" [ngStyle]="{'margin-left': contentLeft+'px'}">
     <history-link-tool #historyLink></history-link-tool>
 
     <div class="fill-height p-l-20 wrap">

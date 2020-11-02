@@ -1,11 +1,11 @@
 import { DatePipe } from "@angular/common"; 
-import {ImageDesc} from '../../../shared-module/image-desc-card/image-desc'
-import { MediumPicture } from "../../../data-core/url/aiop/resources";
-import { ViewPagination } from "../../../shared-module/card-list-panel/card-list-panel";
-import { Page } from "../../../data-core/model/page"; 
-import { CardList } from "../../../shared-module/business-component/event-history/illegal-drop-event-card-list/card-list";
-import { CameraAIEventRecord } from "../../../data-core/model/aiop/camera-ai-event-record";
-import {EnumHelper,ResourceTypeEnum} from '../../../common/tool/enum-helper'
+import {ImageDesc} from '../../../../shared-module/image-desc-card/image-desc'
+import { MediumPicture } from "../../../../data-core/url/aiop/resources";
+import { ViewPagination } from "../../../../shared-module/card-list-panel/card-list-panel";
+import { Page } from "../../../../data-core/model/page"; 
+import { CardList } from "../../../../shared-module/business-component/event-history/illegal-drop-event-card-list/card-list";
+import { CameraAIEventRecord } from "../../../../data-core/model/aiop/camera-ai-event-record";
+import {EnumHelper,ResourceTypeEnum} from '../../../../common/tool/enum-helper'
 export class EventCards {
     dataSource = new Array<ImageDesc>();
     cardList_: CardList;

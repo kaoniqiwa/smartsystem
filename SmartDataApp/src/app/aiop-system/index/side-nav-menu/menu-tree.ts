@@ -57,7 +57,7 @@ export class MenuTreeMap{
         item = new MenuTree('howell-icon-device2', '事件');
         item.nodes.push({
             text: 'AI摄像机事件',
-            url: '/aiop/event-history'
+            url: '/aiop/event-history/ai-model-event'
         });
         menuTree.push(item);
         this.map.set(SystemModeEnum.aiopSet, menuTree);
@@ -93,9 +93,13 @@ export class MenuTreeMap{
         item.an = true;
         item.nodes.push({
             text: '乱扔垃圾事件',
-            url: '/aiop/illegal-drop-event-history'
+            url: '/aiop/event-history/illegal-drop-event'
         });
-        menuTree.push(item);
+        item.nodes.push({
+            text: '乱扔垃圾分析',
+            url: '/aiop/event-history/illegal-drop-event-analyze'
+        });
+        menuTree.push(item); 
         this.map.set(SystemModeEnum.illegalDropEvent, menuTree);
     }
 }

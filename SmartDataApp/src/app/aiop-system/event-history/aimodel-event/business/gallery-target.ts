@@ -1,7 +1,7 @@
 import { DatePipe } from "@angular/common";
-import { CameraAIEventRecord } from "../../../data-core/model/aiop/camera-ai-event-record";
-import { MediumPicture } from "../../../data-core/url/aiop/resources"; 
-import { GalleryTarget, ImageEventEnum } from "../../../shared-module/gallery-target/gallery-target";
+import { CameraAIEventRecord } from "../../../../data-core/model/aiop/camera-ai-event-record";
+import { MediumPicture } from "../../../../data-core/url/aiop/resources"; 
+import { GalleryTarget, ImageEventEnum } from "../../../../shared-module/gallery-target/gallery-target";
 
 export class GalleryTargetView {
     galleryTarget: GalleryTarget;

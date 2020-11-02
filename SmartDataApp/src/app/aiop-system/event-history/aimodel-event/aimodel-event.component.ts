@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { PageListMode } from '../../common/tool/enum-helper';
-import { CustomTableComponent } from '../../shared-module/custom-table/custom-table.component';
-import { ImageDesc } from '../../shared-module/image-desc-card/image-desc';
+import { PageListMode } from '../../../common/tool/enum-helper';
+import { ImageDesc } from '../../../shared-module/image-desc-card/image-desc';
 import { EventTableService } from "./business/event-table.service";
 @Component({
-  selector: 'app-event-history',
-  templateUrl: './event-history.component.html',
-  styleUrls: ['./event-history.component.styl'],
-  providers: [EventTableService]
+  selector: 'app-aimodel-event',
+  templateUrl: './aimodel-event.component.html',
+  styleUrls: ['./aimodel-event.component.styl'],
+  providers:[EventTableService]
 })
-export class EventHistoryComponent implements OnInit {
+export class AIModelEventComponent implements OnInit {
+
   listTypeView = false;
   listMode = PageListMode.table;
   pageListMode = PageListMode;

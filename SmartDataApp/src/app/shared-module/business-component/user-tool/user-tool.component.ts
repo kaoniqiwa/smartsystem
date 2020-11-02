@@ -3,8 +3,7 @@ import { SessionUser } from "../../../common/tool/session-user";
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-user-tool',
-  templateUrl: './user-tool.component.html',
-  styleUrls: ['./user-tool.component.styl']
+  templateUrl: './user-tool.component.html'
 })
 export class UserToolComponent implements OnInit {
   sessionUser = new SessionUser();

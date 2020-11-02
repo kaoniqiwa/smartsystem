@@ -1,13 +1,13 @@
 import { DatePipe } from "@angular/common";
-import { IConverter } from "../../../common/interface/IConverter";
-import { CameraAIEventRecord } from "../../../data-core/model/aiop/camera-ai-event-record";
-import { CustomTableEvent, CustomTableEventEnum } from "../../../shared-module/custom-table/custom-table-event";
-import { CustomTableArgs, FootArgs, TableAttr, TableOperationBtn } from "../../../shared-module/custom-table/custom-table-model";
-import { ITableField } from "../../common/ITableField";
-import { EnumHelper, ResourceTypeEnum } from "../../../common/tool/enum-helper";
-import { MediumPicture } from "../../../data-core/url/aiop/resources";
-import { IBusinessData } from "../../../common/interface/IBusiness";
-import { BusinessTable } from "../../common/business-table";   
+import { IConverter } from "../../../../common/interface/IConverter";
+import { CameraAIEventRecord } from "../../../../data-core/model/aiop/camera-ai-event-record";
+import { CustomTableEvent, CustomTableEventEnum } from "../../../../shared-module/custom-table/custom-table-event";
+import { CustomTableArgs, FootArgs, TableAttr, TableOperationBtn } from "../../../../shared-module/custom-table/custom-table-model";
+import { ITableField } from "../../../common/ITableField";
+import { EnumHelper, ResourceTypeEnum } from "../../../../common/tool/enum-helper";
+import { MediumPicture } from "../../../../data-core/url/aiop/resources";
+import { IBusinessData } from "../../../../common/interface/IBusiness";
+import { BusinessTable } from "../../../common/business-table";   
 export class EventTable extends BusinessTable implements IConverter {
     
     initGalleryTargetFn:(event:CameraAIEventRecord)=>void;

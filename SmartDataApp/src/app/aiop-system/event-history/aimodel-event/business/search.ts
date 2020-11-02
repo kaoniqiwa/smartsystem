@@ -1,7 +1,7 @@
 import { DatePipe } from "@angular/common";
 import { FormGroup, FormControl } from "@angular/forms";
-import { SearchHelper } from "../../../common/tool/table-form-helper";
-import {TimeInterval  } from "../../../common/tool/tool.service";
+import { SearchHelper } from "../../../../common/tool/table-form-helper";
+import {TimeInterval  } from "../../../../common/tool/tool.service";
 export class SearchControl extends SearchHelper {
    
     beginDate='';
