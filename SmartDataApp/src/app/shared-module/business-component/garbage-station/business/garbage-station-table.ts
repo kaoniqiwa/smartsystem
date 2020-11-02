@@ -1,6 +1,6 @@
 import { DatePipe } from "@angular/common";
 import { IConverter } from "../../../../common/interface/IConverter";
-import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
+import { GarbageStation, GetGarbageStationsParams } from "../../../../data-core/model/waste-regulation/garbage-station";
 import { GarbageStationType } from "../../../../data-core/model/waste-regulation/garbage-station-type";
 import { CustomTableEvent } from "../../../custom-table/custom-table-event";
 import { CustomTableArgs, FootArgs, TableAttr } from "../../../custom-table/custom-table-model";
@@ -11,23 +11,70 @@ import { Injectable } from "@angular/core";
 import { Division } from "../../../../data-core/model/waste-regulation/division"; 
 import { Page } from "../../../../data-core/model/page";
 import { StationStateEnum } from "../../../../common/tool/enum-helper";
+import { GarbageStationRequestService } from "../../../../data-core/repuest/garbage-station.service"; 
+import { SearchControl } from "./search";
+import { DivisionDao } from "../../../../data-core/dao/division-dao";
+import { GarbageStationTypeDao } from "../../../../data-core/dao/garbage-station-type-dao";
+import { DivisionRequestService } from "../../../../data-core/repuest/division.service";
+import { GarbageStationTypeRequestService } from "../../../../data-core/repuest/garbage-station.service";
 @Injectable()
 export class BusinessService {
+    dataSource_ = new Array<GarbageStation>(); 
 
-    table = new GarbageStationTable(this.datePipe);
-    constructor(private datePipe:DatePipe) {
+    divisions: Division[] = new Array(); 
+    garbageStationTypes:GarbageStationType[]=new Array();
 
+    search = new SearchControl();
+    set dataSource(items: GarbageStation[]) {
+        for (const x of items)
+            this.dataSource_.push(x);
     }
-    loadTableData(data:BusinessData) {
-        this.table.clearItems();      
 
+    get dataSource() {
+        return this.dataSource_;
+    }
+    table = new GarbageStationTable(this.datePipe);
+    private divisionDao: DivisionDao;
+    private  garbageStationTypeDao:GarbageStationTypeDao;
+    constructor(private datePipe:DatePipe,private garbageStationService:GarbageStationRequestService
+       , divisionService: DivisionRequestService
+        , garbageStationTypeService:GarbageStationTypeRequestService) {
+        this.divisionDao = new DivisionDao(divisionService);
+        this.garbageStationTypeDao=new GarbageStationTypeDao(garbageStationTypeService);
+    }
+
+    async  requestGarbageStationType(){
+        const result = await this.garbageStationTypeDao.garbageStationType();
+        return result;
+    }
+
+    async requestDivisions() {
+        const result = await this.divisionDao.allDivisions();
+        return result.Data;
+    }
+   
+    async requestData(pageIndex: number, callBack?: (page: Page) => void) {
+        const response = await this.garbageStationService.list(this.getRequsetParam(pageIndex, this.search)).toPromise();
+        let data = new BusinessData(this.garbageStationTypes,response.Data.Data,this.divisions);       
+
+        this.table.clearItems();
+        this.dataSource = [];
         this.table.Convert(data, this.table.dataSource);
-        this.table.totalCount = data.statioins.length;
+        this.table.totalCount = response.Data.Page.TotalRecordCount;
+        this.dataSource = response.Data.Data;
+        if (callBack) callBack(response.Data.Page);
+    }; 
 
-        this.table.initPagination({ PageCount: 1 } as Page, async (index) => {
+    getRequsetParam(pageIndex: number, search: SearchControl) {
 
-        });
-    } 
+        const param = new GetGarbageStationsParams();
+        param.PageIndex = pageIndex;
+      
+        param.PageSize = 10;
+        if (search.searchText && search.other == false)
+            param.Name = search.searchText;
+        return param;
+    }
 }
 
 export class GarbageStationTable extends BusinessTable implements IConverter {

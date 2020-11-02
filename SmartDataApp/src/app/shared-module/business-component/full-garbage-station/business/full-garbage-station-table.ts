@@ -5,33 +5,67 @@ import { TableFormControl } from "../../../../common/tool/table-form-helper";
 import { IPageTable } from "../../../../common/interface/IPageTable";
 import { CustomTableEvent } from "../../../custom-table/custom-table-event";
 import { ITableField } from "../../../../aiop-system/common/ITableField";
-import { GarbageStationNumberStatistic } from "../../../../data-core/model/waste-regulation/garbage-station-number-statistic";
+import { GarbageStationNumberStatistic, GetGarbageStationStatisticNumbersParams } from "../../../../data-core/model/waste-regulation/garbage-station-number-statistic";
 import { Injectable } from "@angular/core";
 import { BusinessTable } from "../../../../aiop-system/common/business-table";
 import { Page } from "../../../../data-core/model/page";
-import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
+import { GarbageStation, GetGarbageStationsParams } from "../../../../data-core/model/waste-regulation/garbage-station";
 import "../../../../common/string/hw-string";
+import { TableAttribute } from '../../../../common/tool/table-form-helper';
+import {SearchControl  } from "./search"; 
+import { GarbageStationRequestService } from "../../../../data-core/repuest/garbage-station.service";
+import { GarbageStationDao } from "../../../../data-core/dao/garbage-station-dao";
 @Injectable()
 export class BusinessService {
-
+    garbageStationDao:GarbageStationDao;
+    statistics:GarbageStationNumberStatistic[]=new Array();
     table = new StatisticTable();
-    constructor() {
+    search = new SearchControl();
 
+    dataSource_ = new Array<GarbageStation>(); 
+
+    set dataSource(items: GarbageStation[]) {
+        for (const x of items)
+            this.dataSource_.push(x);
     }
-    loadTableData(statistics: GarbageStationNumberStatistic[], statioins: GarbageStation[]) {
+
+    get dataSource() {
+        return this.dataSource_;
+    }
+    constructor(private garbageStationService: GarbageStationRequestService) {
+        this.garbageStationDao = new GarbageStationDao(garbageStationService);
+    }
+
+    async stationStatistic() {
+        const result =await this.garbageStationDao.allGarbageStationsStatistic();
+        return result.Data;
+    }
+
+    async requestData(pageIndex: number, callBack?: (page: Page) => void) {
+        const response = await this.garbageStationService.list(this.getRequsetParam(pageIndex, this.search)).toPromise();
+        let data = new Statistics();
+        data.garbageStations = response.Data.Data;
+        data.items = this.statistics;
+
         this.table.clearItems();
-        const list = new Statistics();
-        list.items = statistics;
-        list.garbageStations = statioins;
+        this.dataSource = [];
+        this.table.Convert(data, this.table.dataSource);
+        this.table.totalCount = response.Data.Page.TotalRecordCount;
+        this.dataSource = response.Data.Data;
+        if (callBack) callBack(response.Data.Page);
+    }; 
 
-        this.table.Convert(list, this.table.dataSource);
-        this.table.totalCount = statistics.length;
+    getRequsetParam(pageIndex: number, search: SearchControl) {
 
-        this.table.initPagination({ PageCount: 1 } as Page, async (index) => {
-
-        });
+        const param = new GetGarbageStationsParams();
+        param.PageIndex = pageIndex;
+      
+        param.PageSize = 10;
+        if (search.searchText && search.other == false)
+            param.Name = search.searchText;
+        return param;
     }
- 
+
 }
 
 
@@ -84,7 +118,7 @@ export class StatisticTable extends BusinessTable implements IConverter, IPageTa
             var stationsX = input.garbageStations.filter(x => !x.DryFull);
             stationsX = stationsX.sort((a, b) => {
                 return ''.naturalCompare(b.UpdateTime, a.UpdateTime);
-            }); 
+            });
 
             for (const item of stations) {
                 items.push(this.toTableModel(item));
@@ -93,7 +127,7 @@ export class StatisticTable extends BusinessTable implements IConverter, IPageTa
             }
             for (const item of stationsX) {
                 items.push(this.toTableModel(item));
-                const find = input.items.find(x => x.Id == item.Id);
+                const find = input.items.find(x => x.Id == item.Id);                
                 tds.push(this.toIconModel(find));
             }
 

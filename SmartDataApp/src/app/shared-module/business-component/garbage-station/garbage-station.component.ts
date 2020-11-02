@@ -1,29 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { DataService } from "./business/data.service";
-import {  BusinessService,BusinessData} from "./business/garbage-station-table";
+import { Component, OnInit } from '@angular/core'; 
+import {  BusinessService} from "./business/garbage-station-table";
  
 @Component({
   selector: 'hw-garbage-station',
   templateUrl: './garbage-station.component.html',
-  providers: [DataService,BusinessService]
+  providers: [BusinessService]
 })
 export class GarbageStationComponent implements OnInit {
-  searchFn = (val: string) => {
-    const filter = this.dataService.garbageStations.filter(x => x.Name.indexOf(val) > -1);
-    this.businessService.loadTableData(new BusinessData(this.dataService.garbageStationTypes
-      ,filter
-      ,this.dataService.divisions));
+  searchFn =async (val: string) => {
+    this.businessService.search.searchText=val;
+    this.businessService.search.state = true;
+    await this.businessService.requestData(1, (page) => {
+      this.businessService.table.initPagination(page, async (index) => {
+        await this.businessService.requestData(index);
+      });
+    });  
   }
-  constructor(private dataService: DataService
-    ,private businessService:BusinessService) { }
+  constructor(private businessService:BusinessService) { }
 
   async ngOnInit() {
-    this.dataService.garbageStations = await this.dataService.requestStations();
-    this.dataService.garbageStationTypes = await this.dataService.requestGarbageStationType();
-    this.dataService.divisions = await this.dataService.requestDivisions();
-    this.businessService.loadTableData(new BusinessData(this.dataService.garbageStationTypes
-      ,this.dataService.garbageStations
-      ,this.dataService.divisions));
+ 
+    this.businessService.garbageStationTypes = await this.businessService.requestGarbageStationType();
+    this.businessService.divisions = await this.businessService.requestDivisions();
+    await this.businessService.requestData(1, (page) => {
+      this.businessService.table.initPagination(page, async (index) => {
+        await this.businessService.requestData(index);
+      });
+    });   
   }
 
 }

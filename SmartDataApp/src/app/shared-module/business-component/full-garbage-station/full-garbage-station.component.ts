@@ -1,31 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { DataService } from "./business/data.service";
+import { Component, OnInit } from '@angular/core'; 
 import {BusinessService  } from "./business/full-garbage-station-table";
 
 @Component({
   selector: 'hw-full-garbage-station',
   templateUrl: './full-garbage-station.component.html',
-  providers: [DataService, BusinessService]
+  providers: [BusinessService]
 })
 export class FullGarbageStationComponent implements OnInit {
 
-  searchFn = (val: string) => {
-    const filter = this.dataService.statistics.filter(x => x.Name.indexOf(val) > -1),
-    filterX = this.dataService.garbageStations.filter(x => x.Name.indexOf(val) > -1);
-    this.businessService.loadTableData(filter, filterX);
+  searchFn =async (val: string) => {
+    this.businessService.search.searchText=val;
+    this.businessService.search.state = true;
+    await this.businessService.requestData(1, (page) => {
+      this.businessService.table.initPagination(page, async (index) => {
+        await this.businessService.requestData(index);
+      });
+    });  
   }
-  constructor(private dataService: DataService
-    , private businessService: BusinessService) {
+  constructor(
+     private businessService: BusinessService) {
       
   }
 
-  async ngOnInit() {
-   
-    this.dataService.statistics=await   this.dataService.stationStatistic();
-    this.dataService.garbageStations=await this.dataService.requestStations();
- 
-    
-    this.businessService.loadTableData(this.dataService.statistics, this.dataService.garbageStations);
+  async ngOnInit() {    
+    this.businessService.statistics=await this.businessService.stationStatistic();
+    await this.businessService.requestData(1, (page) => {
+      this.businessService.table.initPagination(page, async (index) => {
+        await this.businessService.requestData(index);
+      });
+    });  
   }
 
 }
