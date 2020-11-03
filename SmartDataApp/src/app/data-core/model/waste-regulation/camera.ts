@@ -21,6 +21,8 @@
 13：可回收垃圾
 14：有害垃圾 */
         PositionNo:number;
+
+        OnlineStatus:number;
     }
 
      /**获取摄像机列表参数 */

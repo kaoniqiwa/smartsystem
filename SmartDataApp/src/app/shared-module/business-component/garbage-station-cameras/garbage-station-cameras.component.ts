@@ -11,10 +11,11 @@ export class GarbageStationCamerasComponent implements OnInit {
   @Input() cameraStateTable  =CameraStateTableEnum.none;
 
   searchFn =async (text:string)=>{  
+    this.tableService.search.state=true;
     this.tableService.search.searchText = text; 
-    await this.tableService.searchData(1, (page) => {
+    await this.tableService.requestData(1, (page) => {
       this.tableService.table.initPagination(page, async (index) => {
-        await this.tableService.searchData(index);
+        await this.tableService.requestData(index);
       });
     });
  }
@@ -33,12 +34,5 @@ export class GarbageStationCamerasComponent implements OnInit {
 
 
 
-  async search() {
-    this.tableService.search.state = true;
-    await this.tableService.searchData(1, (page) => {
-      this.tableService.table.initPagination(page, async (index) => {
-        await this.tableService.searchData(index);
-      });
-    });
-  }
+   
 }

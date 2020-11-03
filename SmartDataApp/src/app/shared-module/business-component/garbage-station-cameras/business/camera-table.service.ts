@@ -32,8 +32,7 @@ export class CameraTableService{
         ,private datePipe:DatePipe) { 
        
         this.table.scrollPageFn = (event: CustomTableEvent) => {
-            this.requestData(event.data as any);
-            this.searchData(event.data as any);
+            this.requestData(event.data as any); 
         } 
         this.garbageStationDao = new GarbageStationDao(garbageStationService);
 
@@ -45,60 +44,48 @@ export class CameraTableService{
     }
 
     async requestData(pageIndex: number,callBack?:(page:Page)=>void) {
-        if (this.search.state == false) {
-            const response = await this.cameraService.postList(this.getRequsetParam(pageIndex, this.search)).toPromise();
-            const data = new BusinessData();
-            data.statioins=this.garbageStations; 
-            data.cameras = response.Data.Data.sort((a, b) => {
-                return ''.naturalCompare(a.Name, b.Name);
-            });
+        const response = await this.cameraService.postList(this.getRequsetParam(pageIndex, this.search)).toPromise();
+        const data = new BusinessData();
+        data.statioins=this.garbageStations; 
+        data.cameras = response.Data.Data.sort((a, b) => {
+            return ''.naturalCompare(a.Name, b.Name);
+        });
 
-            this.table.clearItems();
-            this.dataSource = [];
+        this.table.clearItems();
+        this.dataSource = [];
+        if(this.cameraStateTable == CameraStateTableEnum.offline){
+            data.cameras = data.cameras.filter(x=>x.OnlineStatus !=0);
+            this.table.Convert(data, this.table.dataSource); 
+            this.table.totalCount = data.cameras.length;    
+            this.dataSource = data.cameras;
+            if(callBack)callBack({ PageCount:1} as any);   
+        }
+        else{
             this.table.Convert(data, this.table.dataSource); 
             this.table.totalCount = response.Data.Page.TotalRecordCount;         
             this.dataSource = response.Data.Data;
             if(callBack)callBack(response.Data.Page);
         }
+      
 
-    }
-
-    async searchData(pageIndex: number,callBack?:(page:Page)=>void) {
-        if (this.search.state) {
-            const response = await this.cameraService.postList(this.getRequsetParam(pageIndex, this.search)).toPromise();
-            
-            const data = new BusinessData();
-            data.statioins=this.garbageStations; 
-            data.cameras = response.Data.Data.sort((a, b) => {
-                return ''.naturalCompare(a.Name, b.Name);
-            });
-
-            this.table.clearItems();
-            this.dataSource = [];
-            this.table.Convert(data, this.table.dataSource); 
-            this.table.totalCount = response.Data.Page.TotalRecordCount;         
-            this.dataSource = response.Data.Data;
-            if(callBack)callBack(response.Data.Page);
-        }
-
-    }
-
+    } 
 
     getRequsetParam(pageIndex: number, search: SearchControl) {
         const  param = new GetGarbageStationCamerasParams();
         param.PageIndex = pageIndex;
-        param.PageSize = new TableAttribute().pageSize;   
+        param.PageSize =this.cameraStateTable == CameraStateTableEnum.offline? new TableAttribute().pageSize:10;   
         if (search.state) 
             param.Name =search.searchText   
-        if(this.cameraStateTable != CameraStateTableEnum.none)
+        if(this.cameraStateTable == CameraStateTableEnum.online)
             param.OnlineStatus=this.cameraStateTable;
+        
         return param;
     }
 }
 
 
 export enum CameraStateTableEnum{
-  none,
   online,
-  offline
+  offline,
+  none,
 }

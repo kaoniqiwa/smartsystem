@@ -52,7 +52,7 @@
               </div>
             </td>
             <ng-container *ngIf="model.iconTd">
-              <td>
+              <td class="iconTd">
                 <ng-container *ngFor="let i of iconTdAttr(item[model.primaryKey])">
                   <div [ngStyle]="{'width':i.width,'height':i.width}" style="position: relative;" 
                   [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1"

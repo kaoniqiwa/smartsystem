@@ -76,9 +76,8 @@ export class CameraTable extends BusinessTable implements IConverter {
         tableField.updateTime = this.datePipe.transform(statioin.UpdateTime, 'yyyy-MM-dd HH:mm');
         tableField.name = camera.Name;
         tableField.usage = CameraUsageEnum[camera.CameraUsage];
-        tableField.garbageStationName = statioin ? statioin.Name : '-';
-        tableField.state='-';
-        // tableField.state = resourceCamera ? (resourceCamera.OnlineStatus == 0 ? '正常' : '离线') : '-';
+        tableField.garbageStationName = statioin ? statioin.Name : '-'; 
+        tableField.state = camera ? (camera.OnlineStatus == 0 ? '正常' : '离线') : '离线';
         return tableField;
     }
 }
