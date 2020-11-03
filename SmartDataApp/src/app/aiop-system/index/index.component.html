@@ -8,8 +8,58 @@
         <div fxFlex>
 
         </div>
-        <div fxFlex="33" fxFlexOffset="55px" class="fill-height" fxLayoutAlign="end center"> 
-          <app-time-tool></app-time-tool>
+        <div fxFlex="50" fxFlexOffset="55px" class="fill-height" fxLayoutAlign="end center"> 
+          <ng-container *ngFor="let m of systemMode">
+            <div class="hw-trapezoid-wrap">
+              <div class="hw-trapezoid">           
+              </div>
+              <a href="javascript:void(0)" (click)="go(m.linkType)"  class="light-blue-text">
+                <i class="{{m.icon}}"></i>
+                {{m.name}}
+              </a>
+            </div> 
+          </ng-container>
+          <!-- <div class="hw-trapezoid-wrap">
+            <div class="hw-trapezoid">           
+            </div>
+            <a href="javascript:void(0)" (click)="go(systemMode.gisSmartData)"  class="light-blue-text">
+              <i class="howell-icon-cam-all1"></i>
+              数据统计
+            </a>
+          </div>      
+          <div class="hw-trapezoid-wrap">
+            <div class="hw-trapezoid">           
+            </div>
+            <a href="javascript:void(0)" (click)="go(systemMode.supervision)"  class="light-blue-text">
+              <i class="howell-icon-cam-all1"></i>
+              监督平台
+            </a>
+          </div>
+          <div class="hw-trapezoid-wrap">
+            <div class="hw-trapezoid">           
+            </div>
+            <a href="javascript:void(0)" (click)="go(systemMode.illegalDropEvent)"  class="light-blue-text">
+              <i class="howell-icon-system"></i>
+              垃圾事件
+            </a>
+          </div>
+          <div class="hw-trapezoid-wrap">
+            <div class="hw-trapezoid">           
+            </div>
+            <a href="javascript:void(0)" (click)="go(systemMode.aiopSet)"   class="light-blue-text">
+              <i class="howell-icon-setting"></i>
+              系统设置
+            </a>
+          </div> 
+          <div class="hw-trapezoid-wrap">
+            <div class="hw-trapezoid">           
+            </div>
+            <a href="javascript:void(0)" (click)="go(systemMode)" routerLink="../system-mode" class="light-blue-text">
+              <i class="howell-icon-home"></i>
+              返回首页
+            </a>
+          </div>  -->
+          <app-time-tool class="m-l-20"></app-time-tool>
           <div class="m-r-10">
             <app-user-tool></app-user-tool>
           </div>

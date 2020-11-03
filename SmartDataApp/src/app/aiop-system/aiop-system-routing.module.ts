@@ -22,6 +22,7 @@ const routes: Routes = [
     path: '', component: IndexComponent, children: [
       {
         path: 'resources', children: [
+      
           { path: 'camera-mgr', component: CameraMgrComponent },
           { path: 'camera-ai-model-mgr', component: CameraAIModelMgrComponent },
           { path: 'encode-device-mgr', component: EncodeDeviceMgrComponent }
@@ -34,6 +35,11 @@ const routes: Routes = [
       },
       {
         path: 'platform', children: [
+          {
+            path: '',
+            redirectTo: 'platform-mgr',
+            pathMatch: 'full'
+          },
           { path: 'platform-mgr', component: PlatformMgrComponent },
           { path: 'sr-service-mgr', component: SRServersMgrComponent }
         ]
@@ -45,6 +51,11 @@ const routes: Routes = [
       }
       , {
         path: 'event-history', children: [
+          {
+            path: '',
+            redirectTo: 'illegal-drop-event',
+            pathMatch: 'full'
+          },
           { path: 'ai-model-event', component: AIModelEventComponent },
           {
             path: 'illegal-drop-event', component: IllegalDropEventHistoryComponent, data: {
@@ -58,6 +69,11 @@ const routes: Routes = [
       }
       , {
         path: 'garbage-station', children: [
+          {
+            path: '',
+            redirectTo: 'index',
+            pathMatch: 'full'
+          },
           { path: 'map-deploy', component: MapDeployComponent },
           { path: 'deploy-camera', component: DeployCameraComponent },
           { path: 'garbage-station-mgr', component: GarbageStationMgrComponent },

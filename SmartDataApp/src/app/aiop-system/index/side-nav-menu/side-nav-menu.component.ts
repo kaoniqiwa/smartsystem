@@ -35,17 +35,22 @@ export class SideNavMenuComponent implements OnInit {
   maximize = true;
   private highlightedBtn = new Array<string>();
   menuTree = new Array<MenuTree>();
-
+  menuTreeMap:MenuTreeMap;
   @Output() menuEvent = new EventEmitter<string>();
 
-  constructor(router: Router, navService: SideNavService) {
+  constructor(router: Router, private navService: SideNavService) {
     const  
      menuTreeMap = new MenuTreeMap();
      menuTreeMap.init();
-     this.menuTree =menuTreeMap.map.get(navService.systemMode);
-    this.highlightedBtn = [this.menuTree[0].title];
-     router.navigate([this.menuTree[0].nodes[0].url])
+     this.menuTreeMap=menuTreeMap;
+     this.initMenuTree();
+   //  router.navigate([this.menuTree[0].nodes[0].url])
 
+  }
+
+  initMenuTree(){
+    this.menuTree =this.menuTreeMap.map.get(this.navService.systemMode);
+    this.highlightedBtn = [this.menuTree[0].title];
   }
 
   mainBtnClick(item: MenuTree) {

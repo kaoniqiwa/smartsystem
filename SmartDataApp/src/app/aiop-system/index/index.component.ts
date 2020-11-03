@@ -14,6 +14,7 @@ import {
 } from '@angular/animations';
 import { SessionUser } from "../../common/tool/session-user";
 import { Title } from '@angular/platform-browser';
+import { SystemModeEnum } from '../../common/tool/table-form-helper';
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -38,6 +39,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class IndexComponent implements OnInit {
 
+  systemMode = new Array<{ name: string, icon: string, linkType: number }>();
   @ViewChild('navMenu')
   navMenu: SideNavMenuComponent;
   @ViewChild('historyLink')
@@ -47,14 +49,22 @@ export class IndexComponent implements OnInit {
   bug = false;
   contentLeft = 0;
   constructor(private router: Router
-    ,titleService:Title
+    , titleService: Title
     , private navService: SideNavService) {
-      titleService.setTitle('生活垃圾监管平台');
+    titleService.setTitle('生活垃圾监管平台');
     const u = new SessionUser();
     if (u.user.name == '' || u.user.pwd == '') this.router.navigateByUrl('login');
   }
   ngOnInit() {
-   
+    this.systemMode.push({
+      icon: 'howell-icon-cam-all1'
+      , name: '数据统计', linkType: SystemModeEnum.gisSmartData
+    });
+    this.systemMode.push({ icon: 'howell-icon-cam-all1', name: '监督平台', linkType: SystemModeEnum.supervision });
+    this.systemMode.push({ icon: 'howell-icon-system', name: '垃圾事件', linkType: SystemModeEnum.illegalDropEvent });
+    this.systemMode.push({ icon: 'howell-icon-setting', name: '系统设置', linkType: SystemModeEnum.aiopSet });
+    this.systemMode.push({ icon: 'howell-icon-home', name: '返回首页', linkType: null });
+
     this.navService.playVideoBug.subscribe((x: boolean) => {
       this.bug = x;
     });
@@ -65,14 +75,31 @@ export class IndexComponent implements OnInit {
     this.navMenu.maximize = maximize;
     if (this.bug) {
       this.contentLeft = this.maximize ? 296 : 100;
-      domCss('mat-drawer-content',{
-        'margin-left':0
-      },'.');
+      domCss('mat-drawer-content', {
+        'margin-left': 0
+      }, '.');
     }
 
   }
 
-  changeMenuLink(val:string){
-    this.historyLink.links=[val];
+  go(val: SystemModeEnum) {
+    if (val == SystemModeEnum.aiopSet || val == SystemModeEnum.illegalDropEvent || val == SystemModeEnum.supervision) {
+      this.navService.systemMode = val;
+      this.navMenu.initMenuTree();
+      var sub = '';
+      if (val == SystemModeEnum.aiopSet) sub = 'platform';
+      if (val == SystemModeEnum.illegalDropEvent) sub = 'event-history';
+      if (val == SystemModeEnum.supervision) sub = 'garbage-station';
+      this.router.navigateByUrl('aiop/' + sub);
+    }
+    else if (val == SystemModeEnum.gisSmartData)
+      this.router.navigateByUrl('waste-regulation');
+    else if (val == null)
+      this.router.navigateByUrl('system-mode');
+
+  }
+
+  changeMenuLink(val: string) {
+    this.historyLink.links = [val];
   }
 }

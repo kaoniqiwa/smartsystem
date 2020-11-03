@@ -486,6 +486,36 @@ a.td-icon:hover i{
     background-image:url('/assets/img/login-btn-hover.png')
 }
 
+/* 直角梯形 */
+.hw-trapezoid-wrap{
+    height: 30px;
+    width: 106px;
+    margin-right: 20px;
+    position: relative;
+}
+
+.hw-trapezoid{
+    position :absolute;
+    height: 30px;
+    width: 106px;
+    background-color: #232B52;
+    border: 2px #5E6EBE solid;
+    transform:skewX(-20deg);
+}
+
+.hw-trapezoid-wrap a{   
+    z-index: 1;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    text-align: center;
+    width: 100%;
+    font-size: 14px;
+}
+.hw-trapezoid-wrap a i{
+    margin-right: 4px
+}
+
 /**用户信息*/
 .logout{
     text-align: center;

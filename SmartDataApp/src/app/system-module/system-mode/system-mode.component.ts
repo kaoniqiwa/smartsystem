@@ -17,13 +17,13 @@ export class SystemModeComponent implements OnInit {
       titleService.setTitle('生活垃圾监管平台');
     this.systems.push(new SystemMode(
       'howell-icon-cam-all1'
-     , 'GIS大数据统计', 68, SystemModeEnum.gisSmartData));
+     , '数据统计', 98, SystemModeEnum.gisSmartData));
     this.systems.push(new SystemMode(
       'howell-icon-cam-all1'
-      , '垃圾监督平台', 74, SystemModeEnum.supervision));
+      , '监督平台', 98, SystemModeEnum.supervision));
     this.systems.push(new SystemMode(
        'howell-icon-system'
-      , '乱扔垃圾事件', 74, SystemModeEnum.illegalDropEvent));
+      , '垃圾事件', 98, SystemModeEnum.illegalDropEvent));
     this.systems.push(new SystemMode(
        'howell-icon-garbage2'
       , '垃圾房状态', 88, SystemModeEnum.garbageStation));
@@ -39,7 +39,11 @@ export class SystemModeComponent implements OnInit {
   go(val: SystemModeEnum) {
     if (val == SystemModeEnum.aiopSet || val == SystemModeEnum.illegalDropEvent || val == SystemModeEnum.supervision) {
       this.sideNavService.systemMode = val;
-      this.route.navigateByUrl('aiop');
+      var sub = '';
+      if(val == SystemModeEnum.aiopSet)sub='platform';
+      if(val == SystemModeEnum.illegalDropEvent)sub='event-history';
+      if(val == SystemModeEnum.supervision)sub='garbage-station';
+      this.route.navigateByUrl('aiop/'+sub);
     }
     else if(val == SystemModeEnum.gisSmartData)
      this.route.navigateByUrl('waste-regulation');
