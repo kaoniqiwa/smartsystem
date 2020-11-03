@@ -6,10 +6,17 @@ import "../../../../common/string/hw-string";
 import { Page } from "../../../../data-core/model/page";
 import { TableAttribute } from "../../../../common/tool/table-form-helper";
 import { DatePipe } from "@angular/common";
+import { CameraRequestService as  ResourceRequestService } from "../../../../data-core/repuest/resources.service"; 
 import { Camera, GetGarbageStationCamerasParams } from "../../../../data-core/model/waste-regulation/camera";
+import { Camera as ResourceCamera } from "../../../../data-core/model/aiop/camera";
 import { GarbageStationDao } from "../../../../data-core/dao/garbage-station-dao";
+import {  ResourceCameraDao} from "../../../../data-core/dao/resources-camera-dao";
+import { DivisionDao } from "../../../../data-core/dao/division-dao";
 import { GarbageStationRequestService ,CameraRequestService} from "../../../../data-core/repuest/garbage-station.service";
 import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
+import { Division } from "../../../../data-core/model/waste-regulation/division";
+import { DivisionRequestService } from "../../../../data-core/repuest/division.service";
+import { MediumPicture } from "../../../../data-core/url/aiop/resources";
 @Injectable()
 export class CameraTableService{
     dataSource_ = new Array<Camera>();
@@ -25,28 +32,53 @@ export class CameraTableService{
     search = new SearchControl();
     table = new CameraTable(this.datePipe);
     garbageStationDao:GarbageStationDao;
+    resourceCameraDao:ResourceCameraDao;
+    divisionDao:DivisionDao;
     garbageStations = new Array<GarbageStation>(); 
+    resourceCamera=new Array<ResourceCamera>();
+    divisions=new Array<Division>();
     cameraStateTable:CameraStateTableEnum;
+    findImgSrc = '';
     constructor(garbageStationService: GarbageStationRequestService
        ,private cameraService:CameraRequestService
+       , resourceRequestService:ResourceRequestService
+        ,divisionRequestService:DivisionRequestService
         ,private datePipe:DatePipe) { 
        
         this.table.scrollPageFn = (event: CustomTableEvent) => {
             this.requestData(event.data as any); 
         } 
         this.garbageStationDao = new GarbageStationDao(garbageStationService);
+        this.resourceCameraDao=new ResourceCameraDao(resourceRequestService);
+        this.divisionDao=new DivisionDao(divisionRequestService);
 
+        this.table.showImgFn = (id:string)=>{
+            const find = this.resourceCamera.find(x=>x.Id==id);
+            this.findImgSrc= new MediumPicture().getJPG(find.ImageUrl);
+        }
     }
 
     async  getGarbageStations(){
       const result=await this.garbageStationDao.allGarbageStations();
-      this.garbageStations=result.Data;
+      this.garbageStations=result;
+    }
+
+   async getResourceCameras(){
+      const result = await this.resourceCameraDao.allResourceCameras();
+      this.resourceCamera=result;
+    }
+
+    async getDivisions(){
+        const result = await this.divisionDao.allDivisions();
+        this.divisions=result;
     }
 
     async requestData(pageIndex: number,callBack?:(page:Page)=>void) {
         const response = await this.cameraService.postList(this.getRequsetParam(pageIndex, this.search)).toPromise();
         const data = new BusinessData();
         data.statioins=this.garbageStations; 
+        data.resourceCameras=this.resourceCamera;
+        data.divisions=this.divisions;        
         data.cameras = response.Data.Data.sort((a, b) => {
             return ''.naturalCompare(a.Name, b.Name);
         });

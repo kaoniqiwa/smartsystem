@@ -29,7 +29,7 @@
               <span title="{{item[attrs.tdInnerAttrName]}}"
                 class="{{attrs.tdInnerAttrClassName&&item[attrs.tdInnerAttrClassName]?item[attrs.tdInnerAttrClassName]:''}}"
                 *ngIf="!attrs.isImg&&!attrs.isHTML"
-                [ngStyle]="{'color': fontColor(item[attrs.tdInnerAttrName])?'rgb(225,94,100)':'unset'}">{{item[attrs.tdInnerAttrName]}}</span>
+                class="{{fontColor(item[attrs.tdInnerAttrName])}}">{{item[attrs.tdInnerAttrName]}}</span>
               <img src="{{item[attrs.tdInnerAttrName]}}" onerror="this.src='../assets/img/timg-pic.jpg'"
                 (click)="imgClick(item)" *ngIf="attrs.isImg"  [class.small]="attrs.isSmallImg" [class.hover-big]="attrs.isHoverBig">
             </td>

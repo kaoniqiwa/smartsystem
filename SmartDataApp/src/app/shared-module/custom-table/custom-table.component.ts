@@ -1,15 +1,16 @@
-import { Component, OnInit, Input, ViewChild,OnChanges } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnChanges } from '@angular/core';
 import { CustomTableArgs } from './custom-table-model';
 import { CustomTableEvent, CustomTableEventEnum } from "./custom-table-event";
 import { IBusinessData } from '../../common/interface/IBusiness';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { HWPaginationOptions } from "../../common/directive/pagination-directive";
+import { ColorEnum } from '../card-component/card-content-factory';
 @Component({
   selector: 'hw-custom-table',
   templateUrl: './custom-table.component.html',
   styleUrls: ['./custom-table.component.styl'],
 })
-export class CustomTableComponent implements OnInit{
+export class CustomTableComponent implements OnInit {
 
   // @ViewChild('customTable', { read: InfiniteScrollDirective })
   // scrollBar: InfiniteScrollDirective;
@@ -30,16 +31,16 @@ export class CustomTableComponent implements OnInit{
       tableHeight += 42;
     }
     this.minusTableHeightStr = tableHeight + "px";
-  
+
   }
 
   iconTdAttr(id: string) {
     const item = this.model.iconTd.find(x => x.key == id);
-     
-    
-    return item .icons ;
+
+
+    return item.icons;
   }
- 
+
 
   iconTextTagAttr(id: string) {
     const item = this.model.iconTextTagAttr.find(x => x.key == id);
@@ -144,8 +145,24 @@ export class CustomTableComponent implements OnInit{
   onScrollDown() {
   }
 
-  fontColor(text:string){
-     return text == '离线';//rgb(225,94,100)
+  fontColor(text: string) {
+    var className = '';
+    switch (text) {
+      case '正常':
+        className = ColorEnum["green-text"];
+        break;
+      case '满溢':
+        className = ColorEnum["orange-text"];
+        break;
+      case '异常':
+        className = ColorEnum["red-text"];
+        break;
+      case '离线':
+        className = ColorEnum["red-text"];
+      default:
+        break;
+    }
+    return className;//rgb(225,94,100)
   }
 
   imgClick(url: string) {

@@ -4,7 +4,8 @@ import { CameraTableService ,CameraStateTableEnum} from "./business/camera-table
 @Component({
   selector: 'hw-garbage-station-cameras',
   templateUrl: './garbage-station-cameras.component.html',
-  providers: [CameraTableService]
+  providers: [CameraTableService],
+  styleUrls:['./garbage-station-cameras.component.styl']
 })
 export class GarbageStationCamerasComponent implements OnInit {
 
@@ -22,9 +23,11 @@ export class GarbageStationCamerasComponent implements OnInit {
   constructor(private tableService: CameraTableService) { 
   }
 
-  async ngOnInit() {
+  async ngOnInit() { 
     this.tableService.cameraStateTable = this.cameraStateTable;
     await this.tableService.getGarbageStations();  
+    await this.tableService.getDivisions();
+    await this.tableService.getResourceCameras();
     await this.tableService.requestData(1, (page) => {
       this.tableService.table.initPagination(page, async (index) => {
         await this.tableService.requestData(index);

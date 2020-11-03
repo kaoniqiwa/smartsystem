@@ -50,7 +50,7 @@ export class BusinessService {
 
     async requestDivisions() {
         const result = await this.divisionDao.allDivisions();
-        return result.Data;
+        return result;
     }
    
     async requestData(pageIndex: number, callBack?: (page: Page) => void) {
