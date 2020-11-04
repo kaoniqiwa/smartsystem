@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input ,Output,EventEmitter} from '@angular/core';
 import { PanelView, EventTypeEnum, CardListPanel } from "./card-list-panel";
 @Component({
   selector: 'hw-card-list-panel',
@@ -7,6 +7,8 @@ import { PanelView, EventTypeEnum, CardListPanel } from "./card-list-panel";
 })
 export class CardListPanelComponent implements OnInit {
   @Input() model: PanelView;
+
+  @Input() itemMouseEnterFn:(id:string)=>boolean;
   //已选中id
   private selectedId_: string[] = [];
   constructor() { }
@@ -20,6 +22,11 @@ export class CardListPanelComponent implements OnInit {
 
   get selectedId() {
     return this.selectedId_;
+  }
+
+  itemMouseEnter(id:string){
+     const move=this.itemMouseEnterFn(id);
+     if(move)this.itemClick(id);
   }
 
   listItemDelClick(listId: string, itemId: string) {

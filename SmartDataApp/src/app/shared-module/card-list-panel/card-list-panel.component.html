@@ -1,7 +1,7 @@
 <ng-container *ngIf="model&&model.listPanel&&model.pagination">
   <div class="fill-width"  data-list="hw" style="overflow: auto;height: calc(100% - 50px);">
-    <div class="models-list-panel" (click)="itemClick(m.id)"
-      [class.selected]="selectedId.indexOf(m.id)>-1" 
+    <div class="models-list-panel" (click)="itemClick(m.id)" (mouseenter)="itemMouseEnter(m.id)"  
+      [class.selected]="selectedId.indexOf(m.id)>-1"  
       *ngFor="let m of model.listPanel">
       <div class="title-bar">
         <img src="/assets/img/blue-light-spot.png" width="197" height="34" alt="">

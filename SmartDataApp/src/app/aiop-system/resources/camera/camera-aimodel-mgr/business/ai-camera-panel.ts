@@ -11,6 +11,8 @@ export class AICameraPanel {
     cardListSelectedId: Array<string>;
     underCamerasAIModels_: Map<string, string[]>;
     cardListPanelView_ = new PanelView();
+    dropItemState = false;
+    clearSelectedIds :()=>void;
     viewPaginationFn: (page: Page) => ViewPagination;
     addAIModelToCameraFn: (cameraId: string, aiModelId: string, successFn: (success: boolean) => void) => void;
     delAIModelToCameraFn: (cameraId: string, aiModelId: string, successFn: (success: boolean) => void) => void;
@@ -83,7 +85,7 @@ export class AICameraPanel {
                 }
             }
         });
-
+    this.dropItemState=false;
     }
 
     get cardListPanelV() {
@@ -92,6 +94,7 @@ export class AICameraPanel {
 
     clearPanelView() {
         this.cardListPanelView_.listPanel = new Array();
+        this.clearSelectedIds();
     }
 
     set cardListPanelView(items: Camera[]) {

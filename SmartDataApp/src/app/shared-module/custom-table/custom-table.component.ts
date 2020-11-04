@@ -1,16 +1,14 @@
-import { Component, OnInit, Input, ViewChild, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { CustomTableArgs } from './custom-table-model';
 import { CustomTableEvent, CustomTableEventEnum } from "./custom-table-event";
-import { IBusinessData } from '../../common/interface/IBusiness';
-import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { HWPaginationOptions } from "../../common/directive/pagination-directive";
+import { IBusinessData } from '../../common/interface/IBusiness'; 
 import { ColorEnum } from '../card-component/card-content-factory';
 @Component({
   selector: 'hw-custom-table',
   templateUrl: './custom-table.component.html',
   styleUrls: ['./custom-table.component.styl'],
 })
-export class CustomTableComponent implements OnInit {
+export class CustomTableComponent implements OnInit{
 
   // @ViewChild('customTable', { read: InfiniteScrollDirective })
   // scrollBar: InfiniteScrollDirective;
@@ -142,8 +140,10 @@ export class CustomTableComponent implements OnInit {
   // }
 
   //鼠标滚到底事件
-  onScrollDown() {
+  changePage() {
+    this.selectCancel();
   }
+  
 
   fontColor(text: string) {
     var className = '';

@@ -115,7 +115,8 @@
           </div>
 
         </div>
-        <div HWPagination [options]="model.paginationOptions" class="page fill-height"></div>
+        <div HWPagination [options]="model.paginationOptions" (changePageEvent)="changePage()"
+         class="page fill-height"></div>
       </ng-container>
 
     </div>

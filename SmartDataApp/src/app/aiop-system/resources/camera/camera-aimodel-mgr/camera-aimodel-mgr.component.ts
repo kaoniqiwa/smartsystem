@@ -17,6 +17,10 @@ export class CameraAIModelMgrComponent implements OnInit {
   close = ()=>{
     this.mgrService.aiCameraPanel.copyCameraId='';
   }
+
+  cameraMouseEnter =(id:string)=>{
+     return this.mgrService.aiCameraPanel.dropItemState;
+  }
   constructor(private mgrService: CameraAIModelMgrService) { }
 
   init(data: Camera[], page: Page){
@@ -37,6 +41,9 @@ export class CameraAIModelMgrComponent implements OnInit {
     });   
     this.mgrService.aiModelsPanel.convertFromList(this.mgrService.aiModels);
     this.mgrService.aiCameraPanel.cardListSelectedId = this.cardListPanel.selectedId;
+    this.mgrService.aiCameraPanel.clearSelectedIds = ()=>{
+       this.cardListPanel.selectCancel();
+    }
   }
 
   async search() {

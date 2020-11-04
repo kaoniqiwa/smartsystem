@@ -16,7 +16,9 @@
           (cdkDropListDropped)="mgrService.aiCameraPanel.dropItem($event)" class="fine"
           style="height: calc(100% - 88px);overflow: scroll;">
           <ng-container *ngFor="let item of mgrService.aiModelsPanel.dataSource">
-            <div  [class.in]="!item.hidden" class="model-item-wrap pull-left collapse" style=" cursor: move;" cdkDrag>
+            <div  [class.in]="!item.hidden" class="model-item-wrap pull-left collapse" style=" cursor: move;" 
+            (cdkDragStarted)="mgrService.aiCameraPanel.dropItemState=true"
+            cdkDrag>
               <div fxLayoutAlign="center">
                 <div class="middle-round-btn">
                   <i class="howell-icon-home3 fill-height" fxLayoutAlign="center center"
@@ -52,7 +54,8 @@
 
         </div>
         <div style="height: calc(100% - 26px);" cdkDropList id="to" [cdkDropListConnectedTo]="[all]">
-          <hw-card-list-panel #cardListPanel [model]="mgrService.aiCameraPanel.cardListPanelV"></hw-card-list-panel>
+          <hw-card-list-panel #cardListPanel [itemMouseEnterFn]="cameraMouseEnter"
+          [model]="mgrService.aiCameraPanel.cardListPanelV"></hw-card-list-panel>
         </div>
       </div> 
     </div>
