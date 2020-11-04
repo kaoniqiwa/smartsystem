@@ -223,7 +223,7 @@ function CesiumDataController(host, port, onloaded) {
         },
         Post: function (entity, filename, opts, callback, onerror) {
             var str = JSONstringify(entity);
-            var url = "http://" + host + ":" + port + "/node/";
+            var url = "http://" + host + ":" + port + "/amap/amap_node/";
             var service = new AsynHttpService(ContentType.Json);
             service.opts = opts;
             service.callback = callback;
@@ -243,7 +243,7 @@ function CesiumDataController(host, port, onloaded) {
             service.httpPost(url, str);
         },
         Delete: function (filename, callback, onerror) {
-            var url = "http://" + host + ":" + port + "/node/";
+            var url = "http://" + host + ":" + port + "/amap/amap_node/";
             var service = new AsynHttpService(ContentType.Json);
             service.addHeaders("filename", filename);
             service.OnError = onerror ? onerror : AsynService.OnError;
@@ -261,14 +261,14 @@ function CesiumDataController(host, port, onloaded) {
         },
         Post: function (entity, filename) {
             var str = JSONstringify(entity);
-            var url = "http://" + host + ":" + port + "/node/";
+            var url = "http://" + host + ":" + port + "/amap/amap_node/";
             var service = new HttpService(ContentType.Json);
             service.addHeaders("filename", filename);
 
             service.httpPost(url, str);
         },
         Delete: function (filename) {
-            var url = "http://" + host + ":" + port + "/node/";
+            var url = "http://" + host + ":" + port + "/amap/amap_node/";
             var service = new HttpService(ContentType.Json);
             service.addHeaders("filename", filename);
             service.httpDelete(url);

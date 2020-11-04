@@ -7,6 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Division } from 'src/app/data-core/model/waste-regulation/division';
 import { GarbageStation } from 'src/app/data-core/model/waste-regulation/garbage-station';
 import { MessageBar } from 'src/app/common/tool/message-bar';
+import { ConfirmComponent } from './confirm/confirm.component';
 
 
 @Component({
@@ -26,13 +27,23 @@ export class MapDeployComponent implements OnInit {
   iframe: ElementRef;
 
   // 提示框
-  @ViewChild('confirm')
-  confirm: ElementRef;
+  @ViewChild('locationConfirm')
+  locationConfirm: ConfirmComponent;
+
+  @ViewChild('unbindConfirm')
+  unbindConfirm: ConfirmComponent;
 
   confirmMessage: string;
   confirmMode = 0;
 
   wantUnbindNode: FlatNode;
+  wantBindNode: FlatNode;
+
+  // 是否可拖拽
+  draggable = false;
+
+  mouseLon = 0;
+  mouseLat = 0;
 
 
   // 地图地址
@@ -63,18 +74,37 @@ export class MapDeployComponent implements OnInit {
   rightBtn: { iconClass: string, btns: RightBtn[] };
 
   rightBtnFn = (item: FlatNode) => {
-    this.confirmMessage = '是否解除绑定？';
-    this.confirm.nativeElement['style'].display = '';
-    this.confirmMode = 1;
-    this.wantUnbindNode = item;
+    console.log(item);
+
+    if (!item.rightClassBtn || item.rightClassBtn.length === 0) {
+      return;
+    }
+
+    switch (item.rightClassBtn[0].tag) {
+      case RightButtonTag.Link:
+        this.wantBindNode = item;
+        break;
+      case RightButtonTag.Unlink:
+        this.unbindConfirm.display = true;
+        this.wantUnbindNode = item;
+        break;
+      case RightButtonTag.position:
+        break;
+      default:
+        break;
+
+    }
+
+
     // item.id;
   }
 
   selectDivisionClick = async (item: FlatNode, lastNode: boolean) => {
     this.GarbageStation = null;
 
-    this.stationTree.garbageStationTree.getParentNode(item);
+    // this.stationTree.garbageStationTree.getParentNode(item);
     let data: Division[] | GarbageStation[];
+    // 如果选中的是区域项
     data = this.stationTree.dataService.divisions.filter(x => {
       return x.Id === item.id;
     });
@@ -85,7 +115,7 @@ export class MapDeployComponent implements OnInit {
       this.client.Viewer.MoveTo(village.center);
       return;
     }
-
+    // 如果选中的是垃圾厢房
     data = this.stationTree.dataService.garbageStations.filter(x => {
       return x.Id === item.id;
     });
@@ -106,8 +136,8 @@ export class MapDeployComponent implements OnInit {
 
 
       } catch (error) {
-        const village = this.dataController.Village.Get(data[0].DivisionId);
-        this.client.Viewer.MoveTo(village.center);
+        // const village = this.dataController.Village.Get(data[0].DivisionId);
+        // this.client.Viewer.MoveTo(village.center);
       }
       return;
     }
@@ -139,10 +169,10 @@ export class MapDeployComponent implements OnInit {
 
   async ngOnInit() {
 
-    // this.rightBtn = {
-    //   iconClass: 'howell-icon-garbage',
-    //   btns: [new RightBtn('howell-icon-Unlink', '')]
-    // };
+    this.rightBtn = {
+      iconClass: 'howell-icon-garbage',
+      btns: [new RightBtn('howell-icon-Link', RightButtonTag.Link)]
+    };
 
     this.client = new CesiumMapClient(this.iframe.nativeElement);
     this.client.Events.OnLoading = () => {
@@ -160,7 +190,7 @@ export class MapDeployComponent implements OnInit {
 
 
               const node = this.stationTree.findNode(point.id);
-              node.rightClassBtn = [new RightBtn('howell-icon-Unlink', point.id)];
+              node.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
             }
           }
         }
@@ -172,7 +202,7 @@ export class MapDeployComponent implements OnInit {
 
 
 
-      this.client.Point.Draggable(true);
+
 
 
 
@@ -197,26 +227,31 @@ export class MapDeployComponent implements OnInit {
     };
 
 
+    this.client.Events.OnMouseMoving = async (lon: number, lat: number) => {
+      this.mouseLon = lon;
+      this.mouseLat = lat;
+    };
 
 
     this.client.Events.OnMouseDoubleClick = async (position) => {
-      if (this.GarbageStation) {
-        if (this.points[this.GarbageStation.Id]) {
+      if (this.wantBindNode) {
+        if (this.points[this.wantBindNode.id]) {
           // this.client.Viewer.MoveTo(this.points[this.GarbageStation.Id].position);
-          const p = this.points[this.GarbageStation.Id];
+          const p = this.points[this.wantBindNode.id];
           this.client.Events.OnElementDragend(p, position);
           return;
         }
         const point = new CesiumDataController.Point();
-        point.id = this.GarbageStation.Id;
-        point.name = this.GarbageStation.Name;
+        point.id = this.wantBindNode.id;
+        point.name = this.wantBindNode.name;
         point.parentId = this.DivisionId;
         point.villageId = this.DivisionId;
         point.type = CesiumDataController.ElementType.Camera;
         point.position = position;
         point.position.height = 18;
         try {
-          this.dataController.Village.Point.Create(this.GarbageStation.DivisionId, point.id, point);
+          const parentNode = this.stationTree.garbageStationTree.getParentNode(this.wantBindNode);
+          this.dataController.Village.Point.Create(parentNode.id, point.id, point);
           new MessageBar().response_success('点位数据创建成功');
         } catch (ex) {
           new MessageBar().response_Error('点位数据创建失败');
@@ -224,89 +259,89 @@ export class MapDeployComponent implements OnInit {
         this.points[point.id] = point;
         this.client.Point.Create(point);
         const node = this.stationTree.findNode(point.id);
-        node.rightClassBtn = [new RightBtn('howell-icon-Unlink', point.id)];
+        node.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
       }
     };
 
 
     this.client.Events.OnElementDragend = async (element, position) => {
-      this.confirmMode = 0;
-      this.confirmMessage = '是否保存当前位置？';
-      this.confirm.nativeElement['style'].display = '';
+      this.locationConfirm.display = true;
       this.DragendPoint = element;
       this.DragendPosition = position;
 
     };
   }
+  locationYesClicked() {
+    if (this.DragendPoint && this.DragendPosition) {
+      const position = new CesiumDataController.Position(
+        this.DragendPosition.lon,
+        this.DragendPosition.lat,
+        this.DragendPoint.position.height
+      );
+      this.DragendPoint.position = position;
+      try {
+        this.dataController.Village.Point.Update(
+          this.DragendPoint.parentId,
+          this.DragendPoint.id,
+          (this.DragendPoint as CesiumDataController.Point)
+        );
+        new MessageBar().response_success('地图数据修改成功');
+      } catch (error) {
+        new MessageBar().response_Error('地图数据修改失败');
+      }
 
-
-
-
-  ConfirmCancel() {
-    this.confirm.nativeElement['style'].display = 'none';
-    switch (this.confirmMode) {
-      case 0:
-        if (this.DragendPoint) {
-          this.client.Point.Remove(this.DragendPoint.id);
-          const point = this.points[this.DragendPoint.id];
-          this.client.Point.Create(point);
-        }
-        break;
-      case 1:
-        break;
-      default:
-        break;
-    }
-
-  }
-  ConfirmSave() {
-    this.confirm.nativeElement['style'].display = 'none';
-    switch (this.confirmMode) {
-      case 0:
-        if (this.DragendPoint && this.DragendPosition) {
-          const position = new CesiumDataController.Position(
-            this.DragendPosition.lon,
-            this.DragendPosition.lat,
-            this.DragendPoint.position.height
-          );
-          this.DragendPoint.position = position;
-          try {
-            this.dataController.Village.Point.Update(
-              this.DragendPoint.parentId,
-              this.DragendPoint.id,
-              (this.DragendPoint as CesiumDataController.Point)
-            );
-            new MessageBar().response_success('地图数据修改成功');
-          } catch (error) {
-            new MessageBar().response_Error('地图数据修改失败');
-          }
-
-          this.points[this.DragendPoint.id] = this.DragendPoint as CesiumDataController.Point;
-          this.client.Point.Remove(this.DragendPoint.id);
-          const point = this.points[this.DragendPoint.id];
-          this.client.Point.Create(point);
-        }
-        break;
-      case 1:
-        if (this.wantUnbindNode) {
-          const p = this.points[this.wantUnbindNode.id];
-          if (p) {
-            try {
-              this.dataController.Village.Point.Remove(p.villageId, p.id);
-              this.client.Point.Remove(p.id);
-              delete this.points[p.id];
-              this.wantUnbindNode.rightClassBtn = [];
-              new MessageBar().response_success('地图数据删除成功');
-            } catch (ex) {
-              new MessageBar().response_Error('地图数据删除失败');
-            }
-
-          }
-        }
-        break;
-      default:
-        break;
+      this.points[this.DragendPoint.id] = this.DragendPoint as CesiumDataController.Point;
+      this.client.Point.Remove(this.DragendPoint.id);
+      const point = this.points[this.DragendPoint.id];
+      this.client.Point.Create(point);
     }
   }
+  locationCancelClicked() {
+    if (this.DragendPoint) {
+      this.client.Point.Remove(this.DragendPoint.id);
+      const point = this.points[this.DragendPoint.id];
+      this.client.Point.Create(point);
+    }
+  }
+  unbindYesClicked() {
+    if (this.wantUnbindNode) {
+      const p = this.points[this.wantUnbindNode.id];
+      if (p) {
+        try {
+          this.dataController.Village.Point.Remove(p.villageId, p.id);
+          this.client.Point.Remove(p.id);
+          delete this.points[p.id];
+          this.wantUnbindNode.rightClassBtn = [new RightBtn('howell-icon-Link', RightButtonTag.Link)];
+          new MessageBar().response_success('地图数据删除成功');
+        } catch (ex) {
+          new MessageBar().response_Error('地图数据删除失败');
+        }
+
+      }
+    }
+  }
+  unbindCancelClicked() {
+
+  }
+
+
+  DraggableClicked() {
+    this.draggable = !this.draggable;
+    this.client.Point.Draggable(this.draggable);
+    if (this.draggable) {
+      new MessageBar().response_success('点位拖拽已开启');
+    } else {
+      new MessageBar().response_warning('点位拖拽已关闭');
+    }
+  }
+
 
 }
+
+enum RightButtonTag {
+  Unlink = '0',
+  Link = '1',
+  position = '2'
+}
+
+
