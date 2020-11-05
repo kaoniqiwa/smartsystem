@@ -21,4 +21,6 @@ export class FormMustField{
     garbageStation=['Id','Name','StationType','MaxDryVolume','MaxWetVolume'];
 
     garbageStationType=['Type','Name','No','CanType','CameraUsage'];
+
+    cameraAIModel=['Id','ModelJSON'];
 }

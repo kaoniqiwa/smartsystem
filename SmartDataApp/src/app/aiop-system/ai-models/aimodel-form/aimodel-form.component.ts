@@ -1,6 +1,7 @@
 import { Component, OnInit,ViewChild,ElementRef,Input } from '@angular/core';
 import { AIModelFormService,FormField } from "./business/aimodel-form";
-import { domClick, inputFileRead } from '../../../common/tool/jquery-help/jquery-help';
+import { domClick, inputFileRead,downloadFile } from '../../../common/tool/jquery-help/jquery-help';
+import {Base64 } from "../../../common/tool/base64";
  import { CameraAIModel } from "../.././../data-core/model/aiop/camera-ai-model";
 import { FormStateEnum } from '../../../common/tool/table-form-helper';
 import { CustomTreeComponent } from "../../../shared-module/custom-tree/custom-tree.component";
@@ -57,6 +58,12 @@ export class AIModelFormComponent implements OnInit {
     this.formService.saveFrom(formField,(success:boolean,item:CameraAIModel,formState: FormStateEnum)=>{
         if(success&&this.saveFn)this.saveFn(success,item,formState);
     });
+  }
+
+  downLoadModel(){
+    const formField = this.formService.form.value as FormField
+    ,base64=new Base64(),modelJson = base64.decode(formField.ModelJSON);
+    downloadFile(formField.ModelName,modelJson);
   }
 
   onCancel(){

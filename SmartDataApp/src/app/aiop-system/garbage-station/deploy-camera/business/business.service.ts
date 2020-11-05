@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Camera } from "../../../../data-core/model/aiop/camera";
 import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
 import { FlatNode, ColorEnum ,RightBtn} from "../../../../shared-module/custom-tree/custom-tree";
+import { ConfirmDialog} from "../../../../shared-module/confirm-dialog/confirm-dialog.component";
 import { DataService as CameraDataService } from "../business/data.service";
 import { Camera as StationCamera } from "../../../../data-core/model/waste-regulation/camera";
 import { CameraUsageDataEnum, CameraUsageEnum, CanTypeEnum } from "../../../../common/tool/enum-helper";
@@ -13,6 +14,7 @@ export class BusinessService {
     bindItem: FlatNode;
     bindingCamera: Camera;
     station: GarbageStation;
+    confirmDialog_:ConfirmDialog;
     readonly link = [new RightBtn('howell-icon-Link','1')];
     findNodeFn: (id: string) => FlatNode;
     // cameraNodesFn: () => FlatNode[];
@@ -37,14 +39,20 @@ export class BusinessService {
 
         }
         else {
-            const node = this.findNodeFn(liItem.id);
-            node.labelColor = ColorEnum.lightbBlue;
-            node.rightClassBtn = this.link;
-            await this.delCamera(liItem.id);
-            liItem.id = '';
-            liItem.name = liItem.position + '';
-
-
+            this.confirmDialog_ = new ConfirmDialog();
+            this.confirmDialog_.cancelFn = () => {
+                this.confirmDialog_ = null;
+            }
+            this.confirmDialog_.content = '确定删除该摄像机配置';
+            this.confirmDialog_.okFn =async () => {             
+                this.confirmDialog_ = null;    
+                const node = this.findNodeFn(liItem.id);
+                node.labelColor = ColorEnum.lightbBlue;
+                node.rightClassBtn = this.link;
+                await this.delCamera(liItem.id);
+                liItem.id = '';
+                liItem.name = liItem.position + '';                        
+            }
         }
         this.bindingCamera = null;
         this.bindItem = null;

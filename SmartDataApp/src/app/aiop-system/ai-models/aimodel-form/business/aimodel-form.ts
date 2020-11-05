@@ -17,9 +17,9 @@ export class AIModelFormService extends ListAttribute {
     treeListMode = TreeListMode.rightInput;
     modelIcons = new Array<PicturesDropList>();
     dtoDataSource = new Array<InputTreeNode>();
-    parseItem:CameraAIModel;
+    parseItem: CameraAIModel;
     changeModelLabelFn = (item: FlatNode, inputVal?: string) => {
-        const change = (items: CameraAIModelDTOLabel[], id_index: string[]) => { 
+        const change = (items: CameraAIModelDTOLabel[], id_index: string[]) => {
             items.map(x => {
                 if (x.LabelId == id_index[0]) {
                     if (id_index.length == 2)
@@ -33,12 +33,12 @@ export class AIModelFormService extends ListAttribute {
         }
         if (inputVal && item) {
             const id_index = item.id.split('_EnumValues_');
-           if(this.editItem) this.editItem.ModelDTO.Labels.map(m1 => {
+            if (this.editItem) this.editItem.ModelDTO.Labels.map(m1 => {
                 if (m1.LabelId == id_index[0])
                     m1.LabelModelValue = inputVal;
                 change(m1.Labels, id_index);
             });
-            else  if(this.parseItem)this.parseItem.ModelDTO.Labels.map(m1 => {
+            else if (this.parseItem) this.parseItem.ModelDTO.Labels.map(m1 => {
                 if (m1.LabelId == id_index[0])
                     m1.LabelModelValue = inputVal;
                 change(m1.Labels, id_index);
@@ -55,8 +55,9 @@ export class AIModelFormService extends ListAttribute {
             Label: new FormControl('1'),
             FileModelName: new FormControl(''),
             ModelName: new FormControl(''),
-            Version:new FormControl(''),
-            TransformType:new FormControl(''),
+            Version: new FormControl(''),
+            ModelId: new FormControl(''),
+            TransformType: new FormControl(''),
             ModelJSON: new FormControl(''),
             ModelType: new FormControl('AIOP')
         });
@@ -66,7 +67,7 @@ export class AIModelFormService extends ListAttribute {
             this.messageBar.response_warning('名称不能为空');
             return false;
         }
-        else if (item.ModelJSON == ''&&this.editItem==null) {
+        else if (item.ModelJSON == '' && this.editItem == null) {
             this.messageBar.response_warning('请上传模型文件');
             return false;
         }
@@ -77,13 +78,13 @@ export class AIModelFormService extends ListAttribute {
         return true;
     }
 
-    async parseJsonModel(base64JSONData: string,callBack:()=>void) {
+    async parseJsonModel(base64JSONData: string, callBack: () => void) {
         if (base64JSONData) {
             const response = await this.requestService.parse(base64JSONData).toPromise();
-            if(response&&response.Data){
+            if (response && response.Data) {
                 this.form.patchValue({
-                    Version:response.Data.Version,
-                    TransformType:response.Data.TransformType,
+                    Version: response.Data.Version,
+                    TransformType: response.Data.TransformType,
                 });
                 this.parseItem = response.Data;
                 this.loadAIModelDTOTree(this.parseItem);
@@ -93,35 +94,35 @@ export class AIModelFormService extends ListAttribute {
     }
 
     loadAIModelDTOTree(item: CameraAIModel) {
-    
+        this.dtoDataSource = new Array();
         const addItems = (node: TreeNode, items: CameraAIModelDTOLabel[]) => {
-            if(items)
-            for (const i of items) {
-                const node_ = new InputTreeNode();
-                node_.name = i.LabelName;
-                node_.checked = false;
-                node_.id = i.LabelId;
-                node_.label = i.LabelValue;
-                node_.inputVal = i.LabelModelValue;
-                node_.children = new Array<InputTreeNode>();
-                node.children = node.children || new Array<InputTreeNode>();
-                node.children.push(node_);
-                if (i.EnumValues) {
-                    for (let x = 0; x < i.EnumValues.length; x++) {
-                        const val = i.EnumValues[x];
-                        const _ = new InputTreeNode();
-                        _.id = i.LabelId + '_EnumValues_' + x;
-                        _.name = val.Description;
-                        _.iconClass='howell-icon-file';
-                        _.checked = false;
-                        _.label = val.Value + '';
-                        _.inputVal = val.ModelValue + '';
+            if (items)
+                for (const i of items) {
+                    const node_ = new InputTreeNode();
+                    node_.name = i.LabelName;
+                    node_.checked = false;
+                    node_.id = i.LabelId;
+                    node_.label = i.LabelValue;
+                    node_.inputVal = i.LabelModelValue;
+                    node_.children = new Array<InputTreeNode>();
+                    node.children = node.children || new Array<InputTreeNode>();
+                    node.children.push(node_);
+                    if (i.EnumValues) {
+                        for (let x = 0; x < i.EnumValues.length; x++) {
+                            const val = i.EnumValues[x];
+                            const _ = new InputTreeNode();
+                            _.id = i.LabelId + '_EnumValues_' + x;
+                            _.name = val.Description;
+                            _.iconClass = 'howell-icon-file';
+                            _.checked = false;
+                            _.label = val.Value + '';
+                            _.inputVal = val.ModelValue + '';
 
-                        node_.children.push(_);
+                            node_.children.push(_);
+                        }
                     }
+                    addItems(node_, i.Labels);
                 }
-                addItems(node_, i.Labels);
-            }
         }
         if (item.ModelDTO && item.ModelDTO.Labels) {
             for (const i of item.ModelDTO.Labels) {
@@ -130,7 +131,7 @@ export class AIModelFormService extends ListAttribute {
                 node.checked = false;
                 node.id = i.LabelId;
                 node.label = i.LabelValue;
-                node.iconClass='howell-icon-folder';
+                node.iconClass = 'howell-icon-folder';
                 node.inputVal = i.LabelModelValue;
                 this.dtoDataSource.push(node);
                 addItems(node, i.Labels);
@@ -141,18 +142,18 @@ export class AIModelFormService extends ListAttribute {
     }
 
     async modelIconsData() {
-        const response = await this.configService.getAIIcons().toPromise(); 
+        const response = await this.configService.getAIIcons().toPromise();
 
         if (response) {
             for (const key in response) {
-                this.modelIcons.push(new PicturesDropList(key, this.imgUrlRoot+this.aiModelIcon + response[key]));
+                this.modelIcons.push(new PicturesDropList(key, this.imgUrlRoot + this.aiModelIcon + response[key]));
             }
         }
     }
 
-    set modelIcon(index:number){
-        if (this.modelIcons.length&&index>0)
-         this.modelIcons.find(x=>x.id==index+'').checked=true; 
+    set modelIcon(index: number) {
+        if (this.modelIcons.length && index > 0)
+            this.modelIcons.find(x => x.id == index + '').checked = true;
     }
 
     defaultForm(editItem: CameraAIModel) {
@@ -163,24 +164,25 @@ export class AIModelFormService extends ListAttribute {
                 Label: editItem.Label,
                 ModelName: editItem.ModelName,
                 ModelJSON: editItem.ModelJSON,
-                Version:editItem.Version,
-                TransformType:editItem.TransformType,
+                Version: editItem.Version,
+                ModelId: editItem.ModelId,
+                TransformType: editItem.TransformType,
             });
             this.formState = FormStateEnum.edit;
             this.loadAIModelDTOTree(editItem);
-            this.modelIcon=editItem.Label;
+            this.modelIcon = editItem.Label;
         }
-        else {            
-            this.modelIcon=0;
+        else {
+            this.modelIcon = 0;
             this.formState = FormStateEnum.create;
         }
     }
 
     async saveFrom(item: FormField, successFn: (success: boolean, item: CameraAIModel, formState: FormStateEnum) => void) {
-        const check = this.checkForm(item),save=async (model:CameraAIModel)=>{ 
-        
+        const check = this.checkForm(item), save = async (model: CameraAIModel) => {
+
             const response = await this.requestService.create(model).toPromise();
-            if (response.FaultCode ==0) {
+            if (response.FaultCode == 0) {
                 this.messageBar.response_success();
                 successFn(true, response.Data, this.formState);
             }
@@ -188,30 +190,44 @@ export class AIModelFormService extends ListAttribute {
         var model: CameraAIModel;
         model = (this.editItem && this.formState == FormStateEnum.edit) ? this.editItem : new CameraAIModel();
         if (check) {
-           model.ModelName = item.ModelName;
-           model.ModelJSON = item.ModelJSON;
-           model.Label = Number.parseInt(this.modelIcons.find(x => x.checked).id);
-           model.UpdateTime = new Date().toISOString();
+            model.ModelName = item.ModelName;
+            model.ModelJSON = item.ModelJSON;
+            model.Label = Number.parseInt(this.modelIcons.find(x => x.checked).id);
+            model.UpdateTime = new Date().toISOString();
             if (this.formState == FormStateEnum.create) {
                 model.Id = '';
                 model.CreateTime = new Date().toISOString();
-                if(this.parseItem){
+                if (this.parseItem) {
                     this.parseItem.ModelName = item.ModelName;
-                    this.parseItem.Label = Number.parseInt(this.modelIcons.find(x => x.checked).id); 
+                    this.parseItem.Label = Number.parseInt(this.modelIcons.find(x => x.checked).id);
                     save(this.parseItem);
                 }
-                else{
+                else {
                     save(model);
                 }
-              
+
             }
             else if (this.formState == FormStateEnum.edit) {
                 //后台要求
-                model.ModelJSON='';
+                if (item.FileModelName)
+                    model.ModelDTO = null;
+
+                else
+                    model.ModelJSON = '';
                 const response = await this.requestService.set(model).toPromise();
-                if (response.FaultCode ==0) {
+                if (response.FaultCode == 0) {
                     this.messageBar.response_success();
-                    successFn(true, response.Data, this.formState);
+                    if (item.FileModelName) {
+                        const responseDto = await this.requestService.parse(item.ModelJSON).toPromise();
+                        if (responseDto && responseDto.Data) { 
+                            model.Version = responseDto.Data.Version;
+                            model.TransformType=responseDto.Data.TransformType;
+                            model.ModelDTO = responseDto.Data.ModelDTO;
+                            successFn(true, response.Data, this.formState);
+                        }
+                    }
+                    else
+                        successFn(true, response.Data, this.formState);
                 }
             }
         }
@@ -222,5 +238,7 @@ export class AIModelFormService extends ListAttribute {
 export interface FormField {
     Label: number,
     ModelName: string,
-    ModelJSON: string
+    ModelJSON: string,
+    FileModelName: string;
+    ModelId: string;
 }

@@ -28,3 +28,5 @@ export declare function drawRectangle(canvasId:string,points:EventDataObject[]
 export declare function clearCanvas(canvasId:string);
 
 export declare function createVideo(forId:string,src:string,parentDomId:string);
+
+export declare function downloadFile(filename:string, text:string);

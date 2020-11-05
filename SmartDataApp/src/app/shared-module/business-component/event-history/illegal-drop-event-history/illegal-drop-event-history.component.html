@@ -111,7 +111,7 @@
 
   </ng-container>
 
-  <div [ngStyle]="{'height': tableService.search.other ? 'calc(100% - 40px)':tableMinusHeight}">
+  <div [ngStyle]="{'height': tableService.search.other ? tableSearchHeight:tableMinusHeight}">
     <ng-container *ngIf="listMode==pageListMode.table">
       <hw-custom-table #table [model]="tableService.eventTable.dataSource"></hw-custom-table>
     </ng-container>

@@ -15,6 +15,7 @@ export class IllegalDropEventHistoryComponent implements OnInit {
   listMode = PageListMode.table;
   pageListMode = PageListMode;
   tableMinusHeight = 'calc(100% - 0px)';
+  tableSearchHeight = 'calc(100% - 40px)';
   @ViewChild('table')
   table: CustomTableComponent;
 
@@ -66,6 +67,7 @@ export class IllegalDropEventHistoryComponent implements OnInit {
        */
         if (data.val) {
            this.tableMinusHeight= 'calc(100% - 20px)';
+           this.tableSearchHeight = 'calc(100% - 60px)';
            this.fillMode=new FillMode();
            this.fillMode.tablePageSize=9;
            this.fillMode.cardPageSize=10;

@@ -6,12 +6,14 @@ import { CameraAIModel } from "../model/aiop/camera-ai-model";
 import * as url from "../url/aiop/ai-models"; 
 import { GetAIModelsParams } from "../model/aiop/camera-ai-event-records-params";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
+import { SaveModel } from "../model/save-model";
 @Injectable({
     providedIn: 'root'
 })
-export class AIModelRequestService {
+export class AIModelRequestService  extends SaveModel {
     url: url.AIModel;
     constructor(private requestService: HowellAuthHttpService) {
+        super();
         this.url = new url.AIModel();
     }
     create(item: CameraAIModel) {
@@ -23,7 +25,7 @@ export class AIModelRequestService {
     }
 
     set(item: CameraAIModel) {
-        return this.requestService.put<CameraAIModel, Response<CameraAIModel>>(this.url.edit(item.Id), item);
+        return this.requestService.put<CameraAIModel, Response<CameraAIModel>>(this.url.edit(item.Id), this.toModel(item,this.formMustField.division));
     }
 
     del(id: string) {

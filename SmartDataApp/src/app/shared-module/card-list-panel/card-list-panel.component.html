@@ -1,6 +1,12 @@
 <ng-container *ngIf="model&&model.listPanel&&model.pagination">
+  <ng-container *ngIf="confirmDialog_">
+    <div  class="fill-height fill-width hw-content-mask" >
+      <hw-confirm-dialog [dialog]="confirmDialog_"></hw-confirm-dialog>
+    </div>
+  </ng-container>
   <div class="fill-width"  data-list="hw" style="overflow: auto;height: calc(100% - 50px);">
     <div class="models-list-panel" (click)="itemClick(m.id)" (mouseenter)="itemMouseEnter(m.id)"  
+    (mouseleave)="itemMouseLeave(m.id)"
       [class.selected]="selectedId.indexOf(m.id)>-1"  
       *ngFor="let m of model.listPanel">
       <div class="title-bar">

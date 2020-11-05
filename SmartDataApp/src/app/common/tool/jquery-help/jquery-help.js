@@ -112,6 +112,10 @@ function createVideo(forId,src,parentDomId){
     document.getElementById(parentDomId).appendChild(_video);
 }
 
+function downloadFile(filename, text) {
+    download(text, filename, "text/plain");
+}
+
 exports.moveView = moveView;
 exports.domClick = domClick;
 exports.domClickFn = domClickFn;
@@ -126,3 +130,4 @@ exports.drawRectangle = drawRectangle;
 exports.domSize = domSize;
 exports.clearCanvas = clearCanvas;
 exports.createVideo=createVideo;
+exports.downloadFile=downloadFile;

@@ -1,4 +1,9 @@
 <div class="fill-height fill-width">
+  <ng-container *ngIf="businessService.confirmDialog_">
+    <div  class="fill-height fill-width hw-content-mask" style="z-index: 50;" >
+      <hw-confirm-dialog [dialog]="businessService.confirmDialog_"></hw-confirm-dialog>
+    </div>
+  </ng-container>
   <div style="width:320px" class="card-wrap m-r-20 pull-left">
     <h2 class="m-b-20">投放点列表</h2>
     <hw-division-station-tree #stationTree   [treeHeight]="'calc(100% - 80px)'"

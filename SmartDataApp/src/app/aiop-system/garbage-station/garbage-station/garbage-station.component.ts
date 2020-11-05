@@ -6,8 +6,8 @@ import { StationChartComponent } from "../station-chart/station-chart.component"
 import { HouseModeEnum } from "../station-chart/business/station-chart";
 import { GarbageStationType } from "../../../data-core/model/waste-regulation/garbage-station-type";
 import { MessageBar } from "../../../common/tool/message-bar";
-import { DivisionTreeNode } from '../../common/tree.service';
-import { getBitNo } from "../../../common/tool/bit-set";
+import { DivisionTreeNode } from '../../common/tree.service'; 
+import { ConfirmDialog} from "../../../shared-module/confirm-dialog/confirm-dialog.component";
 @Component({
   selector: 'app-garbage-station',
   templateUrl: './garbage-station.component.html',
@@ -16,12 +16,14 @@ import { getBitNo } from "../../../common/tool/bit-set";
 })
 export class GarbageStationComponent implements OnInit {
   stationList: GarbageStationList;
-  trashMode=HouseModeEnum.Trash;
+  trashMode = HouseModeEnum.Trash;
 
   @ViewChild('stationTree')
   cameraTree: CustomTreeComponent;
   @ViewChild('garbageChart')
   chartComponent: StationChartComponent;
+
+  confirmDialog_: ConfirmDialog;
 
   searchTree = (text: string) => {
     this.stationList.dataSource.map(x => x.show = false);
@@ -49,25 +51,35 @@ export class GarbageStationComponent implements OnInit {
 
   treeNodeClick(node: DivisionTreeNode) {
     const type = this.dataService.types.find(x => x.Type + '' == node.id);
-    
+
     this.stationList.selectNode(node);
     this.chartComponent.stationChart.changeTrashNum(type.Windows.length + '')
     this.chartComponent.stationChart.changeHouseType = type;
- 
+
 
   }
 
   delBtnClick() {
-    if (this.stationList.selectedNode)
-      this.stationList.delTreeNode(this.stationList.selectedNode.id);
+    if (this.stationList.selectedNode) {
+ 
+      this.confirmDialog_ = new ConfirmDialog();
+      this.confirmDialog_.cancelFn = () => {
+        this.confirmDialog_ = null;
+      }
+      this.confirmDialog_.content = '确定删除该项';
+      this.confirmDialog_.okFn = () => {
+        this.stationList.delTreeNode(this.stationList.selectedNode.id);
+        this.confirmDialog_ = null;
+      }
+    }
   }
 
   addBtnClick() {
     /** 防止反复初始化 */
-    if(this.stationList.selectedNode){
+    if (this.stationList.selectedNode) {
       this.stationList.clearFirsNode();
       this.chartComponent.initChart();
-    }  
+    }
   }
 
   async saveBtnClick(typeName: string) {

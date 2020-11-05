@@ -17,7 +17,7 @@
           </select>
         </div>
       </div>
-      <div fxLayout="row" class="form-group" *ngIf="!editItem">
+      <div fxLayout="row" class="form-group">
         <div fxFlex>
           <label class="custom control-label tran-input-label">上传模型</label>
           <span class="text-danger p-t-10">*</span>
@@ -55,7 +55,11 @@
       </div>
       <div fxLayout="row">
         <div fxFlex>
-          <label class="custom control-label tran-input-label">模型属性</label>
+          <label class="custom control-label tran-input-label">模型属性
+            <a href="javascript:void(0)" *ngIf="editItem" (click)="downLoadModel()">
+              <i class="howell-icon-download sky-blue-text"></i>
+            </a>
+          </label>
           <div class="fine attr-wrap">
             <hw-custom-tree #tree [mode]="formService.treeListMode" [selectedItemFn]="formService.changeModelLabelFn"
               [treeData]="formService.dtoDataSource"></hw-custom-tree>
