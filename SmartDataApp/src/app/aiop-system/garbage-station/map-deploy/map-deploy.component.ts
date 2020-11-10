@@ -4,11 +4,10 @@ import { FlatNode, RightBtn } from '../../../shared-module/custom-tree/custom-tr
 import { DataService as TypeDataService } from '../garbage-station/business/data.service';
 import { DataService as CameraDataService } from './business/data.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Division } from 'src/app/data-core/model/waste-regulation/division';
-import { GarbageStation } from 'src/app/data-core/model/waste-regulation/garbage-station';
-import { MessageBar } from 'src/app/common/tool/message-bar';
-import { ConfirmComponent } from './confirm/confirm.component';
-import { ConfirmDialog } from 'src/app/shared-module/confirm-dialog/confirm-dialog.component';
+import { Division } from '../../../data-core/model/waste-regulation/division';
+import { GarbageStation } from '../../../data-core/model/waste-regulation/garbage-station';
+import { MessageBar } from '../../../common/tool/message-bar';
+import { ConfirmDialog } from '../../../shared-module/confirm-dialog/confirm-dialog.component';
 
 
 @Component({
