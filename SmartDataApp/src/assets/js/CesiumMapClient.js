@@ -4,7 +4,7 @@ var CesiumMapClient = function (iframe) {
 
     var that = this;
 
-    if (typeof (str) == 'string')
+    if (typeof (iframe) == 'string')
         iframe = document.getElementById(iframe);
 
     function doing(fn) {
@@ -496,6 +496,19 @@ var CesiumMapClient = function (iframe) {
             Draw: function (datas, max) {
                 return doing(function () {
                     return iframe.contentWindow.MapController.Draw.Heatmap.Draw(datas, max);
+                });
+            }
+        },
+        Routing: {
+            Draw: function (positions, type) {
+                return doing(function () {
+                    return iframe.contentWindow.MapController.Draw.Routing.Draw(positions, type);
+                });
+            },
+            Remove: function(id)
+            {
+                return doing(function(){
+                    return iframe.contentWindow.MapController.Draw.Routing.Remove(id);
                 });
             }
         }

@@ -159,12 +159,12 @@ function WSPlayer(args) {
 
                 var c = that.tools.control.position.max - that.tools.control.position.min;
                 var current = c * p;
-                if(current<0)
+                if (current < 0)
                     current = 0;
                 var date = new Date(current);
                 date.setUTCHours(date.getUTCHours() - 8);
                 this.title = date.format("HH:mm:ss");
-                if (that.tools.control.isMoudseDown )
+                if (that.tools.control.isMoudseDown)
                     that.tools.control.begin_time.innerText = date.format("HH:mm:ss");
             });
         }
@@ -195,7 +195,8 @@ function WSPlayer(args) {
 
 
         var p = document.getElementsByClassName("parent-wnd")[0];
-        p.addEventListener("dblclick", function () {            
+        p.addEventListener("dblclick", function () {
+            console.log("dblclick");
             that.fullScreen();
         });
 
@@ -576,7 +577,8 @@ function WSPlayer(args) {
         if (!height)
             height = that.clientHeight;
         doing(function (args) {
-            plugin.JS_Resize(args.width, args.height);
+            var scale = 1 / getRatio();
+            plugin.JS_Resize(args.width * scale, args.height * scale);
         }, {
             width: width, height: height
         });
@@ -585,6 +587,7 @@ function WSPlayer(args) {
 
     function resize() {
         var handle = setInterval(function () {
+            var scale = 1 / getRatio();
             if (that.FullScreen && !document.fullscreen) {
                 that.FullScreen = false;
                 plugin.JS_Resize(that.clientWidth, that.clientHeight);
@@ -594,7 +597,7 @@ function WSPlayer(args) {
             }
             else if (that.FullScreen == false) {
                 that.FullScreen = true;
-                plugin.JS_Resize(window.screen.width, window.screen.height);
+                plugin.JS_Resize(window.screen.width * scale, window.screen.height * scale);
                 that.tools.control.fullscreen.title = "退出"
             }
             else { }
@@ -625,6 +628,30 @@ function WSPlayer(args) {
             document.mozCancelFullScreen();
         }
     }
+
+    function getRatio() {
+        var ratio = 0;
+        var screen = window.screen;
+        var ua = navigator.userAgent.toLowerCase();
+
+        if (window.devicePixelRatio !== undefined) {
+            ratio = window.devicePixelRatio;
+        }
+        else if (~ua.indexOf('msie')) {
+            if (screen.deviceXDPI && screen.logicalXDPI) {
+                ratio = screen.deviceXDPI / screen.logicalXDPI;
+            }
+
+        }
+        else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
+            ratio = window.outerWidth / window.innerWidth;
+        }
+        else { }
+        return ratio;
+    }
+
+
+
 
 
     this.download = function (filename, type) {

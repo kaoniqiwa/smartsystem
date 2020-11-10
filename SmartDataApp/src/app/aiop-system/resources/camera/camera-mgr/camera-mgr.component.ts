@@ -44,6 +44,7 @@ export class CameraMgrComponent implements OnInit {
       this.table.selectCancel();
     }
     await this.regionTreeService.getRegionData();
+    await this.tableService.requestEncodeDevices();
     this.tableService.regionTree.dataSource = this.regionTreeService.dataSource;
     const dataSource = this.regionTreeService.loadTree(this.regionTreeService.dataSource); 
     dataSource.push(this.regionTreeService.singleNode('未分配摄像机', 'howell-icon-video'));
@@ -51,7 +52,6 @@ export class CameraMgrComponent implements OnInit {
     this.tree.dataSource.data = dataSource;
     this.tableService.regionTree.treeNodeSource = dataSource;
     this.tree.defaultItem();
-    await this.tableService.requestEncodeDevices();
 
     this.tableService.cameraTable.tableSelectIds = this.tableSelectIds;
     this.tableService.cameraTable.attrBtnFn = () => {

@@ -4,25 +4,34 @@
     <hw-division-station-tree #stationTree [treeHeight]="'calc(100% - 80px)'" [rightBtn]="rightBtn"
       [rightBtnFn]="rightBtnFn" [selectedItemFn]="selectDivisionClick"></hw-division-station-tree>
   </div>
-  <div style="width: calc(100% - 340px);padding:10px" class="card-wrap pull-left">
-    <iframe class="map" [src]="srcUrl" #iframe width="100%" height="100%"></iframe>
-  </div>
-
-  <div #confirm style="display: none;" class="fill-height fill-width hw-content-mask">
-    <div class="hw-form-wrap" style="height: 150px;">
-      <div class="custom-form-wrap text-center" style="width: 400px;">
-        <h2 class="center message">{{confirmMessage}}</h2>
-        <div class="text-center" style="margin-top: 40px;">
-          <button class="hw-green-m-btn m-r-10" (click)="ConfirmSave()">
-            <i class="howell-icon-Check"></i>
-          </button>
-          <button class="hw-gray-m-btn" (click)="ConfirmCancel()">
-            <i class="howell-icon-Close"></i>
-          </button>
-        </div>
+  <div style="width: calc(100% - 340px);padding:10px" class="card-wrap pull-left map-box">
+    <div class="tools">
+      <div class="pull-left">
+        <button class="hw-blue-btn m-r-10" [ngClass]="{'hw-green-btn': draggable}" (click)="DraggableClicked()">
+          拖拽
+        </button>
+      </div>
+      <div class="pull-right">
+        <input class="text" [value]="mouseLon">
+        <input class="text" [value]="mouseLat">
       </div>
     </div>
+
+    <iframe class="map" [src]="srcUrl" #iframe width="100%" height="100%"></iframe>
+
   </div>
+
+  <app-confirm #locationConfirm
+  [message]="'是否保存当前位置？'"
+    (YesClickedEvent)="locationYesClicked()"
+    (CancelClickedEvent)="locationCancelClicked()"
+  ></app-confirm>
+  
+  <app-confirm #unbindConfirm
+  [message]="'是否解除绑定？'"
+    (YesClickedEvent)="unbindYesClicked()"
+    (CancelClickedEvent)="unbindCancelClicked()"
+  ></app-confirm>
 
 
 </div>

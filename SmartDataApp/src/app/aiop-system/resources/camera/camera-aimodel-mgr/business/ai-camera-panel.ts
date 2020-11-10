@@ -8,7 +8,7 @@ import { MessageBar } from "../../../../../common/tool/message-bar";
 
 export class AICameraPanel {
     messageBar = new MessageBar();
-    cardListSelectedId: Array<string>;
+    cardListSelectedIdFn:()=> Array<string>;
     underCamerasAIModels_: Map<string, string[]>;
     cardListPanelView_ = new PanelView();
     dropItemState = false;
@@ -70,8 +70,8 @@ export class AICameraPanel {
     }
 
     dropItem(event: CdkDragDrop<PanelItem[]>) {
-        const copyItem = event.container.data[event.currentIndex];
-        this.cardListSelectedId.map(i => {
+        const copyItem = event.container.data[event.currentIndex];debugger
+        this.cardListSelectedIdFn().map(i => {
             const list = this.underCamerasAIModels_.get(i);
             if (list.length > 3) { }
             else {

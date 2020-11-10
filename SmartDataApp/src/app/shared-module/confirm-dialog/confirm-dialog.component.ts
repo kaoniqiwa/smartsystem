@@ -26,4 +26,5 @@ export class ConfirmDialog{
     okFn:()=>void;
     cancelFn:()=>void;
     content = '删除该项';
+    title = '确认删除';
 }

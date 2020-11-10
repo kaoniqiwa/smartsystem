@@ -11,36 +11,29 @@ export class CardListPanelComponent implements OnInit {
 
   @Input() itemMouseEnterFn:(id:string)=>boolean;
   //已选中id
-  private selectedId_: string[] = [];
+  selectedId_ = new Array();
   private confirmDialog_: ConfirmDialog;
   constructor() { }
 
   ngOnInit() {
   }
 
-  set selectedId(val: any) {
-    this.selectedId_ = val;
-  }
 
-  get selectedId() {
-    return this.selectedId_;
-  }
-
-  itemMouseEnter(id:string){
+  itemMouseEnter(id:string){ 
      const move=this.itemMouseEnterFn(id);
      if(move){
-      var index = this.selectedId.indexOf(id);
+      var index = this.selectedId_.indexOf(id);
       if (index < 0)
-        this.selectedId.push(id);
+        this.selectedId_.push(id);
      }
   }
 
   itemMouseLeave(id:string){
     const move=this.itemMouseEnterFn(id);
     if(move){
-     var index = this.selectedId.indexOf(id);
+     var index = this.selectedId_.indexOf(id);
      if (index > -1)
-      this.selectedId.splice(index, 1);
+      this.selectedId_.splice(index, 1);
     }
   }
 
@@ -60,12 +53,12 @@ export class CardListPanelComponent implements OnInit {
   }
 
   //列表项点击事件
-  itemClick(id: string) {
-    var index = this.selectedId.indexOf(id);
+  itemClick(id: string) {debugger
+    var index = this.selectedId_.indexOf(id);
     if (index < 0)
-      this.selectedId.push(id);
+      this.selectedId_.push(id);
     else
-      this.selectedId.splice(index, 1);
+      this.selectedId_.splice(index, 1);
 
   }
 
@@ -86,7 +79,7 @@ export class CardListPanelComponent implements OnInit {
 
   //取消列表选中项
   selectCancel(): void {
-    this.selectedId = [];
+    this.selectedId_ = [];
   }
 
   toCopy(cardListPanel: CardListPanel) {

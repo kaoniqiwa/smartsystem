@@ -40,7 +40,9 @@ export class CameraAIModelMgrComponent implements OnInit {
       this.mgrService.search.toInputTagSelect(data);
     });   
     this.mgrService.aiModelsPanel.convertFromList(this.mgrService.aiModels);
-    this.mgrService.aiCameraPanel.cardListSelectedId = this.cardListPanel.selectedId;
+    this.mgrService.aiCameraPanel.cardListSelectedIdFn=()=>{
+      return this.cardListPanel.selectedId_;
+    } ;
     this.mgrService.aiCameraPanel.clearSelectedIds = ()=>{
        this.cardListPanel.selectCancel();
     }
