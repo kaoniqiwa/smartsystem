@@ -6,8 +6,16 @@ import { SystemModeEnum } from "./table-form-helper";
 export class SideNavService{
     
     playVideoBug:EventEmitter<boolean>;
-    systemMode:SystemModeEnum;
+    systemMode_:SystemModeEnum;
     constructor(){
         this.playVideoBug = new EventEmitter<boolean>();
+    }
+
+    set systemMode(systemMode:SystemModeEnum){     
+        sessionStorage.setItem('SystemMode',systemMode+'');
+    }
+
+    get systemMode(){
+        return  Number.parseInt(sessionStorage.getItem('SystemMode'));
     }
 }
