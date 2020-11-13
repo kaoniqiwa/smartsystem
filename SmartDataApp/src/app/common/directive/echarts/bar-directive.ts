@@ -41,7 +41,7 @@ export class EChartBarDirective implements OnChanges {
                 objs.push( {
                     name: options.seriesName[i],
                     type: 'bar',
-                    barWidth: 12,
+                    barWidth: options.barWidth,
                     label: {
                         show: true,
                         position: 'top'
@@ -78,7 +78,7 @@ export class EChartBarDirective implements OnChanges {
             return {
                 color: options.color,
                 title: {       
-                    subtext: '单位(吨)',
+                    subtext: options.subTitle,
                     left: 'right', 
                      subtextStyle:{
                          color:'#7A8DE6'
@@ -102,12 +102,14 @@ export class EChartBarDirective implements OnChanges {
                     containLabel: true
                 },
                 legend: {
-                     data: options.legendData,
-                     itemWidth :6,
-                     itemHeight: 6,
-                     right:0,
+                     data: options.legendData.data,
+                     itemWidth :options.legendData.itemWidth,
+                     itemHeight: options.legendData.itemHeight,
+                     right:options.legendData.right,
+                     orient:options.legendData.orient,
                      textStyle:{
-                         color:'white'
+                         color:options.legendData.color,
+                         fontSize :options.legendData.fontSize
                      }
                 },
                 xAxis: [
@@ -154,6 +156,7 @@ export class EChartBarDirective implements OnChanges {
         }
         this.zone.runOutsideAngular(() => {
             this.echarts_ = echarts.init(this.e.nativeElement); 
+            console.log(JSON.stringify(create(this.options)));
             
             this.echarts_.setOption(create(this.options), true);
         });

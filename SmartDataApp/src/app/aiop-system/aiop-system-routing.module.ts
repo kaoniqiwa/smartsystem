@@ -16,6 +16,7 @@ import { FullTrashCanComponent } from './garbage-station/full-trash-can/full-tra
 import { IllegalDropEventHistoryComponent, ContentModeEnum } from "../shared-module/business-component/event-history/illegal-drop-event-history/illegal-drop-event-history.component";
 import { AIModelEventComponent } from './event-history/aimodel-event/aimodel-event.component';
 import { IllegalDropEventAnalyzeComponent } from './event-history/illegal-drop-event-analyze/illegal-drop-event-analyze.component';
+import { IllegalDropEventChartComponent } from './event-history/illegal-drop-event-chart/illegal-drop-event-chart.component';
 const routes: Routes = [
 
   {
@@ -64,7 +65,8 @@ const routes: Routes = [
           },
           {
             path:'illegal-drop-event-analyze',component:IllegalDropEventAnalyzeComponent
-          }
+          },
+          {path:'illegal-drop-event-chart',component:IllegalDropEventChartComponent}
         ]
       }
       , {

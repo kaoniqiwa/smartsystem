@@ -1,31 +1,37 @@
 <div style="height: calc(100% - 64px);position: relative;">
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
     <div class="second-title-bg text">
-      乱扔垃圾分析
+      乱扔垃圾图表
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch" [formGroup]="businessService.search.searchform"
     class="filter-wrap m-b-10 collapse">
     <div fxFlex="80">
       <div fxFlex="35" class="m-r-10">
-        <span>选择时间</span>       
+        <span>选择时间</span>
         <input type="text" DateTimePicker [format]="'yyyy年mm月dd日'" [startView]="businessService.datePicker.startView"
           [minView]="businessService.datePicker.minView" [defaultVal]="businessService.search.beginDate"
-          [changeDate]="startDate" style="width: calc(100% - 82px);" class="custom form-control m-l-10"> 
-      </div>    
-      <div fxFlex="20" class="m-r-10">
-        <span class="input-text" style="position: relative;top:2px">对象类型</span>
-        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 82px);" 
-          formControlName="ClassType" (change)="changeClassType()">
-          <option value="division">居委会</option> 
-          <option value="station">垃圾房</option> 
-        </select>
+          [changeDate]="startDate" style="width: calc(100% - 82px);" class="custom form-control m-l-10">
       </div>
-      <div fxFlex="35" class="m-r-10">
-        <span class="input-text" style="position: relative;top:2px">{{classText}}</span>
-        <div class="pull-right" style="width: calc(100% - 60px);">
-           <hw-tree-drop-list [onlyDivisionNode]="businessService.divisionNode"></hw-tree-drop-list>
+      <div fxFlex="30" class="m-r-20">
+        <span class="input-text" style="position: relative;top:2px">区划</span>
+        <div class="pull-right" style="width: calc(100% - 46px);">
+          <ng-container *ngIf="businessService.divisionListView">
+            <hw-level-list-panel [model]="businessService.divisionListView.dataSource" [selectedFn]="changeDivisionFn">
+            </hw-level-list-panel>
+          </ng-container>
+
         </div>
+      </div>
+      <div fxFlex="25" class="m-r-10">
+        <span class="input-text" style="position: relative;top:2px">垃圾房</span>
+        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 64px);"
+          formControlName="StationId">
+          <option value="">全部</option>
+          <ng-container *ngFor="let c of businessService.search.stationsDropList">
+            <option value="{{c.id}}">{{c.name}}</option>
+          </ng-container>
+        </select>
       </div>
       <div fxFlex="10">
         <button type="button" class="hw-blue-btn m-r-10 " (click)="search()">
@@ -33,7 +39,6 @@
           查询
         </button>
       </div>
-   
     </div>
     <div fxFlex="20">
       <div class="pull-right">

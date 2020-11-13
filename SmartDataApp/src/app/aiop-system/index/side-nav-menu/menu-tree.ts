@@ -96,6 +96,10 @@ export class MenuTreeMap{
             url: '/aiop/event-history/illegal-drop-event'
         });
         item.nodes.push({
+            text: '乱扔垃圾图表',
+            url: '/aiop/event-history/illegal-drop-event-chart'
+        });
+        item.nodes.push({
             text: '乱扔垃圾分析',
             url: '/aiop/event-history/illegal-drop-event-analyze'
         });

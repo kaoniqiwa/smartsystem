@@ -10,6 +10,7 @@ declare global {
         validIPPort():boolean;
         toIP():string;
         toIPPort():string; 
+        dateTimePickerZC():string;
     }
 }
 export default String; 

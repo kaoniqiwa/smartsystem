@@ -56,4 +56,8 @@ String.prototype.toIP= function () {
 String.prototype.toIPPort= function () {  
     return this.substr(this.lastIndexOf(':')+1,6).replace('/','');
 }
+
+String.prototype.dateTimePickerZC = function(){
+    return this.replace('年','-').replace('月','-').replace('日','') 
+}
  
