@@ -92,7 +92,7 @@ export class TreeDropListComponent implements OnInit {
     this.stationTreeService.divisionModel = this.dataService.divisions;
     if (this.onlyDivisionNode) {
       const nodes = this.stationTreeService.convertTreeNode(this.stationTreeService.divisions);
-      this.stationTreeService.dataSource = nodes.slice(0,5);
+      this.stationTreeService.dataSource = nodes;
     }
     else { 
       if (ancestorDivision && this.dataService.garbageStations.length==0)
