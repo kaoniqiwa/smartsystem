@@ -44,9 +44,12 @@
         <ng-container *ngIf="m.barBody">
           <div fxFlex="192px" class="item" *ngFor="let b of m.barBody">
             <div fxLayoutAlign="center">
-              <div class="  blue-round-btn">
-                <i class="howell-icon-home3 fill-height" fxLayoutAlign="center center"
-                  style="font-size: xx-large;color:white;"></i>
+              <div class="  blue-round-btn" fxLayoutAlign="center center">
+                <ng-container *ngIf="b.icon">
+                  <img src="{{b.icon}}"  width="60" height="60" alt="" onerror="this.src='../assets/img/timg-pic.jpg'">
+                </ng-container>
+                <!-- <i class="howell-icon-home3 fill-height" fxLayoutAlign="center center"
+                  style="font-size: xx-large;color:white;"></i> -->
               </div>
             </div>
             <label fxLayoutAlign="center">{{b.label}}</label>

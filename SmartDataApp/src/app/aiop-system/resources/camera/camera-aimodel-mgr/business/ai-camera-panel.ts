@@ -5,8 +5,9 @@ import { Page } from "../../../../../data-core/model/page";
 import { CdkDragDrop } from "@angular/cdk/drag-drop";
 import { PanelItem } from "./panel-item";
 import { MessageBar } from "../../../../../common/tool/message-bar";
+import { ListAttribute } from "../../../../../common/tool/table-form-helper";
 
-export class AICameraPanel {
+export class AICameraPanel extends ListAttribute{
     messageBar = new MessageBar();
     cardListSelectedIdFn:()=> Array<string>;
     underCamerasAIModels_: Map<string, string[]>;
@@ -19,7 +20,7 @@ export class AICameraPanel {
     findCameraAIModel: (cameraId: string, resultFn: (models: CameraAIModel[]) => void) => void;
     copyCameraId = '';
     constructor() {
-
+super();
         this.underCamerasAIModels_ = new Map<string, string[]>();
         this.cardListPanelView_.event = (event, listId, itemId) => {
             if (event == EventTypeEnum.ListItemDel) {
@@ -64,13 +65,13 @@ export class AICameraPanel {
         })
     }
 
-    addCards(cameraId: string, model: { id: string; label: string; }) {
+    addCards(cameraId: string, model: { id: string; label: string;icon:string }) {
         const item = this.cardListPanelView_.listPanel.find(x => x.id == cameraId);
         item.barBody.push(model);
     }
 
     dropItem(event: CdkDragDrop<PanelItem[]>) {
-        const copyItem = event.container.data[event.currentIndex];debugger
+        const copyItem = event.container.data[event.currentIndex];
         this.cardListSelectedIdFn().map(i => {
             const list = this.underCamerasAIModels_.get(i);
             if (list.length > 3) { }
@@ -139,7 +140,8 @@ export class AICameraPanel {
                 models.map(m => {
                     card.barBody.push({
                         id: m.Id,
-                        label: m.ModelName
+                        label: m.ModelName,
+                        icon: this.imgUrlRoot+this.aiModelIcon+'ai-m'+m.Label+'.png'
                     });
                     this.setUnderCameraAIModel(x.Id, m.Id);
                 });
@@ -163,7 +165,8 @@ export class AICameraPanel {
                         models.map(m => {
                             findItem.barBody.push({
                                 id: m.Id,
-                                label: m.ModelName
+                                label: m.ModelName,
+                                icon:  this.imgUrlRoot+this.aiModelIcon+'ai-m'+m.Label+'.png'
                             });
                             this.setUnderCameraAIModel(x, m.Id);
                         });

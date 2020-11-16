@@ -20,9 +20,13 @@
             (cdkDragStarted)="mgrService.aiCameraPanel.dropItemState=true"
             cdkDrag>
               <div fxLayoutAlign="center">
-                <div class="middle-round-btn">
-                  <i class="howell-icon-home3 fill-height" fxLayoutAlign="center center"
-                    style="font-size: xx-large;color:white;"></i>
+                <div class="middle-round-btn" fxLayoutAlign="center center">
+                  <ng-container *ngIf="item.icon">
+                    <img src="{{item.icon}}"  width="80" height="80" alt="" onerror="this.src='../assets/img/timg-pic.jpg'">
+                  </ng-container>
+                 
+                  <!-- <i class="howell-icon-home3 fill-height" fxLayoutAlign="center center"
+                    style="font-size: xx-large;color:white;"></i> -->
                 </div>
               </div>
               <label fxLayoutAlign="center">{{item.label | TxtLen:11}}</label>

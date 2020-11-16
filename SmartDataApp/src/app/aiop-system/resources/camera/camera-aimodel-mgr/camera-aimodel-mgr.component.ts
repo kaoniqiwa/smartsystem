@@ -46,6 +46,8 @@ export class CameraAIModelMgrComponent implements OnInit {
     this.mgrService.aiCameraPanel.clearSelectedIds = ()=>{
        this.cardListPanel.selectCancel();
     }
+    console.log(this.mgrService.aiModelsPanel.dataSource);
+    
   }
 
   async search() {

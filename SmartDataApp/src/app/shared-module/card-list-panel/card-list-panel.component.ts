@@ -15,7 +15,8 @@ export class CardListPanelComponent implements OnInit {
   private confirmDialog_: ConfirmDialog;
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit() {console.log(this.model);
+  
   }
 
 
@@ -53,7 +54,7 @@ export class CardListPanelComponent implements OnInit {
   }
 
   //列表项点击事件
-  itemClick(id: string) {debugger
+  itemClick(id: string) { 
     var index = this.selectedId_.indexOf(id);
     if (index < 0)
       this.selectedId_.push(id);

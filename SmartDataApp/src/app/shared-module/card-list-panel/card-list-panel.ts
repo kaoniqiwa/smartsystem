@@ -4,7 +4,7 @@ export class CardListPanel{
      barTitle:{ icon:AccessoryIcon,label:AccessoryIconLabel};
      barEqualAccessorys :{ icon:AccessoryIcon,label:AccessoryIconLabel}[]; 
      barOtherAccessorys :AccessoryIcon[]; 
-     barBody:{id:string,label:string}[];
+     barBody:{id:string,label:string,icon:string}[];
      id:string;
 }
 
