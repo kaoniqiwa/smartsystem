@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { StringMapWithRename } from '@angular/core/src/render3/jit/compiler_facade_interface';
 
 @Component({
   selector: 'hw-confirm-dialog',
@@ -7,24 +8,46 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ConfirmDialogComponent implements OnInit {
 
- @Input() dialog = new ConfirmDialog();
+  @Input() dialog = new ConfirmDialog();
   constructor() { }
 
   ngOnInit() {
   }
 
-  okBtnClick(){
-     if(this.dialog.okFn)this.dialog.okFn();
+  okBtnClick() {
+    if (this.dialog.okFn) { this.dialog.okFn(); }
   }
-  cancelBtnClick(){
-    if(this.dialog.cancelFn)this.dialog.cancelFn();
+  cancelBtnClick() {
+    if (this.dialog.cancelFn) { this.dialog.cancelFn(); }
   }
 
 }
 
-export class ConfirmDialog{
-    okFn:()=>void;
-    cancelFn:()=>void;
-    content = '删除该项';
-    title = '确认删除';
+export class ConfirmDialog {
+  constructor(opts?: {
+    title?: string,
+    content?: string,
+    okFn?: () => void,
+    cancelFn?: () => void
+  }) {
+    if (opts) {
+      if (opts.title) {
+        this.title = opts.title;
+      }
+      if (opts.content) {
+        this.content = opts.content;
+      }
+      if (opts.okFn) {
+        this.okFn = opts.okFn;
+      }
+      if (opts.cancelFn) {
+        this.cancelFn = opts.cancelFn;
+      }
+
+    }
+  }
+  okFn: () => void;
+  cancelFn: () => void;
+  content = '删除该项';
+  title = '确认删除';
 }

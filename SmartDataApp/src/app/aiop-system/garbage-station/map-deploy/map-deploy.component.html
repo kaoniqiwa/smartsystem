@@ -20,8 +20,15 @@
     <iframe class="map" [src]="srcUrl" #iframe width="100%" height="100%"></iframe>
 
   </div>
-
-  <app-confirm #locationConfirm
+  <div class="fill-height fill-width hw-content-mask" *ngIf="locationDisplay">
+    <hw-confirm-dialog [dialog]="locationDialog">
+    </hw-confirm-dialog>
+  </div>
+  <div class="fill-height fill-width hw-content-mask" *ngIf="unbindDisplay">
+    <hw-confirm-dialog [dialog]="unbindDialog">
+    </hw-confirm-dialog>
+  </div>
+  <!-- <app-confirm #locationConfirm
   [message]="'是否保存当前位置？'"
     (YesClickedEvent)="locationYesClicked()"
     (CancelClickedEvent)="locationCancelClicked()"
@@ -31,7 +38,7 @@
   [message]="'是否解除绑定？'"
     (YesClickedEvent)="unbindYesClicked()"
     (CancelClickedEvent)="unbindCancelClicked()"
-  ></app-confirm>
+  ></app-confirm> -->
 
 
 </div>
