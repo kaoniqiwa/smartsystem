@@ -9,6 +9,14 @@
       </hw-gallery-target>
     </div>
   </div>
+  <div class="fill-height fill-width hw-content-mask collapse" [class.in]="businessService.playVideo">
+    <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
+      <ng-container *ngIf="businessService.playVideo">
+        <hw-video-simple-card [closeFn]="videoClose" [url]="businessService.playVideo.url" [autostart]="true"
+          [cameraName]="businessService.playVideo.name"></hw-video-simple-card>
+      </ng-container>
+    </div>
+  </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
     <div class="second-title-bg text">
       垃圾房
