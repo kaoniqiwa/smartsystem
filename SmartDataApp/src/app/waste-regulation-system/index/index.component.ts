@@ -46,7 +46,7 @@ export class IndexComponent implements OnInit {
     ];
     this.bar.xAxisData = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
     this.bar.seriesName = ['干垃圾', '湿垃圾'];
-    this.bar.legendData = ['干垃圾', '湿垃圾'];
+    this.bar.legendData.data = ['干垃圾', '湿垃圾'];
     this.line.xAxisData = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
     this.line.seriesData = [820, 932, 901, 934, 1290, 1330, 1320];
     this.pie.legendData = ['干垃圾', '湿垃圾', '可回收垃圾', '有害垃圾'];
@@ -82,6 +82,7 @@ export class IndexComponent implements OnInit {
 
     const committesIds = await this.indexService.getCommittesIds();
     this.divisionBusinessService.committesIds = committesIds;
+    this.divisionBusinessService.divisionsId=county.Id;
     this.divisionConfig = new Array();
     this.divisionConfig.push({
       business: 'DivisionList',

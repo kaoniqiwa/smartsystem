@@ -30,6 +30,7 @@ export class DivisionBusinessService {
     eventHistoryView = false;
     stationCameraView = false;
     stationCameraStateTable:CameraStateTableEnum;
+    divisionsId ='';
     constructor(private cameraService: CameraRequestService) {
         setTimeout(() => {
             for (const x of this.componets) {
@@ -40,6 +41,7 @@ export class DivisionBusinessService {
                         param.map.set('divisionsId', val.id);
                         param.map.set('divisionsType', val.type);
                         param.map.set('divisionsIds', this.committesIds);
+                        this.divisionsId=val.id;
                         if (this.mapClient) {
                             this.mapClient.Village.Select(val.id);
                             let village = this.mapClient.DataController.Village.Get(val.id);

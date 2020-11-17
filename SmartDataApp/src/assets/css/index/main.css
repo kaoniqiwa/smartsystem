@@ -3,11 +3,23 @@ button:focus
 {
     outline: none;
     box-shadow: unset;
-}
-
+} 
 h2 
 {
     line-height: 1
+}
+
+.week-tr {
+    background-color: #003399;
+    color: white;
+}
+
+.datetimepicker-days .table-condensed.week tbody tr:hover {
+    background-color: #96a2b4;
+}
+
+.datetimepicker-days .table-condensed.week tbody tr:hover {
+    color: white;
 }
 
 .fine::-webkit-scrollbar {  

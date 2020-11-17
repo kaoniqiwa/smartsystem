@@ -95,13 +95,14 @@
           </hw-mixed-into-event-history>
         </ng-container>
         <ng-container *ngIf="divisionBusinessService.fullStationsView">
-          <hw-full-garbage-station></hw-full-garbage-station>
+          <hw-full-garbage-station  [divisionsId]="divisionBusinessService.divisionsId"></hw-full-garbage-station>
         </ng-container>
         <ng-container *ngIf="divisionBusinessService.stationListView">
-          <hw-garbage-station></hw-garbage-station>
+          <hw-garbage-station  [divisionsId]="divisionBusinessService.divisionsId"></hw-garbage-station>
         </ng-container>
         <ng-container *ngIf="divisionBusinessService.stationCameraView">
-          <hw-garbage-station-cameras [cameraStateTable]="divisionBusinessService.stationCameraStateTable"></hw-garbage-station-cameras>
+          <hw-garbage-station-cameras [divisionsId]="divisionBusinessService.divisionsId"
+          [cameraStateTable]="divisionBusinessService.stationCameraStateTable"></hw-garbage-station-cameras>
         </ng-container>
       
       

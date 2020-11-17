@@ -1,10 +1,8 @@
 
-import { StatisticalDataBufferService, TimeUnitEnum } from '../../buffer/statistical-data-buffer'; 
+import { StatisticalDataBufferService } from '../../buffer/statistical-data-buffer'; 
 import { DeviceStatus } from "./data";
 import { BusinessParameter } from '../../../../../common/interface/IBusiness';
-import { BaseBusinessRefresh } from "../../../../../common/tool/base-business-refresh";
-import { EventNumber } from '../../../../../data-core/model/waste-regulation/event-number';
-import { EventTypeEnum } from '../../../../../common/tool/enum-helper'
+import { BaseBusinessRefresh } from "../../../../../common/tool/base-business-refresh"; 
 export class DeviceStatusStatistic   extends BaseBusinessRefresh {
 
     constructor(dataServe: StatisticalDataBufferService, businessParameter?: BusinessParameter) {

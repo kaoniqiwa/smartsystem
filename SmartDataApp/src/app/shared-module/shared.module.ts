@@ -89,7 +89,7 @@ import { UserToolComponent } from "./business-component/user-tool/user-tool.comp
     ,LineEChartsCardComponent,SwitchComponent,TimeToolComponent
     ,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventCardListComponent
     ,MixedIntoEventHistoryComponent,FullGarbageStationComponent,GarbageStationComponent,GarbageStationCamerasComponent
-    ,UserToolComponent
+    ,UserToolComponent,LevelListPanelComponent
   ],
   providers: [DatePipe,
    ],
