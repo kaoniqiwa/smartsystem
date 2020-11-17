@@ -41,7 +41,7 @@ export class SearchControl extends SearchHelper {
 
     set formBeginDate(v: Date) { 
         const param = this.toSearchParam();
-        if (param.TimeUnit == TimeUnitEnum.Hour)
+        if (param.TimeUnit == TimeUnitEnum.Hour|| param.TimeUnit==TimeUnitEnum.Week)
             this.searchform.patchValue({
                 BeginTime: this.datePipe.transform(v, 'yyyy年MM月dd日'),
                 EndTime:'',

@@ -49,6 +49,9 @@ export class DateTimePickerDirective implements AfterContentInit {
         forceParse: false,
       }).on('changeDate', (ev) => {
         if (this.changeDate) this.changeDate(ev.date);
+        const week = OneWeekDate(ev.date); 
+        $(this.ele).val(`${this.datePipe.transform(week.monday,'yyyy年MM月dd日')} 至 ${this.datePipe.transform(week.sunday,'yyyy年MM月dd日')}`);
+     
       }).on('show', (ev) => {
         const dayDom = $('.datetimepicker-days');
         dayDom.addClass('week');
