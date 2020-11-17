@@ -42,4 +42,6 @@
         CameraUsage: number | null;
         
         OnlineStatus:number;
+
+        DivisionIds: string[];
     }

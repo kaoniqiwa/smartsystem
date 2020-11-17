@@ -68,7 +68,7 @@ export class GalleryTargetComponent implements OnInit, OnChanges {
   }
 
   load() {
-    if (this.model) {
+    if (this.model&&this.model.polygon) {
       setTimeout(() => {
         const size = domSize('enlargeImage');
         this.enlargeImageSize.width = size.width;

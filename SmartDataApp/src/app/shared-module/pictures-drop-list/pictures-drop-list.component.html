@@ -2,7 +2,7 @@
     <div fxLayout="row">
         <a  href="javascript:void(0)" (click)="showList=true"  fxLayoutAlign="center center" fxFlex="80px" class="single-pic-wrap">
             <ng-container *ngIf="checkedItem">
-                <img src="{{checkedItem.content}}"      alt="" width="30" height="30">
+                <img src="{{checkedItem.content}}" class="fill-width fill-height" alt="">
             </ng-container>          
         </a>
     </div>
@@ -10,9 +10,8 @@
         <div fxLayout="row wrap" >
             <a href="javascript:void(0)" (click)="itemClick(item)" fxLayoutAlign="center center" class="m-r-5 m-b-5 " fxFlex="76px" 
             *ngFor="let item of model">
-                <img  src="{{item.content}}" width="30" height="30" alt="">
-                <strong><i class="howell-icon-Check" *ngIf="item.checked" style="color:rgb(77,207,105)"></i></strong>
-            
+                <img  src="{{item.content}}" class="fill-width fill-height" alt="">
+                <strong><i class="howell-icon-Check" *ngIf="item.checked" style="color:rgb(77,207,105)"></i></strong>            
             </a>       
         </div>
     </div>

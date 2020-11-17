@@ -7,7 +7,7 @@ export class GalleryTargetView {
     galleryTarget: GalleryTarget;
     galleryTargetBox = false;
 
-    constructor(private datePipe: DatePipe) {
+    constructor(public datePipe: DatePipe) {
 
     }
 
