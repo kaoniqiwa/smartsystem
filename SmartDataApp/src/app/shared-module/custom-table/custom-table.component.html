@@ -26,10 +26,10 @@
           <tr *ngFor="let item of model.values" [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1"
             (click)='itemClick(item)'>            
             <ng-container *ngIf="model.galleryTd">
-              <td style="width: 30%;" (click)="imgClick(item)">
-                <ng-container *ngFor="let i of galleryTdAttr(item[model.primaryKey])">
-                  <div class="pull-left m-r-10" style="width: 44px;height:36px;">
-                    <img src="{{i}}"   class="small"  onerror="this.src='../assets/img/timg-pic.jpg'">
+              <td style="width: 30%;">
+                <ng-container *ngFor="let i of galleryTdAttr(item[model.primaryKey]);let j=index">
+                  <div class="pull-left m-r-10"   (click)="galleryImgClick(item,j)"  style="width: 44px;height:36px;">
+                    <img src="{{i}}"  class="small"  onerror="this.src='../assets/img/timg-pic.jpg'">
                   </div>            
                  
                 </ng-container>

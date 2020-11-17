@@ -81,7 +81,7 @@ export enum CameraUsageDataEnum {
 }
 
 export enum StationStateEnum{
-    '-'=0,
+    '正常'=0,
     '满溢',
     '异常'
 }

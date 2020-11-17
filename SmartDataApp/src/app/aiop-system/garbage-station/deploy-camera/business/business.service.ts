@@ -6,7 +6,7 @@ import { FlatNode, ColorEnum ,RightBtn} from "../../../../shared-module/custom-t
 import { ConfirmDialog} from "../../../../shared-module/confirm-dialog/confirm-dialog.component";
 import { DataService as CameraDataService } from "../business/data.service";
 import { Camera as StationCamera } from "../../../../data-core/model/waste-regulation/camera";
-import { CameraUsageDataEnum, CameraUsageEnum, CanTypeEnum } from "../../../../common/tool/enum-helper";
+import { CameraUsageDataEnum, CanTypeEnum } from "../../../../common/tool/enum-helper";
 import { MessageBar } from "../../../../common/tool/message-bar";
 import { House } from "../../station-chart/business/station-chart";
 @Injectable()

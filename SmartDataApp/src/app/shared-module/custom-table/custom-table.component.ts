@@ -175,4 +175,14 @@ export class CustomTableComponent implements OnInit{
 
     }
   }
+
+  galleryImgClick(item:any,index:number){
+    if (this.model.isDisplayDetailImg) {
+      event.stopPropagation();
+      this.model.eventDelegate(new CustomTableEvent(CustomTableEventEnum.Img, {
+        item:item,
+        index:index
+      }));
+    }
+  }
 }
