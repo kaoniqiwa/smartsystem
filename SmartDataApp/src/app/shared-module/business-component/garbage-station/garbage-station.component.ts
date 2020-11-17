@@ -18,10 +18,18 @@ export class GarbageStationComponent implements OnInit {
       });
     });  
   }
+
+  galleryTargetFn = () => {
+    this.businessService.galleryTargetView.galleryTarget = null;
+  }
+  videoClose = () => {
+    this.businessService.playVideo = null;
+  }
   constructor(private businessService:BusinessService) { }
 
   async ngOnInit() {
    this.businessService.divisionsId=this.divisionsId;
+   this.businessService.cameras=await this.businessService.resourceCameraDao.allResourceCameras();
     this.businessService.garbageStationTypes = await this.businessService.requestGarbageStationType();
     this.businessService.divisions = await this.businessService.requestDivisions();
     await this.businessService.requestData(1, (page) => {

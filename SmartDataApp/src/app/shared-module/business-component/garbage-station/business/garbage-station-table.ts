@@ -2,28 +2,44 @@ import { DatePipe } from "@angular/common";
 import { IConverter } from "../../../../common/interface/IConverter";
 import { GarbageStation, GetGarbageStationsParams } from "../../../../data-core/model/waste-regulation/garbage-station";
 import { GarbageStationType } from "../../../../data-core/model/waste-regulation/garbage-station-type";
-import { CustomTableEvent } from "../../../custom-table/custom-table-event";
-import { CustomTableArgs, FootArgs, TableAttr } from "../../../custom-table/custom-table-model";
+import { CustomTableEvent, CustomTableEventEnum } from "../../../custom-table/custom-table-event";
+import { CustomTableArgs, FootArgs, GalleryTdAttr, TableAttr } from "../../../custom-table/custom-table-model";
 import { ITableField } from "../../../../aiop-system/common/ITableField";
 import { IBusinessData } from "../../../../common/interface/IBusiness";
-import { BusinessTable } from "../../../../aiop-system/common/business-table"; 
-import { Injectable } from "@angular/core"; 
-import { Division } from "../../../../data-core/model/waste-regulation/division"; 
+import { BusinessTable } from "../../../../aiop-system/common/business-table";
+import { Injectable } from "@angular/core";
+import { Division } from "../../../../data-core/model/waste-regulation/division";
 import { Page } from "../../../../data-core/model/page";
 import { StationStateEnum } from "../../../../common/tool/enum-helper";
-import { GarbageStationRequestService } from "../../../../data-core/repuest/garbage-station.service"; 
+import { GarbageStationRequestService } from "../../../../data-core/repuest/garbage-station.service";
 import { SearchControl } from "./search";
 import { DivisionDao } from "../../../../data-core/dao/division-dao";
 import { GarbageStationTypeDao } from "../../../../data-core/dao/garbage-station-type-dao";
 import { DivisionRequestService } from "../../../../data-core/repuest/division.service";
 import { GarbageStationTypeRequestService } from "../../../../data-core/repuest/garbage-station.service";
+import { PlayVideo } from "../../../../aiop-system/common/play-video";
+import { GalleryTargetViewI } from "../../full-garbage-station/business/gallery-target";
+import { ResourceCameraDao } from "../../../../data-core/dao/resources-camera-dao";
+import { Camera as ResourceCamera } from "../../../../data-core/model/aiop/camera";
+import { Camera } from "../../../../data-core/model/waste-regulation/camera";
+import { TimeInterval } from "../../../../common/tool/tool.service";
+import { GetVodUrlParams } from "../../../../data-core/model/aiop/video-url";
+import { ResourceSRServersRequestService, CameraRequestService } from "../../../../data-core/repuest/resources.service";
+import { SideNavService } from "../../../../common/tool/sidenav.service";
+import { ImageEventEnum } from "../../../gallery-target/gallery-target";
+import { MediumPicture } from "../../../../data-core/url/aiop/resources";
 @Injectable()
 export class BusinessService {
-    dataSource_ = new Array<GarbageStation>(); 
+    playVideo: PlayVideo;
+    galleryTargetView = new GalleryTargetViewI(this.datePipe);
+    resourceCameraDao: ResourceCameraDao;
+    cameras: ResourceCamera[] = new Array();
 
-    divisions: Division[] = new Array(); 
-    divisionsId='';
-    garbageStationTypes:GarbageStationType[]=new Array();
+    dataSource_ = new Array<GarbageStation>();
+
+    divisions: Division[] = new Array();
+    divisionsId = '';
+    garbageStationTypes: GarbageStationType[] = new Array();
 
     search = new SearchControl();
     set dataSource(items: GarbageStation[]) {
@@ -36,15 +52,90 @@ export class BusinessService {
     }
     table = new GarbageStationTable(this.datePipe);
     private divisionDao: DivisionDao;
-    private  garbageStationTypeDao:GarbageStationTypeDao;
-    constructor(private datePipe:DatePipe,private garbageStationService:GarbageStationRequestService
-       , divisionService: DivisionRequestService
-        , garbageStationTypeService:GarbageStationTypeRequestService) {
-        this.divisionDao = new DivisionDao(divisionService);
-        this.garbageStationTypeDao=new GarbageStationTypeDao(garbageStationTypeService);
+    private garbageStationTypeDao: GarbageStationTypeDao;
+
+    playVideoFn = async (id: string) => {
+        const idV = id.split('&'),
+            camera = this.cameras.find(x => x.Id == idV[1]);
+        const time = TimeInterval(camera.ImageTime + '', -30),
+            video = await this.requestVideoUrl(time.start, time.end, camera.Id);
+        this.playVideo = new PlayVideo(video.Url, camera.Name);
+        this.navService.playVideoBug.emit(true);
     }
 
-    async  requestGarbageStationType(){
+    constructor(private datePipe: DatePipe, private garbageStationService: GarbageStationRequestService
+        , divisionService: DivisionRequestService
+        , private cameraService: CameraRequestService
+        , private navService: SideNavService
+        , private srService: ResourceSRServersRequestService
+        , garbageStationTypeService: GarbageStationTypeRequestService) {
+        this.divisionDao = new DivisionDao(divisionService);
+        this.garbageStationTypeDao = new GarbageStationTypeDao(garbageStationTypeService);
+        this.resourceCameraDao = new ResourceCameraDao(this.cameraService);
+        this.galleryTargetView.neighborEventFnI = (ids, e: ImageEventEnum) => {
+            const idV = ids.split('&'), findStation = this.dataSource.find(x => x.Id == idV[0]);
+            var index = findStation.Cameras.findIndex(x => x.Id == idV[1]);
+            var prev = true, next = true;
+            if (e == ImageEventEnum.none) {
+                if (index == 0)
+                    prev = false;
+                else if (index == findStation.Cameras.length - 1)
+                    next = false;
+                return {
+                    item: null,
+                    prev: prev,
+                    next: next
+                }
+            }
+            else if (e == ImageEventEnum.next) {
+                index += 1;
+                var cameraToIndex = findStation.Cameras[index];
+                if (index == findStation.Cameras.length - 1)
+                    next = false;
+                return {
+                    item: this.cameras.find(x => x.Id == cameraToIndex.Id),
+                    prev: prev,
+                    next: next
+                }
+            }
+            else if (e == ImageEventEnum.prev) {
+                index -= 1;
+                var cameraToIndex = findStation.Cameras[index];
+                if (index == 0)
+                    prev = false;
+                return {
+                    item: this.cameras.find(x => x.Id == cameraToIndex.Id),
+                    prev: prev,
+                    next: next
+                }
+            }
+        }
+        this.table.findGarbageFn = (id) => {
+            return this.dataSource.find(x => x.Id == id);
+        }
+
+        this.table.initGalleryTargetFn = (garbageId, event, index) => {
+            const cameras = new Array<ResourceCamera>();
+            event.map(x => {
+                const find = this.cameras.find(c => c.Id == x.Id);
+                cameras.push(find);
+            })
+            this.galleryTargetView.initGalleryTargetI(garbageId, cameras, index);
+        }
+    }
+
+    async requestVideoUrl(begin: Date, end: Date, cameraId: string) {
+        const params = new GetVodUrlParams();
+        params.BeginTime = begin;
+        params.EndTime = end;
+        params.Protocol = 'ws-ps';
+        params.StreamType = 1;
+        params.CameraId = cameraId;
+        const response = await this.srService.VodUrls(params).toPromise();
+        return response.Data;
+    }
+
+    async requestGarbageStationType() {
         const result = await this.garbageStationTypeDao.garbageStationType();
         return result;
     }
@@ -53,18 +144,18 @@ export class BusinessService {
         const result = await this.divisionDao.allDivisions();
         return result;
     }
-   
+
     async requestData(pageIndex: number, callBack?: (page: Page) => void) {
         const response = await this.garbageStationService.list(this.getRequsetParam(pageIndex, this.search)).toPromise();
-        let data = new BusinessData(this.garbageStationTypes,response.Data.Data,this.divisions);       
-
+        let data = new BusinessData(this.garbageStationTypes, response.Data.Data, this.divisions);
+        data.items = this.cameras;
         this.table.clearItems();
         this.dataSource = [];
         this.table.Convert(data, this.table.dataSource);
         this.table.totalCount = response.Data.Page.TotalRecordCount;
         this.dataSource = response.Data.Data;
         if (callBack) callBack(response.Data.Page);
-    }; 
+    };
 
     getRequsetParam(pageIndex: number, search: SearchControl) {
 
@@ -79,7 +170,7 @@ export class BusinessService {
 }
 
 export class GarbageStationTable extends BusinessTable implements IConverter {
-   
+
     dataSource = new CustomTableArgs<any>({
         hasTableOperationTd: false,
         hasHead: true,
@@ -88,7 +179,10 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
         primaryKey: "id",
         isDisplayDetailImg: true,
         eventDelegate: (event: CustomTableEvent) => {
-          
+            if (event.eventType == CustomTableEventEnum.Img) {
+                const findEvent = this.findGarbageFn(event.data['item'].id);
+                this.initGalleryTargetFn(findEvent.Id, findEvent.Cameras, event.data['index']);
+            }
         },
         tableAttrs: [new TableAttr({
             HeadTitleName: "名称",
@@ -96,73 +190,88 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
             tdInnerAttrName: "name"
         }), new TableAttr({
             HeadTitleName: "类型",
-            tdWidth: "20%",
+            tdWidth: "15%",
             tdInnerAttrName: "type"
         }), new TableAttr({
             HeadTitleName: "状态",
-            tdWidth: "20%",
+            tdWidth: "15%",
             tdInnerAttrName: "state"
         }), new TableAttr({
             HeadTitleName: "区划",
             tdWidth: "20%",
             tdInnerAttrName: "divisionName"
-        }), new TableAttr({
-            HeadTitleName: "更新时间",
-            tdWidth: "20%",
-            tdInnerAttrName: "updateTime"
         })],
+        galleryTd: [],
         footArgs: new FootArgs({
             hasSelectBtn: false,
             hasSelectCount: false
         })
     });
-
+    findGarbageFn: (id: string) => GarbageStation;
+    initGalleryTargetFn: (garbageId: string, event: Camera[], index: number) => void;
+    playVideoFn: (id: string) => void;
 
     constructor(private datePipe: DatePipe) {
         super();
     }
     scrollPageFn: (event: CustomTableEvent) => void;
 
-   
+
     Convert<BusinessData, CustomTableArgs>(input: BusinessData, output: CustomTableArgs) {
         const items = new Array<TableField>();
-
+        var tds: GalleryTdAttr[] = new Array();
         if (input instanceof BusinessData)
             for (const item of input.statioins) {
-                const division = input.divisions.find(x=>x.Id==item.DivisionId)
-                ,type = input.types.find(x=>x.Type==item.StationType);
-                
-                
-                items.push(this.toTableModel(division,type,item));
+                const division = input.divisions.find(x => x.Id == item.DivisionId)
+                    , type = input.types.find(x => x.Type == item.StationType);
+
+
+                items.push(this.toTableModel(division, type, item));
+                if (item.Cameras)
+                    tds.push(this.toGalleryModel(input.items, item.Id, item.Cameras));
             }
         if (output instanceof CustomTableArgs)
+           {
             output.values = items;
-
+            output.galleryTd = tds;
+           }
         return output;
     }
 
-    toTableModel(division: Division,type:GarbageStationType,statioin:GarbageStation) {
+    toTableModel(division: Division, type: GarbageStationType, statioin: GarbageStation) {
         let tableField = new TableField();
         tableField.id = statioin.Id;
-        tableField.updateTime = this.datePipe.transform(statioin.UpdateTime, 'yyyy-MM-dd HH:mm');
         tableField.name = statioin.Name;
-        tableField.type = type ? type.Name :'-';
-        tableField.divisionName = division ? division.Name:'-';
-        tableField.state=StationStateEnum[statioin.StationState];
+        tableField.type = type ? type.Name : '-';
+        tableField.divisionName = division ? division.Name : '-';
+        tableField.state = StationStateEnum[statioin.StationState];
         return tableField;
+    }
+
+    toGalleryModel(resourceCameras: ResourceCamera[], key: string, camera: Camera[]) {
+        const pic = new MediumPicture(), galleryTdAttr = new GalleryTdAttr();
+        galleryTdAttr.imgSrc = new Array<string>();
+        camera.map(x => {
+            const find = resourceCameras.find(x1 => x1.Id == x.Id);
+            if (find)
+                galleryTdAttr.imgSrc.push(pic.getJPG(find.ImageUrl));
+        })
+        galleryTdAttr.key = key; 
+        return galleryTdAttr;
     }
 }
 
 export class BusinessData implements IBusinessData {
     types: GarbageStationType[];
     statioins: GarbageStation[];
+    items: ResourceCamera[];
     divisions: Division[];
     constructor(types: GarbageStationType[],
         statioins: GarbageStation[],
-        divisions: Division[]){
-this.types=types;
-this.statioins=statioins;
-this.divisions=divisions;
+        divisions: Division[]) {
+        this.types = types;
+        this.statioins = statioins;
+        this.divisions = divisions;
     }
 }
 
@@ -170,7 +279,7 @@ export class TableField implements ITableField {
     id: string;
     updateTime: string;
     name: string;
-    state:string;
-    type:string;    
-    divisionName: string; 
+    state: string;
+    type: string;
+    divisionName: string;
 }

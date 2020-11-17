@@ -1,5 +1,14 @@
 <div class="fill-height"> 
-
+  <div class="fill-height fill-width hw-content-mask collapse"
+    [class.in]="businessService.galleryTargetView.galleryTarget">
+    <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
+      <hw-gallery-target [model]="businessService.galleryTargetView.galleryTarget"
+      [imgEventFn]="businessService.galleryTargetView.galleryTargetPageFn"
+      [videoFn]="businessService.playVideoFn"
+      [closeViewFn]="galleryTargetFn">
+      </hw-gallery-target>
+    </div>
+  </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
     <div class="second-title-bg text">
       垃圾房

@@ -1,8 +1,7 @@
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
 import { GalleryTarget, ImageEventEnum } from "../../../gallery-target/gallery-target";
 import { GalleryTargetView } from "../../event-history/gallery-target";
-import { Camera } from "../../../../data-core/model/aiop/camera";
-import { Camera  as ResourceCamera} from "../../../../data-core/model/waste-regulation/camera";
+import { Camera } from "../../../../data-core/model/aiop/camera"; 
 export class GalleryTargetViewI extends GalleryTargetView {
 
     neighborEventFnI: (id: string, e: ImageEventEnum) => {
@@ -48,15 +47,15 @@ export class GalleryTargetViewI extends GalleryTargetView {
 
 
 
-    initGalleryTargetI(garbageId:string,cameras: Camera[]) {
+    initGalleryTargetI(garbageId:string,cameras: Camera[],index:number) { 
         if (cameras && cameras.length) {
-            const enlargeImage = new MediumPicture().getJPG(cameras[0].ImageUrl),ids = new Array();
+            const enlargeImage = new MediumPicture().getJPG(cameras[index].ImageUrl),ids = new Array();
             cameras.map(x=>ids.push(x.Id));
             this.galleryTarget = new GalleryTarget(null
                 , null, enlargeImage,
-                null, garbageId +'&'+cameras[0].Id, this.toDownLoadImgNameI(cameras[0]));
-            this.galleryTarget.imgNext = cameras.length > 1;
-            this.galleryTarget.imgPrev = false;
+                null, garbageId +'&'+cameras[index].Id, this.toDownLoadImgNameI(cameras[index]));
+            this.galleryTarget.imgNext = (index+1)< cameras.length;
+            this.galleryTarget.imgPrev = index > 0;
         }
 
     }

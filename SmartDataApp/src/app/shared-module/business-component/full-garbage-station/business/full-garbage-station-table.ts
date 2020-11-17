@@ -10,11 +10,14 @@ import { Injectable } from "@angular/core";
 import { BusinessTable } from "../../../../aiop-system/common/business-table";
 import { Page } from "../../../../data-core/model/page";
 import { GarbageStation, GetGarbageStationsParams } from "../../../../data-core/model/waste-regulation/garbage-station";
+import { Division } from "../../../../data-core/model/waste-regulation/division";
 import "../../../../common/string/hw-string";
 import { SearchControl } from "./search";
 import { GarbageStationRequestService } from "../../../../data-core/repuest/garbage-station.service";
 import { GarbageStationDao } from "../../../../data-core/dao/garbage-station-dao"
 import { ResourceCameraDao } from "../../../../data-core/dao/resources-camera-dao";
+import { DivisionDao } from "../../../../data-core/dao/division-dao";
+import { DivisionRequestService } from "../../../../data-core/repuest/division.service";
 import { CameraRequestService, ResourceSRServersRequestService } from "../../../../data-core/repuest/resources.service";
 import { Camera as ResourceCamera } from "../../../../data-core/model/aiop/camera";
 import {Camera  } from "../../../../data-core/model/waste-regulation/camera";
@@ -33,7 +36,9 @@ export class BusinessService {
     galleryTargetView = new GalleryTargetViewI(this.datePipe);
     garbageStationDao: GarbageStationDao;
     resourceCameraDao: ResourceCameraDao;
+    divisionDao:DivisionDao;
     cameras: ResourceCamera[] = new Array();
+    divisions = new Array<Division>();
     table = new StatisticTable();
     search = new SearchControl();
     divisionId='';
@@ -60,23 +65,24 @@ export class BusinessService {
         , private cameraService: CameraRequestService        
         , private srService: ResourceSRServersRequestService        
        ,private navService:SideNavService
+       ,divisionService:DivisionRequestService
         ,private datePipe: DatePipe) {
         this.resourceCameraDao = new ResourceCameraDao(this.cameraService);
         this.garbageStationDao = new GarbageStationDao(garbageStationService);
-
+        this.divisionDao=new DivisionDao(divisionService);
         this.table.findGarbageFn = (id) => {
             return this.dataSource.find(x => x.Id == id);
         }
         this.galleryTargetView.neighborEventFnI = (ids, e: ImageEventEnum) => {
            const idV = ids.split('&'),findStation =  this.dataSource.find(x => x.Id == idV[0]);
-           var index = findStation.Cameras.findIndex(x => x.Id == idV[1]);
-            var prev = true, next = true
-                , item: ResourceCamera;
+           var index = findStation.Cameras.filter(j=>j.CameraUsage==8||j.CameraUsage==9)
+           .findIndex(x => x.Id == idV[1]);
+            var prev = true, next = true,cameras = findStation.Cameras.filter(x=>x.CameraUsage == 9 || x.CameraUsage == 8);
 
             if (e == ImageEventEnum.none) {
                 if (index == 0)
                     prev = false;
-                else if (index == findStation.Cameras.length - 1)
+                else if (index == cameras.length - 1)
                     next = false;
                 return {
                     item: null,
@@ -86,9 +92,9 @@ export class BusinessService {
             }
             else if (e == ImageEventEnum.next) {
                 index += 1;
-                const cameraToIndex = findStation.Cameras[index];
+                const cameraToIndex = cameras[index];
 
-                if (index == findStation.Cameras.length - 1)
+                if (index == cameras.length - 1)
                     next = false;
                 return {
                     item: this.cameras.find(x=>x.Id==cameraToIndex.Id),
@@ -98,7 +104,7 @@ export class BusinessService {
             }
             else if (e == ImageEventEnum.prev) {
                 index -= 1;
-                const cameraToIndex  = findStation.Cameras[index];
+                const cameraToIndex  = cameras[index];
                 if (index == 0)
                     prev = false;
                 return {
@@ -109,13 +115,13 @@ export class BusinessService {
             }
         }
 
-        this.table.initGalleryTargetFn = (garbageId,event) => { 
+        this.table.initGalleryTargetFn = (garbageId,event,index) => { 
             const cameras = new Array<ResourceCamera>();
             event.map(x=>{
                const find=   this.cameras.find(c=>c.Id==x.Id);
                cameras.push(find);
             })
-            this.galleryTargetView.initGalleryTargetI(garbageId,cameras);
+            this.galleryTargetView.initGalleryTargetI(garbageId,cameras,index);
         }
 
 
@@ -143,7 +149,7 @@ export class BusinessService {
         let data = new Statistics();
         data.garbageStations = response.Data.Data;
         data.items = this.cameras;
-
+        data.divisions=this.divisions;
         this.table.clearItems();
         this.dataSource = [];
         this.table.Convert(data, this.table.dataSource);
@@ -157,7 +163,7 @@ export class BusinessService {
         const param = new GetGarbageStationsParams();
         param.PageIndex = pageIndex;
         param.DivisionId=this.divisionId;
-        param.PageSize = 10;      
+        param.PageSize = 10;  
         if (search.searchText && search.other == false)
             param.Name = search.searchText;
         return param;
@@ -176,17 +182,22 @@ export class StatisticTable extends BusinessTable implements IConverter, IPageTa
         primaryKey: "id",
         eventDelegate: (event: CustomTableEvent) => {
            if (event.eventType == CustomTableEventEnum.Img) {
-                const findEvent = this.findGarbageFn(event.data['id']);
-                this.initGalleryTargetFn(findEvent.Id,findEvent.Cameras);
+                const findEvent = this.findGarbageFn(event.data['item'].id)
+                ,cameras =findEvent.Cameras.filter(x=>x.CameraUsage == 8|| x.CameraUsage == 9);
+                this.initGalleryTargetFn(findEvent.Id,cameras,event.data['index']);
             }
         },
         tableAttrs: [new TableAttr({
-            HeadTitleName: "名称",
-            tdWidth: "40%",
+            HeadTitleName: "垃圾房名称",
+            tdWidth: "25%",
             tdInnerAttrName: "name"
         }),new TableAttr({
+            HeadTitleName: "区划名称",
+            tdWidth: "25%",
+            tdInnerAttrName: "division"
+        }),new TableAttr({
             HeadTitleName: "状态",
-            tdWidth: "30%",
+            tdWidth: "15%",
             tdInnerAttrName: "state"
         })],
         galleryTd: [],
@@ -197,7 +208,7 @@ export class StatisticTable extends BusinessTable implements IConverter, IPageTa
     });
 
     findGarbageFn: (id: string) => GarbageStation;
-    initGalleryTargetFn:(garbageId:string,event:Camera[])=>void;
+    initGalleryTargetFn:(garbageId:string,event:Camera[],index:number)=>void;
     playVideoFn: (id: string) =>void;
     scrollPageFn: (event: CustomTableEvent) => void;
 
@@ -222,16 +233,13 @@ export class StatisticTable extends BusinessTable implements IConverter, IPageTa
         if (input instanceof Statistics) {
           //  var stations = input.garbageStations.filter(x => x.DryFull || x.WetFull);
            const  stations = input.garbageStations.sort((a, b) => {
-                 return ''.naturalCompare(b.UpdateTime, a.UpdateTime);
-            });  
-
+                 return ''.naturalCompare(b.DryFull, a.DryFull);
+            });    
             for (const item of stations) {
-                items.push(this.toTableModel(item));
-                
+                items.push(this.toTableModel(item,input.divisions));                
                 if(item.Cameras)
                    tds.push(this.toGalleryModel(input.items,item.Id,item.Cameras));              
             } 
-
         }
         if (output instanceof CustomTableArgs) {
             output.galleryTd = tds;
@@ -241,11 +249,13 @@ export class StatisticTable extends BusinessTable implements IConverter, IPageTa
         return output;
     }
 
-    toTableModel(item: GarbageStation) {
+    toTableModel(item: GarbageStation,divisions:Division[]) {
         let tableField = new TableField();
         tableField.id = item.Id;
         tableField.name = item.Name;
         tableField.state=StationStateEnum[item.StationState];
+        const division = divisions.find(x=>x.Id == item.DivisionId);
+        tableField.division = division ? division.Name :'-';
         return tableField;
     }
 
@@ -253,10 +263,13 @@ export class StatisticTable extends BusinessTable implements IConverter, IPageTa
         const pic = new MediumPicture(),galleryTdAttr = new GalleryTdAttr();   
         galleryTdAttr.imgSrc =new Array<string>();
         camera.map(x=>{
-            const find = resourceCameras.find(x1=>x1.Id==x.Id);
-            if(find){
-                galleryTdAttr.imgSrc.push(pic.getJPG(find.ImageUrl));
+            if(x.CameraUsage == 9||x.CameraUsage == 8){
+                const find = resourceCameras.find(x1=>x1.Id==x.Id);
+                if(find)
+                    galleryTdAttr.imgSrc.push(pic.getJPG(find.ImageUrl));
+                
             }
+           
         }) 
         galleryTdAttr.key=key;
         return  galleryTdAttr;
@@ -265,6 +278,7 @@ export class StatisticTable extends BusinessTable implements IConverter, IPageTa
 
 export class Statistics implements IBusinessData {
     items: ResourceCamera[];
+    divisions :Division[];
     garbageStations: GarbageStation[];
 }
 
@@ -272,4 +286,5 @@ export class TableField implements ITableField {
     id: string;
     name: string;
     state:string;
+    division:string; 
 }

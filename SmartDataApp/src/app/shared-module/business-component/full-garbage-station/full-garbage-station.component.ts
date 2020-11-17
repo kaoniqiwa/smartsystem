@@ -30,6 +30,7 @@ export class FullGarbageStationComponent implements OnInit {
 
   async ngOnInit() {    
     this.businessService.divisionId=this.divisionsId;
+    this.businessService.divisions=await this.businessService.divisionDao.allDivisions();
     this.businessService.cameras=await this.businessService.resourceCameraDao.allResourceCameras();
     await this.businessService.requestData(1, (page) => {
       this.businessService.table.initPagination(page, async (index) => {

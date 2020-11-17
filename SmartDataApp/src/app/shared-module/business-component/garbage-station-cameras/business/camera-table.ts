@@ -7,7 +7,6 @@ import { ITableField } from "../../../../aiop-system/common/ITableField";
 import { IBusinessData } from "../../../../common/interface/IBusiness";
 import { BusinessTable } from "../../../../aiop-system/common/business-table";
 import { Camera } from "../../../../data-core/model/waste-regulation/camera";
-import { CameraUsageEnum } from "../../../../common/tool/enum-helper";
 import { Camera as ResourceCamera } from "../../../../data-core/model/aiop/camera";
 import { Division } from "../../../../data-core/model/waste-regulation/division";
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
