@@ -1,31 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-// const routes: Routes = [
-//   {
-//     path: '',
-//     redirectTo: 'aiop',
-//     pathMatch: 'full'
-//   }, 
-//   { path:'aiop',loadChildren:'./aiop-system/aiop-system.module#AIOPSystemModule'},
-// ];
-// const routes: Routes = [
-//   {
-//     path: '',
-//     redirectTo: 'waste-regulation',
-//     pathMatch: 'full'
-//   },
-//    { path:'waste-regulation',loadChildren:'./waste-regulation-system/waste-regulation-system.module#WasteRegulationSystemModule'},
-// ];
+import { AuthGuard } from "./common/tool/auth.guard";
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
   },
-  { path:'system-mode',loadChildren:'./system-module/system.module#SystemModule'},
+  { path:'system-mode',loadChildren:'./system-module/system.module#SystemModule', canActivate: [AuthGuard]},
   { path:'login',loadChildren:'./user-authentication/user-authentication.module#UserAuthenticationModule'},
-  { path:'aiop',loadChildren:'./aiop-system/aiop-system.module#AIOPSystemModule'},
-  { path:'waste-regulation',loadChildren:'./waste-regulation-system/waste-regulation-system.module#WasteRegulationSystemModule'}
+  { path:'aiop',loadChildren:'./aiop-system/aiop-system.module#AIOPSystemModule' ,canActivate: [AuthGuard]},
+  { path:'waste-regulation',loadChildren:'./waste-regulation-system/waste-regulation-system.module#WasteRegulationSystemModule',canActivate: [AuthGuard]}
  ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
