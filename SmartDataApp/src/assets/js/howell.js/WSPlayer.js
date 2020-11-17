@@ -10,6 +10,7 @@ function WSPlayer(args) {
         live: "live"
     }
 
+    this.soundOpened;
 
     var waitStopHandle;
     var waitStopHandle;
@@ -192,6 +193,20 @@ function WSPlayer(args) {
                 }
             });
         }
+        if (that.tools.control.volume.slide) {
+            that.tools.control.volume.slide.addEventListener("input", function () {
+                var value = parseInt(this.value)
+                if (value > 0) {
+                    that.openSound();
+                }
+                else {
+                    that.closeSound();
+                }
+
+                that.setVolume(value);
+
+            })
+        }
 
 
         var p = document.getElementsByClassName("parent-wnd")[0];
@@ -200,8 +215,33 @@ function WSPlayer(args) {
             that.fullScreen();
         });
 
-        document.addEventListener('fullscreenchange', function () { plugin.JS_Resize(window.screen.width, window.screen.height); });
-        document.addEventListener('webkitfullscreenchange', function () { console.log('fullscreenchange') });
+        document.addEventListener('fullscreenchange', function (e) {
+            console.log("window fullscreenchange");
+            console.log(e);
+            plugin.JS_Resize(window.screen.width, window.screen.height);
+        });
+        document.addEventListener('webkitfullscreenchange', function (e) {
+            window.isfullscreen = !window.isfullscreen;
+
+            setTimeout(function(){
+                if (window.isfullscreen) {
+                    var scale = 1 / getRatio();
+                    console.log(window.screen.height);
+                    plugin.JS_Resize(window.screen.width * scale, window.screen.height * scale);
+                    that.tools.control.fullscreen.title = "退出";
+                }
+                else {
+                    plugin.JS_Resize(that.clientWidth, that.clientHeight);
+                    that.tools.control.fullscreen.title = "全屏";
+                }
+    
+    
+                console.log(window.isfullscreen);
+                console.log('fullscreenchange')
+            }, 100);
+            
+            
+        });
         document.addEventListener('mozfullscreenchange', function () { console.log('mozfullscreenchange') });
         document.addEventListener('MSFullscreenChange', function () { console.log('MSFullscreenChange') });
 
@@ -276,6 +316,8 @@ function WSPlayer(args) {
 
     this.status = wsPlayerState.ready;
 
+
+
     function getStatus() {
         return plugin.JS_GetWndStatus(0);
     }
@@ -333,7 +375,6 @@ function WSPlayer(args) {
                         element.className = element.className.replace(/ loading/g, "")
                     },
                     getPosition: function (p) {
-
                         if (p.data) {
 
                             var u8array = new Uint8Array(p.data);
@@ -368,7 +409,10 @@ function WSPlayer(args) {
                     }
                 }, 0).then(() => {
                     that.status = wsPlayerState.playing;
+
                 });
+
+
 
                 if (that.tools.control.begin_time && that.playback_time.begin) {
                     that.tools.control.begin_time.innerText = "00:00:00"
@@ -406,8 +450,6 @@ function WSPlayer(args) {
             plugin.JS_Seek(0, value / 1000);
         });
     }
-
-
     // 快进
     this.fast = function () {
 
@@ -564,8 +606,8 @@ function WSPlayer(args) {
                 console.error(ex)
             }
             //plugin.JS_FullScreen(0);
-            plugin.JS_Resize(window.screen.width, window.screen.height);
-            resize();
+            // plugin.JS_Resize(window.screen.width, window.screen.height);
+            // resize();
             // that.FullScreen = true;
         });
     }
@@ -593,7 +635,6 @@ function WSPlayer(args) {
                 plugin.JS_Resize(that.clientWidth, that.clientHeight);
                 clearInterval(handle);
                 that.tools.control.fullscreen.title = "全屏"
-
             }
             else if (that.FullScreen == false) {
                 that.FullScreen = true;
@@ -664,9 +705,37 @@ function WSPlayer(args) {
             );
     }
 
+
+    this.openSound = function () {
+        doing(function () {
+            if (that.soundOpened) return;
+            plugin.JS_OpenSound(0);
+            that.soundOpened = true;
+        });
+    }
+    this.closeSound = function () {
+        doing(function () {
+            if (!that.soundOpened) return;
+            plugin.JS_CloseSound();
+            that.soundOpened = false;
+        });
+    }
+
+
+    this.getVolume = function (result) {
+        doing(function (result) {
+            plugin.JS_GetVolume(0, result);
+        }, result)
+    }
+    this.setVolume = function (value) {
+        doing(function (value) {
+            plugin.JS_SetVolume(0, value);
+        }, value)
+    }
+
     function tools(element, mode) {
         var tools = document.createElement("div");
-        tools.className = "tools"
+        tools.className = "tools";
         //tools.style.display = "none";
         element.appendChild(tools);
 
@@ -681,7 +750,7 @@ function WSPlayer(args) {
         // element.addEventListener("mouseout", function(){
         //     tools.style.display = "none"
         // });
-
+        display = false;
 
 
         var that_tools = this;
@@ -714,11 +783,11 @@ function WSPlayer(args) {
 
 
 
+
+
         this.createElements = function () {
             var ul = document.createElement("ul");
             content.appendChild(ul);
-
-
 
 
             that_tools.control.play = createElement(ul, "a", { width: "40px" }, { className: "play glyphicon glyphicon-play", title: "播放" });
@@ -750,6 +819,8 @@ function WSPlayer(args) {
             that_tools.control.fullscreen = createElement(ul, "a", { float: "right" }, { className: "fullscreen glyphicon glyphicon-fullscreen", title: "全屏" });
             that_tools.control.capturepicture = createElement(ul, "a", { float: "right" }, { className: "capturepicture glyphicon glyphicon-picture", title: "截图" });
 
+
+
             if (mode == wsPlayerMode.live) {
                 //that_tools.control.stop.style.display = "none";
                 that_tools.control.slow.style.display = "none";
@@ -765,6 +836,61 @@ function WSPlayer(args) {
                 that_tools.control.end_time.style.display = "none";
 
             }
+
+
+            that_tools.control.volume.icon = createElement(ul, "a", { float: "right" }, { className: "volume glyphicon glyphicon-volume-off", title: "音量" });
+            that_tools.control.volume.panel = document.createElement("div");
+            // volume_panel.style.display = "none";
+            that_tools.control.volume.panel.className = "volume_panel";
+            that_tools.control.volume.panel.style.display = "none";
+            tools.appendChild(that_tools.control.volume.panel);
+
+            that_tools.control.volume.slide = document.createElement("input");
+            that_tools.control.volume.slide.type = "range";
+            that_tools.control.volume.slide.min = 0;
+            that_tools.control.volume.slide.max = 100;
+            that_tools.control.volume.slide.value = 0;
+            that_tools.control.volume.slide.style.backgroundSize = "0% 100%";
+            that_tools.control.volume.slide.step = 10;
+            that_tools.control.volume.panel.appendChild(that_tools.control.volume.slide);
+
+            that_tools.control.volume.slide.addEventListener("input", function () {
+                var value = (this.value - this.min) / (this.max - this.min);
+                var valStr = value * 100 + "% 100%";
+                this.style.backgroundSize = valStr;
+                this.title = "音量：" + (value * 100) + "%";
+                that_tools.control.volume.icon.title = this.title;
+                if (value == 0) {
+                    that_tools.control.volume.icon.className = "volume glyphicon glyphicon-volume-off";
+                }
+                else {
+                    that_tools.control.volume.icon.className = "volume glyphicon glyphicon-volume-up";
+                }
+            });
+
+            that_tools.control.volume.icon.addEventListener("click", function () {
+                display = true;
+                that_tools.control.volume.panel.style.display = "";
+            });
+            that_tools.control.volume.icon.addEventListener("mouseleave", function () {
+                setTimeout(function () {
+                    if (display == false)
+                        that_tools.control.volume.panel.style.display = "none";
+                }, 100);
+                display = false;
+
+            });
+            that_tools.control.volume.panel.addEventListener("mouseleave", function () {
+
+                setTimeout(function () {
+                    if (display == false)
+                        that_tools.control.volume.panel.style.display = "none";
+                }, 100);
+                display = false;
+            });
+            that_tools.control.volume.panel.addEventListener("mouseover", function () {
+                display = true;
+            });
 
 
 
@@ -821,7 +947,13 @@ function WSPlayer(args) {
             fullscreen: null,
             capturepicture: null,
             jump_forward: null,
-            jump_back: null
+            jump_back: null,
+            volume: {
+                icon: null,
+                panel: null,
+                slide: null
+            }
+
         }
 
 
