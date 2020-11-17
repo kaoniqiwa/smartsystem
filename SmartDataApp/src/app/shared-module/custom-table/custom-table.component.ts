@@ -34,9 +34,12 @@ export class CustomTableComponent implements OnInit{
 
   iconTdAttr(id: string) {
     const item = this.model.iconTd.find(x => x.key == id);
-
-
     return item.icons;
+  }
+
+  galleryTdAttr(id: string) {
+    const item = this.model.galleryTd.find(x => x.key == id); 
+    return item.imgSrc;
   }
 
 

@@ -37,6 +37,7 @@ export class CustomTableArgs<T extends IBusinessData> implements IViewModel {
     iconTextTh: TableTh;
     iconTextTagAttr: TableIconTextTagAttr[];
     iconTd: TdIconsAttr[];
+    galleryTd:GalleryTdAttr[];
     constructor(options: {
         values?: T[],
         primaryKey?: string,
@@ -54,7 +55,8 @@ export class CustomTableArgs<T extends IBusinessData> implements IViewModel {
         eventDelegate?: (tag: IViewEvent) => void,
         iconTextTh?: TableTh,
         iconTextTagAttr?: TableIconTextTagAttr[],
-        iconTd?: TdIconsAttr[]
+        iconTd?: TdIconsAttr[],
+        galleryTd?:GalleryTdAttr[]
     } = {}) {
         this.values = options.values;
         this.primaryKey = options.primaryKey;
@@ -73,6 +75,7 @@ export class CustomTableArgs<T extends IBusinessData> implements IViewModel {
         this.iconTextTh = options.iconTextTh;
         this.iconTextTagAttr = options.iconTextTagAttr;
         this.iconTd = options.iconTd;
+        this.galleryTd=options.galleryTd;
     }
 }
 
@@ -141,6 +144,12 @@ export class TdIconsAttr implements IViewModel {
         bgColorClass:string;
     }[];
 }
+
+export class GalleryTdAttr implements IViewModel {
+    imgSrc:string[];
+    key:string;
+}
+
 export class TableOperationBtn implements IViewModel {
     //按钮样式
     css: string;
