@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit,Input } from '@angular/core'; 
 import {  BusinessService} from "./business/garbage-station-table";
  
 @Component({
@@ -7,6 +7,8 @@ import {  BusinessService} from "./business/garbage-station-table";
   providers: [BusinessService]
 })
 export class GarbageStationComponent implements OnInit {
+
+  @Input() divisionsId = '';
   searchFn =async (val: string) => {
     this.businessService.search.searchText=val;
     this.businessService.search.state = true;
@@ -19,7 +21,7 @@ export class GarbageStationComponent implements OnInit {
   constructor(private businessService:BusinessService) { }
 
   async ngOnInit() {
- 
+   this.businessService.divisionsId=this.divisionsId;
     this.businessService.garbageStationTypes = await this.businessService.requestGarbageStationType();
     this.businessService.divisions = await this.businessService.requestDivisions();
     await this.businessService.requestData(1, (page) => {

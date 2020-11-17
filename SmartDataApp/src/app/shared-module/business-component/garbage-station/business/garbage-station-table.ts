@@ -22,6 +22,7 @@ export class BusinessService {
     dataSource_ = new Array<GarbageStation>(); 
 
     divisions: Division[] = new Array(); 
+    divisionsId='';
     garbageStationTypes:GarbageStationType[]=new Array();
 
     search = new SearchControl();
@@ -69,7 +70,7 @@ export class BusinessService {
 
         const param = new GetGarbageStationsParams();
         param.PageIndex = pageIndex;
-      
+        param.DivisionId = this.divisionsId;
         param.PageSize = 10;
         if (search.searchText && search.other == false)
             param.Name = search.searchText;

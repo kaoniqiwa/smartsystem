@@ -10,7 +10,7 @@ import { CameraTableService ,CameraStateTableEnum} from "./business/camera-table
 export class GarbageStationCamerasComponent implements OnInit {
 
   @Input() cameraStateTable  =CameraStateTableEnum.none;
-
+  @Input() divisionsId = '';
   searchFn =async (text:string)=>{  
     this.tableService.search.state=true;
     this.tableService.search.searchText = text; 
@@ -24,6 +24,7 @@ export class GarbageStationCamerasComponent implements OnInit {
   }
 
   async ngOnInit() { 
+    this.tableService.divisionsId=this.divisionsId;
     this.tableService.cameraStateTable = this.cameraStateTable;
     await this.tableService.getGarbageStations();  
     await this.tableService.getDivisions();

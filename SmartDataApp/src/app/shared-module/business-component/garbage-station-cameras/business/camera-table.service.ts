@@ -39,6 +39,7 @@ export class CameraTableService{
     divisions=new Array<Division>();
     cameraStateTable:CameraStateTableEnum;
     findImgSrc = '';
+    divisionsId='';
     constructor(garbageStationService: GarbageStationRequestService
        ,private cameraService:CameraRequestService
        , resourceRequestService:ResourceRequestService
@@ -110,7 +111,7 @@ export class CameraTableService{
             param.Name =search.searchText   
         if(this.cameraStateTable == CameraStateTableEnum.online)
             param.OnlineStatus=this.cameraStateTable;
-        
+        param.DivisionIds=[this.divisionsId];
         return param;
     }
 }
