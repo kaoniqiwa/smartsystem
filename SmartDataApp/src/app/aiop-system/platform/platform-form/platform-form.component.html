@@ -53,72 +53,7 @@
       <div fxLayout="row" class="form-group">
         <div fxFlex="100">
           <label class="custom control-label tran-input-label">订阅事件编码</label>
-          <ul class="nav nav-tabs customtab2 m-b-10" role="tablist">
-            <ng-container *ngFor="let item of formService.eventCodesForm;let j=index;">
-              <li class="nav-item">
-                <a class="nav-link text" (click)="formService.eventCodeTabSelectedIndex=j"
-                  [class.active]="formService.eventCodeTabSelectedIndex==j" data-toggle="tab" href="#address{{j}}"
-                  role="tab" aria-selected="true">
-                   {{j+1}}
-                  <a href="javascript:void(0)" (click)="formService.delEventCodeForm(j)" *ngIf="j>0"><i
-                      class="howell-icon-Close"></i></a>
-                </a>
-              </li>
-            </ng-container>
-            <li>
-              <a href="javascript:void(0)" (click)="formService.plusEventCodeForm()" class="nav-plus"><i
-                  class="howell-icon-pluscircle"></i></a>
-            </li>
-          </ul>
-          <div class="tab-content fine address-tabs fine">
-            <ng-container *ngFor="let item of formService.eventCodesForm;let j=index;">
-              <div class="tab-pane " [class.active]="formService.eventCodeTabSelectedIndex==j" id="address{{j}}"
-                role="tabpanel">
-                <div [formGroup]="formService.eventCodesForm[j]">
-                  <div fxLayout="row" class="form-group">
-                    <div fxFlex="50">
-                      <label class="custom control-label tran-input-label">编码1</label>
-                      <input class="form-control custom" formControlName="EventCode1">
-                    </div>
-                    <div fxFlex fxFlexOffset="10px">
-                      <label class="custom control-label tran-input-label">编码2</label>
-                      <input class="form-control custom" formControlName="EventCode2">
-                    </div>
-                  </div>
-                  <div fxLayout="row" class="form-group">
-                    <div fxFlex="50">
-                      <label class="custom control-label tran-input-label">编码3</label>
-                      <input class="form-control custom" formControlName="EventCode3">
-                    </div>
-                    <div fxFlex fxFlexOffset="10px">
-                      <label class="custom control-label tran-input-label">编码4</label>
-                      <input class="form-control custom" formControlName="EventCode4">
-                    </div>
-                  </div>
-                  <div fxLayout="row" class="form-group">
-                    <div fxFlex="50">
-                      <label class="custom control-label tran-input-label">编码5</label>
-                      <input class="form-control custom" formControlName="EventCode5">
-                    </div>
-                    <div fxFlex fxFlexOffset="10px">
-                      <label class="custom control-label tran-input-label">编码6</label>
-                      <input class="form-control custom" formControlName="EventCode6">
-                    </div>
-                  </div>
-                  <div fxLayout="row" class="form-group">
-                    <div fxFlex="50">
-                      <label class="custom control-label tran-input-label">编码7</label>
-                      <input class="form-control custom" formControlName="EventCode7">
-                    </div>
-                    <div fxFlex fxFlexOffset="10px">
-                      <label class="custom control-label tran-input-label">编码8</label>
-                      <input class="form-control custom" formControlName="EventCode8">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </ng-container>
-          </div>
+          <textarea class="form-control custom" style="height: 150px;"  placeholder="编码之间换行" formControlName="EventCodes"></textarea>
         </div>
       </div>
     </div>

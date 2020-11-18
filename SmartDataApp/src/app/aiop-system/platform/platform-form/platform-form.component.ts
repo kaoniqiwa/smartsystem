@@ -25,26 +25,8 @@ export class PlatformFormComponent implements OnInit {
     this.formService.defaultForm(this.editItem);
   }
   onSubmit() {
-    const formField = this.formService.form.value as FormField;
-    formField.EventCodes = new Array();
-    this.formService.eventCodesForm.map(x => {
-      if (x.value.EventCode1)
-        formField.EventCodes.push(x.value.EventCode1);
-       if (x.value.EventCode2)
-        formField.EventCodes.push(x.value.EventCode2);
-       if (x.value.EventCode3)
-        formField.EventCodes.push(x.value.EventCode3);
-       if (x.value.EventCode4)
-        formField.EventCodes.push(x.value.EventCode4);
-       if (x.value.EventCode5)
-        formField.EventCodes.push(x.value.EventCode5);
-       if (x.value.EventCode6)
-        formField.EventCodes.push(x.value.EventCode6);
-       if (x.value.EventCode7)
-        formField.EventCodes.push(x.value.EventCode7);
-       if (x.value.EventCode8)
-        formField.EventCodes.push(x.value.EventCode8);
-    });
+    const formField = this.formService.form.value as FormField; 
+     
     this.formService.saveFrom(formField, (success: boolean, item: Platform, formState: FormStateEnum) => {
       if (success && this.saveFn) this.saveFn(success, item, formState);
     });

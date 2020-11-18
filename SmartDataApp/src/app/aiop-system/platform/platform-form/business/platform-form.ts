@@ -9,68 +9,29 @@ import { Protocol } from "../../../../data-core/model/aiop/protocol";
 @Injectable()
 export class PlatformFormService extends ListAttribute implements FormAttribute {
     form: FormGroup;
-    eventCodesForm: FormGroup[] = new Array();
     editItem: Platform;
     messageBar = new MessageBar();
     formState: FormStateEnum;
     protocols = new Array<Protocol>();
-    eventCodeTabSelectedIndex = 0;
     constructor(private fb: FormBuilder, private platformRequestSerivce: PlatformRequestSerivce) {
         super();
-        this.form = this.fb.group({
-            Name: [''],
-            Username: [''],
-            Password: [''],
-            ProtocolType: [''],
-            Url_: [''],
-            Port: [''],
-            EventRecvPort: [''],
-            EventRecvIPAddress: ['']
+        this.form = new FormGroup({
+            Name: new FormControl(''),
+            Username: new FormControl(''),
+            Password: new FormControl(''),
+            ProtocolType: new FormControl(''),
+            Url_: new FormControl(''),
+            Port: new FormControl(''),
+            EventRecvPort: new FormControl(''),
+            EventRecvIPAddress: new FormControl(''),
+            EventCodes: new FormControl(''),
         });
-        var eventCode = this.fb.group({
-            EventCode1: [''],
-            EventCode2: [''],
-            EventCode3: [''],
-            EventCode4: [''],
-            EventCode5: [''],
-            EventCode6: [''],
-            EventCode7: [''],
-            EventCode8: ['']
-        });
-        this.eventCodesForm.push(eventCode);
+
     }
 
     async getProtocols() {
         const response = await this.platformRequestSerivce.protocol().toPromise();
         this.protocols = response.Data;
-    }
-
-    plusEventCodeForm() {
-        if (this.eventCodesForm.length < 7) {
-            const code = this.fb.group({
-                EventCode1: [''],
-                EventCode2: [''],
-                EventCode3: [''],
-                EventCode4: [''],
-                EventCode5: [''],
-                EventCode6: [''],
-                EventCode7: [''],
-                EventCode8: ['']
-            });
-            this.eventCodesForm.push(code);
-        }
-    }
-
-    delEventCodeForm(index: number) {
-        if (this.eventCodesForm.length > 1) {
-            if (this.eventCodesForm.length - 1 != index) {
-                this.messageBar.response_warning('请依次删除该项');
-                return;
-            }
-            this.eventCodesForm.splice(index, 1);
-            /**该时候的选中表单 */
-            if (index == this.eventCodeTabSelectedIndex) this.eventCodeTabSelectedIndex = 0;
-        }
     }
 
     async defaultForm(editItem: Platform) {
@@ -86,45 +47,17 @@ export class PlatformFormService extends ListAttribute implements FormAttribute 
                 Url_: editItem.Url.toIP(),
                 Port: editItem.Url.toIPPort(),
                 EventRecvIPAddress: editItem.EventRecvIPAddress,
-                EventRecvPort: editItem.EventRecvPort 
+                EventRecvPort: editItem.EventRecvPort
             });
             if (editItem.EventCodes) {
-                var a = new Map<string, number>(), no = 1, groupNo = 0;
-                for (let i = 0; i < editItem.EventCodes.length; i++) {                    
-                    a.set('EventCode' + no, editItem.EventCodes[i]);                    
-                    no += 1;
-                    if (no == 9) {
-                        this.eventCodesForm[groupNo].patchValue({
-                            EventCode1: a.get('EventCode1'),
-                            EventCode2: a.get('EventCode2')||'',
-                            EventCode3: a.get('EventCode3')||'',
-                            EventCode4: a.get('EventCode4')||'',
-                            EventCode5: a.get('EventCode5')||'',
-                            EventCode6: a.get('EventCode6')||'',
-                            EventCode7: a.get('EventCode7')||'',
-                            EventCode8: a.get('EventCode8')||'',
-                        });
-                        groupNo +=1;
-                        a = new Map<string, number>();
-                        no = 1;
-                        this.plusEventCodeForm();
-                    }
-                } 
-                if(a.size<9&&a.size> 0){
-                    this.eventCodesForm[groupNo].patchValue({
-                        EventCode1: a.get('EventCode1')||'',
-                        EventCode2: a.get('EventCode2')||'',
-                        EventCode3: a.get('EventCode3')||'',
-                        EventCode4: a.get('EventCode4')||'',
-                        EventCode5: a.get('EventCode5')||'',
-                        EventCode6: a.get('EventCode6')||'',
-                        EventCode7: a.get('EventCode7')||'',
-                        EventCode8: a.get('EventCode8')||'',
-                    });
-                }
+                var eventCodes = '';
+                editItem.EventCodes.map(x => {
+                    eventCodes += `${x}\r\n`;
+                });
+                this.form.patchValue({
+                    EventCodes: eventCodes
+                });
             }
-
-
             this.formState = FormStateEnum.edit;
         }
         else {
@@ -165,14 +98,25 @@ export class PlatformFormService extends ListAttribute implements FormAttribute 
             model.Password = item.Password;
             model.Name = item.Name;
             model.State = 0;
-            model.EventRecvIPAddress=item.EventRecvIPAddress;
-            model.EventRecvPort=item.EventRecvPort;
-            model.EventCodes=item.EventCodes;
+            if(item.EventRecvIPAddress)
+               model.EventRecvIPAddress = item.EventRecvIPAddress;
+            if(item.EventRecvPort)
+            model.EventRecvPort = item.EventRecvPort;
+            if (item.EventCodes) {
+                const eventCodes = new Array<number>()
+                ,codes=item.EventCodes.split(/[\n,]/g);
+                codes.map(x=>{
+                    if(x.trim())
+                       eventCodes.push(Number.parseInt(x.trim()));                   
+                });
+                 model.EventCodes=eventCodes;
+            }
+           
             model.UpdateTime = new Date().toISOString();
             if (this.formState == FormStateEnum.create) {
                 model.Id = '';
                 model.CreateTime = new Date().toISOString();
-
+ 
                 const response = await this.platformRequestSerivce.create(model).toPromise();
                 if (response.FaultCode == 0) {
                     this.messageBar.response_success();
@@ -203,11 +147,11 @@ export interface FormField {
     /**连接地址 */
     Url_: string;
 
-    Port: string; 
+    Port: string;
 
     EventRecvPort: number;
     /**事件接收的本地IP地址(可选) */
     EventRecvIPAddress: string;
     /**订阅事件编码列表(可选) */
-    EventCodes: number[];
+    EventCodes: string
 }

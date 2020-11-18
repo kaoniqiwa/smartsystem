@@ -12,7 +12,7 @@ export class FormMustField{
 
     region = ['Id','Name','IsLeaf','RegionType'];
     
-    platform =['Id','ProtocolType','Url','State'];
+    platform =['Id','ProtocolType','Url','State','EventCodes'];
 
     srServer  = ['Id','Name','ProtocolType','Addresses'];
   
