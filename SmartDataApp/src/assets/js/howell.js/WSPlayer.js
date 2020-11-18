@@ -11,6 +11,7 @@ function WSPlayer(args) {
     }
 
     this.soundOpened;
+    this.volume = 0;
 
     var waitStopHandle;
     var waitStopHandle;
@@ -59,19 +60,31 @@ function WSPlayer(args) {
     this.clientWidth = parseFloat(element.offsetWidth);
     this.clientHeight = parseFloat(element.offsetHeight);
 
+    var sizeHandle = setInterval(function () {
+        if (that.clientWidth > 0 && that.clientHeight > 0) {
+            clearInterval(sizeHandle);
+            return;
+        }
+        that.clientWidth = parseFloat(element.offsetWidth);
+        that.clientHeight = parseFloat(element.offsetHeight);
+    }, 100);
 
     var plugin;
 
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src = current_args.path + "jsPlugin-1.2.0.min.js";
+    script.src = current_args.path + "jsPlugin-1.2.0.min.js?v=" + new Date().getTime();
     document.getElementsByTagName("head")[0].appendChild(script);
 
 
+
     function initTools() {
+
+        if (that.tools && that.tools.control)
+            that.volume = that.tools.control.volume.value;
         that.tools = new tools(element, current_args.mode);
         that.tools.createElements();
-
+        that.tools.control.volume.value = that.volume;
 
         if (that.tools.control.play) {
             that.tools.control.play.addEventListener("click", function () {
@@ -193,6 +206,21 @@ function WSPlayer(args) {
                 }
             });
         }
+
+        if (that.tools.control.volume.icon) {
+            that.tools.control.volume.icon.addEventListener("dblclick", function () {
+                if (that.soundOpened) {
+                    that.closeSound();
+                }
+                else {
+                    that.openSound();
+                }
+                that.tools.control.volume.value = that.value;
+
+            });
+        }
+
+
         if (that.tools.control.volume.slide) {
             that.tools.control.volume.slide.addEventListener("input", function () {
                 var value = parseInt(this.value)
@@ -204,7 +232,6 @@ function WSPlayer(args) {
                 }
 
                 that.setVolume(value);
-
             })
         }
 
@@ -221,26 +248,36 @@ function WSPlayer(args) {
             plugin.JS_Resize(window.screen.width, window.screen.height);
         });
         document.addEventListener('webkitfullscreenchange', function (e) {
-            window.isfullscreen = !window.isfullscreen;
+            if (!that.FullScreen) return;
+            if (!window.screens) {
+                window.screens = {};
+            }
+            if (e.path) {
+                if (!e.path[0].fullscreennumber)
+                    e.path[0].fullscreennumber = 1;
+                e.path[0].fullscreennumber++;
+                var id = e.path[0].id;
+                window.screens[id] = e.path[0].fullscreennumber % 2 == 0;
 
-            setTimeout(function(){
-                if (window.isfullscreen) {
-                    var scale = 1 / getRatio();
-                    console.log(window.screen.height);
-                    plugin.JS_Resize(window.screen.width * scale, window.screen.height * scale);
-                    that.tools.control.fullscreen.title = "退出";
-                }
-                else {
-                    plugin.JS_Resize(that.clientWidth, that.clientHeight);
-                    that.tools.control.fullscreen.title = "全屏";
-                }
-    
-    
-                console.log(window.isfullscreen);
-                console.log('fullscreenchange')
-            }, 100);
-            
-            
+                setTimeout(function () {
+                    if (window.screens[id]) {
+                        var scale = 1 / getRatio();
+                        console.log(window.screen.height);
+                        plugin.JS_Resize(window.screen.width * scale, window.screen.height * scale);
+                        that.tools.control.fullscreen.title = "退出";
+                    }
+                    else {
+                        that.FullScreen = false;
+                        plugin.JS_Resize(that.clientWidth, that.clientHeight);
+                        that.tools.control.fullscreen.title = "全屏";
+                    }
+
+
+                    console.log("fullscreenchange id:" + id);
+
+                }, 200);
+            }
+
         });
         document.addEventListener('mozfullscreenchange', function () { console.log('mozfullscreenchange') });
         document.addEventListener('MSFullscreenChange', function () { console.log('MSFullscreenChange') });
@@ -556,6 +593,7 @@ function WSPlayer(args) {
         if (element)
             element.className = element.className.replace(/ loading/g, "")
 
+        that.soundOpened = false;
 
         if (!plugin) return;
 
@@ -609,6 +647,7 @@ function WSPlayer(args) {
             // plugin.JS_Resize(window.screen.width, window.screen.height);
             // resize();
             // that.FullScreen = true;
+            that.FullScreen = true;
         });
     }
 
@@ -730,6 +769,7 @@ function WSPlayer(args) {
     this.setVolume = function (value) {
         doing(function (value) {
             plugin.JS_SetVolume(0, value);
+            that.volume = value;
         }, value)
     }
 
@@ -854,23 +894,63 @@ function WSPlayer(args) {
             that_tools.control.volume.slide.step = 10;
             that_tools.control.volume.panel.appendChild(that_tools.control.volume.slide);
 
-            that_tools.control.volume.slide.addEventListener("input", function () {
-                var value = (this.value - this.min) / (this.max - this.min);
+
+
+            function onSlideInput(ctr) {
+                var value = (ctr.value - ctr.min) / (ctr.max - ctr.min);
                 var valStr = value * 100 + "% 100%";
-                this.style.backgroundSize = valStr;
-                this.title = "音量：" + (value * 100) + "%";
-                that_tools.control.volume.icon.title = this.title;
+                ctr.style.backgroundSize = valStr;
+                ctr.title = "音量：" + (value * 100) + "%";
+                that_tools.control.volume.icon.title = ctr.title;
+                that_tools.control.volume.value = parseInt(ctr.value);
                 if (value == 0) {
+                    ctr.opened = false;
                     that_tools.control.volume.icon.className = "volume glyphicon glyphicon-volume-off";
                 }
                 else {
+                    ctr.opened = true;
                     that_tools.control.volume.icon.className = "volume glyphicon glyphicon-volume-up";
                 }
+            }
+
+            that_tools.control.volume.slide.addEventListener("input", function () {
+                onSlideInput(this);
             });
+
+
+
 
             that_tools.control.volume.icon.addEventListener("click", function () {
                 display = true;
                 that_tools.control.volume.panel.style.display = "";
+            });
+            that_tools.control.volume.icon.addEventListener("dblclick", function () {
+                if (that_tools.control.volume.value == 0)
+                    that_tools.control.volume.value = 80;
+
+
+                var value = parseInt(that_tools.control.volume.value);
+
+                if (that_tools.control.volume.slide.value > 0) {
+                    that_tools.control.volume.slide.value = 0;
+                }
+                else {
+                    that_tools.control.volume.slide.value = that_tools.control.volume.value;
+                }
+                onSlideInput(that_tools.control.volume.slide);
+                that_tools.control.volume.value = value;
+                // if (this.opened) {
+                //     that_tools.control.volume.icon.className = "volume glyphicon glyphicon-volume-up";
+                //     this.opened = true;                    
+                //     if(this.value == 0)
+                //     {
+                //         this.value = that_tools.control.volume.value;
+                //     }
+                // }
+                // else {
+                //     that_tools.control.volume.icon.className = "volume glyphicon glyphicon-volume-off";
+                //     this.opened = false;
+                // }
             });
             that_tools.control.volume.icon.addEventListener("mouseleave", function () {
                 setTimeout(function () {
@@ -951,7 +1031,8 @@ function WSPlayer(args) {
             volume: {
                 icon: null,
                 panel: null,
-                slide: null
+                slide: null,
+                value: 0
             }
 
         }
