@@ -7,8 +7,11 @@
   <div style="width: calc(100% - 340px);padding:10px" class="card-wrap pull-left map-box">
     <div class="tools">
       <div class="pull-left">
-        <button class="hw-blue-btn m-r-10" [ngClass]="{'hw-green-btn': draggable}" (click)="DraggableClicked()">
+        <button class="hw-blue-btn m-r-10" [ngClass]="{'hw-green-btn': draggable}" (click)="DraggableClicked()" title="开启地图点位拖拽">
           拖拽
+        </button>
+        <button class="hw-red-btn m-r-10" *ngIf="pointSelected" [ngClass]="{'hw-green-btn': draggable}" (click)="RemovePointClicked()" title="删除已选中地图点位">
+          删除
         </button>
       </div>
       <div class="pull-right">
