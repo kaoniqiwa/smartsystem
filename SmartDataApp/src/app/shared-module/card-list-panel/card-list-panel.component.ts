@@ -15,7 +15,7 @@ export class CardListPanelComponent implements OnInit {
   private confirmDialog_: ConfirmDialog;
   constructor() { }
 
-  ngOnInit() {console.log(this.model);
+  ngOnInit() { 
   
   }
 

@@ -32,6 +32,10 @@ export class DivisionBusinessService {
     stationCameraStateTable:CameraStateTableEnum;
     divisionsId ='';
     constructor(private cameraService: CameraRequestService) {
+       
+    }
+
+    bindingEvent(){
         setTimeout(() => {
             for (const x of this.componets) {
 
@@ -61,18 +65,18 @@ export class DivisionBusinessService {
                 if (x.list[0].view instanceof ImageThemeCardComponent) {
                     x.list[0].view.btnControl = async (val: { timeInterval: { start: Date, end: Date }, cameraId: string }) => {
                         const respone = await this.cameraService.get(val.cameraId).toPromise();
-
+    
                         this.aMap.Playback(respone.Data as any, val.timeInterval.start, val.timeInterval.end);
                     }
                 }
                 if (x.list[0].view instanceof HintCardComponent) {
-
+    
                     x.list[0].view.btnControl = (tag) => {
                         if (x.list[0].business instanceof BaseBusinessRefresh) {
                             if (tag == HintTag.IllegalDrop) {
                                 this.illegalDropMode = new FillMode();
                                 this.illegalDropMode.divisionId = x.list[0].business.businessParameter.map.get("divisionsId");
-
+    
                             }
                             else if (tag == HintTag.MixedInto) {
                                 this.mixedIntoMode = new FillMode();
@@ -84,7 +88,7 @@ export class DivisionBusinessService {
                                 this.stationListView = true;
                             this.eventHistoryView = true;
                         }
-
+    
                     }
                 }
                 if(x.list[0].view instanceof StateScaleCardComponent) {
@@ -92,7 +96,7 @@ export class DivisionBusinessService {
                         this.stationCameraStateTable=item.tag;
                         this.stationCameraView=true;
                         this.eventHistoryView = true;
-
+    
                     }
                 }
             }

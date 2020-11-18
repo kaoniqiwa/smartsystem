@@ -128,6 +128,7 @@ export class IndexComponent implements OnInit {
       this.divisionBusinessService.mapClient.Village.Select(county.Id);
 
     }
+    this.divisionBusinessService.bindingEvent();
   }
 
   logOut(){ 

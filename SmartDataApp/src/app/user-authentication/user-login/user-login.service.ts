@@ -82,8 +82,7 @@ export class UserLoginService {
                         PrivacyData: number
                         StaticData: number                         
                         UserData: number}[]}) => {  
-                        if(result){
-                            console.log(result);
+                        if(result){ 
                            if(result.Role[0].PictureData==1
                             &&result.Role[0].PrivacyData==1
                             &&result.Role[0].StaticData==1
