@@ -88,7 +88,7 @@ export class EChartLineDirective implements OnChanges {
                                 position: 'top',
                                 textStyle: {
                                     fontSize: "16",
-                                    color: "#fff"
+                                    color: options.colors[i]
                                 },
                                 formatter: function (obj: any) {
                                     if (options.seriesLabel != null) {

@@ -22,7 +22,7 @@ export class SearchControl extends SearchHelper {
             DivisionId: new FormControl(''),
             StationId: new FormControl(''),
             TimeUnit: new FormControl(TimeUnitEnum.Hour),
-            ChartType: new FormControl(ChartTypeEnum.Line),
+            ChartType: new FormControl(ChartTypeEnum.Bar),
         });
     }
 

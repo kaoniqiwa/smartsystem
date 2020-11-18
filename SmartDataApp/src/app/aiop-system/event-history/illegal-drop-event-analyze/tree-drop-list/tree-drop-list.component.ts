@@ -97,6 +97,7 @@ export class TreeDropListComponent implements OnInit {
     else { 
       if (ancestorDivision && this.dataService.garbageStations.length==0)
         this.dataService.garbageStations = await this.dataService.requestGarbageStation(ancestorDivision.Id);
+        this.stationTreeService.garbageStations.items= new Array();
       this.stationTreeService.garbageStationModel = this.dataService.garbageStations;
       this.stationTreeService.convertStationTreeNode();
     }

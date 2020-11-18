@@ -58,7 +58,7 @@ export class EChartBarDirective implements OnChanges {
                                 position: "top",
                                 textStyle: {
                                     fontSize: "16",
-                                    color: "#fff"
+                                    color: options.color[i]
                                 }
                             },
                             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{

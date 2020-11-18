@@ -13,7 +13,7 @@
           [minView]="businessService.datePicker.minView" [defaultVal]="businessService.search.beginDate"
           [changeDate]="startDate" style="width: calc(100% - 82px);" class="custom form-control m-l-10"> 
       </div>    
-      <div fxFlex="20" class="m-r-10">
+      <div fxFlex="25" class="m-r-10">
         <span class="input-text" style="position: relative;top:2px">对象类型</span>
         <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 82px);" 
           formControlName="ClassType" (change)="changeClassType()">
@@ -21,7 +21,7 @@
           <option value="station">垃圾房</option> 
         </select>
       </div>
-      <div fxFlex="35" class="m-r-10">
+      <div fxFlex="30" class="m-r-10">
         <span class="input-text" style="position: relative;top:2px">{{classText}}</span>
         <div class="pull-right" style="width: calc(100% - 60px);">
            <hw-tree-drop-list [onlyDivisionNode]="businessService.divisionNode"></hw-tree-drop-list>

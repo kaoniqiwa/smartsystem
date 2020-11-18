@@ -25,8 +25,8 @@ export class BusinessService extends ListAttribute {
     search = new SearchControl(this.datePipe);
     lineChartOption: LineOption;
     barChartOption: BarOption;
-    barChartView = false;
-    lineChartView = true;
+    barChartView = true;
+    lineChartView = false;
     datePicker = {
         startView: 2,
         minView: 2,
