@@ -22,7 +22,7 @@
       <!-- [ngClass]="{'error': camera.CameraState>0}" -->
       <li class="video"  (click)="OnCameraClicked(camera)">    
 
-        <div *ngIf="camera.CameraState>0" class="error">NO SIGNAL</div>
+        <div *ngIf="camera.OnlineStatus!=0" class="error">NO SIGNAL</div>
         <img [src]="camera.ImageUrl" (error)="OnImageError($event)" [title]="camera.Name" />
       </li>
     </ng-container>
