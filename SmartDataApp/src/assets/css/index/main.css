@@ -9,6 +9,13 @@ h2
     line-height: 1
 }
 
+.custom-form-wrap{
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+
 .week-tr {
     background-color: #003399;
     color: white;

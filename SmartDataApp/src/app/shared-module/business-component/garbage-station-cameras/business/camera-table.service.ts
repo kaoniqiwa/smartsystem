@@ -86,20 +86,11 @@ export class CameraTableService{
 
         this.table.clearItems();
         this.dataSource = [];
-        if(this.cameraStateTable == CameraStateTableEnum.offline){
-            data.cameras = data.cameras.filter(x=>x.OnlineStatus !=0); 
-            this.table.Convert(data, this.table.dataSource); 
-            this.table.totalCount = data.cameras.length;    
-            this.dataSource = data.cameras;
-            if(callBack)callBack({ PageCount:1} as any);   
-        }
-        else{
-            this.table.Convert(data, this.table.dataSource); 
+        
+       this.table.Convert(data, this.table.dataSource); 
             this.table.totalCount = response.Data.Page.TotalRecordCount;         
             this.dataSource = response.Data.Data;
             if(callBack)callBack(response.Data.Page);
-        }
-      
 
     } 
 
@@ -109,7 +100,7 @@ export class CameraTableService{
         param.PageSize =this.cameraStateTable == CameraStateTableEnum.offline? new ListAttribute().maxSize:10;   
         if (search.state) 
             param.Name =search.searchText   
-        if(this.cameraStateTable == CameraStateTableEnum.online)
+        if(this.cameraStateTable == CameraStateTableEnum.online||this.cameraStateTable == CameraStateTableEnum.offline)
             param.OnlineStatus=this.cameraStateTable;
         param.DivisionIds=[this.divisionsId]; 
         return param;

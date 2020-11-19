@@ -165,6 +165,7 @@ export class BusinessService  extends EnumHelper{
         const param = new GetGarbageStationsParams();
         param.PageIndex = pageIndex;
         param.DivisionId=this.divisionId;
+        param.DryFull=true;
         param.PageSize = 10;  
         if (search.searchText && search.other == false)
             param.Name = search.searchText;
