@@ -4,7 +4,7 @@ import {CameraTable  ,BusinessData} from "./camera-table";
 import { SearchControl } from "./search";
 import "../../../../common/string/hw-string";
 import { Page } from "../../../../data-core/model/page";
-import { TableAttribute } from "../../../../common/tool/table-form-helper";
+import { ListAttribute} from "../../../../common/tool/table-form-helper";
 import { DatePipe } from "@angular/common";
 import { CameraRequestService as  ResourceRequestService } from "../../../../data-core/repuest/resources.service"; 
 import { Camera, GetGarbageStationCamerasParams } from "../../../../data-core/model/waste-regulation/camera";
@@ -87,7 +87,7 @@ export class CameraTableService{
         this.table.clearItems();
         this.dataSource = [];
         if(this.cameraStateTable == CameraStateTableEnum.offline){
-            data.cameras = data.cameras.filter(x=>x.OnlineStatus !=0);
+            data.cameras = data.cameras.filter(x=>x.OnlineStatus !=0); 
             this.table.Convert(data, this.table.dataSource); 
             this.table.totalCount = data.cameras.length;    
             this.dataSource = data.cameras;
@@ -106,12 +106,12 @@ export class CameraTableService{
     getRequsetParam(pageIndex: number, search: SearchControl) {
         const  param = new GetGarbageStationCamerasParams();
         param.PageIndex = pageIndex;
-        param.PageSize =this.cameraStateTable == CameraStateTableEnum.offline? new TableAttribute().pageSize:10;   
+        param.PageSize =this.cameraStateTable == CameraStateTableEnum.offline? new ListAttribute().maxSize:10;   
         if (search.state) 
             param.Name =search.searchText   
         if(this.cameraStateTable == CameraStateTableEnum.online)
             param.OnlineStatus=this.cameraStateTable;
-        param.DivisionIds=[this.divisionsId];
+        param.DivisionIds=[this.divisionsId]; 
         return param;
     }
 }

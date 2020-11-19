@@ -30,8 +30,9 @@ import { PlayVideo } from "../../../../aiop-system/common/play-video";
 import { TimeInterval } from "../../../../common/tool/tool.service";
 import { GetVodUrlParams } from "../../../../data-core/model/aiop/video-url";
 import { SideNavService } from "../../../../common/tool/sidenav.service";
+import { EnumHelper } from '../../../../common/tool/enum-helper'
 @Injectable()
-export class BusinessService {
+export class BusinessService  extends EnumHelper{
     playVideo: PlayVideo;
     galleryTargetView = new GalleryTargetViewI(this.datePipe);
     garbageStationDao: GarbageStationDao;
@@ -67,6 +68,7 @@ export class BusinessService {
        ,private navService:SideNavService
        ,divisionService:DivisionRequestService
         ,private datePipe: DatePipe) {
+            super();
         this.resourceCameraDao = new ResourceCameraDao(this.cameraService);
         this.garbageStationDao = new GarbageStationDao(garbageStationService);
         this.divisionDao=new DivisionDao(divisionService);
@@ -75,9 +77,9 @@ export class BusinessService {
         }
         this.galleryTargetView.neighborEventFnI = (ids, e: ImageEventEnum) => {
            const idV = ids.split('&'),findStation =  this.dataSource.find(x => x.Id == idV[0]);
-           var index = findStation.Cameras.filter(j=>j.CameraUsage==8||j.CameraUsage==9)
+           var index = findStation.Cameras.filter(j=>this.cameraUsage.garbageFull.indexOf(j.CameraUsage)> -1)
            .findIndex(x => x.Id == idV[1]);
-            var prev = true, next = true,cameras = findStation.Cameras.filter(x=>x.CameraUsage == 9 || x.CameraUsage == 8);
+            var prev = true, next = true,cameras = findStation.Cameras.filter(x=>this.cameraUsage.garbageFull.indexOf(x.CameraUsage)> -1);
 
             if (e == ImageEventEnum.none) {
                 if (index == 0)
@@ -173,6 +175,7 @@ export class BusinessService {
 
 
 export class StatisticTable extends BusinessTable implements IConverter, IPageTable<GarbageStationNumberStatistic> {
+    helper = new EnumHelper()
     dataSource = new CustomTableArgs<TableField>({
         hasTableOperationTd: false,
         hasHead: true,
@@ -181,9 +184,9 @@ export class StatisticTable extends BusinessTable implements IConverter, IPageTa
         values: [],
         primaryKey: "id",
         eventDelegate: (event: CustomTableEvent) => {
-           if (event.eventType == CustomTableEventEnum.Img) {
+           if (event.eventType == CustomTableEventEnum.Img) {               
                 const findEvent = this.findGarbageFn(event.data['item'].id)
-                ,cameras =findEvent.Cameras.filter(x=>x.CameraUsage == 8|| x.CameraUsage == 9);
+                ,cameras =findEvent.Cameras.filter(x=>this.helper.cameraUsage.garbageFull.indexOf(x.CameraUsage)> -1);
                 this.initGalleryTargetFn(findEvent.Id,cameras,event.data['index']);
             }
         },
@@ -263,7 +266,7 @@ export class StatisticTable extends BusinessTable implements IConverter, IPageTa
         const pic = new MediumPicture(),galleryTdAttr = new GalleryTdAttr();   
         galleryTdAttr.imgSrc =new Array<string>();
         camera.map(x=>{
-            if(x.CameraUsage == 9||x.CameraUsage == 8){
+            if(this.helper.cameraUsage.garbageFull.indexOf(x.CameraUsage)> -1){
                 const find = resourceCameras.find(x1=>x1.Id==x.Id);
                 if(find)
                     galleryTdAttr.imgSrc.push(pic.getJPG(find.ImageUrl));

@@ -20,7 +20,7 @@ export class EventTable extends BusinessTable implements IConverter {
     dataSource = new CustomTableArgs<any>({
         hasTableOperationTd: true,
         hasHead: true,
-        isSingleElection: false,
+        isSingleElection: true,
         values: [],
         primaryKey: "id",
         isDisplayDetailImg: true,
