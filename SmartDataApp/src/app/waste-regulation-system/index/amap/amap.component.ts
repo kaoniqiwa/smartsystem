@@ -280,9 +280,10 @@ export class AMapComponent implements AfterViewInit, OnInit {
         if (this.autoCloseWindowHandle) {
             clearTimeout(this.autoCloseWindowHandle);
         }
+        this.videoWindow.changePlayMode(PlayModeEnum.live, true);
         const element = document.getElementById('videoPlayer');
         element.style.display = 'none';
-        this.videoWindow.changePlayMode(PlayModeEnum.live, true);
+
     }
 
     async OnCameraClicked(camera: Camera) {

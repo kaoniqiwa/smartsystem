@@ -83,6 +83,8 @@ export class MapDeployComponent implements OnInit {
   // 地图所有点位
   points: Global.Dictionary<CesiumDataController.Point> = {};
 
+  pointSelected: CesiumDataController.Point;
+
   // 列表右侧按钮
   rightBtn: { iconClass: string, btns: RightBtn[] };
 
@@ -93,6 +95,9 @@ export class MapDeployComponent implements OnInit {
       return;
     }
 
+    console.log(item);
+
+
     switch (item.rightClassBtn[0].tag) {
       case RightButtonTag.Link:
         this.wantBindNode = item;
@@ -101,6 +106,7 @@ export class MapDeployComponent implements OnInit {
         // this.unbindConfirm.display = true;
         this.unbindDisplay = true;
         this.wantUnbindNode = item;
+        this.pointSelected = this.points[item.id];
         break;
       case RightButtonTag.position:
         break;
@@ -127,6 +133,8 @@ export class MapDeployComponent implements OnInit {
       this.client.Village.Select(data[0].Id);
       const village = this.dataController.Village.Get(data[0].Id);
       this.client.Viewer.MoveTo(village.center);
+      this.wantUnbindNode = undefined;
+      this.pointSelected = undefined;
       return;
     }
     // 如果选中的是垃圾厢房
@@ -137,8 +145,12 @@ export class MapDeployComponent implements OnInit {
       this.DivisionId = data[0].DivisionId;
       this.GarbageStation = data[0];
       this.client.Village.Select(data[0].DivisionId);
+
+      this.wantUnbindNode = item;
+
       try {
         const point = this.dataController.Village.Point.Get(data[0].DivisionId, data[0].Id);
+        this.pointSelected = point;
         this.client.Viewer.MoveTo(point.position);
 
         this.client.Point.Name.Hide();
@@ -231,11 +243,11 @@ export class MapDeployComponent implements OnInit {
       if (!objs || objs.length <= 0) { return; }
 
       const element = objs[0];
-
+      this.pointSelected = element as unknown as CesiumDataController.Point;
       const node = this.stationTree.findNode(element.id);
       this.stationTree.selectedItemClick(node);
-      this.stationTree.garbageStationTree.getParentNode(node);
-      this.expandableParentNode(node);
+      // this.stationTree.garbageStationTree.getParentNode(node);
+      // this.expandableParentNode(node);
       // this.stationTree.searchTree(element.name);
 
     };
@@ -272,7 +284,9 @@ export class MapDeployComponent implements OnInit {
         }
         this.points[point.id] = point;
         this.client.Point.Create(point);
+        this.pointSelected = point;
         const node = this.stationTree.findNode(point.id);
+        this.wantUnbindNode = node;
         node.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
       }
     };
@@ -329,24 +343,22 @@ export class MapDeployComponent implements OnInit {
     }
   }
   unbindYesClicked() {
+    let result = false;
     try {
-      if (this.wantUnbindNode) {
-        const p = this.points[this.wantUnbindNode.id];
-        if (p) {
-          try {
-            this.dataController.Village.Point.Remove(p.villageId, p.id);
-            this.client.Point.Remove(p.id);
-            delete this.points[p.id];
-            this.wantUnbindNode.rightClassBtn = [new RightBtn('howell-icon-Link', RightButtonTag.Link)];
-            new MessageBar().response_success('地图数据删除成功');
-          } catch (ex) {
-            new MessageBar().response_Error('地图数据删除失败');
-          }
 
-        }
+      if (this.pointSelected) {
+        result = this.RemovePoint(this.pointSelected);
+        return;
+      }
+      if (this.wantUnbindNode) {
+        this.pointSelected = this.points[this.wantUnbindNode.id];
+        result = this.RemovePoint(this.pointSelected);
       }
     }
     finally {
+      if (result) {
+        this.pointSelected = undefined;
+      }
       this.unbindDisplay = false;
     }
   }
@@ -364,6 +376,36 @@ export class MapDeployComponent implements OnInit {
       new MessageBar().response_warning('点位拖拽已关闭');
     }
   }
+
+  RemovePointClicked() {
+    if (this.pointSelected) {
+      this.unbindDisplay = true;
+      // this.RemovePoint(this.pointSelected);
+      // this.pointSelected = undefined;
+    }
+  }
+
+
+  RemovePoint(point: CesiumDataController.Point) {
+
+    try {
+      if (!this.wantUnbindNode) {
+        this.wantUnbindNode = this.stationTree.findNode(this.pointSelected.id);
+      }
+      this.dataController.Village.Point.Remove(point.villageId, point.id);
+      this.client.Point.Remove(point.id);
+      delete this.points[point.id];
+      this.wantUnbindNode.rightClassBtn = [new RightBtn('howell-icon-Link', RightButtonTag.Link)];
+      new MessageBar().response_success('地图数据删除成功');
+      return true;
+    } catch (ex) {
+      new MessageBar().response_Error('地图数据删除失败');
+      return false;
+    }
+
+
+  }
+
 
 
 }

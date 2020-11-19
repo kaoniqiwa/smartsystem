@@ -10,6 +10,8 @@ function WSPlayer(args) {
         live: "live"
     }
 
+    this.soundOpened;
+    this.volume = 0;
 
     var waitStopHandle;
     var waitStopHandle;
@@ -58,19 +60,31 @@ function WSPlayer(args) {
     this.clientWidth = parseFloat(element.offsetWidth);
     this.clientHeight = parseFloat(element.offsetHeight);
 
+    var sizeHandle = setInterval(function () {
+        if (that.clientWidth > 0 && that.clientHeight > 0) {
+            clearInterval(sizeHandle);
+            return;
+        }
+        that.clientWidth = parseFloat(element.offsetWidth);
+        that.clientHeight = parseFloat(element.offsetHeight);
+    }, 100);
 
     var plugin;
 
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src = current_args.path + "jsPlugin-1.2.0.min.js";
+    script.src = current_args.path + "jsPlugin-1.2.0.min.js?v=" + new Date().getTime();
     document.getElementsByTagName("head")[0].appendChild(script);
 
 
+
     function initTools() {
+
+        if (that.tools && that.tools.control)
+            that.volume = that.tools.control.volume.value;
         that.tools = new tools(element, current_args.mode);
         that.tools.createElements();
-
+        that.tools.control.volume.value = that.volume;
 
         if (that.tools.control.play) {
             that.tools.control.play.addEventListener("click", function () {
@@ -193,6 +207,34 @@ function WSPlayer(args) {
             });
         }
 
+        if (that.tools.control.volume.icon) {
+            that.tools.control.volume.icon.addEventListener("dblclick", function () {
+                if (that.soundOpened) {
+                    that.closeSound();
+                }
+                else {
+                    that.openSound();
+                }
+                that.tools.control.volume.value = that.value;
+
+            });
+        }
+
+
+        if (that.tools.control.volume.slide) {
+            that.tools.control.volume.slide.addEventListener("input", function () {
+                var value = parseInt(this.value)
+                if (value > 0) {
+                    that.openSound();
+                }
+                else {
+                    that.closeSound();
+                }
+
+                that.setVolume(value);
+            })
+        }
+
 
         var p = document.getElementsByClassName("parent-wnd")[0];
         p.addEventListener("dblclick", function () {
@@ -200,8 +242,43 @@ function WSPlayer(args) {
             that.fullScreen();
         });
 
-        document.addEventListener('fullscreenchange', function () { plugin.JS_Resize(window.screen.width, window.screen.height); });
-        document.addEventListener('webkitfullscreenchange', function () { console.log('fullscreenchange') });
+        document.addEventListener('fullscreenchange', function (e) {
+            console.log("window fullscreenchange");
+            console.log(e);
+            plugin.JS_Resize(window.screen.width, window.screen.height);
+        });
+        document.addEventListener('webkitfullscreenchange', function (e) {
+            if (!that.FullScreen) return;
+            if (!window.screens) {
+                window.screens = {};
+            }
+            if (e.path) {
+                if (!e.path[0].fullscreennumber)
+                    e.path[0].fullscreennumber = 1;
+                e.path[0].fullscreennumber++;
+                var id = e.path[0].id;
+                window.screens[id] = e.path[0].fullscreennumber % 2 == 0;
+
+                setTimeout(function () {
+                    if (window.screens[id]) {
+                        var scale = 1 / getRatio();
+                        console.log(window.screen.height);
+                        plugin.JS_Resize(window.screen.width * scale, window.screen.height * scale);
+                        that.tools.control.fullscreen.title = "退出";
+                    }
+                    else {
+                        that.FullScreen = false;
+                        plugin.JS_Resize(that.clientWidth, that.clientHeight);
+                        that.tools.control.fullscreen.title = "全屏";
+                    }
+
+
+                    console.log("fullscreenchange id:" + id);
+
+                }, 200);
+            }
+
+        });
         document.addEventListener('mozfullscreenchange', function () { console.log('mozfullscreenchange') });
         document.addEventListener('MSFullscreenChange', function () { console.log('MSFullscreenChange') });
 
@@ -276,6 +353,8 @@ function WSPlayer(args) {
 
     this.status = wsPlayerState.ready;
 
+
+
     function getStatus() {
         return plugin.JS_GetWndStatus(0);
     }
@@ -333,7 +412,6 @@ function WSPlayer(args) {
                         element.className = element.className.replace(/ loading/g, "")
                     },
                     getPosition: function (p) {
-
                         if (p.data) {
 
                             var u8array = new Uint8Array(p.data);
@@ -368,7 +446,10 @@ function WSPlayer(args) {
                     }
                 }, 0).then(() => {
                     that.status = wsPlayerState.playing;
+
                 });
+
+
 
                 if (that.tools.control.begin_time && that.playback_time.begin) {
                     that.tools.control.begin_time.innerText = "00:00:00"
@@ -406,8 +487,6 @@ function WSPlayer(args) {
             plugin.JS_Seek(0, value / 1000);
         });
     }
-
-
     // 快进
     this.fast = function () {
 
@@ -514,6 +593,7 @@ function WSPlayer(args) {
         if (element)
             element.className = element.className.replace(/ loading/g, "")
 
+        that.soundOpened = false;
 
         if (!plugin) return;
 
@@ -564,9 +644,10 @@ function WSPlayer(args) {
                 console.error(ex)
             }
             //plugin.JS_FullScreen(0);
-            plugin.JS_Resize(window.screen.width, window.screen.height);
-            resize();
+            // plugin.JS_Resize(window.screen.width, window.screen.height);
+            // resize();
             // that.FullScreen = true;
+            that.FullScreen = true;
         });
     }
 
@@ -593,7 +674,6 @@ function WSPlayer(args) {
                 plugin.JS_Resize(that.clientWidth, that.clientHeight);
                 clearInterval(handle);
                 that.tools.control.fullscreen.title = "全屏"
-
             }
             else if (that.FullScreen == false) {
                 that.FullScreen = true;
@@ -664,9 +744,38 @@ function WSPlayer(args) {
             );
     }
 
+
+    this.openSound = function () {
+        doing(function () {
+            if (that.soundOpened) return;
+            plugin.JS_OpenSound(0);
+            that.soundOpened = true;
+        });
+    }
+    this.closeSound = function () {
+        doing(function () {
+            if (!that.soundOpened) return;
+            plugin.JS_CloseSound();
+            that.soundOpened = false;
+        });
+    }
+
+
+    this.getVolume = function (result) {
+        doing(function (result) {
+            plugin.JS_GetVolume(0, result);
+        }, result)
+    }
+    this.setVolume = function (value) {
+        doing(function (value) {
+            plugin.JS_SetVolume(0, value);
+            that.volume = value;
+        }, value)
+    }
+
     function tools(element, mode) {
         var tools = document.createElement("div");
-        tools.className = "tools"
+        tools.className = "tools";
         //tools.style.display = "none";
         element.appendChild(tools);
 
@@ -681,7 +790,7 @@ function WSPlayer(args) {
         // element.addEventListener("mouseout", function(){
         //     tools.style.display = "none"
         // });
-
+        display = false;
 
 
         var that_tools = this;
@@ -714,11 +823,11 @@ function WSPlayer(args) {
 
 
 
+
+
         this.createElements = function () {
             var ul = document.createElement("ul");
             content.appendChild(ul);
-
-
 
 
             that_tools.control.play = createElement(ul, "a", { width: "40px" }, { className: "play glyphicon glyphicon-play", title: "播放" });
@@ -750,6 +859,8 @@ function WSPlayer(args) {
             that_tools.control.fullscreen = createElement(ul, "a", { float: "right" }, { className: "fullscreen glyphicon glyphicon-fullscreen", title: "全屏" });
             that_tools.control.capturepicture = createElement(ul, "a", { float: "right" }, { className: "capturepicture glyphicon glyphicon-picture", title: "截图" });
 
+
+
             if (mode == wsPlayerMode.live) {
                 //that_tools.control.stop.style.display = "none";
                 that_tools.control.slow.style.display = "none";
@@ -765,6 +876,101 @@ function WSPlayer(args) {
                 that_tools.control.end_time.style.display = "none";
 
             }
+
+
+            that_tools.control.volume.icon = createElement(ul, "a", { float: "right" }, { className: "volume glyphicon glyphicon-volume-off", title: "音量" });
+            that_tools.control.volume.panel = document.createElement("div");
+            // volume_panel.style.display = "none";
+            that_tools.control.volume.panel.className = "volume_panel";
+            that_tools.control.volume.panel.style.display = "none";
+            tools.appendChild(that_tools.control.volume.panel);
+
+            that_tools.control.volume.slide = document.createElement("input");
+            that_tools.control.volume.slide.type = "range";
+            that_tools.control.volume.slide.min = 0;
+            that_tools.control.volume.slide.max = 100;
+            that_tools.control.volume.slide.value = 0;
+            that_tools.control.volume.slide.style.backgroundSize = "0% 100%";
+            that_tools.control.volume.slide.step = 10;
+            that_tools.control.volume.panel.appendChild(that_tools.control.volume.slide);
+
+
+
+            function onSlideInput(ctr) {
+                var value = (ctr.value - ctr.min) / (ctr.max - ctr.min);
+                var valStr = value * 100 + "% 100%";
+                ctr.style.backgroundSize = valStr;
+                ctr.title = "音量：" + (value * 100) + "%";
+                that_tools.control.volume.icon.title = ctr.title;
+                that_tools.control.volume.value = parseInt(ctr.value);
+                if (value == 0) {
+                    ctr.opened = false;
+                    that_tools.control.volume.icon.className = "volume glyphicon glyphicon-volume-off";
+                }
+                else {
+                    ctr.opened = true;
+                    that_tools.control.volume.icon.className = "volume glyphicon glyphicon-volume-up";
+                }
+            }
+
+            that_tools.control.volume.slide.addEventListener("input", function () {
+                onSlideInput(this);
+            });
+
+
+
+
+            that_tools.control.volume.icon.addEventListener("click", function () {
+                display = true;
+                that_tools.control.volume.panel.style.display = "";
+            });
+            that_tools.control.volume.icon.addEventListener("dblclick", function () {
+                if (that_tools.control.volume.value == 0)
+                    that_tools.control.volume.value = 80;
+
+
+                var value = parseInt(that_tools.control.volume.value);
+
+                if (that_tools.control.volume.slide.value > 0) {
+                    that_tools.control.volume.slide.value = 0;
+                }
+                else {
+                    that_tools.control.volume.slide.value = that_tools.control.volume.value;
+                }
+                onSlideInput(that_tools.control.volume.slide);
+                that_tools.control.volume.value = value;
+                // if (this.opened) {
+                //     that_tools.control.volume.icon.className = "volume glyphicon glyphicon-volume-up";
+                //     this.opened = true;                    
+                //     if(this.value == 0)
+                //     {
+                //         this.value = that_tools.control.volume.value;
+                //     }
+                // }
+                // else {
+                //     that_tools.control.volume.icon.className = "volume glyphicon glyphicon-volume-off";
+                //     this.opened = false;
+                // }
+            });
+            that_tools.control.volume.icon.addEventListener("mouseleave", function () {
+                setTimeout(function () {
+                    if (display == false)
+                        that_tools.control.volume.panel.style.display = "none";
+                }, 100);
+                display = false;
+
+            });
+            that_tools.control.volume.panel.addEventListener("mouseleave", function () {
+
+                setTimeout(function () {
+                    if (display == false)
+                        that_tools.control.volume.panel.style.display = "none";
+                }, 100);
+                display = false;
+            });
+            that_tools.control.volume.panel.addEventListener("mouseover", function () {
+                display = true;
+            });
 
 
 
@@ -821,7 +1027,14 @@ function WSPlayer(args) {
             fullscreen: null,
             capturepicture: null,
             jump_forward: null,
-            jump_back: null
+            jump_back: null,
+            volume: {
+                icon: null,
+                panel: null,
+                slide: null,
+                value: 0
+            }
+
         }
 
 
