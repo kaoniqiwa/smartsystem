@@ -208,14 +208,14 @@ function WSPlayer(args) {
         }
 
         if (that.tools.control.volume.icon) {
-            that.tools.control.volume.icon.addEventListener("dblclick", function () {
+            that.tools.control.volume.icon.addEventListener("click", function () {
                 if (that.soundOpened) {
                     that.closeSound();
                 }
                 else {
                     that.openSound();
                 }
-                that.tools.control.volume.value = that.value;
+                //that.tools.control.volume.value = that.value;
 
             });
         }
@@ -232,6 +232,7 @@ function WSPlayer(args) {
                 }
 
                 that.setVolume(value);
+                that.tools.control.volume.value = value;
             })
         }
 
@@ -257,7 +258,7 @@ function WSPlayer(args) {
                     e.path[0].fullscreennumber = 1;
                 e.path[0].fullscreennumber++;
                 var id = e.path[0].id;
-                window.screens[id] = e.path[0].fullscreennumber % 2 == 0;
+                window.screens[id] = e.path[0].fullscreennumber % 2 == 0 || document.fullscreen;
 
                 setTimeout(function () {
                     if (window.screens[id]) {
@@ -918,11 +919,26 @@ function WSPlayer(args) {
             });
 
 
-
-
-            that_tools.control.volume.icon.addEventListener("click", function () {
+            that_tools.control.volume.icon.addEventListener("mouseover", function () {
                 display = true;
                 that_tools.control.volume.panel.style.display = "";
+            });
+
+            that_tools.control.volume.icon.addEventListener("click", function () {
+
+                setTimeout(function () {
+                    if (that_tools.control.volume.value == 0)
+                        that_tools.control.volume.value = 80;
+                    var value = parseInt(that_tools.control.volume.value);
+                    if (that_tools.control.volume.slide.value > 0) {
+                        that_tools.control.volume.slide.value = 0;
+                    }
+                    else {
+                        that_tools.control.volume.slide.value = that_tools.control.volume.value;
+                    }
+                    onSlideInput(that_tools.control.volume.slide);
+                    that_tools.control.volume.value = value;
+                }, 10);
             });
             that_tools.control.volume.icon.addEventListener("dblclick", function () {
                 if (that_tools.control.volume.value == 0)
