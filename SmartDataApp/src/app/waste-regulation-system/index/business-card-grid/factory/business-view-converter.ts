@@ -18,7 +18,7 @@ import { ViewsModel } from '../../../../common/abstract/base-view';
 import { IConverter } from "../../../../common/interface/IConverter";
 import { Injector, Injectable } from '@angular/core';
 import { LineOption } from '../../../../common/directive/echarts/echart';
-import { Percentage, TimeInterval } from '../../../../common/tool/tool.service'
+import { Percentage, TimeInterval ,DateInterval} from '../../../../common/tool/tool.service'
 import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
 import { EventNumber } from '../../../../data-core/model/waste-regulation/event-number';
@@ -171,9 +171,12 @@ export class IllegalDropEventConverter implements IConverter {
                 output.views[i].imgDesc1IconColor = ColorEnum["green-text"];
                 output.views[i].titleColor = ColorEnum["red-text"];
                 output.views[i].subTitle = input.items[i].EventTime;
-                output.views[i].tag = {
-                    timeInterval: TimeInterval(input.items[i].EventTimeAll, -30),
-                    cameraId: input.items[i].ResourceId
+                output.views[i].tag = { 
+                   timeInterval:{
+                    start: DateInterval(input.items[i].EventTimeAll, -30),
+                    end: DateInterval(input.items[i].EventTimeAll, 30)
+                   } ,
+                   cameraId: input.items[i].ResourceId
                 }
 
                 // { stationId: string, cameraId: string }

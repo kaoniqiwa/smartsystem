@@ -73,13 +73,13 @@ export class IndexComponent implements OnInit {
     cardType: 'ImageThemeCardComponent',
     state: false
   });
-    this.mqttSevice.listenerIllegalDrop();
+  
+   
+    const county = await this.indexService.getCounty();
+    this.mqttSevice.listenerIllegalDrop(county.Id);
     this.eventPushService.connectionState.subscribe((b) => {   
       this.divisionBusinessService.changeMqttState(b);
     });
-   
-    const county = await this.indexService.getCounty();
-
     const committesIds = await this.indexService.getCommittesIds();
     this.divisionBusinessService.committesIds = committesIds;
     this.divisionBusinessService.divisionsId=county.Id;

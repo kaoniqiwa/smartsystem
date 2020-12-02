@@ -30,6 +30,14 @@ export function TimeInterval(dateString: string, seconds = 0, minutes = 0, hours
         end: end
     }
 }
+export function DateInterval(dateString: string, seconds = 0, minutes = 0, hours = 0, date = 0 ) {
+    const newDate = new Date(dateString);
+    newDate.setSeconds(newDate.getSeconds() + seconds);
+    newDate.setMinutes(newDate.getMinutes() + minutes);
+    newDate.setHours(newDate.getHours() + hours);
+    newDate.setDate(newDate.getDate() + date); 
+    return  newDate;
+}
 
 export function MonthLastDay(year:number, month:number) {
     var new_year = year; //取当前的年份

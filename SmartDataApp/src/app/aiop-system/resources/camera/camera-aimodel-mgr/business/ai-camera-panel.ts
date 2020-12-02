@@ -7,20 +7,20 @@ import { PanelItem } from "./panel-item";
 import { MessageBar } from "../../../../../common/tool/message-bar";
 import { ListAttribute } from "../../../../../common/tool/table-form-helper";
 
-export class AICameraPanel extends ListAttribute{
+export class AICameraPanel extends ListAttribute {
     messageBar = new MessageBar();
-    cardListSelectedIdFn:()=> Array<string>;
+    cardListSelectedIdFn: () => Array<string>;
     underCamerasAIModels_: Map<string, string[]>;
     cardListPanelView_ = new PanelView();
     dropItemState = false;
-    clearSelectedIds :()=>void;
+    clearSelectedIds: () => void;
     viewPaginationFn: (page: Page) => ViewPagination;
     addAIModelToCameraFn: (cameraId: string, aiModelId: string, successFn: (success: boolean) => void) => void;
     delAIModelToCameraFn: (cameraId: string, aiModelId: string, successFn: (success: boolean) => void) => void;
     findCameraAIModel: (cameraId: string, resultFn: (models: CameraAIModel[]) => void) => void;
     copyCameraId = '';
     constructor() {
-super();
+        super();
         this.underCamerasAIModels_ = new Map<string, string[]>();
         this.cardListPanelView_.event = (event, listId, itemId) => {
             if (event == EventTypeEnum.ListItemDel) {
@@ -53,7 +53,7 @@ super();
     delUnderCameraAIModel(cameraId: string, aiModelId: string) {
         var s = this.underCamerasAIModels_.get(cameraId);
         s = s.filter(x => x != aiModelId);
-        this.underCamerasAIModels_.set(cameraId,s);        
+        this.underCamerasAIModels_.set(cameraId, s);
     }
 
     delCardListItem(listId: string, itemId: string) {
@@ -65,7 +65,7 @@ super();
         })
     }
 
-    addCards(cameraId: string, model: { id: string; label: string;icon:string }) {
+    addCards(cameraId: string, model: { id: string; label: string; icon: string }) {
         const item = this.cardListPanelView_.listPanel.find(x => x.id == cameraId);
         item.barBody.push(model);
     }
@@ -86,7 +86,7 @@ super();
                 }
             }
         });
-    this.dropItemState=false;
+        this.dropItemState = false;
     }
 
     get cardListPanelV() {
@@ -131,7 +131,7 @@ super();
             }
             card.barOtherAccessorys.push(icon);
             icon = new AccessoryIcon();
-            icon.colorClass = 'text-danger';
+            icon.colorClass = x.OnlineStatus == 0 ? 'green-text' : 'text-danger';
             icon.icon = x.OnlineStatus == 0 ? 'howell-icon-signal2' : 'howell-icon-no_signal';
             card.barOtherAccessorys.push(icon);
 
@@ -141,7 +141,7 @@ super();
                     card.barBody.push({
                         id: m.Id,
                         label: m.ModelName,
-                        icon: this.imgUrlRoot+this.aiModelIcon+'ai-m'+m.Label+'.png'
+                        icon: this.imgUrlRoot + this.aiModelIcon + 'ai-m' + m.Label + '.png'
                     });
                     this.setUnderCameraAIModel(x.Id, m.Id);
                 });
@@ -166,7 +166,7 @@ super();
                             findItem.barBody.push({
                                 id: m.Id,
                                 label: m.ModelName,
-                                icon:  this.imgUrlRoot+this.aiModelIcon+'ai-m'+m.Label+'.png'
+                                icon: this.imgUrlRoot + this.aiModelIcon + 'ai-m' + m.Label + '.png'
                             });
                             this.setUnderCameraAIModel(x, m.Id);
                         });

@@ -15,4 +15,7 @@ export class ConfigRequestService {
         return this.http.get<any>('assets/ai-icon.json');
     }
 
+    getMQTT(){
+      return  this.http.get<{Port:number}>('assets/mqtt.json');
+    }
 }

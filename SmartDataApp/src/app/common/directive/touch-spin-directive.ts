@@ -18,7 +18,7 @@ export class TouchSpinOptions {
     constructor() {
         this.verticalbuttons = true;
         this.min = 1;
-        this.max = 9999;
+        this.max = 65536;
         this.step = 1;
         this.decimals = 0;
         // this.verticalupclass = 'glyphicon glyphicon-plus';

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { SessionUser } from "../../common/tool/session-user";
 import { Digest } from './digest'; 
 import {Response  } from "../model/response";
  
@@ -9,9 +9,7 @@ import {Response  } from "../model/response";
   providedIn: 'root'
 })
 export class HowellAuthHttpService {
- 
-  userName ='admin';
-  password='123456';
+
   nc=0;
   constructor(private http: HttpClient) {
   } 
@@ -72,9 +70,9 @@ export class HowellAuthHttpService {
 
   //获取已授权的头部
   getHttpHeaders(method: string, uri: string) {  
-    let digest = new Digest();
+    let digest = new Digest(),user = new SessionUser();
     var challenge = digest.parseServerChallenge(null); 
     this.nc+=1;
-    return digest.generateRequestHeader(this.nc, challenge, this.userName, this.password, method, uri);
+    return digest.generateRequestHeader(this.nc, challenge, user.name, user.pwd, method, uri);
   }
 }
