@@ -146,6 +146,11 @@
               (mousedown)="lenUserControl(viewModel.PTZ.len.halo_on,viewModel.PTZ.speed)"></a></div>
           <div style="clear: both"></div>
         </div>
+        <div class="play-live-box m-t-5"> 
+          <div class="btn-i m-r-5" title="主码流"><a href="javascript:void(0)"  [ngStyle]="{'color':hdVideo?'#a6e8ff':'#69adff'}"  (click)="changeVideoStream(1)" class="mdi mdi-quality-high"></a></div>
+          <div class="btn-i m-r-5" title="子码流"><a href="javascript:void(0)"  [ngStyle]="{'color':!hdVideo?'#a6e8ff':'#69adff'}" (click)="changeVideoStream(2)" class="howell-icon-video-loss"></a></div>         
+          <div style="clear: both"></div>
+        </div>
         <div style="width: 140px; height: 30px; padding-top: 16px;position: relative;">
           <input id="ra__" type="text" min="1" max="7" step="1" data-orientation="horizontal">
           <div class="speed-input" style="position: absolute;top: 0;left: 144px;">
@@ -173,7 +178,7 @@
           <p class="line line-d"></p>
           <p class="line line-e"></p>
         </div> -->
-        <div class="preset-list m-t-10" style="overflow: auto;height: calc(100% - 140px);">
+        <div class="preset-list m-t-10" style="overflow: auto;height: calc(100% - 175px);">
 
           <div class="li preset" [class.selected]="i.isSelect" (click)="presetListItemClick(i)"
             *ngFor="let i of viewModel.PTZ.presetControl;">

@@ -4,6 +4,17 @@ export class SessionUser {
     get suffix() {
         return Md5.hashStr('&*^').toString();
     }
+
+    private readonly userIdKey = 'userId';
+
+    set id(val: string) {
+        localStorage.setItem(this.userIdKey, val);
+    }
+    get id() {
+        return localStorage.getItem(this.userIdKey);
+    }
+
+
     set user(val: { name: string, pwd: string }) {
         this.pwd = val.pwd;
         this.name = val.name;
@@ -52,10 +63,10 @@ export class SessionUser {
         return n ? n.split(this.suffix)[0] : '';
     }
 
-    set clear(yes:boolean){
+    set clear(yes: boolean) {
         localStorage.removeItem('memoryPwd');
         localStorage.removeItem('autoLogin');
         localStorage.removeItem('name');
-        localStorage.removeItem('pwd'); 
+        localStorage.removeItem('pwd');
     }
 }

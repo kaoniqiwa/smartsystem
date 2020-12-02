@@ -237,7 +237,7 @@ function WSPlayer(args) {
         }
 
 
-        var p = document.getElementsByClassName("parent-wnd")[0];
+        var p = element.getElementsByClassName("parent-wnd")[0];
         p.addEventListener("dblclick", function () {
             console.log("dblclick");
             that.fullScreen();
@@ -443,6 +443,11 @@ function WSPlayer(args) {
                             var valStr = parseFloat(val) * 100 + "% 100%";
                             that.tools.control.position.style.backgroundSize = valStr;
                             //that.status = p.offset + 1 >= p.count ? that.status = wsPlayerState.end : that.status = wsPlayerState.playing;
+                        }
+                    },
+                    timeout:{
+                        loading:function(){
+                            element.className += " loading";
                         }
                     }
                 }, 0).then(() => {

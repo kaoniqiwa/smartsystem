@@ -147,6 +147,10 @@ export class MapDeployComponent implements OnInit {
       this.client.Village.Select(data[0].DivisionId);
 
       this.wantUnbindNode = item;
+      if (!this.points[item.id]) {
+        this.pointSelected = undefined;
+      }
+
 
       try {
         const point = this.dataController.Village.Point.Get(data[0].DivisionId, data[0].Id);

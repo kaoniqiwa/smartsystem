@@ -1,8 +1,18 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
 import { VideoPlayArgs } from '../video/mode';
 import { DatePipe } from '@angular/common';
+import { ConfigRequestService } from '../data-core/repuest/config.service';
+import { MessageBar } from '../common/tool/message-bar';
+import { UserDalService } from '../dal/user/user-dal.service';
+import { promise } from 'protractor';
 
 declare var $: any;
+export const ConfigType = {
+    Map: 1,
+    MapStatisticVideo: 2,
+    MapStatisticLayout: 3,
+    GisMapVideoLive: 4
+};
 
 @Component({
     selector: 'app-video-window',
@@ -28,11 +38,50 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     delayPlayHandle: NodeJS.Timer;
 
 
-    @Input() url: string;
+    private _url = '';
+    get url() {
+        return this._url;
+    }
+    @Input()
+    set url(val: string) {
+        this._url = val;
+        if (val) {
+            this.videoPlayArgs = VideoPlayArgs.FromUrl(val);
+            this.videoPlayArgs.stream = this.stream;
+        }
+    }
+
+    hdVideo = false;
+
 
     @ViewChild('date') txtDate;
     @ViewChild('begin_time') txtBeginTime;
     @ViewChild('end_time') txtEndTime;
+
+    private _userId: string;
+    private get userId() {
+        if (!this._userId) {
+            this._userId = localStorage.getItem('userId');
+        }
+        return this._userId;
+    }
+
+    private _stream = 1;
+
+    get stream() {
+        return this._stream;
+    }
+    set stream(hd: number) {
+        const saveDB = async (userId) => {
+            const fault = await this.userDalService.editUserConfig(userId, ConfigType.GisMapVideoLive.toString(), hd.toString());
+            if (fault && fault.FaultCode === 0) {
+                new MessageBar().response_success('设置成功');
+                this._stream = hd;
+            }
+        };
+        saveDB(this.userId);
+    }
+
 
 
     player: WSPlayer;
@@ -59,7 +108,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     @Output() PlaybackClickedListen: EventEmitter<{ begin: Date, end: Date }> = new EventEmitter();
     @Output() VideoPlayingEventListen: EventEmitter<boolean> = new EventEmitter();
 
-    constructor(private datePipe: DatePipe) {
+    constructor(private datePipe: DatePipe, private userDalService: UserDalService) {
         if (this.hasControl) {
             if (this.viewModel_ == null) {
                 this.viewModel_ = new ViewModel();
@@ -72,6 +121,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         date.setMinutes(date.getMinutes() - 5);
         this.beginTime = this.formatTime(date);
         this.date = this.formatDate(date);
+
     }
 
     formatDate(date: Date) {
@@ -93,7 +143,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     }
 
 
-    set videoPlayArgs_(v: any) { this.videoPlayArgs = v; }
+    set videoPlayArgs_(v: any) { this.videoPlayArgs = v;  this.videoPlayArgs.stream = this.stream; }
     get viewModel() { return this.viewModel_; }
 
 
@@ -174,9 +224,9 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     videoItemClick(item: any) {
         if (this.videoPlayArgs && this.videoPlayArgs.deviceId) {
             // if(item.beginTime)
-            this.videoPlayArgs.beginTime = new Date(item.beginTime).toISOString();
+            this.videoPlayArgs.begin = new Date(item.beginTime).toISOString();
             // if(item.endTime)
-            this.videoPlayArgs.endTime = new Date(item.endTime).toISOString();
+            this.videoPlayArgs.begin = new Date(item.endTime).toISOString();
             this.playVideo();
             for (const f of this.viewModel.recordFilePage.list) {
                 f.isSelect = false;
@@ -185,8 +235,22 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         }
     }
 
-    ngOnInit() {
+
+    async getStream() {
+        try {
+            const strStream = await this.userDalService.getUserConfig(this.userId, ConfigType.GisMapVideoLive.toString());
+            if (strStream) {
+                this._stream = parseInt(strStream);
+            }
+        } catch (ex) {
+            console.log('getStream error');
+        }
+    }
+
+    async ngOnInit() {
         const me = this;
+
+        this.getStream();
 
 
         document.addEventListener('fullscreenchange', () => {
@@ -253,15 +317,6 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         this.initDateTimePicker();
     }
 
-    createUrl(model: VideoPlayArgs) {
-        // tslint:disable-next-line:max-line-length
-        this.url = `ws://${model.host}:${model.port}/ws/video/howellps/${model.mode}/${model.deviceId}/${model.slot}/1/${model.mode}.mp4?user=${model.userName}&password=${model.password}"`;
-        if (model.mode === 'vod') {
-            // tslint:disable-next-line:max-line-length
-            this.url = `ws://${model.host}:${model.port}/ws/video/howellps/${model.mode}/${model.deviceId}/${model.slot}/1/${model.beginTime}_${model.endTime}/${model.mode}.mp4?user=${model.userName}&password=${model.password}"`;
-        }
-        return this.url;
-    }
 
     playVideo() {
         const me = this;
@@ -269,7 +324,8 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         me.screenId = 'screen' + me.guid;
 
         if (me.videoPlayArgs) {
-            me.url = this.createUrl(me.videoPlayArgs);
+            me.url = me.videoPlayArgs.toString();
+            this.hdVideo = me.videoPlayArgs.stream === 1;
         }
 
         if (!this.url) {
@@ -406,6 +462,15 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
             begin: new Date(date.value + ' ' + begin.value.replace(/ /g, '')),
             end: new Date(date.value + ' ' + end.value.replace(/ /g, ''))
         });
+    }
+
+    changeVideoStream(hd: number) {
+        if (!this.url) { return; }
+        this.videoPlayArgs = VideoPlayArgs.FromUrl(this.url);
+        this.videoPlayArgs.stream = hd;
+        this._url = this.videoPlayArgs.toString();
+        this.playVideo();
+        this.stream = hd;
     }
 
 }
