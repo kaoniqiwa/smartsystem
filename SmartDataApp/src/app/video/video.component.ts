@@ -119,17 +119,6 @@ export class VideoComponent implements OnInit, OnDestroy, AfterViewInit {
         }, 500);
     }
 
-
-    createUrl(model: VideoPlayArgs) {
-        // tslint:disable-next-line:max-line-length
-        this.url = `ws://${model.host}:${model.port}/ws/video/howellps/${model.mode}/${model.deviceId}/${model.slot}/1/${model.mode}.mp4?user=${model.userName}&password=${model.password}"`;
-        if (model.mode === 'vod') {
-            // tslint:disable-next-line:max-line-length
-            this.url = `ws://${model.host}:${model.port}/ws/video/howellps/${model.mode}/${model.deviceId}/${model.slot}/1/${model.beginTime}_${model.endTime}/${model.mode}.mp4?user=${model.userName}&password=${model.password}"`;
-        }
-        return this.url;
-    }
-
     play(opts?: { url?: string, cameraName?: string, width?: number }) {
         if (opts) {
             if (opts.url) {
