@@ -1,8 +1,5 @@
-import { AxiosDigestInstance } from "howell-http-lib";
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-
-import { Response } from "../model/response";
+import { HttpClient } from "@angular/common/http"; 
 @Injectable({
     providedIn: 'root'
 })
@@ -17,5 +14,9 @@ export class ConfigRequestService {
 
     getMQTT(){
       return  this.http.get<{Port:number}>('assets/mqtt.json');
+    }
+
+    getVideo(){
+      return this.http.get<{beforeInterval:number,afterInterval:number}>('assets/video.json')
     }
 }

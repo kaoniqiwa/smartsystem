@@ -25,6 +25,7 @@ import { EventNumber } from '../../../../data-core/model/waste-regulation/event-
 import { ColorEnum } from '../../../../shared-module/card-component/card-content-factory';
 import { CameraStateTableEnum } from "../../../../shared-module/business-component/garbage-station-cameras/business/camera-table.service";
 import { isBoolean } from 'util';
+import {SessionUser  } from "../../../../common/tool/session-user";
 export class IllegalDropHistoryCardConverter implements IConverter {
 
     Convert<IllegalDropEvent, ViewsModel>(input: IllegalDropEvent, output: ViewsModel): ViewsModel;
@@ -159,6 +160,7 @@ export class IllegalDropEventConverter implements IConverter {
         if (input instanceof IllegalDropEventInfos) {
             output.pageSize = input.items.length;
             output.views = new Array();
+            const user = new SessionUser();
             for (let i = 0; i < input.items.length; i++) {
                 output.views.push(new ImageTheme());
                 const pic = new MediumPicture();
@@ -173,8 +175,8 @@ export class IllegalDropEventConverter implements IConverter {
                 output.views[i].subTitle = input.items[i].EventTime;
                 output.views[i].tag = { 
                    timeInterval:{
-                    start: DateInterval(input.items[i].EventTimeAll, -30),
-                    end: DateInterval(input.items[i].EventTimeAll, 30)
+                    start: DateInterval(input.items[i].EventTimeAll, user.video.beforeInterval),
+                    end: DateInterval(input.items[i].EventTimeAll,user.video.afterInterval)
                    } ,
                    cameraId: input.items[i].ResourceId
                 }

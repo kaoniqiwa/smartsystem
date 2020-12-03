@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { log } from "console";
 @Injectable()
 export class ToolService {
     windowScreen: { width: number, height: number };

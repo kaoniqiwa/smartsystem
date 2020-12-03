@@ -7,6 +7,15 @@ export class SessionUser {
 
     private readonly userIdKey = 'userId';
 
+    set video(val:{beforeInterval:number,afterInterval:number}){
+        localStorage.setItem('VIDEO',JSON.stringify(val));
+    }
+
+    get video(){
+        const val = localStorage.getItem('VIDEO');
+        return JSON.parse(val);
+    }
+
     set id(val: string) {
         localStorage.setItem(this.userIdKey, val);
     }

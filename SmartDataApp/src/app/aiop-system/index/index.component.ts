@@ -15,6 +15,7 @@ import {
 import { SessionUser } from "../../common/tool/session-user";
 import { Title } from '@angular/platform-browser';
 import { SystemModeEnum } from '../../common/tool/table-form-helper';
+import { ConfigRequestService } from '../../data-core/repuest/config.service';
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -48,14 +49,16 @@ export class IndexComponent implements OnInit {
   maximize = true;
   bug = false;
   contentLeft = 0;
+  u : SessionUser;
   constructor(private router: Router
     , titleService: Title
+    ,private configService:ConfigRequestService
     , private navService: SideNavService) {
     titleService.setTitle('生活垃圾监管平台');
-    const u = new SessionUser();
-    if (u.user.name == '' || u.user.pwd == '') this.router.navigateByUrl('login');
+    this.u = new SessionUser();
+    if (this.u.user.name == '' || this.u.user.pwd == '') this.router.navigateByUrl('login');
   }
-  ngOnInit() {
+ async ngOnInit() {
     this.systemMode.push({
       icon: 'howell-icon-cam-all1'
       , name: '数据统计', linkType: SystemModeEnum.gisSmartData
@@ -68,6 +71,9 @@ export class IndexComponent implements OnInit {
     this.navService.playVideoBug.subscribe((x: boolean) => {
       this.bug = x;
     });
+
+    const config= await this.configService.getVideo().toPromise();
+    this.u.video=config;
   }
 
   menuControl(maximize: boolean) {

@@ -7,7 +7,8 @@ import { EventPushService } from '../../common/tool/mqtt-event/event-push.servic
 import { DivisionTypeEnum } from '../../common/tool/enum-helper';
 import { AMapComponent } from "./amap/amap.component";
 import { Title } from '@angular/platform-browser';
-import { SessionUser } from "../../common/tool/session-user"; 
+import { SessionUser } from "../../common/tool/session-user";
+import { ConfigRequestService } from "../../data-core/repuest/config.service";
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -34,8 +35,9 @@ export class IndexComponent implements OnInit {
   @ViewChild('aMap')
   aMap: AMapComponent;
   constructor(
-     private indexService: IndexService
+    private indexService: IndexService
     , private titleService: Title
+    , private configService: ConfigRequestService
     , private eventPushService: EventPushService
     , private divisionBusinessService: DivisionBusinessService
     , private mqttSevice: MQTTEventService) {
@@ -63,26 +65,29 @@ export class IndexComponent implements OnInit {
     this.divisionBusinessService.aMap = this.aMap;
     this.moveMapSite();
   }
-  
-  
- async ngOnInit() { 
-  this.illegalDropEventCardConfig = new Array();
-  this.illegalDropEventCardConfig.push({
-    business: 'IllegalDropEvent',
-    flipTime: 60,
-    cardType: 'ImageThemeCardComponent',
-    state: false
-  });
-  
-   
+
+
+  async ngOnInit() {
+
+    this.illegalDropEventCardConfig = new Array();
+    this.illegalDropEventCardConfig.push({
+      business: 'IllegalDropEvent',
+      flipTime: 60,
+      cardType: 'ImageThemeCardComponent',
+      state: false
+    });
+
+
+    const videoConfig = await this.configService.getVideo().toPromise();
+    this.user.video = videoConfig;
     const county = await this.indexService.getCounty();
     this.mqttSevice.listenerIllegalDrop(county.Id);
-    this.eventPushService.connectionState.subscribe((b) => {   
+    this.eventPushService.connectionState.subscribe((b) => {
       this.divisionBusinessService.changeMqttState(b);
     });
     const committesIds = await this.indexService.getCommittesIds();
     this.divisionBusinessService.committesIds = committesIds;
-    this.divisionBusinessService.divisionsId=county.Id;
+    this.divisionBusinessService.divisionsId = county.Id;
     this.divisionConfig = new Array();
     this.divisionConfig.push({
       business: 'DivisionList',
@@ -131,8 +136,8 @@ export class IndexComponent implements OnInit {
     this.divisionBusinessService.bindingEvent();
   }
 
-  logOut(){ 
-    this.user.clear=null;
+  logOut() {
+    this.user.clear = null;
   }
 
 }

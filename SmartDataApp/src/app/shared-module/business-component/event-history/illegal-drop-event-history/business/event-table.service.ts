@@ -3,7 +3,7 @@ import { CustomTableEvent } from "../../../../../shared-module/custom-table/cust
 import { EventTable, IllegalDropEventsRecord } from "./event-table";
 import { SearchControl } from "../../search";
 import "../../../../../common/string/hw-string";
-import { TheDayTime, TimeInterval } from "../../../../../common/tool/tool.service";
+import { TheDayTime, TimeInterval,DateInterval } from "../../../../../common/tool/tool.service";
 import { PlayVideo } from "../../../../../aiop-system/common/play-video";
 import { Page } from "../../../../../data-core/model/page";
 import { TableAttribute, ListAttribute } from "../../../../../common/tool/table-form-helper";
@@ -24,6 +24,7 @@ import { PageListMode } from "../../../../../common/tool/enum-helper";
 import { DivisionListView } from "../../division-list-view";
 import { SideNavService } from "../../../../../common/tool/sidenav.service";
 import { GetGarbageStationCamerasParams } from "../../../../../data-core/model/waste-regulation/camera";
+import { SessionUser } from "../../../../../common/tool/session-user";
 @Injectable()
 export class EventTableService extends ListAttribute {
     dataSource_ = new Array<IllegalDropEventRecord>();
@@ -112,8 +113,9 @@ export class EventTableService extends ListAttribute {
         this.eventTable.playVideoFn = async (id) => {
             var event =  this.eventTable.findEventFn(id);
             if(event==null)event=this.allDataSource.find(x=>x.EventId==id);
-            const time = TimeInterval(event.EventTime + '', -30),
-                video = await this.requestVideoUrl(time.start, time.end, event.ResourceId);
+            const user = new SessionUser(),
+            video = await this.requestVideoUrl(DateInterval(event.EventTime+'',user.video.beforeInterval)
+            , DateInterval(event.EventTime+'',user.video.afterInterval), event.ResourceId);
             this.playVideo = new PlayVideo(video.Url, event.ResourceName);
             this.navService.playVideoBug.emit(true);
         }
