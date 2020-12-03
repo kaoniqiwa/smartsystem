@@ -22,7 +22,7 @@ export class HWPaginationDirective implements OnChanges {
                 this.options.changeFn(pageIndex);
                 this.changePageEvent.emit();
             }
-        });   
+        },this.options.toEnd);   
     }
 }
 
@@ -30,11 +30,15 @@ export class HWPaginationOptions{
     total:number = 1;
     changeFn:(pageIndex:number)=>void;
     viewWidth = 232;
-    constructor(total:number,changeFn:(pageIndex:number)=>void){
+    toEnd :boolean;
+    constructor(total:number
+        ,changeFn:(pageIndex:number)=>void
+        ,toEnd?:boolean){
         this.total=total == 0 ? 1:total;
         if(this.total==1)this.viewWidth+=30;
         else
         this.viewWidth+= total>=7 ? 7*30: total*30;
         this.changeFn = changeFn;
+        this.toEnd=toEnd;
     }
 }

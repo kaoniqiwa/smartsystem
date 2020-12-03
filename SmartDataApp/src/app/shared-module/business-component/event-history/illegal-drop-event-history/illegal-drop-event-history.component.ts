@@ -97,13 +97,13 @@ export class IllegalDropEventHistoryComponent implements OnInit {
         await this.tableService.requestData(1, (page) => {
           this.tableService.eventTable.initPagination(page, async (index) => {
             await this.tableService.requestData(index);
-          });
+          },true);
         });
       else if (this.listMode == PageListMode.list)
         await this.tableService.requestDataX(1, (page) => {
           this.tableService.eventCards.initPagination(page, async (index) => {
             await this.tableService.requestDataX(index);
-          });
+          },true);
         });
     }
     else {
@@ -112,13 +112,13 @@ export class IllegalDropEventHistoryComponent implements OnInit {
         await this.tableService.searchData(1, (page) => {
           this.tableService.eventTable.initPagination(page, async (index) => {
             await this.tableService.searchData(index);
-          });
+          },true);
         });
       else if (this.listMode == PageListMode.list)
         await this.tableService.searchDataX(1, (page) => {
           this.tableService.eventCards.initPagination(page, async (index) => {
             await this.tableService.searchDataX(index);
-          });
+          },true);
         });
     }
   }
@@ -137,13 +137,13 @@ export class IllegalDropEventHistoryComponent implements OnInit {
       await this.tableService.searchData(1, (page) => {
         this.tableService.eventTable.initPagination(page, async (index) => {
           await this.tableService.searchData(index);
-        });
+        },true);
       });
     else if (this.listMode == PageListMode.list)
       await this.tableService.searchDataX(1, (page) => {
         this.tableService.eventCards.initPagination(page, async (index) => {
           await this.tableService.searchDataX(index);
-        });
+        },true);
       });
     await this.tableService.allEventsRecordData();
   }

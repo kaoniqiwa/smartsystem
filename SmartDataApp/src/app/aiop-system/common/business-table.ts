@@ -18,14 +18,14 @@ export class BusinessTable {
         this.dataSource.footArgs.pageCount = val;
     }
 
-    initPagination(page: Page, requestData: (index: number, ...any) => void) {
+    initPagination(page: Page, requestData: (index: number, ...any) => void,toEnd?:boolean) {
         this.dataSource.paginationOptions = new ViewPagination(page.PageCount, (index) => {
 
             if (this.pageIndex != index) {
                 requestData(index);
                 this.pageIndex = index;
             }
-        });
+        },toEnd);
     }
 
     setConfirmDialog(msg: string, okFn: () => void) {

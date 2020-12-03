@@ -19,7 +19,7 @@ export class EventCards {
     }
 
     
-    initPagination(page: Page, requestData: (index: number, ...any) => void) {
+    initPagination(page: Page, requestData: (index: number, ...any) => void,toEnd?:boolean) {
         this.cardList_.totalRecordCount = page.TotalRecordCount;
         this.cardList_.pagination = new ViewPagination(page.PageCount, (index) => {
  
@@ -27,7 +27,7 @@ export class EventCards {
                 requestData(index);
                 this.pageIndex = index;
             }
-        });
+        },toEnd);
     } 
 
     set cardList(value:ImageDesc[]){

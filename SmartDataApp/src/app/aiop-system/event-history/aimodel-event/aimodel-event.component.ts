@@ -48,13 +48,13 @@ export class AIModelEventComponent implements OnInit {
       await this.tableService.requestData(1, (page) => {
         this.tableService.eventTable.initPagination(page, async (index) => {
           await this.tableService.requestData(index);
-        });
+        },true);
       });
     else if (this.listMode == PageListMode.list)
       await this.tableService.requestDataX(1, (page) => {
         this.tableService.eventCards.initPagination(page, async (index) => {
           await this.tableService.requestDataX(index);
-        });
+        },true);
       });
   }
 
