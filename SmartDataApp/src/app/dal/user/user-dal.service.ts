@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserService } from 'src/app/data-core/repuest/user.service';
+import { UserService } from '../../data-core/repuest/user.service';
 import { User } from '../../data-core/url/user-url';
 
 
