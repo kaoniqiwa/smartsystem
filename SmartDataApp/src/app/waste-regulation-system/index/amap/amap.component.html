@@ -3,24 +3,32 @@
 
 
 
-<app-map-list-panel class="map-bar list-panel"
-[dataSource]="this.amapService.childrenOfList"
-(OnVisibilityChanged)="OnPanelVisibilityChanged($event)"
-(OnItemClicked)="OnPanelItemClicked($event)"
-(OnItemDoubleClicked)="OnPanelItemDoubleClicked($event)"
-></app-map-list-panel>
+<app-map-list-panel class="map-bar list-panel" [dataSource]="this.amapService.childrenOfList"
+  (OnVisibilityChanged)="OnPanelVisibilityChanged($event)" (OnItemClicked)="OnPanelItemClicked($event)"
+  (OnItemDoubleClicked)="OnPanelItemDoubleClicked($event)"></app-map-list-panel>
 
 
 <ul class="map-bar status">
-  <li class="normal"><div></div>正常</li>
-  <li class="warm"><div></div>满溢</li>
-  <li class="error"><div></div>异常</li>
+  <li class="normal">
+    <div></div>正常
+  </li>
+  <li class="warm">
+    <div></div>满溢
+  </li>
+  <li class="error">
+    <div></div>异常
+  </li>
 </ul>
+<div class="map-bar carousel prev">
+  <a class="carousel-control-prev" #video_list_prev style="display: none;">
+    <div class="howell-icon-arrowleftbold blue-text arrow-wrap"></div>
+  </a>
+</div>
 <div class="map-bar video-list" style="display: none;">
   <ul class="ul">
     <ng-container *ngFor="let camera of selectedCameras">
       <!-- [ngClass]="{'error': camera.CameraState>0}" -->
-      <li class="video"  (click)="OnCameraClicked(camera)">    
+      <li class="video" (click)="OnCameraClicked(camera)">
 
         <div *ngIf="camera.OnlineStatus!=0" class="error">NO SIGNAL</div>
         <img [src]="camera.ImageUrl" (error)="OnImageError($event)" [title]="camera.Name" />
@@ -28,7 +36,11 @@
     </ng-container>
   </ul>
 </div>
-
+<div class="map-bar carousel next">
+  <a class="carousel-control-next" #video_list_next style="display: none;">
+    <div class="howell-icon-arrowrightbold blue-text arrow-wrap"></div>
+  </a>
+</div>
 
 <!-- <app-video style="height: 382px;width: 80%;z-index:4;" class="amap-video playing"
   [url]="'ws://192.168.21.241:8800/ws/video/howellps/live/00310101031111111000073000000000/1/1/live.H265?user=howell&password=123456'"
