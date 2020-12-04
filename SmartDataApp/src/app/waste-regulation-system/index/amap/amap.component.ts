@@ -9,7 +9,6 @@ import { GarbageStation, GetGarbageStationsParams } from '../../../data-core/mod
 import {
     CameraRequestService as GarbageStationCameraRequestService, GarbageStationRequestService
 } from '../../../data-core/repuest/garbage-station.service';
-import { Camera, CameraState } from '../../../data-core/model/aiop/camera';
 import { GetPreviewUrlParams, GetVodUrlParams } from '../../../data-core/model/aiop/video-url';
 import { PlayModeEnum, VideoWindowComponent } from '../../../video-window/video-window.component';
 
@@ -21,6 +20,7 @@ import { PagedList } from '../../../data-core/model/page';
 import { Response } from '../../../data-core/model/Response';
 import { MapListItem, MapListItemType } from './map-list-panel/map-list-item';
 import { constants } from 'os';
+import { Camera } from '../../../data-core/model/waste-regulation/camera';
 
 declare var $: any;
 
@@ -37,6 +37,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
     @ViewChild('villageTreeList')
     villageTreeList: any;
+
+    @ViewChild('video_list_prev') video_list_prev: ElementRef;
+    @ViewChild('video_list_next') video_list_next: ElementRef;
 
 
 
@@ -67,11 +70,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
         private changeDetectorRef: ChangeDetectorRef,
         private garbageService: GarbageStationRequestService,
         private divisionService: DivisionRequestService,
-        private aiopCameraService: AIOPCameraService,
         private mediaService: ResourceMediumRequestService,
         private cameraService: GarbageStationCameraRequestService,
-        private srService: ResourceSRServersRequestService,
-        private eventService: EventPushService
+        private srService: ResourceSRServersRequestService
     ) {
 
         this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc());
@@ -178,27 +179,33 @@ export class AMapComponent implements AfterViewInit, OnInit {
                     const datas = response.Data.sort((a, b) => {
                         return a.Name.length - b.Name.length || a.Name.localeCompare(b.Name);
                     });
-                    const p = datas.map(async x => {
-                        const camera_response = await this.aiopCameraService.get(x.Id).toPromise();
-                        return camera_response.Data;
-                    });
+
                     this.selectedCameras = [];
                     for (let i = 0; i < datas.length; i++) {
                         try {
-                            const camera_response = await this.aiopCameraService.get(datas[i].Id).toPromise();
-                            if (camera_response) {
-                                if (camera_response.Data.ImageUrl) {
-                                    camera_response.Data.ImageUrl = this.mediaService.getData(camera_response.Data.ImageUrl);
+                            const camera = datas[i];
+                            if (camera) {
+                                if (camera.ImageUrl) {
+                                    camera.ImageUrl = this.mediaService.getData(camera.ImageUrl);
                                 } else {
-                                    camera_response.Data.ImageUrl = 'assets/img/timg.png';
+                                    camera.ImageUrl = 'assets/img/timg.png';
                                 }
-                                this.selectedCameras.push(camera_response.Data);
+                                this.selectedCameras.push(camera);
                             }
 
                         } catch (ex) {
                             console.error(ex);
                         }
                     }
+
+                    if (this.selectedCameras.length > 5) {
+                        this.video_list_next.nativeElement.style.display = '';
+                        this.video_list_prev.nativeElement.style.display = '';
+                    } else {
+                        this.video_list_next.nativeElement.style.display = 'none';
+                        this.video_list_prev.nativeElement.style.display = 'none';
+                    }
+
 
 
                     this.changeDetectorRef.markForCheck();
@@ -218,31 +225,53 @@ export class AMapComponent implements AfterViewInit, OnInit {
                     const right = $(element).width() - table[0].offsetWidth;
                     if (table.scrollLeft() <= right && event.deltaY > 0) {
                         // 禁止事件默认行为（此处禁止鼠标滚轮行为关联到"屏幕滚动条上下移动"行为）
-                        event.preventDefault();
+                        if (event.preventDefault) {
+                            event.preventDefault();
+                        }
                         const left = (table.scrollLeft() + 50);
                         table.scrollLeft(left);
                     }
                     if (table.scrollLeft() >= 0 && event.deltaY < 0) {
                         // 禁止事件默认行为（此处禁止鼠标滚轮行为关联到"屏幕滚动条上下移动"行为）
-                        event.preventDefault();
+                        if (event.preventDefault) {
+                            event.preventDefault();
+                        }
                         const left = (table.scrollLeft() - 50);
                         table.scrollLeft(left);
                     }
                 };
             });
-
-
-
         };
+
+        this.video_list_prev.nativeElement.onclick = () => {
+            $('.ul')[0].onwheel({ deltaY: -1 });
+        };
+
+        this.video_list_next.nativeElement.onclick = () => {
+            $('.ul')[0].onwheel({ deltaY: 1 });
+        };
+
+
         this.client.Events.OnElementsClicked = function (objs) {
             const list = document.getElementsByClassName('map-bar video-list')[0];
             list['style'].display = 'none';
+
+            const prev = document.getElementsByClassName('carousel-control-prev')[0];
+            prev['style'].display = 'none';
+            const next = document.getElementsByClassName('carousel-control-next')[0];
+            next['style'].display = 'none';
         };
 
         this.client.Events.OnVillageClicked = async (village: CesiumDataController.Village) => {
             if (!village) { return; }
             const list = document.getElementsByClassName('map-bar video-list')[0];
             list['style'].display = 'none';
+
+            const prev = document.getElementsByClassName('carousel-control-prev')[0];
+            prev['style'].display = 'none';
+            const next = document.getElementsByClassName('carousel-control-next')[0];
+            next['style'].display = 'none';
+
 
             let params: GetDivisionsParams | GetGarbageStationsParams;
             let response: Response<PagedList<Division | GarbageStation>>;
@@ -287,7 +316,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     }
 
     async OnCameraClicked(camera: Camera) {
-        if (!camera || !camera.SRSId) { return; }
+        if (!camera) { return; }
         try {
 
             this.videoWindow.changePlayMode(PlayModeEnum.live, true);
@@ -302,7 +331,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             const params = new GetPreviewUrlParams();
             params.CameraId = camera.Id;
             params.Protocol = 'ws-ps';
-            params.StreamType = 1;
+            params.StreamType = this.videoWindow.stream;
             const response = await this.srService.PreviewUrls(params).toPromise();
 
             this.amapService.videoPlayerService.playCameraName = camera.Name;

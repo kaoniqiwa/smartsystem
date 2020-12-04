@@ -75,8 +75,8 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         const saveDB = async (userId) => {
             const fault = await this.userDalService.editUserConfig(userId, ConfigType.GisMapVideoLive.toString(), hd.toString());
             if (fault && fault.FaultCode === 0) {
-                new MessageBar().response_success('设置成功');
                 this._stream = hd;
+                this.hdVideo = this._stream === 1;
             }
         };
         saveDB(this.userId);
@@ -143,7 +143,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     }
 
 
-    set videoPlayArgs_(v: any) { this.videoPlayArgs = v;  this.videoPlayArgs.stream = this.stream; }
+    set videoPlayArgs_(v: any) { this.videoPlayArgs = v; this.videoPlayArgs.stream = this.stream; }
     get viewModel() { return this.viewModel_; }
 
 

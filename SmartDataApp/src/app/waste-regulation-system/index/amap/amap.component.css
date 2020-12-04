@@ -160,7 +160,7 @@
   text-align: center; /*让div内部文字居中*/			
 	margin: auto;
 	position: absolute;
-	top: 46px;
+	top: 0px;
 	left: 0;
 	right: 0;
 	bottom: 0;
@@ -176,3 +176,25 @@
 
 
   /* -----------------------------查志磊--------------------- */
+
+
+  .map-bar.carousel{
+    bottom: 95px;
+    
+    position: absolute;
+    width: 40px;
+  }
+  .map-bar.carousel .carousel-control-prev,.map-bar.carousel .carousel-control-next{
+    background-color: #000000dd;
+    width: 30px;
+    height: 30px;
+    margin-top: 26px;
+    z-index: 4;
+    border-radius: 50%;
+  }
+  .map-bar.carousel.prev{
+    right: 580px;
+  }
+  .map-bar.carousel.next{
+    right: 22px;
+  }
