@@ -255,6 +255,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
         this.client.Events.OnElementsClicked = function (objs) {
             const list = document.getElementsByClassName('map-bar video-list')[0];
             list['style'].display = 'none';
+
+            this.video_list_next.nativeElement.style.display = 'none';
+            this.video_list_prev.nativeElement.style.display = 'none';
         };
 
         this.client.Events.OnVillageClicked = async (village: CesiumDataController.Village) => {
