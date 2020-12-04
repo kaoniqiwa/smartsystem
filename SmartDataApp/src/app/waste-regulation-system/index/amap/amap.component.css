@@ -160,7 +160,7 @@
   text-align: center; /*让div内部文字居中*/			
 	margin: auto;
 	position: absolute;
-	top: 46px;
+	top: 0px;
 	left: 0;
 	right: 0;
 	bottom: 0;
@@ -179,8 +179,8 @@
 
 
   .map-bar.carousel{
-    bottom: 10px;
-    height: 86px;
+    bottom: 95px;
+    
     position: absolute;
     width: 40px;
   }
