@@ -256,14 +256,22 @@ export class AMapComponent implements AfterViewInit, OnInit {
             const list = document.getElementsByClassName('map-bar video-list')[0];
             list['style'].display = 'none';
 
-            this.video_list_next.nativeElement.style.display = 'none';
-            this.video_list_prev.nativeElement.style.display = 'none';
+            const prev = document.getElementsByClassName('carousel-control-prev')[0];
+            prev['style'].display = 'none';
+            const next = document.getElementsByClassName('carousel-control-next')[0];
+            next['style'].display = 'none';
         };
 
         this.client.Events.OnVillageClicked = async (village: CesiumDataController.Village) => {
             if (!village) { return; }
             const list = document.getElementsByClassName('map-bar video-list')[0];
             list['style'].display = 'none';
+
+            const prev = document.getElementsByClassName('carousel-control-prev')[0];
+            prev['style'].display = 'none';
+            const next = document.getElementsByClassName('carousel-control-next')[0];
+            next['style'].display = 'none';
+
 
             let params: GetDivisionsParams | GetGarbageStationsParams;
             let response: Response<PagedList<Division | GarbageStation>>;
