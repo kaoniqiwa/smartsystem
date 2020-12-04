@@ -6,7 +6,7 @@ function HWPagination(domId, total, changeFn, toEnd) {
             $("[data-list='hw']").scrollTop(0);
         }
     });
-    if (toEnd)
+    if (toEnd&&total>1)
         box.clickEndPage();
 }
 
