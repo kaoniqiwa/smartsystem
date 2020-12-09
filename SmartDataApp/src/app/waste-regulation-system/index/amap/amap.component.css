@@ -15,6 +15,12 @@
     position: relative;
     bottom: 82px;
     margin: 10px;
+
+    
+    -webkit-user-select:none;
+   -moz-user-select:none;
+   -ms-user-select:none;
+   user-select:none;
   }
   
   
@@ -159,7 +165,8 @@
   background-color: black;
   text-align: center; /*让div内部文字居中*/			
 	margin: auto;
-	position: absolute;
+  position: absolute;
+  /* top: 0px; */
 	top: 0px;
 	left: 0;
 	right: 0;

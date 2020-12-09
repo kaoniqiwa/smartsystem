@@ -91,7 +91,9 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     @Input() videoWidth = '404px';
 
     beginTime: string;
+
     endTime: string;
+
     date: string;
 
 
@@ -108,6 +110,24 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     @Output() PlaybackClickedListen: EventEmitter<{ begin: Date, end: Date }> = new EventEmitter();
     @Output() VideoPlayingEventListen: EventEmitter<boolean> = new EventEmitter();
 
+    setBeginTime(time: Date) {
+        $('#txt_begin_time').wickedpicker({
+            now: time.format('HH : mm : ss'),
+            twentyFour: true,
+            showSeconds: true
+        });
+        this.beginTime = time.format('HH : mm : ss');
+    }
+    setEndTime(time: Date) {
+        $('#txt_end_time').wickedpicker({
+            now: time.format('HH : mm : ss'),
+            twentyFour: true,
+            showSeconds: true
+        });
+        this.endTime = time.format('HH : mm : ss');
+    }
+
+
     constructor(private datePipe: DatePipe, private userDalService: UserDalService) {
         if (this.hasControl) {
             if (this.viewModel_ == null) {
@@ -116,30 +136,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         }
         this.modalWindowEmit = new EventEmitter();
         this.modalWindowEmit.emit(true);
-        const date = new Date();
-        this.endTime = this.formatTime(date);
-        date.setMinutes(date.getMinutes() - 5);
-        this.beginTime = this.formatTime(date);
-        this.date = this.formatDate(date);
 
-    }
-
-    formatDate(date: Date) {
-        let v: number | string;
-        return date.getFullYear()
-            + '-'
-            + ((v = (date.getMonth() + 1)) < 10 ? '0' + v : v)
-            + '-'
-            + ((v = date.getDate()) < 10 ? '0' + v : v);
-    }
-
-    formatTime(date: Date) {
-        let v: number | string;
-        return ((v = date.getHours()) < 10 ? '0' + v : v)
-            + ':'
-            + ((v = date.getMinutes()) < 10 ? '0' + v : v)
-            + ':'
-            + ((v = date.getSeconds()) < 10 ? '0' + v : v);
     }
 
 
@@ -275,18 +272,14 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
                 });
             });
             setTimeout(() => {
+
+
                 const date = new Date();
-                $('#txt_end_time').wickedpicker({
-                    now: date.getHours() + ':' + date.getMinutes() + ':' + '00',
-                    twentyFour: true,
-                    showSeconds: true
-                });
+                this.setEndTime(date);
                 date.setMinutes(date.getMinutes() - 5);
-                $('#txt_begin_time').wickedpicker({
-                    now: date.getHours() + ':' + date.getMinutes() + ':' + '00',
-                    twentyFour: true,
-                    showSeconds: true
-                });
+                this.setBeginTime(date);
+                this.date = date.format('yyyy-MM-dd');
+
                 // $('#txt_end_time').timepicker({
                 //     minuteStep: 1,
                 //     showSeconds: true,

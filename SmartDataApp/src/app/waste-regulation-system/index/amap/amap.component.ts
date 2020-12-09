@@ -13,13 +13,11 @@ import { GetPreviewUrlParams, GetVodUrlParams } from '../../../data-core/model/a
 import { PlayModeEnum, VideoWindowComponent } from '../../../video-window/video-window.component';
 
 import { AMapService } from './amap.service';
-import { EventPushService } from '../../../common/tool/mqtt-event/event-push.service';
 import { DivisionRequestService } from '../../../data-core/repuest/division.service';
 import { Division, GetDivisionsParams } from '../../../data-core/model/waste-regulation/division';
 import { PagedList } from '../../../data-core/model/page';
 import { Response } from '../../../data-core/model/Response';
 import { MapListItem, MapListItemType } from './map-list-panel/map-list-item';
-import { constants } from 'os';
 import { Camera } from '../../../data-core/model/waste-regulation/camera';
 
 declare var $: any;
@@ -353,9 +351,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
         const element = document.getElementById('videoPlayer');
         element.style.display = '';
         this.currentCamera = camera;
-        this.videoWindow.date = this.videoWindow.formatDate(begin);
-        this.videoWindow.beginTime = this.videoWindow.formatTime(begin);
-        this.videoWindow.endTime = this.videoWindow.formatTime(end);
+        this.videoWindow.date = begin.format('yyyy-MM-dd');
+        this.videoWindow.setBeginTime(begin);
+        this.videoWindow.setEndTime(end);
         this.PlaybackClicked({ begin: begin, end: end });
     }
 
