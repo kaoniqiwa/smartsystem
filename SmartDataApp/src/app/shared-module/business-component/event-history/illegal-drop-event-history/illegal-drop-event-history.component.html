@@ -21,8 +21,18 @@
 
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
-    <div class="second-title-bg text">
-      乱扔垃圾事件
+    <div class="fill-heght">
+      <div class="second-title-btn text selected pull-left" >
+        乱扔垃圾事件
+      </div>
+      <ng-container *ngIf="isPage">
+        <div class="second-title-btn text pull-left" (click)="changeView(1)">
+          乱扔垃圾图表
+        </div>
+        <div class="second-title-btn text pull-left " (click)="changeView(2)">
+          乱扔垃圾分析
+        </div>
+      </ng-container>
     </div>
     <div [formGroup]="tableService.search.searchform" fxLayoutAlign="center center" style="position: relative;">
       <input type="text" style="width: 300px;" [readonly]="tableService.search.other" formControlName="SearchText"
@@ -36,7 +46,12 @@
           [class.howell-icon-cam-all1]="listMode==pageListMode.list"></i>
         <i class="mdi mdi-menu-down"></i>
       </button>
-      <button class="hw-cyan-m-btn" (click)="tableService.search.other=!tableService.search.other">
+      <ng-container *ngIf="!isPage">
+        <button class="hw-blue-m-btn m-r-10 " (click)="goMoreHistroy()">
+          <i class="howell-icon-system"></i>
+        </button>
+      </ng-container>
+      <button class="hw-cyan-m-btn" (click)="moreSearch()">
         <i class="mdi mdi-filter-outline"></i>
       </button>
       <div class="list-attr-wrap collapse" [class.in]="listTypeView">

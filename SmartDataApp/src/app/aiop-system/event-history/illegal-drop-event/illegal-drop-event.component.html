@@ -1,0 +1,14 @@
+<div  class="fill-height" style="position: relative;">
+  <div class="fill-height collapse" [class.in]="viewsShow[0]">
+    <hw-illegal-drop-event-history [isPage]="true"
+    [changeViewFn]="viewShowFn"></hw-illegal-drop-event-history>
+  </div>
+  <div class="fill-height collapse" [class.in]="viewsShow[1]">
+    <hw-illegal-drop-event-analyze  [isDefaultSearch]="urlParam"
+    [changeViewFn]="viewShowFn"></hw-illegal-drop-event-analyze>
+  </div>
+  <div class="fill-height collapse" [class.in]="viewsShow[2]">
+    <hw-illegal-drop-event-chart  [isDefaultSearch]="urlParam"
+    [changeViewFn]="viewShowFn"></hw-illegal-drop-event-chart>
+  </div>
+</div> 

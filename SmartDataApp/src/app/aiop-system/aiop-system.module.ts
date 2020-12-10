@@ -39,6 +39,7 @@ import { IllegalDropEventAnalyzeComponent } from './event-history/illegal-drop-e
 import { ConfirmComponent } from './garbage-station/map-deploy/confirm/confirm.component';
 import { IllegalDropEventChartComponent } from './event-history/illegal-drop-event-chart/illegal-drop-event-chart.component';
 import { TreeDropListComponent } from './event-history/illegal-drop-event-analyze/tree-drop-list/tree-drop-list.component';
+import { IllegalDropEventComponent } from './event-history/illegal-drop-event/illegal-drop-event.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -59,7 +60,7 @@ import { TreeDropListComponent } from './event-history/illegal-drop-event-analyz
   , DeployCameraComponent, TrashIconsListComponent, 
   ConfirmComponent, MapDeployComponent,
   CameraRegionMoveComponent, GarbageStationMgrComponent, StationChartComponent, DivisionStationTreeComponent, 
-  RegionCameraTreeComponent, GarbageStationComponent, GarbageStationFormComponent, FullTrashCanComponent, IllegalDropEventChartComponent, TreeDropListComponent ],
+  RegionCameraTreeComponent, GarbageStationComponent, GarbageStationFormComponent, FullTrashCanComponent, IllegalDropEventChartComponent, TreeDropListComponent, IllegalDropEventComponent ],
   exports:[
   ]
 })

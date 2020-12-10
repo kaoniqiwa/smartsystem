@@ -29,10 +29,18 @@ export class TreeDropListComponent implements OnInit {
     this.selectedTexts = new Array();
     for (let key of this.garbageStationTree.flatNodeMap.keys()) {
       if (key.checked && key.level != 0&& this.stationTreeService.isLastNode(key.id)) {     
-        this.selectedTexts.push({
-          id: key.id,
-          text: key.name
-        });
+
+        if(this.onlyDivisionNode&&key.level==2)
+          this.selectedTexts.push({
+            id: key.id,
+            text: key.name
+          });        
+        else if(!this.onlyDivisionNode&&key.level==3)
+          this.selectedTexts.push({
+            id: key.id,
+            text: key.name
+          });
+        
       }
     }
   }
@@ -84,6 +92,11 @@ export class TreeDropListComponent implements OnInit {
     this.reInit();
   }
 
+  set defaultSearch(id:string){
+    const node = this.findNode(id);
+    this.garbageStationTree.itemClick(node);
+  }
+
   async reInit() {
     if (this.dataService.divisions.length==0)
       this.dataService.divisions = await this.dataService.requestDivision();
@@ -103,5 +116,7 @@ export class TreeDropListComponent implements OnInit {
     }
     this.stationTreeService.loadStationTree();
     this.garbageStationTree.dataSource.data = this.stationTreeService.treeNode; 
+    for (let key of this.garbageStationTree.flatNodeMap.keys())
+      key.checked=false;
   }
 }

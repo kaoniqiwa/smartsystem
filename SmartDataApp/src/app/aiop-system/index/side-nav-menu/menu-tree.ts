@@ -92,16 +92,8 @@ export class MenuTreeMap{
         item = new MenuTree('howell-icon-device2', '事件');
         item.an = true;
         item.nodes.push({
-            text: '乱扔垃圾事件',
+            text: '乱扔垃圾',
             url: '/aiop/event-history/illegal-drop-event'
-        });
-        item.nodes.push({
-            text: '乱扔垃圾图表',
-            url: '/aiop/event-history/illegal-drop-event-chart'
-        });
-        item.nodes.push({
-            text: '乱扔垃圾分析',
-            url: '/aiop/event-history/illegal-drop-event-analyze'
         });
         menuTree.push(item); 
         this.map.set(SystemModeEnum.illegalDropEvent, menuTree);

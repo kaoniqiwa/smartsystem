@@ -1,7 +1,15 @@
 <div style="height: calc(100% - 64px);position: relative;">
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
-    <div class="second-title-bg text">
-      乱扔垃圾分析
+    <div>
+      <div class="second-title-btn text pull-left" (click)="changeView(0)">
+        乱扔垃圾事件
+      </div>
+      <div class="second-title-btn text pull-left  selected" >
+        乱扔垃圾图表
+      </div>
+      <div class="second-title-btn text pull-left " (click)="changeView(2)">
+        乱扔垃圾分析
+      </div>
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch" [formGroup]="businessService.search.searchform"

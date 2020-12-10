@@ -17,6 +17,7 @@ import { IllegalDropEventHistoryComponent, ContentModeEnum } from "../shared-mod
 import { AIModelEventComponent } from './event-history/aimodel-event/aimodel-event.component';
 import { IllegalDropEventAnalyzeComponent } from './event-history/illegal-drop-event-analyze/illegal-drop-event-analyze.component';
 import { IllegalDropEventChartComponent } from './event-history/illegal-drop-event-chart/illegal-drop-event-chart.component';
+import { IllegalDropEventComponent } from "./event-history/illegal-drop-event/illegal-drop-event.component";
 const routes: Routes = [
 
   {
@@ -57,11 +58,15 @@ const routes: Routes = [
             redirectTo: 'illegal-drop-event',
             pathMatch: 'full'
           },
+
           { path: 'ai-model-event', component: AIModelEventComponent },
+          // {
+          //   path: 'illegal-drop-event', component: IllegalDropEventHistoryComponent, data: {
+          //     val: ContentModeEnum.Page
+          //   }
+          // },
           {
-            path: 'illegal-drop-event', component: IllegalDropEventHistoryComponent, data: {
-              val: ContentModeEnum.Page
-            }
+            path: 'illegal-drop-event', component: IllegalDropEventComponent
           },
           {
             path:'illegal-drop-event-analyze',component:IllegalDropEventAnalyzeComponent

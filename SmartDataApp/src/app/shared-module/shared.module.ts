@@ -51,6 +51,7 @@ import { FullGarbageStationComponent } from './business-component/full-garbage-s
 import { GarbageStationComponent } from './business-component/garbage-station/garbage-station.component';
 import { GarbageStationCamerasComponent } from './business-component/garbage-station-cameras/garbage-station-cameras.component';
 import { UserToolComponent } from "./business-component/user-tool/user-tool.component";
+import { GalleryRollPageComponent } from './card-component/gallery-roll-page/gallery-roll-page.component';
 @NgModule({
   imports: [
     CommonModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -72,7 +73,7 @@ import { UserToolComponent } from "./business-component/user-tool/user-tool.comp
 ,LineEChartsCardComponent, SwitchComponent  ,TimeToolComponent
 ,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventCardListComponent
 ,UserToolComponent
-, LevelListPanelComponent, MixedIntoEventHistoryComponent, FullGarbageStationComponent, GarbageStationComponent, GarbageStationCamerasComponent
+, LevelListPanelComponent, MixedIntoEventHistoryComponent, FullGarbageStationComponent, GarbageStationComponent, GarbageStationCamerasComponent, GalleryRollPageComponent
 ],
   exports: [
     MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -86,6 +87,7 @@ import { UserToolComponent } from "./business-component/user-tool/user-tool.comp
     ,InputTagSelectComponent,CustomTreeComponent,PicturesDropListComponent,CardListPanelComponent
     ,VideoSimpleCardComponent,StateScaleCardComponent,CardComponent,BusinessCardGridComponent
     ,HeaderSquareListComponent,ImageThemeCardComponent,HintCardComponent,OrderTableCardComponent
+    ,GalleryRollPageComponent
     ,LineEChartsCardComponent,SwitchComponent,TimeToolComponent
     ,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventCardListComponent
     ,MixedIntoEventHistoryComponent,FullGarbageStationComponent,GarbageStationComponent,GarbageStationCamerasComponent
@@ -94,7 +96,8 @@ import { UserToolComponent } from "./business-component/user-tool/user-tool.comp
   providers: [DatePipe,
    ],
    entryComponents: [CardComponent,ImageThemeCardComponent,StateScaleCardComponent,OrderTableCardComponent,
-    BusinessCardGridComponent,HeaderSquareListComponent,HintCardComponent,LineEChartsCardComponent]
+    BusinessCardGridComponent,HeaderSquareListComponent,HintCardComponent,LineEChartsCardComponent
+  ,GalleryRollPageComponent]
   ,
 })
 export class SharedModule { }

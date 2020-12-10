@@ -3,7 +3,11 @@ import { CustomTableComponent } from '../../../../shared-module/custom-table/cus
 import { EventTableService, FillMode } from "./business/event-table.service";
 import { PageListMode } from "../../../../common/tool/enum-helper";
 import { ImageDesc } from '../../../image-desc-card/image-desc';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router'; 
+import { SideNavService } from "../../../../common/tool/sidenav.service";
+import { DivisionBusinessService } from "../../../../waste-regulation-system/index/business-card-grid/division-business.service";
+import { SystemModeEnum } from '../../../../common/tool/table-form-helper';
+import {  LevelListPanelComponent } from "../level-list-panel/level-list-panel.component";
 @Component({
   selector: 'hw-illegal-drop-event-history',
   templateUrl: './illegal-drop-event-history.component.html',
@@ -18,9 +22,16 @@ export class IllegalDropEventHistoryComponent implements OnInit {
   tableSearchHeight = 'calc(100% - 40px)';
   @ViewChild('table')
   table: CustomTableComponent;
+  @ViewChild(LevelListPanelComponent)
+  levelListPanel:LevelListPanelComponent;
 
   @Input() fillMode: FillMode;
-
+  
+  /**
+   * 用于页面 判断
+   */
+  @Input() isPage :boolean;
+  @Input() changeViewFn:(index:number)=>void;
   startDate = (b: Date) => {
     this.tableService.search.formBeginDate = b;
   }
@@ -30,9 +41,7 @@ export class IllegalDropEventHistoryComponent implements OnInit {
   }
   galleryTargetFn = () => {
     this.tableService.galleryTargetView.galleryTarget = null;
-  }
-
- 
+  } 
 
   changeDivisionFn = (divisionId: string) => {
     if(divisionId){
@@ -41,7 +50,8 @@ export class IllegalDropEventHistoryComponent implements OnInit {
       garbageStations.map(x => {
         this.tableService.search.toResourcesDropList =
           this.tableService.resources.filter(r => r.GarbageStationId == x.Id);
-      })
+      });
+      this.tableService.search.divisionId=divisionId;
     }
     else{
       this.tableService.search.toResourcesDropList = this.tableService.resources;
@@ -59,27 +69,29 @@ export class IllegalDropEventHistoryComponent implements OnInit {
     this.tableService.playVideo = null;
   }
  
-  constructor(private tableService: EventTableService    , private route: ActivatedRoute) {
-    route.data.subscribe(async (data) => {
-      /**
-       * 该组件用于页面
-       * 或弹出框
-       */
-        if (data.val) {
-           this.tableMinusHeight= 'calc(100% - 20px)';
-           this.tableSearchHeight = 'calc(100% - 60px)';
-           this.fillMode=new FillMode();
-           this.fillMode.tablePageSize=9;
-           this.fillMode.cardPageSize=10;
-        }
-      });
-    
+  constructor(private tableService: EventTableService
+   , private navService: SideNavService
+    ,private divisionBusinessService:DivisionBusinessService
+    , private router: Router) { 
+  
   }
 
-  async ngOnInit() {
+  async ngOnInit() {  
+    this.tableService.search.divisionId = this.fillMode ? this.fillMode.divisionId : '';
     this.listMode = this.fillMode ? this.fillMode.pageListMode : PageListMode.table;
     this.tableService.fillMode = this.fillMode;
-    this.tableService.search.divisionId = this.fillMode ? this.fillMode.divisionId : '';
+    if(this.isPage){ 
+      this.tableMinusHeight= 'calc(100% - 20px)';
+      this.tableSearchHeight = 'calc(100% - 60px)';
+      this.tableService.fillMode=new FillMode(); 
+      this.tableService.fillMode.divisionId =   this.divisionBusinessService.divisionsId;      
+
+      if(this.divisionBusinessService.divisionsId){
+        this.tableService.search.divisionId=this.divisionBusinessService.divisionsId;
+      }
+    }
+
+
     this.initTableList();
     // this.tableService.eventTable.tableSelectIds = this.tableSelectIds;
     this.tableService.divisions = await this.tableService.requestDivisions();
@@ -91,19 +103,39 @@ export class IllegalDropEventHistoryComponent implements OnInit {
     await this.tableService.allEventsRecordData();
   }
 
+
+  moreSearch(){
+    this.tableService.search.other=!this.tableService.search.other;
+    setTimeout(() => {
+      this.levelListPanel.defaultItem(this.divisionBusinessService.divisionsId);
+    
+    },500);
+
+  }
+
+  goMoreHistroy(){
+    this.navService.systemMode = SystemModeEnum.illegalDropEvent;
+    this.router.navigateByUrl('aiop/event-history/illegal-drop-event?p=1');
+    
+  }
+
+  changeView(tagIndex:number){
+    this.changeViewFn(tagIndex);
+  }
+
   async initTableList() {
     if (this.tableService.search.state == false) {
       if (this.listMode == PageListMode.table)
         await this.tableService.requestData(1, (page) => {
           this.tableService.eventTable.initPagination(page, async (index) => {
             await this.tableService.requestData(index);
-          },true);
+          },!this.isPage);
         });
       else if (this.listMode == PageListMode.list)
         await this.tableService.requestDataX(1, (page) => {
           this.tableService.eventCards.initPagination(page, async (index) => {
             await this.tableService.requestDataX(index);
-          },true);
+          },!this.isPage);
         });
     }
     else {
@@ -112,13 +144,13 @@ export class IllegalDropEventHistoryComponent implements OnInit {
         await this.tableService.searchData(1, (page) => {
           this.tableService.eventTable.initPagination(page, async (index) => {
             await this.tableService.searchData(index);
-          },true);
+          },!this.isPage);
         });
       else if (this.listMode == PageListMode.list)
         await this.tableService.searchDataX(1, (page) => {
           this.tableService.eventCards.initPagination(page, async (index) => {
             await this.tableService.searchDataX(index);
-          },true);
+          },!this.isPage);
         });
     }
   }
@@ -137,13 +169,13 @@ export class IllegalDropEventHistoryComponent implements OnInit {
       await this.tableService.searchData(1, (page) => {
         this.tableService.eventTable.initPagination(page, async (index) => {
           await this.tableService.searchData(index);
-        },true);
+        },!this.isPage);
       });
     else if (this.listMode == PageListMode.list)
       await this.tableService.searchDataX(1, (page) => {
         this.tableService.eventCards.initPagination(page, async (index) => {
           await this.tableService.searchDataX(index);
-        },true);
+        },!this.isPage);
       });
     await this.tableService.allEventsRecordData();
   }

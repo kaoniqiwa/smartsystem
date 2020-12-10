@@ -9,7 +9,7 @@ import { domClickFn } from '../../../../common/tool/jquery-help/jquery-help';
 export class LevelListPanelComponent implements OnInit {
 
   @Input() model: LevelListPanel;
-  @Input() selectedFn:(id:string)=>void;
+  @Input() selectedFn:(id:string)=>void; 
   private showBody = false;
   private nodes = new Array<ListNode>();
   private prevItem = false;
@@ -20,7 +20,7 @@ export class LevelListPanelComponent implements OnInit {
     if (this.model && this.model.listNodes) {
       const n=new ListNode();
       n.id='';
-      n.name='全部';
+      n.name='请选择';
       n.parentId='';
       this.nodes = [n,this.model.listNodes[0]];
       this.selectedItem=n.name;
@@ -32,16 +32,18 @@ export class LevelListPanelComponent implements OnInit {
   }
 
   itemClick(val: ListNode) {
-   // if(val.id){
       this.selectedItem=val.name;
       if(this.selectedFn)this.selectedFn(val.id);
       const filter = this.model.listNodes.filter(x => x.parentId == val.id);
       if (filter.length) {
         this.nodes = filter;
         this.prevItem = true;
-      }
-    //}
-   
+      }   
+  }
+
+  defaultItem(id:string){
+    const node = this.model.listNodes.find(x=>x.id==id);
+    this.itemClick(node);
   }
 
   prevItemClick() {
