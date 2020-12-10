@@ -93,7 +93,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     getSrc() {
         const host = document.location.hostname;
         const port = document.location.port;
-        return 'http://' + host + ':' + port + '/amap/map_ts.html?v=20200925';
+        return 'http://' + host + ':' + port + '/amap/map_ts.html?v=' + new Date().format('yyyyMMddHHmmss');
     }
 
     async refresh() {
