@@ -8,24 +8,26 @@ import { IllegalDropEventInfos } from "../business/illegal-drop-event/data";
 import { Divisions } from "../business/division/data";
 import { IllegalDropOrderInfo } from "../business/illegal-drop-order/data";
 import { Specification } from "../business/division-garbage-specification/data";
+import { GarbageStationInspection } from "../business/inspection/data";
 import { LineECharts } from '../../../../shared-module/card-component/line-echarts-card/line-echarts';
 import { StateScale, Arc } from '../../../../shared-module/card-component/state-scale-card/state-scale';
 import { ImageTheme } from "../../../../shared-module/card-component/image-theme-card/image-theme";
-import { Hint,HintTag } from "../../../../shared-module/card-component/hint-card/hint";
+import { Hint, HintTag } from "../../../../shared-module/card-component/hint-card/hint";
 import { OrderTable } from "../../../../shared-module/card-component/order-table-card/order-table";
 import { HeaderSquareList, SquareItem } from "../../../../shared-module/header-square-list/header-square-list";
+import { GalleryRollPage, Gallery } from "../../../../shared-module/card-component/gallery-roll-page/gallery-roll-page";
 import { ViewsModel } from '../../../../common/abstract/base-view';
 import { IConverter } from "../../../../common/interface/IConverter";
 import { Injector, Injectable } from '@angular/core';
 import { LineOption } from '../../../../common/directive/echarts/echart';
-import { Percentage, TimeInterval ,DateInterval} from '../../../../common/tool/tool.service'
+import { Percentage, TimeInterval, DateInterval } from '../../../../common/tool/tool.service'
 import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
 import { EventNumber } from '../../../../data-core/model/waste-regulation/event-number';
 import { ColorEnum } from '../../../../shared-module/card-component/card-content-factory';
 import { CameraStateTableEnum } from "../../../../shared-module/business-component/garbage-station-cameras/business/camera-table.service";
 import { isBoolean } from 'util';
-import {SessionUser  } from "../../../../common/tool/session-user";
+import { SessionUser } from "../../../../common/tool/session-user"; 
 export class IllegalDropHistoryCardConverter implements IConverter {
 
     Convert<IllegalDropEvent, ViewsModel>(input: IllegalDropEvent, output: ViewsModel): ViewsModel;
@@ -108,19 +110,19 @@ export class DevStatusCardConverter implements IConverter {
                 label: '全部设备数量',
                 number: input.cameraNumber + '',
                 color: ColorEnum["sky-blue-text2"],
-                tag:CameraStateTableEnum.none
+                tag: CameraStateTableEnum.none
             });
             output.views[0].detail.push({
                 label: '在线设备数量',
                 number: (input.cameraNumber - input.offlineCameraNumber) + '',
                 color: ColorEnum["green-text"],
-                tag :CameraStateTableEnum.online
+                tag: CameraStateTableEnum.online
             });
             output.views[0].detail.push({
                 label: '离线设备数量',
                 number: input.offlineCameraNumber + '',
                 color: ColorEnum["powder-red-text"],
-                tag:CameraStateTableEnum.offline
+                tag: CameraStateTableEnum.offline
             });
         }
         return output;
@@ -173,12 +175,12 @@ export class IllegalDropEventConverter implements IConverter {
                 output.views[i].imgDesc1IconColor = ColorEnum["green-text"];
                 output.views[i].titleColor = ColorEnum["red-text"];
                 output.views[i].subTitle = input.items[i].EventTime;
-                output.views[i].tag = { 
-                   timeInterval:{
-                    start: DateInterval(input.items[i].EventTimeAll, user.video.beforeInterval),
-                    end: DateInterval(input.items[i].EventTimeAll,user.video.afterInterval)
-                   } ,
-                   cameraId: input.items[i].ResourceId
+                output.views[i].tag = {
+                    timeInterval: {
+                        start: DateInterval(input.items[i].EventTimeAll, user.video.beforeInterval),
+                        end: DateInterval(input.items[i].EventTimeAll, user.video.afterInterval)
+                    },
+                    cameraId: input.items[i].ResourceId
                 }
 
                 // { stationId: string, cameraId: string }
@@ -245,7 +247,7 @@ export class DivisionGarbageSpecificationConverter implements IConverter {
             hint.title = '垃圾投放点数量';
             hint.subTitleColor = ColorEnum["sky-blue-text2"];
             hint.subTitle = input.garbagePushNumber + '';
-            hint.tag=HintTag.GarbageStation;
+            hint.tag = HintTag.GarbageStation;
             hints.push(hint);
             hint = new Hint();
             hint.title = '垃圾桶数量';
@@ -254,20 +256,20 @@ export class DivisionGarbageSpecificationConverter implements IConverter {
             hints.push(hint);
             hint = new Hint();
             hint.title = '已满溢投放点数量';
-            hint.subTitleColor =ColorEnum["orange-text"];
+            hint.subTitleColor = ColorEnum["orange-text"];
             hint.subTitle = input.fullPushNumber + '';
-            hint.tag=HintTag.FullStation;
+            hint.tag = HintTag.FullStation;
             hints.push(hint);
             hint = new Hint();
             hint.title = '乱丢垃圾';
             hint.subTitleColor = ColorEnum["powder-red-text"];
             hint.subTitle = input.illegalDropNumber + '';
-            hint.tag=HintTag.IllegalDrop;
+            hint.tag = HintTag.IllegalDrop;
             hints.push(hint);
             hint = new Hint();
             hint.title = '混合投放垃圾';
-            hint.tag=HintTag.MixedInto;
-            hint.subTitleColor =  ColorEnum["light-purple-text"];
+            hint.tag = HintTag.MixedInto;
+            hint.subTitleColor = ColorEnum["light-purple-text"];
             hint.subTitle = input.hybridPushNumber + '';
             hints.push(hint);
             output.views = [hints];
@@ -275,6 +277,66 @@ export class DivisionGarbageSpecificationConverter implements IConverter {
         return output;
     }
 }
+
+export class GarbageStationInspectionCardConverter implements IConverter {
+
+    Convert<GarbageStationInspection, ViewsModel>(input: GarbageStationInspection, output: ViewsModel): ViewsModel;
+    Convert(input: GarbageStationInspection, output: ViewsModel<GalleryRollPage>): ViewsModel<GalleryRollPage> {
+        output.views = [];
+        output.pageSize = 1;
+        output.pageIndex = 1;
+        if (input instanceof GarbageStationInspection) {
+            const model = new GalleryRollPage()
+            ,pic = new MediumPicture()
+            ,user = new SessionUser();
+            model.items = new Map();
+            model.leftBottom = {
+                color:ColorEnum["red-text"]
+                ,text:0
+            }
+            input.todayEventNumbers.map(x=>{
+                model.leftBottom.text+=x.DayNumber;
+            });
+            for (let i = 0; i < input.garbageStations.length; i++) {
+              
+                const gs = input.garbageStations[i],
+                gallery=new Gallery(),state = ()=>{
+                    if(gs.StationState==0)return ColorEnum["green-text"];
+                    else if(gs.StationState==null|| gs.StationState == 2)return ColorEnum["red-text"];
+                    else if(gs.StationState==1)return ColorEnum["orange-text"];
+                }; 
+                // gallery.rightBottom = {
+                //     text1:i+1,
+                //     text2:input.garbageStations.length
+                // }
+                gallery.title= {
+                    color:  state(),
+                    text:gs.Name,
+                    id:gs.Id
+                };
+                gallery.imgDesc=new Array();
+                gs.Cameras.map(x=>{
+                    gallery.imgDesc.push({
+                        src:pic.getJPG(x.ImageUrl),
+                        tag: {
+                            start: DateInterval(x.ImageTime+'', user.video.beforeInterval),
+                            end: DateInterval(x.ImageTime+'', user.video.afterInterval),                            
+                        id:x.Id
+                        },
+                        desc:x.Name,
+                        state:x.OnlineStatus !=0
+                    });
+                });
+               
+                model.items.set(i+1,gallery);
+            }
+            output.views = [model];
+        }
+
+        return output;
+    }
+}
+
 
 
 @Injectable(
@@ -289,7 +351,8 @@ export class ConverterFactory {
             { provide: DivisionListConverter, useValue: new DivisionListConverter() },
             { provide: IllegalDropEventConverter, useValue: new IllegalDropEventConverter() },
             { provide: DivisionGarbageSpecificationConverter, useValue: new DivisionGarbageSpecificationConverter() },
-            { provide: IllegalDropOrderConverter, useValue: new IllegalDropOrderConverter() }
+            { provide: IllegalDropOrderConverter, useValue: new IllegalDropOrderConverter() },
+            { provide: GarbageStationInspectionCardConverter, useValue: new GarbageStationInspectionCardConverter() },
         ])
     }
 
@@ -307,5 +370,6 @@ export const CardBusinessCoverterEnum = {
     "DivisionList": DivisionListConverter,
     "IllegalDropEvent": IllegalDropEventConverter,
     "DivisionGarbageSpecification": DivisionGarbageSpecificationConverter,
-    "IllegalDropOrder": IllegalDropOrderConverter
+    "IllegalDropOrder": IllegalDropOrderConverter,
+    "GarbageStationInspection": GarbageStationInspectionCardConverter
 } 

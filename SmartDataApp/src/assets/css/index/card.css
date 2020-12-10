@@ -107,12 +107,19 @@ padding-right: 5px;
   position: absolute;
   bottom: 0;
   padding: 6px 10px;
-  width: 100%;
+  width: 98%;
   background-color: rgb(0,0,0,.5); 
   height: 34px;
 }
 
-
+.gallery-wrapper .desc-label-wrapper{
+  position: absolute;
+  bottom: 0px;
+  padding: 6px 10px;
+  width: 100%;
+  background-color: rgb(0,0,0,.5); 
+  height: 34px;
+}
 
 .small-card-wrapper.title-number-suffix .left-angle{
     left: 0px;
@@ -268,7 +275,8 @@ padding-right: 5px;
   linear-gradient(45deg, transparent 0px,#235fa4 0) bottom left;
   background-size: 50% 50%;
   background-repeat: no-repeat;
-}
+} 
+
 
  .water-wraper {
     height: 100px;
@@ -419,6 +427,14 @@ padding-right: 5px;
   }
   .subTitle-icon.selected{
     color: #5e6ebf;
+  }
+
+  .gallery-wrapper{
+    background-image: url('/assets/img/gallery-bg.png');
+    width: 930px;
+    height: 405px;
+    position: relative;
+    background-size: 930px 100%;
   }
 /* 
   .hint-label::before{

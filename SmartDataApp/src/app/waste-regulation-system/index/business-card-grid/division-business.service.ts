@@ -9,6 +9,7 @@ import { AMapComponent } from "../amap/amap.component";
 import { CameraRequestService } from "../../../data-core/repuest/resources.service";
 import { StateScaleCardComponent } from "../../../shared-module/card-component/state-scale-card/state-scale-card.component";
 import { ImageThemeCardComponent } from "../../../shared-module/card-component/image-theme-card/image-theme-card.component";
+import { GalleryRollPageComponent } from "../../../shared-module/card-component/gallery-roll-page/gallery-roll-page.component";
 import { HintCardComponent } from "../../../shared-module/card-component/hint-card/hint-card.component";
 import { HintTag } from "../../../shared-module/card-component/hint-card/hint";
 import { FillMode } from "../../../shared-module/business-component/event-history/illegal-drop-event-history/business/event-table.service";
@@ -29,6 +30,7 @@ export class DivisionBusinessService {
     stationListView = false;
     eventHistoryView = false;
     stationCameraView = false;
+    inspectionView = false;
     stationCameraStateTable:CameraStateTableEnum;
     divisionsId ='';
     constructor(private cameraService: CameraRequestService) {
@@ -98,6 +100,14 @@ export class DivisionBusinessService {
                         this.eventHistoryView = true;
     
                     }
+                }
+                if(x.list[0].view instanceof GalleryRollPageComponent){
+                    x.list[0].view.btnControl = async (val:  { start: Date, end: Date , id: string }) => { 
+                        if(val == null)this.inspectionView=false;
+                        else{const respone = await this.cameraService.get(val.id).toPromise();    
+                            if(this.aMap)this.aMap.Playback(respone.Data as any, val.start, val.end);
+                        } 
+                    } 
                 }
             }
         }, 1000);

@@ -79,8 +79,8 @@ h2
     transform: translate(-50%,-50%);
 }
 
-.close-winow:hover{
-    color:  #fd2f2d;
+.close-winow:hover,.close-winow:hover i{
+    color:  #fd2f2d !important;
 }
 
 .middle-round-btn{
@@ -261,7 +261,7 @@ h2
     height: 58px;  
     background-image:url('/assets/img/second-title.png')
 }
-.second-title-bg.text{
+.second-title-bg.text,.second-title-btn.text{
     font-size: 25px;
     justify-content: center;
     color: white;
@@ -271,6 +271,20 @@ h2
     left: -4px;
     margin-bottom: 14px;
 }
+
+.second-title-btn{
+    width: 236px;
+    cursor: pointer;
+    height: 58px;  
+    background-image:url('/assets/img/second-title2.png');
+}
+
+.second-title-btn:hover{ 
+    background-image:url('/assets/img/second-title3.png')
+}
+.second-title-btn.selected{
+    background-image:url('/assets/img/second-title.png')
+} 
 
 
 select.custom.form-control:not([size]):not([multiple]) {

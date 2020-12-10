@@ -22,11 +22,12 @@ export class IndexComponent implements OnInit {
   illegalDropTopCardConfig;
   illegalDropHistoryCardConfig;
   divisionConfig;
+  inspectionConfig;
   bar = new BarOption();
   line = new LineOption();
   pie = new PieOption();
   cardSize: { width: number, height: number };
-  moveMapSite: () => void;
+  moveMapSite: () => void; 
   user = new SessionUser();
   jw6 = [
     '新虹', '广中', '黄山', '花园城', '八字桥',
@@ -128,6 +129,14 @@ export class IndexComponent implements OnInit {
       divisionsId: county.Id,
       flipTime: 60 * 3,
       dataTime: 60
+    });
+    this.inspectionConfig = new Array();
+    this.inspectionConfig.push({
+      business: 'GarbageStationInspection',
+      cardType: 'GalleryRollPageComponent',
+      divisionsId: county.Id, 
+      dataTime: 60*10,
+      border: false
     });
     this.moveMapSite = () => {
       this.divisionBusinessService.mapClient.Village.Select(county.Id);

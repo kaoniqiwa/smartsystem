@@ -5,6 +5,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { BusinessParameter } from '../../../../common/interface/IBusiness';
 import { IllegalDropHistory } from '../business/illegal-drop-history/illegal-drop-history';
+import { GarbageInspection } from '../business/inspection/inspection';
 import { DeviceStatusStatistic } from '../business/dev/device-status-statistic';
 import { DivisionGarbageSpecification } from "../business/division-garbage-specification/division-garbage-specification";
 import { IllegalDropOrder } from "../business/illegal-drop-order/illegal-drop-order";
@@ -34,7 +35,8 @@ export class StatisticBusinessInjector {
             {provide:DivisionList,useValue:new DivisionList(this.statisticalDataBufferService), deps: [] },
             {provide:IllegalDropEvent,useValue:new IllegalDropEvent(this.eventPushService), deps: [] },
             {provide:DivisionGarbageSpecification,useValue:new DivisionGarbageSpecification(this.statisticalDataBufferService), deps: []},
-            {provide:IllegalDropOrder,useValue:new IllegalDropOrder(this.statisticalDataBufferService), deps: []}
+            {provide:IllegalDropOrder,useValue:new IllegalDropOrder(this.statisticalDataBufferService), deps: []},
+            {provide:GarbageInspection,useValue:new GarbageInspection(this.statisticalDataBufferService), deps: []}
         ]);
     }
 
@@ -65,5 +67,6 @@ export const CardBusinessEnum = {
     "DivisionList":DivisionList,
     "IllegalDropEvent":IllegalDropEvent,
     "DivisionGarbageSpecification":DivisionGarbageSpecification,
-    "IllegalDropOrder":IllegalDropOrder
+    "IllegalDropOrder":IllegalDropOrder,
+    "GarbageStationInspection":GarbageInspection
 }

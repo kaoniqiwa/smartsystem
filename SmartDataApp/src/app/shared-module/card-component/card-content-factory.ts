@@ -12,7 +12,7 @@ import { HintCardComponent } from "./hint-card/hint-card.component";
 import { OrderTableCardComponent } from "./order-table-card/order-table-card.component";
 import { CardComponent } from './card.component'; 
 import { isString } from 'util'; 
-
+import {GalleryRollPageComponent  } from "./gallery-roll-page/gallery-roll-page.component";
 @Injectable(
     {
         providedIn: 'root'
@@ -68,5 +68,6 @@ export const CardComponentEnum = {
     "HeaderSquareListComponent":HeaderSquareListComponent,
     "ImageThemeCardComponent":ImageThemeCardComponent,
     "HintCardComponent":HintCardComponent,
-    "OrderTableCardComponent":OrderTableCardComponent
+    "OrderTableCardComponent":OrderTableCardComponent,
+    "GalleryRollPageComponent":GalleryRollPageComponent
   }

@@ -18,7 +18,7 @@ import { GarbageStation, GetGarbageStationsParams } from '../../../../data-core/
 })
 export class StatisticalDataBufferService extends ListAttribute implements IBusinessService {
 
-    cache = new AppCaChe(60 * 1000);
+    cache = new AppCaChe(58 * 1000);
 
     readonly eventNumbersHistory = 'EventNumbersHistory_';
     readonly statisticNumber = 'StatisticNumber_';
@@ -96,17 +96,7 @@ export class StatisticalDataBufferService extends ListAttribute implements IBusi
             param.PageSize = this.maxSize;
             const response = await this.divisionService.list(param).toPromise();
             result = response.Data.Data;
-            this.cache.set(this.division, result);
-            // var a = '';
-            // for (let f of result) {
-            //     if (f.Name == '广中新村第三居委会') {
-            //         alert(f.Id)
-            //     }
-            //     a += `"${f.Id}",`;
-            //     console.log(a);
-            // }
-
-
+            this.cache.set(this.division, result); 
         }
         return result;
     }

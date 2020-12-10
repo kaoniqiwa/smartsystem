@@ -125,6 +125,17 @@
           </ng-container>
         </div>
         <app-amap #aMap (mapLoadedEvent)="mapLoaded($event)"></app-amap>
+        <a href="javascript:" [class.in]="!divisionBusinessService.inspectionView"  
+        (click)="divisionBusinessService.inspectionView=!divisionBusinessService.inspectionView" 
+        class="inspection-btn-wrapper ling-btn-border collapse">
+          <h5 class="content text-center m-b-0">开始巡检</h5> 
+        </a>
+        <div class="fill-width fill-height collapse inspection-view-wrapper" [class.in]="divisionBusinessService.inspectionView">
+          <ng-container *ngIf="inspectionConfig">
+            <business-card-grid [cardConfig]="inspectionConfig">
+            </business-card-grid>
+          </ng-container>
+        </div> 
         <div class="card-angle top-left"></div>
         <div class="card-angle top-right"></div>
         <div class="card-angle bottom-left"></div>
