@@ -124,6 +124,14 @@ export class AMapComponent implements AfterViewInit, OnInit {
         this.client.Point.Status(arrayStatus);
     }
 
+    async getBaseDivision() {
+        const params = new GetDivisionsParams();
+        params.DivisionType = 3;
+        const response = await this.divisionService.list(params).toPromise();
+        if (response.Data.Page.TotalRecordCount > 0) {
+            return response.Data.Data[0];
+        }
+    }
 
     ngOnInit() {
 
@@ -133,7 +141,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         this.client.Events.OnLoading = () => {
             this.dataController = this.client.DataController;
         };
-        this.client.Events.OnLoaded = () => {
+        this.client.Events.OnLoaded = async () => {
 
             console.log('this.client.Events.OnLoaded');
 
@@ -152,6 +160,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
             this.mapLoadedEvent.emit(this.client);
 
+            const baseDivision = await this.getBaseDivision();
+            this.client.Village.Select(baseDivision.Id);
         };
 
 
