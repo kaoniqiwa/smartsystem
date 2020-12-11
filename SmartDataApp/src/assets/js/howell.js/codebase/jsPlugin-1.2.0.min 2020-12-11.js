@@ -1,5 +1,4 @@
-var begin;
-var current;
+
 !function (t, e) {
     if ("object" == typeof exports && "object" == typeof module)
         module.exports = e();
@@ -198,10 +197,6 @@ var current;
                                                                             : "GetFrameData" === t.cmd && v.EventCallback.pluginErrorHandler(o, 2001)
                                                                         : D(i, r, o, a, s, e, n)
                                                                 }, o))
-
-                                                v[f][o].oPlayCtrl.play();
-
-
                                             })
                                         }
                                     },
@@ -270,7 +265,7 @@ var current;
                                                         )
                                                     )
 
-                                                v[f][n].oPlayCtrl.stop();
+
                                             })
                                         }
                                     },
@@ -344,7 +339,6 @@ var current;
                                                     }
                                                     console.log("rate:", rate)
                                                     v[f][n].oPlayCtrl.ws.send("Rate " + rate);
-
                                                 }
 
 
@@ -389,7 +383,6 @@ var current;
 
                                                     console.log("rate:", rate);
                                                     v[f][n].oPlayCtrl.ws.send("Rate " + rate);
-
                                                 }
 
                                                 if (false) {
@@ -489,7 +482,6 @@ var current;
                                     {
                                         key: "JS_OpenSound",
                                         value: function (t) {
-                                            console.log("JS_OpenSound");
                                             return t < 0 || t > v[y] - 1
                                                 ? o
                                                 : v[f][t].bPlay
@@ -1578,9 +1570,6 @@ var current;
                             if (e.getPosition) {
                                 v[f][o].oPlayCtrl.getPosition = e.getPosition;
                             }
-                            if (e.timeout && e.timeout.loading) {
-                                v[f][o].oPlayCtrl.timeout.loading = e.timeout.loading;
-                            }
                             if (e.onPlaying) {
                                 v[f][o].oPlayCtrl.onPlaying = e.onPlaying;
                             }
@@ -2042,84 +2031,6 @@ var current;
                                                         if (y[_][0] && y[_][0].socket)
                                                             y[_][0].socket.close();
                                                         (y[_][0] = (u.createClientObject(b, w, g, S)), f(w));
-
-
-                                                        d.oPlayCtrl.InputFn = function doing(t) {
-                                                            if ("string" == typeof t.data) {
-                                                                var e = JSON.parse(t.data),
-                                                                    n = y[P](w);
-                                                                //查志磊
-                                                                if (e && e.version && e.cipherSuite) {
-                                                                    if (y[C] = e.version, y[x] = parseInt(e.cipherSuite, 10), e && e.PKD && e.rand)
-                                                                        y[_].push(k.createClientObject(b, w, e.PKD, e.rand, d));
-                                                                    else {
-                                                                        var i = "live://" + m + ":" + v + "/" + g + "/" + S;
-                                                                        -1 === y[x]
-                                                                            ? y[_].push(D.createClientObject(b, w, i, d))
-                                                                            : y[_].push(T.createClientObject(b, w, i))
-                                                                    }
-                                                                    return void f(w)
-                                                                }
-                                                                //[73, 77, 75, 72, 1, 2, 0, 0, 4, 0, 5, 0, 17, 113, 1, 16, 64, 31, 0, 0, 0, 250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-                                                                if (e && e.sdp) {
-                                                                    var r = T.getMediaFromSdp(e.sdp);
-                                                                    p({
-                                                                        bHead: !0,
-                                                                        buf: r
-                                                                    })
-                                                                }
-                                                                if (e && e.cmd && "end" === e.cmd && p({
-                                                                    type: "exception",
-                                                                    cmd: e.cmd
-                                                                }),
-                                                                    e && e.statusString && ("ok" === e.statusString.toLowerCase() && y[_][n].resolve && y[_][n].resolve(e), "ok" !== e.statusString.toLowerCase())) {
-                                                                    var o = T.getError(e);
-                                                                    -1 < n
-                                                                        ? y[_][n].reject && y[_][n].reject(o)
-                                                                        : h(o)
-                                                                }
-                                                            }
-                                                            else {
-                                                                var a = {},
-                                                                    s = new Uint8Array(t.data);
-                                                                //download_datas = download_datas.concat(Array.prototype.slice.call(s));
-                                                                if (64 === s.byteLength || 40 === s.byteLength) {
-                                                                    for (var l = -1, u = s.byteLength, c = 0; c < u; c++)
-                                                                        if (73 === s[c] && 77 === s[c + 1] && 75 === s[c + 2] && 72 === s[c + 3]) {
-                                                                            l = c;
-                                                                            break
-                                                                        }
-                                                                    if (-1 !== l)
-                                                                        a = {
-                                                                            bHead: !0,
-                                                                            buf: s.slice(l, l + 40),
-                                                                        };
-                                                                    else
-                                                                        a = {
-                                                                            bHead: !1,
-                                                                            buf: s,
-                                                                        }
-                                                                    a = {
-                                                                        bHead: true,
-                                                                        buf: s,
-                                                                    }
-                                                                }
-                                                                else {
-                                                                    a = {
-                                                                        bHead: !1,
-                                                                        buf: s,
-                                                                    };
-                                                                    if (d.oPlayCtrl && d.oPlayCtrl.onPlaying) {
-                                                                        d.oPlayCtrl.onPlaying();
-                                                                    }
-
-                                                                }
-
-                                                                p(a), a = s = null;
-                                                            }
-                                                        }
-
-
                                                         // (y[_].push(u.createClientObject(b, w, g, S)), f(w))
                                                         // init('{"version":"1.0","cipherSuite":"1"}', f);
                                                         // init('{"requestURL":"live://192.168.1.112:7681/1/0","statusCode":1,"statusString":"OK","subStatusCode":"ok","errorCode":0,"errorMsg":"ok","sdp":"v=0\\r\\no=- 1595845496375699 1595845496375699 IN IP6 :: \\r\\ns = Media Presentation\\r\\ne = NONE\\r\\nb = AS: 5100\\r\\nt = 0 0\\r\\na = control: \\r\\nm = video 0 RTP / AVP 96\\r\\nc = IN IP4 0.0.0.0\\r\\nb = AS: 5000\\r\\na = recvonly\\r\\na = x - dimensions: 1920, 1080\\r\\na = control: trackID = 1\\r\\na = rtpmap: 96 H265 / 90000\\r\\na = fmtp: 96 sprop - sps=QgEBAWAAAAMAsAAAAwAAAwB7oAPAgBDlja5JMvTcBAQEAg ==; sprop - pps=RAHA8vA8kAA =\\r\\nm = audio 0 RTP / AVP 8\\r\\nc = IN IP4 0.0.0.0\\r\\nb = AS: 50\\r\\na = recvonly\\r\\na = control: trackID = 2\\r\\na = rtpmap: 8 PCMA / 8000\\r\\na = Media_header: MEDIAINFO = 494D4B48010200000400050011710110401F000000FA000000000000000000000000000000000000; \\r\\na = appversion: 1.0\\r\\n"}', f)
@@ -2204,51 +2115,11 @@ var current;
                                                             }
 
                                                             if (y[_][0].socket.readyState == 1) {
-
-                                                                d.oPlayCtrl.wsBuffer.push(t);
-
-                                                                function getTimestamp(data) {
-
-                                                                    let msgBytes = Array.prototype.slice.call(new Uint8Array(data));
-                                                                    let flags = (msgBytes[0] << 24) + (msgBytes[1] << 16) + (msgBytes[2] << 8) + msgBytes[3];
-                                                                    if (flags === 0x1ba) {
-                                                                        // let array = msgBytes.slice(4, 10);
-                                                                        var timeFlags =
-                                                                            (msgBytes[4] << 40) * Math.pow(2, 32) +
-                                                                            (msgBytes[5] << 32) * Math.pow(2, 32) +
-                                                                            ((msgBytes[6] << 24) >>> 0) +
-                                                                            ((msgBytes[7] << 16) >>> 0) +
-                                                                            ((msgBytes[8] << 8) >>> 0) +
-                                                                            msgBytes[9];
-                                                                        var strTimeFlags = timeFlags.toString(2);
-                                                                        var time =
-
-                                                                            (((parseInt(strTimeFlags.substr(0, strTimeFlags.length - 43), 2) & 0x7) << 30) >>> 0) +
-                                                                            (((parseInt(strTimeFlags.substr(0, strTimeFlags.length - 27), 2) & 0x7FFF) << 15) >>> 0) +
-                                                                            ((parseInt(strTimeFlags.substr(0, strTimeFlags.length - 11), 2) & 0x7FFF) << 0) >>> 0;
-                                                                        var msTime = (time) * 1000 / 90000;
-                                                                        return parseInt(msTime);
-                                                                    }
-                                                                    return -1;
-
-                                                                }
-
-
-                                                                // var timestamp =  getTimestamp(t.data);
-                                                                // current = timestamp;
-                                                                // console.log({
-                                                                //     begin:begin,
-                                                                //     current : current,
-                                                                //     interval:current - begin
-                                                                // });
-                                                                // begin = timestamp
-
-
-                                                                // doing(t);
+                                                                doing(t);
 
                                                                 if (t.data.byteLength == 20) {
                                                                     if (d && d.oPlayCtrl && d.oPlayCtrl.getPosition) {
-                                                                        // d.oPlayCtrl.getPosition({ data: t.data });
+                                                                        d.oPlayCtrl.getPosition({ data: t.data });
                                                                     }
                                                                 }
                                                             }
@@ -5118,211 +4989,8 @@ var current;
 
                         this.ws = null;
                         this.wsBuffer = [];
-                        this.InputFn;
-                        this.InputHandle;
-
-                        var that = this;
-                        // this.begin;
-
-
-                        function getTimestamp(data) {
-
-                            let msgBytes = Array.prototype.slice.call(new Uint8Array(data));
-                            let flags = (msgBytes[0] << 24) + (msgBytes[1] << 16) + (msgBytes[2] << 8) + msgBytes[3];
-                            if (flags === 0x1ba) {
-                                // let array = msgBytes.slice(4, 10);
-                                var timeFlags =
-                                    (msgBytes[4] << 40) * Math.pow(2, 32) +
-                                    (msgBytes[5] << 32) * Math.pow(2, 32) +
-                                    ((msgBytes[6] << 24) >>> 0) +
-                                    ((msgBytes[7] << 16) >>> 0) +
-                                    ((msgBytes[8] << 8) >>> 0) +
-                                    msgBytes[9];
-                                var strTimeFlags = timeFlags.toString(2);
-                                var time =
-
-                                    (((parseInt(strTimeFlags.substr(0, strTimeFlags.length - 43), 2) & 0x7) << 30) >>> 0) +
-                                    (((parseInt(strTimeFlags.substr(0, strTimeFlags.length - 27), 2) & 0x7FFF) << 15) >>> 0) +
-                                    ((parseInt(strTimeFlags.substr(0, strTimeFlags.length - 11), 2) & 0x7FFF) << 0) >>> 0;
-                                var msTime = (time) * 1000 / 90000;
-                                return msTime;
-                            }
-                            return -1;
-
-                        }
-
-
-                        this.interval = {
-                            start: 0,
-                            index: 0,
-                            current: Number.MAX_VALUE,
-                            value: 40,
-                            last: 0,
-                            times: 0,
-                            time: {
-                                start: null,
-                                begin: null,
-                                end: null,
-                                theLast: null,
-                                thisTime: null
-                            },
-                            canload: true,
-                            data: null
-
-                        }
-                        this.first = true;
-
-                        this.status = 0;
-                        this.length = -2;
-
-                        this.pause = function () {
-                            if (that.InputHandle) {
-                                clearTimeout(that.InputHandle);
-                                that.InputHandle = null;
-                            }
-                        }
-
-                        this.loadData = function () {
-
-                            return new Promise((success, fault) => {
-                                // 如果没有数据，再次读取
-                                if (that.wsBuffer.length == 0) {
-                                    fault();
-                                    return;
-                                }
-                                if (that.interval.canload == false) {
-                                    success(that.interval.data);
-                                    return;
-                                }
-                                if (!that.interval.start && that.wsBuffer.length < 10) {
-                                    fault();
-                                    return;
-                                }
-                                let t = that.wsBuffer.shift();
-                                // 如果数据为头文件，填充数据，并且读取新数据
-                                if (t.data.byteLength == 20) {
-                                    if (that.getPosition) {
-                                        that.getPosition({ data: t.data });
-                                    }
-                                }
-                                if (t.data.byteLength == 40 || t.data.byteLength == 20) {
-                                    that.InputFn(t);
-                                    if (that.wsBuffer.length == 0) {
-                                        fault();
-                                        return;
-                                    }
-                                    else {
-                                        t = that.wsBuffer.shift();
-                                    }
-                                }
-                                // 分析数据时间戳
-                                var timestamp = parseInt(getTimestamp(t.data));
-                                if (timestamp < 0) {
-                                    that.InputFn(t);
-                                    // 如果有后续数据，继续分析
-                                    if (that.wsBuffer.length == 0) {
-                                        fault();
-                                        return
-                                    }
-                                    else {
-                                        t = that.wsBuffer.shift();
-                                        timestamp = parseInt(getTimestamp(t.data));
-                                    }
-                                }
-                                success({
-                                    timestamp: timestamp,
-                                    t: t
-                                });
-                            });
-
-
-
-                        }
-                        this.getOffset = function () {
-
-                        }
-                        this.index = 0;
-                        this.play = function () {
-
-                            that.loadData().then(
-                                (data) => {
-                                    try {
-                                        // 开始读取视频数据
-                                        let timestamp = data.timestamp;
-                                        let t = data.t;
-
-                                        that.interval.time.thisTime = new Date();
-
-                                        // 赋值开始时间
-                                        if (!that.interval.start) {
-                                            that.interval.start = timestamp;
-                                            that.InputFn(t);
-                                            that.interval.time.start = new Date();
-                                            that.interval.time.begin = new Date();
-                                            that.interval.time.end = new Date();
-                                            return;
-                                        }
-                                        // 判断时间戳和开始时间的差额 value
-                                        let value = timestamp - that.interval.start;
-                                        // 获取当前时间理应获得的偏差 offset
-                                        let offset = that.interval.time.thisTime - that.interval.time.start;
-                                        // 如果value在offset内，就塞入数据
-
-                                        if ((offset - value) >= 0) {
-
-                                            that.InputFn(t);
-                                            that.interval.canload = true;
-                                            // console.log(
-                                            //     {
-                                            //         length: that.wsBuffer.length,
-                                            //         value: value,
-                                            //         offset: offset,
-                                            //         timestamp: that.timestamp,
-                                            //         interval: that.interval.time.thisTime - that.interval.time.theLast
-                                            //     }
-                                            // );
-
-                                            that.interval.time.theLast = new Date();
-                                        }
-                                        else {
-                                            that.interval.data = data;
-                                            that.interval.canload = false;
-                                        }
-
-                                    } finally {
-                                        // 最后重启play
-                                        that.InputHandle = setTimeout(() => {
-
-                                            that.play();
-                                        }, 10);
-
-                                    }
-                                },
-                                // 如果没有读到数据，就重启play
-                                () => {
-                                    that.InputHandle = setTimeout(() => {
-
-                                        that.interval.canload = true;
-                                        that.play();
-                                    }, 10);
-                                }
-                            );
-                        };
-
-                        this.stop = function () {
-
-                            that.interval.canload = true;
-                            that.interval.start = 0;
-                            if (that.ws) {
-                                that.ws.close();
-                            }
-                            if (that.InputHandle) {
-                                clearTimeout(that.InputHandle);
-                                that.InputHandle = null;
-                            }
-                            this.wsBuffer = [];
-                        }
-
+                        this.videoInputFn;
+                        this.videoInputHandle;
 
                         var f = this;
                         if (this.setCallBack = function (t, e, n, i, r) {
