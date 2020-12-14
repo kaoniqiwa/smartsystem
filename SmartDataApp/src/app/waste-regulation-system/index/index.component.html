@@ -56,19 +56,7 @@
         </div>
         <div fxFlex="33" fxLayoutAlign="end center ">
           <app-time-tool> </app-time-tool>      
-          <app-user-tool></app-user-tool>
-          <!-- <a class="nav-link waves-effect waves-dark logout p-t-0 p-b-0"  href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="howell-icon-account m-r-10 light-blue text-icon"></i>   
-          </a> 
-          <div class="dropdown-menu p-b-0 p-t-0 m-t-10 list-wrap" x-placement="bottom-start">
-            <div  class=" light-blue-text ele-nowrap user-name">
-                <i class="howell-icon-account m-r-5">
-                </i>
-                {{user.name}}
-            </div>
-            <a routerLink="/login" class="dropdown-item light-blue-text" style="font-size: 16px;" (click)="logOut()">
-              <i class="mdi mdi-logout p-r-5"></i>退出登录</a>
-          </div> -->
+          <app-user-tool></app-user-tool> 
         </div>
       </div>
     </div>
@@ -118,24 +106,28 @@
     </div>
     <div gdColumn="auto / span 2" gdRow="auto / span 2">
       <div class="card-wrapper2">
-        <div class="m-t-20 p-l-10 p-r-10 fill-width " style="height: 76px; position: absolute;">
+        <div class="m-t-20 p-l-10 p-r-10 fill-width" style="height: 76px; position: absolute;">
           <ng-container *ngIf="divisionGarbageSpCardConfig">
             <business-card-grid [cardConfig]="divisionGarbageSpCardConfig">
             </business-card-grid>
           </ng-container>
         </div>
         <app-amap #aMap (mapLoadedEvent)="mapLoaded($event)"></app-amap>
-        <a href="javascript:" [class.in]="!divisionBusinessService.inspectionView"  
+        <!-- <div class="collapse in"> 
+
+        </div> -->
+       
+        <!-- <a href="javascript:" [class.in]="!divisionBusinessService.inspectionView"  
         (click)="divisionBusinessService.inspectionView=!divisionBusinessService.inspectionView" 
         class="inspection-btn-wrapper ling-btn-border collapse">
           <h5 class="content text-center m-b-0">开始巡检</h5> 
-        </a>
-        <div class="fill-width fill-height collapse inspection-view-wrapper" [class.in]="divisionBusinessService.inspectionView">
+        </a> -->
+        <!-- <div class="fill-width fill-height p-20" [class.in]="divisionBusinessService.inspectionView">
           <ng-container *ngIf="inspectionConfig">
             <business-card-grid [cardConfig]="inspectionConfig">
             </business-card-grid>
           </ng-container>
-        </div> 
+        </div>  -->
         <div class="card-angle top-left"></div>
         <div class="card-angle top-right"></div>
         <div class="card-angle bottom-left"></div>
