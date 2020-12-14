@@ -444,11 +444,6 @@ function WSPlayer(args) {
                             that.tools.control.position.style.backgroundSize = valStr;
                             //that.status = p.offset + 1 >= p.count ? that.status = wsPlayerState.end : that.status = wsPlayerState.playing;
                         }
-                    },
-                    timeout:{
-                        loading:function(){
-                            element.className += " loading";
-                        }
                     }
                 }, 0).then(() => {
                     that.status = wsPlayerState.playing;
