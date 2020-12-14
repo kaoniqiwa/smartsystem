@@ -8,6 +8,7 @@ import { SideNavService } from "../../../../common/tool/sidenav.service";
 import { DivisionBusinessService } from "../../../../waste-regulation-system/index/business-card-grid/division-business.service";
 import { SystemModeEnum } from '../../../../common/tool/table-form-helper';
 import {  LevelListPanelComponent } from "../level-list-panel/level-list-panel.component";
+import { Camera } from '../../../../data-core/model/waste-regulation/camera';
 @Component({
   selector: 'hw-illegal-drop-event-history',
   templateUrl: './illegal-drop-event-history.component.html',
@@ -45,13 +46,17 @@ export class IllegalDropEventHistoryComponent implements OnInit {
 
   changeDivisionFn = (divisionId: string) => {
     if(divisionId){
-      const garbageStations = this.tableService.garbageStations.filter(x => x.DivisionId == divisionId);
+      const garbageStations = this.tableService.garbageStations.filter(x => x.DivisionId == divisionId); 
       this.tableService.search.toStationsDropList = garbageStations;
-      garbageStations.map(x => {
-        this.tableService.search.toResourcesDropList =
-          this.tableService.resources.filter(r => r.GarbageStationId == x.Id);
+      const resources = new Array<Camera>()
+      garbageStations.map(x => {       
+          this.tableService.resources.filter(r => r.GarbageStationId == x.Id).map(c=>{
+            resources.push(c);
+          });
       });
+      this.tableService.search.toResourcesDropList = resources; 
       this.tableService.search.divisionId=divisionId;
+      this.tableService.search.stationId='';
     }
     else{
       this.tableService.search.toResourcesDropList = this.tableService.resources;
@@ -74,6 +79,11 @@ export class IllegalDropEventHistoryComponent implements OnInit {
     ,private divisionBusinessService:DivisionBusinessService
     , private router: Router) { 
   
+  }
+
+  changeStation(val:string){
+    this.tableService.search.toResourcesDropList = 
+      this.tableService.resources.filter(r => r.GarbageStationId == val);
   }
 
   async ngOnInit() {  

@@ -24,7 +24,12 @@ export class SearchControl extends SearchHelper {
             ResourceId: new FormControl(''),
         });
     }
- 
+
+    set stationId(val:string){
+        this.searchform.patchValue({
+            StationId: val,
+        });  
+    } 
 
     set toResourcesDropList(cameras:Camera[]){
         if(cameras){

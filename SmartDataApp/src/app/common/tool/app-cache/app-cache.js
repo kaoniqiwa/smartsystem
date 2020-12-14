@@ -20,7 +20,9 @@ class AppCaChe {
         return  this.cache.set(key, value);
     }
 
-
+    reset(){
+        this.cache.reset()
+    }
 
 }
 

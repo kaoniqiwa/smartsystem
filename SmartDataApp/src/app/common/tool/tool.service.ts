@@ -1,5 +1,4 @@
-import { Injectable } from "@angular/core";
-import { log } from "console";
+import { Injectable } from "@angular/core"; 
 @Injectable()
 export class ToolService {
     windowScreen: { width: number, height: number };
@@ -9,6 +8,20 @@ export class ToolService {
             height: window.screen.height
         }
     }
+}
+
+export function ArrayPagination<T>(pageNo:number, pageSize:number, array:T[]) {
+    var offset = (pageNo - 1) * pageSize;
+    return (offset + pageSize >= array.length) ? 
+    array.slice(offset, array.length) : array.slice(offset, offset + pageSize);
+    
+}
+
+export function pageCount (totalnum:number,limit:number){
+    return totalnum > 0 ? 
+    ((totalnum < limit) 
+    ? 1 : ((totalnum % limit) 
+    ? ((totalnum / limit) + 1) : (totalnum / limit))) : 0;
 }
 
 

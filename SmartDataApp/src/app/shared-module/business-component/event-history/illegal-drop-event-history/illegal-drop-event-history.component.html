@@ -91,7 +91,7 @@
         <span class="input-text">摄像机</span>
         <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 64px);"
           formControlName="ResourceId">
-          <option value="">全部</option>
+          <option value="">请选择</option>
           <ng-container *ngFor="let c of tableService.search.resourcesDropList">
             <option value="{{c.id}}">{{c.name}}</option>
           </ng-container>
@@ -102,21 +102,13 @@
         <div class="pull-right" style="width: calc(100% - 46px);">
           <hw-level-list-panel [model]="tableService.divisionListView.dataSource"
           [selectedFn]="changeDivisionFn"></hw-level-list-panel>
-        </div>
-       
-        <!-- <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 46px);"
-          formControlName="DivisionId">
-          <option value="">全部</option>
-          <ng-container *ngFor="let c of tableService.divisions">
-            <option value="{{c.Id}}">{{c.Name}}</option>
-          </ng-container>
-        </select> -->
+        </div> 
       </div>
       <div fxFlex="20">
         <span class="input-text">垃圾房</span>
-        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 64px);"
+        <select (change)="changeStation(stationsList.value)" #stationsList class="form-control custom custom-select m-l-10" style="width: calc(100% - 64px);"
           formControlName="StationId">
-          <option value="">全部</option>
+          <option value="">请选择</option>
           <ng-container *ngFor="let c of tableService.search.stationsDropList">
             <option value="{{c.id}}">{{c.name}}</option>
           </ng-container>
