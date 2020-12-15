@@ -31,6 +31,10 @@ export class StatisticalDataBufferService extends ListAttribute implements IBusi
         super();
     }
 
+    cacheReset(){
+        this.cache.reset();
+    }
+
     async getGarbageStations(divisionsId: string) {
         var result = this.cache.get<GarbageStation[]>(this.garbageStation+Md5.hashStr(divisionsId) as string);
         if (!result) {
