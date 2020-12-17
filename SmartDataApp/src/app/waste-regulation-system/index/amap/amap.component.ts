@@ -478,8 +478,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
 
     Button1Clicked() {
-        if (this.patrolButtonClicked[0]) {
-            this.patrolButtonClicked[0].emit();
+        if (this.patrolButtonClicked) {
+            this.patrolButtonClicked.emit();
         }
     }
 
