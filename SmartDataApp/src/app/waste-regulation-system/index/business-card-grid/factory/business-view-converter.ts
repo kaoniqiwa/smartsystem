@@ -21,7 +21,7 @@ import { IConverter } from "../../../../common/interface/IConverter";
 import { Injector, Injectable } from '@angular/core';
 import { LineOption } from '../../../../common/directive/echarts/echart';
 import { Percentage, TimeInterval, DateInterval } from '../../../../common/tool/tool.service'
-import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
+import { DivisionTypeEnum,EnumHelper } from "../../../../common/tool/enum-helper";
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
 import { EventNumber } from '../../../../data-core/model/waste-regulation/event-number';
 import { ColorEnum } from '../../../../shared-module/card-component/card-content-factory';
@@ -287,8 +287,7 @@ export class GarbageStationInspectionCardConverter implements IConverter {
         output.pageIndex = 1;
         if (input instanceof GarbageStationInspection) {
             const model = new GalleryRollPage()
-            ,pic = new MediumPicture()
-            ,user = new SessionUser();
+            ,pic = new MediumPicture();
             model.items = new Map();
             model.leftBottom = {
                 color:ColorEnum["red-text"]
@@ -300,28 +299,27 @@ export class GarbageStationInspectionCardConverter implements IConverter {
             for (let i = 0; i < input.garbageStations.length; i++) {
               
                 const gs = input.garbageStations[i],
+                enumHelper = new EnumHelper(),
                 gallery=new Gallery(),state = ()=>{
                     if(gs.StationState==0)return ColorEnum["green-text"];
                     else if(gs.StationState==null|| gs.StationState == 2)return ColorEnum["red-text"];
                     else if(gs.StationState==1)return ColorEnum["orange-text"];
                 }; 
-                // gallery.rightBottom = {
-                //     text1:i+1,
-                //     text2:input.garbageStations.length
-                // }
                 gallery.title= {
                     color:  state(),
                     text:gs.Name,
                     id:gs.Id
                 };
                 gallery.imgDesc=new Array();
-                gs.Cameras.map(x=>{
+                const c1=  gs.Cameras.filter(y=>enumHelper.cameraUsage.outside.indexOf(y.CameraUsage)>-1)
+                ,c2 = gs.Cameras.filter(y=>enumHelper.cameraUsage.outside.indexOf(y.CameraUsage)==-1);
+                // console.log(c1,c2);
+                
+                [...c1,...c2].map(x=>{  
                     gallery.imgDesc.push({
                         src:pic.getJPG(x.ImageUrl),
-                        tag: {
-                            start: DateInterval(x.ImageTime+'', user.video.beforeInterval),
-                            end: DateInterval(x.ImageTime+'', user.video.afterInterval),                            
-                        id:x.Id
+                        tag: {                    
+                           id:x.Id
                         },
                         desc:x.Name,
                         state:x.OnlineStatus !=0

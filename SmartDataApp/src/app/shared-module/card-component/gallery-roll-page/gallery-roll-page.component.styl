@@ -1,10 +1,31 @@
 .arrow-wrap 
     background-color:alpha(#ffffff,0.1)
-    padding 6px
+    font-size: x-large
+    padding: 7px 8px
     border-radius: 50%
     color: alpha(#ffffff,0.7)
 
-.arrow-wrap:hover 
+.play-stop-wrap
+    background-color:alpha(#ffffff,0.1)
+    color: alpha(#ffffff,0.7)
+    border-radius: 50%
+    padding: 8px 9px
+    font-size: xx-large
+    margin: 0 50px
+
+.left-right-page
+    background-color: alpha(#ffffff,0.3);
+    color: alpha(#ffffff,0.7)
+    border-radius: 50%
+    padding: 1px 9px
+    font-size: xx-large
+    top 14px
+    position relative
+
+.left-right-page:hover 
+    background-color:#7a8de6  
+
+.arrow-wrap:hover,.play-stop-wrap:hover
     background-color:alpha(#ffffff,0.2) 
     color: white
 
@@ -16,14 +37,7 @@
     position: relative
     top: 6px
 
-
-.close-winow-wrap
- position absolute
- right 18px
- top 4px 
-
-.close-winow-wrap>i 
-    color white
+ 
 
 .error
     color: white;
@@ -32,12 +46,38 @@
     text-align: center; 
     line-height:  153px
     position absolute
-    top 0
+    top 0 
 
 .img-wrapper
-    border 2px solid  transparent
-    cursor pointer
+    border 2px solid  transparent 
 
-.img-wrapper:hover
-    border  2px solid #2d76ce
+.img-wrapper .mask
+   opacity 0
 
+.img-wrapper:hover .mask
+    opacity 1
+
+
+.desc-label-wrapper
+    background-image: linear-gradient(alpha(#000000,0.1),alpha(#000000,0.4));
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 30px;
+
+.block-wrapper
+    background-color: alpha(#7a8de6,0.5)
+    color alpha(#ffffff,0.5)
+    padding 6px 8px
+    margin-left: 4px
+
+ .block-wrapper.selected
+    background-color: #7a8de6
+    color white
+
+ .capture:hover i
+    color:  #7a8de6 !important
+
+.right-btn-group a 
+    position relative
+    bottom 4px

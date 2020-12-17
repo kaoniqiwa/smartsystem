@@ -33,6 +33,10 @@ export class GarbageStations extends GarbageBaseUrl implements IUrl {
     statisticNumberList(): string {
         return this.aiop + `GarbageStations/Statistic/Number/List`;
     }
+
+    manualCapture(id: string){ 
+        return this.aiop +`GarbageStations/${id}/ManualCapture`;
+    }
 }
 
 export class Camera extends GarbageBaseUrl implements IUrl {

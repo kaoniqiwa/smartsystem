@@ -1,3 +1,4 @@
+import { HWSPlayerOptions } from "../../../common/directive/wsplayer-directive";
 import { ColorEnum } from "../card-content-factory";
 export class GalleryRollPage{
     items: Map<number,Gallery>;
@@ -5,6 +6,7 @@ export class GalleryRollPage{
         color:ColorEnum;
         text:number;
     };
+    videoOptions:HWSPlayerOptions;  
     index =1;
 }
 
@@ -20,5 +22,5 @@ export class Gallery{
         tag:any;
         state:boolean;
     }[];     
-   
+    index =0;   
 }

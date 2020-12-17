@@ -3,6 +3,7 @@ import { ViewsModel } from "../../../common/abstract/base-view";
 import { BusinessParameter } from "../../../common/interface/IBusiness";
 import { BaseBusinessRefresh } from "../../../common/tool/base-business-refresh";
 import { DivisionTypeEnum } from "../../../common/tool/enum-helper";
+import { MessageBar } from "../../../common/tool/message-bar";
 import { HeaderSquareListComponent } from "../../../shared-module/header-square-list/header-square-list.component";
 import { BusinessViewComponetConstructor } from "./business-card-slot.service";
 import { AMapComponent } from "../amap/amap.component";
@@ -10,11 +11,14 @@ import { CameraRequestService } from "../../../data-core/repuest/resources.servi
 import { StateScaleCardComponent } from "../../../shared-module/card-component/state-scale-card/state-scale-card.component";
 import { ImageThemeCardComponent } from "../../../shared-module/card-component/image-theme-card/image-theme-card.component";
 import { GalleryRollPageComponent } from "../../../shared-module/card-component/gallery-roll-page/gallery-roll-page.component";
+import { Gallery } from "../../../shared-module/card-component/gallery-roll-page/gallery-roll-page";
 import { HintCardComponent } from "../../../shared-module/card-component/hint-card/hint-card.component";
 import { HintTag } from "../../../shared-module/card-component/hint-card/hint";
 import { FillMode } from "../../../shared-module/business-component/event-history/illegal-drop-event-history/business/event-table.service";
 import { ColorEnum } from "../../../shared-module/card-component/card-content-factory";
-import {CameraStateTableEnum  } from "../../../shared-module/business-component/garbage-station-cameras/business/camera-table.service";
+import { CameraStateTableEnum } from "../../../shared-module/business-component/garbage-station-cameras/business/camera-table.service";
+import { GarbageStationRequestService } from "../../../data-core/repuest/garbage-station.service";
+
 @Injectable({
     providedIn: 'root'
 })
@@ -31,13 +35,14 @@ export class DivisionBusinessService {
     eventHistoryView = false;
     stationCameraView = false;
     inspectionView = false;
-    stationCameraStateTable:CameraStateTableEnum;
-    divisionsId ='';
-    constructor(private cameraService: CameraRequestService) {
-       
+    stationCameraStateTable: CameraStateTableEnum;
+    divisionsId = '';
+    constructor(private cameraService: CameraRequestService
+        , private stationService: GarbageStationRequestService) {
+
     }
 
-    bindingEvent(){
+    bindingEvent() {
         setTimeout(() => {
             for (const x of this.componets) {
 
@@ -47,7 +52,7 @@ export class DivisionBusinessService {
                         param.map.set('divisionsId', val.id);
                         param.map.set('divisionsType', val.type);
                         param.map.set('divisionsIds', this.committesIds);
-                        this.divisionsId=val.id;
+                        this.divisionsId = val.id;
                         if (this.mapClient) {
                             this.mapClient.Village.Select(val.id);
                             let village = this.mapClient.DataController.Village.Get(val.id);
@@ -67,18 +72,18 @@ export class DivisionBusinessService {
                 if (x.list[0].view instanceof ImageThemeCardComponent) {
                     x.list[0].view.btnControl = async (val: { timeInterval: { start: Date, end: Date }, cameraId: string }) => {
                         const respone = await this.cameraService.get(val.cameraId).toPromise();
-    
+
                         this.aMap.Playback(respone.Data as any, val.timeInterval.start, val.timeInterval.end);
                     }
                 }
                 if (x.list[0].view instanceof HintCardComponent) {
-    
+
                     x.list[0].view.btnControl = (tag) => {
                         if (x.list[0].business instanceof BaseBusinessRefresh) {
                             if (tag == HintTag.IllegalDrop) {
                                 this.illegalDropMode = new FillMode();
                                 this.illegalDropMode.divisionId = x.list[0].business.businessParameter.map.get("divisionsId");
-    
+
                             }
                             else if (tag == HintTag.MixedInto) {
                                 this.mixedIntoMode = new FillMode();
@@ -90,24 +95,47 @@ export class DivisionBusinessService {
                                 this.stationListView = true;
                             this.eventHistoryView = true;
                         }
-    
+
                     }
                 }
-                if(x.list[0].view instanceof StateScaleCardComponent) {
-                    x.list[0].view.btnControl = (item:{ tag:CameraStateTableEnum}) => {
-                        this.stationCameraStateTable=item.tag;
-                        this.stationCameraView=true;
+                if (x.list[0].view instanceof StateScaleCardComponent) {
+                    x.list[0].view.btnControl = (item: { tag: CameraStateTableEnum }) => {
+                        this.stationCameraStateTable = item.tag;
+                        this.stationCameraView = true;
                         this.eventHistoryView = true;
-    
+
                     }
                 }
-                if(x.list[0].view instanceof GalleryRollPageComponent){
-                    x.list[0].view.btnControl = async (val:  { start: Date, end: Date , id: string }) => { 
-                        if(val == null)this.inspectionView=false;
-                        else{const respone = await this.cameraService.get(val.id).toPromise();    
-                            if(this.aMap)this.aMap.Playback(respone.Data as any, val.start, val.end);
-                        } 
-                    } 
+                if (x.list[0].view instanceof GalleryRollPageComponent) {
+                   /**
+                    * 
+                    * 抓图
+                    */
+                    x.list[0].view.btnControl = async (i) => {
+                        if (i == null)
+                            this.inspectionView = false;
+                        else {
+                            const item = i as { 
+                                g:Gallery,
+                                msg:boolean
+                            };
+                            if (item.g && item.g.title) {
+                                const data = await this.stationService.manualCapture(item.g.title.id).toPromise();
+                                if (data && data.Data) {
+                                    data.Data.map(m => {
+                                        if (m.Result) {
+                                            const desc = item.g.imgDesc.find(i => i.tag.id == m.CameraId);
+                                            if (desc)
+                                                desc.src = m.Url;
+                                        }
+                                    });
+                                }
+                                if(item.msg)
+                                   new MessageBar().response_success();
+                            }
+
+                        }
+                    }
                 }
             }
         }, 1000);

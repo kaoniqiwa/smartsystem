@@ -4,7 +4,7 @@ import { BusinessParameter } from '../../../../../common/interface/IBusiness';
 import { BaseBusinessRefresh } from "../../../../../common/tool/base-business-refresh";
 export class GarbageInspection extends BaseBusinessRefresh {
 
-    constructor(dataServe: StatisticalDataBufferService, businessParameter?: BusinessParameter) { 
+    constructor(dataServe: StatisticalDataBufferService, businessParameter?: BusinessParameter) {
         super(dataServe, businessParameter);
     }
 
@@ -13,8 +13,8 @@ export class GarbageInspection extends BaseBusinessRefresh {
             , model = new GarbageStationInspection()
             , statisticNumber = await (this.dataServe as StatisticalDataBufferService).getDivisionStatisticNumber(divisionsId)
             , garbageStations = await (this.dataServe as StatisticalDataBufferService).getGarbageStations(divisionsId);
-            model.garbageStations=garbageStations;
-            model.todayEventNumbers = statisticNumber.TodayEventNumbers;
+        model.garbageStations = garbageStations;
+        model.todayEventNumbers = statisticNumber.TodayEventNumbers;
         return model;
     }
 }

@@ -25,18 +25,18 @@ export class StatisticalDataBufferService extends ListAttribute implements IBusi
     readonly divisionStatisticNumberList = 'DivisionStatisticNumberList_';
     readonly garbageStationStatisticNumberList = 'GarbageStationStatisticNumberList_';
     readonly division = 'Division';
-    readonly garbageStation='GarbageStation_';
+    readonly garbageStation = 'GarbageStation_';
     constructor(private divisionService: DivisionRequestService
         , private garbageStationService: GarbageStationRequestService) {
         super();
     }
 
-    cacheReset(){
+    cacheReset() {
         this.cache.reset();
     }
 
     async getGarbageStations(divisionsId: string) {
-        var result = this.cache.get<GarbageStation[]>(this.garbageStation+Md5.hashStr(divisionsId) as string);
+        var result = this.cache.get<GarbageStation[]>(this.garbageStation + Md5.hashStr(divisionsId) as string);
         if (!result) {
             const param = new GetGarbageStationsParams();
             param.PageIndex = 1;
@@ -59,7 +59,7 @@ export class StatisticalDataBufferService extends ListAttribute implements IBusi
             param.PageIndex = 1;
             param.PageSize = this.maxSize;
             const response = await this.divisionService.eventNumbersHistory(param, divisionsId).toPromise();
-            result = response.Data.Data; 
+            result = response.Data.Data;
             this.cache.set(this.eventNumbersHistory + divisionsId, result);
         }
         return result;
@@ -100,14 +100,12 @@ export class StatisticalDataBufferService extends ListAttribute implements IBusi
             param.PageSize = this.maxSize;
             const response = await this.divisionService.list(param).toPromise();
             result = response.Data.Data;
-            this.cache.set(this.division, result); 
+            this.cache.set(this.division, result);
         }
         return result;
     }
 
     async postGarbageStationStatisticNumbers(divisionsIds: string[]) {
-     
-        
         var result = this.cache.get<GarbageStationNumberStatistic[]>
             (this.garbageStationStatisticNumberList + Md5.hashStr(divisionsIds.join('-')));
         if (!result) {

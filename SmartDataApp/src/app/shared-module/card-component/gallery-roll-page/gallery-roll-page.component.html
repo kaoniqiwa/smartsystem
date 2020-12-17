@@ -1,38 +1,86 @@
 <ng-container *ngIf="model">
-  <div class="fill-height fill-width gallery-wrapper">
-    <a href="javascript:" class="close-winow close-winow-wrap" (click)="tagClick()">
-      <i class="howell-icon-Close alert-window-close-btn"></i>
-    </a>
-    <div fxLayout="row wrap" fxLayoutGap="10px" style="height: 88%;padding: 30px 0px 0 20px;">
-      <ng-container *ngFor="let item of items.imgDesc">
-        <div fxFlex="23.6"   style="height: 153px;" (click)="tagClick(item.tag)">
-          <div style="position: relative;" class="fill-width fill-height img-wrapper">
-            <img height="100%" width="100%" 
-              src="{{item.src}}" alt="" onerror="this.src='assets/img/timg.png'" >
-            <div *ngIf="item.state" class="error">NO SIGNAL</div>
-            <div class="desc-label-wrapper">
-              <label class="m-0 text-white">{{item.desc}}</label>
+    <div class="fill-width fill-height">    
+    
+        <div fxLayout="row"> 
+            <div class="pull-left" style="width: 200px;">
+              <h2>投放点巡检</h2>
             </div>
+           <div class="pull-left text-center" style="width: 56%;">
+             <h2 class="{{titleColor}}">
+                <i class="howell-icon-garbage {{titleColor}}"></i>
+                {{title}}
+             </h2>
+           </div>
+           <div class="pull-right text-right right-btn-group" style="width: calc(44% - 200px);font-size: 18px;">
+            <a href="javascript:" (click)="tagClick(null,true)" class="m-r-10 capture">
+              <i class="howell-icon-restore text-white"></i>
+            </a>
+            <a href="javascript:" class="close-winow close-winow-wrap" (click)="tagClick('close')">              
+              <i class="howell-icon-Close alert-window-close-btn text-white"></i>
+           
+            </a>
+           </div>
+        </div>
+        <div fxLayout="row wrap" style="height: 86%;">
+            <div fxFlex="50" style="height: 50%;" *ngFor="let item of imgs">
+              <div style="position: relative;"  id="item__{{item.tag.id}}"  [ngStyle]="{'visibility': playState(item.tag.id)?'hidden':'visible'}"
+               class="fill-width fill-height img-wrapper">
+                <img height="100%" width="100%"
+                  src="{{item.src}}" alt="" onerror="this.src='assets/img/timg.png'" >
+                <!-- <div *ngIf="item.state" class="error">NO SIGNAL</div> -->
+                <div class="desc-label-wrapper">
+                  <label class="m-0 text-white" style="line-height: 30px;padding: 0 10px;">{{item.desc}}</label>
+                </div>
+                <div class="fill-width fill-height text-center mask" fxLayoutAlign="center center" style="position: absolute;top: 0;">
+                  <a href="javascript:" (click)="playVideo(item.tag.id)">
+                    <div class="howell-icon-play" style="color: rgba(255,255,255,0.7);font-size: 70px;"></div>
+                  </a>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div fxLayout="row" style="height: 60px;" fxLayoutAlign="space-between end">
+          <div style="width: 220px;">
+            <h2 class="m-b-0" style="line-height: 50px;">今日报警次数 
+              <label class="m-0 powder-red-text">{{model.leftBottom.text}}</label>次</h2>
+          </div>
+          <div class="text-left" style="width: 42%;line-height: 50px;">
+            <a href="javascript:" (click)="prevImgGroup()">
+              <div class="howell-icon-arrowleftbold arrow-wrap"></div>
+            </a>
+            <a href="javascript:" (click)="autoChangePage=!autoChangePage" style="position: relative;top: 2px;">
+              <div [class.howell-icon-play]="!autoChangePage" [class.mdi]="autoChangePage"  
+              [class.mdi-stop]="autoChangePage" class="play-stop-wrap" style="display: inline;"></div>
+            </a>
+            <a href="javascript:" (click)="nextImgGroup()">
+              <div class="howell-icon-arrowrightbold arrow-wrap"></div>
+            </a>
+          </div>
+          <div class="text-right" style="width: 60px;">
+            <h2 class="m-b-0" style="line-height: 50px;">{{model.items.size== 0 ? 0: model.index}}/{{model.items.size}}</h2>
           </div>
         </div>
-      </ng-container>
+        <div  class="carousel-control-prev" style="bottom: 46px;z-index: 2;">
+          <a (click)="prevImgPage()"  href="javascript:" [class.in]="minImgPage" class="collapse howell-icon-arrowleftbold blue-text left-right-page" 
+          style="right: 20px;"></a>
+        </div>
+        <div class="carousel-control-next" style="bottom: 90px;top: 50px;z-index: 2;">
+           <a (click)="nextImgPage()" href="javascript:"  [class.in]="maxImgPage"   class="collapse howell-icon-arrowrightbold blue-text left-right-page" style="left: 20px;top:34px"></a>          
+        </div>
+        <div style="right: 10px;position: absolute;bottom: 10%;">
+          <ng-container *ngFor="let item of imgsPage;let i=index">
+             <span class="block-wrapper " [class.selected]="currentImgPageNum==i">{{i+1}}</span>
+          </ng-container>
+         
+        </div>      
+    
+       <ng-container>
+         <div class="collapse" id="video__view_wrap" [class.in]="playing" [ngStyle]="{'width': playViewSize.width+'px','height': playViewSize.height+'px'}"
+          style="position: absolute;z-index: 1;">
+            <div id="video__view" class="fill-width fill-height player" HWSPlayer></div>
+         </div>
+         
+       </ng-container>
     </div>
-    <div fxLayout="row" fxLayoutAlign="space-between end" class="m-t-10" style="padding:0 20px">
-      <div>
-        <h4>今日报警次数 <label class="m-0 powder-red-text">{{model.leftBottom.text}}</label>次</h4>
-      </div>
-      <div style="width: 300px;position: relative;bottom: 6px;">
-        <a href="javascript:" (click)="prevImgGroup()">
-          <div class="howell-icon-arrowleftbold arrow-wrap"></div>
-        </a>
-        <label class="m-0 text-white text-center title-wrap">{{title}}</label>
-        <a href="javascript:" (click)="nextImgGroup()">
-          <div class="howell-icon-arrowrightbold arrow-wrap"></div>
-        </a>
-      </div>
-      <div class="text-right">
-        <h4>{{model.index}}/{{model.items.size}}</h4>
-      </div>
-    </div>
-  </div>
+
 </ng-container>

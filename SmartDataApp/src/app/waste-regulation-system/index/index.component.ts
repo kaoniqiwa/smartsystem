@@ -135,7 +135,6 @@ export class IndexComponent implements OnInit {
       business: 'GarbageStationInspection',
       cardType: 'GalleryRollPageComponent',
       divisionsId: county.Id, 
-      dataTime: 60*10,
       border: false
     });
     this.moveMapSite = () => {

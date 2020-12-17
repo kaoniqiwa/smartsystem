@@ -106,28 +106,22 @@
     </div>
     <div gdColumn="auto / span 2" gdRow="auto / span 2">
       <div class="card-wrapper2">
-        <div class="m-t-20 p-l-10 p-r-10 fill-width" style="height: 76px; position: absolute;">
+        <div class="m-t-20 p-l-10 p-r-10 fill-width collapse" style="height: 76px; position: absolute;">
           <ng-container *ngIf="divisionGarbageSpCardConfig">
             <business-card-grid [cardConfig]="divisionGarbageSpCardConfig">
             </business-card-grid>
           </ng-container>
         </div>
-        <app-amap #aMap (mapLoadedEvent)="mapLoaded($event)"></app-amap>
-        <!-- <div class="collapse in"> 
-
-        </div> -->
-       
-        <!-- <a href="javascript:" [class.in]="!divisionBusinessService.inspectionView"  
-        (click)="divisionBusinessService.inspectionView=!divisionBusinessService.inspectionView" 
-        class="inspection-btn-wrapper ling-btn-border collapse">
-          <h5 class="content text-center m-b-0">开始巡检</h5> 
-        </a> -->
-        <!-- <div class="fill-width fill-height p-20" [class.in]="divisionBusinessService.inspectionView">
+        <div class="collapse fill-height fill-width" [class.in]="!divisionBusinessService.inspectionView"> 
+ <app-amap #aMap (mapLoadedEvent)="mapLoaded($event)" (patrolButtonClicked)="divisionBusinessService.inspectionView=!divisionBusinessService.inspectionView"></app-amap>
+        </div>
+        
+        <div class="fill-width fill-height p-20 collapse" [class.in]="divisionBusinessService.inspectionView">
           <ng-container *ngIf="inspectionConfig">
             <business-card-grid [cardConfig]="inspectionConfig">
             </business-card-grid>
           </ng-container>
-        </div>  -->
+        </div> 
         <div class="card-angle top-left"></div>
         <div class="card-angle top-right"></div>
         <div class="card-angle bottom-left"></div>

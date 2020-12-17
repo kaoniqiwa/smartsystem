@@ -5,8 +5,7 @@ import { Camera, GetGarbageStationCamerasParams } from '../model/waste-regulatio
 import { GetGarbageStationVolumesParams, GarbageVolume } from '../model/waste-regulation/garbage-volume';
 import { TrashCan, GetGarbageStationTrashCansParams } from '../model/waste-regulation/trashCan';
 import * as url from '../url/waste-regulation/garbage-station';
-import { PagedList } from '../model/page';
-import { BatchRequest, BatchResult } from '../model/batch';
+import { PagedList } from '../model/page'; 
 import { Response } from '../model/Response';
 import { HowellAuthHttpService } from './howell-auth-http.service';
 import { GetGarbageStationnEventNumbersParams, EventNumberStatistic } from '../model/waste-regulation/division-event-numbers';
@@ -14,6 +13,7 @@ import {
     GarbageStationNumberStatistic, GetGarbageStationStatisticNumbersParams
 } from '../model/waste-regulation/garbage-station-number-statistic';
 import { GarbageStationType } from "../model/waste-regulation/garbage-station-type";
+import {CameraPictureUrl  } from "../model/waste-regulation/camera-picture-url";
 @Injectable({
     providedIn: 'root'
 })
@@ -62,6 +62,11 @@ export class GarbageStationRequestService extends SaveModel {
     statisticNumberList(item: GetGarbageStationStatisticNumbersParams) {
         return this.requestService.post<GetGarbageStationStatisticNumbersParams,
             Response<PagedList<GarbageStationNumberStatistic>>>(this.url.statisticNumberList(), item);
+    }
+
+    manualCapture(stationId:string){
+        return this.requestService.post<any,
+        Response<CameraPictureUrl[]>>(this.url.manualCapture(stationId));
     }
 }
 
