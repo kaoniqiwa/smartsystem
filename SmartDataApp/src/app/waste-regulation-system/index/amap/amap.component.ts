@@ -147,21 +147,13 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
             this.refresh();
 
-            const villages = this.dataController.Village.List();
-            for (const villageId in villages) {
-                if (Object.prototype.hasOwnProperty.call(villages, villageId)) {
-                    const village = villages[villageId];
-                    if (!village.parentId) {
-                        this.client.Viewer.MoveTo(village.center);
-                        break;
-                    }
-                }
-            }
-
             this.mapLoadedEvent.emit(this.client);
 
             const baseDivision = await this.getBaseDivision();
             this.client.Village.Select(baseDivision.Id);
+            const village = this.dataController.Village.Get(baseDivision.Id);
+            this.client.Viewer.MoveTo(village.center);
+
         };
 
 
