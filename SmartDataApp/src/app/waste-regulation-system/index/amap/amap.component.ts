@@ -43,6 +43,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
     @Output()
     mapLoadedEvent: EventEmitter<CesiumMapClient> = new EventEmitter();
+    @Output()
+    patrolButtonClicked: EventEmitter<void> = new EventEmitter();
 
     @Output()
     mapPanelListItemClickedEvent: EventEmitter<MapListItem<Division | GarbageStation>> = new EventEmitter();
@@ -475,6 +477,11 @@ export class AMapComponent implements AfterViewInit, OnInit {
     }
 
 
+    Button1Clicked() {
+        if (this.patrolButtonClicked[0]) {
+            this.patrolButtonClicked[0].emit();
+        }
+    }
 
 }
 

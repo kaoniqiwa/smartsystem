@@ -153,7 +153,45 @@ right: -79px;
   bottom: 8px;
   left: 0px;
 }
-
+.map-bar.btn-list
+{
+  position: absolute;
+  bottom: 8px;
+  left: 33px;
+  z-index: 0;
+}
+.map-bar.btn-list .btn {
+  position: relative;
+  
+  bottom: 0px;
+  left: 0px;
+  width: 28px;
+  height: 24px;
+  background-color: #2d76ce;
+  cursor: pointer;
+  clip-path: polygon(
+      25% 0%,
+      75% 0%,
+          100% 50%,                    
+          75% 100%,
+          25% 100%,
+          0% 50%);
+          padding: 1px;
+}
+.map-bar.btn-list .btn .inner{
+  height: 100%;
+  width: 100%;
+  background-color: #040b39;
+  clip-path: polygon(
+      25% 0%,
+      75% 0%,
+          100% 50%,                    
+          75% 100%,
+          25% 100%,
+          0% 50%);
+          color: white;
+          line-height: 20px;
+}
 
 
 

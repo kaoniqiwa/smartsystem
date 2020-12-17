@@ -60,7 +60,7 @@
         0% calc(100% - 10px)
     );
 
-
+    z-index: 1;
     overflow: hidden;
     padding: 2px;
     
