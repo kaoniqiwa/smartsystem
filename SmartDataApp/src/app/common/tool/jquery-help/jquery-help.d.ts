@@ -1,6 +1,7 @@
 import { EventDataObject } from "../../../data-core/model/waste-regulation/event-data-object";
 
 export declare function moveView(targetDomId:string,moveDomId:string,offsetX:number,offsetY:number);
+export declare function moveView2(targetDomId:string,moveDomId:string,offsetX:number,offsetY:number);
 
 export declare function domClick(domId:string);
 

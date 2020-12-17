@@ -2,7 +2,7 @@ export class EnumHelper {
     cameraType: Map<number, string>;
     cameraState: Map<number, string>;
     eventType: Map<number, string>;
-    cameraUsage: { garbageFull: number[] };
+    cameraUsage: { garbageFull: number[] ,outside:number[]};
     constructor() {
         this.cameraState = new Map();
         this.cameraType = new Map();
@@ -21,7 +21,8 @@ export class EnumHelper {
         this.eventType.set(EventTypeEnum.GarbageFull, '垃圾满溢');
 
         this.cameraUsage = {
-            garbageFull: [8, 9, 10, 11, 12, 13, 14, 15]
+            garbageFull: [8, 9, 10, 11, 12, 13, 14, 15],
+            outside:[4,5,6,7,12,13,14,15]
         }
     }
 }

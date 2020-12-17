@@ -1,7 +1,18 @@
 
+/**
+ *  绝对X,Y坐标
+ */
 function moveView(targetDomId, moveDomId, offsetX, offsetY) {
     const target = $('#' + targetDomId), move = $('#' + moveDomId)
     move.css({ 'left': target.offset().left + offsetX + 'px', 'top': target.offset().top + offsetY + 'px' })
+}
+
+/**
+ *  相对(父元素)位置:
+ */
+function moveView2(targetDomId, moveDomId, offsetX, offsetY) {
+    const target = $('#' + targetDomId), move = $('#' + moveDomId)
+    move.css({ 'left': target.position().left + offsetX + 'px', 'top': target.position().top + offsetY + 'px' })
 }
 
 function domSize(domId) {
@@ -117,6 +128,7 @@ function downloadFile(filename, text) {
 }
 
 exports.moveView = moveView;
+exports.moveView2 = moveView2;
 exports.domClick = domClick;
 exports.domClickFn = domClickFn;
 exports.inputFileRead = inputFileRead;
