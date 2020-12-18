@@ -280,4 +280,10 @@
     box-shadow:#33ff66 0px 0px 18px inset;
 }
 
-
+.model{
+    color:rgb(216, 244, 255);
+}
+.model:hover
+{
+    color: #6997ff;
+}

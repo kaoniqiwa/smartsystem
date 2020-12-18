@@ -6,12 +6,12 @@
       <div class="pull-right">
         <a href="javascript:void(0)" *ngIf="hasControl" title="预览模式" (click)="changePlayMode(playMode_.live)"
           [class.hide]="playMode==playMode_.live">
-          <i class="howell-icon-play m-r-10" style="color:rgb(216, 244, 255)">
+          <i class="howell-icon-play m-r-10 model">
           </i>
         </a>
         <a href="javascript:void(0)" *ngIf="hasControl" title="回放模式" (click)="changePlayMode(playMode_.vod)"
           [class.hide]="playMode==playMode_.vod">
-          <i class="howell-icon-replay m-r-10" style="color:rgb(216, 244, 255)">
+          <i class="howell-icon-replay m-r-10 model">
           </i>
         </a>
         <i class="howell-icon-Close alert-window-close-btn" (click)="closeWindow()"></i>
