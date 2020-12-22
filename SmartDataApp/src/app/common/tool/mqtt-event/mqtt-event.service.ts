@@ -34,4 +34,8 @@ export class MQTTEventService {
         }, 500); 
         
     }
+
+    unlistenerIllegalDrop(){
+        this.mqtt.ngOnDestroy();
+    }
 }

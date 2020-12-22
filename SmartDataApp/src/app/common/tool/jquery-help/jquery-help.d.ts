@@ -31,3 +31,7 @@ export declare function clearCanvas(canvasId:string);
 export declare function createVideo(forId:string,src:string,parentDomId:string);
 
 export declare function downloadFile(filename:string, text:string);
+
+export declare function launchIntoFullscreen(id:string);
+ 
+export declare function exitFullscreen();

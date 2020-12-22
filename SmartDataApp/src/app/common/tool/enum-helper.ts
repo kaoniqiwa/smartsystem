@@ -3,10 +3,11 @@ export class EnumHelper {
     cameraState: Map<number, string>;
     eventType: Map<number, string>;
     cameraUsage: { garbageFull: number[] ,outside:number[]};
+    stationState: { full:number[],err:number[]}
     constructor() {
         this.cameraState = new Map();
         this.cameraType = new Map();
-        this.eventType = new Map();
+        this.eventType = new Map(); 
         this.cameraType.set(1, '枪机');
         this.cameraType.set(2, '球机');
         this.cameraType.set(3, '半球');
@@ -23,6 +24,11 @@ export class EnumHelper {
         this.cameraUsage = {
             garbageFull: [8, 9, 10, 11, 12, 13, 14, 15],
             outside:[4,5,6,7,12,13,14,15]
+        }
+
+        this.stationState ={ 
+            full:[1,5,9,13],
+            err:[2,3,6,7,10,11,14,15]
         }
     }
 }

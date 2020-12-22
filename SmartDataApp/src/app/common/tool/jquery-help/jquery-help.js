@@ -127,6 +127,32 @@ function downloadFile(filename, text) {
     download(text, filename, "text/plain");
 }
 
+function launchIntoFullscreen(id){
+    var element=document.getElementById(id);
+    if(element.requestFullscreen){
+        element.requestFullscreen();
+    }
+    else if(element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+    }
+    else if(element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+    }
+    else if(element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+    }
+}
+
+function exitFullscreen() {
+    if(document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if(document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+    } else if(document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    }
+}
+
 exports.moveView = moveView;
 exports.moveView2 = moveView2;
 exports.domClick = domClick;
@@ -143,3 +169,5 @@ exports.domSize = domSize;
 exports.clearCanvas = clearCanvas;
 exports.createVideo=createVideo;
 exports.downloadFile=downloadFile;
+exports.launchIntoFullscreen=launchIntoFullscreen;
+exports.exitFullscreen=exitFullscreen;
