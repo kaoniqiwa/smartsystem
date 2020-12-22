@@ -14,7 +14,6 @@ function WSPlayer(args) {
     this.volume = 0;
 
     var waitStopHandle;
-    var waitStopHandle;
 
     var wsPlayerState = {
         ready: 0,
@@ -410,7 +409,9 @@ function WSPlayer(args) {
 
                 plugin.JS_Play(that.url, {
                     onPlaying: function () {
-                        element.className = element.className.replace(/ loading/g, "")
+                        element.className = element.className.replace(/ loading/g, "");
+
+                        that.status = wsPlayerState.playing;                        
                     },
                     getPosition: function (p) {
                         if (p.data) {
@@ -446,8 +447,27 @@ function WSPlayer(args) {
                         }
                     }
                 }, 0).then(() => {
-                    that.status = wsPlayerState.playing;
+                    if (that.onPlaying) {
+                        try {
+                            that.onPlaying();
+                        } catch (ex) { console.error(ex) }
+                    }
+                    if (that.soundOpened) {
+                        var openSound = function () {
+                            setTimeout(function () {
+                                if (that.status == wsPlayerState.playing) {
+                                    setTimeout(function () {
+                                        plugin.JS_OpenSound(0);
+                                        console.warn("sound");
+                                    }, 500 * 3)
 
+                                } else {
+                                    openSound();
+                                }
+                            }, 100);
+                        }
+                        openSound();
+                    }
                 });
 
 
@@ -542,6 +562,9 @@ function WSPlayer(args) {
         });
     }
 
+    this.onStoping;
+    this.onPlaying;
+
 
 
 
@@ -628,6 +651,11 @@ function WSPlayer(args) {
             });
         }
         finally {
+            if (this.onStoping) {
+                try {
+                    that.onStoping();
+                } catch (ex) { console.error(ex) }
+            }
             waitStopHandle = setTimeout(() => {
                 clearTimeout(waitStopHandle);
                 waitStopHandle = null;
