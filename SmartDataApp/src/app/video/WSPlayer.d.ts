@@ -51,10 +51,10 @@ declare class WSPlayer {
     // 下载
     download(filename: string, type: string): void;
     // 视频正在播放
-    onPlaying:()=>{};
+    onPlaying:()=>void;
     // 视频正在停止
-    onStoping:()=>{};
-    onButtonClicked:(btn:ButtonName)=>{}
+    onStoping:()=>void;
+    onButtonClicked:(btn:ButtonName)=>void
 
 }
 declare enum ButtonName{
