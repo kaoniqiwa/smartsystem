@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { ViewsModel } from "../../../common/abstract/base-view";
 import { BusinessParameter } from "../../../common/interface/IBusiness";
 import { BaseBusinessRefresh } from "../../../common/tool/base-business-refresh";
-import { DivisionTypeEnum } from "../../../common/tool/enum-helper";
+import { DivisionTypeEnum, EnumHelper } from "../../../common/tool/enum-helper";
 import { MessageBar } from "../../../common/tool/message-bar";
 import { HeaderSquareListComponent } from "../../../shared-module/header-square-list/header-square-list.component";
 import { BusinessViewComponetConstructor } from "./business-card-slot.service";
@@ -18,7 +18,12 @@ import { FillMode } from "../../../shared-module/business-component/event-histor
 import { ColorEnum } from "../../../shared-module/card-component/card-content-factory";
 import { CameraStateTableEnum } from "../../../shared-module/business-component/garbage-station-cameras/business/camera-table.service";
 import { GarbageStationRequestService } from "../../../data-core/repuest/garbage-station.service";
-
+import { MediumPicture } from "../../../data-core/url/aiop/resources";
+import { GarbageStation } from "../../../data-core/model/waste-regulation/garbage-station";
+import { GetEventRecordsParams } from "../../../data-core/model/waste-regulation/illegal-drop-event-record";
+import { TheDayTime } from "../../../common/tool/tool.service";
+import { ListAttribute } from "../../../common/tool/table-form-helper";
+import { EventRequestService } from "../../../data-core/repuest/Illegal-drop-event-record";
 @Injectable({
     providedIn: 'root'
 })
@@ -37,7 +42,8 @@ export class DivisionBusinessService {
     inspectionView = false;
     stationCameraStateTable: CameraStateTableEnum;
     divisionsId = '';
-    constructor(private cameraService: CameraRequestService
+    constructor(private cameraService: CameraRequestService 
+        ,private eventRequestService: EventRequestService
         , private stationService: GarbageStationRequestService) {
 
     }
@@ -111,27 +117,57 @@ export class DivisionBusinessService {
                     * 
                     * 抓图
                     */
-                    x.list[0].view.btnControl = async (i) => {
+                    x.list[0].view.btnControl = async (i) => { 
                         if (i == null)
+                           {
                             this.inspectionView = false;
+                           }
                         else {
                             const item = i as { 
                                 g:Gallery,
                                 msg:boolean
-                            };
+                            } ,enumHelper = new EnumHelper()
+                            , pic=new MediumPicture()
+                            , state = (gs:GarbageStation) => {                        
+                                if (gs.StationState == 0) return '正常';
+                                else if (enumHelper.stationState.err.indexOf(gs.StationState) > -1)
+                                    return '异常';
+                                else if (enumHelper.stationState.full.indexOf(gs.StationState) > -1)
+                                    return '满溢';
+                            };;
                             if (item.g && item.g.title) {
-                                const data = await this.stationService.manualCapture(item.g.title.id).toPromise();
-                                if (data && data.Data) {
-                                    data.Data.map(m => {
-                                        if (m.Result) {
-                                            const desc = item.g.imgDesc.find(i => i.tag.id == m.CameraId);
+                                /**更新投放点 */
+                               const station = await this.stationService.get(item.g.title.id).toPromise();
+                                if(station&&station.Data){
+                                    item.g.title.state = state(station.Data); 
+                                    station.Data.Cameras.map(m => {
+                                        if (m.ImageUrl) { 
+                                            const desc = item.g.imgDesc.find(i => i.tag.id == m.Id);
                                             if (desc)
-                                                desc.src = m.Url;
+                                                desc.src = pic.getData(m.ImageUrl);
                                         }
                                     });
                                 }
-                                if(item.msg)
-                                   new MessageBar().response_success();
+                                this.getStationsIllegalDropEvent([item.g.title.id]).subscribe(x=>{
+                                    if(x.Data&&x.Data.Data)
+                                        item.g.title.eventNumber=x.Data.Data.length;                                        
+                                    
+                                });
+                                this.stationService.manualCapture(item.g.title.id).subscribe(data=>{
+                                    console.log(data);
+                                    
+                                    if (data && data.Data) {
+                                        data.Data.map(m => {
+                                            if (m.Result) { 
+                                                const desc = item.g.imgDesc.find(i => i.tag.id == m.CameraId);
+                                                if (desc)
+                                                    desc.src = pic.getData(m.Id);
+                                            }
+                                        });
+                                    }
+                                    if(item.msg)
+                                       new MessageBar().response_success();
+                                });    
                             }
 
                         }
@@ -139,6 +175,74 @@ export class DivisionBusinessService {
                 }
             }
         }, 1000);
+    }
+
+    bindingEvent2(){
+        setTimeout(() => {
+        for (const x of this.componets) { 
+            if (x.list[0].view instanceof GalleryRollPageComponent) {
+               /**
+                * 
+                * 抓图
+                */
+                x.list[0].view.btnControl = async (i) => {
+                    if (i == null)
+                       {
+                        this.inspectionView = false;
+                       }
+                    else {
+                        const item = i as { 
+                            g:Gallery,
+                            msg:boolean
+                        } ,enumHelper = new EnumHelper()
+                        , pic=new MediumPicture()
+                        , state = (gs:GarbageStation) => {                        
+                            if (gs.StationState == 0) return '正常';
+                            else if (enumHelper.stationState.err.indexOf(gs.StationState) > -1)
+                                return '异常';
+                            else if (enumHelper.stationState.full.indexOf(gs.StationState) > -1)
+                                return '满溢';
+                        };;
+                        if (item.g && item.g.title) {
+                            /**更新投放点 */
+                           const station = await this.stationService.get(item.g.title.id).toPromise();
+                            if(station&&station.Data){
+                                item.g.title.state = state(station.Data); 
+                                station.Data.Cameras.map(m => {
+                                    if (m.ImageUrl) { 
+                                        const desc = item.g.imgDesc.find(i => i.tag.id == m.Id);
+                                        if (desc)
+                                            desc.src = pic.getData(m.ImageUrl);
+                                    }
+                                });
+                            }
+                            this.getStationsIllegalDropEvent([item.g.title.id]).subscribe(x=>{
+                                if(x.Data&&x.Data.Data)
+                                    item.g.title.eventNumber=x.Data.Data.length;                                        
+                                
+                            });
+                            this.stationService.manualCapture(item.g.title.id).subscribe(data=>{
+                                console.log(data);
+                                
+                                if (data && data.Data) {
+                                    data.Data.map(m => {
+                                        if (m.Result) { 
+                                            const desc = item.g.imgDesc.find(i => i.tag.id == m.CameraId);
+                                            if (desc)
+                                                desc.src = pic.getData(m.Id);
+                                        }
+                                    });
+                                }
+                                if(item.msg)
+                                   new MessageBar().response_success();
+                            });    
+                        }
+
+                    }
+                }
+            }
+        }
+    });
     }
 
     changeMqttState(state: boolean) {
@@ -149,6 +253,16 @@ export class DivisionBusinessService {
                 x.list[0].view.model.imgDesc1IconColor = state ? ColorEnum["green-text"] : ColorEnum["red-text"];
             }
         }
+    }
+
+    getStationsIllegalDropEvent(stationIds:string[]){
+        const param = new GetEventRecordsParams(), day = TheDayTime(new Date());
+        param.PageIndex = 1;
+        param.BeginTime = day.begin.toISOString();
+        param.EndTime = day.end.toISOString();
+        param.PageSize= new ListAttribute().maxSize;
+        param.StationIds=stationIds;
+        return this.eventRequestService.list(param);
     }
 
     clearEventView() {

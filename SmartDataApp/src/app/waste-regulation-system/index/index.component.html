@@ -104,23 +104,23 @@
         </business-card-grid>
       </ng-container>
     </div>
-    <div gdColumn="auto / span 2" gdRow="auto / span 2">
+    <div id="window-app" gdColumn="auto / span 2" gdRow="auto / span 2">
       <div class="card-wrapper2">
-        <div class="m-t-20 p-l-10 p-r-10 fill-width collapse" style="height: 76px; position: absolute;">
+        <div class="m-t-20 p-l-10 p-r-10 fill-width collapse"  [class.in]="!divisionBusinessService.inspectionView"
+        style="height: 76px; position: absolute;">
           <ng-container *ngIf="divisionGarbageSpCardConfig">
             <business-card-grid [cardConfig]="divisionGarbageSpCardConfig">
             </business-card-grid>
           </ng-container>
         </div>
         <div class="collapse fill-height fill-width" [class.in]="!divisionBusinessService.inspectionView"> 
- <app-amap #aMap (mapLoadedEvent)="mapLoaded($event)" (patrolButtonClicked)="divisionBusinessService.inspectionView=!divisionBusinessService.inspectionView"></app-amap>
+ <app-amap #aMap (mapLoadedEvent)="mapLoaded($event)" (patrolButtonClicked)="showInspectionView()"></app-amap>
         </div>
         
-        <div class="fill-width fill-height p-20 collapse" [class.in]="divisionBusinessService.inspectionView">
-          <ng-container *ngIf="inspectionConfig">
+        <div class="fill-width fill-height p-20" *ngIf="inspectionConfig&&divisionBusinessService.inspectionView">
+          
             <business-card-grid [cardConfig]="inspectionConfig">
-            </business-card-grid>
-          </ng-container>
+            </business-card-grid> 
         </div> 
         <div class="card-angle top-left"></div>
         <div class="card-angle top-right"></div>

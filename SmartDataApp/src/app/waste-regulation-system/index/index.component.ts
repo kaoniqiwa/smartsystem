@@ -148,4 +148,8 @@ export class IndexComponent implements OnInit {
     this.user.clear = null;
   }
 
+  showInspectionView(){
+    this.divisionBusinessService.inspectionView=true;
+    this.divisionBusinessService.bindingEvent2(); 
+  }
 }

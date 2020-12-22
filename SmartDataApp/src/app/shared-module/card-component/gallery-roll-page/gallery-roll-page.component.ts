@@ -1,12 +1,14 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { GalleryRollPage } from "./gallery-roll-page";
 import { BasisCardComponent, ViewsModel } from '../../../common/abstract/base-view';
-import { pageCount } from "../../../common/tool/tool.service";
 import { ResourceSRServersRequestService } from "../../../data-core/repuest/resources.service";
 import { GetPreviewUrlParams } from "../../../data-core/model/aiop/video-url";
 import { HWSPlayerDirective, HWSPlayerOptions } from "../../../common/directive/wsplayer-directive";
 import { moveView2, domSize } from "../../../common/tool/jquery-help/jquery-help";
-import { MessageBar } from "../../../common/tool/message-bar";
+import { ArrayPagination } from "../../../common/tool/tool.service";
+import { UserDalService } from '../../../dal/user/user-dal.service';
+import { SessionUser } from "../../../common/tool/session-user";
+import { launchIntoFullscreen, exitFullscreen } from "../../../common/tool/jquery-help/jquery-help";
 @Component({
   selector: 'hw-gallery-roll-page',
   templateUrl: './gallery-roll-page.component.html',
@@ -19,62 +21,126 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
   @ViewChild(HWSPlayerDirective)
   player: HWSPlayerDirective;
   playing = false;
+  fullscreen = false;
   currentPlayId = '';
   playViewSize = {
     width: 100,
     height: 100
   }
+  carousel = {
+    time: 120,
+    interval: -1,
+    fn: null
+  }
   autoChangePage = true;
-  constructor(private srRequestService: ResourceSRServersRequestService) {
+  galleryHeight = '86%';
+  readonly interval_inspection_key = '99';
+  user = new SessionUser();
+  constructor(
+    private srRequestService: ResourceSRServersRequestService
+    , private userDalService: UserDalService
+  ) {
     super();
   }
 
 
-  ngOnInit() {
+  async ngOnInit() {
     this.loadDatas(new ViewsModel());
+    this.carousel.fn = () => {
+      if (this.model && this.autoChangePage)
+        this.nextImgGroup();
+    }
 
-    window.setInterval(() => {
-      if (this.model && this.autoChangePage) {
-        this.model.index += 1;
-        if (this.model.index > this.model.items.size)
-          this.model.index = 1;
-      }
-      this.tagClick(null,false);
-    }, 60 * 1000)
-
+    /**实时监控 播放界面 */
     window.setInterval(() => {
       if (this.playing && this.currentPlayId) {
         const val = this.model.items.get(this.model.index)
           , id = val.imgDesc.find(x => x.tag.id == this.currentPlayId);
-
-
         if (id == null) {
           this.playing = false;
           this.currentPlayId = '';
         }
       }
-    }, 10)
+    }, 10);
+    window.addEventListener("resize", () => {
+      const size = domSize('window-app');
+      if (window.screen.width == size.width) {
+        this.galleryHeight = '92%';
+      }
+      else {
+        this.galleryHeight = '86%';
+        this.fullscreen = false;
+      }
+      // this.player.stopVideo();
+      // this.playing = false;
+      setTimeout(() => {
+        if (this.playing) {
+          const vSize = domSize('item__' + this.currentPlayId); console.log(vSize);
+
+          this.player.player.clientWidth = vSize.width;
+          this.player.player.clientHeight = vSize.height;
+          this.player.reSizeView();
+          moveView2('item__' + this.currentPlayId, 'video__view_wrap', 0, 0);
+        }
+      }, 20);
+    });
+
+    var time = await this.userDalService.getUserConfig(this.user.id, this.interval_inspection_key);
+    if (time) this.resetCarousel(parseInt(time));
+
+  }
+
+  changeWindow() {
+    if (this.fullscreen)
+      exitFullscreen();
+    else launchIntoFullscreen('window-app')
+    this.fullscreen = !this.fullscreen;
+  }
+
+  resetCarousel(time: number, save = false) {
+    window.clearInterval(this.carousel.interval);
+    this.carousel.time = time;
+    this.carousel.interval = window.setInterval(this.carousel.fn, this.carousel.time * 1000);
+    if (save)
+      this.userDalService.editUserConfig(this.user.id, this.interval_inspection_key, time + '');
+
+
   }
 
   playState(cameraId: string) {
     return this.playing && cameraId == this.currentPlayId;
   }
 
+  fiveTimeVideo() {
+    setTimeout(() => {
+      this.player.stopVideo();
+      this.playing = false;
+      this.autoChangePage = true;
+    }, 300 * 1000);/**播放5 */
+  }
+
   async playVideo(cameraId: string) {
     this.playViewSize = domSize('item__' + cameraId);
-
+    const videoLive = 4;
     moveView2('item__' + cameraId, 'video__view_wrap', 0, 0);
+    const config = await this.userDalService.getUserConfig(this.user.id, videoLive + '');
     const params = new GetPreviewUrlParams();
     params.CameraId = cameraId;
     params.Protocol = 'ws-ps';
-    params.StreamType = 1;
+    params.StreamType = parseInt(config);
     const response = await this.srRequestService.PreviewUrls(params).toPromise();
 
     setTimeout(() => {
       this.playing = true;
       this.currentPlayId = cameraId;
       const videoOptions = new HWSPlayerOptions(response.Data.Url, '');
-      this.player.playVideo(videoOptions);
+      this.player.reSizeView(this.playViewSize.width, this.playViewSize.height);
+      this.player.playVideo(videoOptions,()=>{
+        this.playing = false;
+      });
+      this.fiveTimeVideo();
+
+       
     });
 
   }
@@ -86,10 +152,29 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
 
   get imgs() {
     const val = this.model.items.get(this.model.index);
-
-    if (val && val.imgDesc)
-      return val.imgDesc.slice(val.index * 3, val.index * 3 + 4);
+    if (val && val.imgDesc) {
+      if (val.imgDesc.length > 4)
+        return ArrayPagination<any>(1, 9, val.imgDesc);
+      else return ArrayPagination<any>(val.index, 4, val.imgDesc);
+    }
     return new Array();
+  }
+
+  setviewSize(num: number) {
+    if (num > 4) return 33.3;
+    else return 50;
+  }
+
+  /**9宫格空白填补 */
+  fillBlank(n: number) {
+    const arr = new Array();
+    if (n > 4)
+      for (let i = 0; i < 9 - n; i++)
+        arr.push(1);
+    else
+      for (let i = 0; i < 4 - n; i++)
+        arr.push(1);
+    return arr;
   }
 
   get title() {
@@ -101,73 +186,64 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
 
   get titleColor() {
     const val = this.model.items.get(this.model.index);
-    if (val)
-      return val.title.color;
-    else return '';
-  }
-
-  get imgsPage() {
-    const val = this.model.items.get(this.model.index), num = new Array();
-
-    if (val) {
-      const p = pageCount(val.imgDesc.length, 4);
-      for (let i = 0; i < parseInt(p + ''); i++)
-        num.push(1);
+    var color = '';
+    if (val && val.title.state) {
+      switch (val.title.state) {
+        case '正常':
+          color = 'green-text';
+          break;
+        case '满溢':
+          color = 'orange-text'
+          break;
+        case '异常':
+          color = 'red-text'
+          break;
+        default:
+          break;
+      }
     }
-    return num;
+    return color;
   }
 
-  get currentImgPageNum() {
+  get stateText() {
     const val = this.model.items.get(this.model.index);
-    if (val) return val.index;
+    if (val && val.title.state)
+      return val.title.state;
+  }
+
+  get eventNum() {
+    const val = this.model.items.get(this.model.index);
+    if (val)
+      return val.title.eventNumber;
     else return 0;
   }
 
-  prevImgPage() {
-    const val = this.model.items.get(this.model.index);
-    val.index -= 1;
-    this.playing = false;
-    this.currentPlayId = '';
-  }
-
-  nextImgPage() {
-    const val = this.model.items.get(this.model.index);
-    val.index += 1;
-    this.playing = false;
-    this.currentPlayId = '';
-
-  }
-
-  get minImgPage() {
-    const val = this.model.items.get(this.model.index);
-    if (val == null || val.imgDesc == null) return false;
-    var max = pageCount(val.imgDesc.length, 4);
-
-    return val.index <= parseInt(max + '') && val.index > 0;
-
-  }
-
-  get maxImgPage() {
-    const val = this.model.items.get(this.model.index);
-    if (val == null || val.imgDesc == null) return false;
-    var max = pageCount(val.imgDesc.length, 4);
-    return val.index < parseInt(max + '') - 1;
-
-  }
-
+  // /**下一组图片 */
   nextImgGroup() {
     this.model.index += 1;
     if (this.model.index > this.model.items.size)
-      this.model.index = this.model.items.size;
+      this.model.index = 1;
+    this.resetCarousel(this.carousel.time);
+    this.tagClick(null, false);
   }
 
+  /**上一组图片 */
   prevImgGroup() {
     this.model.index -= 1;
     if (this.model.index <= 0)
-      this.model.index = 1;
+      this.model.index = this.model.items.size;
+    this.resetCarousel(this.carousel.time);
+
   }
 
-  tagClick(param: string,msg:boolean) {
+
+  /**
+   * 图片更新
+   * @param param 
+   * @param msg 是否弹消息
+   */
+  tagClick(param: string, msg: boolean) {
+
     if (param) {
       this.btnControl(null);
     }
@@ -175,11 +251,12 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
       const val = this.model.items.get(this.model.index);
       if (this.btnControl && this.model) {
         this.btnControl({
-           g:val,
-           msg:msg
+          g: val,
+          msg: msg
         });
       }
     }
-
   }
-}
+
+
+} 

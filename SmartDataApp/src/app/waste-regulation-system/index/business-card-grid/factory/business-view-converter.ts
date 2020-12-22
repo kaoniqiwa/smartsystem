@@ -21,13 +21,13 @@ import { IConverter } from "../../../../common/interface/IConverter";
 import { Injector, Injectable } from '@angular/core';
 import { LineOption } from '../../../../common/directive/echarts/echart';
 import { Percentage, TimeInterval, DateInterval } from '../../../../common/tool/tool.service'
-import { DivisionTypeEnum,EnumHelper } from "../../../../common/tool/enum-helper";
+import { DivisionTypeEnum, EnumHelper, StationStateEnum } from "../../../../common/tool/enum-helper";
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
 import { EventNumber } from '../../../../data-core/model/waste-regulation/event-number';
 import { ColorEnum } from '../../../../shared-module/card-component/card-content-factory';
 import { CameraStateTableEnum } from "../../../../shared-module/business-component/garbage-station-cameras/business/camera-table.service";
 import { isBoolean } from 'util';
-import { SessionUser } from "../../../../common/tool/session-user"; 
+import { SessionUser } from "../../../../common/tool/session-user";
 export class IllegalDropHistoryCardConverter implements IConverter {
 
     Convert<IllegalDropEvent, ViewsModel>(input: IllegalDropEvent, output: ViewsModel): ViewsModel;
@@ -285,48 +285,49 @@ export class GarbageStationInspectionCardConverter implements IConverter {
         output.views = [];
         output.pageSize = 1;
         output.pageIndex = 1;
-        if (input instanceof GarbageStationInspection) {
+        if (input instanceof GarbageStationInspection) { 
             const model = new GalleryRollPage()
-            ,pic = new MediumPicture();
+                , pic = new MediumPicture();
             model.items = new Map();
-            model.leftBottom = {
-                color:ColorEnum["red-text"]
-                ,text:0
+            model.leftBottom = { 
+                text: 0
             }
-            input.todayEventNumbers.map(x=>{
-                model.leftBottom.text+=x.DayNumber;
-            });
+
             for (let i = 0; i < input.garbageStations.length; i++) {
-              
+
                 const gs = input.garbageStations[i],
-                enumHelper = new EnumHelper(),
-                gallery=new Gallery(),state = ()=>{
-                    if(gs.StationState==0)return ColorEnum["green-text"];
-                    else if(gs.StationState==null|| gs.StationState == 2)return ColorEnum["red-text"];
-                    else if(gs.StationState==1)return ColorEnum["orange-text"];
-                }; 
-                gallery.title= {
-                    color:  state(),
-                    text:gs.Name,
-                    id:gs.Id
+                    enumHelper = new EnumHelper(),
+                    stationEvents = input.todayStationsEvent.filter(x => x.Data.StationId == gs.Id),
+                    gallery = new Gallery(), state = () => {                        
+                        if (gs.StationState == 0) return '正常';
+                        else if (enumHelper.stationState.err.indexOf(gs.StationState) > -1)
+                            return '异常';
+                        else if (enumHelper.stationState.full.indexOf(gs.StationState) > -1)
+                            return '满溢';
+                    };
+                gallery.title = { 
+                    state:state(),
+                    text: gs.Name,
+                    id: gs.Id,
+                    eventNumber: stationEvents.length
                 };
-                gallery.imgDesc=new Array();
-                const c1=  gs.Cameras.filter(y=>enumHelper.cameraUsage.outside.indexOf(y.CameraUsage)>-1)
-                ,c2 = gs.Cameras.filter(y=>enumHelper.cameraUsage.outside.indexOf(y.CameraUsage)==-1);
-                // console.log(c1,c2);
-                
-                [...c1,...c2].map(x=>{  
+                gallery.imgDesc = new Array();
+                gs.Cameras.sort((a, b) => {
+                    return a.CameraUsage - b.CameraUsage;
+                }).sort((a, b) => {
+                    return ''.naturalCompare(a.Name, b.Name);
+                }).map(x => {
                     gallery.imgDesc.push({
-                        src:pic.getJPG(x.ImageUrl),
-                        tag: {                    
-                           id:x.Id
+                        src: pic.getJPG(x.ImageUrl),
+                        tag: {
+                            id: x.Id
                         },
-                        desc:x.Name,
-                        state:x.OnlineStatus !=0
+                        desc: x.Name,
+                        state: x.OnlineStatus != 0
                     });
                 });
-               
-                model.items.set(i+1,gallery);
+
+                model.items.set(i + 1, gallery);
             }
             output.views = [model];
         }

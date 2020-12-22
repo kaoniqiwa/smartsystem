@@ -11,10 +11,14 @@ export class GarbageInspection extends BaseBusinessRefresh {
     async getData() {
         const divisionsId = this.businessParameter.map.get('divisionsId')
             , model = new GarbageStationInspection()
-            , statisticNumber = await (this.dataServe as StatisticalDataBufferService).getDivisionStatisticNumber(divisionsId)
             , garbageStations = await (this.dataServe as StatisticalDataBufferService).getGarbageStations(divisionsId);
         model.garbageStations = garbageStations;
-        model.todayEventNumbers = statisticNumber.TodayEventNumbers;
+        const stationIds = new Array<string>();
+        garbageStations.map(x=>stationIds.push(x.Id));
+        const events =  await (this.dataServe as StatisticalDataBufferService).getStationsIllegalDropEvent(stationIds).toPromise();
+         
+        if(events&&events.Data)
+             model.todayStationsEvent = events.Data.Data;
         return model;
     }
 }

@@ -13,6 +13,9 @@ import { Md5 } from 'ts-md5/dist/md5';
 import { GarbageStationNumberStatistic } from "../../../../data-core/model/waste-regulation/garbage-station-number-statistic";
 import { GetGarbageStationStatisticNumbersParams } from '../../../../data-core/model/waste-regulation/garbage-station-number-statistic';
 import { GarbageStation, GetGarbageStationsParams } from '../../../../data-core/model/waste-regulation/garbage-station';
+import { EventRequestService } from "../../../../data-core/repuest/Illegal-drop-event-record";
+import { GetEventRecordsParams,IllegalDropEventRecord } from "../../../../data-core/model/waste-regulation/illegal-drop-event-record";
+ 
 @Injectable({
     providedIn: 'root'
 })
@@ -27,13 +30,24 @@ export class StatisticalDataBufferService extends ListAttribute implements IBusi
     readonly division = 'Division';
     readonly garbageStation = 'GarbageStation_';
     constructor(private divisionService: DivisionRequestService
-        , private garbageStationService: GarbageStationRequestService) {
+        , private garbageStationService: GarbageStationRequestService
+        ,private eventRequestService: EventRequestService ) {
         super();
     }
 
     cacheReset() {
         this.cache.reset();
     }
+
+    getStationsIllegalDropEvent(stationIds:string[]){
+        const param = new GetEventRecordsParams(), day = TheDayTime(new Date());
+        param.PageIndex = 1;
+        param.BeginTime = day.begin.toISOString();
+        param.EndTime = day.end.toISOString();
+        param.PageSize= this.maxSize;
+        param.StationIds=stationIds;
+        return this.eventRequestService.list(param);
+    } 
 
     async getGarbageStations(divisionsId: string) {
         var result = this.cache.get<GarbageStation[]>(this.garbageStation + Md5.hashStr(divisionsId) as string);
