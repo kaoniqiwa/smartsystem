@@ -219,6 +219,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 }
                 finally {
                     list['style'].display = 'block';
+                    const status = document.getElementsByClassName('map-bar status')[0];
+                    status['style'].display = 'none';
                 }
 
             }
