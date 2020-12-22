@@ -88,28 +88,36 @@ function WSPlayer(args) {
         if (that.tools.control.play) {
             that.tools.control.play.addEventListener("click", function () {
                 switch (that.status) {
-                    case wsPlayerState.ready:
+                    case wsPlayerState.ready:                        
                         that.play();
+                        buttonClick("play");
                         break;
                     case wsPlayerState.end:
                         that.seek(0);
                         that.resume();
+                        buttonClick("resume");
                         break;
                     case wsPlayerState.fast:
                     case wsPlayerState.slow:
                         //that.play();
                         that.speedResume();
-
+                        buttonClick("resume");
                         break;
                     case wsPlayerState.pause:
 
                         that.resume();
+                        buttonClick("resume");
                         break;
                     case wsPlayerState.playing:
-                        if (current_args.mode == wsPlayerMode.vod)
+                        if (current_args.mode == wsPlayerMode.vod){
                             that.pause();
-                        else
+                            buttonClick("pause");
+                        }
+                        else{
                             that.stop();
+                            buttonClick("stop");
+                        }
+                            
                         break;
                     default:
                         break;
@@ -120,6 +128,7 @@ function WSPlayer(args) {
         if (that.tools.control.stop) {
             that.tools.control.stop.addEventListener("click", function () {
                 that.stop();
+                buttonClick("stop");
             });
         }
         if (that.tools.control.fullscreen) {
@@ -128,34 +137,39 @@ function WSPlayer(args) {
                     that.fullExit();
                 else
                     that.fullScreen();
+                    buttonClick("fullscreen");
             });
         }
 
         if (that.tools.control.capturepicture) {
             that.tools.control.capturepicture.addEventListener("click", function () {
                 that.capturePicture();
+                buttonClick("capturepicture");
             });
         }
 
         if (that.tools.control.slow) {
             that.tools.control.slow.addEventListener("click", function () {
                 that.slow();
+                buttonClick("slow");
             });
         }
         if (that.tools.control.fast) {
             that.tools.control.fast.addEventListener("click", function () {
                 that.fast();
+                buttonClick("fast");
             });
         }
         if (that.tools.control.forward) {
             that.tools.control.forward.addEventListener("click", function () {
                 that.frame();
+                buttonClick("forward");
             });
         }
         if (that.tools.control.position) {
             that.tools.control.position.addEventListener("mousedown", function () {
                 that.pause();
-                that.tools.control.isMoudseDown = true;
+                that.tools.control.isMoudseDown = true;                
             });
             that.tools.control.position.addEventListener("mouseup", function () {
                 that.tools.control.isMoudseDown = false;
@@ -191,6 +205,7 @@ function WSPlayer(args) {
                         value = 0;
                     that.seek(value);
                 }
+                buttonClick("jump_back");
             });
         }
         if (that.tools.control.jump_forward) {
@@ -203,7 +218,9 @@ function WSPlayer(args) {
                         return;
                     that.seek(value);
                 }
+                buttonClick("jump_forward");
             });
+            
         }
 
         if (that.tools.control.volume.icon) {
@@ -215,7 +232,7 @@ function WSPlayer(args) {
                     that.openSound();
                 }
                 //that.tools.control.volume.value = that.value;
-
+                buttonClick("volume");
             });
         }
 
@@ -566,9 +583,20 @@ function WSPlayer(args) {
 
     this.onStoping;
     this.onPlaying;
+    this.onButtonClicked;
 
-
-
+    function buttonClick(btn) {
+        setTimeout(() => {
+            try {
+                if (that.onButtonClicked) {
+                    that.onButtonClicked(btn);
+                }
+            }
+            catch (ex) {
+                console.error(ex);
+            }
+        }, 0);
+    }
 
 
     // 暂停
@@ -957,7 +985,7 @@ function WSPlayer(args) {
             });
 
             that_tools.control.volume.icon.addEventListener("click", function () {
-
+                buttonClick("volume");
                 setTimeout(function () {
                     if (that_tools.control.volume.value == 0)
                         that_tools.control.volume.value = 80;
