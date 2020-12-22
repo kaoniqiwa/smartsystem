@@ -1118,4 +1118,5 @@
 .player.table-cell .tools:hover .tools-content
 {
     display: table-cell;
+    position: absolute;
 }
