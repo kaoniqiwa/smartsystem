@@ -411,7 +411,7 @@ function WSPlayer(args) {
                     onPlaying: function () {
                         element.className = element.className.replace(/ loading/g, "");
 
-                        that.status = wsPlayerState.playing;                        
+                        that.status = wsPlayerState.playing;
                     },
                     getPosition: function (p) {
                         if (p.data) {
@@ -447,11 +447,13 @@ function WSPlayer(args) {
                         }
                     }
                 }, 0).then(() => {
-                    if (that.onPlaying) {
-                        try {
-                            that.onPlaying();
-                        } catch (ex) { console.error(ex) }
-                    }
+                    setTimeout(() => {
+                        if (that.onPlaying) {
+                            try {
+                                that.onPlaying();
+                            } catch (ex) { console.error(ex) }
+                        }
+                    }, 0);
                     if (that.soundOpened) {
                         var openSound = function () {
                             setTimeout(function () {
@@ -652,9 +654,11 @@ function WSPlayer(args) {
         }
         finally {
             if (this.onStoping) {
-                try {
-                    that.onStoping();
-                } catch (ex) { console.error(ex) }
+                setTimeout(() => {
+                    try {
+                        that.onStoping();
+                    } catch (ex) { console.error(ex) }
+                }, 0);
             }
             waitStopHandle = setTimeout(() => {
                 clearTimeout(waitStopHandle);
