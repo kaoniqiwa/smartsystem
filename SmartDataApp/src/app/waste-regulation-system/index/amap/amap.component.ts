@@ -147,12 +147,14 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
             console.log('this.client.Events.OnLoaded');
 
-            this.refresh();
 
             this.mapLoadedEvent.emit(this.client);
 
             const baseDivision = await this.getBaseDivision();
             this.client.Village.Select(baseDivision.Id);
+
+            this.refresh();
+
             const village = this.dataController.Village.Get(baseDivision.Id);
             this.client.Viewer.MoveTo(village.center);
 
@@ -217,6 +219,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 }
                 finally {
                     list['style'].display = 'block';
+                    const status = document.getElementsByClassName('map-bar status')[0];
+                    status['style'].display = 'none';
                 }
 
             }
