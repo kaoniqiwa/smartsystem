@@ -25,6 +25,8 @@ declare class WSPlayer {
         end: Date,
         current: Date
     }
+    // 外部全屏
+    outsidefullscreen:boolean;
     // 播放视频
     play(): void;
     seek(value: number): void;
