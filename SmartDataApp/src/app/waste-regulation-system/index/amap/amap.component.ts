@@ -261,6 +261,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
 
         this.client.Events.OnElementsClicked = function (objs) {
+            const status = document.getElementsByClassName('map-bar status')[0];
+            status['style'].display = '';
+
             const list = document.getElementsByClassName('map-bar video-list')[0];
             list['style'].display = 'none';
 
@@ -272,6 +275,10 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
         this.client.Events.OnVillageClicked = async (village: CesiumDataController.Village) => {
             if (!village) { return; }
+
+            const status = document.getElementsByClassName('map-bar status')[0];
+            status['style'].display = '';
+
             const list = document.getElementsByClassName('map-bar video-list')[0];
             list['style'].display = 'none';
 
