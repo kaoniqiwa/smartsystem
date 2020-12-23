@@ -1118,5 +1118,8 @@
 .player.table-cell .tools:hover .tools-content
 {
     display: table-cell;
+    
+}
+.player.absolute .tools:hover .tools-content{
     position: absolute;
 }

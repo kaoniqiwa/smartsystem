@@ -88,7 +88,7 @@ function WSPlayer(args) {
         if (that.tools.control.play) {
             that.tools.control.play.addEventListener("click", function () {
                 switch (that.status) {
-                    case wsPlayerState.ready:                        
+                    case wsPlayerState.ready:
                         that.play();
                         buttonClick("play");
                         break;
@@ -109,15 +109,15 @@ function WSPlayer(args) {
                         buttonClick("resume");
                         break;
                     case wsPlayerState.playing:
-                        if (current_args.mode == wsPlayerMode.vod){
+                        if (current_args.mode == wsPlayerMode.vod) {
                             that.pause();
                             buttonClick("pause");
                         }
-                        else{
+                        else {
                             that.stop();
                             buttonClick("stop");
                         }
-                            
+
                         break;
                     default:
                         break;
@@ -137,7 +137,7 @@ function WSPlayer(args) {
                     that.fullExit();
                 else
                     that.fullScreen();
-                    buttonClick("fullscreen");
+                buttonClick("fullscreen");
             });
         }
 
@@ -169,7 +169,7 @@ function WSPlayer(args) {
         if (that.tools.control.position) {
             that.tools.control.position.addEventListener("mousedown", function () {
                 that.pause();
-                that.tools.control.isMoudseDown = true;                
+                that.tools.control.isMoudseDown = true;
             });
             that.tools.control.position.addEventListener("mouseup", function () {
                 that.tools.control.isMoudseDown = false;
@@ -220,7 +220,7 @@ function WSPlayer(args) {
                 }
                 buttonClick("jump_forward");
             });
-            
+
         }
 
         if (that.tools.control.volume.icon) {
@@ -273,6 +273,10 @@ function WSPlayer(args) {
                 if (!e.path[0].fullscreennumber)
                     e.path[0].fullscreennumber = 1;
                 e.path[0].fullscreennumber++;
+                if (that.outsidefullscreen) {
+                    e.path[0].fullscreennumber++;
+                    that.outsidefullscreen = false;
+                }
                 var id = e.path[0].id;
                 window.screens[id] = e.path[0].fullscreennumber % 2 == 0 || document.fullscreen;
 
@@ -304,6 +308,7 @@ function WSPlayer(args) {
     }
 
 
+    this.outsidefullscreen = false;
 
 
 
@@ -707,8 +712,8 @@ function WSPlayer(args) {
             //plugin.JS_FullScreen(0);
             // plugin.JS_Resize(window.screen.width, window.screen.height);
             // resize();
-            // that.FullScreen = true;
             that.FullScreen = true;
+
         });
     }
 
