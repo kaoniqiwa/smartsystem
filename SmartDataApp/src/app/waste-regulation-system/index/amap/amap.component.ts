@@ -58,6 +58,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
     villageGarbages: GarbageStation[];
 
+    private baseDivisionId: string;
 
     srcUrl: any;
     dataController: CesiumDataController.Controller;
@@ -151,6 +152,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             this.mapLoadedEvent.emit(this.client);
 
             const baseDivision = await this.getBaseDivision();
+            this.baseDivisionId = baseDivision.Id;
             this.client.Village.Select(baseDivision.Id);
 
             this.refresh();
@@ -480,6 +482,12 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
     }
 
+    MapReload() {
+        if (this.baseDivisionId) {
+            this.client.Village.Reload(this.baseDivisionId);
+            this.refresh();
+        }
+    }
 
     Button1Clicked() {
         if (this.patrolButtonClicked) {

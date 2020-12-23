@@ -114,6 +114,11 @@ var CesiumMapClient = function (iframe) {
             return doing(function () {
                 return iframe.contentWindow.MapController.SetFloorModel(floorModel);
             });
+        },
+        GetLocation: function (callback) {
+            return doing(function () {
+                return iframe.contentWindow.MapController.Map.GetLocation(callback);
+            });
         }
     }
 
@@ -335,6 +340,14 @@ var CesiumMapClient = function (iframe) {
             return doing(function () {
                 iframe.contentWindow.MapController.Village.Select(villageId);
             });
+        },
+        Reload:function(villageId)
+        {
+            /// <summary>重新加载小区</summary>
+            /// <param name="villageId" type="string">小区ID</param>
+            return doing(function () {
+                iframe.contentWindow.MapController.Reload(villageId);
+            });
         }
     }
 
@@ -500,14 +513,13 @@ var CesiumMapClient = function (iframe) {
             }
         },
         Routing: {
-            Draw: function (positions, type) {
+            Drawing: function (positions, type, opts) {
                 return doing(function () {
-                    return iframe.contentWindow.MapController.Draw.Routing.Draw(positions, type);
+                    return iframe.contentWindow.MapController.Draw.Routing.Draw(positions, type, opts);
                 });
             },
-            Remove: function(id)
-            {
-                return doing(function(){
+            Remove: function (id) {
+                return doing(function () {
                     return iframe.contentWindow.MapController.Draw.Routing.Remove(id);
                 });
             }

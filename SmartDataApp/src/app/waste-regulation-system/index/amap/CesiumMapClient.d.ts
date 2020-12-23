@@ -60,6 +60,7 @@ declare namespace CesiumMap {
         /// <summary>选中小区</summary>
         /// <param name="villageId" type="string">小区ID</param>
         Select: (villageId: string) => string;
+        Reload: (villageId: string) => string;
     }
     interface PointNameController {
         Show: (id?: string, style?: CesiumDataController.GuideboardStyle) => void;
