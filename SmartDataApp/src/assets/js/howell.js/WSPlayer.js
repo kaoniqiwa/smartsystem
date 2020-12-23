@@ -259,6 +259,7 @@ function WSPlayer(args) {
             try {
                 if (that.onViewerDoubleClicked) {
                     if (that.onViewerDoubleClicked()) {
+                        that.FullScreen = true;
                         return;
                     }
                 }
