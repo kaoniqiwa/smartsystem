@@ -256,7 +256,18 @@ function WSPlayer(args) {
         var p = element.getElementsByClassName("parent-wnd")[0];
         p.addEventListener("dblclick", function () {
             console.log("dblclick");
+            try {
+                if (that.onViewerDoubleClicked) {
+                    if (that.onViewerDoubleClicked()) {
+                        return;
+                    }
+                }
+            }
+            catch (ex) {
+                console.error(ex);
+            }
             that.fullScreen();
+
         });
 
         document.addEventListener('fullscreenchange', function (e) {
@@ -589,6 +600,7 @@ function WSPlayer(args) {
     this.onStoping;
     this.onPlaying;
     this.onButtonClicked;
+    this.onViewerDoubleClicked;
 
     function buttonClick(btn) {
         setTimeout(() => {

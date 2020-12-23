@@ -26,7 +26,7 @@ declare class WSPlayer {
         current: Date
     }
     // 外部全屏
-    outsidefullscreen:boolean;
+    outsidefullscreen: boolean;
     // 播放视频
     play(): void;
     seek(value: number): void;
@@ -53,33 +53,35 @@ declare class WSPlayer {
     // 下载
     download(filename: string, type: string): void;
     // 视频正在播放
-    onPlaying:()=>void;
+    onPlaying: () => void;
     // 视频正在停止
-    onStoping:()=>void;
-    onButtonClicked:(btn:ButtonName)=>void
+    onStoping: () => void;
+    onButtonClicked: (btn: ButtonName) => void;
+    // 双击全屏 返回值：是否触发全屏
+    onViewerDoubleClicked: () => boolean;
 
 }
-declare enum ButtonName{
+declare enum ButtonName {
     // 播放
-    play="play",
+    play = "play",
     // 恢复
-    resume="resume",
+    resume = "resume",
     // 暂停
-    pause="pause",
+    pause = "pause",
     // 停止
-    stop="stop",
+    stop = "stop",
     // 全屏
-    fullscreen="fullscreen",
+    fullscreen = "fullscreen",
     // 截图
-    capturepicture="capturepicture",
+    capturepicture = "capturepicture",
     // 慢放
-    slow="slow",
+    slow = "slow",
     // 快放
-    fast="fast",
+    fast = "fast",
     // 单帧
-    forward="forward",
+    forward = "forward",
     // 回跳
-    jump_back="jump_back",
+    jump_back = "jump_back",
     // 跳进
-    jump_forward="jump_forward"
+    jump_forward = "jump_forward"
 }
