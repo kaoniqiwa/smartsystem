@@ -1,5 +1,5 @@
 <ng-container *ngIf="model">
-  <div class="fill-width fill-height" >
+  <div class="fill-width fill-height p-20" >
 
     <div fxLayout="row" fxLayoutAlign="space-between center">
       <div  style="width: 200px;">
@@ -27,7 +27,7 @@
         <a href="javascript:" (click)="tagClick(null,true)" title="刷新" class="m-r-10 capture">
           <i class="howell-icon-restore text-white"></i>
         </a>
-        <a href="javascript:" (click)="changeWindow()" title="全屏" class="m-r-10 capture">
+        <a href="javascript:" (click)="changeWindow('window-app')" title="全屏" class="m-r-10 capture">
           <i class="mdi mdi-fullscreen text-white"></i>
         </a>
         <a href="javascript:" class="close-winow close-winow-wrap" (click)="tagClick('close')">
@@ -43,15 +43,15 @@
             <div style="position: relative;" id="item__{{item.tag.id}}"
               [ngStyle]="{'visibility': playState(item.tag.id)?'hidden':'visible'}"
               class="fill-width fill-height img-wrapper">
-              <img height="100%" width="100%" *ngIf="!item.state" src="{{item.src}}" alt=""
+              <img height="100%" width="100%"   src="{{item.src}}" alt=""
                 onerror="this.src='/assets/img/black-bg.png'" style="background-color: black;">
-              <div *ngIf="item.state" class="fill-height fill-width" style="background-color: black;"></div>
+              <!-- <div *ngIf="item.state" class="fill-height fill-width" style="background-color: black;"></div> -->
               <div class="desc-label-wrapper">
                 <label class="m-0 text-white" style="line-height: 30px;padding: 0 10px;">{{item.desc}}</label>
               </div>
               <div class="fill-width fill-height text-center text-white" *ngIf="item.state" fxLayoutAlign="center center"
               style="position: absolute;top: 0;">NO SIGNAL</div>
-              <div class="fill-width fill-height text-center mask" *ngIf="!item.state" fxLayoutAlign="center center"
+              <div class="fill-width fill-height text-center mask"  fxLayoutAlign="center center"
                 style="position: absolute;top: 0;">
                 <a href="javascript:" (click)="playVideo(item.tag.id);autoChangePage=false;">
                   <div class="howell-icon-play" style="color: rgba(255,255,255,0.7);font-size: 70px;"></div>
@@ -109,7 +109,8 @@
       <div class="collapse" id="video__view_wrap" [class.in]="playing"
         [ngStyle]="{'width': playViewSize.width+'px','height': playViewSize.height+'px'}"
         style="position: absolute;z-index: 1;">
-        <div id="video__view" class="fill-width fill-height player table-cell" HWSPlayer></div>
+        <div id="video__view" [class.absolute]="imgs.length == 4"  [class.table-cell]="imgs.length > 4"
+        class="fill-width fill-height player " HWSPlayer></div>
       </div>
 
     </ng-container>

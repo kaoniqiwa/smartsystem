@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, Output, ViewChild, OnDestroy,} from '@angular/core';
 import { GalleryRollPage } from "./gallery-roll-page";
 import { BasisCardComponent, ViewsModel } from '../../../common/abstract/base-view';
 import { ResourceSRServersRequestService } from "../../../data-core/repuest/resources.service";
@@ -14,14 +14,14 @@ import { launchIntoFullscreen, exitFullscreen } from "../../../common/tool/jquer
   templateUrl: './gallery-roll-page.component.html',
   styleUrls: ['./gallery-roll-page.component.styl']
 })
-export class GalleryRollPageComponent extends BasisCardComponent implements OnInit {
+export class GalleryRollPageComponent extends BasisCardComponent implements OnInit,OnDestroy {
 
-  @Input() model: GalleryRollPage;
+  @Input() model: GalleryRollPage; 
 
   @ViewChild(HWSPlayerDirective)
   player: HWSPlayerDirective;
   playing = false;
-  fullscreen = false;
+  maxWindow = false;
   currentPlayId = '';
   playViewSize = {
     width: 100,
@@ -42,7 +42,9 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
   ) {
     super();
   }
-
+ngOnDestroy(){ 
+  this.player.stopVideo();
+}
 
   async ngOnInit() {
     this.loadDatas(new ViewsModel());
@@ -62,27 +64,8 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
         }
       }
     }, 10);
-    window.addEventListener("resize", () => {
-      const size = domSize('window-app');
-      if (window.screen.width == size.width) {
-        this.galleryHeight = '92%';
-      }
-      else {
-        this.galleryHeight = '86%';
-        this.fullscreen = false;
-      }
-      // this.player.stopVideo();
-      // this.playing = false;
-      setTimeout(() => {
-        if (this.playing) {
-          const vSize = domSize('item__' + this.currentPlayId); console.log(vSize);
-
-          this.player.player.clientWidth = vSize.width;
-          this.player.player.clientHeight = vSize.height;
-          this.player.reSizeView();
-          moveView2('item__' + this.currentPlayId, 'video__view_wrap', 0, 0);
-        }
-      }, 20);
+    window.addEventListener("resize", () => {  
+       this.autoVideoWindowSize(); 
     });
 
     var time = await this.userDalService.getUserConfig(this.user.id, this.interval_inspection_key);
@@ -90,12 +73,27 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
 
   }
 
-  changeWindow() {
-    if (this.fullscreen)
-      exitFullscreen();
-    else launchIntoFullscreen('window-app')
-    this.fullscreen = !this.fullscreen;
+  autoVideoWindowSize(){
+    setTimeout(() => {
+      const size = domSize('video__view_wrap');
+      if (this.playing && window.screen.width != size.width) {
+        const vSize = domSize('item__' + this.currentPlayId); console.log(vSize);
+
+        this.player.player.clientWidth = vSize.width;
+        this.player.player.clientHeight = vSize.height;
+        this.player.reSizeView();
+        moveView2('item__' + this.currentPlayId, 'video__view_wrap', 0, 0);
+      }
+    }, 20);
   }
+
+  changeWindow() {
+    this.maxWindow = !this.maxWindow;
+    this.galleryHeight =this.maxWindow ?'90%': '86%';
+    this.btnControl(this.maxWindow);
+    this.autoVideoWindowSize();
+  }
+
 
   resetCarousel(time: number, save = false) {
     window.clearInterval(this.carousel.interval);
@@ -114,8 +112,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
   fiveTimeVideo() {
     setTimeout(() => {
       this.player.stopVideo();
-      this.playing = false;
-      this.autoChangePage = true;
+      this.playing = false; 
     }, 300 * 1000);/**播放5 */
   }
 
@@ -135,12 +132,13 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
       this.currentPlayId = cameraId;
       const videoOptions = new HWSPlayerOptions(response.Data.Url, '');
       this.player.reSizeView(this.playViewSize.width, this.playViewSize.height);
-      this.player.playVideo(videoOptions,()=>{
-        this.playing = false;
+      this.player.playVideo(videoOptions, () => {
+        this.playing = false; 
+        this.btnControl('stop');
       });
       this.fiveTimeVideo();
+      this.btnControl('play');
 
-       
     });
 
   }
@@ -214,7 +212,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
   get eventNum() {
     const val = this.model.items.get(this.model.index);
     if (val)
-      return val.title.eventNumber;
+      return val.title.eventNumber;  
     else return 0;
   }
 
@@ -225,6 +223,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
       this.model.index = 1;
     this.resetCarousel(this.carousel.time);
     this.tagClick(null, false);
+    this.player.stopVideo();
   }
 
   /**上一组图片 */
@@ -233,7 +232,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
     if (this.model.index <= 0)
       this.model.index = this.model.items.size;
     this.resetCarousel(this.carousel.time);
-
+    this.player.stopVideo();
   }
 
 
