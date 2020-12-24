@@ -55,8 +55,8 @@
           </div>
         </div>
         <div fxFlex="33" fxLayoutAlign="end center ">
-          <app-time-tool> </app-time-tool>      
-          <app-user-tool></app-user-tool> 
+          <app-time-tool> </app-time-tool>
+          <app-user-tool></app-user-tool>
         </div>
       </div>
     </div>
@@ -65,7 +65,7 @@
   </div>
 
 </mat-toolbar>
-<div class="platform-body">
+<div class="platform-body" style="position: relative;">
   <div class="fill-height fill-width hw-content-mask" *ngIf="divisionBusinessService.eventHistoryView">
     <div class="hw-form-wrap" style="width: 90%;height:886px;">
 
@@ -83,45 +83,39 @@
           </hw-mixed-into-event-history>
         </ng-container>
         <ng-container *ngIf="divisionBusinessService.fullStationsView">
-          <hw-full-garbage-station  [divisionsId]="divisionBusinessService.divisionsId"></hw-full-garbage-station>
+          <hw-full-garbage-station [divisionsId]="divisionBusinessService.divisionsId"></hw-full-garbage-station>
         </ng-container>
         <ng-container *ngIf="divisionBusinessService.stationListView">
-          <hw-garbage-station  [divisionsId]="divisionBusinessService.divisionsId"></hw-garbage-station>
+          <hw-garbage-station [divisionsId]="divisionBusinessService.divisionsId"></hw-garbage-station>
         </ng-container>
         <ng-container *ngIf="divisionBusinessService.stationCameraView">
           <hw-garbage-station-cameras [divisionsId]="divisionBusinessService.divisionsId"
-          [cameraStateTable]="divisionBusinessService.stationCameraStateTable"></hw-garbage-station-cameras>
+            [cameraStateTable]="divisionBusinessService.stationCameraStateTable"></hw-garbage-station-cameras>
         </ng-container>
-      
-      
+
+
       </div>
     </div>
   </div>
   <div class="fill-width fill-height" gdGap="10px" gdColumns="1fr 1fr 1fr 1fr" gdRows="repeat(3, 32.4%)">
-    <div gdColumn="auto / span 1" gdRow="auto / span 1">
+    <div gdColumn="auto / span 1" gdRow="auto / span 1" >
       <ng-container *ngIf="divisionConfig">
         <business-card-grid [cardConfig]="divisionConfig">
         </business-card-grid>
       </ng-container>
     </div>
-    <div id="window-app" gdColumn="auto / span 2" gdRow="auto / span 2">
+    <div id="map__view" gdColumn="auto / span 2" gdRow="auto / span 2">
       <div class="card-wrapper2">
-        <div class="m-t-20 p-l-10 p-r-10 fill-width collapse"  [class.in]="!divisionBusinessService.inspectionView"
-        style="height: 76px; position: absolute;">
+        <div class="m-t-20 p-l-10 p-r-10 fill-width collapse" [class.in]="!divisionBusinessService.inspectionView"
+          style="height: 76px; position: absolute;">
           <ng-container *ngIf="divisionGarbageSpCardConfig">
             <business-card-grid [cardConfig]="divisionGarbageSpCardConfig">
             </business-card-grid>
           </ng-container>
         </div>
-        <div class="collapse fill-height fill-width" [class.in]="!divisionBusinessService.inspectionView"> 
- <app-amap #aMap (mapLoadedEvent)="mapLoaded($event)" (patrolButtonClicked)="showInspectionView()"></app-amap>
+        <div class="collapse fill-height fill-width" [class.in]="!divisionBusinessService.inspectionView">
+          <app-amap #aMap (mapLoadedEvent)="mapLoaded($event)" (patrolButtonClicked)="showInspectionView()"></app-amap>
         </div>
-        
-        <div class="fill-width fill-height p-20" *ngIf="inspectionConfig&&divisionBusinessService.inspectionView">
-          
-            <business-card-grid [cardConfig]="inspectionConfig">
-            </business-card-grid> 
-        </div> 
         <div class="card-angle top-left"></div>
         <div class="card-angle top-right"></div>
         <div class="card-angle bottom-left"></div>
@@ -134,13 +128,13 @@
         </business-card-grid>
       </ng-container>
     </div>
-    <div gdColumn="auto / span 1" gdRow="auto / span 1">
+    <div gdColumn="auto / span 1" gdRow="auto / span 1"  id="san">
       <ng-container *ngIf="illegalDropTopCardConfig">
         <business-card-grid [cardConfig]="illegalDropTopCardConfig">
         </business-card-grid>
       </ng-container>
     </div>
-    <div gdColumn="auto / span 1" gdRow="auto / span 1">
+    <div gdColumn="auto / span 1" gdRow="auto / span 1" id="san2">
       <ng-container *ngIf="illegalDropEventCardConfig">
         <business-card-grid [cardConfig]="illegalDropEventCardConfig">
         </business-card-grid>
@@ -263,5 +257,22 @@
         <div class="card-angle bottom-right"></div>
       </div>
     </div>
+  </div>
+
+  <div id="inspection_view" class="inspection_view_1"  
+   [ngStyle]="{'right':divisionBusinessService.inspectionSize.width +'px', 'bottom':divisionBusinessService.inspectionSize.height+'px','top':divisionBusinessService.inspectionSize.top+'px','left':divisionBusinessService.inspectionSize.left+'px'}"
+    *ngIf="inspectionConfig&&divisionBusinessService.inspectionView">
+    <div class="platform-body " style="height: 100%;">
+      <div class="card-wrapper2">
+        <business-card-grid [cardConfig]="inspectionConfig">
+        </business-card-grid> 
+        <div class="card-angle top-left"></div>
+        <div class="card-angle top-right"></div>
+        <div class="card-angle bottom-left"></div>
+        <div class="card-angle bottom-right"></div>
+      </div>
+    </div>
+  
+
   </div>
 </div>

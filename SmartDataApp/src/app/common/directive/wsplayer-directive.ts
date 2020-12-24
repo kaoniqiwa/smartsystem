@@ -55,26 +55,25 @@ export class HWSPlayerDirective {
                 }
             }
 
-        } else {
-            console.log('new ');
-           
+        } else { 
             this.player = new WSPlayer({
                 elementId: this.ele.id,
                 url: this.options.url
             });
             this.player.onButtonClicked = (btn)=>{
-                if(btn == ButtonName.stop)
-                  fn();
-                return null;
-            }
+                if(btn =='stop')
+                  fn(); 
+            } 
             this.player.name = this.options.name;
-            this.player.play();
-        }
+            this.player.play();  
+        } 
     }
 
-    
-
+    fullScreen(){
+        this.player.fullScreen();
+    }
     stopVideo() {
+        if(this.player)
         this.player.stop();
     }
 

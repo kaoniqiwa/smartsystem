@@ -24,6 +24,8 @@ import { GetEventRecordsParams } from "../../../data-core/model/waste-regulation
 import { TheDayTime } from "../../../common/tool/tool.service";
 import { ListAttribute } from "../../../common/tool/table-form-helper";
 import { EventRequestService } from "../../../data-core/repuest/Illegal-drop-event-record";
+import {targetPosition, domSize } from "../../../common/tool/jquery-help/jquery-help";
+import { isBoolean, isString } from "util";
 @Injectable({
     providedIn: 'root'
 })
@@ -40,6 +42,9 @@ export class DivisionBusinessService {
     eventHistoryView = false;
     stationCameraView = false;
     inspectionView = false;
+    inspectionViewMaxPostion = false;
+    inspectionViewVideo = false;
+    inspectionSize = { width:0,height:0,left:0,top:0}; 
     stationCameraStateTable: CameraStateTableEnum;
     divisionsId = '';
     constructor(private cameraService: CameraRequestService 
@@ -112,67 +117,71 @@ export class DivisionBusinessService {
 
                     }
                 }
-                if (x.list[0].view instanceof GalleryRollPageComponent) {
-                   /**
-                    * 
-                    * 抓图
-                    */
-                    x.list[0].view.btnControl = async (i) => { 
-                        if (i == null)
-                           {
-                            this.inspectionView = false;
-                           }
-                        else {
-                            const item = i as { 
-                                g:Gallery,
-                                msg:boolean
-                            } ,enumHelper = new EnumHelper()
-                            , pic=new MediumPicture()
-                            , state = (gs:GarbageStation) => {                        
-                                if (gs.StationState == 0) return '正常';
-                                else if (enumHelper.stationState.err.indexOf(gs.StationState) > -1)
-                                    return '异常';
-                                else if (enumHelper.stationState.full.indexOf(gs.StationState) > -1)
-                                    return '满溢';
-                            };;
-                            if (item.g && item.g.title) {
-                                /**更新投放点 */
-                               const station = await this.stationService.get(item.g.title.id).toPromise();
-                                if(station&&station.Data){
-                                    item.g.title.state = state(station.Data); 
-                                    station.Data.Cameras.map(m => {
-                                        if (m.ImageUrl) { 
-                                            const desc = item.g.imgDesc.find(i => i.tag.id == m.Id);
-                                            if (desc)
-                                                desc.src = pic.getData(m.ImageUrl);
-                                        }
-                                    });
-                                }
-                                this.getStationsIllegalDropEvent([item.g.title.id]).subscribe(x=>{
-                                    if(x.Data&&x.Data.Data)
-                                        item.g.title.eventNumber=x.Data.Data.length;                                        
+                // if (x.list[0].view instanceof GalleryRollPageComponent) {
+                //    /**
+                //     * 
+                //     * 抓图
+                //     */
+                //     x.list[0].view.btnControl = async (i) => { 
+                //         if (i == null)
+                //            {
+                //             this.inspectionView = false;
+                //            }
+                //         else if(isBoolean(i)){
+                //             if(i)
+                            
+                //         }
+                //         else {
+                //             const item = i as { 
+                //                 g:Gallery,
+                //                 msg:boolean
+                //             } ,enumHelper = new EnumHelper()
+                //             , pic=new MediumPicture()
+                //             , state = (gs:GarbageStation) => {                        
+                //                 if (gs.StationState == 0) return '正常';
+                //                 else if (enumHelper.stationState.err.indexOf(gs.StationState) > -1)
+                //                     return '异常';
+                //                 else if (enumHelper.stationState.full.indexOf(gs.StationState) > -1)
+                //                     return '满溢';
+                //             };;
+                //             if (item.g && item.g.title) {
+                //                 /**更新投放点 */
+                //                const station = await this.stationService.get(item.g.title.id).toPromise();
+                //                 if(station&&station.Data){
+                //                     item.g.title.state = state(station.Data); 
+                //                     station.Data.Cameras.map(m => {
+                //                         if (m.ImageUrl) { 
+                //                             const desc = item.g.imgDesc.find(i => i.tag.id == m.Id);
+                //                             if (desc)
+                //                                 desc.src = pic.getData(m.ImageUrl);
+                //                         }
+                //                     });
+                //                 }
+                //                 this.getStationsIllegalDropEvent([item.g.title.id]).subscribe(x=>{
+                //                     if(x.Data&&x.Data.Data)
+                //                         item.g.title.eventNumber=x.Data.Data.length;                                        
                                     
-                                });
-                                this.stationService.manualCapture(item.g.title.id).subscribe(data=>{
-                                    console.log(data);
+                //                 });
+                //                 this.stationService.manualCapture(item.g.title.id).subscribe(data=>{
+                //                     console.log(data);
                                     
-                                    if (data && data.Data) {
-                                        data.Data.map(m => {
-                                            if (m.Result) { 
-                                                const desc = item.g.imgDesc.find(i => i.tag.id == m.CameraId);
-                                                if (desc)
-                                                    desc.src = pic.getData(m.Id);
-                                            }
-                                        });
-                                    }
-                                    if(item.msg)
-                                       new MessageBar().response_success();
-                                });    
-                            }
+                //                     if (data && data.Data) {
+                //                         data.Data.map(m => {
+                //                             if (m.Result) { 
+                //                                 const desc = item.g.imgDesc.find(i => i.tag.id == m.CameraId);
+                //                                 if (desc)
+                //                                     desc.src = pic.getData(m.Id);
+                //                             }
+                //                         });
+                //                     }
+                //                     if(item.msg)
+                //                        new MessageBar().response_success();
+                //                 });    
+                //             }
 
-                        }
-                    }
-                }
+                //         }
+                //     }
+                // }
             }
         }, 1000);
     }
@@ -189,7 +198,26 @@ export class DivisionBusinessService {
                     if (i == null)
                        {
                         this.inspectionView = false;
+                        this.aMap.MapReload();
                        }
+                    else if(isBoolean(i)){
+                        this.inspectionViewMaxPostion=i;
+                        if(i)
+                           this.inspectionSize = { width:0,height:0,left:0,top:0}; 
+                        else
+                        setTimeout(() => {
+   
+                            const g=   targetPosition('map__view'),san=   targetPosition('san');
+                            this.inspectionSize.left=g.left-5;
+                            this.inspectionSize.top=0;
+                            const s = domSize('map__view');  
+                            this.inspectionSize.width = s.width-g.left+17; 
+                            this.inspectionSize.height=san.top-5;
+                          });
+                    }
+                    else if(isString(i)){
+                        this.inspectionViewVideo = i =='play';
+                    }
                     else {
                         const item = i as { 
                             g:Gallery,

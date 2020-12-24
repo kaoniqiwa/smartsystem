@@ -9,6 +9,7 @@ import { AMapComponent } from "./amap/amap.component";
 import { Title } from '@angular/platform-browser';
 import { SessionUser } from "../../common/tool/session-user";
 import { ConfigRequestService } from "../../data-core/repuest/config.service";
+import { targetPosition, domSize } from "../../common/tool/jquery-help/jquery-help";
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -23,11 +24,13 @@ export class IndexComponent implements OnInit {
   illegalDropHistoryCardConfig;
   divisionConfig;
   inspectionConfig;
+
   bar = new BarOption();
   line = new LineOption();
   pie = new PieOption();
   cardSize: { width: number, height: number };
-  moveMapSite: () => void; 
+
+  moveMapSite: () => void;
   user = new SessionUser();
   jw6 = [
     '新虹', '广中', '黄山', '花园城', '八字桥',
@@ -134,7 +137,7 @@ export class IndexComponent implements OnInit {
     this.inspectionConfig.push({
       business: 'GarbageStationInspection',
       cardType: 'GalleryRollPageComponent',
-      divisionsId: county.Id, 
+      divisionsId: county.Id,
       border: false
     });
     this.moveMapSite = () => {
@@ -148,8 +151,30 @@ export class IndexComponent implements OnInit {
     this.user.clear = null;
   }
 
-  showInspectionView(){
-    this.divisionBusinessService.inspectionView=true;
-    this.divisionBusinessService.bindingEvent2(); 
+  showInspectionView() {
+    this.divisionBusinessService.inspectionView = true;
+    this.divisionBusinessService.bindingEvent2();
+    const show = () => {
+      if (this.divisionBusinessService.inspectionViewVideo==false)
+        setTimeout(() => {
+
+          const g = targetPosition('map__view'), san = targetPosition('san');
+          this.divisionBusinessService.inspectionSize.left = g.left - 5;
+          this.divisionBusinessService.inspectionSize.top = 0;
+          const s = domSize('map__view');
+          this.divisionBusinessService.inspectionSize.width = s.width - g.left + 15;
+          this.divisionBusinessService.inspectionSize.height = san.top - 5;
+        });
+    }
+    show();
+
+    window.addEventListener("resize", () => {
+      /** 修正 全屏后的高度 */
+      const d = domSize('map__view'),d2 = domSize('inspection_view');
+      console.log(d,d2);
+      if((d.height-d2.height>15|| d2.height-d.height>15)&&this.divisionBusinessService.inspectionViewMaxPostion==false)
+        show();
+      
+    });
   }
 }
