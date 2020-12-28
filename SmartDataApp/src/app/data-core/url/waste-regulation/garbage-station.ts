@@ -37,6 +37,10 @@ export class GarbageStations extends GarbageBaseUrl implements IUrl {
     manualCapture(id: string){ 
         return this.aiop +`GarbageStations/${id}/ManualCapture`;
     }
+
+    cameraFile(stationId:string,cameraId:string,beginTime:string,endTime:string){
+        return this.aiop+`GarbageStations/${stationId}/Cameras/${cameraId}/Files?BeginTime=${beginTime}&EndTime=${endTime}`;
+    }
 }
 
 export class Camera extends GarbageBaseUrl implements IUrl {
