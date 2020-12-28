@@ -519,15 +519,25 @@ export class AMapComponent implements AfterViewInit, OnInit {
         }
     }
 
-    onVideoWindowDownload(args: { begin: Date, end: Date }) {
+    async onVideoWindowDownload(args: { begin: Date, end: Date }) {
         if (!this.currentCamera) { return; }
-        const a = document.createElement('a');
-        a.href = new GarbageStations().cameraFile(this.currentCamera.GarbageStationId, this.currentCamera.Id, args.begin.toISOString(), args.end.toISOString());
+        const interval = args.end.getTime() - args.begin.getTime();
+
+        if ((interval) > 5 * 1000) {
+            args.end.setTime(args.begin.getTime() + 5 * 1000 * 60);
+        }
 
 
-        a.click();
-        document.body.appendChild(a);
-        document.body.removeChild(a);
+        const response = this.garbageService.cameraFileUrl(this.currentCamera.GarbageStationId, this.currentCamera.Id, args.begin.toISOString(), args.end.toISOString()).toPromise();
+        response.then((data) => {
+            if (data && data.Data && data.Data.Url) {
+                const a = document.createElement('a');
+                a.href = data.Data.Url;
+                a.click();
+                document.body.appendChild(a);
+                document.body.removeChild(a);
+            }
+        });
     }
 
 }
