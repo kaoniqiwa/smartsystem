@@ -19,6 +19,7 @@ import { PagedList } from '../../../data-core/model/page';
 import { Response } from '../../../data-core/model/Response';
 import { MapListItem, MapListItemType } from './map-list-panel/map-list-item';
 import { Camera } from '../../../data-core/model/waste-regulation/camera';
+import { GarbageStations } from 'src/app/data-core/url/waste-regulation/garbage-station';
 
 declare var $: any;
 
@@ -141,25 +142,41 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
         // Detect effects of NgForTrackBy
         this.client = new CesiumMapClient(this.iframe.nativeElement);
-        this.client.Events.OnLoading = () => {
+        this.client.Events.OnLoading = async () => {
             this.dataController = this.client.DataController;
+            const response = await this.garbageService.list(new GetGarbageStationsParams()).toPromise();
+
+            this.garbages = response.Data.Data;
+            if (!this.villageGarbages) {
+                this.villageGarbages = this.garbages;
+            }
+
+            for (let i = 0; i < this.garbages.length; i++) {
+                const point = this.dataController.Village.Point.Get(this.garbages[i].DivisionId, this.garbages[i].Id);
+                point.name = this.garbages[i].Name;
+                this.dataController.Village.Point.Update(this.garbages[i].DivisionId, this.garbages[i].Id, point);
+            }
         };
         this.client.Events.OnLoaded = async () => {
 
             console.log('this.client.Events.OnLoaded');
 
+            setTimeout(() => {
+                if (this.mapLoadedEvent) {
+                    this.mapLoadedEvent.emit(this.client);
+                }
+            }, 0);
 
-            this.mapLoadedEvent.emit(this.client);
 
-            const baseDivision = await this.getBaseDivision();
-            this.baseDivisionId = baseDivision.Id;
-            this.client.Village.Select(baseDivision.Id);
+            const p = this.getBaseDivision();
+            p.then((baseDivision) => {
+                this.baseDivisionId = baseDivision.Id;
+                this.client.Village.Select(baseDivision.Id);
+                this.refresh();
 
-            this.refresh();
-
-            const village = this.dataController.Village.Get(baseDivision.Id);
-            this.client.Viewer.MoveTo(village.center);
-
+                const village = this.dataController.Village.Get(baseDivision.Id);
+                this.client.Viewer.MoveTo(village.center);
+            });
         };
 
 
@@ -500,6 +517,15 @@ export class AMapComponent implements AfterViewInit, OnInit {
         if (this.patrolButtonClicked) {
             this.patrolButtonClicked.emit();
         }
+    }
+
+    onVideoWindowDownload(args: { begin: Date, end: Date }) {
+        if (!this.currentCamera) { return; }
+        const a = document.createElement('a');
+        a.href = new GarbageStations().cameraFile(this.currentCamera.GarbageStationId, this.currentCamera.Id, args.begin.toISOString(), args.end.toISOString());
+        a.target = '_blank';
+        a.click();
+        document.removeChild(a);
     }
 
 }

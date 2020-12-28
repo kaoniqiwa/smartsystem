@@ -14,6 +14,7 @@ declare interface Date {
     addMinutes(m: number): void;
     addMonths(m: number): void;
     addDays(d: number): void;
+    toISOString(): string;
 }
 
 declare interface Array<T> {

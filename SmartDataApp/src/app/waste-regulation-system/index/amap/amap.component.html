@@ -62,6 +62,7 @@
   class="amap-video playing" (PlaybackClickedListen)="PlaybackClicked($event)"
   (VideoPlayingEventListen)="OnVideoPlaying($event)" [cameraName]="amapService.videoPlayerService.playCameraName"
   (changeModeEventListen)="changePlayMode($event)" (closeWindowOnloadEventListen)="isShowVideoView=false"
+  (DownloadClickedEventListen)="onVideoWindowDownload($event)"
   [videoPlayArgs]="amapService.videoPlayerService.videoPlayArgs" [playMode]="amapService.videoPlayerService.playMode"
   [cameraId]="amapService.videoPlayerService.playVideoVideoId" [url]="amapService.videoPlayerService.url"
   style="height: 382px;width: 794px;z-index:4;display: none;">

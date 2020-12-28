@@ -5,6 +5,8 @@ import { ConfigRequestService } from '../data-core/repuest/config.service';
 import { MessageBar } from '../common/tool/message-bar';
 import { UserDalService } from '../dal/user/user-dal.service';
 import { promise } from 'protractor';
+import { GarbageStations } from '../data-core/url/waste-regulation/garbage-station';
+import { ThrowStmt } from '@angular/compiler';
 
 declare var $: any;
 export const ConfigType = {
@@ -24,6 +26,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     @Input() videoPlayArgs?: VideoPlayArgs;
     @Input() playMode: PlayModeEnum;
     @Input() cameraId = ''; // 00310101031111111000003001000003
+    @Input() nodeId: Array<String>;
     @Input() hasControl = true;
     // @Input() cameraName = '';
 
@@ -36,6 +39,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     }
 
     delayPlayHandle: NodeJS.Timer;
+
 
 
     private _url = '';
@@ -109,6 +113,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     @Output() changeModeEventListen: EventEmitter<PlayModeEnum> = new EventEmitter();
     @Output() PlaybackClickedListen: EventEmitter<{ begin: Date, end: Date }> = new EventEmitter();
     @Output() VideoPlayingEventListen: EventEmitter<boolean> = new EventEmitter();
+    @Output() DownloadClickedEventListen: EventEmitter<{ begin: Date, end: Date }> = new EventEmitter();
 
     setBeginTime(time: Date) {
         $('#txt_begin_time').wickedpicker({
@@ -465,6 +470,27 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         this.playVideo();
         this.stream = hd;
     }
+
+
+
+
+
+    onDownloadClicked() {
+        try {
+            if (this.DownloadClickedEventListen) {
+                const date = document.getElementById('txt_date') as HTMLInputElement;
+                const txtBegin = document.getElementById('txt_begin_time') as HTMLInputElement;
+                const txtEnd = document.getElementById('txt_end_time') as HTMLInputElement;
+                const begin = new Date(date.value + ' ' + txtBegin.value.replace(/ /g, ''));
+                const end = new Date(date.value + ' ' + txtEnd.value.replace(/ /g, ''));
+                this.DownloadClickedEventListen.emit({ begin: begin, end: end });
+            }
+        } catch (ex) {
+            console.error(ex);
+        }
+    }
+
+
 
 }
 
