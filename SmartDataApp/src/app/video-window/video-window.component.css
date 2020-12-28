@@ -261,7 +261,7 @@
     width: 180px;
 }
 
-.alert-window .datetime .btn
+.alert-window .datetime .btn.full-green
 {
     margin-top: 23px;
     width: 100%;
@@ -269,12 +269,12 @@
     border:2px solid #32b43e;
     box-shadow:#32b43e 0px 0px 18px inset;
 }
-.alert-window .datetime .btn:hover
+.alert-window .datetime .btn.full-green:hover
 {
     border:2px solid #23e353;
     box-shadow:#23e353 0px 0px 18px inset;
 }
-.alert-window .datetime .btn:active
+.alert-window .datetime .btn.full-green:active
 {
     border:2px solid #33ff66;
     box-shadow:#33ff66 0px 0px 18px inset;
@@ -286,4 +286,21 @@
 .model:hover
 {
     color: #6997ff;
+}
+.alert-window .datetime .btn.btn-download
+{margin-top: 10px;
+    width: 100%;
+    height: 34px;    
+    border:2px solid #3283e5;
+    box-shadow:#3283e5 0px 0px 18px inset;
+}
+.alert-window .datetime .btn.btn-download:hover
+{
+    border:2px solid #3a93ff;
+    box-shadow:#3a93ff 0px 0px 18px inset;
+}
+.alert-window .datetime .btn.btn-download:active
+{
+    border:2px solid #3a93ff;
+    box-shadow:#3a93ff 0px 0px 18px inset;
 }

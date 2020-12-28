@@ -523,9 +523,11 @@ export class AMapComponent implements AfterViewInit, OnInit {
         if (!this.currentCamera) { return; }
         const a = document.createElement('a');
         a.href = new GarbageStations().cameraFile(this.currentCamera.GarbageStationId, this.currentCamera.Id, args.begin.toISOString(), args.end.toISOString());
-        a.target = '_blank';
+
+
         a.click();
-        document.removeChild(a);
+        document.body.appendChild(a);
+        document.body.removeChild(a);
     }
 
 }
