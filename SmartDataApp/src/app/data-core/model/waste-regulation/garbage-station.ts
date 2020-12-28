@@ -47,6 +47,10 @@ export class GarbageStation {
     StationState: number;
 }
 
+export class RecordFileUrl {
+    Result: boolean;
+    Url: string;
+}
 
 /**获取垃圾房列表参数 */
 export class GetGarbageStationsParams {
@@ -68,5 +72,5 @@ export class GetGarbageStationsParams {
     WetFull: boolean | null;
     /**祖辈ID(可选)，返回该ID下的所有子孙区划及其本身的垃圾房 */
     AncestorId: string;
-    
+
 }

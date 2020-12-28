@@ -53,6 +53,21 @@ export class HowellAuthHttpService {
     });
   }
 
+  public getStream(url: string, params?: HttpParams): Observable<Blob> {
+    const myHeaders = this.getHttpHeaders('GET', url);
+    const head = new HttpHeaders({
+      'Authorization': myHeaders.get('Authorization'),
+      'Content-Type': 'application/json',
+      'Accept': 'text/plain',
+
+    }); 
+    return this.http.get(url, {
+      headers: head,
+      params: params,
+      responseType: 'blob'
+    });
+  }
+
   public get<T = any, R = Response<T>>(url: string, params?: HttpParams): Observable<R> {
     const myHeaders = this.getHttpHeaders('GET', url);
     const httpOptions = {

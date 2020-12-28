@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SaveModel } from '../model/save-model';
-import { GarbageStation, GetGarbageStationsParams } from '../model/waste-regulation/garbage-station';
+import { GarbageStation, GetGarbageStationsParams,RecordFileUrl } from '../model/waste-regulation/garbage-station';
 import { Camera, GetGarbageStationCamerasParams } from '../model/waste-regulation/camera';
 import { GetGarbageStationVolumesParams, GarbageVolume } from '../model/waste-regulation/garbage-volume';
 import { TrashCan, GetGarbageStationTrashCansParams } from '../model/waste-regulation/trashCan';
@@ -67,6 +67,15 @@ export class GarbageStationRequestService extends SaveModel {
     manualCapture(stationId:string){
         return this.requestService.post<any,
         Response<CameraPictureUrl[]>>(this.url.manualCapture(stationId));
+    }
+
+    cameraFile(stationId:string,cameraId:string,beginTime:string,endTime:string){
+        return this.requestService.getStream(this.url.cameraFile(stationId,cameraId,beginTime,endTime));
+    }
+
+    cameraFileUrl(stationId:string,cameraId:string,beginTime:string,endTime:string){
+        return this.requestService.post<any,
+        Response<RecordFileUrl>>(this.url.cameraFile(stationId,cameraId,beginTime,endTime));
     }
 }
 
