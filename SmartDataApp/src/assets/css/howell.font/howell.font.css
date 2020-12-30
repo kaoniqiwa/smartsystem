@@ -2313,3 +2313,9 @@ a .howell-icon-flip-vertical:before {
 .howell-icon-fullgarbage:before {
     content: "\f332";
 }
+.howell-icon-videodownload:before {
+    content: "\f333";
+}
+.howell-icon-picturedownload:before {
+    content: "\f334";
+}
