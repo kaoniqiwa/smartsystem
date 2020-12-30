@@ -6,32 +6,47 @@
   </div>
   <div class="fill-height">
     <div fxLayout="row" class="fill-height">
-      <div fxFlex="320px" class="card-wrap m-r-20">
+      <div fxFlex="320px" class="card-wrap m-r-20" style="position: relative;">
         <h2 class="m-b-20">模型列表</h2>
         <div class="m-b-20">
           <hw-input-search [placeholder]="'名称'" [searchEvent]="mgrService.aiModelsPanel.filterFn"></hw-input-search>
         </div>
-
+    
         <div cdkDropList id="all" [cdkDropListData]="mgrService.aiModelsPanel.dataSource" [cdkDropListConnectedTo]="to"
-          (cdkDropListDropped)="mgrService.aiCameraPanel.dropItem($event)" class="fine"
+          (cdkDropListDropped)="mgrService.aiCameraPanel.dropItem($event)" class="fine"   
           style="height: calc(100% - 88px);overflow: scroll;">
-          <ng-container *ngFor="let item of mgrService.aiModelsPanel.dataSource">
-            <div  [class.in]="!item.hidden" class="model-item-wrap pull-left collapse" style=" cursor: move;" 
-            (cdkDragStarted)="mgrService.aiCameraPanel.dropItemState=true"
-            cdkDrag>
-              <div fxLayoutAlign="center">
-                <div class="middle-round-btn" fxLayoutAlign="center center">
-                  <ng-container *ngIf="item.icon">
-                    <img src="{{item.icon}}"  width="80" height="80" alt="" onerror="this.src='../assets/img/timg-pic.jpg'">
-                  </ng-container>
-                 
-                  <!-- <i class="howell-icon-home3 fill-height" fxLayoutAlign="center center"
-                    style="font-size: xx-large;color:white;"></i> -->
+          <div class="collapse"  [class.in]="!mgrService.aiCameraPanel.dropItemState">
+            <ng-container *ngFor="let item of mgrService.aiModelsPanel.dataSource">
+              <div  [class.in]="!item.hidden" class="model-item-wrap pull-left collapse" style=" cursor: move;" 
+              (cdkDragStarted)="mgrService.aiCameraPanel.dropItemState=true" 
+              cdkDrag>
+                <div fxLayoutAlign="center">
+                  <div class="middle-round-btn" fxLayoutAlign="center center">
+                    <ng-container *ngIf="item.icon">
+                      <img src="{{item.icon}}"  width="80" height="80" alt="" onerror="this.src='../assets/img/timg-pic.jpg'">
+                    </ng-container> 
+                  </div>
                 </div>
+                <label fxLayoutAlign="center">{{item.label | TxtLen:11}}</label>
               </div>
-              <label fxLayoutAlign="center">{{item.label | TxtLen:11}}</label>
-            </div>
+            </ng-container>
+          </div>        
+          <!-- 防止item 交换 -->
+          <ng-container *ngIf="mgrService.aiCameraPanel.dropItemState">
+            <ng-container *ngFor="let item of mgrService.aiModelsPanel.dataSource">
+              <div   [class.in]="!item.hidden" class="model-item-wrap pull-left collapse">
+                <div fxLayoutAlign="center">
+                  <div class="middle-round-btn" fxLayoutAlign="center center">
+                    <ng-container *ngIf="item.icon">
+                      <img src="{{item.icon}}"  width="80" height="80" alt="" onerror="this.src='../assets/img/timg-pic.jpg'">
+                    </ng-container> 
+                  </div>
+                </div>
+                <label fxLayoutAlign="center">{{item.label | TxtLen:11}}</label>
+              </div>
+            </ng-container>
           </ng-container>
+         
         </div>
 
       </div>
