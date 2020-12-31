@@ -75,8 +75,7 @@
       </a>
       <div class="custom-form-wrap">
         <ng-container *ngIf="divisionBusinessService.illegalDropMode">
-          <hw-illegal-drop-event-history [fillMode]="divisionBusinessService.illegalDropMode">
-          </hw-illegal-drop-event-history>
+          <hw-illegal-drop-event-summary></hw-illegal-drop-event-summary>
         </ng-container>
         <ng-container *ngIf="divisionBusinessService.mixedIntoMode">
           <hw-mixed-into-event-history [fillMode]="divisionBusinessService.mixedIntoMode">
@@ -160,7 +159,7 @@
             </div>
             <div style="height: 50%;padding-top: 30px;">
               <div>
-                <label class="light-blue-text">干垃圾收运</label>
+                <label class="light-blue-text">湿垃圾收运</label>
                 <label class="light-blue-text" style="font-size: small;">(吨)</label>
               </div>
               <div>

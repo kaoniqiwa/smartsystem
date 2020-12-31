@@ -140,6 +140,14 @@ export class IndexComponent implements OnInit {
       divisionsId: county.Id,
       border: false
     });
+    this.divisionBusinessService.nspectionParam = (val) => {
+      this.inspectionConfig = [{
+        business: 'GarbageStationInspection',
+        cardType: 'GalleryRollPageComponent',
+        divisionsId: val,
+        border: false
+      }];
+    }
     this.moveMapSite = () => {
       this.divisionBusinessService.mapClient.Village.Select(county.Id);
 
@@ -155,7 +163,7 @@ export class IndexComponent implements OnInit {
     this.divisionBusinessService.inspectionView = true;
     this.divisionBusinessService.bindingEvent2();
     const show = () => {
-      if (this.divisionBusinessService.inspectionViewVideo==false)
+      if (this.divisionBusinessService.inspectionViewVideo == false)
         setTimeout(() => {
 
           const g = targetPosition('map__view'), san = targetPosition('san');
@@ -169,12 +177,14 @@ export class IndexComponent implements OnInit {
     show();
 
     window.addEventListener("resize", () => {
-      /** 修正 全屏后的高度 */
-      const d = domSize('map__view'),d2 = domSize('inspection_view');
-      console.log(d,d2);
-      if((d.height-d2.height>15|| d2.height-d.height>15)&&this.divisionBusinessService.inspectionViewMaxPostion==false)
-        show();
-      
+      setTimeout(() => {
+        /** 修正 全屏后的高度 */
+        const d = domSize('map__view'), d2 = domSize('inspection_view');
+        console.log(d, d2, this.divisionBusinessService.inspectionViewMaxPostion);
+        if ((d.height - d2.height > 15 || d2.height - d.height > 15) && this.divisionBusinessService.inspectionViewMaxPostion == false)
+          show();
+      }, 50);
+
     });
   }
 }

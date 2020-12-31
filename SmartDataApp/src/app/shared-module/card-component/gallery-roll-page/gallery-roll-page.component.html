@@ -3,7 +3,11 @@
 
     <div fxLayout="row" fxLayoutAlign="space-between center">
       <div  style="width: 200px;">
-        <h2>投放点巡检</h2>
+        <h2>投放点巡检 
+          <div class="spinner-border spinner-border-sm green-text" *ngIf="!catchState.o" style="position: relative;bottom: 4px;" role="status">
+          </div>
+          <label class="m-b-0 green-text" style="font-size:xx-small;position: relative;bottom: 4px;"  *ngIf="catchState.o">
+            ●</label></h2>
       </div>
       <div class="text-center" style="position: fixed;left: 46.4%;">
         <h2 class="{{titleColor}}">
@@ -53,7 +57,7 @@
               style="position: absolute;top: 0;">NO SIGNAL</div>
               <div class="fill-width fill-height text-center mask"  fxLayoutAlign="center center"
                 style="position: absolute;top: 0;">
-                <a href="javascript:" (click)="playVideo(item.tag.id);autoChangePage=false;">
+                <a href="javascript:" (click)="playVideo(item.tag.id);model.autoChangePage=false;">
                   <div class="howell-icon-play" style="color: rgba(255,255,255,0.7);font-size: 70px;"></div>
                 </a>
               </div>
@@ -89,10 +93,13 @@
         <a href="javascript:" (click)="prevImgGroup()">
           <div class="howell-icon-arrowleftbold arrow-wrap"></div>
         </a>
-        <a href="javascript:" (click)="autoChangePage=!autoChangePage" style="position: relative;top: 2px;">
-          <div title="{{!autoChangePage?'播放':'停止'}}" [class.howell-icon-play]="!autoChangePage" [class.mdi]="autoChangePage" [class.mdi-stop]="autoChangePage"
-            class="play-stop-wrap" style="display: inline;"></div>
-        </a>
+        <span style="margin: 0 50px">
+          <a href="javascript:" (click)="model.autoChangePage=!model.autoChangePage" style="position: relative;top: 2px;">
+            <div title="{{!model.autoChangePage?'播放':'停止'}}" [class.howell-icon-play]="!model.autoChangePage" [class.mdi]="model.autoChangePage" [class.mdi-stop]="model.autoChangePage"
+              class="play-stop-wrap" style="display: inline;"></div>
+          </a>
+        </span>
+       
         <a href="javascript:" (click)="nextImgGroup()">
           <div class="howell-icon-arrowrightbold arrow-wrap"></div>
         </a>

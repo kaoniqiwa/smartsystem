@@ -7,6 +7,7 @@ export class GalleryRollPage{
     };
     videoOptions:HWSPlayerOptions;  
     index =1;
+    autoChangePage = true; 
 }
 
 export class Gallery{

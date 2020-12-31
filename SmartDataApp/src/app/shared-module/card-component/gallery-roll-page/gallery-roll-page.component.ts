@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, ViewChild, OnDestroy,} from '@angular/core';
+import { Component, Input, OnInit, Output, ViewChild, OnDestroy, } from '@angular/core';
 import { GalleryRollPage } from "./gallery-roll-page";
 import { BasisCardComponent, ViewsModel } from '../../../common/abstract/base-view';
 import { ResourceSRServersRequestService } from "../../../data-core/repuest/resources.service";
@@ -7,22 +7,24 @@ import { HWSPlayerDirective, HWSPlayerOptions } from "../../../common/directive/
 import { moveView2, domSize } from "../../../common/tool/jquery-help/jquery-help";
 import { ArrayPagination } from "../../../common/tool/tool.service";
 import { UserDalService } from '../../../dal/user/user-dal.service';
-import { SessionUser } from "../../../common/tool/session-user";
-import { launchIntoFullscreen, exitFullscreen } from "../../../common/tool/jquery-help/jquery-help";
+import { SessionUser } from "../../../common/tool/session-user"; 
 @Component({
   selector: 'hw-gallery-roll-page',
   templateUrl: './gallery-roll-page.component.html',
   styleUrls: ['./gallery-roll-page.component.styl']
 })
-export class GalleryRollPageComponent extends BasisCardComponent implements OnInit,OnDestroy {
+export class GalleryRollPageComponent extends BasisCardComponent implements OnInit, OnDestroy {
 
-  @Input() model: GalleryRollPage; 
+  @Input() model: GalleryRollPage;
 
   @ViewChild(HWSPlayerDirective)
   player: HWSPlayerDirective;
   playing = false;
   maxWindow = false;
   currentPlayId = '';
+  catchState = {
+    o: true
+  };
   playViewSize = {
     width: 100,
     height: 100
@@ -31,8 +33,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
     time: 120,
     interval: -1,
     fn: null
-  }
-  autoChangePage = true;
+  } 
   galleryHeight = '86%';
   readonly interval_inspection_key = '99';
   user = new SessionUser();
@@ -42,38 +43,48 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
   ) {
     super();
   }
-ngOnDestroy(){ 
-  this.player.stopVideo();
-}
+  ngOnDestroy() {
+    this.maxWindow=false;
+    this.player.stopVideo();
+  }
 
   async ngOnInit() {
     this.loadDatas(new ViewsModel());
     this.carousel.fn = () => {
-      if (this.model && this.autoChangePage)
+      if (this.model && this.model.autoChangePage)
         this.nextImgGroup();
     }
 
     /**实时监控 播放界面 */
     window.setInterval(() => {
       if (this.playing && this.currentPlayId) {
-        const val = this.model.items.get(this.model.index)
-          , id = val.imgDesc.find(x => x.tag.id == this.currentPlayId);
-        if (id == null) {
+        const val = this.model.items.get(this.model.index),clearVideo = ()=>{
           this.playing = false;
           this.currentPlayId = '';
+          this.player.stopVideo();
+        };
+        if (val && val.imgDesc) {
+          const id = val.imgDesc.find(x => x.tag.id == this.currentPlayId);
+          if (id == null)clearVideo();
         }
+        else if(val == null)clearVideo();
       }
     }, 10);
-    window.addEventListener("resize", () => {  
+    window.addEventListener("resize", () => {
+      this.autoVideoWindowSize();
        this.autoVideoWindowSize(); 
+      this.autoVideoWindowSize();
     });
 
     var time = await this.userDalService.getUserConfig(this.user.id, this.interval_inspection_key);
     if (time) this.resetCarousel(parseInt(time));
-
+    /**上来就抓图 */
+    setTimeout(() => {
+      this.tagClick(null, false);
+    }, 500);
   }
 
-  autoVideoWindowSize(){
+  autoVideoWindowSize() {
     setTimeout(() => {
       const size = domSize('video__view_wrap');
       if (this.playing && window.screen.width != size.width) {
@@ -89,7 +100,7 @@ ngOnDestroy(){
 
   changeWindow() {
     this.maxWindow = !this.maxWindow;
-    this.galleryHeight =this.maxWindow ?'90%': '86%';
+    this.galleryHeight = this.maxWindow ? '90%' : '86%';
     this.btnControl(this.maxWindow);
     this.autoVideoWindowSize();
   }
@@ -112,7 +123,7 @@ ngOnDestroy(){
   fiveTimeVideo() {
     setTimeout(() => {
       this.player.stopVideo();
-      this.playing = false; 
+      this.playing = false;
     }, 300 * 1000);/**播放5 */
   }
 
@@ -133,7 +144,7 @@ ngOnDestroy(){
       const videoOptions = new HWSPlayerOptions(response.Data.Url, '');
       this.player.reSizeView(this.playViewSize.width, this.playViewSize.height);
       this.player.playVideo(videoOptions, () => {
-        this.playing = false; 
+        this.playing = false;
         this.btnControl('stop');
       });
       this.fiveTimeVideo();
@@ -212,7 +223,7 @@ ngOnDestroy(){
   get eventNum() {
     const val = this.model.items.get(this.model.index);
     if (val)
-      return val.title.eventNumber;  
+      return val.title.eventNumber;
     else return 0;
   }
 
@@ -232,6 +243,7 @@ ngOnDestroy(){
     if (this.model.index <= 0)
       this.model.index = this.model.items.size;
     this.resetCarousel(this.carousel.time);
+    this.tagClick(null, false);
     this.player.stopVideo();
   }
 
@@ -249,9 +261,11 @@ ngOnDestroy(){
     else {
       const val = this.model.items.get(this.model.index);
       if (this.btnControl && this.model) {
+        this.catchState.o = false;
         this.btnControl({
           g: val,
-          msg: msg
+          msg: msg,
+          catchState: this.catchState
         });
       }
     }
