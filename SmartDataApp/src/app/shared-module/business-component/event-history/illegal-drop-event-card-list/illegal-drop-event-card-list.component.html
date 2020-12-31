@@ -4,7 +4,7 @@
     <div fxLayout="row wrap">
       <ng-container *ngFor="let item of model.value;let i=index">
         <div fxFlex="20" (click)="itemClick(item)" style="height: 242px;" [class.p-r-10]="i%5!=4" class="p-b-10">
-          <hw-image-desc-card1 [model]="item" [videoFn]="playVideoFn"></hw-image-desc-card1>
+          <hw-image-desc-card1 [model]="item" [videoFn]="playVideoFn"  [videoFileFn]="videoFileFn"></hw-image-desc-card1>
         </div>
       </ng-container>
     </div>

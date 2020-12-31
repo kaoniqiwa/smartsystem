@@ -11,6 +11,7 @@ export class IllegalDropEventCardListComponent implements OnInit {
   @Input() model:CardList;
   @Input() itemFn:(val:ImageDesc)=>void;
   @Input() playVideoFn :(id:string)=>void;
+  @Input() videoFileFn :(id:string)=>void;
   constructor() { }
 
   ngOnInit() {
