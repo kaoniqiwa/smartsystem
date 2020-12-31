@@ -35,11 +35,7 @@ import { GarbageStationFormComponent } from './garbage-station/garbage-station-f
 import { MapDeployComponent } from './garbage-station/map-deploy/map-deploy.component';
 import { FullTrashCanComponent } from './garbage-station/full-trash-can/full-trash-can.component';
 import { AIModelEventComponent } from './event-history/aimodel-event/aimodel-event.component';
-import { IllegalDropEventAnalyzeComponent } from './event-history/illegal-drop-event-analyze/illegal-drop-event-analyze.component'; 
-import { ConfirmComponent } from './garbage-station/map-deploy/confirm/confirm.component';
-import { IllegalDropEventChartComponent } from './event-history/illegal-drop-event-chart/illegal-drop-event-chart.component';
-import { TreeDropListComponent } from './event-history/illegal-drop-event-analyze/tree-drop-list/tree-drop-list.component';
-import { IllegalDropEventComponent } from './event-history/illegal-drop-event/illegal-drop-event.component';
+import { ConfirmComponent } from './garbage-station/map-deploy/confirm/confirm.component'; 
 @NgModule({
   imports: [
     CommonModule,
@@ -55,12 +51,12 @@ import { IllegalDropEventComponent } from './event-history/illegal-drop-event/il
   , CameraAIModelMgrComponent, SRServersMgrComponent, SRServerFormComponent, RegionCameraCopyComponent
   , DeployCameraComponent, TrashIconsListComponent, MapDeployComponent
   , CameraRegionMoveComponent, GarbageStationMgrComponent, StationChartComponent, DivisionStationTreeComponent
-  , RegionCameraTreeComponent, GarbageStationComponent, GarbageStationFormComponent,FullTrashCanComponent, AIModelEventComponent, IllegalDropEventAnalyzeComponent
+  , RegionCameraTreeComponent, GarbageStationComponent, GarbageStationFormComponent,FullTrashCanComponent, AIModelEventComponent
   , CameraAIModelMgrComponent, SRServersMgrComponent, SRServerFormComponent, RegionCameraCopyComponent
   , DeployCameraComponent, TrashIconsListComponent, 
   ConfirmComponent, MapDeployComponent,
   CameraRegionMoveComponent, GarbageStationMgrComponent, StationChartComponent, DivisionStationTreeComponent, 
-  RegionCameraTreeComponent, GarbageStationComponent, GarbageStationFormComponent, FullTrashCanComponent, IllegalDropEventChartComponent, TreeDropListComponent, IllegalDropEventComponent ],
+  RegionCameraTreeComponent, GarbageStationComponent, GarbageStationFormComponent, FullTrashCanComponent ],
   exports:[
   ]
 })

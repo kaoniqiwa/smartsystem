@@ -13,11 +13,9 @@ import { GarbageStationMgrComponent } from './garbage-station/garbage-station-mg
 import { GarbageStationComponent } from "./garbage-station/garbage-station/garbage-station.component";
 import { MapDeployComponent } from './garbage-station/map-deploy/map-deploy.component';
 import { FullTrashCanComponent } from './garbage-station/full-trash-can/full-trash-can.component';
-import { IllegalDropEventHistoryComponent, ContentModeEnum } from "../shared-module/business-component/event-history/illegal-drop-event-history/illegal-drop-event-history.component";
 import { AIModelEventComponent } from './event-history/aimodel-event/aimodel-event.component';
-import { IllegalDropEventAnalyzeComponent } from './event-history/illegal-drop-event-analyze/illegal-drop-event-analyze.component';
-import { IllegalDropEventChartComponent } from './event-history/illegal-drop-event-chart/illegal-drop-event-chart.component';
-import { IllegalDropEventComponent } from "./event-history/illegal-drop-event/illegal-drop-event.component";
+import { IllegalDropEventSummaryComponent } from "../shared-module/business-component/event-history/illegal-drop-event-summary/illegal-drop-event-summary.component";
+
 const routes: Routes = [
 
   {
@@ -58,20 +56,10 @@ const routes: Routes = [
             redirectTo: 'illegal-drop-event',
             pathMatch: 'full'
           },
-
+          {path:'illegal-drop-event',component:IllegalDropEventSummaryComponent,data:{
+            p:'1'
+          }},
           { path: 'ai-model-event', component: AIModelEventComponent },
-          // {
-          //   path: 'illegal-drop-event', component: IllegalDropEventHistoryComponent, data: {
-          //     val: ContentModeEnum.Page
-          //   }
-          // },
-          {
-            path: 'illegal-drop-event', component: IllegalDropEventComponent
-          },
-          {
-            path:'illegal-drop-event-analyze',component:IllegalDropEventAnalyzeComponent
-          },
-          {path:'illegal-drop-event-chart',component:IllegalDropEventChartComponent}
         ]
       }
       , {
