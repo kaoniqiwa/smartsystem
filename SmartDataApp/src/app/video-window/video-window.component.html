@@ -2,7 +2,7 @@
   <div class="alert-window-bg p-10">
     <!-- <div *ngIf="isChangeMode"> -->
     <div style="font-size: 20px;height: 30px;line-height: 20px;color: white">
-      <div class="pull-left">摄像机名 {{cameraName}}</div>
+      <div class="pull-left">{{cameraName}}</div>
       <div class="pull-right">
         <a href="javascript:void(0)" *ngIf="hasControl" title="预览模式" (click)="changePlayMode(playMode_.live)"
           [class.hide]="playMode==playMode_.live">
