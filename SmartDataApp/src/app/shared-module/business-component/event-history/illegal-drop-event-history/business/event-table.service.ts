@@ -4,6 +4,7 @@ import { EventTable, IllegalDropEventsRecord } from "./event-table";
 import { SearchControl } from "../../search";
 import "../../../../../common/string/hw-string";
 import { TheDayTime, TimeInterval,DateInterval } from "../../../../../common/tool/tool.service";
+import { MessageBar } from "../../../../../common/tool/message-bar";
 import { PlayVideo } from "../../../../../aiop-system/common/play-video";
 import { Page } from "../../../../../data-core/model/page";
 import { TableAttribute, ListAttribute } from "../../../../../common/tool/table-form-helper";
@@ -24,7 +25,7 @@ import { PageListMode } from "../../../../../common/tool/enum-helper";
 import { DivisionListView } from "../../division-list-view";
 import { SideNavService } from "../../../../../common/tool/sidenav.service";
 import { GetGarbageStationCamerasParams } from "../../../../../data-core/model/waste-regulation/camera";
-import { SessionUser } from "../../../../../common/tool/session-user";
+import { SessionUser } from "../../../../../common/tool/session-user"; 
 @Injectable()
 export class EventTableService extends ListAttribute {
     dataSource_ = new Array<IllegalDropEventRecord>();
@@ -56,7 +57,7 @@ export class EventTableService extends ListAttribute {
         , private srService: ResourceSRServersRequestService
        ,private navService:SideNavService
         , private datePipe: DatePipe) {
-        super();
+        super(); 
         this.eventTable.scrollPageFn = (event: CustomTableEvent) => {
             this.requestData(event.data as any);
             this.searchData(event.data as any);
@@ -68,6 +69,8 @@ export class EventTableService extends ListAttribute {
 
         this.eventTable.initGalleryTargetFn = (event) => {
             this.galleryTargetView.initGalleryTarget(event);
+            this.galleryTargetView.galleryTarget.videoName=true;
+ 
         }
 
         this.galleryTargetView.neighborEventFn= (id, e: ImageEventEnum) => {   
@@ -120,6 +123,26 @@ export class EventTableService extends ListAttribute {
             this.navService.playVideoBug.emit(true);
         }
 
+        this.eventTable.videoFileFn= async (id) => {
+            var event =  this.eventTable.findEventFn(id);
+            if(event==null)event=this.allDataSource.find(x=>x.EventId==id);
+            const user = new SessionUser(),
+            s = DateInterval(event.EventTime+'',user.video.beforeInterval).toISOString(),
+            e =  DateInterval(event.EventTime+'',user.video.afterInterval).toISOString(),
+            video= await this.garbageStationService.cameraFileUrl(event.Data.StationId, event.ResourceId, s, e).toPromise();
+            if(video){
+                
+            new MessageBar().response_success('正在下载中...');
+                const a = document.createElement('a');
+                a.href = video.Data.Url;
+          
+                a.click();
+                document.body.appendChild(a);
+                document.body.removeChild(a);
+            }
+            
+            
+        }
     }
 
     async requestVideoUrl(begin: Date, end: Date, cameraId: string) {

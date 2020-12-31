@@ -10,6 +10,7 @@ import { BusinessTable } from "../../../../../aiop-system/common/business-table"
 export class EventTable extends BusinessTable implements IConverter {
     findEventFn: (id: string) => IllegalDropEventRecord;
     initGalleryTargetFn:(event:IllegalDropEventRecord)=>void;
+    videoFileFn: (id: string) =>void;
     playVideoFn: (id: string) =>void;
     dataSource = new CustomTableArgs<any>({
         hasTableOperationTd: true,
@@ -57,6 +58,23 @@ export class EventTable extends BusinessTable implements IConverter {
                 title: '视频',
                 callback: (item: TableField) => {
                     this.playVideoFn(item.id);
+                }
+            }), new TableOperationBtn({
+                css: 'howell-icon-picturedownload td-icon',
+                title: '下载图片',
+                callback: (item: TableField) => {
+                    const a = document.createElement('a');
+                    a.href = item.imageUrl;
+                    a.download=item.divisionName+' '+item.stationName+' '+item.resourceName+' '+item.eventTime+'.png';
+                    a.click();
+                    document.body.appendChild(a);
+                    document.body.removeChild(a);
+                }
+            }), new TableOperationBtn({
+                css: 'howell-icon-videodownload td-icon',
+                title: '下载视频',
+                callback: (item: TableField) => {
+                    this.videoFileFn(item.id);
                 }
             })
         ],

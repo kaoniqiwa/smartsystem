@@ -44,6 +44,9 @@ import { TimeToolComponent } from "./time/time-tool.component";
 import { GalleryTargetComponent } from "./gallery-target/gallery-target.component";
 import { ImageDescCardComponent } from './image-desc-card/image-desc-card.component'; 
 import { IllegalDropEventHistoryComponent } from "./business-component/event-history/illegal-drop-event-history/illegal-drop-event-history.component";
+import { IllegalDropEventAnalyzeComponent } from "./business-component/event-history/illegal-drop-event-analyze/illegal-drop-event-analyze.component";
+import { TreeDropListComponent } from "./business-component/event-history/illegal-drop-event-analyze/tree-drop-list/tree-drop-list.component";
+import { IllegalDropEventChartComponent } from "./business-component/event-history/illegal-drop-event-chart/illegal-drop-event-chart.component";
 import { IllegalDropEventCardListComponent } from "./business-component/event-history/illegal-drop-event-card-list/illegal-drop-event-card-list.component";
 import { LevelListPanelComponent } from './business-component/event-history/level-list-panel/level-list-panel.component';
 import { MixedIntoEventHistoryComponent } from './business-component/event-history/mixed-into-event-history/mixed-into-event-history.component';
@@ -52,6 +55,8 @@ import { GarbageStationComponent } from './business-component/garbage-station/ga
 import { GarbageStationCamerasComponent } from './business-component/garbage-station-cameras/garbage-station-cameras.component';
 import { UserToolComponent } from "./business-component/user-tool/user-tool.component";
 import { GalleryRollPageComponent } from './card-component/gallery-roll-page/gallery-roll-page.component';
+import { IllegalDropEventSummaryComponent } from './business-component/event-history/illegal-drop-event-summary/illegal-drop-event-summary.component';
+
 @NgModule({
   imports: [
     CommonModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -71,9 +76,9 @@ import { GalleryRollPageComponent } from './card-component/gallery-roll-page/gal
   PicturesDropListComponent,
   CardListPanelComponent, VideoSimpleCardComponent, StateScaleCardComponent,CardComponent,BusinessCardGridComponent, HeaderSquareListComponent, ImageThemeCardComponent, HintCardComponent, OrderTableCardComponent
 ,LineEChartsCardComponent, SwitchComponent  ,TimeToolComponent
-,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventCardListComponent
+,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventAnalyzeComponent,TreeDropListComponent,IllegalDropEventChartComponent,IllegalDropEventCardListComponent
 ,UserToolComponent
-, LevelListPanelComponent, MixedIntoEventHistoryComponent, FullGarbageStationComponent, GarbageStationComponent, GarbageStationCamerasComponent, GalleryRollPageComponent
+, LevelListPanelComponent, MixedIntoEventHistoryComponent, FullGarbageStationComponent, GarbageStationComponent, GarbageStationCamerasComponent, GalleryRollPageComponent, IllegalDropEventSummaryComponent
 ],
   exports: [
     MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -89,7 +94,7 @@ import { GalleryRollPageComponent } from './card-component/gallery-roll-page/gal
     ,HeaderSquareListComponent,ImageThemeCardComponent,HintCardComponent,OrderTableCardComponent
     ,GalleryRollPageComponent
     ,LineEChartsCardComponent,SwitchComponent,TimeToolComponent
-    ,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventCardListComponent
+    ,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventSummaryComponent,IllegalDropEventHistoryComponent,TreeDropListComponent,IllegalDropEventAnalyzeComponent,IllegalDropEventChartComponent,IllegalDropEventCardListComponent
     ,MixedIntoEventHistoryComponent,FullGarbageStationComponent,GarbageStationComponent,GarbageStationCamerasComponent
     ,UserToolComponent,LevelListPanelComponent
   ],
