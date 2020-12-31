@@ -15,6 +15,8 @@ export class GalleryTargetComponent implements OnInit, OnChanges {
 
   @Input() imgEventFn: (e: ImageEventEnum, id: string) => number;
 
+  @Input() videoFileFn:(id: string)=>void;
+
   @Input() videoFn: (id: string) => void;
 
   onDescFn = (on: boolean) => {
@@ -56,6 +58,10 @@ export class GalleryTargetComponent implements OnInit, OnChanges {
   imgPageClick(e: ImageEventEnum) {
 
     if (this.imgEventFn) this.imgEventFn(e, this.model.id);
+  }
+
+  videoFileClick(){
+    if (this.videoFileFn) this.videoFileFn(this.model.id);
   }
 
   ngOnInit() {

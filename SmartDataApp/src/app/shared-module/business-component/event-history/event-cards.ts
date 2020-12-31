@@ -43,7 +43,7 @@ export class EventCards {
         return new ImageDesc(item.EventId
             , new MediumPicture().getJPG(item.ImageUrl)
             , [item.ResourceName, item.Data.DivisionName]
-            , [this.datePipe.transform(item.EventTime, 'MM-dd HH:mm:ss'), item.Data.StationName]);
+            , [this.datePipe.transform(item.EventTime, 'HH:mm'), item.Data.StationName]);
 
     }
 

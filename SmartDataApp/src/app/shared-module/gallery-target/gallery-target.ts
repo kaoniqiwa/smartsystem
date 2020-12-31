@@ -1,4 +1,4 @@
-import { Point } from "../../data-core/model/Point";
+
 import { EventDataObject } from "../../data-core/model/waste-regulation/event-data-object";
 
 export class GalleryTarget {
@@ -8,6 +8,7 @@ export class GalleryTarget {
     polygon: EventDataObject[];
     id:string;
     downloadImgName:string;
+    videoName:boolean;
     imgPrev:boolean;
     imgNext:boolean;
     constructor(enlargeId: string,
@@ -23,7 +24,8 @@ export class GalleryTarget {
         this.polygon = polygon;
         this.imgNext=true;
         this.imgPrev=true;
-        this.downloadImgName=downloadImgName;
+        this.downloadImgName=downloadImgName; 
+        this.videoName=false;
     }
 }
 

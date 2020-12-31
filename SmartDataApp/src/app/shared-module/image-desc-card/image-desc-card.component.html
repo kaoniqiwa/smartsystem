@@ -7,8 +7,12 @@
     </div>
     <div class="pull-right">   
        <h6 class=" m-b-0" style="line-height: 1;">
-        <a  href="javascript:void(0)" style="font-size: 18px;" (click)="videoClick();$event.stopPropagation();"
-        ><i class="m-r-10 howell-icon-video sky-blue-text2"></i></a> 
+        <a  href="javascript:" title="下载视频" style="font-size: 18px;" (click)="videoFileClick();$event.stopPropagation();"
+        ><i class="m-r-5 howell-icon-videodownload sky-blue-text2"></i></a> 
+        <a  href="{{model.imgSrc}}" title="下载图片" style="font-size: 18px;" download="{{imgFileName}}" (click)="$event.stopPropagation();"
+        ><i class="m-r-5 howell-icon-picturedownload sky-blue-text2"></i></a> 
+        <a  href="javascript:" title="播放视频" style="font-size: 18px;" (click)="videoClick();$event.stopPropagation();"
+        ><i class="m-r-5 howell-icon-video sky-blue-text2"></i></a> 
         <label class="m-b-0 light-blue-text" style="position: relative;bottom: 2px;">  {{model.rightDesc[0]}}</label>
         </h6>
     </div>

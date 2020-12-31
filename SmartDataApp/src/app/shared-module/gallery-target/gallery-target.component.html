@@ -11,9 +11,14 @@
           </div>
         </ng-container>     
 
-        <ng-container *ngIf="model">
+        <ng-container *ngIf="model"> 
+          <ng-container *ngIf="model.videoName">
+            <a href="javascript:" (click)="videoFileClick()" title="下载视频" class="m-r-10">
+              <i class="howell-icon-videodownload  sky-blue-text"></i>
+            </a>
+          </ng-container>
           <a href="{{model.enlargeImage}}" title="下载图片" class="m-r-10" download="{{model.downloadImgName}}.png">
-            <i class="howell-icon-download sky-blue-text"></i>
+            <i class="howell-icon-picturedownload sky-blue-text"></i>
           </a>
           <a href="javascript:void(0)" class="m-r-10" (click)="videoClick()">
             <i class="howell-icon-video sky-blue-text"></i>

@@ -32,7 +32,7 @@ export class GalleryTargetView {
     }
 
     galleryTargetPageFn = (e: ImageEventEnum, id: string) => {
-        const page = this.showImagePage(id, e);
+        const page = this.showImagePage(id, e),v = this.galleryTarget.videoName || false;
         if (e == ImageEventEnum.next && page.next.item) {
             const enlargeImage = new MediumPicture().getJPG(page.next.item.ImageUrl);
             this.galleryTarget = new GalleryTarget(page.next.item.Data.Objects[0].Id
@@ -47,7 +47,8 @@ export class GalleryTargetView {
                 , page.prev.item.EventId,this.toDownLoadImgName(page.prev.item));
 
         }
-
+        /**视频下载按钮 */
+        this.galleryTarget.videoName=v;
         this.galleryTarget.imgNext = page.next.show;
         this.galleryTarget.imgPrev = page.prev.show;
     }
