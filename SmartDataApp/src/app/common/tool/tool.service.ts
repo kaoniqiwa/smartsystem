@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core"; 
+import { Injectable } from "@angular/core";
 @Injectable()
 export class ToolService {
     windowScreen: { width: number, height: number };
@@ -8,13 +8,13 @@ export class ToolService {
             height: window.screen.height
         }
     }
-}
+} 
 
-export function ArrayPagination<T>(pageNo:number, pageSize:number, array:T[]) {
+export function ArrayPagination<T>(pageNo: number, pageSize: number, array: T[]) {
     var offset = (pageNo - 1) * pageSize;
-    return (offset + pageSize >= array.length) ? 
-    array.slice(offset, array.length) : array.slice(offset, offset + pageSize);
-    
+    return (offset + pageSize >= array.length) ?
+        array.slice(offset, array.length) : array.slice(offset, offset + pageSize);
+
 }
 
 
@@ -24,49 +24,49 @@ export function ArrayPagination<T>(pageNo:number, pageSize:number, array:T[]) {
  * @param endTime "2019-10-23 15:27:55"
  * @return 1天2时3分5秒
  */
-export function TwoTimeInterval(startTime:string, endTime:Date) {
- 
+export function TwoTimeInterval(startTime: string, endTime: Date) {
+
     // 开始时间
     //let d1 = startTime.replace(/\-/g, "/");
     let date1 = new Date(startTime);
-   
+
     // 结束时间
     //let d2 = endTime.replace(/\-/g, "/");
     //let date2 = new Date(d2);
     const date2 = endTime;
     // 时间相差秒数
     let dateDiff = date2.getTime() - date1.getTime();
-   
+
     // 计算出相差天数
     let days = Math.floor(dateDiff / (24 * 3600 * 1000));
-   
+
     // 计算出小时数
     let residue1 = dateDiff % (24 * 3600 * 1000); // 计算天数后剩余的毫秒数
     let hours = Math.floor(residue1 / (3600 * 1000));
-   
+
     // 计算相差分钟数
     let residue2 = residue1 % (3600 * 1000); // 计算小时数后剩余的毫秒数
     let minutes = Math.floor(residue2 / (60 * 1000));
-   
+
     // 计算相差秒数
     let residue3 = residue2 % (60 * 1000); // 计算分钟数后剩余的毫秒数
     let seconds = Math.round(residue3 / 1000);
-   
-    let returnVal =
-    //   ((days == 0) ? "" : days+"天") +
-      ((hours == 0) ? "" : days+"时") +
-      ((minutes == 0) ? "" : minutes+"分");
-      //+((seconds == 0) ? "" : seconds+"秒");
-   
-    return returnVal;
-   
-  }
 
-export function pageCount (totalnum:number,limit:number){
-    return totalnum > 0 ? 
-    ((totalnum < limit) 
-    ? 1 : ((totalnum % limit) 
-    ? ((totalnum / limit) + 1) : (totalnum / limit))) : 0;
+    let returnVal =
+        //   ((days == 0) ? "" : days+"天") +
+        ((hours == 0) ? "" : days + "时") +
+        ((minutes == 0) ? "" : minutes + "分");
+    //+((seconds == 0) ? "" : seconds+"秒");
+
+    return returnVal;
+
+}
+
+export function pageCount(totalnum: number, limit: number) {
+    return totalnum > 0 ?
+        ((totalnum < limit)
+            ? 1 : ((totalnum % limit)
+                ? ((totalnum / limit) + 1) : (totalnum / limit))) : 0;
 }
 
 
@@ -89,16 +89,16 @@ export function TimeInterval(dateString: string, seconds = 0, minutes = 0, hours
         end: end
     }
 }
-export function DateInterval(dateString: string, seconds = 0, minutes = 0, hours = 0, date = 0 ) {
+export function DateInterval(dateString: string, seconds = 0, minutes = 0, hours = 0, date = 0) {
     const newDate = new Date(dateString);
     newDate.setSeconds(newDate.getSeconds() + seconds);
     newDate.setMinutes(newDate.getMinutes() + minutes);
     newDate.setHours(newDate.getHours() + hours);
-    newDate.setDate(newDate.getDate() + date); 
-    return  newDate;
+    newDate.setDate(newDate.getDate() + date);
+    return newDate;
 }
 
-export function MonthLastDay(year:number, month:number) {
+export function MonthLastDay(year: number, month: number) {
     var new_year = year; //取当前的年份
     var new_month = month++;//取下一个月的第一天，方便计算（最后一天不固定）
     if (month > 12) {
@@ -110,15 +110,16 @@ export function MonthLastDay(year:number, month:number) {
 }
 
 //获取周1 - 周7
-export  function OneWeekDate(now:Date) {
-    var nowTime = now.getTime();
-    var day = now.getDay();
-    var oneDayLong = 24 * 60 * 60 * 1000;
-    var MondayTime = nowTime - (day - 1) * oneDayLong;
-    var SundayTime = nowTime + (7 - day) * oneDayLong;
+export function OneWeekDate(now: Date) {
+    var week = now.getDay(); //获取时间的星期数
+    var minus = week ? week - 1 : 6;
+    var monday = new Date(now);
+    monday.setDate(now.getDate() - minus); //获取minus天前的日期
+    const sunday = new Date(monday);    
+    sunday.setDate(monday.getDate() + 6);
     return {
-        monday: new Date(MondayTime),
-        sunday: new Date(SundayTime)
+        monday: monday,
+        sunday: sunday
     }
 }
 
