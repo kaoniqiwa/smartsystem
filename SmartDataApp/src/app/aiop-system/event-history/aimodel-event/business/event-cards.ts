@@ -44,7 +44,8 @@ export class EventCards {
         return new ImageDesc(item.EventId
             , new MediumPicture().getJPG(item.ImageUrl)
             , [item.ResourceName, new EnumHelper().eventType.get(item.EventType)]
-            , [this.datePipe.transform(item.EventTime, 'MM-dd HH:mm:ss'), ResourceTypeEnum[item.ResourceType]]);
+            , [this.datePipe.transform(item.EventTime, 'MM-dd HH:mm:ss'), ResourceTypeEnum[item.ResourceType]]
+            ,item.ResourceName+' '+ this.datePipe.transform(item.EventTime, 'yyyy-MM-dd HH:mm:ss')+''.replace('-','_')+'.jpeg');
 
     }
 
