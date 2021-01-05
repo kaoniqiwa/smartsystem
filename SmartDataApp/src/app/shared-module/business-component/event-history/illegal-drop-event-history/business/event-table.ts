@@ -62,10 +62,10 @@ export class EventTable extends BusinessTable implements IConverter {
             }), new TableOperationBtn({
                 css: 'howell-icon-picturedownload td-icon',
                 title: '下载图片',
-                callback: (item: TableField) => {
+                callback: (item: TableField) => { 
                     const a = document.createElement('a');
                     a.href = item.imageUrl;
-                    a.download=item.divisionName+' '+item.stationName+' '+item.resourceName+' '+item.eventTime+'.png';
+                    a.download=item.resourceName+' '+item.eventTime.replace('-','_').replace('-','_')+'.jpeg';
                     a.click();
                     document.body.appendChild(a);
                     document.body.removeChild(a);

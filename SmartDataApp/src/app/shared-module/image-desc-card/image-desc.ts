@@ -1,5 +1,6 @@
 export class ImageDesc {
     imgSrc: string;
+    imgName:string;
     id:string;
     leftDesc: string[];
     rightDesc: string[];
@@ -7,11 +8,13 @@ export class ImageDesc {
     constructor(id:string,
         imgSrc: string,
         leftDesc: string[],
-        rightDesc: string[]) {
+        rightDesc: string[],
+        imgName:string) {
             this.id=id;
         this.imgSrc = imgSrc;
         this.leftDesc = leftDesc;
         this.rightDesc = rightDesc;
         this.selected=false;
+        this.imgName=imgName;
     }
 }

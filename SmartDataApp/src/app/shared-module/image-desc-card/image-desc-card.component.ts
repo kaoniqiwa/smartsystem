@@ -24,6 +24,6 @@ export class ImageDescCardComponent implements OnInit {
   } 
 
   get imgFileName(){
-    return `${this.model.leftDesc[0]} ${this.model.rightDesc[0]} ${this.model.rightDesc[1]} ${this.model.leftDesc[1]}.png`;
+return this.model.imgName;
   }
 }
