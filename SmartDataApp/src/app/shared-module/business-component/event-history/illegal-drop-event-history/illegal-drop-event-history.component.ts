@@ -23,7 +23,7 @@ export class IllegalDropEventHistoryComponent implements OnInit {
   listMode = PageListMode.table;
   pageListMode = PageListMode;
   tableMinusHeight = 'calc(100% - 0px)';
-  tableSearchHeight = 'calc(100% - 40px)';
+  tableSearchHeight = 'calc(100% - 44px)';
   @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
 
   @ViewChild('table')
@@ -98,7 +98,7 @@ export class IllegalDropEventHistoryComponent implements OnInit {
     this.tableService.fillMode = this.fillMode;
     if (this.isPage) {
       this.tableMinusHeight = 'calc(100% - 20px)';
-      this.tableSearchHeight = 'calc(100% - 60px)';
+      this.tableSearchHeight = 'calc(100% - 64px)';
       this.tableService.fillMode = new FillMode();
       this.tableService.fillMode.divisionId = this.divisionBusinessService.divisionsId;
 
@@ -123,6 +123,7 @@ export class IllegalDropEventHistoryComponent implements OnInit {
   moreSearch() {
     this.tableService.search.other = !this.tableService.search.other;
     setTimeout(() => {
+      if(this.levelListPanel&&this.divisionBusinessService.divisionsId)
       this.levelListPanel.defaultItem(this.divisionBusinessService.divisionsId);
 
     }, 500);
