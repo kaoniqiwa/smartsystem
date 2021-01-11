@@ -594,7 +594,7 @@ function WSPlayer(args) {
             name += ("_" + ((v = date.getMinutes()) < 10 ? '0' + v : v));
             name += ("_" + ((v = date.getSeconds()) < 10 ? '0' + v : v));
 
-            plugin.JS_CapturePicture(0, name);
+            plugin.JS_CapturePicture(0, name, 'JPEG');
         });
     }
 
