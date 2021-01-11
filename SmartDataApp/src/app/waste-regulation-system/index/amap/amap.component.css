@@ -162,7 +162,7 @@ right: -79px;
 }
 .map-bar.btn-list .btn {
   position: relative;
-  
+  margin-right: 5px;
   bottom: 0px;
   left: 0px;
   width: 28px;
