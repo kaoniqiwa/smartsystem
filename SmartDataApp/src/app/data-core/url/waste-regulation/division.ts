@@ -1,4 +1,4 @@
-import { IUrl, BaseUrl,GarbageBaseUrl } from "../IUrl";
+import { IUrl, BaseUrl, GarbageBaseUrl } from "../IUrl";
 
 export class Division extends GarbageBaseUrl implements IUrl {
     create(): string {
@@ -18,7 +18,7 @@ export class Division extends GarbageBaseUrl implements IUrl {
     }
 
     garbageStations(id: string): string {
-        return this.aiop+`Divisions/${id}/GarbageStations`;
+        return this.aiop + `Divisions/${id}/GarbageStations`;
     }
 
     tree(): string {
@@ -26,18 +26,22 @@ export class Division extends GarbageBaseUrl implements IUrl {
     }
 
     volumesHistory(id: string): string {
-        return this.aiop+`Divisions/${id}/Volumes/History/List`;
+        return this.aiop + `Divisions/${id}/Volumes/History/List`;
     }
 
     eventNumbersHistory(id: string): string {
-        return this.aiop+`Divisions/${id}/EventNumbers/History/List`;
+        return this.aiop + `Divisions/${id}/EventNumbers/History/List`;
     }
 
     statisticNumber(id: string): string {
-        return this.aiop+`Divisions/${id}/Statistic/Number`;
+        return this.aiop + `Divisions/${id}/Statistic/Number`;
     }
 
     statisticNumberList(): string {
         return this.aiop + `Divisions/Statistic/Number/List`;
+    }
+
+    statisticNumberHistoryList():string {
+        return this.aiop + `Divisions/Statistic/Number/History/List`;
     }
 }
