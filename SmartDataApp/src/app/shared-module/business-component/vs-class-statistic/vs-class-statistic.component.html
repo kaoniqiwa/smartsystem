@@ -1,0 +1,140 @@
+<div class="fill-height">
+  <div fxLayout="row" fxLayoutAlign="space-between stretch">
+    <div class="second-title-bg text">
+      统计比对
+    </div>
+
+  </div>
+  <div fxLayout="row" style="height: 40px;">
+    <div fxFlex="60">
+
+    </div>
+    <div fxFlex="40" class="text-right"  [formGroup]="businessService.search.searchform">
+      <select class="form-control custom custom-select" style="width: 100px;"
+      formControlName="ClassType" (change)="changeClassType()">
+        <option value="division">居委会</option>
+        <option value="station">投放点</option>
+      </select>
+      <select class="form-control custom custom-select m-l-10" style="width: 100px;"
+      formControlName="TimeUnit" (change)="changeTimeType()">
+        <option value="hour">日</option> 
+        <option value="day">月</option>
+      </select>
+    </div>
+  </div>
+  <div fxLayout="row" style="height: calc(100% - 120px);" fxLayoutAlign="center center"
+    [formGroup]="businessService.search.searchform">
+    <div class="fill-height" fxFlex="40">
+      <div style="width: 80%;margin-left: 20%;padding-top: 16px;">
+        <div class="fill-width" style="height: 34px;margin-bottom: 56px;">
+          <div class="pull-right" style="width: 340px;height: 34px;">
+            <hw-tree-drop-list-v2  #drop1  [onlyDivisionNode]="divisionMode" [selectedItemFn]="vs1Class"></hw-tree-drop-list-v2>
+          </div>
+        </div>
+        <div style="margin-bottom: 68px;height: 34px;" class="fill-width">
+          <div class="pull-right" style="width: 208px;height: 34px;position: relative;">
+            <input type="text" id="dtp1"  #dtp1  readonly DateTimePicker [format]="'yyyy年mm月dd日'"
+              [startView]="businessService.datePicker.startView" [minView]="businessService.datePicker.minView"
+              [defaultVal]="businessService.search.beginDate"  
+              [changeDate]="startDate" class="hw-form-control form-control p-r-0">
+            <i class="mdi mdi-menu-down arrow-time" [ngStyle]="{'left': timeArrow+'px'}"></i>
+          </div>
+        </div>
+        <div style="margin-bottom: 72px;height: 34px;" class="fill-width">
+          <h2 class="text-right" style="font-weight: bold;">{{businessService.barChartOption[0].text}}</h2>
+          <div class="progress-bar pull-right"
+            [ngStyle]="{'width': businessService.barChartOption[0].percent,'background-color': businessService.barChartOption[0].color}"
+            style="height:10px;transform: rotate(180deg);" role="progressbar"> </div>
+        </div>
+        <div style="margin-bottom: 74px;height: 34px;" class="fill-width">
+          <h2 class="text-right" style="font-weight: bold;">{{businessService.barChartOption[1].text}}</h2>
+          <div class="progress-bar pull-right"
+            [ngStyle]="{'width': businessService.barChartOption[1].percent,'background-color': businessService.barChartOption[1].color}"
+            style="height:10px;transform: rotate(180deg);" role="progressbar"> </div>           
+        </div>
+       <div style="margin-bottom: 74px;height: 34px;" class="fill-width">
+          <h2 class="text-right" style="font-weight: bold;">{{businessService.barChartOption[2].text}}</h2>
+          <div class="progress-bar pull-right"
+          [ngStyle]="{'width': businessService.barChartOption[2].percent,'background-color': businessService.barChartOption[4].color}"
+          style="height:10px;transform: rotate(180deg);" role="progressbar"> </div>    
+        </div>
+        <div style="margin-bottom: 74px;height: 34px;" class="fill-width">
+          <h2 class="text-right" style="font-weight: bold;">{{businessService.barChartOption[3].text}}</h2>
+          <div class="progress-bar pull-right"
+            [ngStyle]="{'width': businessService.barChartOption[3].percent,'background-color': businessService.barChartOption[4].color}"
+            style="height:10px;transform: rotate(180deg);" role="progressbar"> </div>    
+        </div>
+        <div style="margin-bottom: 0px;height: 34px;" class="fill-width">
+          <h2 class="text-right" style="font-weight: bold;">{{businessService.barChartOption[4].text}}</h2>
+          <div class="progress-bar pull-right"
+            [ngStyle]="{'width': businessService.barChartOption[4].percent,'background-color': businessService.barChartOption[4].color}"
+            style="height:10px;transform: rotate(180deg);" role="progressbar"> </div>    
+        </div>  
+      </div>
+    </div>
+
+    <div fxFlex class="fill-height" style="margin:0px 78px 0px 94px">
+      <h2 class="larg-text">VS</h2>
+      <h2 class="nomal-text light-blue-text" style="height: 120px;">时间</h2>
+      <h2 class="nomal-text light-blue-text" style="height: 108px;">乱扔垃圾<label class="sky-blue-text"
+          style="font-size: 16px;">(起)</label></h2>
+      <h2 class="nomal-text light-blue-text" style="height: 108px;">混合投放<label class="sky-blue-text"
+          style="font-size: 16px;">(起)</label></h2>
+      <h2 class="nomal-text light-blue-text" style="height: 108px;">满溢时间<label class="sky-blue-text"
+          style="font-size: 16px;">(分钟)</label></h2>
+      <h2 class="nomal-text light-blue-text" style="height: 108px;">干垃圾<label class="sky-blue-text"
+          style="font-size: 16px;">(吨)</label></h2>
+      <h2 class="nomal-text light-blue-text">湿垃圾<label class="sky-blue-text" style="font-size: 16px;">(吨)</label></h2>
+    </div>
+    <div class="fill-height" fxFlex="40">
+      <div style="width: 80%;margin-right: 20%;padding-top: 16px;">
+        <div class="fill-width" style="height: 34px;margin-bottom: 56px;">
+          <div class="pull-left" style="width: 340px;height: 34px;">
+            <hw-tree-drop-list-v2 #drop2 [onlyDivisionNode]="divisionMode" [rightArrow]="true" [selectedItemFn]="vs2Class">
+            </hw-tree-drop-list-v2>
+          </div>
+        </div>
+        <div style="margin-bottom: 68px;height: 34px;" class="fill-width">
+          <div class="pull-left" style="width: 208px;height: 34px;position: relative;">
+            <i class="mdi mdi-menu-down arrow-time" [ngStyle]="{'right': timeArrow+'px'}"></i>
+            <input  type="text" id="dtp2"  #dtp2 style="text-align: left;" class="hw-form-control form-control p-l-0" readonly
+            DateTimePickerMirror [format]="'yyyy年mm月dd日'" [startView]="businessService.datePicker.startView"
+              [minView]="businessService.datePicker.minView" [defaultVal]="businessService.search.beginDate"
+               [changeDate]="startDateV2">
+          </div>
+
+        </div>
+        <div style="margin-bottom: 72px;height: 34px;" class="fill-width">
+          <h2 style="font-weight: bold;">{{businessService.barChartOption2[0].text}}</h2> 
+            <div class="progress-bar "
+            [ngStyle]="{'width': businessService.barChartOption2[0].percent,'background-color': businessService.barChartOption2[0].color}"
+            style="height:10px;" role="progressbar"> </div>   
+        </div>
+       <div style="margin-bottom: 74px;height: 34px;" class="fill-width">
+          <h2 style="font-weight: bold;">{{businessService.barChartOption2[1].text}}</h2>         
+          <div class="progress-bar "
+          [ngStyle]="{'width': businessService.barChartOption2[1].percent,'background-color': businessService.barChartOption2[1].color}"
+          style="height:10px;" role="progressbar"> </div>  
+        </div>
+        <div style="margin-bottom: 74px;height: 34px;" class="fill-width">
+          <h2 style="font-weight: bold;">{{businessService.barChartOption2[2].text}}</h2>         
+          <div class="progress-bar "
+          [ngStyle]="{'width': businessService.barChartOption2[2].percent,'background-color': businessService.barChartOption2[2].color}"
+          style="height:10px;" role="progressbar"> </div>  
+        </div>
+        <div style="margin-bottom: 74px;height: 34px;" class="fill-width">
+          <h2 style="font-weight: bold;">{{businessService.barChartOption2[3].text}}</h2>         
+          <div class="progress-bar "
+          [ngStyle]="{'width': businessService.barChartOption2[3].percent,'background-color': businessService.barChartOption2[3].color}"
+          style="height:10px;" role="progressbar"> </div>  
+        </div>
+        <div style="margin-bottom: 0px;height: 34px;" class="fill-width">
+          <h2 style="font-weight: bold;">{{businessService.barChartOption2[4].text}}</h2>         
+          <div class="progress-bar "
+          [ngStyle]="{'width': businessService.barChartOption2[4].percent,'background-color': businessService.barChartOption2[4].color}"
+          style="height:10px;" role="progressbar"> </div>  
+        </div>  
+      </div>
+    </div>
+  </div>
+</div>

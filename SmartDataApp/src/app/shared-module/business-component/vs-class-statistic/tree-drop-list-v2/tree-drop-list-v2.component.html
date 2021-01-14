@@ -1,0 +1,30 @@
+<div style="position: relative;"  (click)="$event.stopPropagation();">
+  <div class="header-wrap" (click)="showBody=!showBody; $event.stopPropagation();" fxLayout="row" fxLayoutAlign="space-between stretch">
+  
+    <div class="placeholder" [class.text-left]="rightArrow" [class.text-right]="!rightArrow">
+      <ng-container *ngIf="!rightArrow">
+        <i class="mdi mdi-menu-down"></i>
+      </ng-container>     
+      {{selectedText?selectedText.text:'请选择' }}  
+      <ng-container *ngIf="rightArrow">
+        <i class="mdi mdi-menu-down"></i>
+      </ng-container>
+    </div>
+     
+  </div>
+  <div  class="fill-width body-wrap collapse" [class.in]="showBody">   
+    <div class="fill-width m-b-10">
+      <div>
+        <hw-input-search [placeholder]="'名称'" [searchEvent]="searchTree"></hw-input-search>
+      </div>
+      <div class="fine"   style="overflow: scroll;height: 300px;">
+        <ng-container *ngIf="dataService.divisions&&dataService.garbageStations">
+          <hw-custom-tree #garbageStationTree [treeData]="stationTreeService.treeNode" 
+          [mode]="treeListMode"          
+          [checkedItemFn]="selectedItemClick">
+          </hw-custom-tree>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
