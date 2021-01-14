@@ -15,7 +15,7 @@ export class CustomTreeComponent implements OnInit {
 
   selectedItems = new Array<FlatNode>();
   @Input() selectedItemFn: (item: FlatNode, inputVal?: string) => void;
-  @Input() checkedItemFn: () => void;
+  @Input() checkedItemFn: (item: FlatNode) => void;
   @Input() rightBtnFn: (item: FlatNode, btn: RightBtn) => void;
   @Input() treeData: TreeNode[];
   @Input() mode = TreeListMode.nomal;
@@ -146,7 +146,7 @@ export class CustomTreeComponent implements OnInit {
       item.checked = !item.checked;
       item.checkBoxState = item.checked == false ? null : this.checkBoxState.self;
       this.sumChildChecked(item, item.checked);
-      if (this.checkedItemFn) this.checkedItemFn();
+      if (this.checkedItemFn) this.checkedItemFn(item);
     }
     else if (this.mode == TreeListMode.nomal && d) {
       d.checked = false;

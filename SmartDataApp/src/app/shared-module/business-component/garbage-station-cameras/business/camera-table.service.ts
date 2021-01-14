@@ -97,7 +97,7 @@ export class CameraTableService{
     getRequsetParam(pageIndex: number, search: SearchControl) {
         const  param = new GetGarbageStationCamerasParams();
         param.PageIndex = pageIndex;
-        param.PageSize =this.cameraStateTable == CameraStateTableEnum.offline? new ListAttribute().maxSize:10;   
+        param.PageSize =10;   
         if (search.state) 
             param.Name =search.searchText   
         if(this.cameraStateTable == CameraStateTableEnum.online||this.cameraStateTable == CameraStateTableEnum.offline)
