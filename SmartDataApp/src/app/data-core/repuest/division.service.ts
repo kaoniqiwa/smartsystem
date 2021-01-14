@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { SaveModel } from "../model/save-model";
 import { Division,GetDivisionsParams } from "../model/waste-regulation/division"; 
 import { DivisionTree } from "../model/waste-regulation/division-tree"; 
-import { DivisionNumberStatistic ,GetDivisionStatisticNumbersParams} from "../model/waste-regulation/division-number-statistic"; 
+import { DivisionNumberStatistic ,GetDivisionStatisticNumbersParams,GetDivisionStatisticNumbersParamsV2,DivisionNumberStatisticV2} from "../model/waste-regulation/division-number-statistic"; 
 import { EventNumberStatistic,GetDivisionEventNumbersParams, } from "../model/waste-regulation/division-event-numbers"; 
 import { GarbageVolume,GetDivisionVolumesParams } from "../model/waste-regulation/garbage-volume"; 
 import * as url from "../url/waste-regulation/division";
@@ -61,6 +61,10 @@ export class DivisionRequestService extends SaveModel{
 
     statisticNumberList(item:GetDivisionStatisticNumbersParams){
         return this.requestService.post<GetDivisionStatisticNumbersParams, Response<PagedList<DivisionNumberStatistic>>>(this.url.statisticNumberList(), item);
+    }
+
+    statisticNumberListV2(item:GetDivisionStatisticNumbersParamsV2){
+        return this.requestService.post<GetDivisionStatisticNumbersParamsV2, Response<DivisionNumberStatisticV2[]>>(this.url.statisticNumberHistoryList(), item);
     }
 }
 

@@ -10,7 +10,7 @@ import { Response } from '../model/Response';
 import { HowellAuthHttpService } from './howell-auth-http.service';
 import { GetGarbageStationnEventNumbersParams, EventNumberStatistic } from '../model/waste-regulation/division-event-numbers';
 import {
-    GarbageStationNumberStatistic, GetGarbageStationStatisticNumbersParams
+    GarbageStationNumberStatistic, GetGarbageStationStatisticNumbersParams,GarbageStationNumberStatisticV2,GetGarbageStationStatisticNumbersParamsV2
 } from '../model/waste-regulation/garbage-station-number-statistic';
 import { GarbageStationType } from "../model/waste-regulation/garbage-station-type";
 import {CameraPictureUrl  } from "../model/waste-regulation/camera-picture-url";
@@ -62,6 +62,11 @@ export class GarbageStationRequestService extends SaveModel {
     statisticNumberList(item: GetGarbageStationStatisticNumbersParams) {
         return this.requestService.post<GetGarbageStationStatisticNumbersParams,
             Response<PagedList<GarbageStationNumberStatistic>>>(this.url.statisticNumberList(), item);
+    }
+    
+    statisticNumberListV2(item: GetGarbageStationStatisticNumbersParamsV2) {
+        return this.requestService.post<GetGarbageStationStatisticNumbersParamsV2,
+            Response<GarbageStationNumberStatisticV2[]>>(this.url.statisticNumberHistoryList(), item);
     }
 
     manualCapture(stationId:string){

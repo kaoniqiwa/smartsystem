@@ -1,4 +1,5 @@
 import { EventNumber } from "./event-number";
+import { StatisticTime } from "./division-number-statistic";
  /**垃圾房数量统计 */
     export interface GarbageStationNumberStatistic
     {
@@ -39,3 +40,26 @@ import { EventNumber } from "./event-number";
         /**区划名称(可选)，支持LIKE */
         Name: string;
     }
+
+ export class   GarbageStationNumberStatisticV2 {
+  Id	:string	;//垃圾房ID
+  Name:	string;	//垃圾房名称
+  Time:	StatisticTime;	//统计时间对象
+  EventNumbers:	EventNumber[];	//当日事件数量
+  Volume:	number;	//总数量，单位：L
+  DryVolume:	number;//	干垃圾容量，单位：L
+  WetVolume:	number;//	湿垃圾容量，单位：L
+  Garde:	number;//	评级
+  FullDuration:	number;	//满溢时间，单位：分钟
+ }
+
+
+export class GetGarbageStationStatisticNumbersParamsV2 {
+  BeginTime: Date | string;	//开始时间
+  EndTime: Date | string;	//结束时间
+  GarbageStationIds: string[];//	垃圾房ID列表
+  TimeUnit: number;//	统计时间单位：
+  //2-Day,3-Week,4-Month
+  Asc: string[];	//升序排列的属性名称
+  Desc: string[];	//降序排列的属性名称
+}
