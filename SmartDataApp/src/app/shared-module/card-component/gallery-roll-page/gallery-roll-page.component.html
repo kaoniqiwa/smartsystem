@@ -43,7 +43,8 @@
     <div fxLayout="row" [ngStyle]="{'height': galleryHeight}" >
       <ul class="view-ul fill-height fill-width">
         <ng-container *ngFor="let item of imgs">
-          <li class="pull-left default-view-size"   [ngStyle]="{'height': setviewSize(imgs.length)+'%','width':  setviewSize(imgs.length)+'%'}">
+          <li  [ngStyle]="{'display': bigViewId&&item.tag.id!=bigViewId ? 'none':'block'}"  class="pull-left" 
+          [class.view-size-9]="!bigViewId&&imgs.length>4" [class.fill-height]="bigViewId"  [class.fill-width]="bigViewId"  [class.view-size-4]="!bigViewId&&imgs.length<=4">
             <div style="position: relative;" id="item__{{item.tag.id}}"
               [ngStyle]="{'visibility': playState(item.tag.id)?'hidden':'visible'}"
               class="fill-width fill-height img-wrapper">
@@ -60,12 +61,16 @@
                 <a href="javascript:" (click)="playVideo(item.tag.id);model.autoChangePage=false;">
                   <div class="howell-icon-play" style="color: rgba(255,255,255,0.7);font-size: 70px;"></div>
                 </a>
+                <a href="javascript:" (click)="bigView(item.tag.id);model.autoChangePage=false;">
+                  <div [class.howell-icon-zoom-increase]="!bigViewId" [class.howell-icon-zoom-decrease]="bigViewId" style="color: rgba(255,255,255,0.7);font-size: 70px;"></div>
+                </a>
               </div>
             </div>
           </li>
         </ng-container>
         <ng-container *ngFor="let item of fillBlank(imgs.length)">
-          <li  class="pull-left default-view-size"    [ngStyle]="{'height': setviewSize(imgs.length)+'%','width':  setviewSize(imgs.length)+'%'}">
+          <li  class="pull-left" [ngStyle]="{'display': bigViewId ? 'none':'block'}"  
+          [class.view-size-9]="!bigViewId&&imgs.length>4"  [class.view-size-4]="!bigViewId&&imgs.length<=4">
             <img height="100%" width="100%"  src="assets/img/black-bg.png" style="border: 2px solid transparent;" alt="">
           </li> 
         </ng-container>
@@ -116,7 +121,7 @@
       <div class="collapse" id="video__view_wrap" [class.in]="playing"
         [ngStyle]="{'width': playViewSize.width+'px','height': playViewSize.height+'px'}"
         style="position: absolute;z-index: 1;">
-        <div id="video__view" [class.absolute]="imgs.length == 4"  [class.table-cell]="imgs.length > 4"
+        <div id="video__view" [class.absolute]="imgs.length == 4"  [class.table-cell]="!bigViewId&&imgs.length > 4"
         class="fill-width fill-height player " HWSPlayer></div>
       </div>
 

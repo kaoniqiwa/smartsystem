@@ -37,6 +37,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
   galleryHeight = '86%';
   readonly interval_inspection_key = '99';
   user = new SessionUser();
+  bigViewId ='';
   constructor(
     private srRequestService: ResourceSRServersRequestService
     , private userDalService: UserDalService
@@ -82,6 +83,10 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
     setTimeout(() => {
       this.tagClick(null, false);
     }, 500);
+  }
+
+  bigView(id:string){
+    this.bigViewId = this.bigViewId ? '':id;
   }
 
   autoVideoWindowSize() {
