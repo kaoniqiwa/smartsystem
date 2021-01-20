@@ -293,6 +293,29 @@ h2
 } 
 
 
+.second-menu-btn{
+    width: 130px;
+    cursor: pointer;
+    height: 44px;  
+    background-image:url('/assets/img/second-menu.png');
+}
+
+.second-menu-btn:hover{ 
+    background-image:url('/assets/img/second-menu-hover.png')
+}
+.second-menu-btn.selected{
+    background-image:url('/assets/img/second-menu-focus.png')
+} 
+
+.second-menu-btn.text{
+    font-size: 18px;
+    justify-content: center;
+    color: white;
+    align-items: center;
+    display: flex; 
+}
+
+
 select.custom.form-control:not([size]):not([multiple]) {
     height: auto;
     background-color: #1d233b;
