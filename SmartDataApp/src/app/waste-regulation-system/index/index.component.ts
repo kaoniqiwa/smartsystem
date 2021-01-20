@@ -159,6 +159,11 @@ export class IndexComponent implements OnInit {
     this.user.clear = null;
   }
 
+  showVsView(){
+    this.divisionBusinessService.eventHistoryView = true;
+    this.divisionBusinessService.vsClassStatistic = true;
+  }
+
   showInspectionView() {
     this.divisionBusinessService.inspectionView = true;
     this.divisionBusinessService.bindingEvent2();

@@ -44,6 +44,7 @@ export class DivisionBusinessService {
     inspectionView = false;
     inspectionViewMaxPostion = false;
     inspectionViewVideo = false;
+    vsClassStatistic = false;
     inspectionSize = { width:0,height:0,left:0,top:0}; 
     /**更正区划id 视图显示当前 */
     nspectionParam:(val:string)=>void;
@@ -252,5 +253,6 @@ export class DivisionBusinessService {
         this.eventHistoryView = false;
         this.stationListView = false;
         this.stationCameraView = false;
+        this.vsClassStatistic=false;
     }
 }

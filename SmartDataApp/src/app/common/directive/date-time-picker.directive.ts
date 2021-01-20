@@ -18,6 +18,9 @@ export class DateTimePickerDirective implements AfterContentInit {
     this.ele = e.nativeElement;
   }
 
+  set setStartDate(val:string|Date){
+    $(this.ele).datetimepicker('update'); 
+  }
   ngAfterContentInit() {
     $(this.ele).datetimepicker({
       format: this.format,
@@ -99,3 +102,9 @@ export class DateTimePickerDirective implements AfterContentInit {
     }
   }
 }
+
+@Directive({
+  selector: '[DateTimePickerMirror]'
+})
+export class DateTimePickerMirrorDirective extends DateTimePickerDirective{}
+

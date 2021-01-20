@@ -10,8 +10,9 @@ import {  MatTreeModule,MatSidenavModule,MatToolbarModule ,MatButtonModule,MatMe
 } from '@angular/material';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { FormTitlePipe,TxtLenPipe } from "../common/tool/howell.pipe";
-import { DateTimePickerDirective } from "../common/directive/date-time-picker.directive";
+import { DateTimePickerDirective,DateTimePickerMirrorDirective } from "../common/directive/date-time-picker.directive";
 import {  EChartBarDirective} from "../common/directive/echarts/bar-directive";
+import {  EChartBarDirectiveV2} from "../common/directive/echarts/bar-directive-v2";
 import {  EChartLineDirective} from "../common/directive/echarts/line-directive";
 import {  EChartPieOutDirective} from "../common/directive/echarts/pie/pie-out-directive";
 import {  EChartPieInDirective} from "../common/directive/echarts/pie/pie-in-directive";
@@ -56,6 +57,9 @@ import { GarbageStationCamerasComponent } from './business-component/garbage-sta
 import { UserToolComponent } from "./business-component/user-tool/user-tool.component";
 import { GalleryRollPageComponent } from './card-component/gallery-roll-page/gallery-roll-page.component';
 import { IllegalDropEventSummaryComponent } from './business-component/event-history/illegal-drop-event-summary/illegal-drop-event-summary.component';
+import { IllegalDropEventAnalyzeV2Component } from './business-component/event-history/illegal-drop-event-analyze-v2/illegal-drop-event-analyze-v2.component';
+import { VsClassStatisticComponent } from './business-component/vs-class-statistic/vs-class-statistic.component';
+import { TreeDropListV2Component } from './business-component/vs-class-statistic/tree-drop-list-v2/tree-drop-list-v2.component';
 
 @NgModule({
   imports: [
@@ -65,8 +69,8 @@ import { IllegalDropEventSummaryComponent } from './business-component/event-his
     MatButtonModule,MatMenuModule,MatButtonToggleModule,MatSnackBarModule
   ],
   declarations: [
-    DateTimePickerDirective,
-    HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartLineDirective ,HWSPlayerDirective,CardDirective
+    DateTimePickerDirective,DateTimePickerMirrorDirective,
+    HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartBarDirectiveV2,EChartLineDirective ,HWSPlayerDirective,CardDirective
     ,EChartPieOutDirective,EChartPieInDirective,EChartPieMiddleDirective ,EChartProgressBarBoxDirective,EChartProgressBarDirective
     ,FormTitlePipe,TxtLenPipe,
   InputSearchComponent,CustomTableComponent, ConfirmDialogComponent,
@@ -78,24 +82,24 @@ import { IllegalDropEventSummaryComponent } from './business-component/event-his
 ,LineEChartsCardComponent, SwitchComponent  ,TimeToolComponent
 ,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventAnalyzeComponent,TreeDropListComponent,IllegalDropEventChartComponent,IllegalDropEventCardListComponent
 ,UserToolComponent
-, LevelListPanelComponent, MixedIntoEventHistoryComponent, FullGarbageStationComponent, GarbageStationComponent, GarbageStationCamerasComponent, GalleryRollPageComponent, IllegalDropEventSummaryComponent
+, LevelListPanelComponent, MixedIntoEventHistoryComponent, FullGarbageStationComponent, GarbageStationComponent, GarbageStationCamerasComponent, GalleryRollPageComponent, IllegalDropEventSummaryComponent, IllegalDropEventAnalyzeV2Component, VsClassStatisticComponent, TreeDropListV2Component
 ],
   exports: [
     MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,
     MatSidenavModule,MatToolbarModule,FlexLayoutModule,ReactiveFormsModule,
     MatButtonModule,MatMenuModule,MatButtonToggleModule,MatSnackBarModule,MatTabsModule
-    ,DateTimePickerDirective
-    ,HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartLineDirective,HWSPlayerDirective,CardDirective
+    ,DateTimePickerDirective,DateTimePickerMirrorDirective
+    ,HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartBarDirectiveV2,EChartLineDirective,HWSPlayerDirective,CardDirective
      ,EChartPieOutDirective,EChartPieInDirective,EChartPieMiddleDirective ,EChartProgressBarBoxDirective,EChartProgressBarDirective
     ,FormTitlePipe,TxtLenPipe
     ,InputSearchComponent,InputTagAreaComponent,CustomTableComponent,ConfirmDialogComponent
     ,InputTagSelectComponent,CustomTreeComponent,PicturesDropListComponent,CardListPanelComponent
     ,VideoSimpleCardComponent,StateScaleCardComponent,CardComponent,BusinessCardGridComponent
     ,HeaderSquareListComponent,ImageThemeCardComponent,HintCardComponent,OrderTableCardComponent
-    ,GalleryRollPageComponent
+    ,GalleryRollPageComponent,TreeDropListV2Component
     ,LineEChartsCardComponent,SwitchComponent,TimeToolComponent
-    ,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventSummaryComponent,IllegalDropEventHistoryComponent,TreeDropListComponent,IllegalDropEventAnalyzeComponent,IllegalDropEventChartComponent,IllegalDropEventCardListComponent
-    ,MixedIntoEventHistoryComponent,FullGarbageStationComponent,GarbageStationComponent,GarbageStationCamerasComponent
+    ,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventSummaryComponent,IllegalDropEventAnalyzeV2Component,IllegalDropEventHistoryComponent,TreeDropListComponent,IllegalDropEventAnalyzeComponent,IllegalDropEventChartComponent,IllegalDropEventCardListComponent
+    ,MixedIntoEventHistoryComponent,FullGarbageStationComponent,GarbageStationComponent,GarbageStationCamerasComponent,VsClassStatisticComponent
     ,UserToolComponent,LevelListPanelComponent
   ],
   providers: [DatePipe,

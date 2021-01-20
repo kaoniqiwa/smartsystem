@@ -19,4 +19,11 @@ export class ConfigRequestService {
     getVideo(){
       return this.http.get<{beforeInterval:number,afterInterval:number}>('assets/video.json')
     }
+
+    xls(name:string){ 
+      return this.http.get('assets/'+name,{
+        responseType: 'arraybuffer'
+      });
+    } 
+
 }

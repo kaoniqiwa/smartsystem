@@ -91,7 +91,9 @@
           <hw-garbage-station-cameras [divisionsId]="divisionBusinessService.divisionsId"
             [cameraStateTable]="divisionBusinessService.stationCameraStateTable"></hw-garbage-station-cameras>
         </ng-container>
-
+        <ng-container *ngIf="divisionBusinessService.vsClassStatistic">
+          <vs-class-statistic></vs-class-statistic>
+        </ng-container>
 
       </div>
     </div>
@@ -113,7 +115,8 @@
           </ng-container>
         </div>
         <div class="collapse fill-height fill-width" [class.in]="!divisionBusinessService.inspectionView">
-          <app-amap #aMap (mapLoadedEvent)="mapLoaded($event)" (patrolButtonClicked)="showInspectionView()"></app-amap>
+          <app-amap #aMap (mapLoadedEvent)="mapLoaded($event)" (vsButtonClicked)="showVsView()"
+           (patrolButtonClicked)="showInspectionView()"></app-amap>
         </div>
         <div class="card-angle top-left"></div>
         <div class="card-angle top-right"></div>

@@ -27,6 +27,18 @@ export class BarOption implements IEChartOption{
     barWidth = 12;
 }
 
+
+export class BarOptionV2 implements IEChartOption{
+    yAxisData: IEChartsData; 
+    seriesData: IEChartsData[];
+    seriesName = new Array<string>();  
+    color = ['#7586e0','#3184e3'];
+    color2 = ['rgb(117,134,224,0.5)','rgb(49,132,227,0.5)'];
+    barWidth = 12;   
+}
+
+
+
 export class LineOption implements IEChartOption{
     xAxisData: Array<IEChartsData>; 
     seriesData: Array<IEChartsData>;   
