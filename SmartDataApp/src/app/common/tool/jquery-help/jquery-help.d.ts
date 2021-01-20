@@ -36,3 +36,9 @@ export declare function downloadFile(filename:string, text:string);
 export declare function launchIntoFullscreen(id:string);
  
 export declare function exitFullscreen();
+
+export declare function getCanvasDataUrl(domId:string);
+
+export declare function setData(dom:string,name:string,val:string);
+
+export declare function getData(dom:string,name:string);

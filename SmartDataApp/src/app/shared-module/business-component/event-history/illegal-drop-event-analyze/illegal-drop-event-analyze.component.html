@@ -1,24 +1,31 @@
 <div style="height: calc(100% - 64px);position: relative;">
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
     <div class="fill-height">
-      <ul class="hw-ul">       
-        <li  class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.history)">
-          <div class="second-title-btn text" >
-           乱扔垃圾事件
-          </div> 
-        </a></li>
-        <li  class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.chart)">
-          <div class="second-title-btn text" >
-            乱扔垃圾图表 
-          </div> 
-        </a></li>
-        <li class="pull-left">
-          <div class="second-title-btn text selected" >
-            乱扔垃圾分析
-          </div> 
-        </li>
-      </ul>
-    
+      <div class="second-title-bg pull-left text">
+        乱扔垃圾
+      </div>
+      <ul class="hw-ul pull-left m-t-10">
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.history)">
+            <div class="second-menu-btn text">
+              &nbsp;&nbsp;事件
+            </div>
+          </a></li>
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.sumChart)">
+            <div class="second-menu-btn  text">
+              &nbsp;总图表
+            </div>
+          </a></li>
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.chart)">
+            <div class="second-menu-btn text">
+              细分图表
+            </div>
+          </a></li>
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.analyze)">
+            <div class="second-menu-btn selected text">
+              数据比较
+            </div>
+          </a></li>
+      </ul>    
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch" [formGroup]="businessService.search.searchform"
@@ -26,7 +33,7 @@
     <div fxFlex="80">
       <div fxFlex="35" class="m-r-10">
         <span>选择时间</span>       
-        <input type="text" DateTimePicker [format]="'yyyy年mm月dd日'" [startView]="businessService.datePicker.startView"
+        <input type="text" #dtp DateTimePicker [format]="'yyyy年mm月dd日'" [startView]="businessService.datePicker.startView"
           [minView]="businessService.datePicker.minView" [defaultVal]="businessService.search.beginDate"
           [changeDate]="startDate" style="width: calc(100% - 82px);" class="custom form-control m-l-10"> 
       </div>    
@@ -44,10 +51,14 @@
            <hw-tree-drop-list [onlyDivisionNode]="businessService.divisionNode"></hw-tree-drop-list>
         </div>
       </div>
-      <div fxFlex="10">
+      <div fxFlex="20">
         <button type="button" class="hw-blue-btn m-r-10 " (click)="search()">
           <i class="mdi mdi-magnify"></i>
           查询
+        </button>
+        <button type="button" class="hw-blue-btn m-r-10 " (click)="exportExcel()">
+          <i class="howell-icon-export"></i>
+          导出
         </button>
       </div>
    

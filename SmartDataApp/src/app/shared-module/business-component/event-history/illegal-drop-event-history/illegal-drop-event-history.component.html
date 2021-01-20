@@ -22,23 +22,31 @@
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
     <div class="fill-height">
-      <ul class="hw-ul">
-        <li class="pull-left">
-          <div class="second-title-btn selected text " >
-            乱扔垃圾事件
-          </div> 
-        </li>
-        <li  class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.chart)">
-          <div class="second-title-btn text" >
-            乱扔垃圾图表
-          </div> 
-        </a></li>
-        <li  class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.analyze)">
-          <div class="second-title-btn text" >
-            乱扔垃圾分析
-          </div> 
-        </a></li>
-      </ul>
+      <div class="second-title-bg pull-left text">
+        乱扔垃圾
+      </div>
+      <ul class="hw-ul pull-left m-t-10">
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.history)">
+            <div class="second-menu-btn selected text">
+              &nbsp;&nbsp;事件
+            </div>
+          </a></li>
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.sumChart)">
+            <div class="second-menu-btn  text">
+              &nbsp;总图表
+            </div>
+          </a></li>
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.chart)">
+            <div class="second-menu-btn  text">
+              细分图表
+            </div>
+          </a></li>
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.analyze)">
+            <div class="second-menu-btn  text">
+              数据比较
+            </div>
+          </a></li>
+      </ul> 
     
     </div>
     <div [formGroup]="tableService.search.searchform" fxLayoutAlign="center center" style="position: relative;">

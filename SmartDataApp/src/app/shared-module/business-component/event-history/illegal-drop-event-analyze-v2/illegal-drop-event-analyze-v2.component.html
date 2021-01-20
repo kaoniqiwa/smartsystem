@@ -1,5 +1,5 @@
 <div style="height: calc(100% - 64px);position: relative;">
-  <div fxLayout="row" fxLayoutAlign="space-between stretch"> 
+  <div fxLayout="row">
     <div class="fill-height">
       <div class="second-title-bg pull-left text">
         乱扔垃圾
@@ -11,21 +11,22 @@
             </div>
           </a></li>
         <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.sumChart)">
-            <div class="second-menu-btn  text">
+            <div class="second-menu-btn selected text">
               &nbsp;总图表
             </div>
           </a></li>
         <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.chart)">
-            <div class="second-menu-btn selected text">
+            <div class="second-menu-btn text">
               细分图表
             </div>
           </a></li>
         <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.analyze)">
-            <div class="second-menu-btn  text">
+            <div class="second-menu-btn text">
               数据比较
             </div>
           </a></li>
-      </ul> 
+      </ul>
+
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch" [formGroup]="businessService.search.searchform"
@@ -37,24 +38,12 @@
           [minView]="businessService.datePicker.minView" [defaultVal]="businessService.search.beginDate"
           [changeDate]="startDate" style="width: calc(100% - 82px);" class="custom form-control m-l-10">
       </div>
-      <div fxFlex="30" class="m-r-10">
-        <span class="input-text" style="position: relative;top:2px">区划</span>
-        <div class="pull-right" style="width: calc(100% - 46px);">
-          <ng-container *ngIf="businessService.divisionListView">
-            <hw-level-list-panel [model]="businessService.divisionListView.dataSource" [selectedFn]="changeDivisionFn">
-            </hw-level-list-panel>
-          </ng-container>
-
-        </div>
-      </div>
       <div fxFlex="25" class="m-r-10">
-        <span class="input-text" style="position: relative;top:2px">垃圾房</span>
-        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 64px);"
-          formControlName="StationId">
-          <option value="">请选择</option>
-          <ng-container *ngFor="let c of businessService.search.stationsDropList">
-            <option value="{{c.id}}">{{c.name}}</option>
-          </ng-container>
+        <span class="input-text" style="position: relative;top:2px">对象类型</span>
+        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 82px);"
+          formControlName="ClassType" (change)="changeClassType()">
+          <option value="division">居委会</option>
+          <option value="station">垃圾房</option>
         </select>
       </div>
       <div fxFlex="20">
@@ -66,7 +55,9 @@
           <i class="howell-icon-export"></i>
           导出
         </button>
+
       </div>
+
     </div>
     <div fxFlex="20">
       <div class="pull-right">
@@ -76,25 +67,15 @@
           <option value="week">周报表</option>
           <option value="day">月报表</option>
         </select>
-        <select class="form-control custom custom-select m-l-10"  (change)="businessService.changeChartType()"
-         style="width: 100px;" formControlName="ChartType">
-          <option value="line">折线图</option>
-          <option value="bar">柱状图</option>
-        </select>
       </div>
     </div>
   </div>
   <div style="height: calc(100% - 60px);position: relative;">
-    <div class="fill-width fill-height" [class.chart-hide]="!businessService.lineChartView" 
-    style="position: absolute;">
-      <ng-container *ngIf="businessService.lineChartOption">
-        <div class="height98 fill-width" [options]="businessService.lineChartOption" EChartLine></div>
-      </ng-container>
-    </div>
-    <div class="fill-width fill-height"  [class.chart-hide]="!businessService.barChartView" 
-    style="position: absolute;">
+
+    <div class="fill-width fill-height" style="position: absolute;overflow-y: scroll;">
       <ng-container *ngIf="businessService.barChartOption">
-        <div class="height98 fill-width" [options]="businessService.barChartOption" EChartBar></div>
+        <div class="fill-width" id="hw_4" [ngStyle]="{'height': businessService.barItemW+'px'}"
+          [options]="businessService.barChartOption" EChartBarV2></div>
       </ng-container>
     </div>
 

@@ -159,6 +159,22 @@ function exitFullscreen() {
     }
 }
 
+function setData(dom,name,val){
+    $('#'+dom).data(name,val);
+}
+
+function getData(dom,name){
+    return  $('#'+dom).data(name);
+}
+
+function getCanvasDataUrl(domId){
+    const canvas=$('#'+domId).find('canvas'), 
+    imgUrl = canvas[0].toDataURL('image/png');
+    return imgUrl || null
+}
+
+exports.getData = getData;
+exports.setData = setData;
 exports.moveView = moveView;
 exports.moveView2 = moveView2;
 exports.targetPosition=targetPosition;
@@ -178,3 +194,4 @@ exports.createVideo=createVideo;
 exports.downloadFile=downloadFile;
 exports.launchIntoFullscreen=launchIntoFullscreen;
 exports.exitFullscreen=exitFullscreen;
+exports.getCanvasDataUrl=getCanvasDataUrl;

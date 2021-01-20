@@ -6,11 +6,13 @@ import { NodeTypeEnum } from '../../../../../aiop-system/common/tree.service';
 import { FlatNode, TreeListMode } from '../../../../custom-tree/custom-tree';
 import { domClickFn } from '../../../../../common/tool/jquery-help/jquery-help';
 import { DivisionTypeEnum } from "../../../../../common/tool/enum-helper";
+import { GarbageStationDao } from '../../../../../data-core/dao/garbage-station-dao';
+import { DivisionDao } from '../../../../../data-core/dao/division-dao';
 @Component({
   selector: 'hw-tree-drop-list',
   templateUrl: './tree-drop-list.component.html',
   styleUrls: ['./tree-drop-list.component.styl'],
-  providers: [StationTreeService, DataService]
+  providers: [StationTreeService, DataService,GarbageStationDao,DivisionDao]
 })
 export class TreeDropListComponent implements OnInit {
   showBody = false;
@@ -58,7 +60,10 @@ export class TreeDropListComponent implements OnInit {
     this.garbageStationTree.treeControl.expandAll();
   }
   constructor(private stationTreeService: StationTreeService
-    , public dataService: DataService) {
+    ,private garbageStationDao:GarbageStationDao
+    ,private divisionDao:DivisionDao
+    , public dataService: DataService
+    ) {
   }
 
   closeChecked(val: { id: string, text: string }) {
@@ -104,7 +109,7 @@ export class TreeDropListComponent implements OnInit {
 
   async reInit() {
     if (this.dataService.divisions.length==0)
-      this.dataService.divisions = await this.dataService.requestDivision();
+      this.dataService.divisions = await this.divisionDao.allDivisions();
     const ancestorDivision = this.dataService.divisions.find(x => x.ParentId == void 0 || x.IsLeaf==false); 
     this.stationTreeService.divisions.items = new Array();
     this.stationTreeService.divisionModel = this.dataService.divisions.filter(x=>x.DivisionType>DivisionTypeEnum.City);
@@ -114,7 +119,7 @@ export class TreeDropListComponent implements OnInit {
     }
     else { 
       if (ancestorDivision && this.dataService.garbageStations.length==0)
-        this.dataService.garbageStations = await this.dataService.requestGarbageStation(ancestorDivision.Id);
+        this.dataService.garbageStations = await this.garbageStationDao.requestGarbageStation(ancestorDivision.Id);
         this.stationTreeService.garbageStations.items= new Array();
       this.stationTreeService.garbageStationModel = this.dataService.garbageStations;
       this.stationTreeService.convertStationTreeNode();

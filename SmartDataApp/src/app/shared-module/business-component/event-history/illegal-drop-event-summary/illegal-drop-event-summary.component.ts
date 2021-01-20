@@ -8,7 +8,7 @@ import { DivisionBusinessService } from "../../../../waste-regulation-system/ind
 })
 export class IllegalDropEventSummaryComponent implements OnInit {
 
-  viewsShow = [true, false, false];
+  viewsShow = [true, false, false,false];
   defaultSearch = false;
 
  
@@ -22,8 +22,8 @@ export class IllegalDropEventSummaryComponent implements OnInit {
   ngOnInit() {
   }
 
-  acceptOtherView(val: OtherViewEnum) {
-    for (var i = 0; i < 3; i++)
+  acceptOtherView(val: OtherViewEnum) { 
+    for (var i = 0; i < 4; i++)
       this.viewsShow[i] = i == val;
     if (val == OtherViewEnum.chart&&this.defaultSearch==false)
       setTimeout(() => {
@@ -39,5 +39,6 @@ export class IllegalDropEventSummaryComponent implements OnInit {
 export enum OtherViewEnum {
   history,
   analyze,
-  chart
+  chart,
+  sumChart
 }

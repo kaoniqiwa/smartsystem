@@ -12,4 +12,8 @@
     <hw-illegal-drop-event-chart  [isDefaultSearch]="true"
     (OtherViewEvent)="acceptOtherView($event)"></hw-illegal-drop-event-chart>
   </div>
+  <div class="fill-height collapse"  [class.in]="viewsShow[3]">
+    <hw-illegal-drop-event-analyze-v2 (OtherViewEvent)="acceptOtherView($event)"></hw-illegal-drop-event-analyze-v2>
+  </div> 
+  
 </div> 
