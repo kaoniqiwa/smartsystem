@@ -62,7 +62,8 @@
                   <div class="howell-icon-play" style="color: rgba(255,255,255,0.7);font-size: 70px;"></div>
                 </a>
                 <a href="javascript:" (click)="bigView(item.tag.id);model.autoChangePage=false;">
-                  <div [class.howell-icon-zoom-increase]="!bigViewId" [class.howell-icon-zoom-decrease]="bigViewId" style="color: rgba(255,255,255,0.7);font-size: 70px;"></div>
+                  <div [class.mdi-fullscreen]="!bigViewId" [class.mdi-fullscreen-exit]="bigViewId" class="mdi "
+                  style="color: rgba(255,255,255,0.7);font-size: 70px;"></div>
                 </a>
               </div>
             </div>

@@ -609,7 +609,7 @@ a.td-icon:hover i{
             top: -10px;
           }
 /**用户信息*/
-.logout{
+.logout,.help{
     text-align: center;
     margin-left: 10px;
     width: 46px;

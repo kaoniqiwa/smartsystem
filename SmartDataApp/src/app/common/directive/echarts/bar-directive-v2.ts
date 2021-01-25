@@ -62,7 +62,7 @@ export class EChartBarDirectiveV2 implements OnChanges {
                 },
                 grid: {
                     left: 0,
-                    top: '0',
+                    top: '10px',
                     right: 0,
                     bottom: '0',
                     containLabel: true
@@ -95,7 +95,7 @@ export class EChartBarDirectiveV2 implements OnChanges {
                         axisLabel: {
                             color: '#CFD7FE',
                             fontSize: "18",                         
-                          
+                            padding: [0, 0,6,0]
                         },
                         axisTick: {        //刻度线
                             show: false,
@@ -114,7 +114,7 @@ export class EChartBarDirectiveV2 implements OnChanges {
         this.zone.runOutsideAngular(() => {
             if(this.echarts_)   this.echarts_.dispose();
             this.echarts_ = echarts.init(this.e.nativeElement);    
-         //    console.log(JSON.stringify(create(this.options)));
+         //console.log(JSON.stringify(create(this.options)));
             
             this.echarts_.setOption(create(this.options), true);
         });

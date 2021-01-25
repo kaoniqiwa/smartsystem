@@ -41,6 +41,7 @@ export class EChartBarDirective implements OnChanges {
                 objs.push( {
                     name: options.seriesName[i],
                     type: 'bar',
+                    barMinHeight:10, 
                     barWidth: options.barWidth,
                     label: {
                         show: true,

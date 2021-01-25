@@ -55,7 +55,7 @@ export function TwoTimeInterval(startTime: string, endTime: Date) {
     let returnVal =
         //   ((days == 0) ? "" : days+"天") +
         ((hours == 0) ? "" : days + "时") +
-        ((minutes == 0) ? "" : minutes + "分");
+        ((minutes == 0) ? "" : minutes + "分钟");
     //+((seconds == 0) ? "" : seconds+"秒");
 
     return returnVal;

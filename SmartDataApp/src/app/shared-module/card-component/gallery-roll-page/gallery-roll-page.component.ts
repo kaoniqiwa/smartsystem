@@ -7,7 +7,7 @@ import { HWSPlayerDirective, HWSPlayerOptions } from "../../../common/directive/
 import { moveView2, domSize } from "../../../common/tool/jquery-help/jquery-help";
 import { ArrayPagination } from "../../../common/tool/tool.service";
 import { UserDalService } from '../../../dal/user/user-dal.service';
-import { SessionUser } from "../../../common/tool/session-user"; 
+import { SessionUser } from "../../../common/tool/session-user";
 @Component({
   selector: 'hw-gallery-roll-page',
   templateUrl: './gallery-roll-page.component.html',
@@ -33,11 +33,11 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
     time: 120,
     interval: -1,
     fn: null
-  } 
+  }
   galleryHeight = '86%';
   readonly interval_inspection_key = '99';
   user = new SessionUser();
-  bigViewId ='';
+  bigViewId = '';
   constructor(
     private srRequestService: ResourceSRServersRequestService
     , private userDalService: UserDalService
@@ -45,7 +45,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
     super();
   }
   ngOnDestroy() {
-    this.maxWindow=false;
+    this.maxWindow = false;
     this.player.stopVideo();
   }
 
@@ -59,21 +59,21 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
     /**实时监控 播放界面 */
     window.setInterval(() => {
       if (this.playing && this.currentPlayId) {
-        const val = this.model.items.get(this.model.index),clearVideo = ()=>{
+        const val = this.model.items.get(this.model.index), clearVideo = () => {
           this.playing = false;
           this.currentPlayId = '';
           this.player.stopVideo();
         };
         if (val && val.imgDesc) {
           const id = val.imgDesc.find(x => x.tag.id == this.currentPlayId);
-          if (id == null)clearVideo();
+          if (id == null) clearVideo();
         }
-        else if(val == null)clearVideo();
+        else if (val == null) clearVideo();
       }
     }, 10);
     window.addEventListener("resize", () => {
       this.autoVideoWindowSize();
-       this.autoVideoWindowSize(); 
+      this.autoVideoWindowSize();
       this.autoVideoWindowSize();
     });
 
@@ -85,8 +85,13 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
     }, 500);
   }
 
-  bigView(id:string){
-    this.bigViewId = this.bigViewId ? '':id;
+  bigView(id: string) {
+    this.bigViewId = this.bigViewId ? '' : id;
+    if (this.playing) {
+      this.playing = false;
+      this.currentPlayId = '';
+      this.player.stopVideo();
+    }
   }
 
   autoVideoWindowSize() {
@@ -234,6 +239,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
 
   // /**下一组图片 */
   nextImgGroup() {
+    this.bigViewId='';
     this.model.index += 1;
     if (this.model.index > this.model.items.size)
       this.model.index = 1;
@@ -244,6 +250,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
 
   /**上一组图片 */
   prevImgGroup() {
+    this.bigViewId='';
     this.model.index -= 1;
     if (this.model.index <= 0)
       this.model.index = this.model.items.size;
