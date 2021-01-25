@@ -89,56 +89,58 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
   }
 
   exportExcel() {
-    const data = this.businessService.exportExcel(this.businessService.dataSources, this.businessService.search, this.dropList.selectedTexts);
-    this.configRequestService.xls('column.xlsx').subscribe(async(x) => {
-      
-      const a = new HowellExcelJS();
-      const b = a.createBook(); 
-      const s = a.addWorksheet(b, 'Table'), colName = ['A', 'B', 'C', 'D','E'];
-      var i = 3, c = 3, timeTag = 0,className = '',sum = 0;
-      this.dropList.selectedTexts.map(x=>className+= ' '+x.text);
-      data.table.title=`${this.dtp.nativeElement.value} ${className}数据比较${this.businessService.reportType}`;
-      data.chart.titles = [data.table.title];
-      data.chart.chartTitle=data.table.title;
-      a.setCellValue(s, 'B1', data.table.title);
-       
-      data.table.fieldName.map((v,i)=>{
-        a.setCellValue(s, colName[i]+'2',v);
-      }); 
-   
-      for (const k of data.table.data.keys()) {     
-        const field = data.table.data.get(k);
-        field.map(x => {
-          if (timeTag == 0)
-          {
-            a.setCellValue(s, 'A' + i + '', x.no);
-            a.setCellValue(s, 'B' + i + '', x.date);
-            a.setCellValue(s, 'C' + i + '', x.name);
-            a.setCellValue(s,'A'+ (3+field.length)+'','合计')
-          }
-          a.setCellValue(s, colName[c] + i, x.val);
-          i += 1;
-          sum+=x.val;
-        });
-        a.setCellValue(s, colName[c] + i, sum);
-        c += 1;
-        i = 3;
-        sum=0;
-        timeTag = 1;
-      } 
-      
-      let he = new HowellExcelV1(data.chart);
-      he.loadZip(x);
-      var sheetArr:any;
-      /**图表 数据 */
-      he.read({file:'xl/worksheets/sheet1.xml'},(err:any, o:any)=>{
-        sheetArr = { $:o.worksheet.$,sheetViews:o.worksheet.sheetViews,drawing:o.worksheet.drawing};      
-      });
-      a.getBuffer(b, (buffer) => { 
-        
-        he.generate(buffer, data.table.title, 2, 4, true,sheetArr);
-      }); 
-    })
-  }
+    if (this.businessService.dataSources) {
 
+
+      const data = this.businessService.exportExcel(this.businessService.dataSources, this.businessService.search, this.dropList.selectedTexts);
+      this.configRequestService.xls('column.xlsx').subscribe(async (x) => {
+
+        const a = new HowellExcelJS();
+        const b = a.createBook();
+        const s = a.addWorksheet(b, 'Table'), colName = ['A', 'B', 'C', 'D', 'E'];
+        var i = 3, c = 3, timeTag = 0, className = '', sum = 0;
+        this.dropList.selectedTexts.map(x => className += ' ' + x.text);
+        data.table.title = `${this.dtp.nativeElement.value} ${className}数据比较${this.businessService.reportType}`;
+        data.chart.titles = [data.table.title];
+        data.chart.chartTitle = data.table.title;
+        a.setCellValue(s, 'B1', data.table.title);
+
+        data.table.fieldName.map((v, i) => {
+          a.setCellValue(s, colName[i] + '2', v);
+        });
+
+        for (const k of data.table.data.keys()) {
+          const field = data.table.data.get(k);
+          field.map(x => {
+            if (timeTag == 0) {
+              a.setCellValue(s, 'A' + i + '', x.no);
+              a.setCellValue(s, 'B' + i + '', x.date);
+              a.setCellValue(s, 'C' + i + '', x.name);
+              a.setCellValue(s, 'A' + (3 + field.length) + '', '合计')
+            }
+            a.setCellValue(s, colName[c] + i, x.val);
+            i += 1;
+            sum += x.val;
+          });
+          a.setCellValue(s, colName[c] + i, sum);
+          c += 1;
+          i = 3;
+          sum = 0;
+          timeTag = 1;
+        }
+
+        let he = new HowellExcelV1(data.chart);
+        he.loadZip(x);
+        var sheetArr: any;
+        /**图表 数据 */
+        he.read({ file: 'xl/worksheets/sheet1.xml' }, (err: any, o: any) => {
+          sheetArr = { $: o.worksheet.$, sheetViews: o.worksheet.sheetViews, drawing: o.worksheet.drawing };
+        });
+        a.getBuffer(b, (buffer) => {
+
+          he.generate(buffer, data.table.title, 2, 4, true, sheetArr);
+        });
+      })
+    }
+  }
 }

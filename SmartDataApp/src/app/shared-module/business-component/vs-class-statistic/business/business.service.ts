@@ -21,8 +21,7 @@ export class BusinessService extends ListAttribute {
         formate: 'yyyy-mm-dd'
     }
     search = new SearchControl(this.datePipe);
-    colors = ['#7d90bc', '#ff9100'];
-    maxPercent = [1000, 9000];
+    colors = ['#7d90bc', '#ff9100']; 
     constructor(private divisionService: DivisionRequestService
         , private datePipe: DatePipe
         , private garbageStationService: GarbageStationRequestService) {
@@ -142,38 +141,43 @@ export class BusinessService extends ListAttribute {
         , search: SearchControl
         , opts: Array<BarOpt>[]) {
         const s = search.toSearchParam(), toPercent = (val: number, maxPercent: number, color: string) => {
-            val = val || 0;
+            val = val || 0;console.log(maxPercent);
+            
             if (val == 0) return { percent: '1%', text: 0, color: color };
             else return {
                 percent: Percentage(val, maxPercent) + 1 + '%',
                 text: val,
                 color: color
             }
+        },maxVal=(vals:number[])=>{
+          return  vals.sort((a,b)=>{
+                return b-a;
+            }).pop();
         }; 
 
         const fillBarOpt = (data: BarOptData, opt: Array<BarOpt>
             , compare: BarOptData) => {
             if (s.TimeUnit == TimeUnitEnum.Hour) {
-                opt[0] = toPercent(data.illegalDrop, this.maxPercent[0], this.colors[0]);
-                opt[1] = toPercent(data.mixedInto, this.maxPercent[0], this.colors[0]);
+                opt[0] = toPercent(data.illegalDrop,data.illegalDrop+compare.illegalDrop, this.colors[0]);
+                opt[1] = toPercent(data.mixedInto, data.mixedInto+compare.mixedInto, this.colors[0]);
                 opt[2] = {
                     percent: '1%',
                     text: 0,
                     color: this.colors[0]
                 }
-                opt[3] = toPercent(data.dryVolume, this.maxPercent[0], this.colors[0]);
-                opt[4] = toPercent(data.wetVolume, this.maxPercent[0], this.colors[0]);
+                opt[3] = toPercent(data.dryVolume, data.dryVolume+compare.dryVolume, this.colors[0]);
+                opt[4] = toPercent(data.wetVolume, data.wetVolume+compare.wetVolume, this.colors[0]);
             }
             else if (s.TimeUnit == TimeUnitEnum.Day) {
-                opt[0] = toPercent(data.illegalDrop, this.maxPercent[1], this.colors[0]);
-                opt[1] = toPercent(data.mixedInto, this.maxPercent[1], this.colors[0]);
+                opt[0] = toPercent(data.illegalDrop, data.illegalDrop+compare.illegalDrop, this.colors[0]);
+                opt[1] = toPercent(data.mixedInto,data.mixedInto+compare.mixedInto, this.colors[0]);
                 opt[2] = {
                     percent: '1%',
                     text: 0,
                     color: data.fullDuration > compare.fullDuration ? this.colors[1] : this.colors[0]
                 }
-                opt[3] = toPercent(data.dryVolume, this.maxPercent[1], this.colors[0]);
-                opt[4] = toPercent(data.wetVolume, this.maxPercent[1], this.colors[0]);
+                opt[3] = toPercent(data.dryVolume,data.dryVolume+compare.dryVolume, this.colors[0]);
+                opt[4] = toPercent(data.wetVolume, data.wetVolume+compare.wetVolume, this.colors[0]);
             }
 
             opt[0].color = data.illegalDrop > compare.illegalDrop ? this.colors[1] : this.colors[0];

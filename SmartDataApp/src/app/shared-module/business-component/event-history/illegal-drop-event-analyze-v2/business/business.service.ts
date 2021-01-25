@@ -195,7 +195,7 @@ export class BusinessService extends ListAttribute {
         this.barChartOption.seriesName = [''];
         this.barChartOption.barWidth = 10;
         if (s.ClassType == ClassTypeEnum.Division) {
-            const statistic_ = statistic as Array<DivisionNumberStatisticV2>, numArr = new Array<{
+            var statistic_ = statistic as Array<DivisionNumberStatisticV2>, numArr = new Array<{
                 value: number,
                 itemStyle: {
                     color: any
@@ -203,6 +203,9 @@ export class BusinessService extends ListAttribute {
             }>();
             var i = 0;
             const dataMap = new Map<string, number>();
+            statistic_ = statistic_.sort((a,b)=>{
+                return a.EventNumbers[0].DayNumber - b.EventNumbers[0].DayNumber;
+            });
             statistic_.map(m => {
                 if (dataMap.has(m.Name)) {
                     var val = dataMap.get(m.Name);
@@ -235,7 +238,7 @@ export class BusinessService extends ListAttribute {
             seriesData.push(numArr);
         }
         else if (s.ClassType == ClassTypeEnum.Station) {
-            const statistic_ = statistic as Array<GarbageStationNumberStatisticV2>, numArr = new Array<{
+            var statistic_a = statistic as Array<GarbageStationNumberStatisticV2>, numArr = new Array<{
                 value: number,
                 itemStyle: {
                     color: any
@@ -243,7 +246,10 @@ export class BusinessService extends ListAttribute {
             }>();
             var i = 0;
             const dataMap = new Map<string, number>();
-            statistic_.map(m => {
+            statistic_a = statistic_a.sort((a,b)=>{
+                return a.EventNumbers[0].DayNumber - b.EventNumbers[0].DayNumber;
+            });
+            statistic_a.map(m => {
                 if (dataMap.has(m.Name)) {
                     var val = dataMap.get(m.Name);
                     m.EventNumbers.map(d => {
