@@ -16,5 +16,9 @@ export class EventRecord extends GarbageBaseUrl{
     mixedIntoList() {
         return this.aiop+`Events/Records/MixedInto/List`;
     }
+
+    garbageFullList(){
+        return this.aiop+'Events/Records/GarbageFull/List';
+    }
 }
  

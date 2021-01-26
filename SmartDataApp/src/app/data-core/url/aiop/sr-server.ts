@@ -1,6 +1,6 @@
-import { IUrl, BaseUrl } from "../IUrl";
+import { IUrl, GarbageBaseUrl } from "../IUrl";
 
-export class SRService extends BaseUrl implements IUrl {
+export class SRService extends GarbageBaseUrl implements IUrl {
     create(): string {
         return this.aiop + 'SRServers';
     }
@@ -21,7 +21,7 @@ export class SRService extends BaseUrl implements IUrl {
     }
 
     preview() {
-        return this.aiop + `SRServers/PreviewUrls`;
+        return this.aiop + `SRServers/PreviewUrls`; 
     }
 
     vod() {

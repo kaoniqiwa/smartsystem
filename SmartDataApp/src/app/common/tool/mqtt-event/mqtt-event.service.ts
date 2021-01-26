@@ -24,7 +24,7 @@ export class MQTTEventService {
             this.mqtt.subscription(topic, (topic: string, message: string) => {
 
                 const msg = JSON.parse(message) as IllegalDropEventRecord;
-                console.log(msg);
+                //console.log(msg);
                 this.pushService.pushIllegalDrop.emit(msg);
             });
             this.mqtt.connectionState.subscribe((x) => {
