@@ -477,6 +477,12 @@ function WSPlayer(args) {
 
                             var valStr = parseFloat(val) * 100 + "% 100%";
                             that.tools.control.position.style.backgroundSize = valStr;
+                            setTimeout(function(){
+                                if(that.getPosition)
+                                {
+                                    that.getPosition(parseFloat(val));
+                                }
+                            }, 0)
                             //that.status = p.offset + 1 >= p.count ? that.status = wsPlayerState.end : that.status = wsPlayerState.playing;
                         }
                     }
@@ -599,6 +605,7 @@ function WSPlayer(args) {
     }
 
     this.onStoping;
+    this.getPosition;
     this.onPlaying;
     this.onButtonClicked;
     this.onViewerDoubleClicked;
