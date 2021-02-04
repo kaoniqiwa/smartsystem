@@ -36,6 +36,8 @@ export class DivisionGarbageSpecification extends BaseBusinessRefresh {
                     for (const v of x.TodayEventNumbers)
                         if (v.EventType == EventTypeEnum.IllegalDrop)
                         model.illegalDropNumber  += v.DayNumber;
+                        else if(v.EventType == EventTypeEnum.MixedInto)
+                        model.hybridPushNumber+=v.DayNumber;
                 }
             }
            
@@ -46,6 +48,8 @@ export class DivisionGarbageSpecification extends BaseBusinessRefresh {
                 for (const v of x.TodayEventNumbers)
                     if (v.EventType == EventTypeEnum.IllegalDrop)
                     model.illegalDropNumber  += v.DayNumber;
+                    else if(v.EventType == EventTypeEnum.MixedInto)
+                    model.hybridPushNumber+=v.DayNumber;
             }
         } 
         else if(divisionsType == void 0){
@@ -54,6 +58,8 @@ export class DivisionGarbageSpecification extends BaseBusinessRefresh {
                 for (const v of x.TodayEventNumbers)
                     if (v.EventType == EventTypeEnum.IllegalDrop)
                     model.illegalDropNumber  += v.DayNumber;
+                    else if(v.EventType == EventTypeEnum.MixedInto)
+                    model.hybridPushNumber+=v.DayNumber;
             }
         }
         return model;
