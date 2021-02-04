@@ -72,9 +72,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
       }
     }, 10);
     window.addEventListener("resize", () => {
-      this.autoVideoWindowSize();
-      this.autoVideoWindowSize();
-      this.autoVideoWindowSize();
+      this.autoVideoWindowSize(); 
     });
 
     var time = await this.userDalService.getUserConfig(this.user.id, this.interval_inspection_key);
@@ -151,6 +149,8 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
     setTimeout(() => {
       this.playing = true;
       this.currentPlayId = cameraId;
+      response.Data.Url=response.Data.Url.indexOf('password') >0 
+      ? response.Data.Url:response.Data.Url+this.user.videoUserPwd;
       const videoOptions = new HWSPlayerOptions(response.Data.Url, '');
       this.player.reSizeView(this.playViewSize.width, this.playViewSize.height);
       this.player.playVideo(videoOptions, () => {

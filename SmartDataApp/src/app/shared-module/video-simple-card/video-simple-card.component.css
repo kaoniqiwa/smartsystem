@@ -36,3 +36,17 @@
     /* Chrome/Safari/Opera */    
     user-select: none;
 } 
+
+.view-size-4{
+    width: 50%;
+    height :50%;
+    border :2px solid transparent;
+}
+
+.mask{
+    position: absolute;
+    top: 0;
+}
+.mask:hover{
+    background-color: rgb(0,0,0,0.3);
+}

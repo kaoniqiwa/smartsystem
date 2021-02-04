@@ -44,8 +44,4 @@ export class VideoSimpleMode implements IViewModel {
         this.beginTime = options.beginTime || '';
         this.endTime = options.endTime || '';
     }
-}
-
-export class MoreVideoModel{
-    name:
-}
+} 

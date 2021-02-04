@@ -1,18 +1,34 @@
 <div class="alert-window text-no-select">
     <div class="alert-window-bg p-10">
         <div style="font-size: 20px;height: 30px;line-height: 20px;color: white">
-            <div class="pull-left">摄像机名 {{cameraName}}</div>
+            <div class="pull-left collapse" [class.in]="(videoImgs&&!playing)||!videoImgs">{{cameraName}}</div>
+            <div class="pull-left collapse" [class.in]="videoImgs&&playing">{{secondName}}</div>
             <div class="pull-right">
-                <a href="javascript:void(0)" (click)="closeWindow()">
+                <a href="javascript:" (click)="closeWindow()">
                     <i class="howell-icon-Close alert-window-close-btn"></i>
-                </a>
+                </a> 
             </div>
         </div>
         <div class="fill-width" style="height: calc(100% - 30px);border: 2px solid #3283E5;">
-            <div style="background-color: black;width: 100%;height:calc(100%) ;">
+            <div class="fill-height fill-width collapse"  [class.in]="playing"  style="background-color: black;">
                 <div id="{{divId}}" class="video-control selected fill-height fill-width player">
                 </div>
-            </div>
+            </div> 
+            <ng-container *ngIf="videoImgs&&!playing">
+                <ul class="hw-ul fill-height fill-width">                    
+                    <ng-container *ngFor="let img of videoImgs">
+                      <li class="pull-left view-size-4" style="position: relative;">
+                        <img  width="100%" class="fill-height " src="{{img.src}}"
+                        onerror="this.src='../assets/img/timg-pic.jpg'" alt="">
+                        <div class="fill-width fill-height text-center mask" >
+                        <a href="javascript:" (click)="simpleVideoClick(img.id,img.name,img.time)">
+                          <div class="howell-icon-play" style="color: rgba(255,255,255,0.7);font-size: 70px;line-height: 4.4;"></div>
+                        </a>
+                      </div>
+                      </li>
+                    </ng-container>
+                  </ul>
+            </ng-container>
         </div>
     </div>
 </div> 
