@@ -8,7 +8,7 @@ export class SwitchComponent implements OnInit {
 
   @Input() onFn:(on:boolean)=>void;
 
-  on = false;
+  @Input() on = false;
   constructor() { }
 
   ngOnInit() {
