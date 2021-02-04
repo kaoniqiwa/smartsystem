@@ -29,7 +29,7 @@ export class TreeDropListV2Component implements OnInit {
   @Input() rightArrow = false;
 
   @Input()
-  selectedItemFn: (item:  { id: string, text: string }) => void;
+  selectedItemFn: (item: { id: string, text: string }) => void;
 
   selectedItemClick = (item: FlatNode) => {
     const setText = (n: FlatNode) => {
@@ -86,7 +86,25 @@ export class TreeDropListV2Component implements OnInit {
     domClickFn('body', () => {
       this.showBody = false;
     });
-    this.reInit();
+    this.reInit();      
+  }
+
+  defaultItem(id: string, cb: (itemId: string) => void) {console.log(this.stationTreeService.treeNode);
+    if (id)
+      this.garbageStationTree.defaultItem(id);
+    else if (this.stationTreeService.treeNode
+      && this.stationTreeService.treeNode.length) {
+        if (this.onlyDivisionNode) {
+          const division= this.dataService.divisions.filter(x => x.DivisionType == DivisionTypeEnum.Committees).shift();
+          this.garbageStationTree.defaultItem(division.Id);
+          cb(division.Id);
+        }
+        else         
+          {
+            this.garbageStationTree.defaultItem(this.dataService.garbageStations[0].Id);
+            cb(this.dataService.garbageStations[0].Id);
+          }          
+    }
   }
 
   clearNestedNode() {
@@ -96,7 +114,7 @@ export class TreeDropListV2Component implements OnInit {
   async reInit() {
     if (this.dataService.divisions.length == 0)
       this.dataService.divisions = await this.divisionDao.allDivisions();
-    const ancestorDivision = this.dataService.divisions.find(x =>x.DivisionType==DivisionTypeEnum.County);
+    const ancestorDivision = this.dataService.divisions.find(x => x.DivisionType == DivisionTypeEnum.County);
     this.stationTreeService.divisions.items = new Array();
     this.stationTreeService.divisionModel = this.dataService.divisions.filter(x => x.DivisionType > DivisionTypeEnum.City);
     if (this.onlyDivisionNode) {

@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild,ElementRef} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { BusinessService } from "./business/business.service";
 import { DateTimePickerDirective, DateTimePickerMirrorDirective } from "../../../common/directive/date-time-picker.directive";
 import { TreeDropListV2Component } from "./tree-drop-list-v2/tree-drop-list-v2.component";
 import { ClassTypeEnum, TimeUnitEnum } from "./business/search";
 import { MessageBar } from "../../../common/tool/message-bar";
-import { setData  } from "../../../common/tool/jquery-help/jquery-help";
+import { setData } from "../../../common/tool/jquery-help/jquery-help";
+import { SessionUser } from "../../../common/tool/session-user";
 @Component({
   selector: 'vs-class-statistic',
   templateUrl: './vs-class-statistic.component.html',
@@ -19,35 +20,35 @@ export class VsClassStatisticComponent implements OnInit {
   timePicker2: DateTimePickerMirrorDirective;
 
   @ViewChild('dtp1')
-  dtp1:ElementRef;
+  dtp1: ElementRef;
 
   @ViewChild('dtp2')
-  dtp2:ElementRef; 
+  dtp2: ElementRef;
 
   @ViewChild('drop1')
   dropList1: TreeDropListV2Component;
 
   @ViewChild('drop2')
-  dropList2: TreeDropListV2Component;  
+  dropList2: TreeDropListV2Component;
 
-  startDate = (b: Date) => { 
-    this.businessService.search.formBeginDate = b;
-    this.businessService.requestData(); 
-    /**时间文本显示处理 */
-    const param = this.businessService.search.toSearchParam();
-    this.dtp2.nativeElement.value='';  
-    setData('dtp2','date',param.InputDateTime);
-    this.timePicker2.setStartDate=null;
-    this.dtp2.nativeElement.value = this.businessService.search.beginDate;   
-  }
-  startDateV2 = (b: Date) => { 
+  startDate = (b: Date) => {
     this.businessService.search.formBeginDate = b;
     this.businessService.requestData();
-     /**时间文本显示处理 */
+    /**时间文本显示处理 */
     const param = this.businessService.search.toSearchParam();
-    this.dtp1.nativeElement.value='';  
-    setData('dtp1','date',param.InputDateTime);
-    this.timePicker1.setStartDate=null;
+    this.dtp2.nativeElement.value = '';
+    setData('dtp2', 'date', param.InputDateTime);
+    this.timePicker2.setStartDate = null;
+    this.dtp2.nativeElement.value = this.businessService.search.beginDate;
+  }
+  startDateV2 = (b: Date) => {
+    this.businessService.search.formBeginDate = b;
+    this.businessService.requestData();
+    /**时间文本显示处理 */
+    const param = this.businessService.search.toSearchParam();
+    this.dtp1.nativeElement.value = '';
+    setData('dtp1', 'date', param.InputDateTime);
+    this.timePicker1.setStartDate = null;
     this.dtp1.nativeElement.value = this.businessService.search.beginDate;
   }
   msg = new MessageBar();
@@ -58,7 +59,7 @@ export class VsClassStatisticComponent implements OnInit {
       this.businessService.search.divisionId1 = item ? item.id : null;
       this.businessService.search.stationId1 = null;
       if (item.id == this.businessService.search.divisionId2) {
-        this.msg.response_warning('相同居委不可比较');
+       // this.msg.response_warning('相同居委不可比较');
         return;
       }
     }
@@ -66,7 +67,7 @@ export class VsClassStatisticComponent implements OnInit {
       this.businessService.search.stationId1 = item ? item.id : null;
       this.businessService.search.divisionId1 = null;
       if (item.id == this.businessService.search.stationId2) {
-        this.msg.response_warning('相同投放点不可比较');
+       // this.msg.response_warning('相同投放点不可比较');
         return;
       }
     }
@@ -79,16 +80,16 @@ export class VsClassStatisticComponent implements OnInit {
     if (param.ClassType == ClassTypeEnum.Division) {
       this.businessService.search.divisionId2 = item ? item.id : null;
       this.businessService.search.stationId2 = null;
-      if (item.id == this.businessService.search.divisionId1) {
-        this.msg.response_warning('相同居委不可比较');
+      if (item.id == param.DivisionId1) {
+        //this.msg.response_warning('相同居委不可比较');
         return;
       }
     }
     else if (param.ClassType == ClassTypeEnum.Station) {
       this.businessService.search.stationId2 = item ? item.id : null;
       this.businessService.search.divisionId2 = null;
-      if (item.id == this.businessService.search.stationId1) {
-        this.msg.response_warning('相同投放点不可比较');
+      if (item.id == param.StationId1) {
+       // this.msg.response_warning('相同投放点不可比较');
         return;
       }
     }
@@ -102,10 +103,43 @@ export class VsClassStatisticComponent implements OnInit {
     if (s.TimeUnit == TimeUnitEnum.Day) return 50;
   }
   constructor(private businessService: BusinessService
-   ) { }
+  ) { }
 
   ngOnInit() {
+    this.defaultTreeList();
+  }
 
+  defaultTreeList() {
+    const user = new SessionUser(),
+      param = this.businessService.search.toSearchParam();
+
+    if (param.ClassType == ClassTypeEnum.Division) {
+      const id = user.divisions && user.divisions.length >= 1 ? user.divisions[0] : '';
+      setTimeout(() => {
+
+        this.dropList1.defaultItem(id, (i) => {
+          user.divisions = [i];
+        });
+      }, 100);
+      setTimeout(() => {
+        this.dropList2.defaultItem(id, (i) => {
+          user.divisions = [i];
+        });
+      }, 300);
+    }
+    else if (param.ClassType == ClassTypeEnum.Station) { 
+      const id = user.stations && user.divisions.length >= 1 ? user.stations[0] : '';
+      setTimeout(() => {
+        this.dropList1.defaultItem(id, (i) => {
+        user.stations = [i];
+        });
+      }, 100);
+      setTimeout(() => {
+        this.dropList2.defaultItem(id, (i) => {
+         user.stations = [i];
+        });
+      }, 300);
+    }
   }
 
   changeClassType() {
@@ -123,6 +157,7 @@ export class VsClassStatisticComponent implements OnInit {
     this.businessService.search.divisionId1 = null;
     this.businessService.search.divisionId2 = null;
     this.businessService.initBarOpt();
+    this.defaultTreeList();
   }
 
   changeTimeType() {

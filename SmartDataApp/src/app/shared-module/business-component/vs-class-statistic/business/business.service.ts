@@ -4,7 +4,7 @@ import { SearchControl } from "./search";
 import { EventTypeEnum } from "../../../../common/tool/enum-helper";
 import { DivisionRequestService } from "../../../../data-core/repuest/division.service";
 import { GarbageStationRequestService } from "../../../../data-core/repuest/garbage-station.service";
-import { TheDayTime, MonthLastDay, OneWeekDate, Percentage } from "../../../../common/tool/tool.service";
+import { TheDayTime, MonthLastDay, Percentage } from "../../../../common/tool/tool.service";
 import { TimeUnitEnum, ClassTypeEnum } from "./search";
 import "../../../../common/string/hw-string";
 import { ListAttribute } from "../../../../common/tool/table-form-helper";
@@ -97,13 +97,6 @@ export class BusinessService extends ListAttribute {
                 param.BeginTime = beginTime.begin.toISOString();
                 param.EndTime = endTime.toISOString();
             }
-            // else if (s.TimeUnit == TimeUnitEnum.Week) {
-            //     const week = OneWeekDate(new Date(Number.parseInt(s.Year)
-            //         , Number.parseInt(s.Month) - 1, Number.parseInt(s.Day)));
-            //     param.TimeUnit = 2;
-            //     param.BeginTime = week.monday.toISOString();
-            //     param.EndTime = week.sunday.toISOString();
-            // }
             return param;
         }
         else if (s.ClassType == ClassTypeEnum.Station) {
@@ -126,13 +119,6 @@ export class BusinessService extends ListAttribute {
                 param.BeginTime = beginTime.begin.toISOString();
                 param.EndTime = endTime.toISOString();
             }
-            // else if (s.TimeUnit == TimeUnitEnum.Week) {
-            //     const week = OneWeekDate(new Date(Number.parseInt(s.Year)
-            //         , Number.parseInt(s.Month) - 1, Number.parseInt(s.Day)));
-            //     param.TimeUnit = 2;
-            //     param.BeginTime = week.monday.toISOString();
-            //     param.EndTime = week.sunday.toISOString();
-            // }
             return param;
         }
     }
