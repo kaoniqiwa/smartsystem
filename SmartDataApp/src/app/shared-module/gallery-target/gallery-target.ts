@@ -11,6 +11,10 @@ export class GalleryTarget {
     videoName:boolean;
     imgPrev:boolean;
     imgNext:boolean;
+    /**刷新 图片加载标记 */
+    refreshImg:{
+        state:boolean;        
+    };
     constructor(enlargeId: string,
         confidence: string,
         imgSrc: string,
