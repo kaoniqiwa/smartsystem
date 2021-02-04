@@ -74,12 +74,8 @@
         <i class="howell-icon-Close alert-window-close-btn"></i>
       </a>
       <div class="custom-form-wrap">
-        <ng-container *ngIf="divisionBusinessService.illegalDropMode">
-          <hw-illegal-drop-event-summary></hw-illegal-drop-event-summary>
-        </ng-container>
-        <ng-container *ngIf="divisionBusinessService.mixedIntoMode">
-          <hw-mixed-into-event-history [fillMode]="divisionBusinessService.mixedIntoMode">
-          </hw-mixed-into-event-history>
+        <ng-container *ngIf="divisionBusinessService.illegalDropMode||divisionBusinessService.mixedIntoMode">
+          <hw-illegal-drop-event-summary [businessEventType]="divisionBusinessService.businessEventType"></hw-illegal-drop-event-summary>
         </ng-container>
         <ng-container *ngIf="divisionBusinessService.fullStationsView">
           <hw-full-garbage-station [divisionsId]="divisionBusinessService.divisionsId"></hw-full-garbage-station>
