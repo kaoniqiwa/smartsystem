@@ -7,6 +7,7 @@ import { OtherViewEnum } from "../illegal-drop-event-summary/illegal-drop-event-
 import { ConfigRequestService } from "../../../../data-core/repuest/config.service";
 import { HowellExcelV1 } from "../../../../common/tool/hw-excel-js/hw-excel-v1";
 import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
+import { BusinessEventTypeEnum } from '../business-event-type';
 @Component({
   selector: 'hw-illegal-drop-event-chart',
   templateUrl: './illegal-drop-event-chart.component.html',
@@ -15,6 +16,7 @@ import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
 })
 export class IllegalDropEventChartComponent implements OnInit {
   otherView = OtherViewEnum;
+  @Input() businessEventType = BusinessEventTypeEnum.IllegalDrop;
   @Input() changeViewFn: (index: number) => void;
   @Input() isDefaultSearch = false;
   @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
@@ -50,7 +52,12 @@ export class IllegalDropEventChartComponent implements OnInit {
     , private configRequestService: ConfigRequestService
     , private divisionBusinessService: DivisionBusinessService) { }
 
+    get pageTitle(){
+      return  this.businessEventType == BusinessEventTypeEnum.IllegalDrop ? '乱扔垃圾' : '混合投放';
+    }
+    
   async ngOnInit() {
+    this.businessService.businessEventType = this.businessEventType;
     this.businessService.divisions = await this.businessService.divisionDao.allDivisions();
     this.businessService.garbageStations = await this.businessService.garbageStationDao.allGarbageStations();
 
@@ -106,10 +113,11 @@ export class IllegalDropEventChartComponent implements OnInit {
 
         const a = new HowellExcelJS();
         const b = a.createBook();
-        const s = a.addWorksheet(b, 'Table'), colName = ['A', 'B', 'C', 'D', 'E'];
+        const s = a.addWorksheet(b, 'Table'), colName = ['A', 'B', 'C', 'D', 'E']
+        , evenTypeLabel = this.pageTitle;
         var i = 3, c = 3, timeTag = 0, sum = 0;
 
-        data.table.title = `${this.dtp.nativeElement.value} ${param.text}${this.businessService.reportType}`;
+        data.table.title = `${this.dtp.nativeElement.value} ${param.text}${evenTypeLabel}${this.businessService.reportType}`;
         data.chart.titles = [data.table.title];
         data.chart.chartTitle = data.table.title;
         a.setCellValue(s, 'B1', data.table.title);

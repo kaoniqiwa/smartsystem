@@ -1,8 +1,15 @@
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
 import { GalleryTarget, ImageEventEnum } from "../../../gallery-target/gallery-target";
 import { GalleryTargetView } from "../../event-history/gallery-target";
-import { Camera } from "../../../../data-core/model/aiop/camera"; 
+import { Camera } from "../../../../data-core/model/aiop/camera";
+import { CameraPictureUrl } from "../../../../data-core/model/waste-regulation/camera-picture-url";
 export class GalleryTargetViewI extends GalleryTargetView {
+
+    /**抓图 */
+    manualCaptureFn: (stationId: string, cb: (cameraPictureUrl: CameraPictureUrl[]) => {
+        old: string,
+        new: string
+    }) => void;
 
     neighborEventFnI: (id: string, e: ImageEventEnum) => {
         prev: boolean,
@@ -24,38 +31,90 @@ export class GalleryTargetViewI extends GalleryTargetView {
         }
     }
 
-    galleryTargetPageFn = (e: ImageEventEnum, id: string) => { 
-        const page = this.showImagePageI(id, e),idV = id.split('&');
-       
+    galleryTargetPageFn = (e: ImageEventEnum, id: string) => {
+        const page = this.showImagePageI(id, e), idV = id.split('&')
+            , mp = new MediumPicture();
+
         if (e == ImageEventEnum.next && page.next.item) {
-            const enlargeImage = new MediumPicture().getJPG(page.next.item.ImageUrl);
+            const enlargeImage = mp.getJPG(page.next.item.ImageUrl);
             this.galleryTarget = new GalleryTarget(null
                 , null, enlargeImage, null
-                , idV[0]+'&'+page.next.item.Id, this.toDownLoadImgNameI(page.next.item));
-
+                , idV[0] + '&' + page.next.item.Id, this.toDownLoadImgNameI(page.next.item));
+            this.galleryTarget.refreshImg = {
+                state: true
+            };
+            this.manualCaptureFn(idV[0], (urls) => {
+                var obj = {
+                    old: page.next.item.ImageUrl,
+                    new: ''
+                }
+                urls.map(x => {
+                    if (x.CameraId == page.next.item.Id) {
+                        obj.new = mp.getJPG(x.Id);
+                        this.galleryTarget.enlargeImage = mp.getJPG(x.Id);
+                        this.galleryTarget.refreshImg.state = false;
+                    }
+                });
+                return obj;
+            });
         }
         else if (e == ImageEventEnum.prev && page.prev.item) {
             const enlargeImage = new MediumPicture().getJPG(page.prev.item.ImageUrl);
             this.galleryTarget = new GalleryTarget(null
                 , null, enlargeImage, null
-                , idV[0]+'&'+page.prev.item.Id, this.toDownLoadImgNameI(page.prev.item));
+                , idV[0] + '&' + page.prev.item.Id, this.toDownLoadImgNameI(page.prev.item));
+            this.galleryTarget.refreshImg = {
+                state: true
+            };
+            this.manualCaptureFn(idV[0], (urls) => {
+                var obj = {
+                    old: page.prev.item.ImageUrl,
+                    new: ''
+                }
+                urls.map(x => {
+                    if (x.CameraId == page.prev.item.Id) {
+                        obj.new = mp.getJPG(x.Id);
+                        this.galleryTarget.enlargeImage = mp.getJPG(x.Id);
+                        this.galleryTarget.refreshImg.state = false;
+                    }
+                });
+                return obj;
+            });
         }
-
         this.galleryTarget.imgNext = page.next.show;
         this.galleryTarget.imgPrev = page.prev.show;
     }
 
 
 
-    initGalleryTargetI(garbageId:string,cameras: Camera[],index:number) { 
+    initGalleryTargetI(garbageId: string, cameras: Camera[], index: number) {
         if (cameras && cameras.length) {
-            const enlargeImage = new MediumPicture().getJPG(cameras[index].ImageUrl),ids = new Array();
-            cameras.map(x=>ids.push(x.Id));
+            const mp = new MediumPicture();
+            const enlargeImage = mp.getJPG(cameras[index].ImageUrl), ids = new Array();
+            cameras.map(x => ids.push(x.Id));
             this.galleryTarget = new GalleryTarget(null
                 , null, enlargeImage,
-                null, garbageId +'&'+cameras[index].Id, this.toDownLoadImgNameI(cameras[index]));
-            this.galleryTarget.imgNext = (index+1)< cameras.length;
+                null, garbageId + '&' + cameras[index].Id, this.toDownLoadImgNameI(cameras[index]));
+            this.galleryTarget.imgNext = (index + 1) < cameras.length;
             this.galleryTarget.imgPrev = index > 0;
+
+            this.manualCaptureFn(garbageId, (urls) => {
+                var obj = {
+                    old: cameras[index].ImageUrl,
+                    new: ''
+                }
+                urls.map(x => {
+                    if (x.CameraId == cameras[index].Id) {
+                        obj.new = mp.getJPG(x.Id);
+                        this.galleryTarget.enlargeImage = mp.getJPG(x.Id);
+                        this.galleryTarget.refreshImg.state = false;
+                    }
+                });
+                return obj;
+            });
+            this.galleryTarget.refreshImg = {
+                state: true
+            };
         }
 
     }

@@ -11,11 +11,11 @@ import { TimeUnitEnum, ClassTypeEnum } from "../../illegal-drop-event-analyze/bu
 import { BarOptionV2 } from "../../../../../common/directive/echarts/echart";
 import { EventTypeEnum } from "../../../../../common/tool/enum-helper";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
-import { GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station"; 
+import { GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station";
 import "../../../../../common/string/hw-string";
 import { DivisionTypeEnum } from '../../../../../common/tool/enum-helper';
-
-import { ExcelData } from "../../../../../common/tool/hw-excel-js/data";
+import { BusinessEventTypeEnum ,convertEventData} from "../../business-event-type";
+import { ExcelData } from "../../../../../common/tool/hw-excel-js/data"; 
 declare const echarts: any;
 @Injectable()
 export class BusinessService extends ListAttribute {
@@ -30,8 +30,9 @@ export class BusinessService extends ListAttribute {
         minView: 2,
         formate: 'yyyy-mm-dd'
     }
-    reportType='';
+    reportType = '';
     dataSources: Array<DivisionNumberStatisticV2> | Array<GarbageStationNumberStatisticV2>;
+    businessEventType = BusinessEventTypeEnum.IllegalDrop;
     constructor(private divisionService: DivisionRequestService
         , private datePipe: DatePipe
         , private garbageStationService: GarbageStationRequestService) {
@@ -69,56 +70,7 @@ export class BusinessService extends ListAttribute {
             this.dataSources = response.Data;
             this.convertBarData(response.Data, this.search);
         }
-    }
-
-    exportExcel1(statistic: Array<DivisionNumberStatisticV2> | Array<GarbageStationNumberStatisticV2>, search: SearchControl)
-        : ExcelData {
-        const s = search.toSearchParam(), excelData = new ExcelData();
-
-
-        if (s.ClassType == ClassTypeEnum.Division) {
-            const statistic_ = statistic as Array<DivisionNumberStatisticV2>;
-            excelData.chartTitle = this.search.beginDate + '居委会总数据';
-            excelData.fields = [];
-            excelData.titles = [this.search.beginDate + '居委会总数据'];
-            excelData.dataKey = ['illegal-drop'];
-            excelData.fieldName = ['居委会', '乱扔垃圾(起)'];
-            excelData.data = {
-                'illegal-drop': {
-                }
-            };
-            statistic_.map(c => {
-                excelData.fields.push(c.Name);
-                c.EventNumbers.map(d => {
-                    if (d.EventType == EventTypeEnum.IllegalDrop)
-                        excelData.data['illegal-drop'][c.Name] = d.DayNumber;
-                });
-
-            });
-        }
-        else if (s.ClassType == ClassTypeEnum.Station) {
-
-            const statistic_ = statistic as Array<GarbageStationNumberStatisticV2>;
-            excelData.chartTitle = this.search.beginDate + '投放点总数据';
-            excelData.fields = [];
-            excelData.titles = [this.search.beginDate + '投放点总数据'];
-            excelData.dataKey = ['illegal-drop'];
-            excelData.fieldName = ['投放点', '乱扔垃圾(起)'];
-            excelData.data = {
-                'illegal-drop': {
-                }
-            };
-            statistic_.map(c => {
-                excelData.fields.push(c.Name);
-                c.EventNumbers.map(d => {
-                    if (d.EventType == EventTypeEnum.IllegalDrop)
-                        excelData.data['illegal-drop'][c.Name] = d.DayNumber;
-                });
-
-            });
-        }
-        return excelData;
-    }
+    } 
 
     exportExcel(statistic: Array<DivisionNumberStatisticV2> | Array<GarbageStationNumberStatisticV2>, search: SearchControl)
         : {
@@ -126,8 +78,8 @@ export class BusinessService extends ListAttribute {
             chart: ExcelData
         } {
         const s = search.toSearchParam(), table = new XlsxData(), chart = new ExcelData()
-        ,dataMap = new Map<string, number>(),
-        statistic_ = statistic as Array<DivisionNumberStatisticV2>;
+            , dataMap = new Map<string, number>(),
+            statistic_ = statistic as Array<DivisionNumberStatisticV2>;
         chart.chartTitle = '';
         table.title = '';
         chart.fields = [];
@@ -137,26 +89,32 @@ export class BusinessService extends ListAttribute {
         chart.data = {
             'illegal-drop': {
             }
-        };    
-     
-     
+        };
+
         table.data = new Array<{ no: number, name: string, val: number }>();
         statistic_.map(m => {
+            const eventNumbers = convertEventData(this.businessEventType,m.EventNumbers);
             if (dataMap.has(m.Name)) {
                 var val = dataMap.get(m.Name);
-                m.EventNumbers.map(d => {
-                    if (d.EventType == EventTypeEnum.IllegalDrop)
-                        dataMap.set(m.Name, val+d.DayNumber);
+                // m.EventNumbers.map(d => {
+                //     if (d.EventType == EventTypeEnum.IllegalDrop)
+                //         dataMap.set(m.Name, val + d.DayNumber);
+                // });
+                eventNumbers.map(d => {
+                    dataMap.set(m.Name, val + d);
                 });
             }
-            else m.EventNumbers.map(d => {
-                if (d.EventType == EventTypeEnum.IllegalDrop)
-                    dataMap.set(m.Name, d.DayNumber);
+            else eventNumbers.map(d => {
+                dataMap.set(m.Name, d);
             });
+            // m.EventNumbers.map(d => {
+            //     if (d.EventType == EventTypeEnum.IllegalDrop)
+            //         dataMap.set(m.Name, d.DayNumber);
+
+            // });
         });
-        var  i=1; 
-        for(const d of dataMap.keys())
-        {
+        var i = 1;
+        for (const d of dataMap.keys()) {
             chart.fields.push(d);
             chart.data['illegal-drop'][d] = dataMap.get(d);
             table.data.push({
@@ -164,18 +122,16 @@ export class BusinessService extends ListAttribute {
                 name: d,
                 val: dataMap.get(d)
             });
-            i+=1;
-        }   
+            i += 1;
+        }
         if (s.ClassType == ClassTypeEnum.Division) {
-           
+
             table.fieldName = ['序号', '居委', '单位(起)'];
-                     
+
         }
         else if (s.ClassType == ClassTypeEnum.Station) {
             // const statistic_ = statistic as Array<GarbageStationNumberStatisticV2>;
-            table.fieldName = ['序号', '投放点', '单位(起)'];
-          
-            
+            table.fieldName = ['序号', '投放点', '单位(起)']; 
         }
         return {
             table: table,
@@ -187,7 +143,7 @@ export class BusinessService extends ListAttribute {
     convertBarData(statistic: Array<GarbageStationNumberStatisticV2> | Array<DivisionNumberStatisticV2>, search: SearchControl) {
         const s = search.toSearchParam(), yAxisData = new Array(), colors = ['#7d90bc', '#ff9100']
             , colors2 = ['rgb(125,144,188,0.5)', 'rgb(255,145,0,0.5)'];
-       
+
         this.barChartOption = new BarOptionV2();
         this.barChartOption.yAxisData = yAxisData;
         this.barChartOption.seriesData = new Array();
@@ -203,24 +159,46 @@ export class BusinessService extends ListAttribute {
             }>();
             var i = 0;
             const dataMap = new Map<string, number>();
-            statistic_ = statistic_.sort((a,b)=>{
-                return a.EventNumbers[0].DayNumber - b.EventNumbers[0].DayNumber;
-            });
+            statistic_ = statistic_.sort((a, b) => {
+                /**缺少 混合投放补全 */
+                if(a.EventNumbers.length==1)a.EventNumbers.push({
+                    DayNumber:0,
+                    DeltaNumber:0,
+                    EventType:EventTypeEnum.MixedInto
+                });
+                if(b.EventNumbers.length==1)b.EventNumbers.push({
+                    DayNumber:0,
+                    DeltaNumber:0,
+                    EventType:EventTypeEnum.MixedInto
+                });
+                if (this.businessEventType == BusinessEventTypeEnum.IllegalDrop)
+                    return a.EventNumbers[0].DayNumber - b.EventNumbers[0].DayNumber;
+                else if (this.businessEventType == BusinessEventTypeEnum.MixedInfo)
+                    return a.EventNumbers[1].DayNumber - b.EventNumbers[1].DayNumber;
+            }); 
+            
             statistic_.map(m => {
+                const eventNumbers = convertEventData(this.businessEventType,m.EventNumbers);
                 if (dataMap.has(m.Name)) {
                     var val = dataMap.get(m.Name);
-                    m.EventNumbers.map(d => {
-                        if (d.EventType == EventTypeEnum.IllegalDrop)
-                            dataMap.set(m.Name, val+d.DayNumber);
+                    // m.EventNumbers.map(d => {
+                    //     if (d.EventType == EventTypeEnum.IllegalDrop)
+                    //         dataMap.set(m.Name, val + d.DayNumber);
+                    // });
+                    eventNumbers.map(d => {
+                        dataMap.set(m.Name, val + d);
                     });
                 }
-                else m.EventNumbers.map(d => {
-                    if (d.EventType == EventTypeEnum.IllegalDrop)
-                        dataMap.set(m.Name, d.DayNumber);
+                else eventNumbers.map(d => {
+                    dataMap.set(m.Name, d);
                 });
+                //  m.EventNumbers.map(d => {
+                //     if (d.EventType == EventTypeEnum.IllegalDrop)
+                //         dataMap.set(m.Name, d.DayNumber);
+                // });
             });
             this.barItemW = dataMap.size * 54;
-            for(const c of dataMap.keys()){
+            for (const c of dataMap.keys()) {
                 yAxisData.push(c);
                 numArr.push({
                     value: dataMap.get(c),
@@ -234,7 +212,6 @@ export class BusinessService extends ListAttribute {
                 });
                 i += 1;
             }
-          
             seriesData.push(numArr);
         }
         else if (s.ClassType == ClassTypeEnum.Station) {
@@ -246,24 +223,34 @@ export class BusinessService extends ListAttribute {
             }>();
             var i = 0;
             const dataMap = new Map<string, number>();
-            statistic_a = statistic_a.sort((a,b)=>{
-                return a.EventNumbers[0].DayNumber - b.EventNumbers[0].DayNumber;
+            statistic_a = statistic_a.sort((a, b) => {
+                if (this.businessEventType == BusinessEventTypeEnum.IllegalDrop)
+                    return a.EventNumbers[0].DayNumber - b.EventNumbers[0].DayNumber;
+                else if (this.businessEventType == BusinessEventTypeEnum.MixedInfo)
+                    return a.EventNumbers[1].DayNumber - b.EventNumbers[1].DayNumber;
             });
             statistic_a.map(m => {
+                const eventNumbers = convertEventData(this.businessEventType,m.EventNumbers);
                 if (dataMap.has(m.Name)) {
                     var val = dataMap.get(m.Name);
-                    m.EventNumbers.map(d => {
-                        if (d.EventType == EventTypeEnum.IllegalDrop)
-                            dataMap.set(m.Name, val+d.DayNumber);
+                    // m.EventNumbers.map(d => {
+                    //     if (d.EventType == EventTypeEnum.IllegalDrop)
+                    //         dataMap.set(m.Name, val + d.DayNumber);
+                    // });
+                    eventNumbers.map(d => {
+                        dataMap.set(m.Name, val + d);
                     });
                 }
-                else m.EventNumbers.map(d => {
-                    if (d.EventType == EventTypeEnum.IllegalDrop)
-                        dataMap.set(m.Name, d.DayNumber);
+                else eventNumbers.map(d => {
+                    dataMap.set(m.Name, d);
                 });
+                //  m.EventNumbers.map(d => {
+                //     if (d.EventType == EventTypeEnum.IllegalDrop)
+                //         dataMap.set(m.Name, d.DayNumber);
+                // });
             });
             this.barItemW = dataMap.size * 54;
-            for(const c of dataMap.keys()){
+            for (const c of dataMap.keys()) {
                 yAxisData.push(c);
                 numArr.push({
                     value: dataMap.get(c),
@@ -277,12 +264,11 @@ export class BusinessService extends ListAttribute {
                 });
                 i += 1;
             };
-          
+
             seriesData.push(numArr);
         }
         this.barChartOption.seriesData = seriesData;
         //  console.log(this.barChartOption);
-
     }
 
     getRequsetParam(search: SearchControl): GetDivisionStatisticNumbersParamsV2 | GetGarbageStationStatisticNumbersParamsV2 {
@@ -355,7 +341,7 @@ export class BusinessService extends ListAttribute {
             this.datePicker.minView = 2;
             this.datePicker.startView = 2;
             this.datePicker.formate = 'yyyy年mm月dd日';
-            this.reportType='日报表';
+            this.reportType = '日报表';
             return {
                 time: `${param.Year}年${param.Month}月${param.Day}日`,
                 week: false
@@ -365,7 +351,7 @@ export class BusinessService extends ListAttribute {
             this.datePicker.minView = 3;
             this.datePicker.startView = 3;
             this.datePicker.formate = 'yyyy年mm月';
-            this.reportType='月报表';
+            this.reportType = '月报表';
             return {
                 time: `${param.Year}年${param.Month}月`,
                 week: false
@@ -375,7 +361,7 @@ export class BusinessService extends ListAttribute {
             this.datePicker.minView = 2;
             this.datePicker.startView = 2;
             this.datePicker.formate = 'yyyy年mm月dd日';
-            this.reportType='周报表';
+            this.reportType = '周报表';
             return {
                 time: `${param.Year}年${param.Month}月${param.Day}日`,
                 week: true

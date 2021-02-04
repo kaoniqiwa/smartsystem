@@ -81,7 +81,7 @@ export class EventTableService extends ListAttribute {
             if (e == ImageEventEnum.none) {
                 if (index == 0)
                     prev = false;
-                else if (index == this.allDataSource.length - 1)
+                if (index == this.allDataSource.length - 1)
                     next = false;
                 return {
                     item: null,
@@ -119,7 +119,8 @@ export class EventTableService extends ListAttribute {
             const user = new SessionUser(),
             video = await this.requestVideoUrl(DateInterval(event.EventTime+'',user.video.beforeInterval)
             , DateInterval(event.EventTime+'',user.video.afterInterval), event.ResourceId);
-            this.playVideo = new PlayVideo(video.Url, event.ResourceName);
+            this.playVideo = new PlayVideo(null, event.ResourceName); 
+            this.playVideo.url_ = video.Url;
             this.navService.playVideoBug.emit(true);
         }
 
@@ -134,14 +135,11 @@ export class EventTableService extends ListAttribute {
                 
             new MessageBar().response_success('正在下载中...');
                 const a = document.createElement('a');
-                a.href = video.Data.Url;
-          
+                a.href = video.Data.Url;          
                 a.click();
                 document.body.appendChild(a);
                 document.body.removeChild(a);
-            }
-            
-            
+            }      
         }
     }
 

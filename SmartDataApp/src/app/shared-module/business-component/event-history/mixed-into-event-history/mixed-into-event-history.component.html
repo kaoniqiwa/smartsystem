@@ -3,26 +3,51 @@
     [class.in]="tableService.galleryTargetView.galleryTarget">
     <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
       <hw-gallery-target [closeViewFn]="galleryTargetFn" [model]="tableService.galleryTargetView.galleryTarget"
-        [videoFn]="tableService.eventTable.playVideoFn"  
+        [videoFn]="tableService.eventTable.playVideoFn" [videoFileFn]="tableService.videoFilesFn"
         [imgEventFn]="tableService.galleryTargetView.galleryTargetPageFn">
       </hw-gallery-target>
     </div>
   </div>
 
-  <div class="fill-height fill-width hw-content-mask collapse" [class.in]="tableService.playVideo">
+  <div class="fill-height fill-width hw-content-mask collapse" [class.in]="tableService.videoImgs">
 
     <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
-      <ng-container *ngIf="tableService.playVideo">
-        <hw-video-simple-card [closeFn]="videoClose" [url]="tableService.playVideo.url" [autostart]="true"
-          [cameraName]="tableService.playVideo.name"></hw-video-simple-card>
+      <ng-container *ngIf="tableService.videoImgs">
+        <hw-video-simple-card [closeFn]="videoClose" [playVideoToUrlFn]="tableService.playVideoToUrlFn"
+          [videoImgs]="tableService.videoImgs" [cameraName]="tableService.playVideoViewTitle"></hw-video-simple-card>
       </ng-container>
 
     </div>
 
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
-    <div class="second-title-bg text">
-      混合投放事件
+    <div class="fill-height">
+      <div class="second-title-bg pull-left text">
+        混合投放
+      </div>
+      <ul class="hw-ul pull-left m-t-10">
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.history)">
+            <div class="second-menu-btn selected text">
+              &nbsp;&nbsp;事件
+            </div>
+          </a></li>
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.sumChart)">
+            <div class="second-menu-btn  text">
+              &nbsp;总图表
+            </div>
+          </a></li>
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.chart)">
+            <div class="second-menu-btn  text">
+              细分图表
+            </div>
+          </a></li>
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.analyze)">
+            <div class="second-menu-btn  text">
+              数据比较
+            </div>
+          </a></li>
+      </ul>
+
     </div>
     <div [formGroup]="tableService.search.searchform" fxLayoutAlign="center center" style="position: relative;">
       <input type="text" style="width: 300px;" [readonly]="tableService.search.other" formControlName="SearchText"
@@ -41,16 +66,16 @@
       </button>
       <div class="list-attr-wrap collapse" [class.in]="listTypeView">
         <ul class="p-l-0">
-          <li  (click)="changeListMode(pageListMode.table)" >
-            <a href="javascript:void(0)"class="list-li light-blue-text">
+          <li (click)="changeListMode(pageListMode.table)">
+            <a href="javascript:void(0)" class="list-li light-blue-text">
               <i class="howell-icon-ul"></i>
-             
+
             </a>
           </li>
-          <li  (click)="changeListMode(pageListMode.list)">
+          <li (click)="changeListMode(pageListMode.list)">
             <a href="javascript:void(0)" class="list-li light-blue-text">
               <i class="howell-icon-cam-all1"></i>
-                </a>
+            </a>
           </li>
         </ul>
 
@@ -73,29 +98,11 @@
           formControlName="EndTime">
       </div>
       <div fxFlex="20">
-        <span class="input-text">摄像机</span>
-        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 64px);"
-          formControlName="ResourceId">
-          <option value="">全部</option>
-          <ng-container *ngFor="let c of tableService.search.resourcesDropList">
-            <option value="{{c.id}}">{{c.name}}</option>
-          </ng-container>
-        </select>
-      </div>
-      <div fxFlex="20">
         <span class="input-text">区划</span>
         <div class="pull-right" style="width: calc(100% - 46px);">
-          <hw-level-list-panel [model]="tableService.divisionListView.dataSource"
-          [selectedFn]="changeDivisionFn"></hw-level-list-panel>
+          <hw-level-list-panel [model]="tableService.divisionListView.dataSource" [selectedFn]="changeDivisionFn">
+          </hw-level-list-panel>
         </div>
-       
-        <!-- <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 46px);"
-          formControlName="DivisionId">
-          <option value="">全部</option>
-          <ng-container *ngFor="let c of tableService.divisions">
-            <option value="{{c.Id}}">{{c.Name}}</option>
-          </ng-container>
-        </select> -->
       </div>
       <div fxFlex="20">
         <span class="input-text">垃圾房</span>
@@ -103,6 +110,16 @@
           formControlName="StationId">
           <option value="">全部</option>
           <ng-container *ngFor="let c of tableService.search.stationsDropList">
+            <option value="{{c.id}}">{{c.name}}</option>
+          </ng-container>
+        </select>
+      </div>
+      <div fxFlex="20">
+        <span class="input-text">摄像机</span>
+        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 64px);"
+          formControlName="ResourceId">
+          <option value="">全部</option>
+          <ng-container *ngFor="let c of tableService.search.resourcesDropList">
             <option value="{{c.id}}">{{c.name}}</option>
           </ng-container>
         </select>
@@ -117,9 +134,40 @@
     </ng-container>
     <ng-container *ngIf="listMode==pageListMode.list">
       <hw-illegal-drop-event-card-list [model]="tableService.eventCards.cards" [itemFn]="listGalleryTargetFn"
-        [playVideoFn]="tableService.eventTable.playVideoFn">
+        [playVideoFn]="tableService.eventTable.playVideoFn" [videoFileFn]="tableService.eventTable.videoFilesFn">
       </hw-illegal-drop-event-card-list>
     </ng-container>
+    <ng-container *ngIf="tableService.videoDownLoad">
+      <div class="video-list-mask">
+        <div class="custom-form-wrap video-list-wrap">
+          <h2>视频下载</h2>
+          <ul class="hw-ul" style="width: 300px;height: calc(100% - 64px);">
+            <ng-container *ngFor="let v of tableService.videoDownLoad">
+              <li (click)="v.state=!v.state">
+                <a href="javascript:">
+                  <div class="ckbox">
+                    <i class="howell-icon-Check" *ngIf="v.state" style="font-size:small;position:absolute;"></i>
+                  </div>
+                  <label class="light-blue-text">
+                    {{ v.name}}
+                  </label>
+                </a>
+              </li>
+            </ng-container>
+          </ul>
+          <div class="text-center">
+            <button class="hw-green-btn m-r-10" (click)="tableService.videoListDownload()">
+              <i class="howell-icon-download"></i>
+              下载
+            </button>
+            <button class="hw-gray-m-btn" style="width: 76px;" (click)="tableService.videoDownLoad=null">
+              <i class="howell-icon-Close"></i>
+              取消
+            </button>
+          </div>
+        </div>
+      </div>
 
+    </ng-container>
   </div>
 </div>

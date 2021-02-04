@@ -11,6 +11,7 @@ export class EventTable extends BusinessTable implements IConverter {
     findEventFn: (id: string) => MixedIntoEventRecord;
     initGalleryTargetFn:(event:MixedIntoEventRecord)=>void;
     playVideoFn: (id: string) =>void;
+    videoFilesFn: (id: string) =>void;
     dataSource = new CustomTableArgs<any>({
         hasTableOperationTd: true,
         hasHead: true,
@@ -57,6 +58,23 @@ export class EventTable extends BusinessTable implements IConverter {
                 title: '视频',
                 callback: (item: TableField) => {
                     this.playVideoFn(item.id);
+                }
+            }), new TableOperationBtn({
+                css: 'howell-icon-picturedownload td-icon',
+                title: '下载图片',
+                callback: (item: TableField) => { 
+                    const a = document.createElement('a');
+                    a.href = item.imageUrl;
+                    a.download=item.resourceName+' '+item.eventTime.replace('-','_').replace('-','_')+'.jpeg';
+                    a.click();
+                    document.body.appendChild(a);
+                    document.body.removeChild(a);
+                }
+            }), new TableOperationBtn({
+                css: 'howell-icon-videodownload td-icon',
+                title: '下载视频',
+                callback: (item: TableField) => {
+                    this.videoFilesFn(item.id);
                 }
             })
         ],

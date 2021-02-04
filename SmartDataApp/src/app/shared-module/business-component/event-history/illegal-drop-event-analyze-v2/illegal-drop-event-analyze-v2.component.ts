@@ -7,6 +7,7 @@ import { GarbageStationDao } from "../../../../data-core/dao/garbage-station-dao
 import { ConfigRequestService } from "../../../../data-core/repuest/config.service";
 import { HowellExcelV1 } from "../../../../common/tool/hw-excel-js/hw-excel-v1";
 import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
+import { BusinessEventTypeEnum } from '../business-event-type';
 @Component({
   selector: 'hw-illegal-drop-event-analyze-v2',
   templateUrl: './illegal-drop-event-analyze-v2.component.html',
@@ -14,6 +15,8 @@ import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
   providers: [BusinessService, DivisionDao, GarbageStationDao]
 })
 export class IllegalDropEventAnalyzeV2Component implements OnInit {
+
+  @Input() businessEventType = BusinessEventTypeEnum.IllegalDrop;
 
   @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
 
@@ -35,6 +38,7 @@ export class IllegalDropEventAnalyzeV2Component implements OnInit {
     , private garbageStationDao: GarbageStationDao) { }
 
   async ngOnInit() {
+    this.businessService.businessEventType = this.businessEventType;
     this.divisionDao.allDivisions().then(x => this.businessService.divisions = x);
     this.garbageStationDao.allGarbageStations().then(x => this.businessService.garbageStations = x);
 
@@ -57,14 +61,19 @@ export class IllegalDropEventAnalyzeV2Component implements OnInit {
     this.OtherViewEvent.emit(val);
   }
 
+  get pageTitle(){
+    return  this.businessEventType == BusinessEventTypeEnum.IllegalDrop ? '乱扔垃圾' : '混合投放';
+  }
+
   exportExcel() {
     if (this.businessService.dataSources) {
       this.configRequestService.xls('bar.xlsx').subscribe((x) => {
-        const data = this.businessService.exportExcel(this.businessService.dataSources, this.businessService.search);
+        const data = this.businessService.exportExcel(this.businessService.dataSources, this.businessService.search)
+          , evenTypeLabel = this.pageTitle;
         const a = new HowellExcelJS();
         const b = a.createBook();
         const s = a.addWorksheet(b, 'Table');
-        data.table.title = this.dtp.nativeElement.value + this.classText + '总数据' + this.businessService.reportType;
+        data.table.title = this.dtp.nativeElement.value + this.classText + evenTypeLabel + '总数据' + this.businessService.reportType;
         data.chart.chartTitle = data.table.title;
         a.setCellValue(s, 'B1', data.table.title);
         a.setCellValue(s, 'A2', data.table.fieldName[0]);

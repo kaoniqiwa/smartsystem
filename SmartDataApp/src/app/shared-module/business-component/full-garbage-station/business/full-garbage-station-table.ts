@@ -27,9 +27,11 @@ import { DatePipe } from "@angular/common";
 import { GalleryTargetViewI } from "./gallery-target";
 import { ImageEventEnum } from "../../../gallery-target/gallery-target";
 import { PlayVideo } from "../../../../aiop-system/common/play-video";
-import { TimeInterval, TwoTimeInterval } from "../../../../common/tool/tool.service";
-import { GetVodUrlParams } from "../../../../data-core/model/aiop/video-url";
+import { TwoTimeInterval } from "../../../../common/tool/tool.service";
+import { GetPreviewUrlParams } from "../../../../data-core/model/aiop/video-url";
 import { SideNavService } from "../../../../common/tool/sidenav.service";
+import { UserDalService } from "../../../../dal/user/user-dal.service";
+import { SessionUser } from "../../../../common/tool/session-user";
 @Injectable()
 export class BusinessService extends EnumHelper {
     playVideo: PlayVideo;
@@ -55,9 +57,8 @@ export class BusinessService extends EnumHelper {
 
     playVideoFn = async (id: string) => {
         const idV = id.split('&'),
-            camera = this.cameras.find(x => x.Id == idV[1]);
-        const time = TimeInterval(camera.ImageTime + '', -30),
-            video = await this.requestVideoUrl(time.start, time.end, camera.Id);
+            camera = this.cameras.find(x => x.Id == idV[1]),
+         video = await this.requestVideoUrl(camera.Id);
         this.playVideo = new PlayVideo(video.Url, camera.Name);
         this.navService.playVideoBug.emit(true);
     }
@@ -65,6 +66,7 @@ export class BusinessService extends EnumHelper {
         , private cameraService: CameraRequestService
         , private srService: ResourceSRServersRequestService
         , private navService: SideNavService
+        , private userDalService: UserDalService
         , divisionService: DivisionRequestService
         , private datePipe: DatePipe) {
         super();
@@ -116,6 +118,20 @@ export class BusinessService extends EnumHelper {
             }
         }
 
+        this.galleryTargetView.manualCaptureFn = (stationId, cb) => {
+            this.garbageStationDao.manualCapture(stationId).subscribe(result => {
+                if (result && result.Data) {
+                    const img = cb(result.Data);  
+                    this.table.dataSource.galleryTd.map(g => {
+                        const oldIndex = g.imgSrc.findIndex(f => f.indexOf(img.old)>0);
+                        if (oldIndex > 0 && g.key == stationId)
+                            g.imgSrc[oldIndex] = img.new;
+                    });
+
+                }
+            });
+        }
+
         this.table.initGalleryTargetFn = (garbageId, event, index) => {
             const cameras = new Array<ResourceCamera>();
             event.map(x => {
@@ -129,14 +145,14 @@ export class BusinessService extends EnumHelper {
     }
 
 
-    async requestVideoUrl(begin: Date, end: Date, cameraId: string) {
-        const params = new GetVodUrlParams();
-        params.BeginTime = begin;
-        params.EndTime = end;
-        params.Protocol = 'ws-ps';
-        params.StreamType = 1;
+    async requestVideoUrl(cameraId: string) {
+        const  user = new SessionUser(), params = new GetPreviewUrlParams()
+        ,videoLive = '4'
+        ,config = await this.userDalService.getUserConfig(user.id, videoLive);        
         params.CameraId = cameraId;
-        const response = await this.srService.VodUrls(params).toPromise();
+        params.Protocol = 'ws-ps';
+        params.StreamType = parseInt(config);
+        const response = await this.srService.PreviewUrls(params).toPromise(); 
         return response.Data;
     }
 
@@ -249,6 +265,8 @@ export class StatisticTable extends BusinessTable implements IConverter, IPageTa
             }
         }
         if (output instanceof CustomTableArgs) {
+            console.log(tds);
+
             output.galleryTd = tds;
             output.values = [...output.values, ...items];
         }

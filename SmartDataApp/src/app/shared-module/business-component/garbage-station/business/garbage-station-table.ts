@@ -17,17 +17,19 @@ import { DivisionDao } from "../../../../data-core/dao/division-dao";
 import { GarbageStationTypeDao } from "../../../../data-core/dao/garbage-station-type-dao";
 import { DivisionRequestService } from "../../../../data-core/repuest/division.service";
 import { GarbageStationTypeRequestService } from "../../../../data-core/repuest/garbage-station.service";
-import { PlayVideo } from "../../../../aiop-system/common/play-video";
+import { PlayVideo } from "../../../../aiop-system/common/play-video"; 
+import { GarbageStationDao } from "../../../../data-core/dao/garbage-station-dao"
 import { GalleryTargetViewI } from "../../full-garbage-station/business/gallery-target";
 import { ResourceCameraDao } from "../../../../data-core/dao/resources-camera-dao";
 import { Camera as ResourceCamera } from "../../../../data-core/model/aiop/camera";
-import { Camera } from "../../../../data-core/model/waste-regulation/camera";
-import { TimeInterval } from "../../../../common/tool/tool.service";
-import { GetVodUrlParams } from "../../../../data-core/model/aiop/video-url";
+import { Camera } from "../../../../data-core/model/waste-regulation/camera"; 
 import { ResourceSRServersRequestService, CameraRequestService } from "../../../../data-core/repuest/resources.service";
 import { SideNavService } from "../../../../common/tool/sidenav.service";
 import { ImageEventEnum } from "../../../gallery-target/gallery-target";
-import { MediumPicture } from "../../../../data-core/url/aiop/resources";
+import { MediumPicture } from "../../../../data-core/url/aiop/resources"; 
+import { UserDalService } from "../../../../dal/user/user-dal.service";
+import { SessionUser } from "../../../../common/tool/session-user";
+import { GetPreviewUrlParams } from "../../../../data-core/model/aiop/video-url";
 @Injectable()
 export class BusinessService {
     playVideo: PlayVideo;
@@ -53,13 +55,13 @@ export class BusinessService {
     table = new GarbageStationTable(this.datePipe);
     private divisionDao: DivisionDao;
     private garbageStationTypeDao: GarbageStationTypeDao;
-
+    private garbageStationDao: GarbageStationDao;
     playVideoFn = async (id: string) => {
         const idV = id.split('&'),
             camera = this.cameras.find(x => x.Id == idV[1]);
-        const time = TimeInterval(camera.ImageTime + '', -30),
-            video = await this.requestVideoUrl(time.start, time.end, camera.Id);
-        this.playVideo = new PlayVideo(video.Url, camera.Name);
+        const video = await this.requestVideoUrl(camera.Id);
+        this.playVideo = new PlayVideo(null, camera.Name);
+        this.playVideo.url_=video.Url;
         this.navService.playVideoBug.emit(true);
     }
 
@@ -67,9 +69,11 @@ export class BusinessService {
         , divisionService: DivisionRequestService
         , private cameraService: CameraRequestService
         , private navService: SideNavService
+        , private userDalService: UserDalService
         , private srService: ResourceSRServersRequestService
         , garbageStationTypeService: GarbageStationTypeRequestService) {
         this.divisionDao = new DivisionDao(divisionService);
+        this.garbageStationDao = new GarbageStationDao(garbageStationService);
         this.garbageStationTypeDao = new GarbageStationTypeDao(garbageStationTypeService);
         this.resourceCameraDao = new ResourceCameraDao(this.cameraService);
         this.galleryTargetView.neighborEventFnI = (ids, e: ImageEventEnum) => {
@@ -122,16 +126,29 @@ export class BusinessService {
             })
             this.galleryTargetView.initGalleryTargetI(garbageId, cameras, index);
         }
+
+        this.galleryTargetView.manualCaptureFn = (stationId, cb) => {
+            this.garbageStationDao.manualCapture(stationId).subscribe(result => {
+                if (result && result.Data) {
+                    const img = cb(result.Data);  
+                    this.table.dataSource.galleryTd.map(g => {
+                        const oldIndex = g.imgSrc.findIndex(f => f.indexOf(img.old)>0);
+                        if (oldIndex > 0 && g.key == stationId)
+                            g.imgSrc[oldIndex] = img.new;
+                    });
+                }
+            });
+        }
     }
 
-    async requestVideoUrl(begin: Date, end: Date, cameraId: string) {
-        const params = new GetVodUrlParams();
-        params.BeginTime = begin;
-        params.EndTime = end;
-        params.Protocol = 'ws-ps';
-        params.StreamType = 1;
+    async requestVideoUrl(cameraId: string) {
+        const  user = new SessionUser(), params = new GetPreviewUrlParams()
+        ,videoLive = '4'
+        ,config = await this.userDalService.getUserConfig(user.id, videoLive);        
         params.CameraId = cameraId;
-        const response = await this.srService.VodUrls(params).toPromise();
+        params.Protocol = 'ws-ps';
+        params.StreamType = parseInt(config);
+        const response = await this.srService.PreviewUrls(params).toPromise(); 
         return response.Data;
     }
 

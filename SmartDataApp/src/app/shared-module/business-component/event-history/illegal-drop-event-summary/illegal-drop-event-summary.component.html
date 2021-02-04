@@ -5,15 +5,20 @@
    ></hw-illegal-drop-event-history>
   </div>
   <div class="fill-height collapse"  [class.in]="viewsShow[1]">
-    <hw-illegal-drop-event-analyze   
+    <hw-illegal-drop-event-analyze   [businessEventType]="businessEventType"
     (OtherViewEvent)="acceptOtherView($event)"></hw-illegal-drop-event-analyze>
   </div>
   <div class="fill-height collapse"  [class.in]="viewsShow[2]">
-    <hw-illegal-drop-event-chart  [isDefaultSearch]="true"
+    <hw-illegal-drop-event-chart  [isDefaultSearch]="true"   [businessEventType]="businessEventType"
     (OtherViewEvent)="acceptOtherView($event)"></hw-illegal-drop-event-chart>
   </div>
   <div class="fill-height collapse"  [class.in]="viewsShow[3]">
-    <hw-illegal-drop-event-analyze-v2 (OtherViewEvent)="acceptOtherView($event)"></hw-illegal-drop-event-analyze-v2>
+    <hw-illegal-drop-event-analyze-v2   [businessEventType]="businessEventType"
+    (OtherViewEvent)="acceptOtherView($event)"></hw-illegal-drop-event-analyze-v2>
   </div> 
-  
+  <div class="fill-height collapse"  [class.in]="viewsShow[4]">
+    <hw-mixed-into-event-history  [fillMode]="divisionBusinessService.mixedIntoMode" 
+     (OtherViewEvent)="acceptOtherView($event)"></hw-mixed-into-event-history>
+  </div>
+ 
 </div> 

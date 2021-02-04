@@ -8,6 +8,7 @@ import { ConfigRequestService } from "../../../../data-core/repuest/config.servi
 import { DivisionBusinessService } from "../../../../waste-regulation-system/index/business-card-grid/division-business.service";
 import { HowellExcelV1 } from "../../../../common/tool/hw-excel-js/hw-excel-v1";
 import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
+import { BusinessEventTypeEnum } from '../business-event-type';
 @Component({
   selector: 'hw-illegal-drop-event-analyze',
   templateUrl: './illegal-drop-event-analyze.component.html',
@@ -15,6 +16,7 @@ import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
   providers: [BusinessService]
 })
 export class IllegalDropEventAnalyzeComponent implements OnInit {
+  @Input() businessEventType = BusinessEventTypeEnum.IllegalDrop;
   @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
   @Input() changeViewFn: (index: number) => void;
   @ViewChild(DateTimePickerDirective)
@@ -39,7 +41,7 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
     , private divisionBusinessService: DivisionBusinessService) { }
 
   async ngOnInit() {
-
+    this.businessService.businessEventType=this.businessEventType;
     setTimeout(() => {
       if (this.isDefaultSearch && this.divisionBusinessService.divisionsId) this.defaultSearch = this.divisionBusinessService.divisionsId;
     }, 1200);
@@ -51,6 +53,10 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
 
   set defaultSearch(id: string) {
     this.dropList.defaultSearch = id;
+  }
+
+  get pageTitle(){
+    return  this.businessEventType == BusinessEventTypeEnum.IllegalDrop ? '乱扔垃圾' : '混合投放';
   }
 
   changeClassType() {
@@ -77,6 +83,7 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
     if (ids.length <= 3 && ids.length > 0) {
       this.businessService.toDivisionIdsOrStationIds(ids);
       this.businessService.requestData(this.dropList.selectedTexts);
+      this.businessService.requestTodayEventData(this.dropList.onlyDivisionNode);
     }
     else if (ids.length > 3)
       new MessageBar().response_warning('最大3个对象');
@@ -97,10 +104,11 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
 
         const a = new HowellExcelJS();
         const b = a.createBook();
-        const s = a.addWorksheet(b, 'Table'), colName = ['A', 'B', 'C', 'D', 'E'];
+        const s = a.addWorksheet(b, 'Table'), colName = ['A', 'B', 'C', 'D', 'E']
+        , evenTypeLabel = this.pageTitle;
         var i = 3, c = 3, timeTag = 0, className = '', sum = 0;
         this.dropList.selectedTexts.map(x => className += ' ' + x.text);
-        data.table.title = `${this.dtp.nativeElement.value} ${className}数据比较${this.businessService.reportType}`;
+        data.table.title = `${this.dtp.nativeElement.value} ${className} ${evenTypeLabel}数据比较${this.businessService.reportType}`;
         data.chart.titles = [data.table.title];
         data.chart.chartTitle = data.table.title;
         a.setCellValue(s, 'B1', data.table.title);
