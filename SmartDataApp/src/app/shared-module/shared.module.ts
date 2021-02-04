@@ -21,6 +21,7 @@ import {  EChartProgressBarBoxDirective} from "../common/directive/echarts/pie/p
 import {  EChartProgressBarDirective} from "../common/directive/echarts/pie/progress-bar-directive";
 import { HWSPlayerDirective } from "../common/directive/wsplayer-directive";
 import { TouchSpinDirective } from "../common/directive/touch-spin-directive";
+import {  EChartCandlestickDirective } from "../common/directive/echarts/candlestick-directive";
 import { HWPaginationDirective } from "../common/directive/pagination-directive";
 import {  CardDirective } from "../common/directive/card-directive";
 import { InputSearchComponent } from './input-search/input-search.component'; 
@@ -60,6 +61,8 @@ import { IllegalDropEventSummaryComponent } from './business-component/event-his
 import { IllegalDropEventAnalyzeV2Component } from './business-component/event-history/illegal-drop-event-analyze-v2/illegal-drop-event-analyze-v2.component';
 import { VsClassStatisticComponent } from './business-component/vs-class-statistic/vs-class-statistic.component';
 import { TreeDropListV2Component } from './business-component/vs-class-statistic/tree-drop-list-v2/tree-drop-list-v2.component';
+// import { GarbageFullHistoryComponent } from './business-component/event-history/garbage-full-history/garbage-full-history.component';
+// import { StatisticGarbageCountComponent } from './business-component/event-history/statistic-garbage-count/statistic-garbage-count.component';
 
 @NgModule({
   imports: [
@@ -72,6 +75,7 @@ import { TreeDropListV2Component } from './business-component/vs-class-statistic
     DateTimePickerDirective,DateTimePickerMirrorDirective,
     HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartBarDirectiveV2,EChartLineDirective ,HWSPlayerDirective,CardDirective
     ,EChartPieOutDirective,EChartPieInDirective,EChartPieMiddleDirective ,EChartProgressBarBoxDirective,EChartProgressBarDirective
+     ,EChartCandlestickDirective
     ,FormTitlePipe,TxtLenPipe,
   InputSearchComponent,CustomTableComponent, ConfirmDialogComponent,
   InputTagAreaComponent,
@@ -82,7 +86,9 @@ import { TreeDropListV2Component } from './business-component/vs-class-statistic
 ,LineEChartsCardComponent, SwitchComponent  ,TimeToolComponent
 ,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventHistoryComponent,IllegalDropEventAnalyzeComponent,TreeDropListComponent,IllegalDropEventChartComponent,IllegalDropEventCardListComponent
 ,UserToolComponent
-, LevelListPanelComponent, MixedIntoEventHistoryComponent, FullGarbageStationComponent, GarbageStationComponent, GarbageStationCamerasComponent, GalleryRollPageComponent, IllegalDropEventSummaryComponent, IllegalDropEventAnalyzeV2Component, VsClassStatisticComponent, TreeDropListV2Component
+, LevelListPanelComponent, MixedIntoEventHistoryComponent, FullGarbageStationComponent, GarbageStationComponent, GarbageStationCamerasComponent, GalleryRollPageComponent, IllegalDropEventSummaryComponent, IllegalDropEventAnalyzeV2Component
+, VsClassStatisticComponent, TreeDropListV2Component
+//, GarbageFullHistoryComponent, StatisticGarbageCountComponent
 ],
   exports: [
     MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -91,6 +97,7 @@ import { TreeDropListV2Component } from './business-component/vs-class-statistic
     ,DateTimePickerDirective,DateTimePickerMirrorDirective
     ,HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartBarDirectiveV2,EChartLineDirective,HWSPlayerDirective,CardDirective
      ,EChartPieOutDirective,EChartPieInDirective,EChartPieMiddleDirective ,EChartProgressBarBoxDirective,EChartProgressBarDirective
+     ,EChartCandlestickDirective
     ,FormTitlePipe,TxtLenPipe
     ,InputSearchComponent,InputTagAreaComponent,CustomTableComponent,ConfirmDialogComponent
     ,InputTagSelectComponent,CustomTreeComponent,PicturesDropListComponent,CardListPanelComponent
@@ -101,6 +108,7 @@ import { TreeDropListV2Component } from './business-component/vs-class-statistic
     ,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventSummaryComponent,IllegalDropEventAnalyzeV2Component,IllegalDropEventHistoryComponent,TreeDropListComponent,IllegalDropEventAnalyzeComponent,IllegalDropEventChartComponent,IllegalDropEventCardListComponent
     ,MixedIntoEventHistoryComponent,FullGarbageStationComponent,GarbageStationComponent,GarbageStationCamerasComponent,VsClassStatisticComponent
     ,UserToolComponent,LevelListPanelComponent
+    //,GarbageFullHistoryComponent,StatisticGarbageCountComponent
   ],
   providers: [DatePipe,
    ],

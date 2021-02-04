@@ -18,8 +18,8 @@ import { Division, GetDivisionsParams } from '../../../data-core/model/waste-reg
 import { PagedList } from '../../../data-core/model/page';
 import { Response } from '../../../data-core/model/Response';
 import { MapListItem, MapListItemType } from './map-list-panel/map-list-item';
-import { Camera } from '../../../data-core/model/waste-regulation/camera';
-import { GarbageStations } from 'src/app/data-core/url/waste-regulation/garbage-station';
+import { Camera } from '../../../data-core/model/waste-regulation/camera'; 
+import { SessionUser } from '../../../common/tool/session-user';
 
 declare var $: any;
 
@@ -65,7 +65,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     srcUrl: any;
     dataController: CesiumDataController.Controller;
     client: CesiumMapClient;
-
+    user = new SessionUser();
     autoCloseWindowHandle: NodeJS.Timer;
     constructor(
         private amapService: AMapService,
@@ -370,7 +370,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
             this.amapService.videoPlayerService.playCameraName = camera.Name;
             this.amapService.videoPlayerService.playMode = PlayModeEnum.live;
             this.amapService.videoPlayerService.playVideoVideoId = 'player';
-
+            response.Data.Url=response.Data.Url.indexOf('password') >0 
+            ? response.Data.Url:response.Data.Url+this.user.videoUserPwd;
             this.amapService.videoPlayerService.url = response.Data.Url;
             this.videoWindow.url = response.Data.Url;
             this.videoWindow.cameraName = camera.Name;
@@ -420,6 +421,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 params.Protocol = 'ws-ps';
                 params.StreamType = 1;
                 const response = await this.srService.PreviewUrls(params).toPromise();
+                response.Data.Url=response.Data.Url.indexOf('password') >0 
+                ? response.Data.Url:response.Data.Url+this.user.videoUserPwd;
                 this.videoWindow.url = response.Data.Url;
                 this.videoWindow.cameraName = this.currentCamera.Name;
                 this.videoWindow.playVideo();
@@ -438,7 +441,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
             params.Protocol = 'ws-ps';
             params.StreamType = 1;
             params.CameraId = this.currentCamera.Id;
-            const response = await this.srService.VodUrls(params).toPromise();
+            const response = await this.srService.VodUrls(params).toPromise();           
+            response.Data.Url=response.Data.Url.indexOf('password') >0 
+            ? response.Data.Url:response.Data.Url+this.user.videoUserPwd;
             this.videoWindow.url = response.Data.Url;
             this.videoWindow.cameraName = this.currentCamera.Name;
             this.videoWindow.playVideo();
