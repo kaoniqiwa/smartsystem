@@ -53,4 +53,8 @@ export class GarbageStationDao extends ListAttribute {
         const result = await this.requestService.statisticNumberList(param).toPromise();
         return result.Data;
     }
+
+    manualCapture(stationId:string){
+      return  this.requestService.manualCapture(stationId);
+    }
 }

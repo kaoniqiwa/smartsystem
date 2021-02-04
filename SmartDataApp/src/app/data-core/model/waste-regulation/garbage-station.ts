@@ -45,6 +45,13 @@ export class GarbageStation {
 
     // 垃圾厢房状态
     StationState: number;
+
+    Grade: number;//评级
+    CountSchedule: TimeRange[];//	计数时间段
+}
+interface TimeRange {
+    BeginTime: Date | string;
+    EndTime: Date | string;
 }
 
 export class RecordFileUrl {

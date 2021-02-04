@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpHeaders, HttpParams ,HttpRequest, HttpResponse} from '@angular/common/http';
 import { SessionUser } from "../../common/tool/session-user";
 import { Digest } from './digest'; 
 import {Response  } from "../model/response";
@@ -120,6 +120,27 @@ export class HowellAuthHttpService {
       headers: httpHeaders
     };
     return this.http.get<any>(url, httpOptions);
+  }
+
+  downloadFile(url:string,percent:(percent:number)=>void
+  ,completely:(completely:boolean)=>void){
+    const req = new HttpRequest('GET', url, {
+      reportProgress: true,
+    });
+    
+    this.http.request(req).subscribe(event => {
+      // Via this API, you get access to the raw event stream.
+      // Look for download progress events.
+      if (event.type === HttpEventType.DownloadProgress) {
+        // This is an download progress event. Compute and show the % done:
+        const percentDone = Math.round(100 * event.loaded / event.total);
+        percent(percentDone);
+       // console.log(`File is ${percentDone}% downloaded.`);
+      } else if (event instanceof HttpResponse) {
+        completely(true);
+        // console.log('File is completely downloaded!');
+      }
+    });
   }
 
   //获取已授权的头部
