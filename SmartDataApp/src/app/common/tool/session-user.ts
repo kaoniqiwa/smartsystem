@@ -6,6 +6,8 @@ export class SessionUser {
     }
 
     private readonly userIdKey = 'userId';
+    private readonly divisionsKey = 'like_divisions';
+    private readonly stationsKey = 'like_stations';
 
     set video(val:{beforeInterval:number,afterInterval:number}){
         localStorage.setItem('VIDEO',JSON.stringify(val));
@@ -71,6 +73,28 @@ export class SessionUser {
         const n = localStorage.getItem('pwd');
         return n ? n.split(this.suffix)[0] : '';
     }
+    
+    get videoUserPwd(){ 
+        return `?user=${this.user.name}&password=${this.user.pwd}`;
+    }
+
+    set divisions(val: string[]) { 
+          localStorage.setItem(this.divisionsKey,val.join(','));
+    }
+
+    get divisions() {
+        const n = localStorage.getItem(this.divisionsKey);
+        return n ? n.split(',') : new Array();
+    }
+
+    set stations(val: string[]) { 
+        localStorage.setItem(this.stationsKey,val.join(','));
+  }
+
+  get stations() {
+      const n = localStorage.getItem(this.stationsKey);
+      return n ? n.split(',') : new Array();
+  }
 
     set clear(yes: boolean) {
         localStorage.removeItem('memoryPwd');

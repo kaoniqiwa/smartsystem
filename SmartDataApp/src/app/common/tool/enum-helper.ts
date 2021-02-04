@@ -23,7 +23,7 @@ export class EnumHelper {
 
         this.cameraUsage = {
             garbageFull: [8, 9, 10, 11, 12, 13, 14, 15],
-            outside:[4,5,6,7,12,13,14,15]
+            outside:[0,4,5,6,7,12,13,14,15]
         }
 
         this.stationState ={ 
