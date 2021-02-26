@@ -45,6 +45,10 @@ export class GarbageStations extends GarbageBaseUrl implements IUrl {
     statisticNumberHistoryList():string{
         return this.aiop+`GarbageStations/Statistic/Number/History/List`;
     }
+
+    statisticGarbageCountHistoryList(){
+        return this.aiop+'GarbageStations/Statistic/GarbageCount/History/List';
+    }
  
 }
 

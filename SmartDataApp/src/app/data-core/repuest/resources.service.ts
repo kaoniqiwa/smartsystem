@@ -16,6 +16,7 @@ import { BatchCopyRequest } from '../model/aiop/ai-models-params';
 import { BatchResult } from '../model/batch';
 import { HowellAuthHttpService } from './howell-auth-http.service';
 import { SRService } from '../url/aiop/sr-server';
+import { SRService as  StationSRService} from "../url/waste-regulation/sr-server";
 import { GetPreviewUrlParams, GetVodUrlParams, VideoUrl } from '../model/aiop/video-url';
 @Injectable({
     providedIn: 'root'
@@ -235,6 +236,26 @@ export class ResourceSRServersRequestService {
     url: SRService;
     constructor(private requestService: HowellAuthHttpService) {
         this.url = new SRService();
+    }
+
+    PreviewUrls(params: GetPreviewUrlParams) {
+        return this.requestService.post<VideoUrl>(this.url.preview(), params);
+    }
+
+    VodUrls(params: GetVodUrlParams) {
+        return this.requestService.post<VideoUrl>(this.url.vod(), params);
+    }
+
+}
+
+
+@Injectable({
+    providedIn: 'root'
+})
+export class StationResourceSRServersRequestService {
+    url: StationSRService;
+    constructor(private requestService: HowellAuthHttpService) {
+        this.url = new StationSRService();
     }
 
     PreviewUrls(params: GetPreviewUrlParams) {

@@ -10,7 +10,9 @@ import { Response } from '../model/Response';
 import { HowellAuthHttpService } from './howell-auth-http.service';
 import { GetGarbageStationnEventNumbersParams, EventNumberStatistic } from '../model/waste-regulation/division-event-numbers';
 import {
-    GarbageStationNumberStatistic, GetGarbageStationStatisticNumbersParams,GarbageStationNumberStatisticV2,GetGarbageStationStatisticNumbersParamsV2
+    GetGarbageStationStatisticGarbageCountsParams, GarbageStationNumberStatistic
+    , GetGarbageStationStatisticNumbersParams,GarbageStationNumberStatisticV2,GetGarbageStationStatisticNumbersParamsV2
+    , GarbageStationGarbageCountStatistic
 } from '../model/waste-regulation/garbage-station-number-statistic';
 import { GarbageStationType } from "../model/waste-regulation/garbage-station-type";
 import {CameraPictureUrl  } from "../model/waste-regulation/camera-picture-url";
@@ -81,6 +83,11 @@ export class GarbageStationRequestService extends SaveModel {
     cameraFileUrl(stationId:string,cameraId:string,beginTime:string,endTime:string){
         return this.requestService.post<any,
         Response<RecordFileUrl>>(this.url.cameraFile(stationId,cameraId,beginTime,endTime));
+    }
+
+    statisticGarbageCount(item:GetGarbageStationStatisticGarbageCountsParams){
+        return this.requestService.post<GetGarbageStationStatisticGarbageCountsParams
+        ,Response<GarbageStationGarbageCountStatistic[]>>(this.url.statisticGarbageCountHistoryList(),item);
     }
 }
 

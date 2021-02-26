@@ -62,6 +62,8 @@ export class GarbageStationNumberStatisticV2 {
   AvgGarbageTime: number;	//	垃圾堆平均滞留时间，单位：分钟
   MaxGarbageTime: number;	//	垃圾堆最大滞留时间，单位：分钟
   MaxGarbageCount: number;		//当日最大滞留堆数量
+  GarbageDuration: number;//	 	有垃圾时长，单位：分钟
+CleanDuration: number;	// 	无垃圾时长，单位：分钟
 }
 
 
