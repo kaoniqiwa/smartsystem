@@ -8,20 +8,13 @@ declare namespace CesiumDataController {
         Village: VillageController;
         Building: any;
         Floor: any;
-        Point: any;
+        Point: PointController;
         Polyline: any;
         Ellipsoid: any;
     }
 
     export type Dictionary<T> = { [key: string]: T; }
 
-    class VillagePointController {
-        List: (villageId: string) => Dictionary<Point>;
-        Get: (villageId: string, pointId: string) => Point;
-        Create: (villageId: string, pointId: string, village: Point) => boolean;
-        Update: (villageId: string, pointId: string, village: Point) => boolean;
-        Remove: (villageId: string, pointId: string) => boolean;
-    }
 
     class VillageController {
         GetIds: () => void;
@@ -32,9 +25,17 @@ declare namespace CesiumDataController {
         Remove: (villageId: string) => boolean;
         GetByBuildingId: (buildingId: string) => Building;
         Asyn: AsynVillageController;
-        Point: VillagePointController;
+        Point: any;
         Polyline: any;
         Ellipsoid: any;
+    }
+    class PointController {
+        GetIds: () => void;
+        List: () => Dictionary<Point>;
+        Get: (villageId: string, pointId: string) => Point;
+        Create: (villageId: string, pointId: string, point: Point) => boolean;
+        Update: (villageId: string, pointId: string, point: Point) => boolean;
+        Remove: (villageId: string, pointId: string) => boolean;
     }
 
     namespace CallbackType {
@@ -431,6 +432,7 @@ declare namespace CesiumDataController {
         showBackground: boolean;
         areas: Array<number>[];
         center: Position;
+        level:number;
         buildings: Global.Dictionary<Building>;
         points: Global.Dictionary<Point>;
         polylines: Global.Dictionary<Polyline>;
@@ -519,6 +521,57 @@ declare namespace CesiumDataController {
 
     }
 
+    class RGB {
+        r?: number;
+        g?: number;
+        b?: number;
+    }
+    class HSL {
+        h?: number;
+        s?: number;
+        l?: number;
+    }
+
+
+    class Color {
+        rgb?: RGB | string;
+        hsl?: HSL;
+    }
+
+    class PointOptions {
+        id: string;
+        color?: Color;
+    }
+
+    class LabelOptions {
+        id: string;
+        position: Position;
+        text?: string;
+        color?: Color | string;
+        backgroundColor?: Color | string;
+        value: number;
+        image?: ImageOptions;
+    }
+    class ImageOptions{
+        color?: Color | string;
+        value?: number;
+        resource:ImageResource
+    }
+
+    enum ImageResource {
+        arcProgress = "arc-progress"
+    }
+
+
+    // 路径规划类型
+    enum RoutingType {
+        // 驾车
+        Driving = "driving",
+        // 步行
+        Walking = "walking",
+        // 骑行
+        Riding = "riding"
+    }
 
 }
 

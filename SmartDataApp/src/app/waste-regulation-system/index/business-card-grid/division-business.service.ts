@@ -1,4 +1,4 @@
-import { Injectable ,EventEmitter} from "@angular/core";
+import { Injectable, EventEmitter } from "@angular/core";
 import { ViewsModel } from "../../../common/abstract/base-view";
 import { BusinessParameter } from "../../../common/interface/IBusiness";
 import { BaseBusinessRefresh } from "../../../common/tool/base-business-refresh";
@@ -24,7 +24,7 @@ import { GetEventRecordsParams } from "../../../data-core/model/waste-regulation
 import { TheDayTime } from "../../../common/tool/tool.service";
 import { ListAttribute } from "../../../common/tool/table-form-helper";
 import { EventRequestService } from "../../../data-core/repuest/Illegal-drop-event-record";
-import {targetPosition, domSize } from "../../../common/tool/jquery-help/jquery-help";
+import { targetPosition, domSize } from "../../../common/tool/jquery-help/jquery-help";
 import { isBoolean, isString } from "util";
 @Injectable({
     providedIn: 'root'
@@ -32,7 +32,6 @@ import { isBoolean, isString } from "util";
 export class DivisionBusinessService {
     componets = new Array<BusinessViewComponetConstructor>();
     committesIds: string[];
-    mapClient: CesiumMapClient;
     aMap: AMapComponent;
     /**区划 */
     illegalDropMode: FillMode;
@@ -45,15 +44,15 @@ export class DivisionBusinessService {
     inspectionViewMaxPostion = false;
     inspectionViewVideo = false;
     vsClassStatistic = false;
-    inspectionSize = { width:0,height:0,left:0,top:0}; 
+    inspectionSize = { width: 0, height: 0, left: 0, top: 0 };
     /**更正区划id 视图显示当前 */
-    nspectionParam:(val:string)=>void;
+    nspectionParam: (val: string) => void;
     stationCameraStateTable: CameraStateTableEnum;
     divisionsId = '';
     /** 统计页面默认搜索图表 */
     illegalDropChartDefault = new EventEmitter<any>();
-    constructor(private cameraService: CameraRequestService 
-        ,private eventRequestService: EventRequestService
+    constructor(private cameraService: CameraRequestService
+        , private eventRequestService: EventRequestService
         , private stationService: GarbageStationRequestService) {
 
     }
@@ -70,24 +69,23 @@ export class DivisionBusinessService {
                         param.map.set('divisionsIds', this.committesIds);
                         this.nspectionParam(val.id);
                         this.divisionsId = val.id;
-                        if (this.mapClient) {
-                            this.mapClient.Village.Select(val.id);
-                            let village = this.mapClient.DataController.Village.Get(val.id);
-                            this.mapClient.Viewer.MoveTo(village.center);
+                        if(this.aMap)
+                        {
+                            this.aMap.VillageSelect(val.id, true);
                         }
                         for (const x of this.componets) {
                             if (x.list[0].view instanceof HeaderSquareListComponent) { }
                             else {
                                 if (x.list[0].business instanceof BaseBusinessRefresh) {
                                     x.list[0].business.businessParameter = param;
-                                    x.list[0].view.loadDatas(new ViewsModel()); 
+                                    x.list[0].view.loadDatas(new ViewsModel());
                                 }
                                 setTimeout(() => {
-                                    if (x.list[0].view instanceof GalleryRollPageComponent){  
-                                        x.list[0].view.tagClick(null,false);                                       
+                                    if (x.list[0].view instanceof GalleryRollPageComponent) {
+                                        x.list[0].view.tagClick(null, false);
                                     }
-                                },500);
-                               
+                                }, 500);
+
                             }
                         }
                     }
@@ -128,102 +126,101 @@ export class DivisionBusinessService {
                         this.eventHistoryView = true;
 
                     }
-                }               
+                }
             }
         }, 1000);
     }
 
-    bindingEvent2(){
+    bindingEvent2() {
         setTimeout(() => {
-        for (const x of this.componets) { 
-            if (x.list[0].view instanceof GalleryRollPageComponent) {
-               /**
-                * 
-                * 抓图
-                */
-                const s_view = ()=>{
-                    const g=   targetPosition('map__view'),san=   targetPosition('san');
-                    this.inspectionSize.left=g.left-5;
-                    this.inspectionSize.top=0;
-                    const s = domSize('map__view');  
-                    this.inspectionSize.width = s.width-g.left+17; 
-                    this.inspectionSize.height=san.top-5;
-                }
-                x.list[0].view.btnControl = async (i) => {
-                    if (i == null)
-                       {
-                        this.inspectionView = false;
-                        setTimeout(() => {
-                            s_view();
-                            this.aMap.MapReload();    
-                        });
-                       }
-                    else if(isBoolean(i)){
-                        this.inspectionViewMaxPostion=i;
-                        if(i)
-                           this.inspectionSize = { width:0,height:0,left:0,top:0}; 
-                        else
-                        setTimeout(() => {
-   
-                            s_view();
-                          });
+            for (const x of this.componets) {
+                if (x.list[0].view instanceof GalleryRollPageComponent) {
+                    /**
+                     * 
+                     * 抓图
+                     */
+                    const s_view = () => {
+                        const g = targetPosition('map__view'), san = targetPosition('san');
+                        this.inspectionSize.left = g.left - 5;
+                        this.inspectionSize.top = 0;
+                        const s = domSize('map__view');
+                        this.inspectionSize.width = s.width - g.left + 17;
+                        this.inspectionSize.height = san.top - 5;
                     }
-                    else if(isString(i)){
-                        this.inspectionViewVideo = i =='play';
-                    }
-                    else {
-                        const item = i as { 
-                            g:Gallery,
-                            msg:boolean,
-                            catchState:{ o:boolean}
-                        } ,enumHelper = new EnumHelper()
-                        , pic=new MediumPicture()
-                        , state = (gs:GarbageStation) => {                        
-                            if (gs.StationState == 0) return '正常';
-                            else if (enumHelper.stationState.err.indexOf(gs.StationState) > -1)
-                                return '异常';
-                            else if (enumHelper.stationState.full.indexOf(gs.StationState) > -1)
-                                return '满溢';
-                        };;
-                        if (item.g && item.g.title) {
-                            /**更新投放点 */
-                           const station = await this.stationService.get(item.g.title.id).toPromise();
-                            if(station&&station.Data){
-                                item.g.title.state = state(station.Data); 
-                                station.Data.Cameras.map(m => {
-                                    if (m.ImageUrl) { 
-                                        const desc = item.g.imgDesc.find(i => i.tag.id == m.Id);
-                                        if (desc)
-                                            desc.src = pic.getData(m.ImageUrl);
-                                    }
-                                });
-                            }
-                            this.getStationsIllegalDropEvent([item.g.title.id]).subscribe(x=>{
-                                if(x.Data&&x.Data.Data)
-                                    item.g.title.eventNumber=x.Data.Data.length;                                        
-                                
+                    x.list[0].view.btnControl = async (i) => {
+                        if (i == null) {
+                            this.inspectionView = false;
+                            setTimeout(() => {
+                                s_view();
+                                this.aMap.MapReload();
                             });
-                            this.stationService.manualCapture(item.g.title.id).subscribe(data=>{ 
-                                item.catchState.o = true;
-                                if (data && data.Data) {
-                                    data.Data.map(m => {
-                                        if (m.Result) { 
-                                            const desc = item.g.imgDesc.find(i => i.tag.id == m.CameraId);
+                        }
+                        else if (isBoolean(i)) {
+                            this.inspectionViewMaxPostion = i;
+                            if (i)
+                                this.inspectionSize = { width: 0, height: 0, left: 0, top: 0 };
+                            else
+                                setTimeout(() => {
+
+                                    s_view();
+                                });
+                        }
+                        else if (isString(i)) {
+                            this.inspectionViewVideo = i == 'play';
+                        }
+                        else {
+                            const item = i as {
+                                g: Gallery,
+                                msg: boolean,
+                                catchState: { o: boolean }
+                            }, enumHelper = new EnumHelper()
+                                , pic = new MediumPicture()
+                                , state = (gs: GarbageStation) => {
+                                    if (gs.StationState == 0) return '正常';
+                                    else if (enumHelper.stationState.err.indexOf(gs.StationState) > -1)
+                                        return '异常';
+                                    else if (enumHelper.stationState.full.indexOf(gs.StationState) > -1)
+                                        return '满溢';
+                                };;
+                            if (item.g && item.g.title) {
+                                /**更新投放点 */
+                                const station = await this.stationService.get(item.g.title.id).toPromise();
+                                if (station && station.Data) {
+                                    item.g.title.state = state(station.Data);
+                                    station.Data.Cameras.map(m => {
+                                        if (m.ImageUrl) {
+                                            const desc = item.g.imgDesc.find(i => i.tag.id == m.Id);
                                             if (desc)
-                                                desc.src = pic.getData(m.Id);
+                                                desc.src = pic.getData(m.ImageUrl);
                                         }
                                     });
                                 }
-                                if(item.msg)
-                                   new MessageBar().response_success();
-                            });    
-                        }
+                                this.getStationsIllegalDropEvent([item.g.title.id]).subscribe(x => {
+                                    if (x.Data && x.Data.Data)
+                                        item.g.title.eventNumber = x.Data.Data.length;
 
+                                });
+                                this.stationService.manualCapture(item.g.title.id).subscribe(data => {
+                                    item.catchState.o = true;
+                                    if (data && data.Data) {
+                                        data.Data.map(m => {
+                                            if (m.Result) {
+                                                const desc = item.g.imgDesc.find(i => i.tag.id == m.CameraId);
+                                                if (desc)
+                                                    desc.src = pic.getData(m.Id);
+                                            }
+                                        });
+                                    }
+                                    if (item.msg)
+                                        new MessageBar().response_success();
+                                });
+                            }
+
+                        }
                     }
                 }
             }
-        }
-    });
+        });
     }
 
     changeMqttState(state: boolean) {
@@ -236,13 +233,13 @@ export class DivisionBusinessService {
         }
     }
 
-    getStationsIllegalDropEvent(stationIds:string[]){
+    getStationsIllegalDropEvent(stationIds: string[]) {
         const param = new GetEventRecordsParams(), day = TheDayTime(new Date());
         param.PageIndex = 1;
         param.BeginTime = day.begin.toISOString();
         param.EndTime = day.end.toISOString();
-        param.PageSize= new ListAttribute().maxSize;
-        param.StationIds=stationIds;
+        param.PageSize = new ListAttribute().maxSize;
+        param.StationIds = stationIds;
         return this.eventRequestService.list(param);
     }
 
@@ -253,6 +250,6 @@ export class DivisionBusinessService {
         this.eventHistoryView = false;
         this.stationListView = false;
         this.stationCameraView = false;
-        this.vsClassStatistic=false;
+        this.vsClassStatistic = false;
     }
 }

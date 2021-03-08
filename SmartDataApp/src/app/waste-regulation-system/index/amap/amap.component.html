@@ -7,18 +7,23 @@
   (OnVisibilityChanged)="OnPanelVisibilityChanged($event)" (OnItemClicked)="OnPanelItemClicked($event)"
   (OnItemDoubleClicked)="OnPanelItemDoubleClicked($event)"></app-map-list-panel>
 
-  <div class="map-bar btn-list">
-    <div class="btn" (click)=Button1Clicked()>
-      <div class="inner">
-          <i class="howell-icon-refresh"></i>
-      </div>
+<div class="map-bar btn-list">
+  <div class="btn" (click)=Button1Clicked()>
+    <div class="inner">
+      <i class="howell-icon-refresh"></i>
+    </div>
   </div>
   <div class="btn" (click)=Button2Clicked()>
     <div class="inner">
-        vs
+      vs
     </div>
-</div>
   </div>
+  <div class="btn" style="display: none;" (click)=Button3Clicked()>
+    <div class="inner">
+      <i class="howell-icon-garbage"></i>
+    </div>
+  </div>
+</div>
 
 <ul class="map-bar status">
   <li class="normal">

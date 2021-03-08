@@ -65,7 +65,6 @@ export class IndexComponent implements OnInit {
 
   }
   mapLoaded(mapClient: CesiumMapClient) {
-    this.divisionBusinessService.mapClient = mapClient;
     this.divisionBusinessService.aMap = this.aMap;
     this.moveMapSite();
   }
@@ -149,8 +148,7 @@ export class IndexComponent implements OnInit {
       }];
     }
     this.moveMapSite = () => {
-      this.divisionBusinessService.mapClient.Village.Select(county.Id);
-
+      this.divisionBusinessService.aMap.VillageSelect(county.Id, false);
     }
     this.divisionBusinessService.bindingEvent();
   }

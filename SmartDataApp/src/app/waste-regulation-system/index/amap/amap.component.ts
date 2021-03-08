@@ -174,7 +174,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             const p = this.getBaseDivision();
             p.then((baseDivision) => {
                 this.baseDivisionId = baseDivision.Id;
-                this.client.Village.Select(baseDivision.Id);
+                this.client.Village.Select(baseDivision.Id, true);
                 this.refresh();
 
                 const village = this.dataController.Village.Get(baseDivision.Id);
@@ -470,7 +470,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             case MapListItemType.Parent:
             case MapListItemType.Division:
                 const village = this.dataController.Village.Get(item.Id);
-                this.client.Village.Select(village.id);
+                this.client.Village.Select(village.id, this.baseDivisionId === village.id);
                 position = village.center;
                 break;
             case MapListItemType.GarbageStation:
@@ -531,6 +531,20 @@ export class AMapComponent implements AfterViewInit, OnInit {
             this.vsButtonClicked.emit();
         }
     }
+
+    Button3Clicked() {
+
+    }
+
+
+    VillageSelect(villageId: string, move: boolean) {
+        this.client.Village.Select(villageId, this.baseDivisionId === villageId);
+        if (move) {
+            const village = this.dataController.Village.Get(villageId);
+            this.client.Viewer.MoveTo(village.center);
+        }
+    }
+
 
     async onVideoWindowDownload(args: { begin: Date, end: Date }) {
         if (!this.currentCamera) { return; }
