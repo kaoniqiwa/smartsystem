@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { iif } from "rxjs";
 @Injectable()
 export class ToolService {
     windowScreen: { width: number, height: number };
@@ -8,7 +9,7 @@ export class ToolService {
             height: window.screen.height
         }
     }
-} 
+}
 
 export function ArrayPagination<T>(pageNo: number, pageSize: number, array: T[]) {
     var offset = (pageNo - 1) * pageSize;
@@ -17,7 +18,25 @@ export function ArrayPagination<T>(pageNo: number, pageSize: number, array: T[])
 
 }
 
+export function Decimal(num:number){
+  return  Math.floor(num * 100) / 100;
+}
+ 
+export function GetIntegerNum(num:string){     
+   return parseInt(num.substring(0,num.indexOf(".")+2));    
+}
 
+export function GetDecimalNum(num:string){ 
+    if(num.indexOf(".")> -1)
+    return num.substr(0,num.indexOf(".")+3);
+    else return num;
+ }
+
+ export function IntegerDecimalNum(num:string){ 
+    if(num.indexOf(".")> -1)
+    return num.substr(0,num.indexOf(".")+3);
+    else return num;
+ }
 /**
  * JS 计算两个时间间隔多久（时分秒）
  * @param startTime "2019-10-23 15:27:23"
@@ -62,11 +81,34 @@ export function TwoTimeInterval(startTime: string, endTime: Date) {
 
 }
 
+export function ChangeHourMinute(str:number) {
+    if (str != 0 && str != null) 
+        return ((Math.floor(str / 60)).toString().length < 2 ? (Math.floor(str / 60)).toString() :
+            (Math.floor(str / 60)).toString()) + "小时" + ((str % 60).toString().length < 2 ? (str % 60).toString() : (str % 60).toString());
+    else 
+        return 0;    
+}
+
+export function ChangeHourMinutestr(str:number) {
+    if (str != 0 && str != null) 
+        return ((Math.floor(str / 60)).toString().length < 2 ? (Math.floor(str / 60)).toString() :
+            (Math.floor(str / 60)).toString()) + ":" + ((str % 60).toString().length < 2 ? (str % 60).toString() : (str % 60).toString());
+    else 
+        return '0';    
+}
 export function pageCount(totalnum: number, limit: number) {
     return totalnum > 0 ?
         ((totalnum < limit)
             ? 1 : ((totalnum % limit)
                 ? ((totalnum / limit) + 1) : (totalnum / limit))) : 0;
+}
+
+export function TheBeforeDate(date: Date,days=0,months=0){
+    const y = date.getFullYear(), m = date.getMonth(), d = date.getDate();
+    return {
+        begin: new Date(y, m+months, d+days, 0, 0, 0),
+        end: new Date(y, m, d, 23, 59, 59)
+    }
 }
 
 
@@ -115,7 +157,7 @@ export function OneWeekDate(now: Date) {
     var minus = week ? week - 1 : 6;
     var monday = new Date(now);
     monday.setDate(now.getDate() - minus); //获取minus天前的日期
-    const sunday = new Date(monday);    
+    const sunday = new Date(monday);
     sunday.setDate(monday.getDate() + 6);
     return {
         monday: monday,

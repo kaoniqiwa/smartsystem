@@ -15,6 +15,11 @@ function moveView2(targetDomId, moveDomId, offsetX, offsetY) {
     move.css({ 'left': target.position().left + offsetX + 'px', 'top': target.position().top + offsetY + 'px' });
 }
 
+function moveView3(targetDomId, offsetX, offsetY) {
+    const target = $('#' + targetDomId);
+    target.css({ 'left': offsetX + 'px', 'top':  offsetY + 'px' });
+}
+
 function targetPosition(targetDomId) {
     const target = $('#' + targetDomId)
    return target.position();
@@ -177,6 +182,7 @@ exports.getData = getData;
 exports.setData = setData;
 exports.moveView = moveView;
 exports.moveView2 = moveView2;
+exports.moveView3 =moveView3;
 exports.targetPosition=targetPosition;
 exports.domClick = domClick;
 exports.domClickFn = domClickFn;
