@@ -18,9 +18,10 @@
       vs
     </div>
   </div>
-  <div class="btn" style="display: none;" (click)=Button3Clicked()>
+  <div class="btn" (click)=Button3Clicked()>
     <div class="inner">
-      <i class="howell-icon-garbage"></i>
+      <i [ngClass]="LabelVisibility ? 'howell-icon-residual': 'howell-icon-recyclable'"></i>
+      <!-- <i *ngIf="!LabelVisibility" class="howell-icon-zoomout"></i>       -->
     </div>
   </div>
 </div>

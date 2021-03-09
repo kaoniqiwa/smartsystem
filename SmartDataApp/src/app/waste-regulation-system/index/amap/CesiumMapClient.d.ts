@@ -164,6 +164,15 @@ declare namespace CesiumMap {
 
     }
 
+    interface Label{
+        Show():void;
+        Hide():void;
+        Set(opts:CesiumDataController.LabelOptions):void;
+        Set(opts:CesiumDataController.LabelOptions[]):void;
+        Remove(id:string):void;
+        Remove(ids:string[]):void;
+
+    }
 
     interface EventTriggers {
         OnLoading(): void;
@@ -199,6 +208,8 @@ declare namespace CesiumMap {
         DataController: CesiumDataController.Controller;
 
         Events: EventTriggers;
+
+        Label:Label;
     }
 }
 
