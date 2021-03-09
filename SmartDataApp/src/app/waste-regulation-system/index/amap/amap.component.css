@@ -177,6 +177,7 @@ right: -79px;
           25% 100%,
           0% 50%);
           padding: 1px;
+          
 }
 .map-bar.btn-list .btn .inner{
   height: 100%;
@@ -189,8 +190,15 @@ right: -79px;
           75% 100%,
           25% 100%,
           0% 50%);
-          color: white;
-          line-height: 20px;
+    color: white;
+    line-height: 20px;
+    opacity: 0.8;
+    
+  
+}
+.map-bar.btn-list .btn:hover .inner
+{
+  opacity: 1;
 }
 
 

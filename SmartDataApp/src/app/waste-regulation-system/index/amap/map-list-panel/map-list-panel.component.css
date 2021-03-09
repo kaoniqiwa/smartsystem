@@ -29,6 +29,11 @@
             0% 50%);
             color: white;
             line-height: 20px;
+            opacity: 0.8;
+}
+.btn .inner:hover
+{
+    opacity: 1;
 }
 ::-webkit-scrollbar {  
     width:4px;  

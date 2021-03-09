@@ -53,9 +53,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
     @Output()
     mapPanelListItemClickedEvent: EventEmitter<MapListItem<Division | GarbageStation>> = new EventEmitter();
 
-
+    labels: Global.Dictionary<CesiumDataController.LabelOptions> = {};
     labelHandle: NodeJS.Timer;
-
     // label 显示
     labelVisibility = false;
     set LabelVisibility(val: boolean) {
@@ -144,38 +143,50 @@ export class AMapComponent implements AfterViewInit, OnInit {
         const opts = new Array();
         for (let i = 0; i < list.Data.Data.length; i++) {
             const data = list.Data.Data[i];
-            // data.CurrentGarbageTime = 30;
-            const point = this.points[data.Id];
-            const opt = new CesiumDataController.LabelOptions();
-            opt.position = point.position;
-            opt.id = point.id;
 
-            const p = data.CurrentGarbageTime / 240;
+            if (data.CurrentGarbageTime > 0) {
+                const point = this.points[data.Id];
+                const opt = new CesiumDataController.LabelOptions();
+                opt.position = point.position;
+                opt.id = point.id;
 
+                const p = data.CurrentGarbageTime / 240;
 
-            const hours = parseInt((data.CurrentGarbageTime / 60).toString());
-            const minutes = parseInt((data.CurrentGarbageTime % 60).toString());
+                console.log(data);
+                const hours = parseInt((data.CurrentGarbageTime / 60).toString());
+                const minutes = parseInt((Math.ceil(data.CurrentGarbageTime) % 60).toString());
 
-            opt.text = (hours ? hours + '小时' : (minutes ? minutes + '分钟' : ''));
+                opt.text = (hours ? hours + '小时' : (minutes ? minutes + '分钟' : ''));
 
-            const color = new CesiumDataController.Color();
-            color.rgb = '#36e323';
-            color.hsl = new CesiumDataController.HSL();
-            color.hsl.h = 120 - parseInt((p * 90).toString());
-            color.hsl.s = 100;
-            color.hsl.l = 60;
+                const color = new CesiumDataController.Color();
+                color.rgb = '#36e323';
+                color.hsl = new CesiumDataController.HSL();
+                color.hsl.h = 120 - parseInt((p * 90).toString());
+                color.hsl.s = 100;
+                color.hsl.l = 60;
 
-            opt.color = color;
-            opt.value = p;
-            if (opt.text) {
-                opt.image = new CesiumDataController.ImageOptions();
-                opt.image.color = color;
-                opt.image.value = p;
-                opt.image.resource = CesiumDataController.ImageResource.arcProgress;
+                opt.color = color;
+                opt.value = p;
+                if (opt.text) {
+                    opt.image = new CesiumDataController.ImageOptions();
+                    opt.image.color = color;
+                    opt.image.value = p;
+                    opt.image.resource = CesiumDataController.ImageResource.arcProgress;
+                }
+                opts.push(opt);
+                this.labels[opt.id] = opt;
             }
-            opts.push(opt);
         }
         this.client.Label.Set(opts);
+        for (const id in this.labels) {
+            if (Object.prototype.hasOwnProperty.call(this.labels, id)) {
+                const label = this.labels[id];
+                if (label.value === 0) {
+                    this.client.Label.Remove(id);
+                    delete this.labels[id];
+                }
+            }
+        }
     }
 
     setPointStatus(stations: GarbageStation[]) {
@@ -594,6 +605,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     MapReload() {
         if (this.baseDivisionId) {
             this.client.Village.Reload(this.baseDivisionId);
+            this.client.Village.Select(this.baseDivisionId, true);
             this.refresh();
         }
     }
@@ -610,6 +622,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     }
 
     Button3Clicked() {
+
         this.LabelVisibility = !this.LabelVisibility;
     }
 

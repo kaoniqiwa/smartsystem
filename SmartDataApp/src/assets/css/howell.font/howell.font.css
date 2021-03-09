@@ -2319,3 +2319,31 @@ a .howell-icon-flip-vertical:before {
 .howell-icon-picturedownload:before {
     content: "\f334";
 }
+.howell-icon-arrow2left:before {
+    content: "\f335";
+}
+.howell-icon-arrow2right:before {
+    content: "\f336";
+}
+.howell-icon-arrow2up:before {
+    content: "\f337";
+}
+.howell-icon-arrow2down:before {
+    content: "\f338";
+}
+
+.howell-icon-zoomout:before {
+    content: "\f339";
+}
+
+.howell-icon-zoomin:before {
+    content: "\f340";
+}
+
+.howell-icon-arrow:before {
+    content: "\f341";
+}
+
+.howell-icon-garbagebags:before {
+    content: "\f342";
+}
