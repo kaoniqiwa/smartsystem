@@ -53,6 +53,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     @Output()
     mapPanelListItemClickedEvent: EventEmitter<MapListItem<Division | GarbageStation>> = new EventEmitter();
 
+    labelNumber = 0;
     labels: Global.Dictionary<CesiumDataController.LabelOptions> = {};
     labelHandle: NodeJS.Timer;
     // label 显示
@@ -177,11 +178,14 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 this.labels[opt.id] = opt;
             }
         }
+
+        const ids = opts.map(x => x.id);
+
         this.client.Label.Set(opts);
         for (const id in this.labels) {
             if (Object.prototype.hasOwnProperty.call(this.labels, id)) {
                 const label = this.labels[id];
-                if (label.value === 0) {
+                if (label.value === 0 || !ids.includes(id)) {
                     this.client.Label.Remove(id);
                     delete this.labels[id];
                 }
