@@ -157,16 +157,16 @@ right: -79px;
 {
   position: absolute;
   bottom: 8px;
-  left: 33px;
+  left: 42px;
   z-index: 0;
 }
 .map-bar.btn-list .btn {
   position: relative;
-  margin-right: 5px;
+  margin-right: 6px;
   bottom: 0px;
   left: 0px;
-  width: 28px;
-  height: 24px;
+  width: 36px;
+  height: 32px;
   background-color: #2d76ce;
   cursor: pointer;
   clip-path: polygon(
@@ -191,9 +191,9 @@ right: -79px;
           25% 100%,
           0% 50%);
     color: white;
-    line-height: 20px;
+    line-height: 28px;
     opacity: 0.8;
-    
+    font-size: 18px;
   
 }
 .map-bar.btn-list .btn:hover .inner
