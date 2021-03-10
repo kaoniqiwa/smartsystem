@@ -87,6 +87,7 @@ export class BusinessService extends ListAttribute {
                     if (i < 10) timeKey.push({ no: i, date: '', name: `0${i}日`, val: 0 });
                     else timeKey.push({ no: i, date: '', name: `${i}日`, val: 0 });
                 }
+                chart.dataLen = (lastDay+2);
             }
             else if (s.TimeUnit == TimeUnitEnum.Week) {
                 ["周一", "周二", "周三", "周四", "周五", "周六", "周日"].map((x, index) => {
