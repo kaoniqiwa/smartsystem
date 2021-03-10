@@ -3,8 +3,8 @@
     
     bottom: 0px;
     left: 0px;
-    width: 28px;
-    height: 24px;
+    width: 36px;
+    height: 32px;
     background-color: #2d76ce;
     cursor: pointer;
     clip-path: polygon(
@@ -28,7 +28,13 @@
             25% 100%,
             0% 50%);
             color: white;
-            line-height: 20px;
+            line-height: 28px;
+            opacity: 0.8;
+            font-size: 18px;
+}
+.btn .inner:hover
+{
+    opacity: 1;
 }
 ::-webkit-scrollbar {  
     width:4px;  
@@ -40,8 +46,8 @@
     height: 255px;
     width: 161px;
     position: relative;
-    bottom: -7px;
-    left: 14px;
+    bottom: -6px;
+    left: 20px;
     
     background-color: #2d76ce;
     clip-path: polygon(

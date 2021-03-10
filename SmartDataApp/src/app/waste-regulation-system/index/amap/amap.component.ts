@@ -20,6 +20,8 @@ import { Response } from '../../../data-core/model/Response';
 import { MapListItem, MapListItemType } from './map-list-panel/map-list-item';
 import { Camera } from '../../../data-core/model/waste-regulation/camera';
 import { SessionUser } from '../../../common/tool/session-user';
+import { GetDivisionStatisticNumbersParams } from 'src/app/data-core/model/waste-regulation/division-number-statistic';
+import { GetGarbageStationStatisticNumbersParams } from 'src/app/data-core/model/waste-regulation/garbage-station-number-statistic';
 
 declare var $: any;
 
@@ -51,6 +53,27 @@ export class AMapComponent implements AfterViewInit, OnInit {
     @Output()
     mapPanelListItemClickedEvent: EventEmitter<MapListItem<Division | GarbageStation>> = new EventEmitter();
 
+    labelNumber = 0;
+    labels: Global.Dictionary<CesiumDataController.LabelOptions> = {};
+    labelHandle: NodeJS.Timer;
+    // label 显示
+    labelVisibility = false;
+    set LabelVisibility(val: boolean) {
+        this.labelVisibility = val;
+        if (val) {
+            this.client.Label.Show();
+            this.setLabel(this.garbages);
+            this.labelHandle = setInterval(() => {
+                this.setLabel(this.garbages);
+            }, 1 * 60 * 1000);
+        } else {
+            this.client.Label.Hide();
+            clearInterval(this.labelHandle);
+        }
+    }
+    get LabelVisibility() {
+        return this.labelVisibility;
+    }
 
     isShowVideoView = false;
     currentCamera: Camera;
@@ -61,6 +84,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     villageGarbages: GarbageStation[];
 
     private baseDivisionId: string;
+    private points: Global.Dictionary<CesiumDataController.Point> = {};
 
     srcUrl: any;
     dataController: CesiumDataController.Controller;
@@ -108,16 +132,78 @@ export class AMapComponent implements AfterViewInit, OnInit {
         if (!this.villageGarbages) {
             this.villageGarbages = this.garbages;
         }
+        this.setPointStatus(this.garbages);
+
+    }
+
+    async setLabel(stations: GarbageStation[]) {
+        const params = new GetGarbageStationStatisticNumbersParams();
+        params.Ids = stations.map(x => x.Id);
+        const list = await this.garbageService.statisticNumberList(params).toPromise();
+
+        const opts = new Array();
+        for (let i = 0; i < list.Data.Data.length; i++) {
+            const data = list.Data.Data[i];
+
+            if (data.CurrentGarbageTime > 0) {
+                const point = this.points[data.Id];
+                const opt = new CesiumDataController.LabelOptions();
+                opt.position = point.position;
+                opt.id = point.id;
+
+                const p = data.CurrentGarbageTime / 240;
+
+                console.log(data);
+                const hours = parseInt((data.CurrentGarbageTime / 60).toString());
+                const minutes = parseInt((Math.ceil(data.CurrentGarbageTime) % 60).toString());
+
+                opt.text = (hours ? hours + '小时' : (minutes ? minutes + '分钟' : ''));
+
+                const color = new CesiumDataController.Color();
+                color.rgb = '#36e323';
+                color.hsl = new CesiumDataController.HSL();
+                color.hsl.h = 120 - parseInt((p * 90).toString());
+                color.hsl.s = 100;
+                color.hsl.l = 60;
+
+                opt.color = color;
+                opt.value = p;
+                if (opt.text) {
+                    opt.image = new CesiumDataController.ImageOptions();
+                    opt.image.color = color;
+                    opt.image.value = p;
+                    opt.image.resource = CesiumDataController.ImageResource.arcProgress;
+                }
+                opts.push(opt);
+                this.labels[opt.id] = opt;
+            }
+        }
+
+        const ids = opts.map(x => x.id);
+
+        this.client.Label.Set(opts);
+        for (const id in this.labels) {
+            if (Object.prototype.hasOwnProperty.call(this.labels, id)) {
+                const label = this.labels[id];
+                if (label.value === 0 || !ids.includes(id)) {
+                    this.client.Label.Remove(id);
+                    delete this.labels[id];
+                }
+            }
+        }
+    }
+
+    setPointStatus(stations: GarbageStation[]) {
         const arrayStatus = new Array();
-        for (let i = 0; i < this.garbages.length; i++) {
-            const garbage = this.garbages[i];
+        for (let i = 0; i < stations.length; i++) {
+            const station = stations[i];
             try {
                 const status = {
-                    id: this.garbages[i].Id,
+                    id: station.Id,
                     status: 0
                 };
-                if (this.garbages[i].StationState > 0) {
-                    status.status = this.garbages[i].StationState === 1 ? 1 : 2;
+                if (station.StationState > 0) {
+                    status.status = station.StationState === 1 ? 1 : 2;
                 }
 
                 arrayStatus.push(status);
@@ -154,9 +240,12 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
             for (let i = 0; i < this.garbages.length; i++) {
                 const point = this.dataController.Village.Point.Get(this.garbages[i].DivisionId, this.garbages[i].Id);
-                if (point.name !== this.garbages[i].Name) {
-                    point.name = this.garbages[i].Name;
-                    this.dataController.Village.Point.Update(this.garbages[i].DivisionId, this.garbages[i].Id, point);
+                if (point) {
+                    this.points[point.id] = point;
+                    if (point.name !== this.garbages[i].Name) {
+                        point.name = this.garbages[i].Name;
+                        this.dataController.Village.Point.Update(this.garbages[i].DivisionId, this.garbages[i].Id, point);
+                    }
                 }
             }
         };
@@ -174,12 +263,14 @@ export class AMapComponent implements AfterViewInit, OnInit {
             const p = this.getBaseDivision();
             p.then((baseDivision) => {
                 this.baseDivisionId = baseDivision.Id;
-                this.client.Village.Select(baseDivision.Id);
+                this.client.Village.Select(baseDivision.Id, true);
                 this.refresh();
 
                 const village = this.dataController.Village.Get(baseDivision.Id);
                 this.client.Viewer.MoveTo(village.center);
             });
+
+            this.LabelVisibility = false;
         };
 
 
@@ -316,7 +407,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
             response = await this.divisionService.list(params).toPromise();
             if (response.Data.Page.TotalRecordCount > 0) {
                 this.amapService.childrenOfList = (response as Response<PagedList<Division>>).Data.Data.map(x => {
-                    return new MapListItem(x.Id, x.Name, MapListItemType.Division, x);
+                    const item = new MapListItem(x.Id, x.Name, MapListItemType.Division, x);
+                    return item;
                 });
 
             } else {
@@ -470,7 +562,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             case MapListItemType.Parent:
             case MapListItemType.Division:
                 const village = this.dataController.Village.Get(item.Id);
-                this.client.Village.Select(village.id);
+                this.client.Village.Select(village.id, this.baseDivisionId === village.id);
                 position = village.center;
                 break;
             case MapListItemType.GarbageStation:
@@ -517,6 +609,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     MapReload() {
         if (this.baseDivisionId) {
             this.client.Village.Reload(this.baseDivisionId);
+            this.client.Village.Select(this.baseDivisionId, true);
             this.refresh();
         }
     }
@@ -531,6 +624,21 @@ export class AMapComponent implements AfterViewInit, OnInit {
             this.vsButtonClicked.emit();
         }
     }
+
+    Button3Clicked() {
+
+        this.LabelVisibility = !this.LabelVisibility;
+    }
+
+
+    VillageSelect(villageId: string, move: boolean) {
+        this.client.Village.Select(villageId, this.baseDivisionId === villageId);
+        if (move) {
+            const village = this.dataController.Village.Get(villageId);
+            this.client.Viewer.MoveTo(village.center);
+        }
+    }
+
 
     async onVideoWindowDownload(args: { begin: Date, end: Date }) {
         if (!this.currentCamera) { return; }

@@ -33,7 +33,6 @@ import { BusinessEventTypeEnum } from '../../../shared-module/business-component
 export class DivisionBusinessService {
     componets = new Array<BusinessViewComponetConstructor>();
     committesIds: string[];
-    mapClient: CesiumMapClient;
     aMap: AMapComponent;
     /**区划 */
     illegalDropMode: FillMode;
@@ -77,10 +76,9 @@ export class DivisionBusinessService {
                         param.map.set('divisionsIds', this.committesIds);
                         this.nspectionParam(val.id);
                         this.divisionsId = val.id;
-                        if (this.mapClient) {
-                            this.mapClient.Village.Select(val.id);
-                            let village = this.mapClient.DataController.Village.Get(val.id);
-                            this.mapClient.Viewer.MoveTo(village.center);
+                        if(this.aMap)
+                        {
+                            this.aMap.VillageSelect(val.id, true);
                         }
                         for (const x of this.componets) {
                             if (x.list[0].view instanceof HeaderSquareListComponent) { }

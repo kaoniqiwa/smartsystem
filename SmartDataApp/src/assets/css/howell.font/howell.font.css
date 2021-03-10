@@ -2343,3 +2343,7 @@ a .howell-icon-flip-vertical:before {
 .howell-icon-arrow:before {
     content: "\f341";
 }
+
+.howell-icon-garbagebags:before {
+    content: "\f342";
+}
