@@ -8,6 +8,7 @@ import { domClickFn } from '../../../../common/tool/jquery-help/jquery-help';
 import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
 import { GarbageStationDao } from '../../../../data-core/dao/garbage-station-dao';
 import { DivisionDao } from '../../../../data-core/dao/division-dao';
+import { SessionUser } from "../../../../common/tool/session-user";
 @Component({
   selector: 'hw-tree-drop-list-v2',
   templateUrl: './tree-drop-list-v2.component.html',
@@ -27,6 +28,8 @@ export class TreeDropListV2Component implements OnInit {
   onlyDivisionNode = false;
 
   @Input() rightArrow = false;
+  @Input() textLeft = true;
+  @Input() textColor = 'text-white';
 
   @Input()
   selectedItemFn: (item: { id: string, text: string }) => void;
@@ -68,6 +71,8 @@ export class TreeDropListV2Component implements OnInit {
     this.garbageStationTree.dataSource.data = dataSource;
     this.garbageStationTree.treeControl.expandAll();
   }
+
+  user = new SessionUser();
   constructor(private stationTreeService: StationTreeService
     , private garbageStationDao: GarbageStationDao
     , private divisionDao: DivisionDao
@@ -89,7 +94,7 @@ export class TreeDropListV2Component implements OnInit {
     this.reInit();      
   }
 
-  defaultItem(id: string, cb: (itemId: string) => void) {console.log(this.stationTreeService.treeNode);
+  defaultItem(id: string, cb: (itemId: string) => void) {//console.log(this.stationTreeService.treeNode);
     if (id)
       this.garbageStationTree.defaultItem(id);
     else if (this.stationTreeService.treeNode
@@ -130,7 +135,18 @@ export class TreeDropListV2Component implements OnInit {
     }
     this.stationTreeService.loadStationTree();
     this.garbageStationTree.dataSource.data = this.stationTreeService.treeNode;
+    this.userDefaultLike();
+  }
 
+  userDefaultLike(){
+    if (this.onlyDivisionNode&&this.user.divisions.length==0&&this.dataService.divisions.length) {
+       const division= this.dataService.divisions.find(x => x.DivisionType == DivisionTypeEnum.Committees);
+       this.user.divisions = [division.Id];
+    }
+    else if (this.onlyDivisionNode==false&&this.user.stations.length==0&&this.dataService.garbageStations.length){
+      const station= this.dataService.garbageStations[0]
+      this.user.stations = [station.Id];
+    }
   }
 
 }

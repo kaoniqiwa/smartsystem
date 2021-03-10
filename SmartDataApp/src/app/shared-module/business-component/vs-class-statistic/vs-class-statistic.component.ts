@@ -120,7 +120,7 @@ export class VsClassStatisticComponent implements OnInit {
         this.dropList1.defaultItem(id, (i) => {
           user.divisions = [i];
         });
-      }, 100);
+      }, 300);
       setTimeout(() => {
         this.dropList2.defaultItem(id, (i) => {
           user.divisions = [i];
@@ -133,7 +133,7 @@ export class VsClassStatisticComponent implements OnInit {
         this.dropList1.defaultItem(id, (i) => {
         user.stations = [i];
         });
-      }, 100);
+      }, 300);
       setTimeout(() => {
         this.dropList2.defaultItem(id, (i) => {
          user.stations = [i];

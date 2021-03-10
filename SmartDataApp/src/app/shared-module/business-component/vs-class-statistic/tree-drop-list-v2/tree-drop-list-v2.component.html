@@ -1,7 +1,7 @@
 <div style="position: relative;"  (click)="$event.stopPropagation();">
   <div class="header-wrap" (click)="showBody=!showBody; $event.stopPropagation();" fxLayout="row" fxLayoutAlign="space-between stretch">
   
-    <div class="placeholder" [class.text-left]="rightArrow" [class.text-right]="!rightArrow">
+    <div class="placeholder {{textColor}}" [class.text-left]="textLeft" [class.text-right]="!textLeft">
       <ng-container *ngIf="!rightArrow">
         <i class="mdi mdi-menu-down"></i>
       </ng-container>     

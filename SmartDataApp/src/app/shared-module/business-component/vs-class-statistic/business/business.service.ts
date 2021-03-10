@@ -21,7 +21,7 @@ export class BusinessService extends ListAttribute {
         formate: 'yyyy-mm-dd'
     }
     search = new SearchControl(this.datePipe);
-    colors = ['#7d90bc', '#ff9100']; 
+    colors = ['#7d90bc', '#ff9100'];
     constructor(private divisionService: DivisionRequestService
         , private datePipe: DatePipe
         , private garbageStationService: GarbageStationRequestService) {
@@ -127,43 +127,50 @@ export class BusinessService extends ListAttribute {
         , search: SearchControl
         , opts: Array<BarOpt>[]) {
         const s = search.toSearchParam(), toPercent = (val: number, maxPercent: number, color: string) => {
-            val = val || 0;console.log(maxPercent);
-            
+            val = val || 0; console.log(maxPercent);
+
             if (val == 0) return { percent: '1%', text: 0, color: color };
             else return {
                 percent: Percentage(val, maxPercent) + 1 + '%',
                 text: val,
                 color: color
             }
-        },maxVal=(vals:number[])=>{
-          return  vals.sort((a,b)=>{
-                return b-a;
-            }).pop();
-        }; 
+        }, toScore = (usedTime: number, color: string) => {
+            const totalTime = 24 * 60;
+            usedTime = usedTime || 0;
+            if (usedTime == 0) return { percent: '1%', text: 0, color: color };
+            return (usedTime >= totalTime) ? { percent: '100%', text: 0, color: color } :
+                {
+                    percent: Percentage(usedTime, totalTime) + 1 + '%',
+                    text: usedTime / totalTime,
+                    color: color
+                }
+
+        };
 
         const fillBarOpt = (data: BarOptData, opt: Array<BarOpt>
             , compare: BarOptData) => {
             if (s.TimeUnit == TimeUnitEnum.Hour) {
-                opt[0] = toPercent(data.illegalDrop,data.illegalDrop+compare.illegalDrop, this.colors[0]);
-                opt[1] = toPercent(data.mixedInto, data.mixedInto+compare.mixedInto, this.colors[0]);
+                opt[0] = toPercent(data.illegalDrop, data.illegalDrop + compare.illegalDrop, this.colors[0]);
+                opt[1] = toPercent(data.mixedInto, data.mixedInto + compare.mixedInto, this.colors[0]);
                 opt[2] = {
                     percent: '1%',
                     text: 0,
                     color: this.colors[0]
                 }
-                opt[3] = toPercent(data.dryVolume, data.dryVolume+compare.dryVolume, this.colors[0]);
-                opt[4] = toPercent(data.wetVolume, data.wetVolume+compare.wetVolume, this.colors[0]);
+                opt[3] = toPercent(data.dryVolume, parseFloat((data.wetVolume + compare.wetVolume).toFixed(2)), this.colors[0]);
+                opt[4] = toPercent(data.wetVolume, parseFloat((data.wetVolume + compare.wetVolume).toFixed(2)), this.colors[0]);
             }
             else if (s.TimeUnit == TimeUnitEnum.Day) {
-                opt[0] = toPercent(data.illegalDrop, data.illegalDrop+compare.illegalDrop, this.colors[0]);
-                opt[1] = toPercent(data.mixedInto,data.mixedInto+compare.mixedInto, this.colors[0]);
+                opt[0] = toPercent(data.illegalDrop, data.illegalDrop + compare.illegalDrop, this.colors[0]);
+                opt[1] = toPercent(data.mixedInto, data.mixedInto + compare.mixedInto, this.colors[0]);
                 opt[2] = {
                     percent: '1%',
                     text: 0,
                     color: data.fullDuration > compare.fullDuration ? this.colors[1] : this.colors[0]
                 }
-                opt[3] = toPercent(data.dryVolume,data.dryVolume+compare.dryVolume, this.colors[0]);
-                opt[4] = toPercent(data.wetVolume, data.wetVolume+compare.wetVolume, this.colors[0]);
+                opt[3] = toPercent(data.dryVolume, parseFloat((data.wetVolume + compare.wetVolume).toFixed(2)), this.colors[0]);
+                opt[4] = toPercent(data.wetVolume, parseFloat((data.wetVolume + compare.wetVolume).toFixed(2)), this.colors[0]);
             }
 
             opt[0].color = data.illegalDrop > compare.illegalDrop ? this.colors[1] : this.colors[0];
@@ -187,8 +194,10 @@ export class BusinessService extends ListAttribute {
                             else if (d.EventType == EventTypeEnum.MixedInto)
                                 barOptData.mixedInto += d.DayNumber;
                         });
-                        barOptData.wetVolume += m.WetVolume;
-                        barOptData.dryVolume += m.DryVolume;
+                        barOptData.wetVolume =0;
+                        barOptData.dryVolume =0;
+                        // barOptData.wetVolume += m.WetVolume;
+                        // barOptData.dryVolume += m.DryVolume;
                     });
                 };
             fillData(statisticG1, barOptDataG1);
@@ -198,29 +207,29 @@ export class BusinessService extends ListAttribute {
 
         }
         else if (s.ClassType == ClassTypeEnum.Station) {
-            const statistic_ = statistic as Array<GarbageStationNumberStatisticV2> 
-            , statisticG1 = statistic_.filter(x => x.Id == s.StationId1),
-            statisticG2 = statistic_.filter(x => x.Id == s.StationId2),
-            barOptDataG1 = new BarOptData(),
-            barOptDataG2 = new BarOptData(),
-            fillData = (data: Array<GarbageStationNumberStatisticV2>, barOptData: BarOptData) => {
-                data.map(m => {
-                    m.EventNumbers.map(d => {
-                        if (d.EventType == EventTypeEnum.IllegalDrop)
-                            barOptData.illegalDrop += d.DayNumber;
+            const statistic_ = statistic as Array<GarbageStationNumberStatisticV2>
+                , statisticG1 = statistic_.filter(x => x.Id == s.StationId1),
+                statisticG2 = statistic_.filter(x => x.Id == s.StationId2),
+                barOptDataG1 = new BarOptData(),
+                barOptDataG2 = new BarOptData(),
+                fillData = (data: Array<GarbageStationNumberStatisticV2>, barOptData: BarOptData) => {
+                    data.map(m => {
+                        m.EventNumbers.map(d => {
+                            if (d.EventType == EventTypeEnum.IllegalDrop)
+                                barOptData.illegalDrop += d.DayNumber;
 
-                        else if (d.EventType == EventTypeEnum.MixedInto)
-                            barOptData.mixedInto += d.DayNumber;
+                            else if (d.EventType == EventTypeEnum.MixedInto)
+                                barOptData.mixedInto += d.DayNumber;
+                        });
+                        barOptData.wetVolume += m.AvgGarbageTime;
+                        barOptData.cleanDuration += m.CleanDuration;
                     });
-                    barOptData.wetVolume += m.WetVolume;
-                    barOptData.dryVolume += m.DryVolume;
-                });
-            };
-        fillData(statisticG1, barOptDataG1);
-        fillData(statisticG2, barOptDataG2); 
-        fillBarOpt(barOptDataG1, opts[0], barOptDataG2);
-        fillBarOpt(barOptDataG2, opts[1], barOptDataG1);
-            
+                };
+            fillData(statisticG1, barOptDataG1);
+            fillData(statisticG2, barOptDataG2);
+            fillBarOpt(barOptDataG1, opts[0], barOptDataG2);
+            fillBarOpt(barOptDataG2, opts[1], barOptDataG1);
+
         }
         console.log(this.barChartOption, this.barChartOption2);
 
@@ -243,8 +252,12 @@ class BarOpt {
 class BarOptData {
     illegalDrop: number;
     mixedInto: number;
+    /**干垃圾容量  评分 */
     dryVolume: number;
+    /**湿垃圾容积  滞留时长 */
     wetVolume: number;
+    /** 无垃圾时长，单位：分钟*/
+    cleanDuration: number;
     fullDuration: number;
     constructor() {
         this.mixedInto = 0;

@@ -28,7 +28,7 @@
       <div style="width: 80%;margin-left: 20%;padding-top: 16px;">
         <div class="fill-width" style="height: 34px;margin-bottom: 56px;">
           <div class="pull-right" style="width: 340px;height: 34px;">
-            <hw-tree-drop-list-v2  #drop1  [onlyDivisionNode]="divisionMode" [selectedItemFn]="vs1Class"></hw-tree-drop-list-v2>
+            <hw-tree-drop-list-v2  #drop1 [textLeft]="false" [onlyDivisionNode]="divisionMode" [selectedItemFn]="vs1Class"></hw-tree-drop-list-v2>
           </div>
         </div>
         <div style="margin-bottom: 68px;height: 34px;" class="fill-width">
@@ -82,15 +82,15 @@
           style="font-size: 16px;position: absolute;top:12px">(起)</label></h2>
       <h2 class="nomal-text light-blue-text" style="height: 108px;">满溢时间<label class="sky-blue-text"
           style="font-size: 16px;position: absolute;top:12px">(分钟)</label></h2>
-      <h2 class="nomal-text light-blue-text" style="height: 108px;">干垃圾<label class="sky-blue-text"
-          style="font-size: 16px;position: absolute;top:12px">(吨)</label></h2>
-      <h2 class="nomal-text light-blue-text">湿垃圾<label class="sky-blue-text" style="font-size: 16px;position: absolute;top:12px">(吨)</label></h2>
+      <h2 class="nomal-text light-blue-text" style="height: 108px;">垃圾处置评分<label class="sky-blue-text"
+          style="font-size: 16px;position: absolute;top:12px">(分)</label></h2>
+      <h2 class="nomal-text light-blue-text">垃圾滞留时长<label class="sky-blue-text" style="font-size: 16px;position: absolute;top:12px">(分)</label></h2>
     </div>
     <div class="fill-height" fxFlex="40">
       <div style="width: 80%;margin-right: 20%;padding-top: 16px;">
         <div class="fill-width" style="height: 34px;margin-bottom: 56px;">
           <div class="pull-left" style="width: 340px;height: 34px;">
-            <hw-tree-drop-list-v2 #drop2 [onlyDivisionNode]="divisionMode" [rightArrow]="true" [selectedItemFn]="vs2Class">
+            <hw-tree-drop-list-v2 #drop2 [onlyDivisionNode]="divisionMode" [textLeft]="true" [rightArrow]="true" [selectedItemFn]="vs2Class">
             </hw-tree-drop-list-v2>
           </div>
         </div>
