@@ -1,0 +1,23 @@
+<ng-container *ngIf="model"> 
+  <div style="position: relative;"  (click)="$event.stopPropagation();">
+    <div class="m-t-10 header-wrap" (click)="showBody=!showBody; $event.stopPropagation();" fxLayout="row" fxLayoutAlign="space-between stretch">
+      <div fxFlex class="ele-nowrap">
+        <h2 class="light-blue-text p-t-5 p-l-10 m-b-0 text-right"> {{selectedItemLabel}}</h2> 
+      </div>
+      <button type="button" fxFlex="30px" class="btn to-down">
+        <i class="mdi mdi-menu-down light-blue-text"></i>
+      </button>
+    </div>
+    <div class="fill-width body-wrap collapse" [class.in]="showBody"> 
+      <div class="fill-width drop-list-wrap" >    
+        <ul class="p-l-0 m-b-0 fine" style="max-height: 200px;overflow: auto;">
+          <ng-container *ngFor="let n of model.listNodes">
+            <li (click)="itemClick(n)">
+              <a  href="javascript:"  class="li-a">{{n.name}}</a>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </div>
+  </div>
+</ng-container>
