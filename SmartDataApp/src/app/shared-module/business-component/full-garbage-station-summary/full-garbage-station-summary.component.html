@@ -1,0 +1,10 @@
+<div  class="fill-height" style="position: relative;">
+  <div class="fill-height collapse" [class.in]="viewsShow[0]">
+    <hw-full-garbage-station (OtherViewEvent)="acceptOtherView($event)"  [divisionsId]="divisionsId">      
+    </hw-full-garbage-station>
+  </div>
+  <div class="fill-height collapse"  [class.in]="viewsShow[1]">
+    <hw-garbage-full-history (OtherViewEvent)="acceptOtherView($event)"
+    [fillMode]="divisionBusinessService.fullGarbageStationIntoMode"></hw-garbage-full-history>
+  </div>  
+</div> 
