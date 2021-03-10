@@ -1,0 +1,180 @@
+<div style="height: calc(100% - 64px);position: relative;">
+  <div class="fill-height fill-width hw-content-mask collapse"
+    [class.in]="tableService.galleryTargetView.galleryTarget">
+    <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
+      <hw-gallery-target [closeViewFn]="galleryTargetFn" [model]="tableService.galleryTargetView.galleryTarget"
+        [videoFn]="tableService.playVideoFn"  [videoFileFn]="tableService.videoFileFn"
+        [imgEventFn]="tableService.galleryTargetView.galleryTargetPageFn">
+      </hw-gallery-target>
+    </div>
+  </div>
+
+  <div class="fill-height fill-width hw-content-mask collapse" [class.in]="tableService.videoImgs">
+    <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
+      <ng-container *ngIf="tableService.videoImgs">
+        <hw-video-simple-card [closeFn]="videoClose" [playVideoToUrlFn]="tableService.playVideoToUrlFn"
+          [videoImgs]="tableService.videoImgs" [cameraName]="tableService.playVideoViewTitle"></hw-video-simple-card>
+      </ng-container>
+    </div>
+  </div>
+  <div class="fill-height fill-width hw-content-mask collapse" [class.in]="tableService.playVideo">
+    <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
+      <ng-container *ngIf="tableService.playVideo">
+        <hw-video-simple-card [closeFn]="videoClose" [url]="tableService.playVideo.url" [autostart]="true"
+          [cameraName]="tableService.playVideo.name"></hw-video-simple-card>
+      </ng-container>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between stretch">
+    <div class="fill-height">
+      <div class="second-title-bg pull-left text">
+        投放点状态
+      </div>
+      <ul class="hw-ul pull-left m-t-10">
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.info)">
+            <div class="second-menu-btn  text">
+              &nbsp;&nbsp;列表
+            </div>
+          </a></li>
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.event)">
+            <div class="second-menu-btn selected text">
+              &nbsp;事件
+            </div>
+          </a></li> 
+      </ul> 
+    
+    </div>
+    <div [formGroup]="tableService.search.searchform" fxLayoutAlign="center center" style="position: relative;">
+      <input type="text" style="width: 300px;" [readonly]="tableService.search.other" formControlName="SearchText"
+        placeholder="输入关键字" class="custom form-control m-r-10">
+      <button type="button" class="hw-blue-btn m-r-10 " (click)="search()">
+        <i class="mdi mdi-magnify"></i>
+        查询
+      </button>   
+      <button type="button" class="hw-blue-m-btn m-r-10 " (click)="listTypeView=!listTypeView">
+        <i style="margin-left: 2px;" [class.howell-icon-ul]="listMode==pageListMode.table"
+          [class.howell-icon-cam-all1]="listMode==pageListMode.list"></i>
+        <i class="mdi mdi-menu-down"></i>
+      </button>       
+      <button class="hw-cyan-m-btn" (click)="moreSearch()">
+        <i class="mdi mdi-filter-outline"></i>
+      </button>   
+      <div class="list-attr-wrap other-list collapse  "  [class.in]="otherDrop">
+        <ul class="p-l-0">
+          <li (click)="changeOtherView(otherView.chart)">
+            <a href="javascript:"class="list-li light-blue-text">
+              <i class="howell-icon-ul"></i>             
+            </a>
+          </li>
+          <li (click)="changeOtherView(otherView.analyze)">
+            <a href="javascript:" class="list-li light-blue-text">
+              <i class="howell-icon-chart-line"></i>
+            </a>
+          </li>
+        </ul>
+      </div> 
+      <div class="list-attr-wrap table-list  collapse" [class.in]="listTypeView">
+        <ul class="p-l-0">
+          <li  (click)="changeListMode(pageListMode.table)" >
+            <a href="javascript:void(0)"class="list-li light-blue-text">
+              <i class="howell-icon-ul"></i>             
+            </a>
+          </li>
+          <li  (click)="changeListMode(pageListMode.list)">
+            <a href="javascript:void(0)" class="list-li light-blue-text">
+              <i class="howell-icon-cam-all1"></i>
+                </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="tableService.search.other">
+    <div fxLayout="row" [formGroup]="tableService.search.searchform" fxLayoutGap="20px"
+      class="filter-wrap m-b-10 collapse">
+      <div fxFlex="20">
+        <span>开始时间</span>
+        <input type="text" DateTimePicker [defaultVal]="tableService.search.beginDate" [changeDate]="startDate"
+          [startView]="1" [minView]="1" style="width: calc(100% - 82px);" class="custom form-control m-l-10"
+          formControlName="BeginTime">
+      </div>
+      <div fxFlex="20">
+        <span>结束时间</span>
+        <input type="text" DateTimePicker [defaultVal]="tableService.search.endDate" [changeDate]="endDate"
+          [startView]="1" [minView]="1" style="width: calc(100% - 82px);" class="custom form-control m-l-10"
+          formControlName="EndTime">
+      </div>
+      <div fxFlex="20">
+        <span class="input-text">区划</span>
+        <div class="pull-right" style="width: calc(100% - 46px);">
+          <hw-level-list-panel [model]="tableService.divisionListView.dataSource"
+          [selectedFn]="changeDivisionFn"></hw-level-list-panel>
+        </div> 
+      </div>
+      <div fxFlex="20">
+        <span class="input-text">垃圾房</span>
+        <select (change)="changeStation(stationsList.value)" #stationsList class="form-control custom custom-select m-l-10" style="width: calc(100% - 64px);"
+          formControlName="StationId">
+          <option value="">请选择</option>
+          <ng-container *ngFor="let c of tableService.search.stationsDropList">
+            <option value="{{c.id}}">{{c.name}}</option>
+          </ng-container>
+        </select>
+      </div>
+      <div fxFlex="20">
+        <span class="input-text">摄像机</span>
+        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 64px);"
+          formControlName="ResourceId">
+          <option value="">请选择</option>
+          <ng-container *ngFor="let c of tableService.search.resourcesDropList">
+            <option value="{{c.id}}">{{c.name}}</option>
+          </ng-container>
+        </select>
+      </div>
+    </div>
+
+  </ng-container>
+
+  <div [ngStyle]="{'height': tableService.search.other ? tableSearchHeight:tableMinusHeight}">
+    <ng-container *ngIf="listMode==pageListMode.table">
+      <hw-custom-table #table [model]="tableService.eventTable.dataSource"></hw-custom-table>
+    </ng-container>
+    <ng-container *ngIf="listMode==pageListMode.list">
+      <hw-illegal-drop-event-card-list [model]="tableService.eventCards.cards" [itemFn]="listGalleryTargetFn"
+        [playVideoFn]="tableService.eventTable.playVideosFn" [videoFileFn]="tableService.eventTable.videoFilesFn">
+      </hw-illegal-drop-event-card-list>
+    </ng-container>
+    <ng-container *ngIf="tableService.videoDownLoad">
+      <div class="video-list-mask">
+        <div class="custom-form-wrap video-list-wrap">
+          <h2>视频下载</h2>
+          <ul class="hw-ul" style="width: 300px;height: calc(100% - 64px);">
+            <ng-container *ngFor="let v of tableService.videoDownLoad">
+              <li (click)="v.state=!v.state">
+                <a href="javascript:">
+                  <div class="ckbox">
+                    <i class="howell-icon-Check" *ngIf="v.state" style="font-size:small;position:absolute;"></i>
+                  </div>
+                  <label class="light-blue-text">
+                    {{ v.name}}
+                  </label>
+                </a>
+              </li>
+            </ng-container>
+          </ul>
+          <div class="text-center">
+            <button class="hw-green-btn m-r-10" (click)="tableService.videoListDownload()">
+              <i class="howell-icon-download"></i>
+              下载
+            </button>
+            <button class="hw-gray-m-btn" style="width: 76px;" (click)="tableService.videoDownLoad=null">
+              <i class="howell-icon-Close"></i>
+              取消
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+  </div>
+</div>
