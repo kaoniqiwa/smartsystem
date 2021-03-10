@@ -39,47 +39,13 @@ export class GalleryTargetViewI extends GalleryTargetView {
             const enlargeImage = mp.getJPG(page.next.item.ImageUrl);
             this.galleryTarget = new GalleryTarget(null
                 , null, enlargeImage, null
-                , idV[0] + '&' + page.next.item.Id, this.toDownLoadImgNameI(page.next.item));
-            this.galleryTarget.refreshImg = {
-                state: true
-            };
-            this.manualCaptureFn(idV[0], (urls) => {
-                var obj = {
-                    old: page.next.item.ImageUrl,
-                    new: ''
-                }
-                urls.map(x => {
-                    if (x.CameraId == page.next.item.Id) {
-                        obj.new = mp.getJPG(x.Id);
-                        this.galleryTarget.enlargeImage = mp.getJPG(x.Id);
-                        this.galleryTarget.refreshImg.state = false;
-                    }
-                });
-                return obj;
-            });
+                , idV[0] + '&' + page.next.item.Id, this.toDownLoadImgNameI(page.next.item));         
         }
         else if (e == ImageEventEnum.prev && page.prev.item) {
             const enlargeImage = new MediumPicture().getJPG(page.prev.item.ImageUrl);
             this.galleryTarget = new GalleryTarget(null
                 , null, enlargeImage, null
-                , idV[0] + '&' + page.prev.item.Id, this.toDownLoadImgNameI(page.prev.item));
-            this.galleryTarget.refreshImg = {
-                state: true
-            };
-            this.manualCaptureFn(idV[0], (urls) => {
-                var obj = {
-                    old: page.prev.item.ImageUrl,
-                    new: ''
-                }
-                urls.map(x => {
-                    if (x.CameraId == page.prev.item.Id) {
-                        obj.new = mp.getJPG(x.Id);
-                        this.galleryTarget.enlargeImage = mp.getJPG(x.Id);
-                        this.galleryTarget.refreshImg.state = false;
-                    }
-                });
-                return obj;
-            });
+                , idV[0] + '&' + page.prev.item.Id, this.toDownLoadImgNameI(page.prev.item));          
         }
         this.galleryTarget.imgNext = page.next.show;
         this.galleryTarget.imgPrev = page.prev.show;
