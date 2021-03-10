@@ -1,4 +1,4 @@
-import { Component, OnInit ,Input} from '@angular/core'; 
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import {BusinessService  } from "./business/full-garbage-station-table";
 @Component({
   selector: 'hw-full-garbage-station',
@@ -7,6 +7,7 @@ import {BusinessService  } from "./business/full-garbage-station-table";
 })
 export class FullGarbageStationComponent implements OnInit {
 
+  @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
   @Input() divisionsId = '';
   searchFn =async (val: string) => {
     this.businessService.search.searchText=val;
@@ -17,7 +18,7 @@ export class FullGarbageStationComponent implements OnInit {
       });
     });  
   }
-
+  otherView = OtherViewEnum;
   galleryTargetFn = () => {
     this.businessService.galleryTargetView.galleryTarget = null;
   }
@@ -39,4 +40,15 @@ export class FullGarbageStationComponent implements OnInit {
     });  
   }
 
+  changeOtherView(val: OtherViewEnum) {
+    setTimeout(() => {
+      this.OtherViewEvent.emit(val);
+    }, 50);
+  }
+}
+
+
+export enum OtherViewEnum {
+  event,
+  info
 }

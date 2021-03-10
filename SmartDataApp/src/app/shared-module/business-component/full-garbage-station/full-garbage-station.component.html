@@ -18,8 +18,22 @@
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
-    <div class="second-title-bg text">
-      垃圾房状态
+    <div class="fill-height">
+      <div class="second-title-bg pull-left text">
+        投放点状态
+      </div>
+      <ul class="hw-ul pull-left m-t-10">
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.info)">
+            <div class="second-menu-btn selected text">
+              &nbsp;&nbsp;列表
+            </div>
+          </a></li>
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.event)">
+            <div class="second-menu-btn  text">
+              &nbsp;事件
+            </div>
+          </a></li>
+      </ul>     
     </div>
     <div fxLayoutAlign="center center">
       <hw-input-search [searchEvent]="searchFn" [placeholder]="'名称'"></hw-input-search>     
