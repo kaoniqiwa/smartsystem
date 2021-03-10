@@ -18,6 +18,7 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
     @Input() closeFn: () => void;
     @Input() videoImgs: { id: string, imgSrc: string, name: string, time: Date | string }[];
     @Input() playVideoToUrlFn: (id: string, time: Date | string, cb: (url: string) => void) => void;
+    @Input() bottomTool: { left: { label: string, color: string }[], right: { label: string, color: string }[] };
     private delayPlayHandle: NodeJS.Timer;
 
     private player: WSPlayer;
@@ -194,33 +195,41 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
             this.player = new WSPlayer({
                 elementId: this.divId,
                 url: this.url
-            });
-            const size = domSize(this.divId);
-            this.player.clientWidth = size.width;
-            this.player.clientHeight = size.height;
+            }); 
             this.player.name = this.secondName;
             this.player.play();
             this.VideoPlayingEventListen.emit(true);
-        }
+        } 
+        const size = domSize(this.divId);
+        this.player.clientWidth = size.width;
+        this.player.clientHeight = size.height;
     }
 
     closeWindow(): void {
-        if (this.player) 
+        if (this.player)
             setTimeout(() => {
                 this.player.stop();
-            });           
-        
-        if (this.playing && this.videoImgs)
-            {
-                this.playing = false;
-                this.secondName='';
-            }
+            });
+
+        if (this.playing && this.videoImgs) {
+            this.playing = false;
+            this.secondName = '';
+        }
         else {
             const sc = document.getElementById(this.divId);
             if (sc) { sc.parentElement.removeChild(sc); }
             if (this.closeFn) this.closeFn();
         }
-    } 
+    }
+
+    /**9宫格空白填补 */
+    fillBlank(n: number) {
+        const arr = new Array();
+        if (n < 4)        
+            for (let i = 0; i < 4 - n; i++)
+                arr.push(1);
+        return arr;
+    }
 
     ngOnDestroy() {
         const sc = document.getElementById(this.divId);
