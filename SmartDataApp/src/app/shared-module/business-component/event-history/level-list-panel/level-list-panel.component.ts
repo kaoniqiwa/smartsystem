@@ -13,7 +13,7 @@ export class LevelListPanelComponent implements OnInit {
   private showBody = false;
   private nodes = new Array<ListNode>();
   private prevItem = false;
-  private selectedItem = ''
+  selectedItem = ''
   constructor() { }
 
   ngOnInit() {
