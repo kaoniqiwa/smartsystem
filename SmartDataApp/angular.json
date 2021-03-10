@@ -30,7 +30,7 @@
               "src/styles.styl"
             ],
             "scripts": [
-              "src/assets/echarts.min.3x.js"
+             
             ]
           },
           "configurations": {
