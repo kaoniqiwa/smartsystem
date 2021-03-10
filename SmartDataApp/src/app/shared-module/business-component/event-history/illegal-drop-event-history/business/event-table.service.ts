@@ -14,7 +14,7 @@ import { EventRequestService } from "../../../../../data-core/repuest/Illegal-dr
 import { GetDivisionsParams, Division } from "../../../../../data-core/model/waste-regulation/division";
 import { GarbageStationRequestService,CameraRequestService } from "../../../../../data-core/repuest/garbage-station.service";
 import { GetGarbageStationsParams, GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station";
-import { ResourceSRServersRequestService } from "../../../../../data-core/repuest/resources.service";
+import { StationResourceSRServersRequestService } from "../../../../../data-core/repuest/resources.service";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
 import { GetEventRecordsParams, IllegalDropEventRecord } from "../../../../../data-core/model/waste-regulation/illegal-drop-event-record";
 import { ImageEventEnum } from "../../../../gallery-target/gallery-target";
@@ -54,7 +54,7 @@ export class EventTableService extends ListAttribute {
         , private divisionService: DivisionRequestService
         , private garbageStationService: GarbageStationRequestService
        , private resourceService: CameraRequestService
-        , private srService: ResourceSRServersRequestService
+        , private srService: StationResourceSRServersRequestService
        ,private navService:SideNavService
         , private datePipe: DatePipe) {
         super(); 
@@ -118,7 +118,7 @@ export class EventTableService extends ListAttribute {
             if(event==null)event=this.allDataSource.find(x=>x.EventId==id);
             const user = new SessionUser(),
             video = await this.requestVideoUrl(DateInterval(event.EventTime+'',user.video.beforeInterval)
-            , DateInterval(event.EventTime+'',user.video.afterInterval), event.ResourceId);
+            , DateInterval(event.EventTime+'',user.video.afterInterval), event.ResourceId); 
             this.playVideo = new PlayVideo(null, event.ResourceName); 
             this.playVideo.url_ = video.Url;
             this.navService.playVideoBug.emit(true);
