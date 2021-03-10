@@ -7,4 +7,8 @@ export  class ExcelData{
     fieldName:Array<string>;
     chartCatStrRef:string;
     data:any;  
+    dataLen:number;
+    constructor(){
+        this.dataLen = 9;
+    }
 }

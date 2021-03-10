@@ -15,6 +15,7 @@ class HowellExcelV1 {
 		this.dataKey = data.dataKey;
 		this.fields = data.fields;
 		this.fieldName = data.fieldName;
+		this.dataLen = data.dataLen;
 		this.data = data.data;
 		this.readZip = new JSZip();
 	}
@@ -360,7 +361,7 @@ class HowellExcelV1 {
 				return cb(new VError(err, "writeChart"));
 			}
 			var ser = {};
-			var column = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+			var column = ['A', 'B', 'C', 'D', 'E', 'F', 'G','H','I','J'];
 			var i1 = 0;
 			_.each(me.dataKey, function (t, i) {
 				var chart = me.data[t].chart || me.chart;
@@ -397,7 +398,7 @@ class HowellExcelV1 {
 					"c:cat": {
 						"c:strRef": {
 							//	"c:f": "Table!$A$" + (row + 2) + ":$A$" + (me.fields.length + row),
-							"c:f": "Table!$C$" + (row + 1) + ":$C$" + (me.fields.length + row),//Table!$A$2:$A$4
+							"c:f": "Table!$C$" + (row + 1) + ":$C$" + (me.dataLen),//Table!$A$2:$A$4 me.fields.length + row
 							"c:strCache": {
 								"c:ptCount": {
 									$: {
@@ -419,7 +420,7 @@ class HowellExcelV1 {
 						"c:numRef": {
 							//	"c:f": "Table!$" + me.getColName(i + col) + "$" + (row + 2) + ":$" + me.getColName(i + col) + "$" + (me.fields.length + row),
 							//Table!$B$2:$B$4
-							"c:f": "Table!$" + me.getColName(i + col) + "$" + (row + 1) + ":$" + me.getColName(i + col) + "$" + (me.fields.length + row),
+							"c:f": "Table!$" + me.getColName(i + col) + "$" + (row + 1) + ":$" + me.getColName(i + col) + "$" + (me.dataLen),//(me.fields.length + row)
 							"c:numCache": {
 								"c:formatCode": "General",
 								"c:ptCount": {
