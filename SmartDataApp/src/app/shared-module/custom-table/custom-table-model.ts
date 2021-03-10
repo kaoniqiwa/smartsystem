@@ -76,6 +76,8 @@ export class CustomTableArgs<T extends IBusinessData> implements IViewModel {
         this.iconTextTagAttr = options.iconTextTagAttr;
         this.iconTd = options.iconTd;
         this.galleryTd=options.galleryTd;
+       
+        
     }
 }
 
@@ -96,7 +98,13 @@ export class TableAttr implements IViewModel {
     isHoverBig: boolean;
     //是否html
     isHTML: boolean;
-
+    //图标css class 及文本
+    iocnClassLabel:boolean;
+    //排序
+    orderBy:{
+        asOrderBy:OrderByEnum,
+        id:string
+    };
     constructor(options: {
         HeadTitleName?: string,
         tdWidth?: string,
@@ -105,16 +113,23 @@ export class TableAttr implements IViewModel {
         isImg?: boolean,
         isSmallImg?: boolean,
         isHoverBig?: boolean,
-        isHTML?: boolean
+        isHTML?: boolean,
+        iocnClassLabel?:boolean,
+        orderBy?:{
+            asOrderBy:OrderByEnum,
+            id:string
+        }
     } = {}) {
         this.HeadTitleName = options.HeadTitleName || '';
         this.tdWidth = options.tdWidth || '';
         this.tdInnerAttrName = options.tdInnerAttrName || '';
         this.tdInnerAttrClassName = options.tdInnerAttrClassName || '';
+        this.iocnClassLabel=options.iocnClassLabel|| false;
         this.isImg = options.isImg || false;
         this.isSmallImg = options.isSmallImg || false;
         this.isHoverBig = options.isHoverBig || false;
         this.isHTML = options.isHTML || false;
+        this.orderBy=options.orderBy||null;
     }
 }
 
@@ -192,4 +207,9 @@ export class FootArgs implements IViewModel {
         this.totalRecordCount = options.totalRecordCount || 0;
         this.pageCount = options.pageCount || 1;
     }
+}
+
+export enum OrderByEnum{
+    up,
+    down
 }

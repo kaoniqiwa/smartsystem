@@ -18,6 +18,10 @@ export class CustomTableEvent implements IViewEvent {
 
 export enum CustomTableEventEnum {
     /**
+     * 列排序
+     */
+    asOrder= 'asOrder',
+    /**
      * 滚动底部触发
      */
     ScrollDown = 'ScrollDown',

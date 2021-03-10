@@ -1,14 +1,15 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { CustomTableArgs } from './custom-table-model';
 import { CustomTableEvent, CustomTableEventEnum } from "./custom-table-event";
-import { IBusinessData } from '../../common/interface/IBusiness'; 
+import { IBusinessData } from '../../common/interface/IBusiness';
 import { ColorEnum } from '../card-component/card-content-factory';
+import { TableAttr,OrderByEnum } from "./custom-table-model";
 @Component({
   selector: 'hw-custom-table',
   templateUrl: './custom-table.component.html',
   styleUrls: ['./custom-table.component.styl'],
 })
-export class CustomTableComponent implements OnInit{
+export class CustomTableComponent implements OnInit {
 
   // @ViewChild('customTable', { read: InfiniteScrollDirective })
   // scrollBar: InfiniteScrollDirective;
@@ -32,13 +33,18 @@ export class CustomTableComponent implements OnInit{
 
   }
 
+  tdIconClassLabel(val: string) {
+    const item: { tdVal: string, iconClass: string, label: string } = JSON.parse(val);
+    return item;
+  }
+
   iconTdAttr(id: string) {
     const item = this.model.iconTd.find(x => x.key == id);
     return item.icons;
   }
 
   galleryTdAttr(id: string) {
-    const item = this.model.galleryTd.find(x => x.key == id); 
+    const item = this.model.galleryTd.find(x => x.key == id);
     return item.imgSrc;
   }
 
@@ -146,7 +152,7 @@ export class CustomTableComponent implements OnInit{
   changePage() {
     this.selectCancel();
   }
-  
+
 
   fontColor(text: string) {
     var className = '';
@@ -176,12 +182,24 @@ export class CustomTableComponent implements OnInit{
     }
   }
 
-  galleryImgClick(item:any,index:number){
+  /**
+   * 排序头事件
+   * @param th 
+   */
+  thOrderClick(th: TableAttr) {
+    if (th.orderBy) { 
+      th.orderBy.asOrderBy = th.orderBy.asOrderBy ==OrderByEnum.up ?OrderByEnum.down:OrderByEnum.up;
+      this.model.eventDelegate(new CustomTableEvent(CustomTableEventEnum.asOrder,th.orderBy));
+    }
+
+  }
+
+  galleryImgClick(item: any, index: number) {
     if (this.model.isDisplayDetailImg) {
       event.stopPropagation();
       this.model.eventDelegate(new CustomTableEvent(CustomTableEventEnum.Img, {
-        item:item,
-        index:index
+        item: item,
+        index: index
       }));
     }
   }

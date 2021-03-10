@@ -5,8 +5,13 @@
         <thead>
           <tr>            
             <th class="title-name" *ngIf="model.galleryTd" style="width: 30%;">图片</th> 
-            <th class="title-name" *ngFor="let th of model.tableAttrs" [ngStyle]="{'width':th.tdWidth}">
-              {{th.HeadTitleName}}</th>
+            <th class="title-name" (click)="thOrderClick(th)" *ngFor="let th of model.tableAttrs" [ngStyle]="{'width':th.tdWidth}">
+              {{th.HeadTitleName}}
+              <ng-container *ngIf="th.orderBy">                
+                <i [class.howell-icon-arrow-down]="th.orderBy.asOrderBy==1"
+                [class.howell-icon-arrow-top]="th.orderBy.asOrderBy==0"></i>               
+              </ng-container>
+            </th>
             <th class="ico-btn title-name" [ngStyle]="{'width':model.iconTextTh.width}" *ngIf="model.iconTextTh">
               {{model.iconTextTh.name}}
             </th>
@@ -35,12 +40,23 @@
                 </ng-container>
               </td>
             </ng-container>
-            <td *ngFor="let attrs of model.tableAttrs" [ngStyle]="{'width':attrs.tdWidth}">
-
-              <span title="{{item[attrs.tdInnerAttrName]}}"
+            <td *ngFor="let attrs of model.tableAttrs" [ngStyle]="{'width':attrs.tdWidth}">       
+              <ng-container *ngIf="!attrs.iocnClassLabel">
+                <span title="{{item[attrs.tdInnerAttrName]}}"
                 class="{{attrs.tdInnerAttrClassName&&item[attrs.tdInnerAttrClassName]?item[attrs.tdInnerAttrClassName]:''}}"
                 *ngIf="!attrs.isImg&&!attrs.isHTML"
                 class="{{fontColor(item[attrs.tdInnerAttrName])}}">{{item[attrs.tdInnerAttrName]}}</span>
+              </ng-container>
+              <ng-container *ngIf="attrs.iocnClassLabel">
+                <span>
+                  <label class="m-0" style="width: 110px;">{{tdIconClassLabel(item[attrs.tdInnerAttrName]).tdVal}}</label>    
+                  <ng-container *ngIf="tdIconClassLabel(item[attrs.tdInnerAttrName]).tdVal!='0'">
+                    <label class="sky-blue-text2 m-0" style="text-align: right;font-size: 16px;">
+                      <i class="{{tdIconClassLabel(item[attrs.tdInnerAttrName]).iconClass}}"></i>{{tdIconClassLabel(item[attrs.tdInnerAttrName]).label}}
+                    </label>
+                  </ng-container>      
+                </span>
+              </ng-container>
               <img src="{{item[attrs.tdInnerAttrName]}}" onerror="this.src='../assets/img/timg-pic.jpg'"
                 (click)="imgClick(item)" *ngIf="attrs.isImg" [class.small]="attrs.isSmallImg"
                 [class.hover-big]="attrs.isHoverBig">
