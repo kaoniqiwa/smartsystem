@@ -1,14 +1,14 @@
-import { Component, OnInit,Input } from '@angular/core'; 
-import {  BusinessService} from "./business/garbage-station-table";
- 
+import { Component, OnInit,Input ,Output,EventEmitter} from '@angular/core'; 
+import {  BusinessService} from "./business/garbage-station-table"; 
 @Component({
   selector: 'hw-garbage-station',
   templateUrl: './garbage-station.component.html',
   providers: [BusinessService]
 })
 export class GarbageStationComponent implements OnInit {
-
+  @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
   @Input() divisionsId = '';
+  otherView = OtherViewEnum;
   searchFn =async (val: string) => {
     this.businessService.search.searchText=val;
     this.businessService.search.state = true;
@@ -38,5 +38,16 @@ export class GarbageStationComponent implements OnInit {
       });
     });   
   }
+  changeOtherView(val: OtherViewEnum) {
+    setTimeout(() => {
+      this.OtherViewEvent.emit(val);
+    },240);
+  }
+}
 
+export enum OtherViewEnum {
+  chart,
+  info,
+  sumChart,
+  analyzeChart
 }
