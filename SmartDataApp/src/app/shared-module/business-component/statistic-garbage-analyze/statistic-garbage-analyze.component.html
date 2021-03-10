@@ -1,0 +1,99 @@
+<div style="height: calc(100% - 64px);position: relative;">
+  <div fxLayout="row">
+    <div class="fill-height">
+      <div class="second-title-bg pull-left text">
+        投放点
+      </div>
+      <ul class="hw-ul pull-left m-t-10">
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.info)">
+            <div class="second-menu-btn  text">
+              &nbsp;&nbsp;列表
+            </div>
+          </a></li>
+          <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.chart)">
+            <div class="second-menu-btn text">
+              &nbsp; &nbsp;小包垃圾处置
+            </div>
+          </a></li>
+          <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.sumChart)">
+            <div class="second-menu-btn  text">
+              &nbsp;总图表
+            </div>
+          </a></li>
+          <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.analyzeChart)">
+            <div class="second-menu-btn selected text">
+              &nbsp;细分图表
+            </div>
+          </a></li>
+      </ul> 
+
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between stretch" [formGroup]="businessService.search.searchform"
+    class="filter-wrap m-b-10 collapse">
+    <div fxFlex="80">
+      <div fxFlex="35" class="m-r-10">
+        <span>选择时间</span>
+        <input type="text" DateTimePicker #dtp [format]="'yyyy年mm月dd日'" [startView]="businessService.datePicker.startView"
+          [minView]="businessService.datePicker.minView" [defaultVal]="businessService.search.beginDate"
+          [changeDate]="startDate" style="width: calc(100% - 82px);" class="custom form-control m-l-10">
+      </div> 
+      <div fxFlex="25" class="m-r-10">
+        <span class="input-text" style="position: relative;top:2px">对象类别</span>
+        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 82px);" 
+          formControlName="ClassType" (change)="changeClassType()">
+          <option value="garbageRatio">评分</option> 
+          <option value="avgGarbageTime">平均落地时长</option> 
+          <option value="maxGarbageTime">最大落地时长</option> 
+          <option value="garbageDuration">总落地时长</option> 
+          <option value="illegalDrop">乱扔垃圾</option> 
+          <option value="mixedInto">混合投放</option>  
+        </select>
+      </div>
+      <div fxFlex="30" class="m-r-10">
+        <span class="input-text" style="position: relative;top:2px">投放点</span>
+        <div class="pull-right" style="width: calc(100% - 60px);">
+           <hw-tree-drop-list></hw-tree-drop-list>
+        </div>
+      </div>
+      <div fxFlex="20">
+        <button type="button" class="hw-blue-btn m-r-10 " (click)="search()">
+          <i class="mdi mdi-magnify"></i>
+          查询
+        </button> 
+        <button type="button" class="hw-blue-btn m-r-10 " (click)="exportExcel()">
+          <i class="howell-icon-export"></i>
+          导出
+        </button>
+      </div>
+    </div> 
+    <div fxFlex="20" class="text-right"  [formGroup]="businessService.search.searchform">
+      
+      <select class="form-control custom custom-select m-l-10" style="width: 100px;"
+      formControlName="TimeUnit" (change)="changeTimeType()">      
+        <option value="week">周报表</option> 
+        <option value="month">月报表</option>
+      </select>
+      <select class="form-control custom custom-select m-l-10"  (change)="businessService.changeChartType()"
+      style="width: 100px;" formControlName="ChartType">
+       <option value="line">折线图</option>
+       <option value="bar">柱状图</option>
+     </select>
+    </div>
+  </div> 
+  <div style="height: calc(100% - 60px);position: relative;">
+   
+    <div class="fill-width fill-height" [class.chart-hide]="!businessService.lineChartView" 
+    style="position: absolute;">
+      <ng-container *ngIf="businessService.lineChartOption">
+        <div class="height98 fill-width" [options]="businessService.lineChartOption" EChartLine></div>
+      </ng-container>
+    </div>
+    <div class="fill-width fill-height"  [class.chart-hide]="!businessService.barChartView" 
+    style="position: absolute;">
+      <ng-container *ngIf="businessService.barChartOption">
+        <div class="height98 fill-width" [options]="businessService.barChartOption" EChartBar></div>
+      </ng-container>
+    </div>
+  </div>
+</div>
