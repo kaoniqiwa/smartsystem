@@ -68,7 +68,7 @@ export class DateTimePickerDirective implements AfterContentInit {
           var tbody = dayDom.find('tbody'),
             trs = tbody.find('tr'),
             d = this.datePipe.transform(ev.date, 'dd');
-          d = parseInt(d) + '';console.log(d);
+          d = parseInt(d) + '';//console.log(d);
           
           $(trs).each(function (index: number, element: any) {
             var tds = $(element).children();

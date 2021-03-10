@@ -26,24 +26,37 @@ export class EChartCandlestickDirective implements OnChanges, OnInit {
             this.init();
     }
 
-    init() {
-
-        const options = {
+    init() { 
+        const options1 = {
             animation: false,
+
             tooltip: {
                 trigger: 'axis',
                 formatter: '{b}',
-                axisPointer :{
-                    lineStyle :{
-                        color:'#5e6ebf',
-                          width:1.2
+                axisPointer: {
+                    lineStyle: {
+                        color: '#5e6ebf',
+                        width: 1.2
                     }
-               }
-            },
+                }
+            }, 
+            visualMap: {
+                show: false,
 
+                pieces: [{
+                    gt: 0.005,
+                    lte: 1,
+                    color: '#CD661D'
+                }, {
+                    gte: 0,
+                    lte: 0.005,
+                    color: '#28ce38'
+                }],
+                seriesIndex: 0,
+            },
             grid: [
                 {
-                    top:20,
+                    top: 20,
                     left: '40px',
                     right: '60px',
                     height: '60%',
@@ -61,29 +74,25 @@ export class EChartCandlestickDirective implements OnChanges, OnInit {
                     data: this.options.xAxisLine,
                     scale: true,
                     boundaryGap: false,
-                    axisLine: { onZero: false,
-                        lineStyle:{
-                            color:'#7d90bc'
-                        } },
+                    axisLine: {
+                        onZero: false,
+                        lineStyle: {
+                            color: '#7d90bc'
+                        }
+                    },
                     splitLine: {
                         lineStyle: {
                             color: 'rgb(117,134,224,0.3)'
                         }
                     },
-                    // splitNumber: 20,
-                    // minInterval: 2,
                     min: 'dataMin',
                     max: 'dataMax',
                     axisLabel: {
                         color: '#CFD7FE',
                         fontSize: "16",
-                        // interval: function (index: number, value: string) {                            
-                        //    return value.indexOf(':00')>0|| value.indexOf(':20')>0
-                        //    ||value.indexOf(':40')>0;                           
-                        // }
                     },
                     axisTick: {        //刻度线
-                        show: false,
+
                         lineStyle: {
                             color: 'rgb(117,134,224,0.3)'
                         }
@@ -93,30 +102,23 @@ export class EChartCandlestickDirective implements OnChanges, OnInit {
                     type: 'category',
                     gridIndex: 1,
                     data: this.options.xAxisBar,
-                    // axisPointer: {
-                    //     show: false
-                    // },
+                    scale: true,
+                    boundaryGap: false,
+                    axisLine: { show: false, onZero: false },
+                    axisTick: { show: false },
+                    splitLine: { show: false },
                     axisPointer: {
                         show: true,
-                        type:'none',
-                        label:{
-                          //  show:true,
-                            formatter:(param:{value:number,seriesData:Array<{name:string}> })=>{ 
-                            
-                               if(param&&param.seriesData.length&&param.value==1) 
-                                   {console.log( param);
-                                    return param.seriesData[0].name;
-                                    
-                                   }
-                                else return '';
-                            }
-                        }
+                        type: 'none',
+
                     },
+
+                    min: 'dataMin',
+                    max: 'dataMax',
+
                     axisLabel: {
                         show: false
                     },
-                    axisLine: { show: false },
-                    axisTick: { show: false },
                 }
             ],
             yAxis: [
@@ -128,22 +130,18 @@ export class EChartCandlestickDirective implements OnChanges, OnInit {
                     axisTick: {        //刻度线
                         show: false
                     },
-                    
-                    axisLine: { 
+
+                    axisLine: {
                         show: false,
                         onZero: false,//y轴
-                        lineStyle:{
-                            color:'#7d90bc'
-                        } },
+                        lineStyle: {
+                            color: '#7d90bc'
+                        }
+                    },
                     axisLabel: {
                         color: '#CFD7FE',
                         fontSize: "16",
                         show: false,
-                        // formatter: function (value: number) {
-                        //     if (value > 0 && value < 1)
-                        //         return '';
-                        //     else return value;
-                        // }
                     },
                     splitLine: {
                         lineStyle: {
@@ -163,20 +161,6 @@ export class EChartCandlestickDirective implements OnChanges, OnInit {
                     }
                 }
             ],
-            visualMap: {
-                show: false,
-                
-                pieces: [{
-                    gt:0.005,
-                    lte:1,
-                    color: '#CD661D'
-                }, {
-                    gte:0,
-                    lte:0.005,
-                    color: '#28ce38'
-                }],
-                seriesIndex: 0,
-            },
             dataZoom: [
                 {
                     type: 'inside',
@@ -199,102 +183,65 @@ export class EChartCandlestickDirective implements OnChanges, OnInit {
                     }
                 }
             ],
-            series: [
-                {
+            series: [{
                     name: 'theLine',
                     type: 'line',
-                    data:  this.options.lineData,
-                    symbolSize: 8, 
-                //    showSymbol: false,
-                    step: 'end', 
-                },{
+                    data: this.options.lineData, 
+                    step: 'end',
+                    symbolSize: 8,
+                }, {
                     name: 'theLineB',
                     type: 'line',
-                   // showSymbol: false,
                     data: this.options.lineDataB,
-                    symbolSize: 8, 
-                    itemStyle :{
-                        color:'gray'
+                    symbolSize: 8,
+                    itemStyle: {
+                        color: 'gray'
                     }
                 },
                 {
                     name: 'theBar',
                     type: 'bar',
-                    animation: false,
-                    xAxisIndex: 1,
-                    yAxisIndex: 1, 
-                    // barWidth: 10,
-                    data: this.options.barData,
-                },
-                {
-                    name: 'theBarA',
-                   type: 'bar', 
-                    // barWidth: 10,              
-                    selectedMode: true,
-                    animation: false,
                     xAxisIndex: 1,
                     yAxisIndex: 1,
-                    data: this.options.barDataB,
-                    // emphasis:{
-                    //     focus: 'series',
-                    //     label :{
-                    //         show: true,
-                    //         rich : {
-                    //             value: {
-                    //                 lineHeight: 30,
-                    //                 align: 'center'
-                    //             },
-                    //             Sunny: {
-                    //                 width: 12,
-                    //                 height: 22,
-                    //                 align: 'center',
-                    //                 backgroundColor: {
-                    //                     image: '/assets/img/arrow-tag.png',               
-                    //                 },
-                    //             }
-                    //         }
-                    //     }
-                    // },             
+                    data: this.options.barData
                 }
             ]
         }
 
-
         this.zone.runOutsideAngular(() => {
             this.echarts_ = echarts.init(this.e.nativeElement);
+            this.echarts_.setOption(options1, true);
 
-        //    console.log(JSON.stringify(this.options.xAxisLine.slice(0,20)));
-        //    console.log(JSON.stringify(this.options.visualMapPieces.slice(0,20)));
-        //    console.log(JSON.stringify(this.options.lineDataB.slice(0,100)));
-            this.echarts_.setOption(options, true);
-
-            this.echarts_.on('click', 'series.bar',   (obj:any) =>{    
-                window.event.cancelBubble=true;
-               this.options.itemClick(obj); 
+            this.echarts_.on('click', 'series.bar', (obj: any) => {
+                window.event.cancelBubble = true;
+                this.options.itemClick(obj);
             });
-            this.echarts_.on('click', 'series.line',   (obj:any) =>{     
-                window.event.cancelBubble=true;
-               this.options.itemClick(obj); 
+            this.echarts_.on('click', 'series.line', (obj: any) => {
+                window.event.cancelBubble = true;
+                this.options.itemClick(obj);
             });
             this.echarts_.getZr().on('dblclick', (obj: any) => {
                 window.event.cancelBubble = true;
 
                 const pointInPixel = [obj.offsetX, obj.offsetY]
-                , pointInGrid = this.echarts_.convertFromPixel({ seriesIndex: 0 }, pointInPixel)
-                // x轴数据的索引值
-                , xIndex = pointInGrid[0];
+                    , pointInGrid = this.echarts_.convertFromPixel({ seriesIndex: 0 }, pointInPixel)
+                    // x轴数据的索引值
+                    , xIndex = pointInGrid[0];
                 // 使用getOption() 获取图表的option
                 //, op = this.echarts_.getOption();
 
                 // 获取当前点击位置要的数据
                 //var xData = op.series[0].data[xIndex];  
- 
-                if(pointInGrid[1]>0)
-                this.options.dbitemClick(this.options.xAxisLine[xIndex]); 
+
+                if (pointInGrid[1] > 0)
+                    this.options.dbitemClick(this.options.xAxisLine[xIndex]);
             });
 
-            this.echarts_.on('dataZoom',()=>{
-                this.options.dataZoomClick();
+            this.echarts_.on('dataZoom', (param: any) => {
+                //  console.log(param);
+
+                this.options.dataZoomClick(param);
+
             });
         });
     }

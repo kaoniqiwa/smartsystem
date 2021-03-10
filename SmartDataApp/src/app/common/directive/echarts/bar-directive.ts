@@ -43,14 +43,11 @@ export class EChartBarDirective implements OnChanges {
                     type: 'bar',
                     barMinHeight:10, 
                     barWidth: options.barWidth,
-                    label: {
-                        show: true,
-                        position: 'top'
-                    },
+                    label: options.label,
                     itemStyle: {
                         normal: {
                             label: {
-                                show: true,
+                                show: options.label.show,
                                 formatter: function (obj:any) {
                                     let display = checkDataIndex(obj.dataIndex,options.displayDataIndex);
                                     if (!display)
@@ -128,23 +125,21 @@ export class EChartBarDirective implements OnChanges {
                             show: false,
                             lineStyle: {
                                 color: 'rgb(117,134,224,0.5)'
-                            }
+                            },
+                            alignWithLabel:true
                         },
+                        axisLine: { onZero: false,//y轴
+                            lineStyle:{
+                                color:'#7d90bc'
+                            } }
                     }
                 ],
                 yAxis: [
                     {
                         type: 'value',
-                        axisTick: {        //刻度线
-                            show: false
-                        },
-                        axisLine: {       //y轴
-                            show: false
-                        },
-                        axisLabel: {
-                            color: '#d8f4ff',
-                            show: false,
-                        },
+                        axisTick: options.axisTick  ,//刻度线    
+                        axisLabel: options.axisLabel,
+                        axisLine:options.axisLine,
                         splitLine: {
                             lineStyle: {
                                 color: 'rgb(117,134,224,0.3)'

@@ -84,7 +84,7 @@ export class EChartLineDirective implements OnChanges {
                         type: 'line',
                         label: {
                             normal: {
-                                show: true,
+                                show: options.label.show,
                                 position: 'top',
                                 textStyle: {
                                     fontSize: "16",
@@ -173,19 +173,18 @@ export class EChartLineDirective implements OnChanges {
                             color: 'rgb(117,134,224,0.3)'
                         }
                     },
+                    axisLine: { onZero: false,//y轴
+                        lineStyle:{
+                            color:'#7d90bc'
+                        } }
                 },
                 yAxis: {
                     type: 'value',
-                    axisTick: {        //刻度线
-                        show: false
+                    axisTick:  {        //刻度线
+                        show: options.axisTick.show
                     },
-                    axisLine: {       //y轴
-                        show: false
-                    },
-                    axisLabel: {
-                        color: '#d8f4ff',
-                        show: false,
-                    },
+                    axisLine: options.axisLine,//y轴
+                    axisLabel: options.axisLabel,
                     splitLine: {
                         lineStyle: {
                             color: 'rgb(117,134,224,0.3)'
