@@ -61,8 +61,13 @@ import { IllegalDropEventSummaryComponent } from './business-component/event-his
 import { IllegalDropEventAnalyzeV2Component } from './business-component/event-history/illegal-drop-event-analyze-v2/illegal-drop-event-analyze-v2.component';
 import { VsClassStatisticComponent } from './business-component/vs-class-statistic/vs-class-statistic.component';
 import { TreeDropListV2Component } from './business-component/vs-class-statistic/tree-drop-list-v2/tree-drop-list-v2.component';
-// import { GarbageFullHistoryComponent } from './business-component/event-history/garbage-full-history/garbage-full-history.component';
-// import { StatisticGarbageCountComponent } from './business-component/event-history/statistic-garbage-count/statistic-garbage-count.component';
+import { GarbageFullHistoryComponent } from  './business-component/event-history/garbage-full-history/garbage-full-history.component'
+import { StatisticGarbageCountComponent } from './business-component/statistic-garbage-count/statistic-garbage-count.component';
+import { SelectOptionComponent } from './select-option/select-option.component';
+import { GarbageStationSummaryComponent } from './business-component/garbage-station-summary/garbage-station-summary.component';
+import { FullGarbageStationSummaryComponent } from './business-component/full-garbage-station-summary/full-garbage-station-summary.component';
+import { GarbageFullHistorySumChartComponent } from './business-component/event-history/garbage-full-history-sum-chart/garbage-full-history-sum-chart.component';
+import { StatisticGarbageAnalyzeComponent } from './business-component/statistic-garbage-analyze/statistic-garbage-analyze.component';
 
 @NgModule({
   imports: [
@@ -88,7 +93,8 @@ import { TreeDropListV2Component } from './business-component/vs-class-statistic
 ,UserToolComponent
 , LevelListPanelComponent, MixedIntoEventHistoryComponent, FullGarbageStationComponent, GarbageStationComponent, GarbageStationCamerasComponent, GalleryRollPageComponent, IllegalDropEventSummaryComponent, IllegalDropEventAnalyzeV2Component
 , VsClassStatisticComponent, TreeDropListV2Component
-//, GarbageFullHistoryComponent, StatisticGarbageCountComponent
+, GarbageFullHistoryComponent
+, StatisticGarbageCountComponent, SelectOptionComponent, GarbageStationSummaryComponent, FullGarbageStationSummaryComponent, GarbageFullHistorySumChartComponent, StatisticGarbageAnalyzeComponent
 ],
   exports: [
     MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -108,7 +114,9 @@ import { TreeDropListV2Component } from './business-component/vs-class-statistic
     ,GalleryTargetComponent,ImageDescCardComponent,IllegalDropEventSummaryComponent,IllegalDropEventAnalyzeV2Component,IllegalDropEventHistoryComponent,TreeDropListComponent,IllegalDropEventAnalyzeComponent,IllegalDropEventChartComponent,IllegalDropEventCardListComponent
     ,MixedIntoEventHistoryComponent,FullGarbageStationComponent,GarbageStationComponent,GarbageStationCamerasComponent,VsClassStatisticComponent
     ,UserToolComponent,LevelListPanelComponent
-    //,GarbageFullHistoryComponent,StatisticGarbageCountComponent
+    ,GarbageFullHistoryComponent
+    ,StatisticGarbageCountComponent,GarbageStationSummaryComponent,FullGarbageStationSummaryComponent,GarbageFullHistorySumChartComponent
+    ,StatisticGarbageAnalyzeComponent
   ],
   providers: [DatePipe,
    ],
