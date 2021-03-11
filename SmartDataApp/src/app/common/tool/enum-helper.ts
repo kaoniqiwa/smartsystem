@@ -43,6 +43,7 @@ export enum EventTypeEnum {
 export enum DivisionTypeEnum {
     None,
     Province,
+    /**区 */
     City,
     /**县、街道 */
     County,
