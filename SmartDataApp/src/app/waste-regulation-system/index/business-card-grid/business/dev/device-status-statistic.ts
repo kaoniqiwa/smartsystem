@@ -10,10 +10,10 @@ export class DeviceStatusStatistic   extends BaseBusinessRefresh {
     }
 
     async getData() {
-        const divisionsId = this.businessParameter.map.get('divisionsId');
+        const divisionId = this.businessParameter.map.get('divisionId');
         let model = new DeviceStatus();
        
-        let data = await (this.dataServe as StatisticalDataBufferService).getDivisionStatisticNumber(divisionsId); 
+        let data = await (this.dataServe as StatisticalDataBufferService).getDivisionStatisticNumber(divisionId); 
         model.cameraNumber=data.CameraNumber||0;
         model.offlineCameraNumber=data.OfflineCameraNumber||0;
         return model;

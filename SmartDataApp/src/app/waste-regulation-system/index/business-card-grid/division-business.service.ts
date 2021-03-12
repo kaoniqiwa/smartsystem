@@ -2,12 +2,16 @@ import { Injectable, EventEmitter } from "@angular/core";
 import { ViewsModel } from "../../../common/abstract/base-view";
 import { BusinessParameter } from "../../../common/interface/IBusiness";
 import { BaseBusinessRefresh } from "../../../common/tool/base-business-refresh";
-import { DivisionTypeEnum, EnumHelper } from "../../../common/tool/enum-helper";
+import { EventDropHistory  } from "./business/event-drop-history/event-drop-history";
+import { EventDropOrder } from "./business/event-drop-order/event-drop-order";
+import { StationDisposeScore } from "./business/station-dispose-score/station-dispose-score";
+import { DivisionTypeEnum, EnumHelper,EventTypeEnum } from "../../../common/tool/enum-helper";
 import { MessageBar } from "../../../common/tool/message-bar";
 import { HeaderSquareListComponent } from "../../../shared-module/header-square-list/header-square-list.component";
 import { BusinessViewComponetConstructor } from "./business-card-slot.service";
 import { AMapComponent } from "../amap/amap.component";
 import { CameraRequestService } from "../../../data-core/repuest/resources.service";
+import { OrderTableCardComponent } from "../../../shared-module/card-component/order-table-card/order-table-card.component";
 import { StateScaleCardComponent } from "../../../shared-module/card-component/state-scale-card/state-scale-card.component";
 import { ImageThemeCardComponent } from "../../../shared-module/card-component/image-theme-card/image-theme-card.component";
 import { GalleryRollPageComponent } from "../../../shared-module/card-component/gallery-roll-page/gallery-roll-page.component";
@@ -32,7 +36,7 @@ import { BusinessEventTypeEnum } from '../../../shared-module/business-component
 })
 export class DivisionBusinessService {
     componets = new Array<BusinessViewComponetConstructor>();
-    committesIds: string[];
+    childrenDivisionIds: string[];
     aMap: AMapComponent;
     /**区划 */
     illegalDropMode: FillMode;
@@ -70,10 +74,11 @@ export class DivisionBusinessService {
 
                 if (x.list[0].view instanceof HeaderSquareListComponent) {
                     x.list[0].view.btnControl = (val: { id: string, type: DivisionTypeEnum }) => {
-                        const param = new BusinessParameter();
-                        param.map.set('divisionsId', val.id);
-                        param.map.set('divisionsType', val.type);
-                        param.map.set('divisionsIds', this.committesIds);
+                        const param = new BusinessParameter()
+                        ,eventTypes = [EventTypeEnum.IllegalDrop,EventTypeEnum.MixedInto,EventTypeEnum.IllegalDrop,EventTypeEnum.MixedInto];
+                        param.map.set('divisionId', val.id);
+                        param.map.set('divisionType', val.type);
+                        param.map.set('divisionsIds', this.childrenDivisionIds);
                         this.nspectionParam(val.id);
                         this.divisionsId = val.id;
                         if(this.aMap)
@@ -83,7 +88,16 @@ export class DivisionBusinessService {
                         for (const x of this.componets) {
                             if (x.list[0].view instanceof HeaderSquareListComponent) { }
                             else {
-                                if (x.list[0].business instanceof BaseBusinessRefresh) {
+                                if (x.list[0].business instanceof BaseBusinessRefresh) {   console.log(x.list[0].business );
+                                
+                                    /**小包处置跳过 */         
+                                    if(x.list[0].business instanceof StationDisposeScore)continue;
+                                    /**加上事件 类别 */
+                                    if(x.list[0].business instanceof EventDropHistory
+                                    ||x.list[0].business instanceof  EventDropOrder)                                  
+                                    param.map.set('eventType',eventTypes.shift());
+                                  
+
                                     x.list[0].business.businessParameter = param;
                                     x.list[0].view.loadDatas(new ViewsModel());
                                 }
@@ -97,30 +111,30 @@ export class DivisionBusinessService {
                         }
                     }
                 }
-                if (x.list[0].view instanceof ImageThemeCardComponent) {
+                else if (x.list[0].view instanceof ImageThemeCardComponent) {
                     x.list[0].view.btnControl = async (val: { timeInterval: { start: Date, end: Date }, cameraId: string }) => {
                         const respone = await this.cameraService.get(val.cameraId).toPromise();
 
                         this.aMap.Playback(respone.Data as any, val.timeInterval.start, val.timeInterval.end);
                     }
                 }
-                if (x.list[0].view instanceof HintCardComponent) {
+                else  if (x.list[0].view instanceof HintCardComponent) {
 
                     x.list[0].view.btnControl = (tag) => {
                         if (x.list[0].business instanceof BaseBusinessRefresh) {
                             if (tag == HintTag.IllegalDrop) {
                                 this.illegalDropMode = new FillMode();
-                                this.illegalDropMode.divisionId = x.list[0].business.businessParameter.map.get("divisionsId");
+                                this.illegalDropMode.divisionId = x.list[0].business.businessParameter.map.get("divisionId");
 
                             }
                             else if (tag == HintTag.MixedInto) {
                                 this.mixedIntoMode = new FillMode();
-                                this.mixedIntoMode.divisionId = x.list[0].business.businessParameter.map.get("divisionsId");
+                                this.mixedIntoMode.divisionId = x.list[0].business.businessParameter.map.get("divisionId");
                             }
                             else if (tag == HintTag.FullStation) {
                                 this.fullStationsView = true;
                                 this.fullGarbageStationIntoMode = new FillMode();
-                                this.fullGarbageStationIntoMode.divisionId = x.list[0].business.businessParameter.map.get("divisionsId");
+                                this.fullGarbageStationIntoMode.divisionId = x.list[0].business.businessParameter.map.get("divisionId");
                             }
                             else if (tag == HintTag.GarbageStation)
                                 this.stationListView = true;
@@ -129,12 +143,36 @@ export class DivisionBusinessService {
 
                     }
                 }
-                if (x.list[0].view instanceof StateScaleCardComponent) {
+                else  if (x.list[0].view instanceof StateScaleCardComponent) {
                     x.list[0].view.btnControl = (item: { tag: CameraStateTableEnum }) => {
                         this.stationCameraStateTable = item.tag;
                         this.stationCameraView = true;
-                        this.eventHistoryView = true;
-
+                        this.eventHistoryView = true; 
+                    }
+                }
+                else if(x.list[0].view instanceof  OrderTableCardComponent){
+                    /** 列表切换功能 */
+                    x.list[0].view.btnControl = (item:{id:string,eventType:EventTypeEnum}) => { 
+                        const param = new BusinessParameter(),stationKey='station';
+                        param.map.set('divisionId', this.divisionsId);
+                        param.map.set('divisionType', (item.id==stationKey?null:item.id));   
+                        param.map.set('eventType', item.eventType);                
+                        param.map.set('dropList', item.id);   
+                        if(item.id!=stationKey)
+                            param.map.set('divisionsIds', this.childrenDivisionIds);
+                        for (const x of this.componets) {
+                            if (x.list[0].view instanceof OrderTableCardComponent) { 
+                           
+                               if(x.list[0].view.model.dropList
+                                &&x.list[0].view.model.dropList.eventType==item.eventType){
+                                    if (x.list[0].business instanceof BaseBusinessRefresh) { 
+                                       
+                                        x.list[0].business.businessParameter = param;
+                                        x.list[0].view.loadDatas(new ViewsModel());
+                                    }
+                               }                               
+                            } 
+                        }
                     }
                 }
             }

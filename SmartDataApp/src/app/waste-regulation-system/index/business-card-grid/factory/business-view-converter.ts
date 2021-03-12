@@ -2,11 +2,12 @@
  * Developer 施文斌
  * LastUpdateTime 
  */
-import { IllegalDropEvent } from '../business/illegal-drop-history/data';
+import { DropEvent } from "../business/event-drop-history/data";
+import { StationsScoreInfo } from "../business/station-dispose-score/data";
 import { DeviceStatus } from "../business/dev/data";
 import { IllegalDropEventInfos } from "../business/illegal-drop-event/data";
 import { Divisions } from "../business/division/data";
-import { IllegalDropOrderInfo } from "../business/illegal-drop-order/data";
+import { EventDropOrderInfo } from "../business/event-drop-order/data";
 import { Specification } from "../business/division-garbage-specification/data";
 import { GarbageStationInspection } from "../business/inspection/data";
 import { LineECharts } from '../../../../shared-module/card-component/line-echarts-card/line-echarts';
@@ -20,8 +21,8 @@ import { ViewsModel } from '../../../../common/abstract/base-view';
 import { IConverter } from "../../../../common/interface/IConverter";
 import { Injector, Injectable } from '@angular/core';
 import { LineOption } from '../../../../common/directive/echarts/echart';
-import { Percentage, TimeInterval, DateInterval } from '../../../../common/tool/tool.service'
-import { DivisionTypeEnum, EnumHelper, StationStateEnum } from "../../../../common/tool/enum-helper";
+import { Percentage, TimeInterval, DateInterval, IntegerDecimalNum } from '../../../../common/tool/tool.service'
+import { DivisionTypeEnum, EnumHelper, EventTypeEnum } from "../../../../common/tool/enum-helper";
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
 import { EventNumber } from '../../../../data-core/model/waste-regulation/event-number';
 import { ColorEnum } from '../../../../shared-module/card-component/card-content-factory';
@@ -30,8 +31,8 @@ import { isBoolean } from 'util';
 import { SessionUser } from "../../../../common/tool/session-user";
 export class IllegalDropHistoryCardConverter implements IConverter {
 
-    Convert<IllegalDropEvent, ViewsModel>(input: IllegalDropEvent, output: ViewsModel): ViewsModel;
-    Convert(input: IllegalDropEvent, output: ViewsModel<LineECharts>): ViewsModel<LineECharts> {
+    Convert<DropEvent, ViewsModel>(input: DropEvent, output: ViewsModel): ViewsModel;
+    Convert(input: DropEvent, output: ViewsModel<LineECharts>): ViewsModel<LineECharts> {
         output.views = [];
         output.pageSize = 1;
         output.pageIndex = 1;
@@ -68,6 +69,46 @@ export class IllegalDropHistoryCardConverter implements IConverter {
     }
 }
 
+export class MixedIntoHistoryCardConverter implements IConverter {
+
+    Convert<DropEvent, ViewsModel>(input: DropEvent, output: ViewsModel): ViewsModel;
+    Convert(input: DropEvent, output: ViewsModel<LineECharts>): ViewsModel<LineECharts> {
+        output.views = [];
+        output.pageSize = 1;
+        output.pageIndex = 1;
+
+        const lc = this.joinPart(new LineECharts());
+        var enters1 = new Array<EventNumber>();
+        for (let i = 0; i < input.datas.length; i++) {
+            enters1.push(input.datas[i]);
+        }
+        lc.option.seriesData = new Array();
+        for (const x of enters1)
+            lc.option.seriesData.push(x.DeltaNumber);
+        output.views.push(lc);
+
+        return output;
+    }
+
+    private joinPart(t1: LineECharts) {
+        t1.title = "今日混合投放";
+        t1.option = new LineOption();
+        t1.option.xAxisData = [];
+        for (let i = 1; i <= 12; i++) {
+            if (i < 10)
+                t1.option.xAxisData.push('0' + i + ':00');
+            else
+                t1.option.xAxisData.push(i + ':00');
+        }
+        for (let i = 13; i <= 24; i++) {
+            if (i == 24)
+                t1.option.xAxisData.push('23' + ':59');
+            else
+                t1.option.xAxisData.push(i + ':00');
+        }
+        return t1;
+    }
+}
 
 export class DevStatusCardConverter implements IConverter {
 
@@ -201,35 +242,116 @@ export class IllegalDropEventConverter implements IConverter {
 
 export class IllegalDropOrderConverter implements IConverter {
     Convert<IllegalDropOrderInfo, ViewsModel>(input: IllegalDropOrderInfo, output: ViewsModel): ViewsModel;
-    Convert(input: IllegalDropOrderInfo, output: ViewsModel<OrderTable>): ViewsModel<OrderTable> {
+    Convert(input: EventDropOrderInfo, output: ViewsModel<OrderTable>): ViewsModel<OrderTable> {
         output.views = [new OrderTable()];
         output.pageSize = 1;
         output.pageIndex = 1;
-        if (input instanceof IllegalDropOrderInfo) {
-            output.views[0].title = '乱扔垃圾行为TOP10';
+        if (input instanceof EventDropOrderInfo) {
+            output.views[0].title = '乱扔垃圾排名';
             output.views[0].table = new Array();
 
             const sort = input.items.sort((a, b) => {
                 return b.dropNum - a.dropNum
             });
-            for (const x of sort.slice(0, 10)) {
+            for (const x of sort) 
                 output.views[0].table.push({
                     name: x.division,
                     subName: x.dropNum + '',
                     subNameAfter: '起'
                 });
-            }
+            /**补空行 */
+            const len=output.views[0].table.length;
+                if (len < 6)
+                    for (let i = 0; i < (6-len); i++) 
+                        output.views[0].table.push({
+                            name: '-',
+                            subName: '0',
+                            subNameAfter: '起'
+                        });
 
-            const len = output.views[0].table.length;
-            for (let i = 0; i <= 9 - len; i++) {
+                
+            if (input.dropList)
+                output.views[0].dropList = {
+                    listNodes: input.dropList
+                    , fontSize: '18px'
+                    , defaultId: input.defaultId
+                    ,eventType:EventTypeEnum.IllegalDrop
+                }
+
+        }
+        return output;
+    }
+}
+
+export class MixedIntoDropOrderConverter implements IConverter {
+    Convert<IllegalDropOrderInfo, ViewsModel>(input: IllegalDropOrderInfo, output: ViewsModel): ViewsModel;
+    Convert(input: EventDropOrderInfo, output: ViewsModel<OrderTable>): ViewsModel<OrderTable> {
+        output.views = [new OrderTable()];
+        output.pageSize = 1;
+        output.pageIndex = 1;
+        if (input instanceof EventDropOrderInfo) {
+            output.views[0].title = '混合投放排名';
+            output.views[0].table = new Array();
+
+            const sort = input.items.sort((a, b) => {
+                return b.dropNum - a.dropNum
+            });
+            for (const x of sort) 
                 output.views[0].table.push({
-                    name: '-',
-                    subName: '0',
+                    name: x.division,
+                    subName: x.dropNum + '',
                     subNameAfter: '起'
+                }); 
+                /**补空行 */
+            const len=output.views[0].table.length;
+            if (len < 6)
+                for (let i = 0; i < (6-len); i++) 
+                    output.views[0].table.push({
+                        name: '-',
+                        subName: '0',
+                        subNameAfter: '起'
+                    });
+            if (input.dropList)
+                output.views[0].dropList = {
+                    listNodes: input.dropList
+                    , fontSize: '18px'
+                    ,defaultId: input.defaultId
+                    ,eventType:EventTypeEnum.MixedInto
+                }
+        }
+        return output;
+    }
+}
+
+export class StationDisposeScoreConverter implements IConverter {
+    Convert<StationsScoreInfo, ViewsModel>(input: StationsScoreInfo, output: ViewsModel): ViewsModel;
+    Convert(input: StationsScoreInfo, output: ViewsModel<OrderTable>): ViewsModel<OrderTable> {
+        output.views = [new OrderTable()];
+        output.pageSize = 1;
+        output.pageIndex = 1;
+        if (input instanceof StationsScoreInfo) {
+            output.views[0].title = '小包垃圾处置排名';
+            output.views[0].table = new Array();
+
+            const sort = input.items.sort((a, b) => {
+                return a.score - b.score
+            });
+            for (const x of sort) 
+                output.views[0].table.push({
+                    name: x.station,
+                    subName: IntegerDecimalNum(x.score + ''),
+                    subNameAfter: x.unit
                 });
-
-            }
-
+            
+                /**补空行 */
+                const len=output.views[0].table.length;
+                if (len < 6)
+                    for (let i = 0; i < (6-len); i++) 
+                        output.views[0].table.push({
+                            name: '-',
+                            subName: '0',
+                            subNameAfter: '起'
+                        });
         }
         return output;
     }
@@ -285,11 +407,11 @@ export class GarbageStationInspectionCardConverter implements IConverter {
         output.views = [];
         output.pageSize = 1;
         output.pageIndex = 1;
-        if (input instanceof GarbageStationInspection) { 
+        if (input instanceof GarbageStationInspection) {
             const model = new GalleryRollPage()
                 , pic = new MediumPicture();
             model.items = new Map();
-            model.leftBottom = { 
+            model.leftBottom = {
                 text: 0
             }
 
@@ -298,15 +420,15 @@ export class GarbageStationInspectionCardConverter implements IConverter {
                 const gs = input.garbageStations[i],
                     enumHelper = new EnumHelper(),
                     stationEvents = input.todayStationsEvent.filter(x => x.Data.StationId == gs.Id),
-                    gallery = new Gallery(), state = () => {                        
+                    gallery = new Gallery(), state = () => {
                         if (gs.StationState == 0) return '正常';
                         else if (enumHelper.stationState.err.indexOf(gs.StationState) > -1)
                             return '异常';
                         else if (enumHelper.stationState.full.indexOf(gs.StationState) > -1)
                             return '满溢';
                     };
-                gallery.title = { 
-                    state:state(),
+                gallery.title = {
+                    state: state(),
                     text: gs.Name,
                     id: gs.Id,
                     eventNumber: stationEvents.length
@@ -346,12 +468,15 @@ export class ConverterFactory {
     constructor() {
         this.convertInjector = Injector.create([
             { provide: IllegalDropHistoryCardConverter, useValue: new IllegalDropHistoryCardConverter() },
+            { provide: MixedIntoHistoryCardConverter, useValue: new MixedIntoHistoryCardConverter() },
             { provide: DevStatusCardConverter, useValue: new DevStatusCardConverter() },
             { provide: DivisionListConverter, useValue: new DivisionListConverter() },
             { provide: IllegalDropEventConverter, useValue: new IllegalDropEventConverter() },
             { provide: DivisionGarbageSpecificationConverter, useValue: new DivisionGarbageSpecificationConverter() },
             { provide: IllegalDropOrderConverter, useValue: new IllegalDropOrderConverter() },
+            { provide: MixedIntoDropOrderConverter, useValue: new MixedIntoDropOrderConverter() },
             { provide: GarbageStationInspectionCardConverter, useValue: new GarbageStationInspectionCardConverter() },
+            { provide: StationDisposeScoreConverter, useValue: new StationDisposeScoreConverter() }
         ])
     }
 
@@ -365,10 +490,13 @@ export class ConverterFactory {
 
 export const CardBusinessCoverterEnum = {
     "IllegalDropHistory": IllegalDropHistoryCardConverter,
+    "MixedIntoHistory": MixedIntoHistoryCardConverter,
     "DeviceStatusStatistic": DevStatusCardConverter,
     "DivisionList": DivisionListConverter,
     "IllegalDropEvent": IllegalDropEventConverter,
-    "DivisionGarbageSpecification": DivisionGarbageSpecificationConverter,
     "IllegalDropOrder": IllegalDropOrderConverter,
-    "GarbageStationInspection": GarbageStationInspectionCardConverter
-} 
+    "MixedIntoDropOrder": MixedIntoDropOrderConverter,
+    "DivisionGarbageSpecification": DivisionGarbageSpecificationConverter,
+    "GarbageStationInspection": GarbageStationInspectionCardConverter,
+    "StationDisposeScore": StationDisposeScoreConverter
+}

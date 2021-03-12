@@ -9,7 +9,7 @@ export class GarbageInspection extends BaseBusinessRefresh {
     }
 
     async getData() {
-        const divisionsId = this.businessParameter.map.get('divisionsId')
+        const divisionsId = this.businessParameter.map.get('divisionId')
             , model = new GarbageStationInspection()
             , garbageStations = await (this.dataServe as StatisticalDataBufferService).getGarbageStations(divisionsId);
         model.garbageStations = garbageStations;

@@ -10,10 +10,13 @@ export class DivisionList extends BaseBusinessRefresh {
     }
 
     async getData() { 
-        let model = new Divisions();
+        const divisionId = this.businessParameter.map.get('divisionId') as string;
+        const model = new Divisions();  
         model.items = new Array();
-        let data = await (this.dataServe as StatisticalDataBufferService).getDivisions();
-        for (const d of data) {
+        const ancestorDivisions = await (this.dataServe as StatisticalDataBufferService).ancestorDivisions(divisionId)
+        , divisions = await (this.dataServe as StatisticalDataBufferService).ancestorDivisions(null,divisionId);
+        ancestorDivisions.push(divisions.pop());
+        for (const d of ancestorDivisions) {
             const _ = new Division();
             _.id = d.Id;
             _.name = d.Name;
