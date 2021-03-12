@@ -9,8 +9,7 @@ import { HowellAuthHttpService } from "../../data-core/repuest/howell-auth-http.
 import { User } from "../../data-core/url/user-url";
 import { BaseUrl } from "../../data-core/url/IUrl";
 import { SessionUser } from "../../common/tool/session-user";
-import { Router } from '@angular/router';
-import { debug } from 'console';
+import { Router } from '@angular/router'; 
 @Injectable()
 export class UserLoginService {
     sessionUser: SessionUser;
@@ -86,10 +85,11 @@ export class UserLoginService {
                             PrivacyData: number
                             StaticData: number
                             UserData: number
-                        }[]
+                        }[],
+                        Resources:Array<{Id:string,Name:string}>
                     }) => {
                         if (result) { 
-                            //console.log(result);
+                            console.log(result);
                             // sessionStorage.setItem('userid', );
                             if (result.Role[0].PictureData === 1
                                 && result.Role[0].PrivacyData === 1
@@ -98,7 +98,7 @@ export class UserLoginService {
                                 this.router.navigateByUrl('system-mode');
                             } else { this.router.navigateByUrl('waste-regulation'); }
 
-                            this.memory(this.formVal.name, this.formVal.pwd, result.Id);
+                            this.memory(this.formVal.name, this.formVal.pwd, result.Id,result.Resources);
                         }
                     });
             }
@@ -106,12 +106,13 @@ export class UserLoginService {
         };
     }
 
-    memory(name: string, pwd: string, id: string) {
+    memory(name: string, pwd: string, id: string,userDivision:Array<{Id:string,Name:string}>) {
         this.sessionUser.autoLogin = this.autoLogin_;
         this.sessionUser.memoryPwd = this.jpwd_;
         this.sessionUser.name = name;
         this.sessionUser.pwd = pwd;
         this.sessionUser.id = id;
+        this.sessionUser.userDivision=userDivision;
 
     }
 

@@ -8,6 +8,16 @@ export class SessionUser {
     private readonly userIdKey = 'userId';
     private readonly divisionsKey = 'like_divisions';
     private readonly stationsKey = 'like_stations';
+    private readonly userDivisionKey='user_division';
+
+    set userDivision(val:Array<{Id:string,Name:string}>){
+        localStorage.setItem(this.userDivisionKey,JSON.stringify(val));
+    }
+
+    get userDivision(){
+        const val = localStorage.getItem(this.userDivisionKey);
+        return JSON.parse(val);
+    }
 
     set video(val:{beforeInterval:number,afterInterval:number}){
         localStorage.setItem('VIDEO',JSON.stringify(val));
