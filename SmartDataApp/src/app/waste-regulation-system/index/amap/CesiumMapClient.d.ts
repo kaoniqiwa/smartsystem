@@ -174,6 +174,13 @@ declare namespace CesiumMap {
 
     }
 
+    interface ContextMenu{
+        Enable():void;
+        Disable():void;
+        AddItem(text:string, fn:Function, num:number):void;
+        RemoveItem(text:string, fn:Function):void;
+    }
+
     interface EventTriggers {
         OnLoading(): void;
         OnLoaded(): void;
@@ -208,7 +215,7 @@ declare namespace CesiumMap {
         DataController: CesiumDataController.Controller;
 
         Events: EventTriggers;
-
+        ContextMenu:ContextMenu;
         Label:Label;
     }
 }
