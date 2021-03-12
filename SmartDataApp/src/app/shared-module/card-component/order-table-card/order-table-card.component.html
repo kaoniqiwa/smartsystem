@@ -1,6 +1,14 @@
 <ng-container *ngIf="model">
-  <h2>{{model.title}}</h2>
-  <div class="content-wrapper p-t-20  " >
+  <h2>
+    {{model.title}}
+    <ng-container *ngIf="model.dropList">
+      <div class="pull-right m-r-10" style="width: 110px;">
+        <hw-select-option [model]="model.dropList" [selectedItemFn]="selectedItemFn"></hw-select-option>
+      </div> 
+    </ng-container>
+  </h2>
+  
+  <div class="content-wrapper p-t-20  ">
     <div class="fill-width fill-height p-r-30 fine" style="overflow: auto;">
 
       <div *ngFor="let item of model.table;let i= index" fxLayout="row" style="height: calc(100%/6);" class="top6-list">
