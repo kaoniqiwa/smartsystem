@@ -4,5 +4,7 @@ export class SelectOption{
         id:string;
         name:string; 
      }>;
+     fontSize:string;
+     defaultId:string;
      constructor(){}
 } 

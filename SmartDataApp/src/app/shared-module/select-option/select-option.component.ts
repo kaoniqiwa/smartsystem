@@ -18,6 +18,7 @@ export class SelectOptionComponent implements OnInit {
     domClickFn('body', () => {
       this.showBody = false;
     });
+    if(this.model.defaultId)this.defaultItem(this.model.defaultId);
   }
 
   itemClick(val: {
