@@ -1,9 +1,8 @@
 
-import { StatisticalDataBufferService, TimeUnitEnum } from '../../buffer/statistical-data-buffer';
+import { StatisticalDataBufferService } from '../../buffer/statistical-data-buffer';
 import { Specification } from "./data";
 import { BusinessParameter } from '../../../../../common/interface/IBusiness';
 import { BaseBusinessRefresh } from "../../../../../common/tool/base-business-refresh";
-import { EventNumber } from '../../../../../data-core/model/waste-regulation/event-number';
 import { DivisionTypeEnum, EventTypeEnum } from '../../../../../common/tool/enum-helper'
 export class DivisionGarbageSpecification extends BaseBusinessRefresh {
 
@@ -13,11 +12,10 @@ export class DivisionGarbageSpecification extends BaseBusinessRefresh {
 
     async getData() {
         const divisionsIds = this.businessParameter.map.get('divisionsIds') as string[]
-            , divisionsId = this.businessParameter.map.get('divisionsId') as string
-            , divisionsType = this.businessParameter.map.get('divisionsType') as DivisionTypeEnum; 
-        let model = new Specification();
-
-        let data = await (this.dataServe as StatisticalDataBufferService).getDivisionStatisticNumber(divisionsId);
+            , divisionsId = this.businessParameter.map.get('divisionId') as string
+            , divisionsType = this.businessParameter.map.get('divisionsType') as DivisionTypeEnum
+        , model = new Specification()
+        , data = await (this.dataServe as StatisticalDataBufferService).getDivisionStatisticNumber(divisionsId);
         model.fullPushNumber = data.DryFullStationNumber;
         model.garbageBarrelNumber = data.TrashCanNumber || 0;
         model.garbagePushNumber = data.StationNumber || 0;
@@ -25,8 +23,7 @@ export class DivisionGarbageSpecification extends BaseBusinessRefresh {
         model.illegalDropNumber = 0;
         if (divisionsType == DivisionTypeEnum.Committees ) {
             const stations = await (this.dataServe as StatisticalDataBufferService).getGarbageStations(divisionsId)
-                , stationIds = new Array<string>();
-                
+                , stationIds = new Array<string>();                
                 
             for (const x of stations)
                 stationIds.push(x.Id);
@@ -39,8 +36,7 @@ export class DivisionGarbageSpecification extends BaseBusinessRefresh {
                         else if(v.EventType == EventTypeEnum.MixedInto)
                         model.hybridPushNumber+=v.DayNumber;
                 }
-            }
-           
+            }           
         }
         else if (divisionsType == DivisionTypeEnum.County) {
             const data = await (this.dataServe as StatisticalDataBufferService).postDivisionStatisticNumbers(divisionsIds);
