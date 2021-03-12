@@ -53,6 +53,41 @@ export class AMapComponent implements AfterViewInit, OnInit {
     @Output()
     mapPanelListItemClickedEvent: EventEmitter<MapListItem<Division | GarbageStation>> = new EventEmitter();
 
+
+    @Output()
+    /**
+     * ContextMenu 乱扔垃圾事件
+     *
+     * @type {EventEmitter<string>}
+     * @memberof AMapComponent
+     */
+    ContextMenuIllegalDropClickedEvent: EventEmitter<GarbageStation> = new EventEmitter();
+    @Output()
+    /**
+     * ContextMenu 混合投放事件
+     *
+     * @type {EventEmitter<string>}
+     * @memberof AMapComponent
+     */
+    ContextMenuMixedIntoClickedEvent: EventEmitter<GarbageStation> = new EventEmitter();
+    @Output()
+    /**
+     * ContextMenu 投放点巡检事件
+     *
+     * @type {EventEmitter<string>}
+     * @memberof AMapComponent
+     */
+    ContextMenuStationPatrolClickedEvent: EventEmitter<GarbageStation> = new EventEmitter();
+    @Output()
+    /**
+     * ContextMenu 小包垃圾落地
+     *
+     * @type {EventEmitter<string>}
+     * @memberof AMapComponent
+     */
+    ContextMenuGarbageCountClickedEvent: EventEmitter<GarbageStation> = new EventEmitter();
+
+
     labelNumber = 0;
     labels: Global.Dictionary<CesiumDataController.LabelOptions> = {};
     labelHandle: NodeJS.Timer;
@@ -271,6 +306,54 @@ export class AMapComponent implements AfterViewInit, OnInit {
             });
 
             this.LabelVisibility = false;
+
+            this.client.ContextMenu.AddItem('<i class="howell-icon-nolittering"></i> 乱扔垃圾记录', async (id: string) => {
+                if (this.ContextMenuIllegalDropClickedEvent) {
+                    let station = this.garbages.find(x => x.Id === id);
+                    if (!station) {
+                        const response = await this.garbageService.get(id).toPromise();
+                        station = response.Data;
+                        this.garbages.push(station);
+                    }
+                    this.ContextMenuIllegalDropClickedEvent.emit(station);
+                }
+            }, 0);
+            this.client.ContextMenu.AddItem('<i class="howell-icon-mixlittering"></i> 混合投放记录', async (id: string) => {
+                if (this.ContextMenuMixedIntoClickedEvent) {
+                    let station = this.garbages.find(x => x.Id === id);
+                    if (!station) {
+                        const response = await this.garbageService.get(id).toPromise();
+                        station = response.Data;
+                        this.garbages.push(station);
+                    }
+                    this.ContextMenuMixedIntoClickedEvent.emit(station);
+                }
+            }, 1);
+            this.client.ContextMenu.AddItem('<i class="howell-icon-refresh"></i> 投放点巡检', async (id: string) => {
+                if (this.ContextMenuStationPatrolClickedEvent) {
+                    let station = this.garbages.find(x => x.Id === id);
+                    if (!station) {
+                        const response = await this.garbageService.get(id).toPromise();
+                        station = response.Data;
+                        this.garbages.push(station);
+                    }
+                    this.ContextMenuStationPatrolClickedEvent.emit(station);
+                }
+            }, 2);
+            this.client.ContextMenu.AddItem('<i class="howell-icon-garbagebags"></i> 小包垃圾落地', async (id: string) => {
+                if (this.ContextMenuGarbageCountClickedEvent) {
+                    let station = this.garbages.find(x => x.Id === id);
+                    if (!station) {
+                        const response = await this.garbageService.get(id).toPromise();
+                        station = response.Data;
+                        this.garbages.push(station);
+                    }
+                    this.ContextMenuGarbageCountClickedEvent.emit(station);
+                }
+            }, 3);
+
+
+            this.client.ContextMenu.Enable();
         };
 
 
