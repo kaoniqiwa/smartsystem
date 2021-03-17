@@ -116,6 +116,13 @@ export class AMapComponent implements AfterViewInit, OnInit {
     selectedCameras: Camera[];
     garbages: GarbageStation[];
 
+    get resourceId() {
+        if (this.user.userDivision && this.user.userDivision.length > 0) {
+            return this.user.userDivision[0].Id;
+        }
+        return undefined;
+    }
+
     villageGarbages: GarbageStation[];
 
     private baseDivisionId: string;
@@ -251,11 +258,13 @@ export class AMapComponent implements AfterViewInit, OnInit {
     }
 
     async getBaseDivision() {
+
         const params = new GetDivisionsParams();
         params.DivisionType = 3;
-        const response = await this.divisionService.list(params).toPromise();
-        if (response.Data.Page.TotalRecordCount > 0) {
-            return response.Data.Data[0];
+
+        const response = await this.divisionService.get(this.resourceId).toPromise();
+        if (response.Data) {
+            return response.Data;
         }
     }
 
@@ -488,12 +497,15 @@ export class AMapComponent implements AfterViewInit, OnInit {
             params = new GetDivisionsParams();
             params.ParentId = village.id;
             response = await this.divisionService.list(params).toPromise();
+            console.log(response);
+            let itemType: MapListItemType;
+            let parentId = village.parentId;
             if (response.Data.Page.TotalRecordCount > 0) {
                 this.amapService.childrenOfList = (response as Response<PagedList<Division>>).Data.Data.map(x => {
                     const item = new MapListItem(x.Id, x.Name, MapListItemType.Division, x);
+                    itemType = item.Data.ParentId === this.resourceId ? MapListItemType.Parent : MapListItemType.Division;
                     return item;
                 });
-
             } else {
                 params = new GetGarbageStationsParams();
                 params.DivisionId = village.id;
@@ -501,9 +513,20 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 this.amapService.childrenOfList = (response as Response<PagedList<GarbageStation>>).Data.Data.map(x => {
                     return new MapListItem(x.Id, x.Name, MapListItemType.GarbageStation, x);
                 });
-
-                const parent = new MapListItem(village.parentId, '上一级', MapListItemType.Parent, null);
-                this.amapService.childrenOfList.unshift(parent);
+                itemType = MapListItemType.Division;
+            }
+            if (!parentId) {
+                parentId = await (await this.divisionService.get(village.id).toPromise()).Data.ParentId;
+            }
+            switch (itemType) {
+                case MapListItemType.Division:
+                case MapListItemType.GarbageStation:
+                    const parent = new MapListItem(parentId, '上一级', itemType, null);
+                    this.amapService.childrenOfList.unshift(parent);
+                    break;
+                case MapListItemType.Parent:
+                default:
+                    break;
             }
         };
     }
