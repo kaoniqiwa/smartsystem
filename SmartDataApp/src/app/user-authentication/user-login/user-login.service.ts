@@ -86,7 +86,7 @@ export class UserLoginService {
                             StaticData: number
                             UserData: number
                         }[],
-                        Resources:Array<{Id:string,Name:string}>
+                        Resources:Array<{Id:string,Name:string,ResourceType:number}>
                     }) => {
                         if (result) { 
                             console.log(result);
@@ -107,7 +107,7 @@ export class UserLoginService {
         };
     }
 
-    memory(name: string, pwd: string, id: string,userDivision:Array<{Id:string,Name:string}>) {
+    memory(name: string, pwd: string, id: string,userDivision:Array<{Id:string,Name:string,ResourceType:number}>) {
         this.sessionUser.autoLogin = this.autoLogin_;
         this.sessionUser.memoryPwd = this.jpwd_;
         this.sessionUser.name = name;

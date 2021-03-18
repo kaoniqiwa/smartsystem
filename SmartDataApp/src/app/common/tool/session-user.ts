@@ -10,7 +10,7 @@ export class SessionUser {
     private readonly stationsKey = 'like_stations';
     private readonly userDivisionKey='user_division';
 
-    set userDivision(val:Array<{Id:string,Name:string}>){
+    set userDivision(val:Array<{Id:string,Name:string,ResourceType:number}>){
         localStorage.setItem(this.userDivisionKey,JSON.stringify(val));
     }
 
