@@ -52,8 +52,8 @@ import { IllegalDropEventChartComponent } from "./business-component/event-histo
 import { IllegalDropEventCardListComponent } from "./business-component/event-history/illegal-drop-event-card-list/illegal-drop-event-card-list.component";
 import { LevelListPanelComponent } from './business-component/event-history/level-list-panel/level-list-panel.component';
 import { MixedIntoEventHistoryComponent } from './business-component/event-history/mixed-into-event-history/mixed-into-event-history.component';
-import { FullGarbageStationComponent } from './business-component/full-garbage-station/full-garbage-station.component';
-import { GarbageStationComponent } from './business-component/garbage-station/garbage-station.component';
+import { FullGarbageStationComponent } from './business-component/station-state-view-summary/full-garbage-station/full-garbage-station.component';
+import { GarbageStationComponent } from './business-component/station-view-summary/garbage-station/garbage-station.component';
 import { GarbageStationCamerasComponent } from './business-component/garbage-station-cameras/garbage-station-cameras.component';
 import { UserToolComponent } from "./business-component/user-tool/user-tool.component";
 import { GalleryRollPageComponent } from './card-component/gallery-roll-page/gallery-roll-page.component';
@@ -61,13 +61,13 @@ import { IllegalDropEventSummaryComponent } from './business-component/event-his
 import { IllegalDropEventAnalyzeV2Component } from './business-component/event-history/illegal-drop-event-analyze-v2/illegal-drop-event-analyze-v2.component';
 import { VsClassStatisticComponent } from './business-component/vs-class-statistic/vs-class-statistic.component';
 import { TreeDropListV2Component } from './business-component/vs-class-statistic/tree-drop-list-v2/tree-drop-list-v2.component';
-import { GarbageFullHistoryComponent } from  './business-component/event-history/garbage-full-history/garbage-full-history.component'
-import { StatisticGarbageCountComponent } from './business-component/statistic-garbage-count/statistic-garbage-count.component';
-import { SelectOptionComponent } from './select-option/select-option.component';
-import { GarbageStationSummaryComponent } from './business-component/garbage-station-summary/garbage-station-summary.component';
-import { FullGarbageStationSummaryComponent } from './business-component/full-garbage-station-summary/full-garbage-station-summary.component';
-import { GarbageFullHistorySumChartComponent } from './business-component/event-history/garbage-full-history-sum-chart/garbage-full-history-sum-chart.component';
-import { StatisticGarbageAnalyzeComponent } from './business-component/statistic-garbage-analyze/statistic-garbage-analyze.component';
+import { GarbageFullHistoryComponent } from  './business-component/station-state-view-summary/garbage-full-history/garbage-full-history.component'
+import { StatisticGarbageCountComponent } from './business-component/station-view-summary/statistic-garbage-count/statistic-garbage-count.component';
+import { SelectOptionComponent } from './select-option/select-option.component'; 
+import { GarbageStationSummaryComponent } from './business-component/station-view-summary/garbage-station-summary/garbage-station-summary.component';
+import { FullGarbageStationSummaryComponent } from './business-component/station-state-view-summary/full-garbage-station-summary/full-garbage-station-summary.component';
+import { GarbageFullHistorySumChartComponent } from './business-component/station-view-summary/garbage-full-history-sum-chart/garbage-full-history-sum-chart.component';
+import { StatisticGarbageAnalyzeComponent } from './business-component/station-view-summary/statistic-garbage-analyze/statistic-garbage-analyze.component';
 
 @NgModule({
   imports: [
