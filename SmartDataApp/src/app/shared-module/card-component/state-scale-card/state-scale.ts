@@ -5,6 +5,7 @@ export class StateScale {
         subTitle: string;
         scaleNumber: string;
         state: string;
+        color:string;
         // arc: number;
     }
     arc: {
@@ -24,6 +25,7 @@ export class StateScale {
             subTitle: '',
             scaleNumber: '0',
             state: '-',
+            color:''
             // arc: 0
         }
         this.arc = Arc._100;

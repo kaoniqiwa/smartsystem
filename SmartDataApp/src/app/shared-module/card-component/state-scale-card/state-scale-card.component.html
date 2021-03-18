@@ -5,12 +5,12 @@
       <div fxFlex="50" class="fill-height" style="position: relative;">
         <div style="position: absolute;z-index: 1;" [options]="model.arc" class="fill-height fill-width" EChartProgressBar></div>
         <div style="position: absolute;"   class="fill-height fill-width" EChartProgressBarBox></div>
-        <h4 class="green-text" style="position: absolute;right: 28%;bottom: 10px;margin: 0;"> {{model.stateLabel.state}}</h4>
+        <h4 class="{{model.stateLabel.color}}" style="position: absolute;right: 28%;bottom: 10px;margin: 0;"> {{model.stateLabel.state}}</h4>
       </div>
       <div fxFlex class="fill-height">
         <div style="margin-top: 16%;">
           <h4 class="light-blue-text">{{model.stateLabel.subTitle}}</h4>
-          <h1 class="green-text">
+          <h1 class="{{model.stateLabel.color}}">
             {{model.stateLabel.scaleNumber}}<label class="m-0 light-blue-text" style="font-size: 18px;">%</label>
           </h1>
         </div>
