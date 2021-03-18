@@ -7,5 +7,6 @@ export  class ListNode{
     id:string;
     name:string;
     parentId:string;
+    head:boolean;
     
 }

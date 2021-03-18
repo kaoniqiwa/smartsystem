@@ -282,7 +282,8 @@ export class EventTableService extends ListAttribute {
             if (s.DivisionId) param.DivisionIds = [s.DivisionId];
             if (s.StationId) param.StationIds = [s.StationId];
             if (s.ResourceId) param.ResourceIds = [s.ResourceId];
-        }
+        }console.log(param);
+        
         return param;
     }
 }

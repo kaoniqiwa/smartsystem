@@ -8,23 +8,20 @@ import { SearchControl } from "./search";
 import { DatePipe } from "@angular/common";
 import { TheDayTime, MonthLastDay, OneWeekDate } from "../../../../../common/tool/tool.service";
 import { TimeUnitEnum, ClassTypeEnum } from "../../illegal-drop-event-analyze/business/search";
-import { BarOptionV2 } from "../../../../../common/directive/echarts/echart";
 import { EventTypeEnum } from "../../../../../common/tool/enum-helper";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
 import { GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station";
 import "../../../../../common/string/hw-string";
 import { DivisionTypeEnum } from '../../../../../common/tool/enum-helper';
-import { BusinessEventTypeEnum ,convertEventData} from "../../business-event-type";
-import { ExcelData } from "../../../../../common/tool/hw-excel-js/data"; 
-declare const echarts: any;
+import { BusinessEventTypeEnum, convertEventData } from "../../business-event-type";
+import { ExcelData } from "../../../../../common/tool/hw-excel-js/data";
+import { EventAnalyzeTable, EventsAnalyzeRecord } from "./event-analyze-table";
 @Injectable()
 export class BusinessService extends ListAttribute {
 
     divisions: Array<Division>;
     garbageStations: Array<GarbageStation>;
     search = new SearchControl(this.datePipe);
-    barChartOption: BarOptionV2;
-    barItemW = 0;
     datePicker = {
         startView: 2,
         minView: 2,
@@ -33,12 +30,22 @@ export class BusinessService extends ListAttribute {
     reportType = '';
     dataSources: Array<DivisionNumberStatisticV2> | Array<GarbageStationNumberStatisticV2>;
     businessEventType = BusinessEventTypeEnum.IllegalDrop;
+    table: EventAnalyzeTable;
     constructor(private divisionService: DivisionRequestService
         , private datePipe: DatePipe
         , private garbageStationService: GarbageStationRequestService) {
         super();
         this.divisions = new Array<Division>();
         this.garbageStations = new Array<GarbageStation>();
+        this.table = new EventAnalyzeTable();
+        this.table.findDivision = (id) => {
+            const d = this.divisions.find(d => d.Id == id);
+            return this.divisions.find(f => f.Id == d.ParentId);;
+        }
+        this.table.findStationDivision = (id: string) => {
+             const g= this.garbageStations.find(d => d.Id == id);
+             return this.divisions.find(f => f.Id == g.DivisionId);;
+        }
     }
 
     toDivisionIdsOrStationIds() {
@@ -60,17 +67,25 @@ export class BusinessService extends ListAttribute {
     async requestData() {
         const s = this.search.toSearchParam()
             , requsetParam = this.getRequsetParam(this.search);
+   
         if (s.ClassType == ClassTypeEnum.Station) {
+            this.table.classType = s.ClassType;
             const response = await this.garbageStationService.statisticNumberListV2(requsetParam as any).toPromise();
             this.dataSources = response.Data;
-            this.convertBarData(response.Data, this.search);
+            this.convertTableData(response.Data, this.search);
+            const td = this.convertTableData(response.Data, this.search);
+            this.table.clearItems();
+            this.table.Convert(td, this.table.dataSource);
         }
         else if (s.ClassType == ClassTypeEnum.Division) {
+            this.table.classType = s.ClassType;
             const response = await this.divisionService.statisticNumberListV2(requsetParam as any).toPromise();
             this.dataSources = response.Data;
-            this.convertBarData(response.Data, this.search);
+            const td = this.convertTableData(response.Data, this.search);
+            this.table.clearItems();
+            this.table.Convert(td, this.table.dataSource);
         }
-    } 
+    }
 
     exportExcel(statistic: Array<DivisionNumberStatisticV2> | Array<GarbageStationNumberStatisticV2>, search: SearchControl)
         : {
@@ -93,7 +108,7 @@ export class BusinessService extends ListAttribute {
 
         table.data = new Array<{ no: number, name: string, val: number }>();
         statistic_.map(m => {
-            const eventNumbers = convertEventData(this.businessEventType,m.EventNumbers);
+            const eventNumbers = convertEventData(this.businessEventType, m.EventNumbers);
             if (dataMap.has(m.Name)) {
                 var val = dataMap.get(m.Name);
                 // m.EventNumbers.map(d => {
@@ -131,7 +146,7 @@ export class BusinessService extends ListAttribute {
         }
         else if (s.ClassType == ClassTypeEnum.Station) {
             // const statistic_ = statistic as Array<GarbageStationNumberStatisticV2>;
-            table.fieldName = ['序号', '投放点', '单位(起)']; 
+            table.fieldName = ['序号', '投放点', '单位(起)'];
         }
         return {
             table: table,
@@ -140,135 +155,77 @@ export class BusinessService extends ListAttribute {
     }
 
 
-    convertBarData(statistic: Array<GarbageStationNumberStatisticV2> | Array<DivisionNumberStatisticV2>, search: SearchControl) {
-        const s = search.toSearchParam(), yAxisData = new Array(), colors = ['#7d90bc', '#ff9100']
-            , colors2 = ['rgb(125,144,188,0.5)', 'rgb(255,145,0,0.5)'];
-
-        this.barChartOption = new BarOptionV2();
-        this.barChartOption.yAxisData = yAxisData;
-        this.barChartOption.seriesData = new Array();
-        const seriesData = new Array();
-        this.barChartOption.seriesName = [''];
-        this.barChartOption.barWidth = 10;
+    convertTableData(statistic: Array<GarbageStationNumberStatisticV2> | Array<DivisionNumberStatisticV2>, search: SearchControl) {
+        const s = search.toSearchParam(), dataMap = new Map<string, { name: string, num: number }>()
+            , ear = new EventsAnalyzeRecord();
         if (s.ClassType == ClassTypeEnum.Division) {
-            var statistic_ = statistic as Array<DivisionNumberStatisticV2>, numArr = new Array<{
-                value: number,
-                itemStyle: {
-                    color: any
-                }
-            }>();
-            var i = 0;
-            const dataMap = new Map<string, number>();
+            var statistic_ = statistic as Array<DivisionNumberStatisticV2>;
+
             statistic_ = statistic_.sort((a, b) => {
                 /**缺少 混合投放补全 */
-                if(a.EventNumbers.length==1)a.EventNumbers.push({
-                    DayNumber:0,
-                    DeltaNumber:0,
-                    EventType:EventTypeEnum.MixedInto
+                if (a.EventNumbers.length == 1) a.EventNumbers.push({
+                    DayNumber: 0,
+                    DeltaNumber: 0,
+                    EventType: EventTypeEnum.MixedInto
                 });
-                if(b.EventNumbers.length==1)b.EventNumbers.push({
-                    DayNumber:0,
-                    DeltaNumber:0,
-                    EventType:EventTypeEnum.MixedInto
+                if (b.EventNumbers.length == 1) b.EventNumbers.push({
+                    DayNumber: 0,
+                    DeltaNumber: 0,
+                    EventType: EventTypeEnum.MixedInto
                 });
                 if (this.businessEventType == BusinessEventTypeEnum.IllegalDrop)
-                    return a.EventNumbers[0].DayNumber - b.EventNumbers[0].DayNumber;
+                    return b.EventNumbers[0].DayNumber - a.EventNumbers[0].DayNumber;
                 else if (this.businessEventType == BusinessEventTypeEnum.MixedInfo)
-                    return a.EventNumbers[1].DayNumber - b.EventNumbers[1].DayNumber;
-            }); 
-            
+                    return b.EventNumbers[1].DayNumber - a.EventNumbers[1].DayNumber;
+            });
+
             statistic_.map(m => {
-                const eventNumbers = convertEventData(this.businessEventType,m.EventNumbers);
-                if (dataMap.has(m.Name)) {
-                    var val = dataMap.get(m.Name);
-                    // m.EventNumbers.map(d => {
-                    //     if (d.EventType == EventTypeEnum.IllegalDrop)
-                    //         dataMap.set(m.Name, val + d.DayNumber);
-                    // });
+                const eventNumbers = convertEventData(this.businessEventType, m.EventNumbers);
+                if (dataMap.has(m.Id)) {
+                    const item = dataMap.get(m.Id);
                     eventNumbers.map(d => {
-                        dataMap.set(m.Name, val + d);
+                        item.num += d;
+                        dataMap.set(m.Id, item);
                     });
                 }
                 else eventNumbers.map(d => {
-                    dataMap.set(m.Name, d);
+                    dataMap.set(m.Id, {
+                        name: m.Name,
+                        num: d
+                    });
                 });
-                //  m.EventNumbers.map(d => {
-                //     if (d.EventType == EventTypeEnum.IllegalDrop)
-                //         dataMap.set(m.Name, d.DayNumber);
-                // });
             });
-            this.barItemW = dataMap.size * 54;
-            for (const c of dataMap.keys()) {
-                yAxisData.push(c);
-                numArr.push({
-                    value: dataMap.get(c),
-                    itemStyle: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-                            offset: 0, color: colors2[i % 2]// 0% 处的颜色
-                        }, {
-                            offset: 1, color: colors[i % 2]  // 100% 处的颜色
-                        }], false),
-                    }
-                });
-                i += 1;
-            }
-            seriesData.push(numArr);
         }
         else if (s.ClassType == ClassTypeEnum.Station) {
-            var statistic_a = statistic as Array<GarbageStationNumberStatisticV2>, numArr = new Array<{
-                value: number,
-                itemStyle: {
-                    color: any
-                }
-            }>();
-            var i = 0;
-            const dataMap = new Map<string, number>();
+            var statistic_a = statistic as Array<GarbageStationNumberStatisticV2>;
+
             statistic_a = statistic_a.sort((a, b) => {
                 if (this.businessEventType == BusinessEventTypeEnum.IllegalDrop)
-                    return a.EventNumbers[0].DayNumber - b.EventNumbers[0].DayNumber;
+                    return b.EventNumbers[0].DayNumber - a.EventNumbers[0].DayNumber;
                 else if (this.businessEventType == BusinessEventTypeEnum.MixedInfo)
-                    return a.EventNumbers[1].DayNumber - b.EventNumbers[1].DayNumber;
+                    return b.EventNumbers[1].DayNumber - a.EventNumbers[1].DayNumber;
             });
-            statistic_a.map(m => {
-                const eventNumbers = convertEventData(this.businessEventType,m.EventNumbers);
-                if (dataMap.has(m.Name)) {
-                    var val = dataMap.get(m.Name);
-                    // m.EventNumbers.map(d => {
-                    //     if (d.EventType == EventTypeEnum.IllegalDrop)
-                    //         dataMap.set(m.Name, val + d.DayNumber);
-                    // });
+            statistic_a.map(m => { 
+            
+                const eventNumbers = convertEventData(this.businessEventType, m.EventNumbers);
+                if (dataMap.has(m.Id)) {
+                    const item = dataMap.get(m.Id);
+
                     eventNumbers.map(d => {
-                        dataMap.set(m.Name, val + d);
+                        item.num += d;
+                        dataMap.set(m.Id, item);
                     });
                 }
                 else eventNumbers.map(d => {
-                    dataMap.set(m.Name, d);
+                    dataMap.set(m.Id, {
+                        name: m.Name,
+                        num: d
+                    });
                 });
-                //  m.EventNumbers.map(d => {
-                //     if (d.EventType == EventTypeEnum.IllegalDrop)
-                //         dataMap.set(m.Name, d.DayNumber);
-                // });
             });
-            this.barItemW = dataMap.size * 54;
-            for (const c of dataMap.keys()) {
-                yAxisData.push(c);
-                numArr.push({
-                    value: dataMap.get(c),
-                    itemStyle: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-                            offset: 0, color: colors2[i % 2]// 0% 处的颜色
-                        }, {
-                            offset: 1, color: colors[i % 2]  // 100% 处的颜色
-                        }], false),
-                    }
-                });
-                i += 1;
-            };
-
-            seriesData.push(numArr);
         }
-        this.barChartOption.seriesData = seriesData;
-        //  console.log(this.barChartOption);
+        ear.items = dataMap;
+        return ear;
     }
 
     getRequsetParam(search: SearchControl): GetDivisionStatisticNumbersParamsV2 | GetGarbageStationStatisticNumbersParamsV2 {

@@ -1,17 +1,20 @@
-import { Component, OnInit, ViewChild, Input ,Output,EventEmitter} from '@angular/core';
+import { Component, OnInit, ViewChild, Input ,Output,EventEmitter,OnDestroy} from '@angular/core';
 import { CustomTableComponent } from '../../../../shared-module/custom-table/custom-table.component';
 import { EventTableService, FillMode } from "./business/event-table.service";
-import { PageListMode } from "../../../../common/tool/enum-helper";
+import { DivisionTypeEnum, PageListMode } from "../../../../common/tool/enum-helper";
 import { ImageDesc } from '../../../image-desc-card/image-desc';
 import { Camera } from '../../../../data-core/model/waste-regulation/camera';
 import { OtherViewEnum } from "../illegal-drop-event-summary/illegal-drop-event-summary.component";
+import { BusinessManageService, ViewDivisionTypeEnum } from "../../business-manage-service"; 
+import { DivisionBusinessService } from "../../../../waste-regulation-system/index/business-card-grid/division-business.service";
+import { LevelListPanelComponent } from "../level-list-panel/level-list-panel.component";
 @Component({
   selector: 'hw-mixed-into-event-history',
   templateUrl: './mixed-into-event-history.component.html',
   styleUrls: ['./mixed-into-event-history.component.styl'],
   providers: [EventTableService]
 })
-export class MixedIntoEventHistoryComponent implements OnInit {
+export class MixedIntoEventHistoryComponent implements OnInit ,OnDestroy{
 
   listTypeView = false;
   listMode = PageListMode.table;
@@ -19,6 +22,9 @@ export class MixedIntoEventHistoryComponent implements OnInit {
   pageListMode = PageListMode;
   @ViewChild('table')
   table: CustomTableComponent;
+  @ViewChild(LevelListPanelComponent)
+  levelListPanel: LevelListPanelComponent;
+
 
   @Input() fillMode: FillMode;
   @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
@@ -63,25 +69,50 @@ export class MixedIntoEventHistoryComponent implements OnInit {
   videoClose = () => {
     this.tableService.videoImgs = null;
   }
-  constructor(private tableService: EventTableService) {
+  constructor(private tableService: EventTableService
+    , private divisionBusinessService: DivisionBusinessService
+    , private businessManageService: BusinessManageService) {
+  }
+
+  setSearchDivision(){
+    if(this.fillMode){ 
+      const division = this.tableService.divisions.find(d => d.Id==this.fillMode.divisionId);
+      if (division && division.DivisionType == DivisionTypeEnum.City){
+         const children = this.tableService.divisions.filter(f=>f.ParentId == division.Id);
+         this.tableService.search.divisionId=children.pop().Id;
+      }
+      else this.tableService.search.divisionId =this.fillMode.divisionId;
+    }
+    else  this.tableService.search.divisionId='';
   }
 
   async ngOnInit() {
     this.listMode = this.fillMode ? this.fillMode.pageListMode : PageListMode.table;
     this.tableService.fillMode = this.fillMode;
-    this.tableService.search.divisionId = this.fillMode ? this.fillMode.divisionId : '';
+   // this.tableService.search.divisionId = this.fillMode ? this.fillMode.divisionId : '';
+
+    if (this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.MapStation
+      && this.businessManageService.station) {
+      this.tableService.search.stationId = this.businessManageService.station.Id;
+    }
+    
+    this.tableService.divisions = await this.tableService.requestDivisions();
+    this.setSearchDivision();
     this.initTableList();
     // this.tableService.eventTable.tableSelectIds = this.tableSelectIds;
-    this.tableService.divisions = await this.tableService.requestDivisions();
+  
     this.tableService.garbageStations = await this.tableService.requestGarbageStations();
     this.tableService.resources = await this.tableService.requestResource();
     this.tableService.search.toResourcesDropList = this.tableService.resources;
-    this.tableService.search.toStationsDropList = this.tableService.garbageStations;
-    this.tableService.divisionListView.toLevelListPanel(this.tableService.divisions);
+    this.tableService.search.toStationsDropList = this.tableService.garbageStations;     
+    this.tableService.divisionListView.toLevelListPanel(this.tableService.divisions.filter(x=>x.ParentId !=null));
     this.tableService.allEventsRecordData();
   }
 
-  async initTableList() {
+  ngOnDestroy(){
+    this.businessManageService.resetNone();
+  }
+  async initTableList() {   
     if (this.tableService.search.state == false) {
       if (this.listMode == PageListMode.table)
         await this.tableService.requestData(1, (page) => {
@@ -110,6 +141,29 @@ export class MixedIntoEventHistoryComponent implements OnInit {
             await this.tableService.searchDataX(index);
           },true);
         });
+    }
+  }
+
+  moreSearch() {
+    this.tableService.search.other = !this.tableService.search.other;
+    if (this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.None)
+      setTimeout(() => {
+        if (this.levelListPanel && this.divisionBusinessService.divisionsId){
+          const division = this.tableService.divisions.find(d => d.Id==this.divisionBusinessService.divisionsId);
+          if (division && division.DivisionType == DivisionTypeEnum.City){
+             const children = this.tableService.divisions.filter(f=>f.ParentId == division.Id);
+             this.levelListPanel.defaultItem(children.pop().Id);
+          }
+          else this.levelListPanel.defaultItem(this.divisionBusinessService.divisionsId);
+        } 
+
+      }, 500);
+    else if (this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.MapStation
+      && this.businessManageService.station) {
+      setTimeout(() => {
+        this.levelListPanel.defaultItem(this.businessManageService.station.DivisionId);
+        this.tableService.search.stationId = this.businessManageService.station.Id;
+      }, 500);
     }
   }
 

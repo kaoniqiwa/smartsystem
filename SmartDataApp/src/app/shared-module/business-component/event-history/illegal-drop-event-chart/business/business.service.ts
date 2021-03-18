@@ -49,7 +49,7 @@ export class BusinessService extends ListAttribute {
 
     initDivisionListView() {
         this.divisionListView = new DivisionListView();
-        this.divisionListView.toLevelListPanel(this.divisions);
+        this.divisionListView.toLevelListPanel(this.divisions.filter(f=>f.ParentId!=null));
     }
 
     async requestData() {

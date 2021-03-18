@@ -41,7 +41,7 @@
       <div fxFlex="25" class="m-r-10">
         <span class="input-text" style="position: relative;top:2px">对象类型</span>
         <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 82px);"
-          formControlName="ClassType" (change)="changeClassType()">
+          formControlName="ClassType">
           <option value="division">居委会</option>
           <option value="station">垃圾房</option>
         </select>
@@ -70,15 +70,7 @@
       </div>
     </div>
   </div>
-  <div style="height: calc(100% - 60px);position: relative;">
-
-    <div class="fill-width fill-height" style="position: absolute;overflow-y: scroll;">
-      <ng-container *ngIf="businessService.barChartOption">
-        <div class="fill-width" id="hw_4" [ngStyle]="{'height': businessService.barItemW+'px'}"
-          [options]="businessService.barChartOption" EChartBarV2></div>
-      </ng-container>
-    </div>
-
-
+  <div style="height: calc(100% - 60px);position: relative;"> 
+    <hw-custom-table #table [model]="businessService.table.dataSource"></hw-custom-table> 
   </div>
 </div>

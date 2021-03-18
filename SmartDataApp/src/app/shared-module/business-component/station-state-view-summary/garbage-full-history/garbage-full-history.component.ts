@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { CustomTableComponent } from '../../../../shared-module/custom-table/custom-table.component';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { CustomTableComponent } from '../../../custom-table/custom-table.component';
 import { EventTableService, FillMode } from "./business/event-table.service";
 import { PageListMode } from "../../../../common/tool/enum-helper";
 import { ImageDesc } from '../../../image-desc-card/image-desc';
@@ -7,18 +7,18 @@ import { Router } from '@angular/router';
 import { SideNavService } from "../../../../common/tool/sidenav.service";
 import { DivisionBusinessService } from "../../../../waste-regulation-system/index/business-card-grid/division-business.service";
 import { SystemModeEnum } from '../../../../common/tool/table-form-helper';
-import { LevelListPanelComponent } from "../level-list-panel/level-list-panel.component";
-import { Camera } from '../../../../data-core/model/waste-regulation/camera';
-import { OtherViewEnum } from "../illegal-drop-event-summary/illegal-drop-event-summary.component";
-import { BusinessManageService, ViewDivisionTypeEnum } from "../../business-manage-service";
-import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
+import { LevelListPanelComponent } from "../../event-history/level-list-panel/level-list-panel.component";
+import { Camera } from '../../../../data-core/model/waste-regulation/camera'; 
+import { HWVideoService } from "../../../../data-core/dao/video-dao";
+import { GetVodUrlParams } from '../../../../data-core/model/aiop/video-url';
+import { PlayVideo } from '../../../../aiop-system/common/play-video';
 @Component({
-  selector: 'hw-illegal-drop-event-history',
-  templateUrl: './illegal-drop-event-history.component.html',
-  styleUrls: ['./illegal-drop-event-history.component.styl'],
-  providers: [EventTableService]
+  selector: 'hw-garbage-full-history',
+  templateUrl: './garbage-full-history.component.html',
+  styleUrls: ['./garbage-full-history.component.styl'],
+  providers: [EventTableService, HWVideoService]
 })
-export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
+export class GarbageFullHistoryComponent implements OnInit {
   listTypeView = false;
   otherDrop = false;
   otherView = OtherViewEnum;
@@ -74,17 +74,18 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
 
   listGalleryTargetFn = (val: ImageDesc) => {
     const event = this.tableService.eventTable.findEventFn(val.id);
-    this.tableService.galleryTargetView.initGalleryTarget(event);
+    this.tableService.galleryTargetView.initGalleryTarget(event,0);
     this.tableService.galleryTargetView.galleryTarget.videoName = true;
   }
 
   videoClose = () => {
-    this.tableService.playVideo = null;
+    this.tableService.videoImgs = null;
+    this.tableService.playVideo=null;
   }
 
   constructor(private tableService: EventTableService
     , private navService: SideNavService
-    , private businessManageService: BusinessManageService
+    , private videoService: HWVideoService
     , private divisionBusinessService: DivisionBusinessService
     , private router: Router) {
 
@@ -95,23 +96,8 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
       this.tableService.resources.filter(r => r.GarbageStationId == val);
   }
 
-  ngOnDestroy() {
-    this.businessManageService.resetNone();
-  }
-
-  setSearchDivision(){
-    if(this.fillMode){ 
-      const division = this.tableService.divisions.find(d => d.Id==this.fillMode.divisionId);
-      if (division && division.DivisionType == DivisionTypeEnum.City){
-         const children = this.tableService.divisions.filter(f=>f.ParentId == division.Id);
-         this.tableService.search.divisionId=children.pop().Id;
-      }
-      else this.tableService.search.divisionId =this.fillMode.divisionId;
-    }
-    else  this.tableService.search.divisionId='';
-  }
-  async ngOnInit() {     
-    //this.tableService.search.divisionId = this.fillMode ? this.fillMode.divisionId : '';
+  async ngOnInit() {
+    this.tableService.search.divisionId = this.fillMode ? this.fillMode.divisionId : '';
     this.listMode = this.fillMode ? this.fillMode.pageListMode : PageListMode.table;
     this.tableService.fillMode = this.fillMode;
     if (this.isPage) {
@@ -124,45 +110,44 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
         this.tableService.search.divisionId = this.divisionBusinessService.divisionsId;
       }
     }
-    if (this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.MapStation
-      && this.businessManageService.station) {
-      this.tableService.search.stationId = this.businessManageService.station.Id;
-    }
-    this.tableService.divisions = await this.tableService.requestDivisions();
-    this.setSearchDivision();  
+
+    this.tableService.garbageStations = await this.tableService.requestGarbageStations();
     this.initTableList();
     // this.tableService.eventTable.tableSelectIds = this.tableSelectIds;
-   
-    this.tableService.garbageStations = await this.tableService.requestGarbageStations();
+    this.tableService.divisions = await this.tableService.requestDivisions();
+
     this.tableService.resources = await this.tableService.requestResource();
     this.tableService.search.toResourcesDropList = this.tableService.resources;
     this.tableService.search.toStationsDropList = this.tableService.garbageStations;
-
     this.tableService.divisionListView.toLevelListPanel(this.tableService.divisions.filter(x => x.ParentId != null));
-    await this.tableService.allEventsRecordData();
-    //this.allEvallEventsRecord();
+    this.tableService.allEventsRecordData();
+
+    this.tableService.playVideoToUrlFn = async (id, time, cb) => { 
+      const param = this.tableService.getVodUrlParam(null,id,time+'',time+'')
+      , video = await this.videoService.videoUrl(param);
+      cb(video.Url)
+    }
+
+    this.tableService.playVideoFn =async (ids)=>{
+      const idV = ids.split('&')
+      ,param = this.tableService.getVodUrlParam(idV[1],idV[0])
+      , video = await this.videoService.videoUrl(param)
+      ,cameraName = this.tableService.getCameraName(idV[1],idV[0])
+      ,pv = new PlayVideo(video.Url,cameraName); 
+      pv.url = video.Url;
+      this.tableService.playVideo =pv;
+    }
   }
+
 
   moreSearch() {
     this.tableService.search.other = !this.tableService.search.other;
-    if (this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.None)
-      setTimeout(() => {
-        if (this.levelListPanel && this.divisionBusinessService.divisionsId){
-          const division = this.tableService.divisions.find(d => d.Id==this.divisionBusinessService.divisionsId);
-          if (division && division.DivisionType == DivisionTypeEnum.City){
-             const children = this.tableService.divisions.filter(f=>f.ParentId == division.Id);
-             this.levelListPanel.defaultItem(children.pop().Id);
-          }
-          else this.levelListPanel.defaultItem(this.divisionBusinessService.divisionsId);
-        } 
-      }, 500);
-    else if (this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.MapStation
-      && this.businessManageService.station) {
-      setTimeout(() => {
-        this.levelListPanel.defaultItem(this.businessManageService.station.DivisionId);
-        this.tableService.search.stationId = this.businessManageService.station.Id;
-      }, 500);
-    }
+    setTimeout(() => {
+      if (this.levelListPanel && this.divisionBusinessService.divisionsId)
+        this.levelListPanel.defaultItem(this.divisionBusinessService.divisionsId);
+
+    }, 500);
+
   }
 
   goMoreHistroy() {
@@ -175,8 +160,7 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
     this.changeViewFn(tagIndex);
   }
 
-  async initTableList() {   
-       
+  async initTableList() {
     if (this.tableService.search.state == false) {
       if (this.listMode == PageListMode.table)
         await this.tableService.requestData(1, (page) => {
@@ -241,10 +225,14 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
     this.tableService.allEventsRecordData();
   }
 
-
 }
 
 export enum ContentModeEnum {
   View,
   Page
+}
+
+export enum OtherViewEnum {
+  event,
+  info
 }
