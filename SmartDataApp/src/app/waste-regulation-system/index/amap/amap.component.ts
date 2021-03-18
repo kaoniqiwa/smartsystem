@@ -25,6 +25,11 @@ import { GetGarbageStationStatisticNumbersParams } from 'src/app/data-core/model
 
 declare var $: any;
 
+enum PanelEventType {
+    Hover,
+    Click,
+    DoubleClick
+}
 @Component({
     selector: 'app-amap',
     templateUrl: './amap.component.html',
@@ -116,9 +121,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
     selectedCameras: Camera[];
     garbages: GarbageStation[];
 
-    get resourceId() {
+    get Resource() {
         if (this.user.userDivision && this.user.userDivision.length > 0) {
-            return this.user.userDivision[0].Id;
+            return this.user.userDivision[0];
         }
         return undefined;
     }
@@ -128,6 +133,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     private baseDivisionId: string;
     private points: Global.Dictionary<CesiumDataController.Point> = {};
 
+    panelEventType?: PanelEventType;
     srcUrl: any;
     dataController: CesiumDataController.Controller;
     client: CesiumMapClient;
@@ -164,7 +170,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     getSrc() {
         const host = document.location.hostname;
         const port = document.location.port;
-        return 'http://' + host + ':' + port + '/amap/map_ts.html?v=' + new Date().format('yyyyMMddHHmmss');
+        return 'http://' + host + ':' + port + '/amap/test/map_ts.html?v=' + new Date().format('yyyyMMddHHmmss');
     }
 
     async refresh() {
@@ -260,9 +266,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
     async getBaseDivision() {
 
         const params = new GetDivisionsParams();
-        params.DivisionType = 3;
+        params.DivisionType = this.Resource.ResourceType;
 
-        const response = await this.divisionService.get(this.resourceId).toPromise();
+        const response = await this.divisionService.get(this.Resource.Id).toPromise();
         if (response.Data) {
             return response.Data;
         }
@@ -479,6 +485,10 @@ export class AMapComponent implements AfterViewInit, OnInit {
         this.client.Events.OnVillageClicked = async (village: CesiumDataController.Village) => {
             if (!village) { return; }
 
+            if (this.panelEventType === PanelEventType.Hover) {
+                return;
+            }
+
             const status = document.getElementsByClassName('map-bar status')[0];
             status['style'].display = '';
 
@@ -503,7 +513,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             if (response.Data.Page.TotalRecordCount > 0) {
                 this.amapService.childrenOfList = (response as Response<PagedList<Division>>).Data.Data.map(x => {
                     const item = new MapListItem(x.Id, x.Name, MapListItemType.Division, x);
-                    itemType = item.Data.ParentId === this.resourceId ? MapListItemType.Parent : MapListItemType.Division;
+                    itemType = item.Data.ParentId === this.Resource.Id ? MapListItemType.Parent : MapListItemType.Division;
                     return item;
                 });
             } else {
@@ -662,6 +672,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     OnPanelItemClicked(item: MapListItem<Division | GarbageStation>) {
 
         if (!item) { return; }
+        this.panelEventType = PanelEventType.Click;
         let position: CesiumDataController.Position;
 
         switch (item.type) {
@@ -692,7 +703,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
     OnPanelItemDoubleClicked(item: MapListItem<Division | GarbageStation>) {
         if (!item) { return; }
-
+        this.panelEventType = PanelEventType.DoubleClick;
         switch (item.type) {
             case MapListItemType.GarbageStation:
                 const data = item.Data as GarbageStation;
@@ -702,6 +713,38 @@ export class AMapComponent implements AfterViewInit, OnInit {
             default:
                 break;
         }
+    }
+
+
+
+
+    OnPanelItemHover(item: MapListItem<Division | GarbageStation>) {
+        return;
+        if (!item) { return; }
+        this.panelEventType = PanelEventType.Hover;
+        let position: CesiumDataController.Position;
+
+        switch (item.type) {
+            case MapListItemType.Parent:
+            case MapListItemType.Division:
+                const village = this.dataController.Village.Get(item.Id);
+                this.client.Village.Select(village.id, this.baseDivisionId === village.id);
+                position = village.center;
+                break;
+            case MapListItemType.GarbageStation:
+                try {
+                    const point = this.dataController.Village.Point.Get((item.Data as GarbageStation).DivisionId, item.Id);
+                    position = point.position;
+                } catch (ex) {
+
+                }
+                break;
+            default:
+                return;
+        }
+        // if (position) {
+        //     this.client.Viewer.MoveTo(position);
+        // }
     }
 
 
@@ -732,7 +775,6 @@ export class AMapComponent implements AfterViewInit, OnInit {
     }
 
     Button3Clicked() {
-
         this.LabelVisibility = !this.LabelVisibility;
     }
 
@@ -742,6 +784,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         if (move) {
             const village = this.dataController.Village.Get(villageId);
             this.client.Viewer.MoveTo(village.center);
+
         }
     }
 

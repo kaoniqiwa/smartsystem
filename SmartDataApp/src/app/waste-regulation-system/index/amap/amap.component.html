@@ -5,7 +5,7 @@
 
 <app-map-list-panel class="map-bar list-panel" [dataSource]="this.amapService.childrenOfList"
   (OnVisibilityChanged)="OnPanelVisibilityChanged($event)" (OnItemClicked)="OnPanelItemClicked($event)"
-  (OnItemDoubleClicked)="OnPanelItemDoubleClicked($event)"></app-map-list-panel>
+  (OnItemDoubleClicked)="OnPanelItemDoubleClicked($event)" (OnItemHover)="OnPanelItemHover($event)"></app-map-list-panel>
 
 <div class="map-bar btn-list">
   <div class="btn" (click)=Button1Clicked()>
