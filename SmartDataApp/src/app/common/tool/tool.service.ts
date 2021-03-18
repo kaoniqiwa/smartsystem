@@ -37,50 +37,32 @@ export function GetDecimalNum(num:string){
     return num.substr(0,num.indexOf(".")+3);
     else return num;
  }
+ 
 /**
- * JS 计算两个时间间隔多久（时分秒）
- * @param startTime "2019-10-23 15:27:23"
- * @param endTime "2019-10-23 15:27:55"
- * @return 1天2时3分5秒
+ *  JS 计算两个时间间隔多久（时分秒） 
  */
-export function TwoTimeInterval(startTime: string, endTime: Date) {
+export function DateDifference(faultDate:string,completeTime:Date){
+    // let d1 = new Date(faultDate);
+    // let d2 = new Date(completeTime);
+    var stime =new Date(faultDate).getTime();
+    var etime =completeTime.getTime();
 
-    // 开始时间
-    //let d1 = startTime.replace(/\-/g, "/");
-    let date1 = new Date(startTime);
-
-    // 结束时间
-    //let d2 = endTime.replace(/\-/g, "/");
-    //let date2 = new Date(d2);
-    const date2 = endTime;
-    // 时间相差秒数
-    let dateDiff = date2.getTime() - date1.getTime();
-
-    // 计算出相差天数
-    let days = Math.floor(dateDiff / (24 * 3600 * 1000));
-
-    // 计算出小时数
-    let residue1 = dateDiff % (24 * 3600 * 1000); // 计算天数后剩余的毫秒数
-    let hours = Math.floor(residue1 / (3600 * 1000));
-
-    // 计算相差分钟数
-    let residue2 = residue1 % (3600 * 1000); // 计算小时数后剩余的毫秒数
-    let minutes = Math.floor(residue2 / (60 * 1000));
-
-    // 计算相差秒数
-    let residue3 = residue2 % (60 * 1000); // 计算分钟数后剩余的毫秒数
-    let seconds = Math.round(residue3 / 1000);
-
-    let returnVal =
-        //   ((days == 0) ? "" : days+"天") +
-        ((hours == 0) ? "" : days + "时") +
-        ((minutes == 0) ? "" : minutes + "分钟");
-    //+((seconds == 0) ? "" : seconds+"秒");
-
-    return returnVal;
-
-}
-
+    var usedTime = etime - stime;  //两个时间戳相差的毫秒数
+    var days=Math.floor(usedTime/(24*3600*1000));
+    //计算出小时数
+    var leave1=usedTime%(24*3600*1000);    //计算天数后剩余的毫秒数
+    var hours=Math.floor(leave1/(3600*1000));
+    //计算相差分钟数
+    var leave2=leave1%(3600*1000);        //计算小时数后剩余的毫秒数
+    var minutes=Math.floor(leave2/(60*1000));
+    var time = '';
+    if(days>0)time+=days + "天";
+    if(hours>0)time+=hours+"时";
+    if(minutes>0)time+=minutes+"分";
+    //var time = days + "天"+hours+"时"+minutes+"分";
+    //var time = days;
+    return time;
+  }
 export function ChangeHourMinute(str:number) {
     if (str != 0 && str != null) 
         return ((Math.floor(str / 60)).toString().length < 2 ? (Math.floor(str / 60)).toString() :
@@ -166,7 +148,7 @@ export function OneWeekDate(now: Date) {
 }
 
 export function Percentage(num: number, total: number) {
-    if (num == 0) return 100;
+    if (num == total) return 100;
     else if (total == 0) return 0;
     return (Math.round(num / total * 10000) / 100.00);// 小数点后两位百分比
 }
