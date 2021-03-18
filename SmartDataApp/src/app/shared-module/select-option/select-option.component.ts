@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit} from '@angular/core';
 import { SelectOption } from "./select-option";
 import { domClickFn } from '../../common/tool/jquery-help/jquery-help';
+import { ComponentService } from "../component-service";
 @Component({
   selector: 'hw-select-option',
   templateUrl: './select-option.component.html',
@@ -12,14 +13,22 @@ export class SelectOptionComponent implements OnInit {
   @Input() selectedItemFn: (id: string) => void;
   selectedItemLabel = '';
   private showBody = false;
-  constructor() { }
+  constructor(private componentService:ComponentService) { }
 
   ngOnInit() {
     domClickFn('body', () => {
       this.showBody = false;
+    }); 
+    if(this.model&&this.model.defaultId)this.defaultItem(this.model.defaultId);
+ 
+
+    this.componentService.selectOptionEventEmitter.subscribe((items:Array<{id:string,name:string}>)=>{ 
+      /**更新 数据列表 */
+      this.model.listNodes = items;
+      this.selectedItemLabel = items[0].name;
+      this.showBody=false;
     });
-    if(this.model.defaultId)this.defaultItem(this.model.defaultId);
-  }
+  } 
 
   itemClick(val: {
     id: string;

@@ -2,7 +2,7 @@
   <div style="position: relative;"  (click)="$event.stopPropagation();">
     <div class="m-t-10 header-wrap" (click)="showBody=!showBody; $event.stopPropagation();" fxLayout="row" fxLayoutAlign="space-between stretch">
       <div fxFlex class="ele-nowrap">
-        <h2 [ngStyle]="{'font-size': model.fontSize?model.fontSize:'unset'}" 
+        <h2 [ngStyle]="{'font-size': model.fontSize?model.fontSize:''}" 
         class="light-blue-text p-t-5 p-l-10 m-b-0 text-right"> {{selectedItemLabel}}</h2> 
       </div>
       <button type="button" fxFlex="30px" class="btn to-down">
