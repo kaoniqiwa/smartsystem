@@ -46,7 +46,7 @@ export class StatisticBusinessInjector {
 
     createBusiness(businessConfig:Partial< { business: string, dataTime: number
         ,divisionType:DivisionTypeEnum
-        ,state:boolean,eventType:EventTypeEnum
+        ,state:boolean,eventType:EventTypeEnum,stationId:string
         , divisionId: string,divisionsIds:string[] }>) {
         if (businessConfig.business) { 
             let business = this.businessInjector.get<BaseBusinessRefresh>(CardBusinessEnum[businessConfig.business]);
@@ -57,6 +57,7 @@ export class StatisticBusinessInjector {
             business.businessParameter.map.set('divisionsIds', businessConfig.divisionsIds);
             business.businessParameter.map.set('divisionType', businessConfig.divisionType);
             business.businessParameter.map.set('state', businessConfig.state);
+            business.businessParameter.map.set('stationId', businessConfig.stationId);
             business.businessParameter.map.set('eventType', businessConfig.eventType);
          
             if (business.timeSpan)

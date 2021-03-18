@@ -35,7 +35,7 @@
                 transform="translate(-92.9 -49.1)" />
             </svg>
           </div>
-          <h3 class="header-title m-l-20">生活垃圾监管平台</h3>
+          <h3 class="header-title m-l-20">{{businessService.logoTitle}}</h3>
         </div>
         <div fxFlex fxLayoutAlign="center center">
 
@@ -97,8 +97,8 @@
   </div>
   <div class="fill-width fill-height" gdGap="10px" gdColumns="1fr 1fr 1fr 1fr" gdRows="repeat(3, 32.4%)">
     <div gdColumn="auto / span 1" gdRow="auto / span 1" >
-      <ng-container *ngIf="divisionConfig">
-        <business-card-grid [cardConfig]="divisionConfig">
+      <ng-container *ngIf="businessService.divisionCardConfig">
+        <business-card-grid [cardConfig]="businessService.divisionCardConfig">
         </business-card-grid>
       </ng-container>
     </div>
@@ -106,8 +106,8 @@
       <div class="card-wrapper2">
         <div class="m-t-20 p-l-10 p-r-10 fill-width collapse" [class.in]="!divisionBusinessService.inspectionView"
           style="height: 76px; position: absolute;">
-          <ng-container *ngIf="divisionGarbageSpCardConfig">
-            <business-card-grid [cardConfig]="divisionGarbageSpCardConfig">
+          <ng-container *ngIf="businessService.divisionGarbageSpCardConfig">
+            <business-card-grid [cardConfig]="businessService.divisionGarbageSpCardConfig">
             </business-card-grid>
           </ng-container>
         </div>
@@ -122,14 +122,14 @@
       </div>
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <ng-container *ngIf="devCardConfig">
-        <business-card-grid [cardConfig]="devCardConfig">
+      <ng-container *ngIf="businessService.illegalDropTopCardConfig">
+        <business-card-grid [cardConfig]="businessService.illegalDropTopCardConfig">
         </business-card-grid>
       </ng-container>
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1"  id="san">
-      <ng-container *ngIf="illegalDropTopCardConfig">
-        <business-card-grid [cardConfig]="illegalDropTopCardConfig">
+      <ng-container *ngIf="businessService.devCardConfig">
+        <business-card-grid [cardConfig]="businessService.devCardConfig">
         </business-card-grid>
       </ng-container>
     </div>
@@ -138,8 +138,12 @@
         <business-card-grid [cardConfig]="illegalDropEventCardConfig">
         </business-card-grid>
       </ng-container>
+      <ng-container *ngIf="businessService.mixedIntoDropTopCardConfig">
+        <business-card-grid [cardConfig]="businessService.mixedIntoDropTopCardConfig">
+        </business-card-grid>
+      </ng-container>
     </div>
-    <div gdColumn="auto / span 1" gdRow="auto / span 1">
+    <div gdColumn="auto / span 1" gdRow="auto / span 1">      
       <div class="card-wrapper p-l-20" style="padding-top: 15px;border:1px #5c6ebf solid">
         <div class="fill-height pull-left" style="width: 50%;">
           <h2>垃圾投放量分析</h2>
@@ -169,7 +173,7 @@
                   <i class="mdi mdi-arrow-up-bold red-text"></i> 0% </label>
               </div>
             </div>
-          </div>
+          </div>  
         </div>
         <div style="width: 50%;float: right;height: 100%;position: relative;" fxLayout="row"
           fxLayoutAlign="center center">
@@ -199,10 +203,7 @@
             <div id="water" class="water-svg">
               <svg viewBox="0 0 560 20" class="water_wave water_wave_back">
                 <use xlink:href="#wave"></use>
-              </svg>
-              <!-- <svg viewBox="0 0 560 20" class="water_wave water_wave_front">
-                <use xlink:href="#wave"></use>
-              </svg> -->
+              </svg> 
             </div>
           </div>
           <div class="fill-width text-center" style="height: 64%;">
@@ -221,7 +222,11 @@
 
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <div class="card-wrapper p-l-20" style="padding-top: 15px;border:1px #5c6ebf solid">
+      <ng-container *ngIf="businessService.illegalDropHistoryCardConfig">
+        <business-card-grid [cardConfig]="businessService.illegalDropHistoryCardConfig">
+        </business-card-grid>
+      </ng-container>
+      <!-- <div class="card-wrapper p-l-20" style="padding-top: 15px;border:1px #5c6ebf solid">
         <div style="position:absolute;">
           <h2>垃圾投放量比对</h2>
         </div>
@@ -230,40 +235,29 @@
         <div class="card-angle top-right"></div>
         <div class="card-angle bottom-left"></div>
         <div class="card-angle bottom-right"></div>
-      </div>
+      </div> -->
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <ng-container *ngIf="illegalDropHistoryCardConfig">
-        <business-card-grid [cardConfig]="illegalDropHistoryCardConfig">
+     
+      <ng-container *ngIf="businessService.mixedIntoHistoryCardConfig">
+        <business-card-grid [cardConfig]="businessService.mixedIntoHistoryCardConfig">
         </business-card-grid>
       </ng-container>
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <div class="card-wrapper p-l-20" style="padding-top: 15px;border:1px #5c6ebf solid">
-        <div style="position:absolute;">
-          <h2>垃圾收运占比</h2>
-        </div>
-        <div class="p-t-10 height98 fill-width" style="position: relative;">
-          <div EChartPieOut [options]="pie"
-            style="width: 100%;height:100%;position: absolute;opacity: 0.3;top:0;left:0;"></div>
-          <div EChartPieMiddle [options]="pie"
-            style="width: 100%;height:100%;position: absolute;opacity: 0.6;top:0;left:0;"></div>
-          <div EChartPieIn [options]="pie" style="width: 100%;height:100%;position: absolute;top:0;left:0;"></div>
-        </div>
-        <div class="card-angle top-left"></div>
-        <div class="card-angle top-right"></div>
-        <div class="card-angle bottom-left"></div>
-        <div class="card-angle bottom-right"></div>
-      </div>
+      <ng-container *ngIf="businessService.stationDisposeScoreCardConfig">
+        <business-card-grid [cardConfig]="businessService.stationDisposeScoreCardConfig">
+        </business-card-grid>
+      </ng-container>
     </div>
   </div>
 
   <div id="inspection_view" class="inspection_view_1"  
    [ngStyle]="{'right':divisionBusinessService.inspectionSize.width +'px', 'bottom':divisionBusinessService.inspectionSize.height+'px','top':divisionBusinessService.inspectionSize.top+'px','left':divisionBusinessService.inspectionSize.left+'px'}"
-    *ngIf="inspectionConfig&&divisionBusinessService.inspectionView">
+    *ngIf="businessService.inspectionCardConfig&&divisionBusinessService.inspectionView">
     <div class="platform-body " style="height: 100%;">
       <div class="card-wrapper2">
-        <business-card-grid [cardConfig]="inspectionConfig">
+        <business-card-grid [cardConfig]="businessService.inspectionCardConfig">
         </business-card-grid> 
         <div class="card-angle top-left"></div>
         <div class="card-angle top-right"></div>

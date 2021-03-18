@@ -1,29 +1,23 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BarOption, LineOption, PieOption } from "../../common/directive/echarts/echart";
 import { IndexService } from "./business/index.service";
+import { BusinessService } from "./business/business.service";
 import { DivisionBusinessService } from "./business-card-grid/division-business.service";
 import { MQTTEventService } from '../../common/tool/mqtt-event/mqtt-event.service';
-import { EventPushService } from '../../common/tool/mqtt-event/event-push.service';
-import { DivisionTypeEnum } from '../../common/tool/enum-helper';
+import { EventPushService } from '../../common/tool/mqtt-event/event-push.service'; 
 import { AMapComponent } from "./amap/amap.component";
 import { Title } from '@angular/platform-browser';
 import { SessionUser } from "../../common/tool/session-user";
 import { ConfigRequestService } from "../../data-core/repuest/config.service";
 import { targetPosition, domSize } from "../../common/tool/jquery-help/jquery-help";
+import { BusinessManageService ,ViewDivisionTypeEnum} from "../../shared-module/business-component/business-manage-service";
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.styl'],
-  providers: [IndexService]
+  providers: [IndexService, BusinessService]
 })
-export class IndexComponent implements OnInit {
-  devCardConfig;
-  illegalDropEventCardConfig;
-  divisionGarbageSpCardConfig;
-  illegalDropTopCardConfig;
-  illegalDropHistoryCardConfig;
-  divisionConfig;
-  inspectionConfig;
+export class IndexComponent implements OnInit { 
 
   bar = new BarOption();
   line = new LineOption();
@@ -32,15 +26,16 @@ export class IndexComponent implements OnInit {
 
   moveMapSite: () => void;
   user = new SessionUser();
-  jw6 = [
-    '新虹', '广中', '黄山', '花园城', '八字桥',
-    '何家宅'
-  ]
+  userDivisionName_ = '';
+
+
   @ViewChild('aMap')
   aMap: AMapComponent;
   constructor(
     private indexService: IndexService
+    , private businessService: BusinessService
     , private titleService: Title
+    ,private businessManageService:BusinessManageService
     , private configService: ConfigRequestService
     , private eventPushService: EventPushService
     , private divisionBusinessService: DivisionBusinessService
@@ -69,100 +64,71 @@ export class IndexComponent implements OnInit {
     this.moveMapSite();
   }
 
-
   async ngOnInit() {
 
-    this.illegalDropEventCardConfig = new Array();
-    this.illegalDropEventCardConfig.push({
-      business: 'IllegalDropEvent',
-      flipTime: 60,
-      cardType: 'ImageThemeCardComponent',
-      state: false
-    });
-
-
+    this.businessService.setLogoTitle(); 
     const videoConfig = await this.configService.getVideo().toPromise();
-    this.user.video = videoConfig;
-    const county = await this.indexService.getCounty();
-    this.mqttSevice.listenerIllegalDrop(county.Id);
-    this.eventPushService.connectionState.subscribe((b) => {
+    this.user.video = videoConfig; 
+    this.mqttSevice.listenerIllegalDrop(this.businessService.user.userDivision.pop().Id);
+    this.eventPushService.connectionState.subscribe((b: any) => {
       this.divisionBusinessService.changeMqttState(b);
     });
-    const committesIds = await this.indexService.getCommittesIds();
-    this.divisionBusinessService.committesIds = committesIds;
-    this.divisionBusinessService.divisionsId = county.Id;
-    this.divisionConfig = new Array();
-    this.divisionConfig.push({
-      business: 'DivisionList',
-      cardType: 'HeaderSquareListComponent',
-      border: false
-    });
-    this.devCardConfig = new Array();
-    this.devCardConfig.push({
-      business: 'DeviceStatusStatistic',
-      cardType: 'StateScaleCardComponent',
-      dataTime: 60,
-      divisionsId: county.Id,
-      // defaultViewMoel: this.indexService.getStateScale
-    });
+   
+    this.businessService.initCardConfig();
 
+    setTimeout(() => { 
+      this.divisionBusinessService.divisionsId = this.businessService.user.userDivision.pop().Id;
+      this.divisionBusinessService.bindingEvent();
+    }, 500); 
 
-    this.divisionGarbageSpCardConfig = new Array();
-    this.divisionGarbageSpCardConfig.push({
-      business: 'DivisionGarbageSpecification',
-      cardType: 'HintCardComponent',
-      divisionsId: county.Id,
-      dataTime: 60,
-      border: false
-    });
-    this.illegalDropTopCardConfig = new Array();
-    this.illegalDropTopCardConfig.push({
-      business: 'IllegalDropOrder',
-      cardType: 'OrderTableCardComponent',
-      divisionsIds: committesIds,
-      dataTime: 60,
-      // defaultViewMoel: this.indexService.defaultOrderTable,
-      divisionsType: DivisionTypeEnum.County,
-    });
-    this.illegalDropHistoryCardConfig = new Array();
-    this.illegalDropHistoryCardConfig.push({
-      business: 'IllegalDropHistory',
-      cardType: 'LineEChartsCardComponent',
-      divisionsId: county.Id,
-      flipTime: 60 * 3,
-      dataTime: 60
-    });
-    this.inspectionConfig = new Array();
-    this.inspectionConfig.push({
-      business: 'GarbageStationInspection',
-      cardType: 'GalleryRollPageComponent',
-      divisionsId: county.Id,
-      border: false
-    });
+ 
     this.divisionBusinessService.nspectionParam = (val) => {
-      this.inspectionConfig = [{
-        business: 'GarbageStationInspection',
-        cardType: 'GalleryRollPageComponent',
-        divisionsId: val,
-        border: false
-      }];
+      this.businessService.inspectionCard(val);
+      // this.inspectionConfig = [{
+      //   business: 'GarbageStationInspection',
+      //   cardType: 'GalleryRollPageComponent',
+      //   divisionsId: val,
+      //   border: false
+      // }];
     }
     this.moveMapSite = () => {
-      this.divisionBusinessService.aMap.VillageSelect(county.Id, false);
+      const mapStation = (station:any)=>{
+        this.businessManageService.viewDivisionType=ViewDivisionTypeEnum.MapStation;
+        this.businessManageService.station=station;
+      }
+      this.divisionBusinessService.aMap.VillageSelect(this.businessService.user.userDivision.pop().Id, false);
+      this.aMap.ContextMenuIllegalDropClickedEvent.subscribe(station =>{
+        mapStation(station);
+        this.divisionBusinessService.illegalDrop();
+      });
+      this.aMap.ContextMenuMixedIntoClickedEvent.subscribe(station =>{
+        mapStation(station);
+        this.divisionBusinessService.mixedInto();
+      });
+      this.aMap.ContextMenuStationPatrolClickedEvent.subscribe(station =>{      
+          this.showInspectionView(station);
+      });
+      this.aMap.ContextMenuGarbageCountClickedEvent.subscribe(station =>{
+        mapStation(station);
+        this.divisionBusinessService.stationListView=true;
+        this.divisionBusinessService.eventHistoryView = true;
+      });
     }
-    this.divisionBusinessService.bindingEvent();
+
   }
 
   logOut() {
     this.user.clear = null;
   }
 
-  showVsView(){
+  showVsView() {
     this.divisionBusinessService.eventHistoryView = true;
     this.divisionBusinessService.vsClassStatistic = true;
   }
 
-  showInspectionView() {
+  showInspectionView(station?:any) {
+    if(station) this.businessService.inspectionCard(this.divisionBusinessService.divisionsId,station.Id);
+    else  this.businessService.inspectionCard();
     this.divisionBusinessService.inspectionView = true;
     this.divisionBusinessService.bindingEvent2();
     const show = () => {

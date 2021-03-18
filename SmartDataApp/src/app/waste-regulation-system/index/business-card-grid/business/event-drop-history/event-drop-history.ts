@@ -19,6 +19,7 @@ export class EventDropHistory  extends BaseBusinessRefresh {
        
         
         let data = await (this.dataServe as StatisticalDataBufferService).getDivisionEventNumbers(divisionId, TimeUnitEnum.Hour);
+    console.log(data);
     
         for (var x of data) {
             for (const y of x.EventNumbers) 

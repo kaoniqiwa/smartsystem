@@ -8,4 +8,5 @@ export class Division implements IBusinessData {
     name: string;
     divisionType: number;
     parentId:string;
+    root:boolean;
 }

@@ -31,11 +31,13 @@ import { EventRequestService } from "../../../data-core/repuest/Illegal-drop-eve
 import { targetPosition, domSize } from "../../../common/tool/jquery-help/jquery-help";
 import { isBoolean, isString } from "util";
 import { BusinessEventTypeEnum } from '../../../shared-module/business-component/event-history/business-event-type';
+import {ComponentService  } from "../../../shared-module/component-service";
 @Injectable({
     providedIn: 'root'
 })
 export class DivisionBusinessService {
     componets = new Array<BusinessViewComponetConstructor>();
+    galleryRollPage:BusinessViewComponetConstructor;
     childrenDivisionIds: string[];
     aMap: AMapComponent;
     /**区划 */
@@ -58,6 +60,7 @@ export class DivisionBusinessService {
     /** 统计页面默认搜索图表 */
     illegalDropChartDefault = new EventEmitter<any>();
     constructor(private cameraService: CameraRequestService
+        ,private componentService:ComponentService
         , private eventRequestService: EventRequestService
         , private stationService: GarbageStationRequestService) {
 
@@ -66,6 +69,20 @@ export class DivisionBusinessService {
     get businessEventType() {
         if (this.mixedIntoMode) return BusinessEventTypeEnum.MixedInfo;
         else if (this.illegalDropMode) return BusinessEventTypeEnum.IllegalDrop;
+    }
+
+    /**显示乱扔垃圾view */
+    illegalDrop(){
+        this.illegalDropMode = new FillMode();
+        this.illegalDropMode.divisionId = this.divisionsId;
+        this.eventHistoryView = true;
+    }
+
+    /**显示混合投放view */
+    mixedInto(){
+        this.mixedIntoMode = new FillMode();
+        this.mixedIntoMode.divisionId =this.divisionsId;
+        this.eventHistoryView = true;
     }
 
     bindingEvent() {
@@ -78,7 +95,7 @@ export class DivisionBusinessService {
                         ,eventTypes = [EventTypeEnum.IllegalDrop,EventTypeEnum.MixedInto,EventTypeEnum.IllegalDrop,EventTypeEnum.MixedInto];
                         param.map.set('divisionId', val.id);
                         param.map.set('divisionType', val.type);
-                        param.map.set('divisionsIds', this.childrenDivisionIds);
+                       // param.map.set('divisionsIds', [val.id]);
                         this.nspectionParam(val.id);
                         this.divisionsId = val.id;
                         if(this.aMap)
@@ -88,18 +105,40 @@ export class DivisionBusinessService {
                         for (const x of this.componets) {
                             if (x.list[0].view instanceof HeaderSquareListComponent) { }
                             else {
-                                if (x.list[0].business instanceof BaseBusinessRefresh) {   console.log(x.list[0].business );
+                                if (x.list[0].business instanceof BaseBusinessRefresh) {   
                                 
                                     /**小包处置跳过 */         
                                     if(x.list[0].business instanceof StationDisposeScore)continue;
                                     /**加上事件 类别 */
                                     if(x.list[0].business instanceof EventDropHistory
                                     ||x.list[0].business instanceof  EventDropOrder)                                  
+                                  {
                                     param.map.set('eventType',eventTypes.shift());
+                                    setTimeout(() => {
+                                       const divisionDrop = new Map<DivisionTypeEnum, Array<{ id: string, name: string }>>();
+                                        divisionDrop.set(DivisionTypeEnum.City, [{
+                                            id: DivisionTypeEnum.County + '',
+                                            name: '街道'
+                                        }, {
+                                            id: DivisionTypeEnum.Committees + '',
+                                            name: '居委'
+                                        }]);
+                                        divisionDrop.set(DivisionTypeEnum.County, [{
+                                            id: DivisionTypeEnum.Committees + '',
+                                            name: '居委'
+                                        }, {
+                                            id: 'station',
+                                            name: '投放点'
+                                        }]);
+                                        this.componentService.selectOptionEventEmitter.emit(divisionDrop.get(val.type));
+                                    },100);
+                                  }
                                   
 
                                     x.list[0].business.businessParameter = param;
                                     x.list[0].view.loadDatas(new ViewsModel());
+
+                                   
                                 }
                                 setTimeout(() => {
                                     if (x.list[0].view instanceof GalleryRollPageComponent) {
@@ -158,8 +197,8 @@ export class DivisionBusinessService {
                         param.map.set('divisionType', (item.id==stationKey?null:item.id));   
                         param.map.set('eventType', item.eventType);                
                         param.map.set('dropList', item.id);   
-                        if(item.id!=stationKey)
-                            param.map.set('divisionsIds', this.childrenDivisionIds);
+                        // if(item.id!=stationKey)
+                        //     param.map.set('divisionsIds', this.childrenDivisionIds);
                         for (const x of this.componets) {
                             if (x.list[0].view instanceof OrderTableCardComponent) { 
                            
@@ -181,7 +220,8 @@ export class DivisionBusinessService {
 
     bindingEvent2() {
         setTimeout(() => {
-            for (const x of this.componets) {
+            for (const x of this.componets) { 
+            
                 if (x.list[0].view instanceof GalleryRollPageComponent) {
                     /**
                      * 
@@ -195,13 +235,13 @@ export class DivisionBusinessService {
                         this.inspectionSize.width = s.width - g.left + 17;
                         this.inspectionSize.height = san.top - 5;
                     }
-                    x.list[0].view.btnControl = async (i) => {
+                    x.list[0].view.btnControl = async (i) => { 
                         if (i == null) {
                             this.inspectionView = false;
                             setTimeout(() => {
                                 s_view();
                                 this.aMap.MapReload();
-                            });
+                            },200);
                         }
                         else if (isBoolean(i)) {
                             this.inspectionViewMaxPostion = i;
@@ -266,6 +306,7 @@ export class DivisionBusinessService {
 
                         }
                     }
+                    break;
                 }
             }
         });

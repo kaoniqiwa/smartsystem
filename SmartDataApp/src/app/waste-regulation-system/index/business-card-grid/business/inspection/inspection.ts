@@ -10,9 +10,15 @@ export class GarbageInspection extends BaseBusinessRefresh {
 
     async getData() {
         const divisionsId = this.businessParameter.map.get('divisionId')
+            ,stationId = this.businessParameter.map.get('stationId')//第一个显示
             , model = new GarbageStationInspection()
             , garbageStations = await (this.dataServe as StatisticalDataBufferService).getGarbageStations(divisionsId);
-        model.garbageStations = garbageStations;
+        if(stationId){ 
+            model.garbageStations= garbageStations.filter(g=>g.Id == stationId);
+            garbageStations.filter(g=>g.Id != stationId).map(s=> model.garbageStations.push(s));
+        }
+        else 
+          model.garbageStations = garbageStations;
         const stationIds = new Array<string>();
         garbageStations.map(x=>stationIds.push(x.Id));
         const events =  await (this.dataServe as StatisticalDataBufferService).getStationsIllegalDropEvent(stationIds).toPromise();

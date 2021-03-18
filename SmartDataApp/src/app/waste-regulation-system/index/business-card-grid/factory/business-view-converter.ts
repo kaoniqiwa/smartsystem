@@ -1,6 +1,6 @@
 /**
  * Developer 施文斌
- * LastUpdateTime 
+ * LastUpdateTime  21.3.17
  */
 import { DropEvent } from "../business/event-drop-history/data";
 import { StationsScoreInfo } from "../business/station-dispose-score/data";
@@ -21,8 +21,8 @@ import { ViewsModel } from '../../../../common/abstract/base-view';
 import { IConverter } from "../../../../common/interface/IConverter";
 import { Injector, Injectable } from '@angular/core';
 import { LineOption } from '../../../../common/directive/echarts/echart';
-import { Percentage, TimeInterval, DateInterval, IntegerDecimalNum } from '../../../../common/tool/tool.service'
-import { DivisionTypeEnum, EnumHelper, EventTypeEnum } from "../../../../common/tool/enum-helper";
+import { Percentage,DateInterval, IntegerDecimalNum } from '../../../../common/tool/tool.service'
+import { EnumHelper, EventTypeEnum } from "../../../../common/tool/enum-helper";
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
 import { EventNumber } from '../../../../data-core/model/waste-regulation/event-number';
 import { ColorEnum } from '../../../../shared-module/card-component/card-content-factory';
@@ -140,12 +140,17 @@ export class DevStatusCardConverter implements IConverter {
                         return Arc._20;
 
                 };
-
+                enum StateColorEnum{
+                    '正常'='green-text',
+                    '中度'='orange-text',
+                    '严重'='powder-red-text'
+                }
             output.views[0].arc = arcVal(percent);
             output.views[0].stateLabel = {
                 subTitle: '系统设备在线比',
                 scaleNumber: percent + '',
                 state: level(percent),
+                color:StateColorEnum[level(percent)]
             }
             output.views[0].detail.push({
                 label: '全部设备数量',
@@ -178,16 +183,21 @@ export class DivisionListConverter implements IConverter {
         output.pageIndex = 1;
         if (input instanceof Divisions) {
             output.views[0].squareItems = new Array();
-            const countys = input.items.filter(x => x.divisionType == DivisionTypeEnum.County),
-                committees = input.items.filter(x => x.divisionType == DivisionTypeEnum.Committees);
+            const countys = input.items.filter(x => x.root == true),
+                committees = input.items.filter(x => x.root == false && x.parentId == countys[0].id);
 
             for (let i = 0; i < countys.length; i++)
-                output.views[0].squareItems.push(new SquareItem(countys[i].id, countys[i].name, DivisionTypeEnum.County));
+                output.views[0].squareItems.push(new SquareItem(countys[i].id, countys[i].name, countys[i].divisionType));
 
             for (let i = 0; i < committees.length; i++)
-                output.views[0].squareItems.push(new SquareItem(committees[i].id, committees[i].name, DivisionTypeEnum.Committees, committees[i].parentId));
+                output.views[0].squareItems.push(new SquareItem(committees[i].id, committees[i].name, committees[i].divisionType, committees[i].parentId));
+
+                /**填补空白 样式走样 */
+            // for (let i = 0; i < (12 - committees.length); i++)
+            //     output.views[0].fillView.push('');
             if (countys.length)
                 output.views[0].changebodyView = countys[0].id;
+                
         }
         return output;
     }
@@ -253,29 +263,29 @@ export class IllegalDropOrderConverter implements IConverter {
             const sort = input.items.sort((a, b) => {
                 return b.dropNum - a.dropNum
             });
-            for (const x of sort) 
+            for (const x of sort)
                 output.views[0].table.push({
                     name: x.division,
                     subName: x.dropNum + '',
                     subNameAfter: '起'
                 });
             /**补空行 */
-            const len=output.views[0].table.length;
-                if (len < 6)
-                    for (let i = 0; i < (6-len); i++) 
-                        output.views[0].table.push({
-                            name: '-',
-                            subName: '0',
-                            subNameAfter: '起'
-                        });
+            const len = output.views[0].table.length;
+            if (len < 6)
+                for (let i = 0; i < (6 - len); i++)
+                    output.views[0].table.push({
+                        name: '-',
+                        subName: '0',
+                        subNameAfter: '起'
+                    });
 
-                
+
             if (input.dropList)
                 output.views[0].dropList = {
                     listNodes: input.dropList
                     , fontSize: '18px'
                     , defaultId: input.defaultId
-                    ,eventType:EventTypeEnum.IllegalDrop
+                    , eventType: EventTypeEnum.IllegalDrop
                 }
 
         }
@@ -296,16 +306,16 @@ export class MixedIntoDropOrderConverter implements IConverter {
             const sort = input.items.sort((a, b) => {
                 return b.dropNum - a.dropNum
             });
-            for (const x of sort) 
+            for (const x of sort)
                 output.views[0].table.push({
                     name: x.division,
                     subName: x.dropNum + '',
                     subNameAfter: '起'
-                }); 
-                /**补空行 */
-            const len=output.views[0].table.length;
+                });
+            /**补空行 */
+            const len = output.views[0].table.length;
             if (len < 6)
-                for (let i = 0; i < (6-len); i++) 
+                for (let i = 0; i < (6 - len); i++)
                     output.views[0].table.push({
                         name: '-',
                         subName: '0',
@@ -315,8 +325,8 @@ export class MixedIntoDropOrderConverter implements IConverter {
                 output.views[0].dropList = {
                     listNodes: input.dropList
                     , fontSize: '18px'
-                    ,defaultId: input.defaultId
-                    ,eventType:EventTypeEnum.MixedInto
+                    , defaultId: input.defaultId
+                    , eventType: EventTypeEnum.MixedInto
                 }
         }
         return output;
@@ -336,22 +346,22 @@ export class StationDisposeScoreConverter implements IConverter {
             const sort = input.items.sort((a, b) => {
                 return a.score - b.score
             });
-            for (const x of sort) 
+            for (const x of sort)
                 output.views[0].table.push({
                     name: x.station,
                     subName: IntegerDecimalNum(x.score + ''),
                     subNameAfter: x.unit
                 });
-            
-                /**补空行 */
-                const len=output.views[0].table.length;
-                if (len < 6)
-                    for (let i = 0; i < (6-len); i++) 
-                        output.views[0].table.push({
-                            name: '-',
-                            subName: '0',
-                            subNameAfter: '起'
-                        });
+
+            /**补空行 */
+            const len = output.views[0].table.length;
+            if (len < 6)
+                for (let i = 0; i < (6 - len); i++)
+                    output.views[0].table.push({
+                        name: '-',
+                        subName: '0',
+                        subNameAfter: '起'
+                    });
         }
         return output;
     }

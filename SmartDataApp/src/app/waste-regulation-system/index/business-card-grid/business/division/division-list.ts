@@ -15,15 +15,23 @@ export class DivisionList extends BaseBusinessRefresh {
         model.items = new Array();
         const ancestorDivisions = await (this.dataServe as StatisticalDataBufferService).ancestorDivisions(divisionId)
         , divisions = await (this.dataServe as StatisticalDataBufferService).ancestorDivisions(null,divisionId);
-        ancestorDivisions.push(divisions.pop());
+      
         for (const d of ancestorDivisions) {
             const _ = new Division();
             _.id = d.Id;
             _.name = d.Name;
             _.divisionType = d.DivisionType;
             _.parentId=d.ParentId;
+            _.root=false;
             model.items.push(_);
-        }
+        } 
+        const ds = new Division();
+        ds.id=divisions[0].Id;
+        ds.name=divisions[0].Name;
+        ds.divisionType=divisions[0].DivisionType;
+        ds.parentId=divisions[0].ParentId;
+        ds.root=true; 
+        model.items.push(ds);
         return model;
     }
 }

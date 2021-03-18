@@ -34,8 +34,7 @@ export class BusinessService {
         this.illegalDropHistoryCard();
         this.mixedIntoHistoryCard();
         this.stationDisposeScoreCard();
-        this.devCard();
-        this.inspectionCard();
+        this.devCard(); 
         this.divisionGarbageSpCard();
     }
 
@@ -50,13 +49,22 @@ export class BusinessService {
         });
     }
 
-    inspectionCard(divisionId?: string) {
-        this.inspectionCardConfig = [{
-            business: 'GarbageStationInspection',
-            cardType: 'GalleryRollPageComponent',
-            divisionId: divisionId || this.user.userDivision.pop().Id,
-            border: false
-        }];
+    inspectionCard(divisionId?: string, stationId?: string) {
+        if (stationId&&divisionId)
+            this.inspectionCardConfig = [{
+                business: 'GarbageStationInspection',
+                cardType: 'GalleryRollPageComponent',
+                stationId: stationId,
+                divisionId: divisionId,
+                border: false
+            }];
+        else
+            this.inspectionCardConfig = [{
+                business: 'GarbageStationInspection',
+                cardType: 'GalleryRollPageComponent',
+                divisionId: divisionId || this.user.userDivision.pop().Id,
+                border: false
+            }];
     }
 
     devCard() {
@@ -120,8 +128,8 @@ export class BusinessService {
         this.illegalDropTopCardConfig.push({
             business: 'IllegalDropOrder',
             cardType: 'OrderTableCardComponent',
-            divisionsIds: param.divisionsIds,
-            divisionId: '',
+            //divisionsIds: param.divisionsIds,
+            divisionId: this.user.userDivision.pop().Id,
             dataTime: 60,
             eventType: EventTypeEnum.IllegalDrop,
             divisionType: param.divisionType
@@ -134,8 +142,8 @@ export class BusinessService {
         this.mixedIntoDropTopCardConfig.push({
             business: 'MixedIntoDropOrder',
             cardType: 'OrderTableCardComponent',
-            divisionsIds: param.divisionsIds,
-            divisionId: '',
+            //divisionsIds: param.divisionsIds,
+            divisionId: this.user.userDivision.pop().Id,
             dataTime: 60,
             eventType: EventTypeEnum.MixedInto,
             divisionType: param.divisionType
