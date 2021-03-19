@@ -31,16 +31,16 @@ export class EventDropOrder extends BaseBusinessRefresh {
             id: 'station',
             name: '投放点'
         }]);
-        model.items = new Array();
-        const divisionId = this.businessParameter.map.get('divisionId') as string //父区划
-            // , divisionsIds = this.businessParameter.map.get('divisionsIds') as Array<string>//子区划
+        model.items = new Array(); 
+        const divisionId = this.businessParameter.map.get('divisionId') as string //父区划 
             , divisionType = this.businessParameter.map.get('divisionType') as DivisionTypeEnum
             , eventType = this.businessParameter.map.get('eventType') as EventTypeEnum
             , dropList = this.businessParameter.map.get('dropList') as string
             , division = await (this.dataServe as StatisticalDataBufferService).ancestorDivisions(null, divisionId)
             , fillIllegalDropInfo = async () => {
                 const ancestorDivisions = await (this.dataServe as StatisticalDataBufferService).ancestorDivisions(divisionId)
-                    , ids = new Array<string>(); 
+                    , ids = new Array<string>();  
+                
                 switch (dropList) {
                     case DivisionTypeEnum.County + '':
                         ancestorDivisions.filter(f => f.DivisionType == DivisionTypeEnum.County).map(d => ids.push(d.Id));
@@ -48,33 +48,33 @@ export class EventDropOrder extends BaseBusinessRefresh {
 
                     case DivisionTypeEnum.Committees + '':
                         ancestorDivisions.filter(f => f.DivisionType == DivisionTypeEnum.Committees).map(d => ids.push(d.Id));
-
-                        break; 
+                        break;
                     default:
                         ancestorDivisions.filter(f => f.ParentId == divisionId).map(d => ids.push(d.Id));
                         break;
-                }
-
+                } 
+               
                 const data = await (this.dataServe as StatisticalDataBufferService).postDivisionStatisticNumbers(ids);
                 for (const x of data) {
                     const info = new EventDropInfo();
                     model.items.push(info);
                     info.division = x.Name;
-                    info.dropNum = 0;
+                    info.dropNum = 0;                   
                     for (const v of x.TodayEventNumbers)
                         if (v.EventType == eventType)
                             info.dropNum += v.DayNumber;
                 }
+               
             }
             , stationDropInfo = async () => {
                 const stations = await (this.dataServe as StatisticalDataBufferService).getGarbageStations(divisionId)
                     , stationIds = new Array<string>();
-                    
+
                 for (const x of stations)
                     stationIds.push(x.Id);
                 if (stationIds.length) {
                     const data = await (this.dataServe as StatisticalDataBufferService).postGarbageStationStatisticNumbers(stationIds);
-                    console.log(data,stationIds);
+                    // console.log(data,stationIds);
                     for (const x of data) {
                         const info = new EventDropInfo();
                         model.items.push(info);
@@ -85,24 +85,24 @@ export class EventDropOrder extends BaseBusinessRefresh {
                                 info.dropNum += v.DayNumber;
                     }
                 }
-              
+
             };
 
 
         model.eventType = eventType;
 
-        if (dropList) {           
+        if (dropList) {
             model.dropList = divisionDrop.get(division[0].DivisionType);
-                //统计街道 乱扔垃圾
-            if(dropList =='station') 
+            //统计街道 乱扔垃圾
+            if (dropList == 'station')
                 await stationDropInfo();
             else await fillIllegalDropInfo();
             model.defaultId = dropList;
         }
-        else {            
+        else {
             model.dropList = divisionDrop.get(division[0].DivisionType);
-            
-            if (divisionType == DivisionTypeEnum.City) {  
+
+            if (divisionType == DivisionTypeEnum.City) {
                 model.defaultId = DivisionTypeEnum.County + '';
                 //统计街道 统计居委 乱扔垃圾
                 await fillIllegalDropInfo();
@@ -116,7 +116,7 @@ export class EventDropOrder extends BaseBusinessRefresh {
             else if (divisionType == DivisionTypeEnum.Committees) {
                 //统计投放点 乱扔垃圾
                 await stationDropInfo();
-            } 
+            }
         }
         return model;
     }
