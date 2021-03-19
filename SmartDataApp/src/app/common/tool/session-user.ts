@@ -9,6 +9,16 @@ export class SessionUser {
     private readonly divisionsKey = 'like_divisions';
     private readonly stationsKey = 'like_stations';
     private readonly userDivisionKey='user_division';
+    private readonly userDivisionTypeKey='user_division_type';
+
+    set userDivisionType(val:string){
+        localStorage.setItem(this.userDivisionTypeKey,val);
+    }
+
+    get userDivisionType(){
+        const val = localStorage.getItem(this.userDivisionTypeKey);
+        return val;
+    }
 
     set userDivision(val:Array<{Id:string,Name:string,ResourceType:number}>){
         localStorage.setItem(this.userDivisionKey,JSON.stringify(val));

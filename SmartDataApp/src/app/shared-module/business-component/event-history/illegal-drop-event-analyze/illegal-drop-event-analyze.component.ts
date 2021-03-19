@@ -9,11 +9,13 @@ import { DivisionBusinessService } from "../../../../waste-regulation-system/ind
 import { HowellExcelV1 } from "../../../../common/tool/hw-excel-js/hw-excel-v1";
 import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
 import { BusinessEventTypeEnum } from '../business-event-type';
+import { ClassTypeEnum } from "./business/search";
+import { DivisionDao } from "../../../../data-core/dao/division-dao";
 @Component({
   selector: 'hw-illegal-drop-event-analyze',
   templateUrl: './illegal-drop-event-analyze.component.html',
   styleUrls: ['./illegal-drop-event-analyze.component.styl'],
-  providers: [BusinessService]
+  providers: [BusinessService,DivisionDao]
 })
 export class IllegalDropEventAnalyzeComponent implements OnInit {
   @Input() businessEventType = BusinessEventTypeEnum.IllegalDrop;
@@ -30,13 +32,14 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
 
   @Input() isDefaultSearch = false;
 
-  classText = '居委会';
+  classText = '街道';
   otherView = OtherViewEnum;
 
   startDate = (b: Date) => {
     this.businessService.search.formBeginDate = b;
   }
   constructor(private businessService: BusinessService
+    ,private divisionDao:DivisionDao
     , private configRequestService: ConfigRequestService
     , private divisionBusinessService: DivisionBusinessService) { }
 
@@ -45,6 +48,7 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
     setTimeout(() => {
       if (this.isDefaultSearch && this.divisionBusinessService.divisionsId) this.defaultSearch = this.divisionBusinessService.divisionsId;
     }, 1200);
+    this.divisionDao.allDivisions().then(d=>this.businessService.divisions=d);
   }
 
   changeView(tagIndex: number) {
@@ -61,9 +65,23 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
 
   changeClassType() {
     this.dropList.clearSelectedTexts();
-    this.businessService.changeClassType((val: boolean) => {
-      this.dropList.onlyDivisionNode = val;
-      this.classText = val ? '居委会' : '垃圾房';
+    enum ClassTextEnum{
+      county='街道',
+      committees='居委会',
+      station='投放点'
+    }
+    this.businessService.changeClassType((ct:string) => {
+      //this.dropList.onlyDivisionNode = dn;
+      if(ct==ClassTypeEnum.County)this.dropList.onlyCityNode=true;
+      else if(ct==ClassTypeEnum.Committees){
+        this.dropList.onlyDivisionNode=true;
+        this.dropList.onlyCityNode=false;
+      }
+      else if(ct==ClassTypeEnum.Station){
+        this.dropList.onlyDivisionNode=false;
+        this.dropList.onlyCityNode=false;
+      }
+      this.classText = ClassTextEnum[ct];
       this.dropList.r();
       this.dropList.reInit();
     });
@@ -83,7 +101,7 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
     if (ids.length <= 3 && ids.length > 0) {
       this.businessService.toDivisionIdsOrStationIds(ids);
       this.businessService.requestData(this.dropList.selectedTexts);
-      this.businessService.requestTodayEventData(this.dropList.onlyDivisionNode);
+      this.businessService.requestTodayEventData(this.dropList.onlyDivisionNode,this.dropList.onlyCityNode);
     }
     else if (ids.length > 3)
       new MessageBar().response_warning('最大3个对象');

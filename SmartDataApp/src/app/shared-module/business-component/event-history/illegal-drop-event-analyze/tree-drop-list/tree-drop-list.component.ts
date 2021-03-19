@@ -12,7 +12,7 @@ import { DivisionDao } from '../../../../../data-core/dao/division-dao';
   selector: 'hw-tree-drop-list',
   templateUrl: './tree-drop-list.component.html',
   styleUrls: ['./tree-drop-list.component.styl'],
-  providers: [StationTreeService, DataService,GarbageStationDao,DivisionDao]
+  providers: [StationTreeService, DataService, GarbageStationDao, DivisionDao]
 })
 export class TreeDropListComponent implements OnInit {
   showBody = false;
@@ -26,28 +26,37 @@ export class TreeDropListComponent implements OnInit {
   onlyDivisionNode = false;
 
   @Input()
+  onlyCityNode = false;
+
+  @Input()
   selectedItemFn: (item: FlatNode, lastNode: boolean) => void;
 
   selectedItemClick = (item: FlatNode) => {
     this.selectedTexts = new Array();
     for (let key of this.garbageStationTree.flatNodeMap.keys()) {
-      if (key.checked && key.level != 0&& this.stationTreeService.isLastNode(key.id)) {               
-        if(!this.onlyDivisionNode&&key.iconClass== "howell-icon-garbage")
+      if (key.checked && key.level != 0 && this.stationTreeService.isLastNode(key.id)) {
+        if(this.onlyCityNode){
           this.selectedTexts.push({
             id: key.id,
             text: key.name
           });
-          else   if(this.onlyDivisionNode&&key.iconClass== "howell-icon-map5")
+        }
+        if (!this.onlyDivisionNode && key.iconClass == "howell-icon-garbage")
           this.selectedTexts.push({
             id: key.id,
             text: key.name
-          });      
+          });
+        else if (this.onlyDivisionNode && key.iconClass == "howell-icon-map5")
+          this.selectedTexts.push({
+            id: key.id,
+            text: key.name
+          });
       }
     }
   }
 
-  clearSelectedTexts(){
-    this.selectedTexts=new Array();
+  clearSelectedTexts() {
+    this.selectedTexts = new Array();
   }
 
   treeListMode = TreeListMode.checkedBox;
@@ -60,10 +69,10 @@ export class TreeDropListComponent implements OnInit {
     this.garbageStationTree.treeControl.expandAll();
   }
   constructor(private stationTreeService: StationTreeService
-    ,private garbageStationDao:GarbageStationDao
-    ,private divisionDao:DivisionDao
+    , private garbageStationDao: GarbageStationDao
+    , private divisionDao: DivisionDao
     , public dataService: DataService
-    ) {
+  ) {
   }
 
   closeChecked(val: { id: string, text: string }) {
@@ -96,36 +105,45 @@ export class TreeDropListComponent implements OnInit {
     this.reInit();
   }
 
-  set defaultSearch(id:string){
+  set defaultSearch(id: string) {
     const node = this.findNode(id);
     this.garbageStationTree.itemClick(node);
   }
 
-  r(){
+  r() {
     this.garbageStationTree.clearNestedNode();
     this.stationTreeService.treeNode = new Array();
     this.garbageStationTree.dataSource.data = new Array();
   }
 
   async reInit() {
-    if (this.dataService.divisions.length==0)
+    if (this.dataService.divisions.length == 0)
       this.dataService.divisions = await this.divisionDao.allDivisions();
-    const ancestorDivision = this.dataService.divisions.find(x => x.ParentId == void 0 || x.IsLeaf==false); 
     this.stationTreeService.divisions.items = new Array();
-    this.stationTreeService.divisionModel = this.dataService.divisions.filter(x=>x.DivisionType>DivisionTypeEnum.City);
-    if (this.onlyDivisionNode) {
+    if (this.onlyCityNode) {
+      this.stationTreeService.cityDivisionModel = this.dataService.divisions.filter(x => x.DivisionType < DivisionTypeEnum.Committees);
       const nodes = this.stationTreeService.convertTreeNode(this.stationTreeService.divisions);
       this.stationTreeService.dataSource = nodes;
     }
-    else { 
-      if (ancestorDivision && this.dataService.garbageStations.length==0)
-        this.dataService.garbageStations = await this.garbageStationDao.requestGarbageStation(ancestorDivision.Id);
-        this.stationTreeService.garbageStations.items= new Array();
-      this.stationTreeService.garbageStationModel = this.dataService.garbageStations;
-      this.stationTreeService.convertStationTreeNode();
-    } 
+    else {
+      const ancestorDivision = this.dataService.divisions.find(x => x.ParentId == void 0 || x.IsLeaf == false);
+      // this.stationTreeService.divisions.items = new Array();
+      this.stationTreeService.divisionModel = this.dataService.divisions.filter(x => x.DivisionType > DivisionTypeEnum.City);
+      if (this.onlyDivisionNode) {
+        const nodes = this.stationTreeService.convertTreeNode(this.stationTreeService.divisions);
+        this.stationTreeService.dataSource = nodes;
+      }
+      else {
+        if (ancestorDivision && this.dataService.garbageStations.length == 0)
+          this.dataService.garbageStations = await this.garbageStationDao.requestGarbageStation(ancestorDivision.Id);
+        this.stationTreeService.garbageStations.items = new Array();
+        this.stationTreeService.garbageStationModel = this.dataService.garbageStations;
+        this.stationTreeService.convertStationTreeNode();
+      }
+    }
+
     this.stationTreeService.loadStationTree();
-    this.garbageStationTree.dataSource.data = this.stationTreeService.treeNode; 
+    this.garbageStationTree.dataSource.data = this.stationTreeService.treeNode;
     // for (let key of this.garbageStationTree.flatNodeMap.keys())
     //   key.checked=false;
   }
