@@ -7,7 +7,7 @@ import { GarbageStationDao } from "../../../../data-core/dao/garbage-station-dao
 import { ConfigRequestService } from "../../../../data-core/repuest/config.service";
 import { HowellExcelV1 } from "../../../../common/tool/hw-excel-js/hw-excel-v1";
 import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
-import { BusinessEventTypeEnum } from '../business-event-type';
+import { BusinessEventTypeEnum } from '../business-event-type'; 
 @Component({
   selector: 'hw-illegal-drop-event-analyze-v2',
   templateUrl: './illegal-drop-event-analyze-v2.component.html',
@@ -34,7 +34,7 @@ export class IllegalDropEventAnalyzeV2Component implements OnInit {
   }
   constructor(private businessService: BusinessService
     , private configRequestService: ConfigRequestService
-    , private divisionDao: DivisionDao
+    , private divisionDao: DivisionDao 
     , private garbageStationDao: GarbageStationDao) { }
 
   async ngOnInit() {
@@ -43,6 +43,7 @@ export class IllegalDropEventAnalyzeV2Component implements OnInit {
     this.garbageStationDao.allGarbageStations().then(x => this.businessService.garbageStations = x);
 
   }
+
 
   changeTimeType() {
     const val = this.businessService.changeDatePicker();

@@ -42,7 +42,8 @@
         <span class="input-text" style="position: relative;top:2px">对象类型</span>
         <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 82px);"
           formControlName="ClassType">
-          <option value="division">居委会</option>
+          <option *ngIf="businessService.cityOption" value="county">街道</option>
+          <option value="committees">居委会</option>
           <option value="station">垃圾房</option>
         </select>
       </div>

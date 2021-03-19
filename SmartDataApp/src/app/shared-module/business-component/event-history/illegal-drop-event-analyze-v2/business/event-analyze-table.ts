@@ -1,12 +1,13 @@
 
 import { IConverter } from "../../../../../common/interface/IConverter"; 
-import { CustomTableEvent } from "../../../../custom-table/custom-table-event";
+import { CustomTableEvent,CustomTableEventEnum } from "../../../../custom-table/custom-table-event";
 import { CustomTableArgs, FootArgs, TableAttr } from "../../../../custom-table/custom-table-model";
 import { ITableField } from "../../../../../aiop-system/common/ITableField";
 import { IBusinessData } from "../../../../../common/interface/IBusiness";
 import { BusinessTable } from "../../../../../aiop-system/common/business-table"; 
 import { Division } from "../../../../../data-core/model/waste-regulation/division"; 
 import { ClassTypeEnum } from "../../illegal-drop-event-analyze/business/search"; 
+import "../../../../../common/string/hw-string";
 export class EventAnalyzeTable extends BusinessTable implements IConverter { 
     findDivision:(id:string)=>Division; 
     findStationDivision:(id:string)=>Division; 
@@ -19,20 +20,42 @@ export class EventAnalyzeTable extends BusinessTable implements IConverter {
         primaryKey: "id",
         isDisplayDetailImg: false,
         eventDelegate: (event: CustomTableEvent) => {
-            
+            if (event.eventType == CustomTableEventEnum.asOrder) {
+                const data = event.data as { asOrderBy: number, id: string },
+                    toOrder = (orderName: FieldOrderNameEnum) => {
+                        this.dataSource.values = this.dataSource.values.sort((a, b) => {
+                            if (data.asOrderBy == OrderByEnum.up)
+                                return ''.naturalCompare(a[orderName], b[orderName]);
+                            else return ''.naturalCompare(b[orderName], a[orderName]);
+                        });                          
+                    };
+                toOrder(data.id as FieldOrderNameEnum);
+            }
         },
         tableAttrs: [new TableAttr({
             HeadTitleName: "名称",
             tdWidth: "30%",
-            tdInnerAttrName: "name"
+            tdInnerAttrName: "name",
+            orderBy: {
+                asOrderBy: 0,
+                id: FieldOrderNameEnum.Name
+            },
         }), new TableAttr({
             HeadTitleName: "区划名称",
             tdWidth: "30%",
-            tdInnerAttrName: "divisionName"
+            tdInnerAttrName: "divisionName",
+            orderBy: {
+                asOrderBy: 0,
+                id: FieldOrderNameEnum.DivisionName
+            },
         }), new TableAttr({
             HeadTitleName: "乱扔垃圾",
             tdWidth: "30%",
-            tdInnerAttrName: "eventNumber"
+            tdInnerAttrName: "eventNumber",
+            orderBy: {
+                asOrderBy: 1,
+                id: FieldOrderNameEnum.EventNumber
+            },
         })],
         footArgs: new FootArgs({
             hasSelectBtn: false,
@@ -65,7 +88,7 @@ export class EventAnalyzeTable extends BusinessTable implements IConverter {
         let tableField = new TableField();
         tableField.id = id;    
         tableField.name=name; 
-        if(this.classType==ClassTypeEnum.Division)
+        if(this.classType==ClassTypeEnum.Committees||this.classType==ClassTypeEnum.County)
         tableField.divisionName= this.findDivision(id).Name;
         else if(this.classType==ClassTypeEnum.Station)
              tableField.divisionName= this.findStationDivision(id).Name;
@@ -83,4 +106,15 @@ export class TableField implements ITableField {
     eventNumber: number;
     name: string; 
     divisionName: string; 
+}
+
+
+export enum FieldOrderNameEnum {
+    Name='name',
+    DivisionName='divisionName',
+    EventNumber='eventNumber'
+}
+export enum OrderByEnum{
+    up,
+    down
 }
