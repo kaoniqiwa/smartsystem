@@ -4,7 +4,6 @@ import { BusinessParameter } from "../../../common/interface/IBusiness";
 import { BaseBusinessRefresh } from "../../../common/tool/base-business-refresh";
 import { EventDropHistory  } from "./business/event-drop-history/event-drop-history";
 import { EventDropOrder } from "./business/event-drop-order/event-drop-order";
-import { StationDisposeScore } from "./business/station-dispose-score/station-dispose-score";
 import { DivisionTypeEnum, EnumHelper,EventTypeEnum } from "../../../common/tool/enum-helper";
 import { MessageBar } from "../../../common/tool/message-bar";
 import { HeaderSquareListComponent } from "../../../shared-module/header-square-list/header-square-list.component";
@@ -94,7 +93,7 @@ export class DivisionBusinessService {
                         const param = new BusinessParameter()
                         ,eventTypes = [EventTypeEnum.IllegalDrop,EventTypeEnum.MixedInto,EventTypeEnum.IllegalDrop,EventTypeEnum.MixedInto];
                         param.map.set('divisionId', val.id);
-                        param.map.set('divisionType', val.type);
+                        param.map.set('divisionType', val.type); 
                        // param.map.set('divisionsIds', [val.id]);
                         this.nspectionParam(val.id);
                         this.divisionsId = val.id;
@@ -108,7 +107,7 @@ export class DivisionBusinessService {
                                 if (x.list[0].business instanceof BaseBusinessRefresh) {   
                                 
                                     /**小包处置跳过 */         
-                                    if(x.list[0].business instanceof StationDisposeScore)continue;
+                                    //if(x.list[0].business instanceof StationDisposeScore)continue;
                                     /**加上事件 类别 */
                                     if(x.list[0].business instanceof EventDropHistory
                                     ||x.list[0].business instanceof  EventDropOrder)                                  
@@ -190,15 +189,16 @@ export class DivisionBusinessService {
                     }
                 }
                 else if(x.list[0].view instanceof  OrderTableCardComponent){
-                    /** 列表切换功能 */
-                    x.list[0].view.btnControl = (item:{id:string,eventType:EventTypeEnum}) => { 
+                    /** 列表切换功能 */ 
+                    x.list[0].view.btnControl = (item:{
+                       id:string,eventType:EventTypeEnum
+                    }) => { 
                         const param = new BusinessParameter(),stationKey='station';
+                        param.map.set('eventType', item.eventType);    
                         param.map.set('divisionId', this.divisionsId);
-                        param.map.set('divisionType', (item.id==stationKey?null:item.id));   
-                        param.map.set('eventType', item.eventType);                
-                        param.map.set('dropList', item.id);   
-                        // if(item.id!=stationKey)
-                        //     param.map.set('divisionsIds', this.childrenDivisionIds);
+                        param.map.set('divisionType', (item.id==stationKey?null:item.id));                                    
+                        param.map.set('dropList', item.id);    
+                       
                         for (const x of this.componets) {
                             if (x.list[0].view instanceof OrderTableCardComponent) { 
                            
@@ -305,11 +305,10 @@ export class DivisionBusinessService {
                             }
 
                         }
-                    }
-                    break;
+                    } 
                 }
             }
-        });
+        },2000);
     }
 
     changeMqttState(state: boolean) {
