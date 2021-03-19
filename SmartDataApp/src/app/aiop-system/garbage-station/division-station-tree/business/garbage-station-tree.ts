@@ -33,6 +33,12 @@ export class StationTreeService extends TreeService{
         this.convert(dao);
     }
 
+    set cityDivisionModel(models:Division[]){
+        const dao =new  CityRegionDao();
+        dao.items=models;  
+        this.convert(dao);
+    }
+
     convertStationTreeNode(){ 
        const nodeA= this.convertTreeNode(this.garbageStations),
        nodeB= this.convertTreeNode(this.divisions); 
@@ -46,7 +52,8 @@ export class StationTreeService extends TreeService{
 
     convert<GarbageStationDao>(input:GarbageStationDao):void;
     convert<RegionDao>(input:RegionDao):void;
-    convert(input:GarbageStationDao|RegionDao){    
+    convert<CityRegionDao>(input:CityRegionDao):void;
+    convert(input:GarbageStationDao|RegionDao|CityRegionDao){    
       
         if(input instanceof GarbageStationDao){          
             for (const item of input.items) {
@@ -58,7 +65,17 @@ export class StationTreeService extends TreeService{
                 this.garbageStations.items.push(mini);
             }
         }
-       else if(input instanceof RegionDao){
+       else if(input instanceof RegionDao){           
+            for (const item of input.items) {
+                const mini = new DivisionMini();   
+                mini.id=item.Id;
+                mini.name=item.Name;
+                mini.isLeaf=item.IsLeaf;
+                mini.parentId=item.ParentId;    
+                this.divisions.items.push(mini);
+            }
+        }  
+        else if(input instanceof CityRegionDao){
            
             for (const item of input.items) {
                 const mini = new DivisionMini();   
@@ -66,6 +83,7 @@ export class StationTreeService extends TreeService{
                 mini.name=item.Name;
                 mini.isLeaf=item.IsLeaf;
                 mini.parentId=item.ParentId;    
+                mini.divisionType=item.DivisionType;
                 this.divisions.items.push(mini);
             }
         }  
@@ -86,5 +104,9 @@ export class GarbageStationDao{
 }
 
 export class RegionDao{
+    items:Division[];
+}
+
+export class CityRegionDao{
     items:Division[];
 }
