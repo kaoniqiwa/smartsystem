@@ -1,4 +1,5 @@
 import { Division } from "../../../data-core/model/waste-regulation/division";
+import { GarbageStation } from "../../../data-core/model/waste-regulation/garbage-station";
 import { LevelListPanel, ListNode } from "./level-list-panel/level-list-panel";
 import { DivisionTypeEnum } from "../../../common/tool/enum-helper";
 export class DivisionListView {
@@ -22,6 +23,18 @@ export class DivisionListView {
             node.name = t.Name;
             node.parentId = t.ParentId;
             node.head = t.DivisionType == headType;
+            this.dataSource.listNodes.push(node);
+        }
+    }
+
+    toStationList(station:Array<GarbageStation>){
+        this.dataSource.last=true;
+        for (const t of station) {
+            const node = new ListNode();
+            node.id = t.Id;
+            node.last=true;
+            node.name = t.Name;
+            node.parentId = t.DivisionId; 
             this.dataSource.listNodes.push(node);
         }
     }

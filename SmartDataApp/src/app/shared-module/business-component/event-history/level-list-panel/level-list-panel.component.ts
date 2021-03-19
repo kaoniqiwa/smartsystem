@@ -33,7 +33,8 @@ export class LevelListPanelComponent implements OnInit {
   }
 
   itemClick(val: ListNode) {
-    this.selectedItem = val.name;
+    if ((this.model.last&&val.last) || (!this.model.last&&!val.last))
+      this.selectedItem = val.name;
     if (this.selectedFn) this.selectedFn(val.id);
     const filter = this.model.listNodes.filter(x => x.parentId == val.id);
     if (filter.length) {

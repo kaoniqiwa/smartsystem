@@ -12,37 +12,37 @@ export class BusinessManageService {
      * 前台 投放点 事件记录及统计 业务管理
      */
 
-    viewDivisionType=ViewDivisionTypeEnum.None;
+    viewDivisionType = ViewDivisionTypeEnum.None;
     divisionId: string;
     station: GarbageStation;
-    user:SessionUser;
-    viewDivisionTypeEnum=ViewDivisionTypeEnum;
+    user: SessionUser;
+    viewDivisionTypeEnum = ViewDivisionTypeEnum;
     constructor(private dataBufferService: StatisticalDataBufferService) {
-        this.user=new SessionUser();
+        this.user = new SessionUser();
+    } 
+
+    resetNone() {
+        this.station = null;
+        this.viewDivisionType = ViewDivisionTypeEnum.None;
     }
 
-    resetNone(){
-        this.station=null;
-        this.viewDivisionType=ViewDivisionTypeEnum.None;
-    }
-
-     getGarbageStations(divisionsId: string) {
+    getGarbageStations(divisionsId: string) {
         return this.dataBufferService.getGarbageStations(divisionsId)
     }
 
-    getParentDivision(){
-       return this.dataBufferService.ancestorDivisions(null, this.user.userDivision.pop().Id);         
+    getParentDivision() {
+        return this.dataBufferService.ancestorDivisions(null, this.user.userDivision.pop().Id);
     }
 
-    getchildrenDivision(){
+    getchildrenDivision() {
         return this.dataBufferService.ancestorDivisions(this.user.userDivision.pop().Id);
     }
 
-    divisionType(division:Division){
-         if(division)
-           this.viewDivisionType=  division.DivisionType== DivisionTypeEnum.City ? ViewDivisionTypeEnum.City
-           :ViewDivisionTypeEnum.None;
-         
+    divisionType(division: Division) {
+        if (division)
+            this.viewDivisionType = division.DivisionType == DivisionTypeEnum.City ? ViewDivisionTypeEnum.City
+                : ViewDivisionTypeEnum.None;
+
     }
 }
 
