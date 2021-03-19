@@ -124,6 +124,7 @@ export class BusinessService {
 
     async illegalDropTopCard() {
         const param = await this.eventDropTopCardParam();
+        this.user.userDivisionType=param.divisionType+'';
         this.illegalDropTopCardConfig = new Array();
         this.illegalDropTopCardConfig.push({
             business: 'IllegalDropOrder',

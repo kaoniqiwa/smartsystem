@@ -19,16 +19,17 @@ export class StationDisposeScore extends BaseBusinessRefresh {
         const divisionId = this.businessParameter.map.get('divisionId') as string, //父区划
          stations= await (this.dataServe as StatisticalDataBufferService).getGarbageStations(divisionId)
          ,stationIds = new Array<string>();
-         
-         stations.map(s=>stationIds.push(s.Id));
-         const statistic=await (this.dataServe as StatisticalDataBufferService).stationNumberStatistic(stationIds);
-         statistic.map(s=>{
-            const info = new StationScoreInfo();
-            model.items.push(info);
-            info.station = s.Name;
-            info.score = s.GarbageRatio;
-            info.unit='分';
-         });
+         if(stations.length){
+            stations.map(s=>stationIds.push(s.Id));
+            const statistic=await (this.dataServe as StatisticalDataBufferService).stationNumberStatistic(stationIds);
+            statistic.map(s=>{
+               const info = new StationScoreInfo();
+               model.items.push(info);
+               info.station = s.Name;
+               info.score = s.GarbageRatio;
+               info.unit='分';
+            });
+         }        
 
         return model;
     }
