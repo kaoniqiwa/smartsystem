@@ -322,7 +322,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
             this.LabelVisibility = false;
 
-            this.client.ContextMenu.AddItem('<i class="howell-icon-nolittering"></i> 乱扔垃圾记录', async (id: string) => {
+            this.client.ContextMenu.AddItem('<i class="howell-icon-nolittering" style="font-size: 18px"></i> 乱扔垃圾记录', async (id: string) => {
                 if (this.ContextMenuIllegalDropClickedEvent) {
                     let station = this.garbages.find(x => x.Id === id);
                     if (!station) {
@@ -333,7 +333,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
                     this.ContextMenuIllegalDropClickedEvent.emit(station);
                 }
             }, 0);
-            this.client.ContextMenu.AddItem('<i class="howell-icon-mixlittering"></i> 混合投放记录', async (id: string) => {
+            this.client.ContextMenu.AddItem('<i class="howell-icon-mixlittering" style="font-size: 18px"></i> 混合投放记录', async (id: string) => {
                 if (this.ContextMenuMixedIntoClickedEvent) {
                     let station = this.garbages.find(x => x.Id === id);
                     if (!station) {
@@ -344,7 +344,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
                     this.ContextMenuMixedIntoClickedEvent.emit(station);
                 }
             }, 1);
-            this.client.ContextMenu.AddItem('<i class="howell-icon-refresh"></i> 投放点巡检', async (id: string) => {
+            this.client.ContextMenu.AddItem('<i class="howell-icon-refresh" style="font-size: 18px"></i> 投放点巡检', async (id: string) => {
                 if (this.ContextMenuStationPatrolClickedEvent) {
                     let station = this.garbages.find(x => x.Id === id);
                     if (!station) {
@@ -355,7 +355,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
                     this.ContextMenuStationPatrolClickedEvent.emit(station);
                 }
             }, 2);
-            this.client.ContextMenu.AddItem('<i class="howell-icon-garbagebags"></i> 小包垃圾落地', async (id: string) => {
+            this.client.ContextMenu.AddItem('<i class="howell-icon-garbagebags" style="font-size: 18px"></i> 小包垃圾落地', async (id: string) => {
                 if (this.ContextMenuGarbageCountClickedEvent) {
                     let station = this.garbages.find(x => x.Id === id);
                     if (!station) {
