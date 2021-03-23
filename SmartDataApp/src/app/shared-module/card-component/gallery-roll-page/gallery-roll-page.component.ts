@@ -268,7 +268,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
   tagClick(param: string, msg: boolean) {
 
     if (param) {
-      this.btnControl(null);
+      if (this.btnControl)this.btnControl(null);
     }
     else {
       const val = this.model.items.get(this.model.index);

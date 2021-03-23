@@ -10,15 +10,20 @@ import { GetEventRecordsParams, IllegalDropEventRecord } from "../../../../../da
 import { EnumHelper } from "../../../../../common/tool/enum-helper";
 import { GetVodUrlParams } from '../../../../../data-core/model/aiop/video-url';
 import { GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station";
+import { Division } from "../../../../../data-core/model/waste-regulation/division";
 import { SelectOption } from "../../../../select-option/select-option";
 import { moveView3 } from "../../../../../common/tool/jquery-help/jquery-help";
 import { MediumPicture } from "../../../../../data-core/url/aiop/resources";
+import { DivisionListView } from "../../../event-history/division-list-view";
 
 @Injectable()
 export class EventChartService extends ListAttribute {
     garbageStations: Array<GarbageStation>;
+    divisions:Array<Division>;
     candlestickOption: CandlestickOption;
-    garbageSelectOption: SelectOption;
+    divisionListView:DivisionListView;
+    //garbageSelectOption: SelectOption;//厢房下拉
+    //divisionSelectOption:SelectOption;//区划
     garbageCountStatistic: Array<GarbageStationGarbageCountStatistic>;
     datePicker = {
         startView: 2,
@@ -42,15 +47,24 @@ export class EventChartService extends ListAttribute {
         this.illegalDropView = false;
     }
 
-    selectedItemFn = (id: string) => {
-        this.search.station = id;
-        this.usedTime = 0;
-        this.initStatistical();
-        this.requestData();
-        this.illegalDumpView = false;
-        this.illegalDropView = false;
+    // selectedItemFn = (id: string) => {
+    //     this.search.station = id;
+    //     this.usedTime = 0;
+    //     this.initStatistical();
+    //     this.requestData();
+    //     this.illegalDumpView = false;
+    //     this.illegalDropView = false;
+    // }
+    changeDivisionFn = (id:string)=>{
+        if(this.garbageStations.find(x=>x.Id==id)){
+            this.search.station = id; 
+            this.initStatistical();
+            this.requestData();
+            this.illegalDumpView = false;
+            this.illegalDropView = false;
+        }
+       
     }
-
 
     illegalDumpView = false;
     illegalDumpVideo = false;
@@ -145,18 +159,27 @@ export class EventChartService extends ListAttribute {
             });
         if (g && g.length) return g[0];
         else return null;
-    }
+    } 
 
-    covertStationList(stations: GarbageStation[]) {
-        this.garbageSelectOption = new SelectOption();
-        this.garbageSelectOption.listNodes = new Array();
-        stations.map(c => this.garbageSelectOption.listNodes.push({
-            id: c.Id,
-            name: c.Name
-        }));
-        this.garbageStations = stations;
-    }
+    // covertStationList(stations: GarbageStation[]) {
+    //     this.garbageSelectOption = new SelectOption();
+    //     this.garbageSelectOption.listNodes = new Array();
+    //     stations.map(c => this.garbageSelectOption.listNodes.push({
+    //         id: c.Id,
+    //         name: c.Name
+    //     }));
+    //     this.garbageStations = stations;
+    // }
 
+    // covertDivisionList(divisions: Division[]) {
+    //     this.divisionSelectOption = new SelectOption();
+    //     this.divisionSelectOption.listNodes = new Array();
+    //     divisions.map(c => this.divisionSelectOption.listNodes.push({
+    //         id: c.Id,
+    //         name: c.Name
+    //     }));
+    //     this.divisions = divisions;
+    // }
 
     covertStatistical(statisticV2: Array<GarbageStationNumberStatisticV2>) {
         statisticV2.map(s => {//console.log(s);

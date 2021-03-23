@@ -14,11 +14,15 @@ import "../../../../../common/string/hw-string";
 import { ExcelData } from "../../../../../common/tool/hw-excel-js/data";
 import { BusinessEventTypeEnum, convertEventData } from "../../business-event-type";
 import { MixedIntoEventRecord } from "../../../../../data-core/model/waste-regulation/mixed-into-event-record";
+import { Division } from "../../../../../data-core/model/waste-regulation/division";
 import { GetEventRecordsParams, IllegalDropEventRecord } from "../../../../../data-core/model/waste-regulation/illegal-drop-event-record";
+import { SessionUser } from "../../../../../common/tool/session-user";
+import { DivisionTypeEnum } from "../../../../../common/tool/enum-helper";
 @Injectable()
 export class BusinessService extends ListAttribute {
 
     search = new SearchControl(this.datePipe);
+    divisions:Array<Division>;
     lineChartOption: LineOption;
     barChartOption: BarOption;
     barChartView = true;
@@ -28,7 +32,8 @@ export class BusinessService extends ListAttribute {
         minView: 2,
         formate: 'yyyy-mm-dd'
     }
-    divisionNode = true;
+    divisionNode = false;
+    oneDivisionNode = false;
     reportType = '';
     dataSources: Map<string, EventNumberStatistic[]>;
     businessEventType = BusinessEventTypeEnum.IllegalDrop;
@@ -38,12 +43,13 @@ export class BusinessService extends ListAttribute {
         , private illegalDropEventService: IllegalDropEventService
         , private mixedIntoEventService: MixedIntoEventService) {
         super();
-
+        this.oneDivisionNode = this.cityOption;
+        this.divisionNode = !this.cityOption;
     }
 
     toDivisionIdsOrStationIds(ids: string[]) {
         const s = this.search.toSearchParam();
-        if (s.ClassType == ClassTypeEnum.Division) {
+        if (s.ClassType == ClassTypeEnum.Committees||s.ClassType == ClassTypeEnum.County) {
             this.search.divisionId = ids;
             this.search.stationId = new Array();
         }
@@ -53,6 +59,9 @@ export class BusinessService extends ListAttribute {
         }
     }
 
+    get cityOption(){
+        return new SessionUser().userDivisionType == (DivisionTypeEnum.City+'');
+     }
 
     exportExcel(dataSources: Map<string, EventNumberStatistic[]>, search: SearchControl, param: Array<{ id: string, text: string }>)
         : {
@@ -167,33 +176,50 @@ export class BusinessService extends ListAttribute {
         };
     }
 
-    async requestTodayEventData(onlyDivision: boolean) {
+    async requestTodayEventData(onlyDivision: boolean,cityDivisionNode:boolean) {
         const requsetParam = this.getTodayEventRequsetParam(this.search)
             , groupEventData = new Map<string, Array<IllegalDropEventRecord | MixedIntoEventRecord>>()
-            , fillGroupEventData = (event: IllegalDropEventRecord | MixedIntoEventRecord) => {
-                if (onlyDivision && groupEventData.has(event.Data.DivisionName)) {
-                    const e = groupEventData.get(event.Data.DivisionName);
-                    e.push(event);
-                    groupEventData.set(event.Data.DivisionName, e);
+            , fillGroupEventData = (event: IllegalDropEventRecord | MixedIntoEventRecord) => {console.log(event);
+                if(cityDivisionNode&&onlyDivision==false){
+                    const committees = this.divisions.find(d=>d.Id==event.Data.DivisionId)
+                    ,division=this.divisions.find(d=>d.Id == committees.ParentId);
+                    
+                    if(groupEventData.has(division.Name)){console.log(division);
+                        const e = groupEventData.get(division.Name);
+                        e.push(event);
+                        groupEventData.set(division.Name, e);
+                    }
+                    else{
+                        groupEventData.set(division.Name, [event]);console.log(1);
+                        
+                    }
                 }
-                else if (onlyDivision && groupEventData.has(event.Data.DivisionName) == false)
-                    groupEventData.set(event.Data.DivisionName, [event]);
-
-                if (onlyDivision == false && groupEventData.has(event.Data.StationName)) {
-                    const e = groupEventData.get(event.Data.StationName);
-                    e.push(event);
-                    groupEventData.set(event.Data.StationName, e);
+                else{
+                    if (onlyDivision && groupEventData.has(event.Data.DivisionName)) {
+                        const e = groupEventData.get(event.Data.DivisionName);
+                        e.push(event);
+                        groupEventData.set(event.Data.DivisionName, e);
+                    }
+                    else if (onlyDivision && groupEventData.has(event.Data.DivisionName) == false)
+                        groupEventData.set(event.Data.DivisionName, [event]);
+    
+                    if (onlyDivision == false && groupEventData.has(event.Data.StationName)) {
+                        const e = groupEventData.get(event.Data.StationName);
+                        e.push(event);
+                        groupEventData.set(event.Data.StationName, e);
+                    }
+                    else if (onlyDivision == false && groupEventData.has(event.Data.StationName) == false)
+                        groupEventData.set(event.Data.StationName, [event]);
                 }
-                else if (onlyDivision == false && groupEventData.has(event.Data.StationName) == false)
-                    groupEventData.set(event.Data.StationName, [event]);
+                
             };
 
-        if (this.businessEventType == BusinessEventTypeEnum.IllegalDrop) {
+        if (this.businessEventType == BusinessEventTypeEnum.IllegalDrop&&requsetParam) {
             const response = await this.illegalDropEventService.list(requsetParam).toPromise();
             if (response.Data && response.Data.Data)
                 response.Data.Data.map(m => fillGroupEventData(m));
         }
-        else {
+        if (this.businessEventType == BusinessEventTypeEnum.MixedInfo&&requsetParam) {
             const response = await this.mixedIntoEventService.list(requsetParam).toPromise();
             if (response.Data && response.Data.Data)
                 response.Data.Data.map(m => fillGroupEventData(m));
@@ -478,14 +504,14 @@ export class BusinessService extends ListAttribute {
         }
     }
 
-    changeClassType(fn: (param: boolean) => void) {
+    changeClassType(fn: (ct:string) => void) {
         const param = this.search.toSearchParam();
-        if (param.ClassType == ClassTypeEnum.Division)
+        if (param.ClassType == ClassTypeEnum.Committees||param.ClassType == ClassTypeEnum.County)
             this.divisionNode = true;
 
         else if (param.ClassType == ClassTypeEnum.Station)
             this.divisionNode = false;
-        fn(this.divisionNode);
+        fn(param.ClassType);
     }
 
     changeDatePicker() {

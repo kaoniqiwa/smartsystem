@@ -3,8 +3,7 @@ import { StatisticalDataBufferService, TimeUnitEnum } from '../../buffer/statist
 import { DropEvent } from "./data";
 import { BusinessParameter } from '../../../../../common/interface/IBusiness';
 import { BaseBusinessRefresh } from "../../../../../common/tool/base-business-refresh";
-import { EventNumber } from '../../../../../data-core/model/waste-regulation/event-number';
-import { DivisionTypeEnum, EventTypeEnum } from '../../../../../common/tool/enum-helper';
+import { EventTypeEnum } from '../../../../../common/tool/enum-helper';
 export class EventDropHistory  extends BaseBusinessRefresh {
 
     constructor(dataServe: StatisticalDataBufferService, businessParameter?: BusinessParameter) {
@@ -16,10 +15,8 @@ export class EventDropHistory  extends BaseBusinessRefresh {
         , eventType = this.businessParameter.map.get('eventType') as EventTypeEnum;
         let model = new DropEvent();
         model.datas = new Array();
-       
-        
+
         let data = await (this.dataServe as StatisticalDataBufferService).getDivisionEventNumbers(divisionId, TimeUnitEnum.Hour);
-    console.log(data);
     
         for (var x of data) {
             for (const y of x.EventNumbers) 

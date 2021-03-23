@@ -21,7 +21,7 @@ import { ViewsModel } from '../../../../common/abstract/base-view';
 import { IConverter } from "../../../../common/interface/IConverter";
 import { Injector, Injectable } from '@angular/core';
 import { LineOption } from '../../../../common/directive/echarts/echart';
-import { Percentage,DateInterval, IntegerDecimalNum } from '../../../../common/tool/tool.service'
+import { Percentage, DateInterval, IntegerDecimalNum } from '../../../../common/tool/tool.service'
 import { EnumHelper, EventTypeEnum } from "../../../../common/tool/enum-helper";
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
 import { EventNumber } from '../../../../data-core/model/waste-regulation/event-number';
@@ -140,17 +140,17 @@ export class DevStatusCardConverter implements IConverter {
                         return Arc._20;
 
                 };
-                enum StateColorEnum{
-                    '正常'='green-text',
-                    '中度'='orange-text',
-                    '严重'='powder-red-text'
-                }
+            enum StateColorEnum {
+                '正常' = 'green-text',
+                '中度' = 'orange-text',
+                '严重' = 'powder-red-text'
+            }
             output.views[0].arc = arcVal(percent);
             output.views[0].stateLabel = {
                 subTitle: '系统设备在线比',
                 scaleNumber: percent + '',
                 state: level(percent),
-                color:StateColorEnum[level(percent)]
+                color: StateColorEnum[level(percent)]
             }
             output.views[0].detail.push({
                 label: '全部设备数量',
@@ -192,12 +192,12 @@ export class DivisionListConverter implements IConverter {
             for (let i = 0; i < committees.length; i++)
                 output.views[0].squareItems.push(new SquareItem(committees[i].id, committees[i].name, committees[i].divisionType, committees[i].parentId));
 
-                /**填补空白 样式走样 */
+            /**填补空白 样式走样 */
             // for (let i = 0; i < (12 - committees.length); i++)
             //     output.views[0].fillView.push('');
             if (countys.length)
                 output.views[0].changebodyView = countys[0].id;
-                
+
         }
         return output;
     }
@@ -342,16 +342,19 @@ export class StationDisposeScoreConverter implements IConverter {
         if (input instanceof StationsScoreInfo) {
             output.views[0].title = '小包垃圾处置排名';
             output.views[0].table = new Array();
-
+            var i = 0;
             const sort = input.items.sort((a, b) => {
                 return a.score - b.score
             });
-            for (const x of sort)
+            for (const x of sort) {
+                if (i == 100) break;
                 output.views[0].table.push({
                     name: x.station,
                     subName: IntegerDecimalNum(x.score + ''),
                     subNameAfter: x.unit
                 });
+                i += 1;
+            }
 
             /**补空行 */
             const len = output.views[0].table.length;

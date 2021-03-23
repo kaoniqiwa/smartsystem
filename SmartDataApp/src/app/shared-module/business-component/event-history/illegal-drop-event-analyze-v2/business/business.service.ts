@@ -8,14 +8,14 @@ import { SearchControl } from "./search";
 import { DatePipe } from "@angular/common";
 import { TheDayTime, MonthLastDay, OneWeekDate } from "../../../../../common/tool/tool.service";
 import { TimeUnitEnum, ClassTypeEnum } from "../../illegal-drop-event-analyze/business/search";
-import { EventTypeEnum } from "../../../../../common/tool/enum-helper";
+import { EventTypeEnum,DivisionTypeEnum } from "../../../../../common/tool/enum-helper";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
 import { GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station";
-import "../../../../../common/string/hw-string";
-import { DivisionTypeEnum } from '../../../../../common/tool/enum-helper';
+import "../../../../../common/string/hw-string"; 
 import { BusinessEventTypeEnum, convertEventData } from "../../business-event-type";
 import { ExcelData } from "../../../../../common/tool/hw-excel-js/data";
 import { EventAnalyzeTable, EventsAnalyzeRecord } from "./event-analyze-table";
+import { SessionUser } from "../../../../../common/tool/session-user";
 @Injectable()
 export class BusinessService extends ListAttribute {
 
@@ -48,11 +48,23 @@ export class BusinessService extends ListAttribute {
         }
     }
 
+    
+  get cityOption(){
+    return new SessionUser().userDivisionType == (DivisionTypeEnum.City+'');
+ }
+
     toDivisionIdsOrStationIds() {
         const s = this.search.toSearchParam(), ids = new Array<string>();;
-        if (s.ClassType == ClassTypeEnum.Division) {
+        if (s.ClassType == ClassTypeEnum.Committees) {
             this.divisions.map(x => {
                 if (x.DivisionType == DivisionTypeEnum.Committees) ids.push(x.Id);
+            });
+            this.search.divisionId = ids;
+            this.search.stationId = new Array();
+        }
+        else if (s.ClassType == ClassTypeEnum.County) {
+            this.divisions.map(x => {
+                if (x.DivisionType == DivisionTypeEnum.County) ids.push(x.Id);
             });
             this.search.divisionId = ids;
             this.search.stationId = new Array();
@@ -77,7 +89,7 @@ export class BusinessService extends ListAttribute {
             this.table.clearItems();
             this.table.Convert(td, this.table.dataSource);
         }
-        else if (s.ClassType == ClassTypeEnum.Division) {
+        else if (s.ClassType == ClassTypeEnum.Committees||s.ClassType == ClassTypeEnum.County) {
             this.table.classType = s.ClassType;
             const response = await this.divisionService.statisticNumberListV2(requsetParam as any).toPromise();
             this.dataSources = response.Data;
@@ -139,9 +151,9 @@ export class BusinessService extends ListAttribute {
             });
             i += 1;
         }
-        if (s.ClassType == ClassTypeEnum.Division) {
+        if (s.ClassType == ClassTypeEnum.Committees||s.ClassType == ClassTypeEnum.County) {
 
-            table.fieldName = ['序号', '居委', '单位(起)'];
+            table.fieldName = ['序号', '区划', '单位(起)'];
 
         }
         else if (s.ClassType == ClassTypeEnum.Station) {
@@ -158,7 +170,7 @@ export class BusinessService extends ListAttribute {
     convertTableData(statistic: Array<GarbageStationNumberStatisticV2> | Array<DivisionNumberStatisticV2>, search: SearchControl) {
         const s = search.toSearchParam(), dataMap = new Map<string, { name: string, num: number }>()
             , ear = new EventsAnalyzeRecord();
-        if (s.ClassType == ClassTypeEnum.Division) {
+        if (s.ClassType == ClassTypeEnum.Committees||s.ClassType == ClassTypeEnum.County) {
             var statistic_ = statistic as Array<DivisionNumberStatisticV2>;
 
             statistic_ = statistic_.sort((a, b) => {
@@ -231,7 +243,7 @@ export class BusinessService extends ListAttribute {
     getRequsetParam(search: SearchControl): GetDivisionStatisticNumbersParamsV2 | GetGarbageStationStatisticNumbersParamsV2 {
         const s = search.toSearchParam();
 
-        if (s.ClassType == ClassTypeEnum.Division) {
+        if (s.ClassType == ClassTypeEnum.Committees||s.ClassType == ClassTypeEnum.County) {
             const param = new GetDivisionStatisticNumbersParamsV2();
             param.DivisionIds = s.DivisionId.split(',');
             s.BeginTime = s.BeginTime.dateTimePickerZC();

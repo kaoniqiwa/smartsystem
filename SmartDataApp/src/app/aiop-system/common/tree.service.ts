@@ -22,13 +22,21 @@ export class TreeService extends ListAttribute {
     convertTreeNode(input: Divisions|GarbageStations|Cameras|Regions|GarbageStationTypes) {
         const nodes = new Array<DivisionTreeNode>();
         if (input instanceof Divisions ||input instanceof Regions) {
-            for (const item of input.items) {
+            for (const item of input.items) { 
                 const node = new DivisionTreeNode();
                 node.id = item.id;
                 node.name = item.name;
-                node.parentId = item.parentId;
+                node.parentId = item.parentId;             
+                if(item['divisionType']){  
+                    node.type=item['divisionType'] >2 ? NodeTypeEnum.map: NodeTypeEnum.root;//区划
+                    node.isLeaf = item['divisionType']>2;  
+                }                
+                else {               
+                    node.isLeaf = item.isLeaf;  
                 node.isLeaf = item.isLeaf;  
-                node.type=item.isLeaf ? NodeTypeEnum.map: NodeTypeEnum.root;
+                    node.isLeaf = item.isLeaf;  
+                    node.type=item.isLeaf ? NodeTypeEnum.map: NodeTypeEnum.root;
+                }
                 nodes.push(node);
             }
         } 
@@ -153,7 +161,8 @@ export enum NodeTypeEnum{
     root=1,
     map,
     camera,
-    station
+    station,
+    city
 }
  
 export class DivisionTreeNode {

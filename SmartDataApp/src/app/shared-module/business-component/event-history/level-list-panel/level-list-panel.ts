@@ -1,6 +1,7 @@
 
 export class LevelListPanel{
      listNodes:ListNode[];
+     last?:boolean;
 }
 
 export  class ListNode{
@@ -8,5 +9,6 @@ export  class ListNode{
     name:string;
     parentId:string;
     head:boolean;
+    last?:boolean;
     
 }

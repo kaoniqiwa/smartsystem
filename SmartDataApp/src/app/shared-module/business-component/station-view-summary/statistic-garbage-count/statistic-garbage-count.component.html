@@ -44,8 +44,11 @@
           <i class="mdi mdi-menu-down arrow-time light-blue-text"></i>
         </div>
         <div class="pull-right" style="width: 280px;height: 34px;">
-          <hw-select-option [selectedItemFn]="businessService.selectedItemFn"
-            [model]="businessService.garbageSelectOption"></hw-select-option>
+          <ng-container *ngIf="businessService.divisionListView">
+            <hw-level-list-panel [model]="businessService.divisionListView.dataSource"
+            [selectedFn]="businessService.changeDivisionFn"></hw-level-list-panel>
+          </ng-container>
+         
         </div>
       </div>
     </div>

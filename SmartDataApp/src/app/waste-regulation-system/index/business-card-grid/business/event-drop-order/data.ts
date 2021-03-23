@@ -1,6 +1,6 @@
 
 import { IBusinessData } from "../../../../../common/interface/IBusiness";
-import { EventTypeEnum } from '../../../../../common/tool/enum-helper';
+import { EventTypeEnum ,DivisionTypeEnum} from '../../../../../common/tool/enum-helper';
 export class EventDropOrderInfo implements IBusinessData {
     items:EventDropInfo[];
     dropList:Array<{id:string,name:string}>;

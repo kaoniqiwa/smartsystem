@@ -1,16 +1,25 @@
 <ng-container *ngIf="model"> 
   <div style="position: relative;"  (click)="$event.stopPropagation();">
-    <div class="m-t-10 header-wrap" (click)="showBody=!showBody; $event.stopPropagation();" fxLayout="row" fxLayoutAlign="space-between stretch">
-     
-      <div fxFlex class="ele-nowrap">
-        <h4 class="light-blue-text p-t-5 p-l-10 m-b-0"> {{selectedItem}}</h4>
-       
-      </div>
-      <button type="button" fxFlex="30px" class="btn to-down">
-        <i class="mdi mdi-menu-down"></i>
-      </button>
+    <div [class.m-t-10]="!model.last" [class.header-wrap]="!model.last" (click)="showBody=!showBody; $event.stopPropagation();" fxLayout="row" fxLayoutAlign="space-between stretch">
+      <ng-container *ngIf="model.last">
+        <div fxFlex>
+          <h2 class="light-blue-text text-right p-t-5 p-l-10 m-b-0"> {{selectedItem}}</h2> 
+        </div>
+        <button type="button" fxFlex="30px" class="btn to-down light-blue-text">
+          <i class="mdi mdi-menu-down"></i>
+        </button>
+      </ng-container>
+      <ng-container *ngIf="!model.last">
+        <div fxFlex class="ele-nowrap">
+          <h4 class="light-blue-text p-t-5 p-l-10 m-b-0"> {{selectedItem}}</h4>
+         
+        </div>
+        <button type="button" fxFlex="30px" class="btn to-down" style="color: #69ADFF">
+          <i class="mdi mdi-menu-down"></i>
+        </button>
+      </ng-container>
     </div>
-    <div class="fill-width body-wrap collapse" [class.in]="showBody">
+    <div class="fill-width body-wrap collapse" [class.in]="showBody"  [class.m-t-10]="model.last">
       
       <div class="fill-width drop-list-wrap" >    
         
