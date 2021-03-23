@@ -120,6 +120,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     maskLayerShow = false;
     selectedCameras: Camera[];
     garbages: GarbageStation[];
+    private selectedVillageId?: string;
 
     get Resource() {
         if (this.user.userDivision && this.user.userDivision.length > 0) {
@@ -344,17 +345,17 @@ export class AMapComponent implements AfterViewInit, OnInit {
                     this.ContextMenuMixedIntoClickedEvent.emit(station);
                 }
             }, 1);
-            this.client.ContextMenu.AddItem('<i class="howell-icon-refresh" style="font-size: 18px"></i> 投放点巡检', async (id: string) => {
-                if (this.ContextMenuStationPatrolClickedEvent) {
-                    let station = this.garbages.find(x => x.Id === id);
-                    if (!station) {
-                        const response = await this.garbageService.get(id).toPromise();
-                        station = response.Data;
-                        this.garbages.push(station);
-                    }
-                    this.ContextMenuStationPatrolClickedEvent.emit(station);
-                }
-            }, 2);
+            // this.client.ContextMenu.AddItem('<i class="howell-icon-refresh" style="font-size: 18px"></i> 投放点巡检', async (id: string) => {
+            //     if (this.ContextMenuStationPatrolClickedEvent) {
+            //         let station = this.garbages.find(x => x.Id === id);
+            //         if (!station) {
+            //             const response = await this.garbageService.get(id).toPromise();
+            //             station = response.Data;
+            //             this.garbages.push(station);
+            //         }
+            //         this.ContextMenuStationPatrolClickedEvent.emit(station);
+            //     }
+            // }, 2);
             this.client.ContextMenu.AddItem('<i class="howell-icon-garbagebags" style="font-size: 18px"></i> 小包垃圾落地', async (id: string) => {
                 if (this.ContextMenuGarbageCountClickedEvent) {
                     let station = this.garbages.find(x => x.Id === id);
@@ -484,7 +485,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
         this.client.Events.OnVillageClicked = async (village: CesiumDataController.Village) => {
             if (!village) { return; }
-
+            this.selectedVillageId = village.id;
             if (this.panelEventType === PanelEventType.Hover) {
                 return;
             }
@@ -756,10 +757,14 @@ export class AMapComponent implements AfterViewInit, OnInit {
     }
 
     MapReload() {
+        const id = this.selectedVillageId;
         if (this.baseDivisionId) {
             this.client.Village.Reload(this.baseDivisionId);
             this.client.Village.Select(this.baseDivisionId, true);
             this.refresh();
+            if (id) {
+                this.client.Village.Select(id);
+            }
         }
     }
 
@@ -780,11 +785,11 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
 
     VillageSelect(villageId: string, move: boolean) {
+
         this.client.Village.Select(villageId, this.baseDivisionId === villageId);
         if (move) {
             const village = this.dataController.Village.Get(villageId);
             this.client.Viewer.MoveTo(village.center);
-
         }
     }
 
