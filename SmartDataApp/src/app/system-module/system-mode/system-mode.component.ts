@@ -46,7 +46,8 @@ export class SystemModeComponent implements OnInit {
       this.route.navigateByUrl('aiop/'+sub);
     }
     else if(val == SystemModeEnum.gisSmartData)
-     this.route.navigateByUrl('waste-regulation');
+    return;
+    //  this.route.navigateByUrl('waste-regulation');
   }
 }
 
