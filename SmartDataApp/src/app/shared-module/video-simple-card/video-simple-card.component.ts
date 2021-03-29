@@ -216,8 +216,8 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
             this.secondName = '';
         }
         else {
-            const sc = document.getElementById(this.divId);
-            if (sc) { sc.parentElement.removeChild(sc); }
+            // const sc = document.getElementById(this.divId);
+            // if (sc) { sc.parentElement.removeChild(sc); }
             if (this.closeFn) this.closeFn();
         }
     }
@@ -232,10 +232,11 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
     }
 
     ngOnDestroy() {
-        const sc = document.getElementById(this.divId);
-        if (sc && sc.parentElement) {
-            sc.parentElement.removeChild(sc);
-        }
+        this.player=null;
+        // const sc = document.getElementById(this.divId);
+        // if (sc && sc.parentElement) {
+        //     sc.parentElement.removeChild(sc);
+        // }
     }
 
 }
