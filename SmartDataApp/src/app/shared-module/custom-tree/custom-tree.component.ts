@@ -72,17 +72,20 @@ export class CustomTreeComponent implements OnInit {
   getLevel = (node: FlatNode) => node.level;
 
   getParentNode(node: FlatNode): FlatNode | null {
-    const currentLevel = this.getLevel(node);
-    if (currentLevel < 1) {
-      return null;
-    }
-    const startIndex = this.treeControl.dataNodes.indexOf(node) - 1;
-    for (let i = startIndex; i >= 0; i--) {
-      const currentNode = this.treeControl.dataNodes[i];
-      if (this.getLevel(currentNode) < currentLevel) {
-        return currentNode;
+    if(node){
+      const currentLevel = this.getLevel(node);
+      if (currentLevel < 1) {
+        return null;
+      }
+      const startIndex = this.treeControl.dataNodes.indexOf(node) - 1;
+      for (let i = startIndex; i >= 0; i--) {
+        const currentNode = this.treeControl.dataNodes[i];
+        if (this.getLevel(currentNode) < currentLevel) {
+          return currentNode;
+        }
       }
     }
+   
     return null;
   }
 
