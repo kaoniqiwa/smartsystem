@@ -4,20 +4,20 @@ import { IndexService } from "./business/index.service";
 import { BusinessService } from "./business/business.service";
 import { DivisionBusinessService } from "./business-card-grid/division-business.service";
 import { MQTTEventService } from '../../common/tool/mqtt-event/mqtt-event.service';
-import { EventPushService } from '../../common/tool/mqtt-event/event-push.service'; 
+import { EventPushService } from '../../common/tool/mqtt-event/event-push.service';
 import { AMapComponent } from "./amap/amap.component";
 import { Title } from '@angular/platform-browser';
 import { SessionUser } from "../../common/tool/session-user";
 import { ConfigRequestService } from "../../data-core/repuest/config.service";
 import { targetPosition, domSize } from "../../common/tool/jquery-help/jquery-help";
-import { BusinessManageService ,ViewDivisionTypeEnum} from "../../shared-module/business-component/business-manage-service";
+import { BusinessManageService, ViewDivisionTypeEnum } from "../../shared-module/business-component/business-manage-service";
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.styl'],
   providers: [IndexService, BusinessService]
 })
-export class IndexComponent implements OnInit { 
+export class IndexComponent implements OnInit {
 
   bar = new BarOption();
   line = new LineOption();
@@ -35,7 +35,7 @@ export class IndexComponent implements OnInit {
     private indexService: IndexService
     , private businessService: BusinessService
     , private titleService: Title
-    ,private businessManageService:BusinessManageService
+    , private businessManageService: BusinessManageService
     , private configService: ConfigRequestService
     , private eventPushService: EventPushService
     , private divisionBusinessService: DivisionBusinessService
@@ -66,22 +66,25 @@ export class IndexComponent implements OnInit {
 
   async ngOnInit() {
 
-    this.businessService.setLogoTitle(); 
+    this.businessService.setLogoTitle();
     const videoConfig = await this.configService.getVideo().toPromise();
-    this.user.video = videoConfig; 
-    this.mqttSevice.listenerIllegalDrop(this.businessService.user.userDivision.pop().Id);
-    this.eventPushService.connectionState.subscribe((b: any) => {
-      this.divisionBusinessService.changeMqttState(b);
-    });
-   
+    this.user.video = videoConfig;
+
+
     this.businessService.initCardConfig();
 
-    setTimeout(() => { 
+    setTimeout(() => {
       this.divisionBusinessService.divisionsId = this.businessService.user.userDivision.pop().Id;
       this.divisionBusinessService.bindingEvent();
-    }, 500); 
+      if (this.businessService.illegalDropEventCardConfig) {
+        this.mqttSevice.listenerIllegalDrop(this.businessService.user.userDivision.pop().Id);
+        this.eventPushService.connectionState.subscribe((b: any) => {
+          this.divisionBusinessService.changeMqttState(b);
+        });
+      }
+    }, 500);
 
- 
+
     this.divisionBusinessService.nspectionParam = (val) => {
       this.businessService.inspectionCard(val);
       // this.inspectionConfig = [{
@@ -92,25 +95,25 @@ export class IndexComponent implements OnInit {
       // }];
     }
     this.moveMapSite = () => {
-      const mapStation = (station:any)=>{
-        this.businessManageService.viewDivisionType=ViewDivisionTypeEnum.MapStation;
-        this.businessManageService.station=station;
+      const mapStation = (station: any) => {
+        this.businessManageService.viewDivisionType = ViewDivisionTypeEnum.MapStation;
+        this.businessManageService.station = station;
       }
       this.divisionBusinessService.aMap.VillageSelect(this.businessService.user.userDivision.pop().Id, false);
-      this.aMap.ContextMenuIllegalDropClickedEvent.subscribe(station =>{
+      this.aMap.ContextMenuIllegalDropClickedEvent.subscribe(station => {
         mapStation(station);
         this.divisionBusinessService.illegalDrop();
       });
-      this.aMap.ContextMenuMixedIntoClickedEvent.subscribe(station =>{
+      this.aMap.ContextMenuMixedIntoClickedEvent.subscribe(station => {
         mapStation(station);
         this.divisionBusinessService.mixedInto();
       });
-      this.aMap.ContextMenuStationPatrolClickedEvent.subscribe(station =>{      
-          this.showInspectionView(station);
+      this.aMap.ContextMenuStationPatrolClickedEvent.subscribe(station => {
+        this.showInspectionView(station);
       });
-      this.aMap.ContextMenuGarbageCountClickedEvent.subscribe(station =>{
+      this.aMap.ContextMenuGarbageCountClickedEvent.subscribe(station => {
         mapStation(station);
-        this.divisionBusinessService.stationListView=true;
+        this.divisionBusinessService.stationListView = true;
         this.divisionBusinessService.eventHistoryView = true;
       });
     }
@@ -126,9 +129,9 @@ export class IndexComponent implements OnInit {
     this.divisionBusinessService.vsClassStatistic = true;
   }
 
-  showInspectionView(station?:any) {
-    if(station) this.businessService.inspectionCard(this.divisionBusinessService.divisionsId,station.Id);
-    else  this.businessService.inspectionCard();
+  showInspectionView(station?: any) {
+    if (station) this.businessService.inspectionCard(this.divisionBusinessService.divisionsId, station.Id);
+    else this.businessService.inspectionCard(this.divisionBusinessService.divisionsId);
     this.divisionBusinessService.inspectionView = true;
     this.divisionBusinessService.bindingEvent2();
     const show = () => {
