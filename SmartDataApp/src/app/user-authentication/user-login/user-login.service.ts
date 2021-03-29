@@ -91,7 +91,7 @@ export class UserLoginService {
                         if (result) { 
                             console.log(result);
                             // sessionStorage.setItem('userid', );
-                            if (result.Role&&result.Role.length
+                            if (result.Role&&result.Role.length>0
                                 &&result.Role[0].PictureData === 1
                                 && result.Role[0].PrivacyData === 1
                                 && result.Role[0].StaticData === 1
