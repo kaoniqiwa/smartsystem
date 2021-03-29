@@ -30,6 +30,7 @@ export class TreeDropListV2Component implements OnInit {
   @Input() rightArrow = false;
   @Input() textLeft = true;
   @Input() textColor = 'text-white';
+  @Input() selectItemNodeMode = SelectItemNodeModeEnum.None;
 
   @Input()
   selectedItemFn: (item: { id: string, text: string }) => void;
@@ -38,10 +39,13 @@ export class TreeDropListV2Component implements OnInit {
     const setText = (n: FlatNode) => {
       if (this.selectedText) {
         const d = this.findNode(this.selectedText.id), p = this.garbageStationTree.getParentNode(d);
-        d.checked = false;
-        d.checkBoxState = null;
-        p.checked = false;
-        p.checkBoxState = null;
+        if (d) {
+          d.checked = false;
+          d.checkBoxState = null;
+        } if (p) {
+          p.checked = false;
+          p.checkBoxState = null;
+        }
       }
       if (item.checked)
         this.selectedText = {
@@ -52,7 +56,8 @@ export class TreeDropListV2Component implements OnInit {
       this.showBody = false;
       this.selectedItemFn(this.selectedText);
     }
-    if (!this.onlyDivisionNode && item.iconClass == "howell-icon-garbage")
+    if ((!this.onlyDivisionNode && item.iconClass == "howell-icon-garbage")
+      || this.selectItemNodeMode == SelectItemNodeModeEnum.EndNode && item.iconClass == "howell-icon-garbage")
       setText(item);
     else if (this.onlyDivisionNode && item.iconClass == "howell-icon-map5") setText(item);
     else {
@@ -91,7 +96,7 @@ export class TreeDropListV2Component implements OnInit {
     domClickFn('body', () => {
       this.showBody = false;
     });
-    this.reInit();      
+    this.reInit();
   }
 
   defaultItem(id: string, cb: (itemId: string) => void) {//console.log(this.stationTreeService.treeNode);
@@ -99,16 +104,18 @@ export class TreeDropListV2Component implements OnInit {
       this.garbageStationTree.defaultItem(id);
     else if (this.stationTreeService.treeNode
       && this.stationTreeService.treeNode.length) {
-        if (this.onlyDivisionNode) {
-          const division= this.dataService.divisions.filter(x => x.DivisionType == DivisionTypeEnum.Committees).shift();
-          this.garbageStationTree.defaultItem(division.Id);
-          cb(division.Id);
+      if (this.onlyDivisionNode) {
+        const division = this.dataService.divisions.filter(x => x.DivisionType == DivisionTypeEnum.Committees).shift();
+        this.garbageStationTree.defaultItem(division.Id);
+        cb(division.Id);
+      }
+      else {
+        if(this.dataService.garbageStations.length>0){
+          this.garbageStationTree.defaultItem(this.dataService.garbageStations[0].Id);
+          cb(this.dataService.garbageStations[0].Id);
         }
-        else         
-          {
-            this.garbageStationTree.defaultItem(this.dataService.garbageStations[0].Id);
-            cb(this.dataService.garbageStations[0].Id);
-          }          
+        
+      }
     }
   }
 
@@ -119,34 +126,54 @@ export class TreeDropListV2Component implements OnInit {
   async reInit() {
     if (this.dataService.divisions.length == 0)
       this.dataService.divisions = await this.divisionDao.allDivisions();
-    const ancestorDivision = this.dataService.divisions.find(x => x.DivisionType == DivisionTypeEnum.County);
+
     this.stationTreeService.divisions.items = new Array();
     this.stationTreeService.divisionModel = this.dataService.divisions.filter(x => x.DivisionType > DivisionTypeEnum.City);
-    if (this.onlyDivisionNode) {
+    if (this.selectItemNodeMode == SelectItemNodeModeEnum.EndNode) {
       const nodes = this.stationTreeService.convertTreeNode(this.stationTreeService.divisions);
       this.stationTreeService.dataSource = nodes;
-    }
-    else {
-      if (ancestorDivision && this.dataService.garbageStations.length == 0)
-        this.dataService.garbageStations = await this.garbageStationDao.requestGarbageStation(ancestorDivision.Id);
+      if (this.dataService.garbageStations.length == 0)
+        this.dataService.garbageStations = await this.garbageStationDao.allGarbageStations();
       this.stationTreeService.garbageStations.items = new Array();
       this.stationTreeService.garbageStationModel = this.dataService.garbageStations;
       this.stationTreeService.convertStationTreeNode();
+    }
+    else {
+      //const ancestorDivision = this.dataService.divisions.find(x => x.DivisionType == DivisionTypeEnum.County);
+      if (this.onlyDivisionNode) {
+        const nodes = this.stationTreeService.convertTreeNode(this.stationTreeService.divisions);
+        this.stationTreeService.dataSource = nodes;
+      }
+      else {
+        // if (ancestorDivision && this.dataService.garbageStations.length == 0)
+        //   this.dataService.garbageStations = await this.garbageStationDao.requestGarbageStation(ancestorDivision.Id);
+        this.dataService.garbageStations = await this.garbageStationDao.allGarbageStations();
+        this.stationTreeService.garbageStations.items = new Array();
+        this.stationTreeService.garbageStationModel = this.dataService.garbageStations;
+        this.stationTreeService.convertStationTreeNode();
+      }
     }
     this.stationTreeService.loadStationTree();
     this.garbageStationTree.dataSource.data = this.stationTreeService.treeNode;
     this.userDefaultLike();
   }
 
-  userDefaultLike(){
-    if (this.onlyDivisionNode&&this.user.divisions.length==0&&this.dataService.divisions.length) {
-       const division= this.dataService.divisions.find(x => x.DivisionType == DivisionTypeEnum.Committees);
-       this.user.divisions = [division.Id];
+  userDefaultLike() {
+    if (this.onlyDivisionNode && this.user.divisions.length == 0 && this.dataService.divisions.length) {
+      const division = this.dataService.divisions.find(x => x.DivisionType == DivisionTypeEnum.Committees);
+      this.user.divisions = [division.Id];
     }
-    else if (this.onlyDivisionNode==false&&this.user.stations.length==0&&this.dataService.garbageStations.length){
-      const station= this.dataService.garbageStations[0]
+    else if (this.onlyDivisionNode == false && this.user.stations.length == 0 && this.dataService.garbageStations.length) {
+      const station = this.dataService.garbageStations[0]
       this.user.stations = [station.Id];
     }
   }
 
+}
+
+
+export enum SelectItemNodeModeEnum {
+  None,
+  /**最后节点 */
+  EndNode
 }
