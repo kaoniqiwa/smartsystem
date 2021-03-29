@@ -6,7 +6,7 @@ import { BusinessManageService, ViewDivisionTypeEnum } from "../../business-mana
 import { DivisionListView } from '../../event-history/division-list-view';
 import { LevelListPanelComponent } from "../../event-history/level-list-panel/level-list-panel.component";
 import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
-
+import { SelectItemNodeModeEnum,TreeDropListV2Component } from "../../vs-class-statistic/tree-drop-list-v2/tree-drop-list-v2.component";
 @Component({
   selector: 'hw-statistic-garbage-count',
   templateUrl: './statistic-garbage-count.component.html',
@@ -16,11 +16,12 @@ import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
 export class StatisticGarbageCountComponent implements OnInit, OnDestroy {
   @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
 
-  // @ViewChild(SelectOptionComponent)
-  // selectOptionView: SelectOptionComponent;
-  @ViewChild(LevelListPanelComponent)
-  lp: LevelListPanelComponent;
+  
+  @ViewChild(TreeDropListV2Component)
+  lp: TreeDropListV2Component;
   otherView = OtherViewEnum;
+ 
+  selectItemNodeMode=SelectItemNodeModeEnum.EndNode;
   constructor(private businessService: EventChartService
     , private businessManageService: BusinessManageService
     , private videoService: HWVideoService) {
@@ -69,28 +70,28 @@ export class StatisticGarbageCountComponent implements OnInit, OnDestroy {
     this.businessService.divisions = divisions;
     this.businessManageService.getGarbageStations(this.businessManageService.user.userDivision.pop().Id).then(x => {
       this.businessService.garbageStations = x;
-      this.businessService.divisionListView = new DivisionListView();
-      if (this.businessManageService.user.userDivisionType == (DivisionTypeEnum.City + '')) {
-        this.businessService.divisionListView.toLevelListPanel(divisions.filter(x => x.ParentId != null && x.DivisionType == DivisionTypeEnum.County));//多街道
-        //跳过居委 列表数据
-        x.map(s => {
-          const division = divisions.find(dd => dd.Id == s.DivisionId);
-          s.DivisionId = division.ParentId;
-        });
-      }
-      else
-        this.businessService.divisionListView.toLevelListPanel(divisions.filter(x => x.ParentId != null));
+      // this.businessService.divisionListView = new DivisionListView();
+      // if (this.businessManageService.user.userDivisionType == (DivisionTypeEnum.City + '')) {
+      //   this.businessService.divisionListView.toLevelListPanel(divisions.filter(x => x.ParentId != null && x.DivisionType == DivisionTypeEnum.County));//多街道
+      //   //跳过居委 列表数据
+      //   x.map(s => {
+      //     const division = divisions.find(dd => dd.Id == s.DivisionId);
+      //     s.DivisionId = division.ParentId;
+      //   });
+      // }
+      // else
+      //   this.businessService.divisionListView.toLevelListPanel(divisions.filter(x => x.ParentId != null));
   
       
-      this.businessService.divisionListView.toStationList(x);
+      // this.businessService.divisionListView.toStationList(x);
       // this.businessService.covertStationList(x);
       setTimeout(() => {
         if (this.businessManageService.viewDivisionType != ViewDivisionTypeEnum.MapStation
-          && x.length)
-          this.lp.defaultItem(x[0].Id);
+           )
+          this.lp.defaultItem(x[0].Id,(cb)=>{});
         else if (this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.MapStation
-          && x.length && this.businessManageService)
-          this.lp.defaultItem(this.businessManageService.station.Id);
+          && this.businessManageService)
+          this.lp.defaultItem(this.businessManageService.station.Id,(cb)=>{});
       }, 500);
 
     });

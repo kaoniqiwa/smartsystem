@@ -19,6 +19,7 @@ export class BusinessService {
     devCardConfig: Array<any>;/**设备状态 */
     inspectionCardConfig: Array<any>;/**巡检 */
     divisionGarbageSpCardConfig: Array<any>;/**区划 投放点 状态数据 */
+    illegalDropEventCardConfig: Array<any>;/**报警推送 */
     constructor(private bufferService: StatisticalDataBufferService) {
         this.user = new SessionUser();
     }
@@ -34,8 +35,22 @@ export class BusinessService {
         this.illegalDropHistoryCard();
         this.mixedIntoHistoryCard();
         this.stationDisposeScoreCard();
-        this.devCard(); 
+        this.devCard();
         this.divisionGarbageSpCard();
+        this.illegalDropEventCard();
+    }
+
+    async illegalDropEventCard() {
+        const param =await this.eventDropTopCardParam();
+        if (param.divisionType == (DivisionTypeEnum.County)) { 
+            this.illegalDropEventCardConfig = new Array();
+            this.illegalDropEventCardConfig.push({
+                business: 'IllegalDropEvent',
+                flipTime: 60,
+                cardType: 'ImageThemeCardComponent',
+                state: false,
+            });
+        }
     }
 
     divisionGarbageSpCard() {
@@ -50,7 +65,7 @@ export class BusinessService {
     }
 
     inspectionCard(divisionId?: string, stationId?: string) {
-        if (stationId&&divisionId)
+        if (stationId && divisionId)
             this.inspectionCardConfig = [{
                 business: 'GarbageStationInspection',
                 cardType: 'GalleryRollPageComponent',
@@ -124,7 +139,7 @@ export class BusinessService {
 
     async illegalDropTopCard() {
         const param = await this.eventDropTopCardParam();
-        this.user.userDivisionType=param.divisionType+'';
+        this.user.userDivisionType = param.divisionType + '';
         this.illegalDropTopCardConfig = new Array();
         this.illegalDropTopCardConfig.push({
             business: 'IllegalDropOrder',

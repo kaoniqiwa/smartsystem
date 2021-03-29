@@ -55,9 +55,9 @@ export class EventChartService extends ListAttribute {
     //     this.illegalDumpView = false;
     //     this.illegalDropView = false;
     // }
-    changeDivisionFn = (id:string)=>{
-        if(this.garbageStations.find(x=>x.Id==id)){
-            this.search.station = id; 
+    changeDivisionFn = (item:{id:string})=>{ 
+        if(item&&this.garbageStations.find(x=>x.Id==item.id)){
+            this.search.station = item.id; 
             this.initStatistical();
             this.requestData();
             this.illegalDumpView = false;
