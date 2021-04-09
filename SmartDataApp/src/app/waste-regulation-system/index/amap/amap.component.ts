@@ -366,7 +366,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
                     }
                     this.ContextMenuGarbageCountClickedEvent.emit(station);
                 }
-            }, 3);
+            }, 2);
 
 
             this.client.ContextMenu.Enable();
@@ -798,7 +798,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         if (!this.currentCamera) { return; }
         const interval = args.end.getTime() - args.begin.getTime();
 
-        if ((interval) > 5 * 1000) {
+        if ((interval) > 5 * 60 * 1000) {
             args.end.setTime(args.begin.getTime() + 5 * 1000 * 60);
         }
 
