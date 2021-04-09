@@ -14,7 +14,7 @@ export class GalleryTargetViewI extends GalleryTargetView {
     neighborEventFnI: (id: string, e: ImageEventEnum) => {
         prev: boolean,
         next: boolean,
-        item: Camera
+        item: Camera|CameraV2
     };
 
     showImagePageI(id: string, e: ImageEventEnum) {
