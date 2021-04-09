@@ -133,6 +133,7 @@ function WSPlayer(args) {
         }
         if (that.tools.control.fullscreen) {
             that.tools.control.fullscreen.addEventListener("click", function () {
+                that.FullScreen = element.offsetWidth === window.screen.width && element.offsetHeight === window.screen.height;
                 if (that.FullScreen)
                     that.fullExit();
                 else
@@ -256,6 +257,7 @@ function WSPlayer(args) {
         var p = element.getElementsByClassName("parent-wnd")[0];
         p.addEventListener("dblclick", function () {
             console.log("dblclick");
+            that.FullScreen = element.offsetWidth === window.screen.width && element.offsetHeight === window.screen.height;
             try {
                 if (that.onViewerDoubleClicked) {
                     if (that.onViewerDoubleClicked()) {
@@ -477,9 +479,8 @@ function WSPlayer(args) {
 
                             var valStr = parseFloat(val) * 100 + "% 100%";
                             that.tools.control.position.style.backgroundSize = valStr;
-                            setTimeout(function(){
-                                if(that.getPosition)
-                                {
+                            setTimeout(function () {
+                                if (that.getPosition) {
                                     that.getPosition(parseFloat(val));
                                 }
                             }, 0)
@@ -671,6 +672,12 @@ function WSPlayer(args) {
             throw new Error("waiting for stop");
         if (element)
             element.className = element.className.replace(/ loading/g, "")
+
+
+        if (that.FullScreen) {
+            that.fullExit();
+        }
+
 
         that.soundOpened = false;
 
