@@ -24,6 +24,14 @@ export class HWSPlayerDirective {
 
     }
 
+    set playViewSize(size:{
+        width: number,
+        height: number
+      }){console.log('----',size);
+        this.player.clientWidth = size.width;
+        this.player.clientHeight = size.height;
+    }
+
     playVideo(options: HWSPlayerOptions, fn: () => void) {
         this.options = options;
         if (this.player) {
