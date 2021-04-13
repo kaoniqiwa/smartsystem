@@ -174,6 +174,10 @@ export class EventTableService extends ListAttribute {
             });
         }
 
+        this.eventTable.findDivisionFn = (id)=>{
+            return this.divisions.find(d=>d.Id == id);
+        }
+
     }
 
     /**多视频文件 列表 */

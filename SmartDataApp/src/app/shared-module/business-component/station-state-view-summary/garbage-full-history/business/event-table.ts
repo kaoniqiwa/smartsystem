@@ -7,11 +7,14 @@ import { ITableField } from "../../../../../aiop-system/common/ITableField";
 import { MediumPicture } from "../../../../../data-core/url/aiop/resources";
 import { IBusinessData } from "../../../../../common/interface/IBusiness";
 import { BusinessTable } from "../../../../../aiop-system/common/business-table";
+import { Division } from "../../../../../data-core/model/waste-regulation/division";
+import {DivisionTypeEnum  } from "../../../../../common/tool/enum-helper";
 export class EventTable extends BusinessTable implements IConverter {
     findEventFn: (id: string) => GarbageFullEventRecord;
     initGalleryTargetFn: (event: GarbageFullEventRecord) => void;
     videoFilesFn: (id: string) => void;
     playVideosFn: (id: string) => void;
+    findDivisionFn: (id: string) => Division;
     dataSource = new CustomTableArgs<any>({
         hasTableOperationTd: true,
         hasHead: true,
@@ -34,17 +37,21 @@ export class EventTable extends BusinessTable implements IConverter {
             isSmallImg: true,
             tdInnerAttrName: "imageUrl",
             isImg: true
-        }),new TableAttr({
-            HeadTitleName: "区划名称",
-            tdWidth: "25%",
-            tdInnerAttrName: "divisionName"
         }), new TableAttr({
-            HeadTitleName: "垃圾房名称",
-            tdWidth: "25%",
-            tdInnerAttrName: "stationName"
+            HeadTitleName: "投放点",
+            tdWidth: "20%",
+            tdInnerAttrName: "station"
+        }),new TableAttr({
+            HeadTitleName: "街道",
+            tdWidth: "15%",
+            tdInnerAttrName: "county"
+        }),new TableAttr({
+            HeadTitleName: "居委会",
+            tdWidth: "20%",
+            tdInnerAttrName: "committees"
         }), new TableAttr({
             HeadTitleName: "上报时间",
-            tdWidth: "25%",
+            tdWidth: "20%",
             tdInnerAttrName: "eventTime"
         })]
         , tableOperationBtns: [
@@ -104,8 +111,17 @@ export class EventTable extends BusinessTable implements IConverter {
         tableField.id = item.EventId;
         tableField.eventTime = this.datePipe.transform(item.EventTime, 'yyyy-MM-dd HH:mm:ss');
         tableField.resourceName = item.ResourceName 
-        tableField.stationName = item.Data.StationName;
-        tableField.divisionName = item.Data.DivisionName;
+        tableField.station = item.Data.StationName;
+        const division=this.findDivisionFn(item.Data.DivisionId);
+        if(division.DivisionType ==DivisionTypeEnum.Committees){
+            tableField.committees = division.Name;
+            const county = this.findDivisionFn(division.ParentId);
+            tableField.county=county.Name;
+        }else{
+            tableField.committees=item.Data.DivisionName;
+            tableField.county=item.Data.DivisionName;
+        }            
+      
         if(item.Data&&item.Data.CameraImageUrls&&item.Data.CameraImageUrls.length)
             tableField.imageUrl = new MediumPicture().getJPG(item.Data.CameraImageUrls[0].ImageUrl);
         return tableField;
@@ -119,8 +135,9 @@ export class GarbageFullEventsRecord implements IBusinessData {
 export class TableField implements ITableField {
     id: string;
     eventTime: string;
-    resourceName: string;
-    stationName: string;
-    divisionName: string;
+    committees: string;
+    resourceName:string;
+    station: string;
+    county: string;
     imageUrl: string;
 }
