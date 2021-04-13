@@ -80,6 +80,7 @@ export class EventDropOrder extends BaseBusinessRefresh {
                         model.items.push(info);
                         info.division = x.Name;
                         info.dropNum = 0;
+                        if(x.TodayEventNumbers)
                         for (const v of x.TodayEventNumbers)
                             if (v.EventType == eventType)
                                 info.dropNum += v.DayNumber;

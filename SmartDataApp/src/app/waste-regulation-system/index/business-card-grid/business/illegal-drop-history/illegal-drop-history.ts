@@ -12,7 +12,7 @@ export class IllegalDropHistory  extends BaseBusinessRefresh {
     }
 
     async getData() {
-        const divisionsId = this.businessParameter.map.get('divisionsId');
+        const divisionsId = this.businessParameter.map.get('divisionId');
         let model = new IllegalDropEvent();
         model.datas = new Array();
         

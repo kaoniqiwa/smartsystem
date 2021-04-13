@@ -10,4 +10,6 @@ export class  Specification implements IBusinessData {
     illegalDropNumber: number;
     /**混合行为 */
     hybridPushNumber: number;
+    /*垃圾滞留 */
+    garbageStrandedNumber: number;
 }
