@@ -1,0 +1,14 @@
+.panel {
+  width: 365px;
+  height: 200px;
+  border: #3a93ff solid 1px;
+  background-color: #0d1f38B2;
+  color: white;
+}
+.panel > table{
+    width: 100%;
+    margin: 10px;
+}
+.panel > table > tr{
+    height: 34px;
+}

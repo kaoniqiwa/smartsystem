@@ -48,8 +48,152 @@ export class GarbageStation {
 
     Grade: number;//评级
     CountSchedule: TimeRange[];//	计数时间段
+
+    /**
+     * 地址	O
+     *
+     * @type {string}
+     * @memberof GarbageStation
+     */
+    Address?: string;
+    /**
+     * 垃圾投放点类型	O
+     *
+     * @type {number}
+     * @memberof GarbageStation
+     */
+    DumpPointType?: number;
+    /**
+     *	停用的事件号列表	O
+     *
+     * @type {number[]}
+     * @memberof GarbageStation
+     */
+    DisableEventTypes: number[];
+    /**
+     * 所属网格单元ID	O
+     *
+     * @type {string}
+     * @memberof GarbageStation
+     */
+    GridCellId?: string;
+    /**
+     *	垃圾相关参数	O
+     *
+     * @type {GarbageParameters}
+     * @memberof GarbageStation
+     */
+    GarbageParameters?: GarbageParameters;
+    /**
+     *	人员列表	O
+     *
+     * @type {Member[]}
+     * @memberof GarbageStation
+     */
+    Members?: Member[];
 }
-interface TimeRange {
+export class Member {
+    /**
+     *	成员ID	M
+     *
+     * @type {string}
+     * @memberof Member
+     */
+    Id: string;
+    /**
+     *	姓名	M
+     *
+     * @type {string}
+     * @memberof Member
+     */
+    Name: string;
+    /**
+     *	性别，1-男性，2-女性	O
+     *
+     * @type {number}
+     * @memberof Member
+     */
+    Gender?: Gender;
+    /**
+     *	手机号码	O
+     *
+     * @type {string}
+     * @memberof Member
+     */
+    MobileNo?: string;
+    /**
+     *	描述信息	O
+     *
+     * @type {string}
+     * @memberof Member
+     */
+    Note?: string;
+    /**
+     *	人员类型	M
+     *
+     * @type {number}
+     * @memberof Member
+     */
+    MemberType: number;
+    /**
+     *	微信OpenId	O
+     *
+     * @type {string}
+     * @memberof Member
+     */
+    WeChatOpenId?: string;
+    /**
+     *	所属区划ID	O
+     *
+     * @type {string}
+     * @memberof Member
+     */
+    DivisionId?: string;
+    /**
+     *	所属网格ID 	O
+     *
+     * @type {string}
+     * @memberof Member
+     */
+    GridCellId?: string;
+    /**
+     *	创建时间	M
+     *
+     * @type {(string|Date)}
+     * @memberof Member
+     */
+    CreateTime: string | Date;
+    /**
+     *	更新事件	M
+     *
+     * @type {(string|Date)}
+     * @memberof Member
+     */
+    UpdateTime: string | Date;
+}
+
+export enum Gender {
+    /**
+     *  男
+     */
+    Male = 1,
+    /**
+     *  女
+     */
+    Female = 2
+}
+
+export class GarbageParameters {
+    /**
+     *	处置超时时长，单位：分钟，默认：15分钟	O
+     *
+     * @type {number}
+     * @memberof GarbageParameters
+     */
+    HandleTimeout?: number;
+}
+
+export interface TimeRange {
     BeginTime: Date | string;
     EndTime: Date | string;
 }
