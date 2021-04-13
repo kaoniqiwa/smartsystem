@@ -48,6 +48,17 @@ export class BarOption implements IEChartOption {
     barWidth = 12;
 }
 
+export class Bar3dOption implements IEChartOption {
+    seriesData: IEChartsData[];
+    xAxis3dData:IEChartsData[];
+    yAxis3dData:IEChartsData[];
+    maxNumber =1;
+    boxWidth= 100;
+    boxDepth= 80;
+    beta = 40;
+    distance=200;
+}
+
 
 export class BarOptionV2 implements IEChartOption {
     yAxisData: IEChartsData;
