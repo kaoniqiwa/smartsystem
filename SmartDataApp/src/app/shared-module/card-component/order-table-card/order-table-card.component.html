@@ -1,11 +1,17 @@
 <ng-container *ngIf="model">
   <h2>
     {{model.title}}
-    <ng-container *ngIf="model.dropList">
+    
+    <ng-container *ngIf="model.dropListV1">
       <div class="pull-right m-r-10" style="width: 110px;">
-        <hw-select-option [model]="model.dropList" [selectedItemFn]="selectedItemFn"></hw-select-option>
+        <hw-select-option [model]="model.dropListV1" [selectedItemFn]="selectedItemFn"></hw-select-option>
       </div> 
     </ng-container>
+    <ng-container *ngIf="model.dropList">
+      <div class="pull-right " style="width: 94px;">
+        <hw-select-option [model]="model.dropList" [selectedItemFn]="selectedItemFn"></hw-select-option>
+      </div> 
+    </ng-container> 
   </h2>
   
   <div class="content-wrapper p-t-20  ">

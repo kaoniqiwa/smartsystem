@@ -9,7 +9,9 @@ export class OrderTableCardComponent extends BasisCardComponent implements OnIni
   @Input() model: OrderTable;
 
   selectedItemFn = (id: string) => {
-    if (this.btnControl) this.btnControl({ id:id,eventType:this.model.dropList.eventType});
+    
+    if (this.btnControl&&this.model.dropListV1) this.btnControl({ id:id,eventType:this.model.dropListV1.eventType});
+    else if (this.btnControl&&this.model.dropList) this.btnControl({ id:id,eventType:this.model.dropList.eventType});
   }
   constructor() {
     super();

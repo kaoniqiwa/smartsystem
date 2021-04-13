@@ -13,6 +13,7 @@ import { FormTitlePipe,TxtLenPipe } from "../common/tool/howell.pipe";
 import { DateTimePickerDirective,DateTimePickerMirrorDirective } from "../common/directive/date-time-picker.directive";
 import {  EChartBarDirective} from "../common/directive/echarts/bar-directive";
 import {  EChartBarDirectiveV2} from "../common/directive/echarts/bar-directive-v2";
+import { EChartBar3dDirective } from "../common/directive/echarts/bar3d-directive";
 import {  EChartLineDirective} from "../common/directive/echarts/line-directive";
 import {  EChartPieOutDirective} from "../common/directive/echarts/pie/pie-out-directive";
 import {  EChartPieInDirective} from "../common/directive/echarts/pie/pie-in-directive";
@@ -68,6 +69,8 @@ import { GarbageStationSummaryComponent } from './business-component/station-vie
 import { FullGarbageStationSummaryComponent } from './business-component/station-state-view-summary/full-garbage-station-summary/full-garbage-station-summary.component';
 import { GarbageFullHistorySumChartComponent } from './business-component/station-view-summary/garbage-full-history-sum-chart/garbage-full-history-sum-chart.component';
 import { StatisticGarbageAnalyzeComponent } from './business-component/station-view-summary/statistic-garbage-analyze/statistic-garbage-analyze.component';
+import { GarbageDropEventHistoryComponent } from './business-component/station-view-summary/garbage-drop-event-history/garbage-drop-event-history.component';
+import { StationStrandedComponent } from './business-component/station-stranded-statistic/station-stranded/station-stranded.component';
 
 @NgModule({
   imports: [
@@ -80,7 +83,7 @@ import { StatisticGarbageAnalyzeComponent } from './business-component/station-v
     DateTimePickerDirective,DateTimePickerMirrorDirective,
     HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartBarDirectiveV2,EChartLineDirective ,HWSPlayerDirective,CardDirective
     ,EChartPieOutDirective,EChartPieInDirective,EChartPieMiddleDirective ,EChartProgressBarBoxDirective,EChartProgressBarDirective
-     ,EChartCandlestickDirective
+     ,EChartCandlestickDirective,EChartBar3dDirective
     ,FormTitlePipe,TxtLenPipe,
   InputSearchComponent,CustomTableComponent, ConfirmDialogComponent,
   InputTagAreaComponent,
@@ -94,7 +97,7 @@ import { StatisticGarbageAnalyzeComponent } from './business-component/station-v
 , LevelListPanelComponent, MixedIntoEventHistoryComponent, FullGarbageStationComponent, GarbageStationComponent, GarbageStationCamerasComponent, GalleryRollPageComponent, IllegalDropEventSummaryComponent, IllegalDropEventAnalyzeV2Component
 , VsClassStatisticComponent, TreeDropListV2Component
 , GarbageFullHistoryComponent
-, StatisticGarbageCountComponent, SelectOptionComponent, GarbageStationSummaryComponent, FullGarbageStationSummaryComponent, GarbageFullHistorySumChartComponent, StatisticGarbageAnalyzeComponent
+, StatisticGarbageCountComponent, SelectOptionComponent, GarbageStationSummaryComponent, FullGarbageStationSummaryComponent, GarbageFullHistorySumChartComponent, StatisticGarbageAnalyzeComponent, GarbageDropEventHistoryComponent, StationStrandedComponent
 ],
   exports: [
     MatTreeModule,DragDropModule, HttpClientModule,ScrollingModule,
@@ -103,7 +106,7 @@ import { StatisticGarbageAnalyzeComponent } from './business-component/station-v
     ,DateTimePickerDirective,DateTimePickerMirrorDirective
     ,HWPaginationDirective,TouchSpinDirective,EChartBarDirective,EChartBarDirectiveV2,EChartLineDirective,HWSPlayerDirective,CardDirective
      ,EChartPieOutDirective,EChartPieInDirective,EChartPieMiddleDirective ,EChartProgressBarBoxDirective,EChartProgressBarDirective
-     ,EChartCandlestickDirective
+     ,EChartCandlestickDirective,EChartBar3dDirective
     ,FormTitlePipe,TxtLenPipe
     ,InputSearchComponent,InputTagAreaComponent,CustomTableComponent,ConfirmDialogComponent
     ,InputTagSelectComponent,CustomTreeComponent,PicturesDropListComponent,CardListPanelComponent
@@ -116,7 +119,7 @@ import { StatisticGarbageAnalyzeComponent } from './business-component/station-v
     ,UserToolComponent,LevelListPanelComponent
     ,GarbageFullHistoryComponent
     ,StatisticGarbageCountComponent,GarbageStationSummaryComponent,FullGarbageStationSummaryComponent,GarbageFullHistorySumChartComponent
-    ,StatisticGarbageAnalyzeComponent
+    ,StatisticGarbageAnalyzeComponent,GarbageDropEventHistoryComponent,StationStrandedComponent
   ],
   providers: [DatePipe,
    ],
