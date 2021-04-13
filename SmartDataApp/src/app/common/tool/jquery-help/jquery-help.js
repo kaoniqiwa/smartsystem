@@ -178,6 +178,21 @@ function getCanvasDataUrl(domId){
     return imgUrl || null
 }
 
+function mousewheel(dom,cb){
+    $(dom).on("mousewheel DOMMouseScroll", function (event) {
+         cb(this,event);
+    });
+}
+
+function scrollLeft(dom,leftNumber){
+    var a =$(dom).parent(); 
+    $(a[0]).scrollLeft(leftNumber);
+}
+
+function tooltip(){
+    $('[data-toggle="tooltip"]').tooltip();
+}
+
 exports.getData = getData;
 exports.setData = setData;
 exports.moveView = moveView;
@@ -201,3 +216,6 @@ exports.downloadFile=downloadFile;
 exports.launchIntoFullscreen=launchIntoFullscreen;
 exports.exitFullscreen=exitFullscreen;
 exports.getCanvasDataUrl=getCanvasDataUrl;
+exports.mousewheel=mousewheel;
+exports.scrollLeft=scrollLeft; 
+exports.tooltip=tooltip;

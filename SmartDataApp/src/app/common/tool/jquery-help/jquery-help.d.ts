@@ -44,3 +44,8 @@ export declare function getCanvasDataUrl(domId:string);
 export declare function setData(dom:string,name:string,val:string);
 
 export declare function getData(dom:string,name:string);
+
+export declare function mousewheel(dom:string,cb:(thatDom:any,data:any)=>void);
+export declare function scrollLeft(dom:any,leftNumber:number);
+
+export declare function tooltip();
