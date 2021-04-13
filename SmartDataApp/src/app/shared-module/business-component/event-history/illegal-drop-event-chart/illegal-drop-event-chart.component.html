@@ -38,8 +38,8 @@
           [changeDate]="startDate" style="width: calc(100% - 82px);" class="custom form-control m-l-10">
       </div>
       <div fxFlex="30" class="m-r-10">
-        <span class="input-text" style="position: relative;top:2px">区划</span>
-        <div class="pull-right" style="width: calc(100% - 46px);">
+        <span class="input-text" style="position: relative;top:2px">行政区</span>
+        <div class="pull-right" style="width: calc(100% - 64px);">
           <ng-container *ngIf="businessService.divisionListView">
             <hw-level-list-panel [model]="businessService.divisionListView.dataSource" [selectedFn]="changeDivisionFn">
             </hw-level-list-panel>
@@ -48,7 +48,7 @@
         </div>
       </div>
       <div fxFlex="25" class="m-r-10">
-        <span class="input-text" style="position: relative;top:2px">垃圾房</span>
+        <span class="input-text" style="position: relative;top:2px">投放点</span>
         <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 64px);"
           formControlName="StationId">
           <option value="">请选择</option>
@@ -95,6 +95,9 @@
     style="position: absolute;">
       <ng-container *ngIf="businessService.barChartOption">
         <div class="height98 fill-width" [options]="businessService.barChartOption" EChartBar></div>
+      </ng-container>
+      <ng-container *ngIf="businessService.bar3dOption">
+        <div  class="height98 fill-width"  [options]="businessService.bar3dOption" EChartBar3d></div>
       </ng-container>
     </div>
 

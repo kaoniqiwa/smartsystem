@@ -12,11 +12,11 @@ import { Division } from "../../../../../data-core/model/waste-regulation/divisi
 import { GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station";
 import { TheDayTime, MonthLastDay, OneWeekDate } from "../../../../../common/tool/tool.service";
 import { ChartTypeEnum, TimeUnitEnum } from "./search";
-import { LineOption, BarOption } from "../../../../../common/directive/echarts/echart"; 
+import { LineOption, BarOption, Bar3dOption } from "../../../../../common/directive/echarts/echart";
 import "../../../../../common/string/hw-string";
 import { XlsxData } from "../../illegal-drop-event-analyze/business/business.service";
 import { ExcelData } from "../../../../../common/tool/hw-excel-js/data";
-import { BusinessEventTypeEnum,convertEventData } from "../../business-event-type"; 
+import { BusinessEventTypeEnum, convertEventData } from "../../business-event-type";
 @Injectable()
 export class BusinessService extends ListAttribute {
     divisionListView: DivisionListView;
@@ -27,6 +27,7 @@ export class BusinessService extends ListAttribute {
     search = new SearchControl(this.datePipe);
     lineChartOption: LineOption;
     barChartOption: BarOption;
+    bar3dOption: Bar3dOption;
     barChartView = true;
     lineChartView = false;
     datePicker = {
@@ -49,7 +50,7 @@ export class BusinessService extends ListAttribute {
 
     initDivisionListView() {
         this.divisionListView = new DivisionListView();
-        this.divisionListView.toLevelListPanel(this.divisions.filter(f=>f.ParentId!=null));
+        this.divisionListView.toLevelListPanel(this.divisions.filter(f => f.ParentId != null));
     }
 
     async requestData() {
@@ -62,14 +63,17 @@ export class BusinessService extends ListAttribute {
             mapData.set(s.StationId, response.Data.Data);
             this.convertLineData(response.Data.Data, this.search);
             this.convertBarData(response.Data.Data, this.search);
+            this.convertBar3dData(response.Data.Data, this.search);
         }
         else if (s.DivisionId) {
             const response = await this.divisionService.eventNumbersHistory(requsetParam.searchParam, requsetParam.divisionsId).toPromise();
-            mapData.set(s.DivisionId, response.Data.Data);
+            mapData.set(s.DivisionId, response.Data.Data); console.log(response.Data.Data);
             this.convertLineData(response.Data.Data, this.search);
             this.convertBarData(response.Data.Data, this.search);
+            this.convertBar3dData(response.Data.Data, this.search);
+
         }
-    } 
+    }
 
     exportExcel(dataSources: Map<string, EventNumberStatistic[]>, search: SearchControl, param: Array<{ id: string, text: string }>)
         : {
@@ -104,7 +108,7 @@ export class BusinessService extends ListAttribute {
                     if (i < 10) timeKey.push({ no: i, date: '', name: `0${i}日`, val: 0 });
                     else timeKey.push({ no: i, date: '', name: `${i}日`, val: 0 });
                 }
-                chart.dataLen = (lastDay+2);
+                chart.dataLen = (lastDay + 2);
             }
             else if (s.TimeUnit == TimeUnitEnum.Week) {
                 ["周一", "周二", "周三", "周四", "周五", "周六", "周日"].map((x, index) => {
@@ -139,7 +143,7 @@ export class BusinessService extends ListAttribute {
 
                 for (let i = 0; i < monthMaxDay; i++) {
                     if (data[i]) {
-                        convertEventData(this.businessEventType,data[i].EventNumbers)
+                        convertEventData(this.businessEventType, data[i].EventNumbers)
                             .map(ed => dayNum.push(ed));
                         // for (const e of data[i].EventNumbers)
                         //     if (e.EventType == EventTypeEnum.IllegalDrop)
@@ -152,8 +156,8 @@ export class BusinessService extends ListAttribute {
             else
                 for (const x of data) {
                     dates.push(this.datePipe.transform(x.BeginTime, 'yyyy年MM月dd日'));
-                    convertEventData(this.businessEventType,x.EventNumbers, s.TimeUnit == TimeUnitEnum.Hour)
-                            .map(ed => dayNum.push(ed));
+                    convertEventData(this.businessEventType, x.EventNumbers, s.TimeUnit == TimeUnitEnum.Hour)
+                        .map(ed => dayNum.push(ed));
                     // for (const e of x.EventNumbers)
                     //     if (e.EventType == EventTypeEnum.IllegalDrop)
                     //         if (s.TimeUnit == TimeUnitEnum.Hour)
@@ -227,7 +231,7 @@ export class BusinessService extends ListAttribute {
 
             for (let i = 0; i < monthMaxDay; i++) {
                 if (statistic[i]) {
-                    convertEventData(this.businessEventType,statistic[i].EventNumbers)
+                    convertEventData(this.businessEventType, statistic[i].EventNumbers)
                         .map(ed => this.lineChartOption.seriesData.push(ed));
                     // for (const e of statistic[i].EventNumbers)
                     //     if (e.EventType == EventTypeEnum.IllegalDrop)
@@ -237,8 +241,8 @@ export class BusinessService extends ListAttribute {
             }
         }
         else
-            for (const x of statistic) {           
-                convertEventData(this.businessEventType,x.EventNumbers, s.TimeUnit == TimeUnitEnum.Hour)
+            for (const x of statistic) {
+                convertEventData(this.businessEventType, x.EventNumbers, s.TimeUnit == TimeUnitEnum.Hour)
                     .map(ed => this.lineChartOption.seriesData.push(ed));
 
                 // for (const e of x.EventNumbers)
@@ -251,8 +255,9 @@ export class BusinessService extends ListAttribute {
 
     convertBarData(statistic: EventNumberStatistic[], search: SearchControl) {
         const s = search.toSearchParam();
+        if (s.TimeUnit == TimeUnitEnum.Week) return;
         this.barChartOption = new BarOption();
-
+        this.bar3dOption = null;
         var xAxisData = new Array(), monthMaxDay = 0;
         if (s.TimeUnit == TimeUnitEnum.Hour) {
             for (let i = 0; i < 24; i++) {
@@ -281,8 +286,8 @@ export class BusinessService extends ListAttribute {
 
             for (let i = 0; i < monthMaxDay; i++) {
                 if (statistic[i]) {
-                    convertEventData(this.businessEventType,statistic[i].EventNumbers)
-                    .map(ed=>seriesData.push(ed));
+                    convertEventData(this.businessEventType, statistic[i].EventNumbers)
+                        .map(ed => seriesData.push(ed));
                     // for (const e of statistic[i].EventNumbers)
                     //     if (e.EventType == EventTypeEnum.IllegalDrop)
                     //         seriesData.push(e.DayNumber);
@@ -292,8 +297,8 @@ export class BusinessService extends ListAttribute {
         }
         else
             for (const x of statistic) {
-                convertEventData(this.businessEventType,x.EventNumbers,s.TimeUnit == TimeUnitEnum.Hour)
-                .map(ed=>seriesData.push(ed));
+                convertEventData(this.businessEventType, x.EventNumbers, s.TimeUnit == TimeUnitEnum.Hour)
+                    .map(ed => seriesData.push(ed));
                 // for (const e of x.EventNumbers)
                 //     if (e.EventType == EventTypeEnum.IllegalDrop)
                 //         if (s.TimeUnit == TimeUnitEnum.Hour)
@@ -333,7 +338,8 @@ export class BusinessService extends ListAttribute {
             // ,Number.parseInt(s.Month),Number.parseInt(s.Day)));
             const week = OneWeekDate(new Date(Number.parseInt(s.Year)
                 , Number.parseInt(s.Month) - 1, Number.parseInt(s.Day)));
-            param.TimeUnit = 2;
+            week.sunday.setHours(week.sunday.getHours() + 24);
+            param.TimeUnit = 1;
             param.BeginTime = week.monday.toISOString();
             param.EndTime = week.sunday.toISOString();
         }
@@ -343,6 +349,61 @@ export class BusinessService extends ListAttribute {
             divisionsId: s.DivisionId,
             stationId: s.StationId
         };
+    }
+
+    convertBar3dData(statistic: EventNumberStatistic[], search: SearchControl) {
+        const s = search.toSearchParam(), seriesData = new Array()
+            , weekNumberMap = new Map<string, Array<Array<number>>>();
+
+        if (statistic.length == 0) {
+            this.bar3dOption = null;
+            return;
+        }
+        if (s.TimeUnit == TimeUnitEnum.Week) {
+            this.barChartOption = null;
+            this.bar3dOption = new Bar3dOption();
+            this.bar3dOption.boxDepth = 80; 
+            this.bar3dOption.boxWidth = 200; 
+            this.bar3dOption.beta=-40;
+            this.bar3dOption.distance=300;
+            this.bar3dOption.yAxis3dData = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
+            this.bar3dOption.xAxis3dData = new Array();
+            for (let i = 0; i < 24; i++)
+                this.bar3dOption.xAxis3dData.push(`${i}:00`);
+       
+            const week = OneWeekDate(new Date(Number.parseInt(s.Year)
+                , Number.parseInt(s.Month) - 1, Number.parseInt(s.Day)))
+            for (let i = 0; i < 7; i++) {
+                const date = week.monday.getMonth() + '-' + week.monday.getDate()
+                weekNumberMap.set(date, new Array());
+                const arr = weekNumberMap.get(date);
+                for (let j = 0; j < 24; j++) {
+                    //  console.log(`${week.monday.getMonth()}-${week.monday.getDate()} ${j}`);
+                    const findVal = statistic.find(s => {
+                        const bg = new Date(s.BeginTime);
+                        //  console.log(`${bg.getMonth()}-${bg.getDate()} ${bg.getHours()}` ,`${week.monday.getMonth()}-${week.monday.getDate()} ${j}`);
+                        return `${bg.getMonth()}-${bg.getDate()} ${bg.getHours()}`
+                            == `${week.monday.getMonth()}-${week.monday.getDate()} ${j}`;
+                    });
+                    if (findVal) 
+                        convertEventData(this.businessEventType, findVal.EventNumbers, true)
+                            .map(ed => { 
+                                arr.push([i, j,ed]);
+                                this.bar3dOption.maxNumber = ed > this.bar3dOption.maxNumber ? ed : this.bar3dOption.maxNumber;
+                            }); 
+                    else arr.push([i, j, 0]); 
+                }
+
+                week.monday.setDate(week.monday.getDate() + 1);
+            }
+        }
+        else return;
+           for (const v of weekNumberMap.values()) 
+               v.map(m=>{
+                   seriesData.push(m); 
+               }); 
+           this.bar3dOption.seriesData=seriesData;
+            
     }
 
     changeChartType() {
