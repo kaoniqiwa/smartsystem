@@ -7,6 +7,7 @@ import { MessageBar } from '../../../../common/tool/message-bar';
 import { ConfigRequestService } from "../../../../data-core/repuest/config.service";
 import { HowellExcelV1 } from "../../../../common/tool/hw-excel-js/hw-excel-v1";
 import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
+import { OtherViewEnum } from "../view-helper";
 @Component({
   selector: 'hw-statistic-garbage-analyze',
   templateUrl: './statistic-garbage-analyze.component.html',
@@ -130,10 +131,4 @@ export class StatisticGarbageAnalyzeComponent implements OnInit {
   }
  
 
-}
-export enum OtherViewEnum {
-  chart,
-  info,
-  sumChart,
-  analyzeChart
 } 

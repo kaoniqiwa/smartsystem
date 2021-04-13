@@ -23,7 +23,7 @@ import { GalleryTargetViewI } from "../../../station-state-view-summary/full-gar
 import { ResourceCameraDao } from "../../../../../data-core/dao/resources-camera-dao";
 import { Camera as ResourceCamera } from "../../../../../data-core/model/aiop/camera";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera"; 
-import { ResourceSRServersRequestService, CameraRequestService } from "../../../../../data-core/repuest/resources.service";
+import { ResourceSRServersRequestService, CameraRequestService, StationResourceSRServersRequestService } from "../../../../../data-core/repuest/resources.service";
 import { SideNavService } from "../../../../../common/tool/sidenav.service";
 import { ImageEventEnum } from "../../../../gallery-target/gallery-target";
 import { MediumPicture } from "../../../../../data-core/url/aiop/resources"; 
@@ -70,7 +70,7 @@ export class BusinessService {
         , private cameraService: CameraRequestService
         , private navService: SideNavService
         , private userDalService: UserDalService
-        , private srService: ResourceSRServersRequestService
+        , private srService: StationResourceSRServersRequestService
         , garbageStationTypeService: GarbageStationTypeRequestService) {
         this.divisionDao = new DivisionDao(divisionService);
         this.garbageStationDao = new GarbageStationDao(garbageStationService);
@@ -124,7 +124,7 @@ export class BusinessService {
                 const find = this.cameras.find(c => c.Id == x.Id);
                 cameras.push(find);
             })
-            this.galleryTargetView.initGalleryTargetI(garbageId, cameras, index);
+            this.galleryTargetView.initGalleryTargetI(garbageId, cameras as any, index);
         }
 
         this.galleryTargetView.manualCaptureFn = (stationId, cb) => {
@@ -139,6 +139,10 @@ export class BusinessService {
                 }
             });
         }
+
+        this.table.findDivisionFn=(id)=>{
+            return this.divisions.find(d=>d.Id == id);
+        }
     }
 
     async requestVideoUrl(cameraId: string) {
@@ -147,7 +151,7 @@ export class BusinessService {
         ,config = await this.userDalService.getUserConfig(user.id, videoLive);        
         params.CameraId = cameraId;
         params.Protocol = 'ws-ps';
-        params.StreamType = parseInt(config);
+        params.StreamType =config? parseInt(config):1;
         const response = await this.srService.PreviewUrls(params).toPromise(); 
         return response.Data;
     }
@@ -179,7 +183,7 @@ export class BusinessService {
         const param = new GetGarbageStationsParams();
         param.PageIndex = pageIndex;
         param.DivisionId = this.divisionsId;
-        param.PageSize = 10;
+        param.PageSize = 9;
         if (search.searchText && search.other == false)
             param.Name = search.searchText;
         return param;
@@ -202,21 +206,21 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
             }
         },
         tableAttrs: [new TableAttr({
-            HeadTitleName: "名称",
+            HeadTitleName: "投放点",
             tdWidth: "20%",
             tdInnerAttrName: "name"
-        }), new TableAttr({
-            HeadTitleName: "类型",
+        }),new TableAttr({
+            HeadTitleName: "街道",
             tdWidth: "15%",
-            tdInnerAttrName: "type"
+            tdInnerAttrName: "county"
+        }), new TableAttr({
+            HeadTitleName: "居委会",
+            tdWidth: "20%",
+            tdInnerAttrName: "committees"
         }), new TableAttr({
             HeadTitleName: "状态",
             tdWidth: "15%",
             tdInnerAttrName: "state"
-        }), new TableAttr({
-            HeadTitleName: "区划",
-            tdWidth: "20%",
-            tdInnerAttrName: "divisionName"
         })],
         galleryTd: [],
         footArgs: new FootArgs({
@@ -227,7 +231,7 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
     findGarbageFn: (id: string) => GarbageStation;
     initGalleryTargetFn: (garbageId: string, event: Camera[], index: number) => void;
     playVideoFn: (id: string) => void;
-
+    findDivisionFn:(id:string)=>Division;
     constructor(private datePipe: DatePipe) {
         super();
     }
@@ -237,13 +241,10 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
     Convert<BusinessData, CustomTableArgs>(input: BusinessData, output: CustomTableArgs) {
         const items = new Array<TableField>();
         var tds: GalleryTdAttr[] = new Array();
+     
         if (input instanceof BusinessData)
             for (const item of input.statioins) {
-                const division = input.divisions.find(x => x.Id == item.DivisionId)
-                    , type = input.types.find(x => x.Type == item.StationType);
-
-
-                items.push(this.toTableModel(division, type, item));
+                items.push(this.toTableModel(item));
                 if (item.Cameras)
                     tds.push(this.toGalleryModel(input.items, item.Id, item.Cameras));
             }
@@ -255,13 +256,15 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
         return output;
     }
 
-    toTableModel(division: Division, type: GarbageStationType, statioin: GarbageStation) {
+    toTableModel(station: GarbageStation) {
         let tableField = new TableField();
-        tableField.id = statioin.Id;
-        tableField.name = statioin.Name;
-        tableField.type = type ? type.Name : '-';
-        tableField.divisionName = division ? division.Name : '-';
-        tableField.state = StationStateEnum[statioin.StationState];
+        tableField.id = station.Id;
+        tableField.name = station.Name;
+        const committees = this.findDivisionFn(station.DivisionId),
+        county  = this.findDivisionFn(committees.ParentId);
+        tableField.county =county.Name;
+        tableField.committees =committees.Name;
+        tableField.state = StationStateEnum[station.StationState];
         return tableField;
     }
 
@@ -295,8 +298,8 @@ export class BusinessData implements IBusinessData {
 export class TableField implements ITableField {
     id: string;
     updateTime: string;
-    name: string;
-    state: string;
-    type: string;
-    divisionName: string;
+    name: string; 
+    committees: string;  
+    county: string; 
+    state:string;
 }

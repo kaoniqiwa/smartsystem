@@ -11,7 +11,6 @@ import { EnumHelper } from "../../../../../common/tool/enum-helper";
 import { GetVodUrlParams } from '../../../../../data-core/model/aiop/video-url';
 import { GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
-import { SelectOption } from "../../../../select-option/select-option";
 import { moveView3 } from "../../../../../common/tool/jquery-help/jquery-help";
 import { MediumPicture } from "../../../../../data-core/url/aiop/resources";
 import { DivisionListView } from "../../../event-history/division-list-view";
@@ -188,19 +187,19 @@ export class EventChartService extends ListAttribute {
             }
             this.statistical[0].vals[0].val = Decimal(s.GarbageRatio);
 
-            if (s.AvgGarbageTime == 0)  //用于显示 数据为 0 的时候
+            if (s.AvgGarbageTime < 1)  //用于显示 数据为 0 的时候
                 this.statistical[1].vals = new Array();
             else {
                 this.statistical[1].vals[0].val = toHour(s.AvgGarbageTime).split(':')[0];
                 this.statistical[1].vals[1].val = toHour(s.AvgGarbageTime).split(':')[1];
             }
-            if (s.MaxGarbageTime == 0)
+            if (s.MaxGarbageTime < 1)
                 this.statistical[2].vals = new Array();
             else {
                 this.statistical[2].vals[0].val = toHour(s.MaxGarbageTime).split(':')[0];
                 this.statistical[2].vals[1].val = toHour(s.MaxGarbageTime).split(':')[1];
             }
-            if (s.GarbageDuration == 0)
+            if (s.GarbageDuration < 1)
                 this.statistical[3].vals = new Array();
             else {
                 this.statistical[3].vals[0].val = toHour(s.GarbageDuration).split(':')[0];

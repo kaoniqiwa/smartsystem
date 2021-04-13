@@ -9,6 +9,7 @@ import { LevelListPanelComponent } from "../../event-history/level-list-panel/le
 import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
 import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
 import { BusinessManageService, ViewDivisionTypeEnum } from "../../business-manage-service";
+import { OtherViewEnum } from "../view-helper";
 @Component({
   selector: 'hw-garbage-full-history-sum-chart',
   templateUrl: './garbage-full-history-sum-chart.component.html',
@@ -186,10 +187,4 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
   }
 
 }
-
-export enum OtherViewEnum {
-  chart,
-  info,
-  sumChart,
-  analyzeChart
-}
+ 

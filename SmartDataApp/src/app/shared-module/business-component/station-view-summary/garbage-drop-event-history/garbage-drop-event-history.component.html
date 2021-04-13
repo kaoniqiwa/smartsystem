@@ -1,0 +1,116 @@
+<div style="height: calc(100% - 64px);position: relative;">
+  <div class="fill-height fill-width hw-content-mask collapse"
+    [class.in]="tableService.galleryTargetView.galleryTarget">
+    <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
+      <hw-gallery-target [closeViewFn]="galleryTargetFn" [model]="tableService.galleryTargetView.galleryTarget"
+        [imgEventFn]="tableService.galleryTargetView.galleryTargetPageFn">
+      </hw-gallery-target>
+    </div>
+  </div>
+
+  <div class="fill-height fill-width hw-content-mask collapse" [class.in]="tableService.videoImgs">
+
+    <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
+      <ng-container *ngIf="tableService.videoImgs">
+        <hw-video-simple-card [closeFn]="videoClose" [playVideoToUrlFn]="tableService.playVideoToUrlFn"
+          [videoImgs]="tableService.videoImgs" [cameraName]="tableService.playVideoViewTitle"></hw-video-simple-card>
+      </ng-container> 
+    </div>
+
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between stretch">
+    <div class="fill-height">
+      <div class="second-title-bg pull-left text">
+        投放点
+      </div>
+      <ul class="hw-ul pull-left m-t-10">
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.info)">
+          <div class="second-menu-btn  text">
+            &nbsp;&nbsp;列表
+          </div>
+        </a></li>
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.chart)">
+          <div class="second-menu-btn text">
+            &nbsp; &nbsp;小包垃圾处置
+          </div>
+        </a></li>
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.sumChart)">
+          <div class="second-menu-btn  text">
+            &nbsp;总图表
+          </div>
+        </a></li>
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.analyzeChart)">
+          <div class="second-menu-btn  text">
+            &nbsp;细分图表
+          </div>
+        </a></li>
+        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.event)">
+          <div class="second-menu-btn selected text">
+            &nbsp;&nbsp;事件
+          </div>
+        </a></li>
+      </ul> 
+    
+    </div>
+    <div [formGroup]="tableService.search.searchform" fxLayoutAlign="center center" style="position: relative;">
+      <input type="text" style="width: 300px;" [readonly]="tableService.search.other" formControlName="SearchText"
+        placeholder="输入关键字" class="custom form-control m-r-10">
+      <button type="button" class="hw-blue-btn m-r-10 " (click)="search()">
+        <i class="mdi mdi-magnify"></i>
+        查询
+      </button> 
+      <button class="hw-cyan-m-btn" (click)="moreSearch()">
+        <i class="mdi mdi-filter-outline"></i>
+      </button>  
+    </div>
+  </div>
+  <ng-container *ngIf="tableService.search.other">
+    <div fxLayout="row" [formGroup]="tableService.search.searchform" fxLayoutGap="20px"
+      class="filter-wrap m-b-10 collapse">
+      <div fxFlex="20">
+        <span>开始时间</span>
+        <input type="text" DateTimePicker [defaultVal]="tableService.search.beginDate" [changeDate]="startDate"
+          [startView]="1" [minView]="1" style="width: calc(100% - 82px);" class="custom form-control m-l-10"
+          formControlName="BeginTime">
+      </div>
+      <div fxFlex="20">
+        <span>结束时间</span>
+        <input type="text" DateTimePicker [defaultVal]="tableService.search.endDate" [changeDate]="endDate"
+          [startView]="1" [minView]="1" style="width: calc(100% - 82px);" class="custom form-control m-l-10"
+          formControlName="EndTime">
+      </div>
+      <div fxFlex="20">
+        <span class="input-text">区划</span>
+        <div class="pull-right" style="width: calc(100% - 46px);">
+          <hw-level-list-panel [model]="tableService.divisionListView.dataSource"
+          [selectedFn]="changeDivisionFn"></hw-level-list-panel>
+        </div> 
+      </div>
+      <div fxFlex="20">
+        <span class="input-text">垃圾房</span>
+        <select (change)="changeStation(stationsList.value)" #stationsList class="form-control custom custom-select m-l-10" style="width: calc(100% - 64px);"
+          formControlName="StationId">
+          <option value="">请选择</option>
+          <ng-container *ngFor="let c of tableService.search.stationsDropList">
+            <option value="{{c.id}}">{{c.name}}</option>
+          </ng-container>
+        </select>
+      </div>
+      <div fxFlex="20">
+        <span class="input-text">摄像机</span>
+        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 64px);"
+          formControlName="ResourceId">
+          <option value="">请选择</option>
+          <ng-container *ngFor="let c of tableService.search.resourcesDropList">
+            <option value="{{c.id}}">{{c.name}}</option>
+          </ng-container>
+        </select>
+      </div>
+    </div>
+
+  </ng-container>
+
+  <div [ngStyle]="{'height': tableService.search.other ? tableSearchHeight:tableMinusHeight}">
+    <hw-custom-table #table [model]="tableService.table.dataSource"></hw-custom-table>
+  </div>
+</div>

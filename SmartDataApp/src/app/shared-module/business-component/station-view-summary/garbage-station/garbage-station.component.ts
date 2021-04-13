@@ -1,5 +1,6 @@
 import { Component, OnInit,Input ,Output,EventEmitter} from '@angular/core'; 
-import {  BusinessService} from "./business/garbage-station-table"; 
+import {  BusinessService} from "./business/garbage-station-table";
+import {  OtherViewEnum } from "../view-helper"; 
 @Component({
   selector: 'hw-garbage-station',
   templateUrl: './garbage-station.component.html',
@@ -44,10 +45,4 @@ export class GarbageStationComponent implements OnInit {
     },240);
   }
 }
-
-export enum OtherViewEnum {
-  chart,
-  info,
-  sumChart,
-  analyzeChart
-}
+ 

@@ -3,9 +3,7 @@ import { EventChartService } from "./business/event-chart.service";
 import { HWVideoService } from "../../../../data-core/dao/video-dao";
 import { GetVodUrlParams } from '../../../../data-core/model/aiop/video-url';
 import { BusinessManageService, ViewDivisionTypeEnum } from "../../business-manage-service";
-import { DivisionListView } from '../../event-history/division-list-view';
-import { LevelListPanelComponent } from "../../event-history/level-list-panel/level-list-panel.component";
-import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
+import { OtherViewEnum } from "../view-helper";
 import { SelectItemNodeModeEnum,TreeDropListV2Component } from "../../vs-class-statistic/tree-drop-list-v2/tree-drop-list-v2.component";
 @Component({
   selector: 'hw-statistic-garbage-count',
@@ -118,10 +116,4 @@ export class StatisticGarbageCountComponent implements OnInit, OnDestroy {
 
 
   }
-}
-export enum OtherViewEnum {
-  chart,
-  info,
-  sumChart,
-  analyzeChart
-}
+} 
