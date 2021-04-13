@@ -35,7 +35,7 @@
           <div class="pull-right" style="width: 208px;height: 34px;position: relative;">
             <input type="text" id="dtp1"  #dtp1  readonly DateTimePicker [format]="'yyyy年mm月dd日'"
               [startView]="businessService.datePicker.startView" [minView]="businessService.datePicker.minView"
-              [defaultVal]="businessService.search.beginDate"  
+              [defaultVal]="businessService.search.beginDate"  style="cursor:pointer;"
               [changeDate]="startDate" class="hw-form-control form-control p-r-0">
             <i class="mdi mdi-menu-down arrow-time" [ngStyle]="{'left': timeArrow+'px'}"></i>
           </div>
@@ -98,7 +98,7 @@
           <div class="pull-left" style="width: 208px;height: 34px;position: relative;">
             <i class="mdi mdi-menu-down arrow-time" [ngStyle]="{'right': timeArrow+'px'}"></i>
             <input  type="text" id="dtp2"  #dtp2 style="text-align: left;" class="hw-form-control form-control p-l-0" readonly
-            DateTimePickerMirror [format]="'yyyy年mm月dd日'" [startView]="businessService.datePicker.startView"
+            DateTimePickerMirror [format]="'yyyy年mm月dd日'" [startView]="businessService.datePicker.startView" style="cursor:pointer;"
               [minView]="businessService.datePicker.minView" [defaultVal]="businessService.search.beginDate"
                [changeDate]="startDateV2">
           </div>

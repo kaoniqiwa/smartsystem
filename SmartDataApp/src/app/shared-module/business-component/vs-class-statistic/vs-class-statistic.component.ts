@@ -89,7 +89,7 @@ export class VsClassStatisticComponent implements OnInit {
       this.businessService.search.stationId2 = item ? item.id : null;
       this.businessService.search.divisionId2 = null;
       if (item.id == param.StationId1) {
-       // this.msg.response_warning('相同投放点不可比较');
+        //this.msg.response_warning('相同投放点不可比较');
         return;
       }
     }
