@@ -38,6 +38,8 @@ export class CustomTableArgs<T extends IBusinessData> implements IViewModel {
     iconTextTagAttr: TableIconTextTagAttr[];
     iconTd: TdIconsAttr[];
     galleryTd:GalleryTdAttr[];
+    galleryTdWidth:string;
+    tooltipTd:TooltipTd;
     constructor(options: {
         values?: T[],
         primaryKey?: string,
@@ -56,7 +58,8 @@ export class CustomTableArgs<T extends IBusinessData> implements IViewModel {
         iconTextTh?: TableTh,
         iconTextTagAttr?: TableIconTextTagAttr[],
         iconTd?: TdIconsAttr[],
-        galleryTd?:GalleryTdAttr[]
+        galleryTd?:GalleryTdAttr[] 
+        tooltipTd?:TooltipTd;
     } = {}) {
         this.values = options.values;
         this.primaryKey = options.primaryKey;
@@ -76,7 +79,8 @@ export class CustomTableArgs<T extends IBusinessData> implements IViewModel {
         this.iconTextTagAttr = options.iconTextTagAttr;
         this.iconTd = options.iconTd;
         this.galleryTd=options.galleryTd;
-       
+        this.galleryTdWidth='30%';
+        this.tooltipTd = options.tooltipTd;
         
     }
 }
@@ -139,6 +143,17 @@ export class TableTh {
     constructor(width: string, name: string) {
         this.width = width;
         this.name = name;
+    }
+}
+
+/**图标提示信息 */
+export class TooltipTd{
+    width:string;
+    tdName:string;
+    listMap:Map<string,Array<{icon:string,tip:string}>>;
+    constructor(width:string,tdName:string){
+        this.width=width;
+        this.tdName=tdName; 
     }
 }
 

@@ -4,6 +4,7 @@ import { CustomTableEvent, CustomTableEventEnum } from "./custom-table-event";
 import { IBusinessData } from '../../common/interface/IBusiness';
 import { ColorEnum } from '../card-component/card-content-factory';
 import { TableAttr,OrderByEnum } from "./custom-table-model";
+import { mousewheel,scrollLeft } from "../../common/tool/jquery-help/jquery-help";
 @Component({
   selector: 'hw-custom-table',
   templateUrl: './custom-table.component.html',
@@ -29,8 +30,26 @@ export class CustomTableComponent implements OnInit {
     if (this.model.hasFoot) {
       tableHeight += 42;
     }
-    this.minusTableHeightStr = tableHeight + "px";
+    this.minusTableHeightStr = tableHeight + "px"; 
+ 
+  }
 
+  tdImgListScoll(){
+    setTimeout(() => {
+      var leftNumber = 0;
+      mousewheel('.hw-wheel',(thatDom:{offsetWidth:number},d:{originalEvent: { wheelDelta:number}})=>{ 
+      
+        if(d.originalEvent&&d.originalEvent.wheelDelta>0)
+           leftNumber-=54;
+        else if(d.originalEvent&&d.originalEvent.wheelDelta<0)
+        leftNumber+=54;
+        leftNumber = leftNumber< 0 ? 0 :leftNumber;
+        leftNumber = leftNumber > thatDom.offsetWidth ? thatDom.offsetWidth:leftNumber;console.log(leftNumber);
+        scrollLeft(thatDom,leftNumber);
+        
+         });
+        
+    }, 1000);
   }
 
   tdIconClassLabel(val: string) {
@@ -46,6 +65,11 @@ export class CustomTableComponent implements OnInit {
   galleryTdAttr(id: string) {
     const item = this.model.galleryTd.find(x => x.key == id);
     return item.imgSrc;
+  }
+
+  galleryTdAttrMaxLen(id: string) {
+    const item = this.model.galleryTd.find(x => x.key == id);
+    return 54*item.imgSrc.length;
   }
 
 

@@ -4,7 +4,7 @@
       <table class="table  head custom stylish-table m-b-0">
         <thead>
           <tr>            
-            <th class="title-name" *ngIf="model.galleryTd" style="width: 30%;">图片</th> 
+            <th class="title-name" *ngIf="model.galleryTd" [ngStyle]="{'width': model.galleryTdWidth}">图片</th> 
             <th class="title-name" (click)="thOrderClick(th)" *ngFor="let th of model.tableAttrs" [ngStyle]="{'width':th.tdWidth}">
               {{th.HeadTitleName}}
               <ng-container *ngIf="th.orderBy">                
@@ -14,6 +14,9 @@
             </th>
             <th class="ico-btn title-name" [ngStyle]="{'width':model.iconTextTh.width}" *ngIf="model.iconTextTh">
               {{model.iconTextTh.name}}
+            </th>
+            <th class="ico-btn title-name" [ngStyle]="{'width':model.tooltipTd.width}" *ngIf="model.tooltipTd">
+              {{model.tooltipTd.tdName}}
             </th>
             <th class="ico-btn title-name" *ngIf="model.hasTableOperationTd">
               {{model.operationTdName}}
@@ -31,13 +34,16 @@
           <tr *ngFor="let item of model.values" [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1"
             (click)='itemClick(item)'>            
             <ng-container *ngIf="model.galleryTd">
-              <td style="width: 30%;">
-                <ng-container *ngFor="let i of galleryTdAttr(item[model.primaryKey]);let j=index">
-                  <div class="pull-left m-r-10"   (click)="galleryImgClick(item,j)"  style="width: 44px;height:36px;">
-                    <img src="{{i}}"  class="small"  onerror="this.src='../assets/img/timg-pic.jpg'">
-                  </div>            
-                 
-                </ng-container>
+              <td [ngStyle]="{'width': model.galleryTdWidth}">
+                <div class="fill-width" style="overflow: hidden;position: relative;">
+                  <ul class="hw-ul hw-wheel fill-height"  [ngStyle]="{'width': galleryTdAttrMaxLen(item[model.primaryKey])+'px'}">
+                    <ng-container *ngFor="let i of galleryTdAttr(item[model.primaryKey]);let j=index">
+                      <li  (click)="galleryImgClick(item,j)"  style="width: 44px;height:36px;">
+                        <img src="{{i}}"  class="small"  onerror="this.src='../assets/img/timg-pic.jpg'">
+                      </li>    
+                    </ng-container> 
+                  </ul>
+                </div>           
               </td>
             </ng-container>
             <td *ngFor="let attrs of model.tableAttrs" [ngStyle]="{'width':attrs.tdWidth}">       
@@ -51,7 +57,7 @@
                 <span>
                   <label class="m-0" style="width: 110px;">{{tdIconClassLabel(item[attrs.tdInnerAttrName]).tdVal}}</label>    
                   <ng-container *ngIf="tdIconClassLabel(item[attrs.tdInnerAttrName]).tdVal!='0'">
-                    <label class="sky-blue-text2 m-0" style="text-align: right;font-size: 16px;">
+                    <label class="sky-blue-text2 m-0" style="text-align: right;font-size: 16px;width: 1px;">
                       <i class="{{tdIconClassLabel(item[attrs.tdInnerAttrName]).iconClass}}"></i>{{tdIconClassLabel(item[attrs.tdInnerAttrName]).label}}
                     </label>
                   </ng-container>      
@@ -93,6 +99,15 @@
                     <div class="card-angle td bottom-right"></div>
                   </div>
                 </ng-container>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="model.tooltipTd&&model.tooltipTd.listMap">
+              <td [ngStyle]="{'width': model.tooltipTd.width}">
+                 <ng-container *ngFor="let item of model.tooltipTd.listMap.get(item[model.primaryKey])">
+                  <button type="button" class="btn btn-default {{item.icon}}"  data-toggle="tooltip"  data-placement="top" style="padding:0;background-color: transparent;" 
+                  [attr.data-original-title]="item.tip"></button>
+                 </ng-container>
+               
               </td>
             </ng-container>
             <td *ngIf="model.hasTableOperationTd">
