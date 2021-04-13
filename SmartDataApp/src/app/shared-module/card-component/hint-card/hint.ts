@@ -14,5 +14,6 @@ export enum HintTag{
     IllegalDrop=1,
     MixedInto,
     FullStation,
-    GarbageStation 
+    GarbageStation,
+    StationStranded
 }
