@@ -141,6 +141,9 @@ export class EventTableService extends ListAttribute {
                 document.body.removeChild(a);
             }      
         }
+        this.eventTable.findDivisionFn = (id)=>{
+            return this.divisions.find(d=>d.Id == id);
+        }
     }
 
     async requestVideoUrl(begin: Date, end: Date, cameraId: string) {
@@ -290,7 +293,7 @@ export class EventTableService extends ListAttribute {
 
 export class FillMode {
     divisionId: string = '';
-    tablePageSize: number = 10;
+    tablePageSize: number = 9;
     cardPageSize: number = 15;
     pageListMode_: PageListMode;
     readonly sessionTag = 'illegal-drop-event-history';

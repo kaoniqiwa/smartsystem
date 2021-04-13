@@ -110,14 +110,14 @@
           formControlName="EndTime">
       </div>
       <div fxFlex="20">
-        <span class="input-text">区划</span>
-        <div class="pull-right" style="width: calc(100% - 46px);">
+        <span class="input-text">行政区</span>
+        <div class="pull-right" style="width: calc(100% - 64px);">
           <hw-level-list-panel [model]="tableService.divisionListView.dataSource"
           [selectedFn]="changeDivisionFn"></hw-level-list-panel>
         </div> 
       </div>
       <div fxFlex="20">
-        <span class="input-text">垃圾房</span>
+        <span class="input-text">投放点</span>
         <select (change)="changeStation(stationsList.value)" #stationsList class="form-control custom custom-select m-l-10" style="width: calc(100% - 64px);"
           formControlName="StationId">
           <option value="">请选择</option>
