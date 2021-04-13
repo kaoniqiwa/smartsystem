@@ -143,7 +143,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
     const params = new GetPreviewUrlParams();
     params.CameraId = cameraId;
     params.Protocol = 'ws-ps';
-    params.StreamType = parseInt(config);
+    params.StreamType = config? parseInt(config):1;
     const response = await this.srRequestService.PreviewUrls(params).toPromise();
 
     setTimeout(() => {
@@ -155,6 +155,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
       this.player.reSizeView(this.playViewSize.width, this.playViewSize.height);
       this.player.playVideo(videoOptions, () => {
         this.playing = false;
+        this.player.playViewSize=this.playViewSize;
         this.btnControl('stop');
       });
       this.fiveTimeVideo();
