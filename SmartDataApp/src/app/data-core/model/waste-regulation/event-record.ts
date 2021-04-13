@@ -49,3 +49,9 @@
 
         
     }
+
+    export class CameraImageUrl {
+        CameraId: string	//摄像机ID
+        CameraName: string	//摄像机名称
+        ImageUrl: string;	//照片地址
+    }

@@ -29,6 +29,8 @@ export interface DivisionNumberStatistic {
     DayDryVolume: number;
     /**当天湿垃圾容量，单位：L */
     DayWetVolume: number;
+    /**	垃圾滞留点数量 */
+    GarbageDropStationNumber: number;
 }
 
 /// <summary>

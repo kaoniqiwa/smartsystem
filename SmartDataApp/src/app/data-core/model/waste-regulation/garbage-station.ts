@@ -1,5 +1,6 @@
 import { TrashCan } from "./trashCan";
 import { Camera } from "./camera";
+import { Member } from "./member";
 /**投放点信息 */
 export class GarbageStation {
     /**垃圾房ID */
@@ -48,6 +49,8 @@ export class GarbageStation {
 
     Grade: number;//评级
     CountSchedule: TimeRange[];//	计数时间段
+
+    Members	:Member[];//人员
 }
 interface TimeRange {
     BeginTime: Date | string;

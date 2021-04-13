@@ -34,6 +34,10 @@ export interface GarbageStationNumberStatistic {
   AvgGarbageTime: number;		//当日垃圾堆平均滞留时间，单位：分钟
   MaxGarbageTime: number;		//当日垃圾堆最大滞留时间，单位：分钟
   MaxGarbageCount: number;		//当日最大滞留堆数量
+  /** ;	有垃圾时长，单位：分钟	O*/
+  GarbageDuration:number
+  /** 	无垃圾时长，单位：分钟	O*/
+CleanDuration:number;
 }
 
 /**获取垃圾房数量参数 */
@@ -46,6 +50,8 @@ export class GetGarbageStationStatisticNumbersParams {
   Ids: string[];
   /**区划名称(可选)，支持LIKE */
   Name: string;
+  /**当前有没有垃圾落地 */
+  GarbageDrop:boolean;
 }
 
 export class GarbageStationNumberStatisticV2 {

@@ -20,5 +20,9 @@ export class EventRecord extends GarbageBaseUrl{
     garbageFullList(){
         return this.aiop+'Events/Records/GarbageFull/List';
     }
+
+    garbageDropList(){
+        return this.aiop+'Events/Records/GarbageDrop/List';
+    }
 }
  
