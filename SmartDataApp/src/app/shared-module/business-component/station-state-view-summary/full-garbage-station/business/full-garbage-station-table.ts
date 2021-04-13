@@ -100,7 +100,7 @@ export class BusinessService extends EnumHelper {
                 if (index == cameras.length - 1)
                     next = false;
                 return {
-                    item: this.cameras.find(x => x.Id == cameraToIndex.Id),
+                    item: this.cameras.find(x => x.Id == cameraToIndex.Id)  as any,
                     prev: prev,
                     next: next
                 }
@@ -111,7 +111,7 @@ export class BusinessService extends EnumHelper {
                 if (index == 0)
                     prev = false;
                 return {
-                    item: this.cameras.find(x => x.Id == cameraToIndex.Id),
+                    item: this.cameras.find(x => x.Id == cameraToIndex.Id) as any,
                     prev: prev,
                     next: next
                 }
@@ -138,7 +138,7 @@ export class BusinessService extends EnumHelper {
                 const find = this.cameras.find(c => c.Id == x.Id);
                 cameras.push(find);
             })
-            this.galleryTargetView.initGalleryTargetI(garbageId, cameras, index);
+            this.galleryTargetView.initGalleryTargetI(garbageId, cameras as Array<any> , index);
         }
 
 
@@ -151,7 +151,7 @@ export class BusinessService extends EnumHelper {
         ,config = await this.userDalService.getUserConfig(user.id, videoLive);        
         params.CameraId = cameraId;
         params.Protocol = 'ws-ps';
-        params.StreamType = parseInt(config);
+        params.StreamType =config? parseInt(config):1;
         const response = await this.srService.PreviewUrls(params).toPromise(); 
         return response.Data;
     }
@@ -207,7 +207,7 @@ export class StatisticTable extends BusinessTable implements IConverter, IPageTa
             }
         },
         tableAttrs: [new TableAttr({
-            HeadTitleName: "垃圾房名称",
+            HeadTitleName: "投放点",
             tdWidth: "15%",
             tdInnerAttrName: "name"
         }), new TableAttr({
