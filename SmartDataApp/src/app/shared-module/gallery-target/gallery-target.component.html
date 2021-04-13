@@ -1,13 +1,16 @@
 <div class="fill-height fill-width">
   <div class="custom-form-wrap">
     <div class="title-wrap">
-      <div class="pull-left" style="width: 220px;">详细图片
+      <div class="pull-left" [ngStyle]="{'width': model&&model.subName?'400px':'220px'}"><ng-container *ngIf="model">{{model.enlargeImageName}}</ng-container>
+        <ng-container *ngIf="model&&model.subName">
+            <label class="m-b-0 {{model.subName.class}}">_{{model.subName.label}}</label>
+        </ng-container>
         <ng-container *ngIf="model&&model.refreshImg">
           <div *ngIf="model.refreshImg.state" class="spinner-border spinner-border-sm green-text" role="status">
           </div>
           <label class="m-b-0 green-text" style="font-size:xx-small;position: relative;bottom: 4px;"  *ngIf="!model.refreshImg.state">
             ●</label>
-        </ng-container>        
+        </ng-container>    
       </div>
       <div class="pull-right">
         <ng-container *ngIf="model&&model.polygon">
@@ -26,9 +29,12 @@
           <a href="{{model.enlargeImage}}" title="下载图片" class="m-r-10" download="{{model.downloadImgName}}.png">
             <i class="howell-icon-picturedownload sky-blue-text"></i>
           </a>
-          <a href="javascript:void(0)" class="m-r-10" (click)="videoClick()">
-            <i class="howell-icon-video sky-blue-text"></i>
-          </a>
+          <ng-container *ngIf="videoFn">
+            <a href="javascript:void(0)" class="m-r-10" (click)="videoClick()">
+              <i class="howell-icon-video sky-blue-text"></i>
+            </a>
+          </ng-container>
+         
         </ng-container>
         <a href="javascript:void(0)" class="close-winow" (click)="closeViewClick()">
           <i class="howell-icon-Close alert-window-close-btn"></i>

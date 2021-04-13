@@ -5,6 +5,8 @@ export class GalleryTarget {
     enlargeId: string;
     enlargeConfidence: string;
     enlargeImage: string;
+    enlargeImageName: string;
+    subName:{ label:string,class:string};
     polygon: EventDataObject[];
     id:string;
     downloadImgName:string;
@@ -30,6 +32,7 @@ export class GalleryTarget {
         this.imgPrev=true;
         this.downloadImgName=downloadImgName; 
         this.videoName=false;
+        this.enlargeImageName='详细图片'; 
     }
 }
 
