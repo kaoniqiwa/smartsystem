@@ -4,7 +4,7 @@ import { GetPreviewUrlParams, GetVodUrlParams, VideoUrl } from '../../data-core/
 import { StationResourceSRServersRequestService } from '../repuest/resources.service';
 import { SessionUser } from '../../common/tool/session-user';
 import { UserDalService } from '../../dal/user/user-dal.service';
-import { TheDayTime, TimeInterval, DateInterval } from "../../common/tool/tool.service";
+import { DateInterval } from "../../common/tool/tool.service";
 
 @Injectable()
 export class HWVideoService {
@@ -17,7 +17,7 @@ export class HWVideoService {
         const videoLive = '4', vu = new VideoUrl()
         , user = new SessionUser()
         ,config = await this.userDalService.getUserConfig(user.id, videoLive);   
-        param.StreamType  = parseInt(config); 
+        param.StreamType  = config ? parseInt(config):1; 
         param.Protocol = 'ws-ps'; 
         if(param instanceof GetPreviewUrlParams){         
             const response= await this.srService.PreviewUrls(param).toPromise();
@@ -42,7 +42,7 @@ export class HWVideoService {
         const videoLive = '4', vu = new VideoUrl()
         , user = new SessionUser()
         ,config = await this.userDalService.getUserConfig(user.id, videoLive);   
-        param.StreamType  = parseInt(config); 
+        param.StreamType  =  config ? parseInt(config):1; 
         param.Protocol = 'ws-ps'; 
         param.BeginTime =param.BeginTime;
         param.EndTime= param.EndTime;
