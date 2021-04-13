@@ -13,17 +13,17 @@ import { EventRequestService } from "../../../../../data-core/repuest/mixed-into
 import { GetDivisionsParams, Division } from "../../../../../data-core/model/waste-regulation/division";
 import { GarbageStationRequestService, CameraRequestService } from "../../../../../data-core/repuest/garbage-station.service";
 import { GetGarbageStationsParams, GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station";
-import { ResourceSRServersRequestService } from "../../../../../data-core/repuest/resources.service";
+// import { ResourceSRServersRequestService } from "../../../../../data-core/repuest/resources.service";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
 import { MixedIntoEventRecord } from "../../../../../data-core/model/waste-regulation/mixed-into-event-record";
 import { GetEventRecordsParams } from "../../../../../data-core/model/waste-regulation/illegal-drop-event-record";
 import { ImageEventEnum } from "../../../../gallery-target/gallery-target";
 import { EventCards } from "../../event-cards";
 import { GalleryTargetView } from "../../gallery-target";
-import { GetVodUrlParams } from "../../../../../data-core/model/aiop/video-url";
+// import { GetVodUrlParams } from "../../../../../data-core/model/aiop/video-url";
 import { PageListMode } from "../../../../../common/tool/enum-helper";
 import { DivisionListView } from "../../division-list-view";
-import { SideNavService } from "../../../../../common/tool/sidenav.service";
+// import { SideNavService } from "../../../../../common/tool/sidenav.service";
 import { GetGarbageStationCamerasParams } from "../../../../../data-core/model/waste-regulation/camera";
 import { SessionUser } from "../../../../../common/tool/session-user";
 import { EnumHelper } from "../../../../../common/tool/enum-helper";
@@ -68,8 +68,8 @@ export class EventTableService extends ListAttribute {
         , private divisionService: DivisionRequestService
         , private garbageStationService: GarbageStationRequestService
         , private resourceService: CameraRequestService
-        , private srService: ResourceSRServersRequestService
-        , private navService: SideNavService
+        // , private srService: ResourceSRServersRequestService
+        // , private navService: SideNavService
         , private datePipe: DatePipe) {
         super();
         this.eventTable.scrollPageFn = (event: CustomTableEvent) => {
@@ -155,17 +155,21 @@ export class EventTableService extends ListAttribute {
             this.appendVideoList(id);
         }
 
-        this.playVideoToUrlFn = async (id, time, cb) => {
-            const user = new SessionUser(),
-                video = await this.requestVideoUrl(DateInterval(time + '', user.video.beforeInterval)
-                    , DateInterval(time + '', user.video.afterInterval), id);
-            video.Url = video.Url.indexOf('password') > 0 ? video.Url : video.Url + user.videoUserPwd;
-            cb(video.Url)
-            this.navService.playVideoBug.emit(true);
-        }
+        // this.playVideoToUrlFn = async (id, time, cb) => {
+        //     const user = new SessionUser(),
+        //         video = await this.requestVideoUrl(DateInterval(time + '', user.video.beforeInterval)
+        //             , DateInterval(time + '', user.video.afterInterval), id);
+        //     video.Url = video.Url.indexOf('password') > 0 ? video.Url : video.Url + user.videoUserPwd;
+        //     cb(video.Url)
+        //     this.navService.playVideoBug.emit(true);
+        // }
 
         this.videoFilesFn = (id) => {
             this.appendVideoList(id);
+        }
+
+        this.eventTable.findDivisionFn = (id)=>{
+            return this.divisions.find(d=>d.Id == id);
         }
     }
 
@@ -215,16 +219,16 @@ export class EventTableService extends ListAttribute {
         });
     }
 
-    async requestVideoUrl(begin: Date, end: Date, cameraId: string) {
-        const params = new GetVodUrlParams();
-        params.BeginTime = begin;
-        params.EndTime = end;
-        params.Protocol = 'ws-ps';
-        params.StreamType = 1;
-        params.CameraId = cameraId;
-        const response = await this.srService.VodUrls(params).toPromise();
-        return response.Data;
-    }
+    // async requestVideoUrl(begin: Date, end: Date, cameraId: string) {
+    //     const params = new GetVodUrlParams();
+    //     params.BeginTime = begin;
+    //     params.EndTime = end;
+    //     params.Protocol = 'ws-ps';
+    //     params.StreamType = 1;
+    //     params.CameraId = cameraId;
+    //     const response = await this.srService.VodUrls(params).toPromise();
+    //     return response.Data;
+    // }
 
     async requestResource() {
         const param = new GetGarbageStationCamerasParams();
@@ -362,7 +366,7 @@ export class EventTableService extends ListAttribute {
 
 export class FillMode {
     divisionId: string = '';
-    tablePageSize: number = 10;
+    tablePageSize: number = 9;
     cardPageSize: number = 15;
     pageListMode_: PageListMode;
     readonly sessionTag = 'mixed-info-event-history';

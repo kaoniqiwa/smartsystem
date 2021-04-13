@@ -8,11 +8,13 @@ import { OtherViewEnum } from "../illegal-drop-event-summary/illegal-drop-event-
 import { BusinessManageService, ViewDivisionTypeEnum } from "../../business-manage-service"; 
 import { DivisionBusinessService } from "../../../../waste-regulation-system/index/business-card-grid/division-business.service";
 import { LevelListPanelComponent } from "../level-list-panel/level-list-panel.component";
+import { HWVideoService } from "../../../../data-core/dao/video-dao";
+import { GetVodUrlParams } from '../../../../data-core/model/aiop/video-url';
 @Component({
   selector: 'hw-mixed-into-event-history',
   templateUrl: './mixed-into-event-history.component.html',
   styleUrls: ['./mixed-into-event-history.component.styl'],
-  providers: [EventTableService]
+  providers: [EventTableService,HWVideoService]
 })
 export class MixedIntoEventHistoryComponent implements OnInit ,OnDestroy{
 
@@ -70,6 +72,7 @@ export class MixedIntoEventHistoryComponent implements OnInit ,OnDestroy{
     this.tableService.videoImgs = null;
   }
   constructor(private tableService: EventTableService
+    ,private videoService:HWVideoService
     , private divisionBusinessService: DivisionBusinessService
     , private businessManageService: BusinessManageService) {
   }
@@ -107,6 +110,14 @@ export class MixedIntoEventHistoryComponent implements OnInit ,OnDestroy{
     this.tableService.search.toStationsDropList = this.tableService.garbageStations;     
     this.tableService.divisionListView.toLevelListPanel(this.tableService.divisions.filter(x=>x.ParentId !=null));
     this.tableService.allEventsRecordData();
+
+    this.tableService.playVideoToUrlFn = (id, time, cb)=>{
+      const param = new GetVodUrlParams();
+      param.CameraId=id;
+      param.BeginTime=time;
+      param.EndTime=time;
+      this.videoService.videoUrl(param).then(t=> cb(t.Url));
+    }
   }
 
   ngOnDestroy(){
