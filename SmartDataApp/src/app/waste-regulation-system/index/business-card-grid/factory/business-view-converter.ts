@@ -250,6 +250,55 @@ export class IllegalDropEventConverter implements IConverter {
     }
 }
 
+export class DropOrderConverter implements IConverter {
+    Convert<EventDropOrderInfo, ViewsModel>(input: EventDropOrderInfo, output: ViewsModel): ViewsModel;
+    Convert(input: EventDropOrderInfo, output: ViewsModel<OrderTable>): ViewsModel<OrderTable> {
+        output.views = [new OrderTable()];
+        output.pageSize = 1;
+        output.pageIndex = 1;
+        if (input instanceof EventDropOrderInfo) {
+            output.views[0].title = input.eventType == EventTypeEnum.IllegalDrop ? '乱扔垃圾排名' : '混合投放排名';
+            output.views[0].table = new Array();
+
+            const sort = input.items.sort((a, b) => {
+                return b.dropNum - a.dropNum
+            });
+            for (const x of sort)
+                output.views[0].table.push({
+                    name: x.division,
+                    subName: x.dropNum + '',
+                    subNameAfter: '起'
+                });
+            /**补空行 */
+            const len = output.views[0].table.length;
+            if (len < 6)
+                for (let i = 0; i < (6 - len); i++)
+                    output.views[0].table.push({
+                        name: '-',
+                        subName: '0',
+                        subNameAfter: '起'
+                    });
+
+            output.views[0].dropListV1 = {
+                listNodes:  [ { id:'IllegalDrop',name:'乱扔垃圾'},{ id:'MixedInto',name:'混合投放'}]
+                , fontSize: '18px'
+                , defaultId:  'IllegalDrop'
+                , eventType: input.eventType
+            }
+            if (input.dropList)
+                output.views[0].dropList = {
+                    listNodes: input.dropList
+                    , fontSize: '18px'
+                    , defaultId: input.defaultId
+                    , eventType: input.eventType
+                }
+
+
+        }
+        return output;
+    }
+}
+
 export class IllegalDropOrderConverter implements IConverter {
     Convert<IllegalDropOrderInfo, ViewsModel>(input: IllegalDropOrderInfo, output: ViewsModel): ViewsModel;
     Convert(input: EventDropOrderInfo, output: ViewsModel<OrderTable>): ViewsModel<OrderTable> {
@@ -385,9 +434,10 @@ export class DivisionGarbageSpecificationConverter implements IConverter {
             hint.tag = HintTag.GarbageStation;
             hints.push(hint);
             hint = new Hint();
-            hint.title = '垃圾桶数量';
+            hint.title = '小包垃圾滞留';
+            hint.tag = HintTag.StationStranded;
             hint.subTitleColor = ColorEnum["green-text"];
-            hint.subTitle = input.garbageBarrelNumber + '';
+            hint.subTitle = input.garbageStrandedNumber + '';
             hints.push(hint);
             hint = new Hint();
             hint.title = '已满溢投放点数量';
@@ -486,8 +536,9 @@ export class ConverterFactory {
             { provide: DivisionListConverter, useValue: new DivisionListConverter() },
             { provide: IllegalDropEventConverter, useValue: new IllegalDropEventConverter() },
             { provide: DivisionGarbageSpecificationConverter, useValue: new DivisionGarbageSpecificationConverter() },
-            { provide: IllegalDropOrderConverter, useValue: new IllegalDropOrderConverter() },
-            { provide: MixedIntoDropOrderConverter, useValue: new MixedIntoDropOrderConverter() },
+            // { provide: IllegalDropOrderConverter, useValue: new IllegalDropOrderConverter() },
+            // { provide: MixedIntoDropOrderConverter, useValue: new MixedIntoDropOrderConverter() },
+            {provide: DropOrderConverter,useValue:new DropOrderConverter()},
             { provide: GarbageStationInspectionCardConverter, useValue: new GarbageStationInspectionCardConverter() },
             { provide: StationDisposeScoreConverter, useValue: new StationDisposeScoreConverter() }
         ])
@@ -507,8 +558,9 @@ export const CardBusinessCoverterEnum = {
     "DeviceStatusStatistic": DevStatusCardConverter,
     "DivisionList": DivisionListConverter,
     "IllegalDropEvent": IllegalDropEventConverter,
-    "IllegalDropOrder": IllegalDropOrderConverter,
-    "MixedIntoDropOrder": MixedIntoDropOrderConverter,
+    "DropOrder":DropOrderConverter,
+    // "IllegalDropOrder": IllegalDropOrderConverter,
+    // "MixedIntoDropOrder": MixedIntoDropOrderConverter,
     "DivisionGarbageSpecification": DivisionGarbageSpecificationConverter,
     "GarbageStationInspection": GarbageStationInspectionCardConverter,
     "StationDisposeScore": StationDisposeScoreConverter

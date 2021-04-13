@@ -2,10 +2,11 @@ import { Injectable } from "@angular/core";
 import { StatisticalDataBufferService } from "../business-card-grid/buffer/statistical-data-buffer";
 import { DivisionTypeEnum, EventTypeEnum } from "../../../common/tool/enum-helper";
 import { SessionUser } from "../../../common/tool/session-user";
+import { DivisionBusinessService } from "../business-card-grid/division-business.service";
 @Injectable()
 export class BusinessService {
     user: SessionUser;
-    logoTitle = '生活垃圾分类全程监管平台';
+    logoTitle = '';
     divisionParam: {
         divisionType: number,/**父 区划类别 */
         divisionsIds: Array<string>
@@ -20,18 +21,19 @@ export class BusinessService {
     inspectionCardConfig: Array<any>;/**巡检 */
     divisionGarbageSpCardConfig: Array<any>;/**区划 投放点 状态数据 */
     illegalDropEventCardConfig: Array<any>;/**报警推送 */
-    constructor(private bufferService: StatisticalDataBufferService) {
+    constructor(private bufferService: StatisticalDataBufferService
+    ,private divisionBusinessService:DivisionBusinessService) {
         this.user = new SessionUser();
     }
 
     setLogoTitle() {
-        this.logoTitle = this.user.userDivision.pop().Name + '生活垃圾分类全程监管平台';
+        this.logoTitle = this.user.userDivision.pop().Name;
     }
 
     initCardConfig() {
         this.divisionCard();
         this.illegalDropTopCard();
-        this.mixedIntoDropTopCard();
+        //this.mixedIntoDropTopCard();
         this.illegalDropHistoryCard();
         this.mixedIntoHistoryCard();
         this.stationDisposeScoreCard();
@@ -120,7 +122,7 @@ export class BusinessService {
             cardType: 'LineEChartsCardComponent',
             divisionId: this.user.userDivision.pop().Id,
             flipTime: 60 * 3,
-            dataTime: 60,
+            dataTime: 12,
             eventType: EventTypeEnum.IllegalDrop
         });
     }
@@ -132,7 +134,7 @@ export class BusinessService {
             cardType: 'LineEChartsCardComponent',
             divisionId: this.user.userDivision.pop().Id,
             flipTime: 60 * 3,
-            dataTime: 60,
+            dataTime: 12,
             eventType: EventTypeEnum.MixedInto
         });
     }
@@ -142,7 +144,7 @@ export class BusinessService {
         this.user.userDivisionType = param.divisionType + '';
         this.illegalDropTopCardConfig = new Array();
         this.illegalDropTopCardConfig.push({
-            business: 'IllegalDropOrder',
+            business: 'DropOrder',
             cardType: 'OrderTableCardComponent',
             //divisionsIds: param.divisionsIds,
             divisionId: this.user.userDivision.pop().Id,
@@ -150,6 +152,8 @@ export class BusinessService {
             eventType: EventTypeEnum.IllegalDrop,
             divisionType: param.divisionType
         });
+        //默认行政区 用于事件卡片
+        this.divisionBusinessService.eventDropCard.divisionType = param.divisionType;
     }
 
     async mixedIntoDropTopCard() {

@@ -4,7 +4,8 @@
  */
 import { Injectable, Injector } from '@angular/core';
 import { BusinessParameter } from '../../../../common/interface/IBusiness';
-import { EventDropHistory,EventDropHistoryB } from '../business/event-drop-history/event-drop-history';
+import { EventDropHistory } from '../business/event-drop-history/event-drop-history';
+import { IllegalDropHistory} from '../business/illegal-drop-history/illegal-drop-history';
 import { GarbageInspection } from '../business/inspection/inspection';
 import { DeviceStatusStatistic } from '../business/dev/device-status-statistic';
 import { DivisionGarbageSpecification } from "../business/division-garbage-specification/division-garbage-specification";
@@ -32,7 +33,7 @@ export class StatisticBusinessInjector {
         businessParameter.map.set('datePipe',this.datePipe);
         this.businessInjector = Injector.create([
             { provide: EventDropHistory, useValue: new EventDropHistory(this.statisticalDataBufferService), deps: [] },
-            { provide: EventDropHistoryB, useValue: new EventDropHistoryB(this.statisticalDataBufferService), deps: [] },
+            { provide: IllegalDropHistory, useValue: new IllegalDropHistory(this.statisticalDataBufferService), deps: [] },
             { provide: DeviceStatusStatistic, useValue: new DeviceStatusStatistic(this.statisticalDataBufferService), deps: [] },
             {provide:DivisionList,useValue:new DivisionList(this.statisticalDataBufferService), deps: [] },
             {provide:IllegalDropEvent,useValue:new IllegalDropEvent(this.eventPushService), deps: [] },
@@ -69,14 +70,14 @@ export class StatisticBusinessInjector {
 }
 
 export const CardBusinessEnum = {
-    "IllegalDropHistory": EventDropHistory,
-    "MixedIntoHistory": EventDropHistoryB,
+    "IllegalDropHistory": IllegalDropHistory,
+    "MixedIntoHistory": EventDropHistory,
     "DeviceStatusStatistic": DeviceStatusStatistic,
     "DivisionList":DivisionList,
     "IllegalDropEvent":IllegalDropEvent,
     "DivisionGarbageSpecification":DivisionGarbageSpecification,
-    "IllegalDropOrder":EventDropOrder,
-    "MixedIntoDropOrder":EventDropOrderB,
+    "DropOrder":EventDropOrder,
+    // "MixedIntoDropOrder":EventDropOrderB,
     "GarbageStationInspection":GarbageInspection,
     "StationDisposeScore":StationDisposeScore
 }
