@@ -23,11 +23,10 @@ import { GalleryTargetViewI } from "../../../station-state-view-summary/full-gar
 import { ResourceCameraDao } from "../../../../../data-core/dao/resources-camera-dao";
 import { Camera as ResourceCamera } from "../../../../../data-core/model/aiop/camera";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera"; 
-import { ResourceSRServersRequestService, CameraRequestService, StationResourceSRServersRequestService } from "../../../../../data-core/repuest/resources.service";
-import { SideNavService } from "../../../../../common/tool/sidenav.service";
+import { CameraRequestService } from "../../../../../data-core/repuest/resources.service";
+import { HWVideoService } from "../../../../../data-core/dao/video-dao";
 import { ImageEventEnum } from "../../../../gallery-target/gallery-target";
 import { MediumPicture } from "../../../../../data-core/url/aiop/resources"; 
-import { UserDalService } from "../../../../../dal/user/user-dal.service";
 import { SessionUser } from "../../../../../common/tool/session-user";
 import { GetPreviewUrlParams } from "../../../../../data-core/model/aiop/video-url";
 @Injectable()
@@ -56,21 +55,18 @@ export class BusinessService {
     private divisionDao: DivisionDao;
     private garbageStationTypeDao: GarbageStationTypeDao;
     private garbageStationDao: GarbageStationDao;
+    videoService:HWVideoService;
     playVideoFn = async (id: string) => {
         const idV = id.split('&'),
             camera = this.cameras.find(x => x.Id == idV[1]);
         const video = await this.requestVideoUrl(camera.Id);
         this.playVideo = new PlayVideo(null, camera.Name);
-        this.playVideo.url_=video.Url;
-        this.navService.playVideoBug.emit(true);
+        this.playVideo.url=video.Url;
     }
 
     constructor(private datePipe: DatePipe, private garbageStationService: GarbageStationRequestService
         , divisionService: DivisionRequestService
         , private cameraService: CameraRequestService
-        , private navService: SideNavService
-        , private userDalService: UserDalService
-        , private srService: StationResourceSRServersRequestService
         , garbageStationTypeService: GarbageStationTypeRequestService) {
         this.divisionDao = new DivisionDao(divisionService);
         this.garbageStationDao = new GarbageStationDao(garbageStationService);
@@ -146,14 +142,14 @@ export class BusinessService {
     }
 
     async requestVideoUrl(cameraId: string) {
-        const  user = new SessionUser(), params = new GetPreviewUrlParams()
-        ,videoLive = '4'
-        ,config = await this.userDalService.getUserConfig(user.id, videoLive);        
+        const  user = new SessionUser(), params = new GetPreviewUrlParams();
+        // ,videoLive = '4'
+        // ,config = await this.userDalService.getUserConfig(user.id, videoLive);        
         params.CameraId = cameraId;
-        params.Protocol = 'ws-ps';
-        params.StreamType =config? parseInt(config):1;
-        const response = await this.srService.PreviewUrls(params).toPromise(); 
-        return response.Data;
+        // params.Protocol = 'ws-ps';
+        // params.StreamType =config? parseInt(config):1;
+        const response = await this.videoService.videoUrl(params); 
+        return response;
     }
 
     async requestGarbageStationType() {

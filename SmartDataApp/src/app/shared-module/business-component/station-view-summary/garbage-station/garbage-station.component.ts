@@ -1,10 +1,11 @@
 import { Component, OnInit,Input ,Output,EventEmitter} from '@angular/core'; 
 import {  BusinessService} from "./business/garbage-station-table";
 import {  OtherViewEnum } from "../view-helper"; 
+import { HWVideoService } from "../../../../data-core/dao/video-dao";
 @Component({
   selector: 'hw-garbage-station',
   templateUrl: './garbage-station.component.html',
-  providers: [BusinessService]
+  providers: [BusinessService,HWVideoService]
 })
 export class GarbageStationComponent implements OnInit {
   @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
@@ -26,7 +27,10 @@ export class GarbageStationComponent implements OnInit {
   videoClose = () => {
     this.businessService.playVideo = null;
   }
-  constructor(private businessService:BusinessService) { }
+  constructor(private businessService:BusinessService
+    ,videoService:HWVideoService) { 
+      this.businessService.videoService = videoService;
+    }
 
   async ngOnInit() {
    this.businessService.divisionsId=this.divisionsId;
