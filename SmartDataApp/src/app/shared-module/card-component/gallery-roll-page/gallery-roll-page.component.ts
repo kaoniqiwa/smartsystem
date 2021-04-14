@@ -1,7 +1,7 @@
-import { Component, Input, OnInit, Output, ViewChild, OnDestroy, } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, OnDestroy, } from '@angular/core';
 import { GalleryRollPage } from "./gallery-roll-page";
 import { BasisCardComponent, ViewsModel } from '../../../common/abstract/base-view';
-import { ResourceSRServersRequestService } from "../../../data-core/repuest/resources.service";
+import { HWVideoService } from "../../../data-core/dao/video-dao"; 
 import { GetPreviewUrlParams } from "../../../data-core/model/aiop/video-url";
 import { HWSPlayerDirective, HWSPlayerOptions } from "../../../common/directive/wsplayer-directive";
 import { moveView2, domSize } from "../../../common/tool/jquery-help/jquery-help";
@@ -11,7 +11,8 @@ import { SessionUser } from "../../../common/tool/session-user";
 @Component({
   selector: 'hw-gallery-roll-page',
   templateUrl: './gallery-roll-page.component.html',
-  styleUrls: ['./gallery-roll-page.component.styl']
+  styleUrls: ['./gallery-roll-page.component.styl'],
+  providers:[HWVideoService]
 })
 export class GalleryRollPageComponent extends BasisCardComponent implements OnInit, OnDestroy {
 
@@ -39,8 +40,8 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
   user = new SessionUser();
   bigViewId = '';
   constructor(
-    private srRequestService: ResourceSRServersRequestService
-    , private userDalService: UserDalService
+    private videoService:HWVideoService, 
+    private userDalService: UserDalService
   ) {
     super();
   }
@@ -137,21 +138,22 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
 
   async playVideo(cameraId: string) {
     this.playViewSize = domSize('item__' + cameraId);
-    const videoLive = 4;
+    // const videoLive = 4;
     moveView2('item__' + cameraId, 'video__view_wrap', 0, 0);
-    const config = await this.userDalService.getUserConfig(this.user.id, videoLive + '');
+    // const config = await this.userDalService.getUserConfig(this.user.id, videoLive + '');
     const params = new GetPreviewUrlParams();
     params.CameraId = cameraId;
-    params.Protocol = 'ws-ps';
-    params.StreamType = config? parseInt(config):1;
-    const response = await this.srRequestService.PreviewUrls(params).toPromise();
+    // params.Protocol = 'ws-ps';
+    // params.StreamType = config? parseInt(config):1;
+    const response= await this.videoService.videoUrl(params);
+    // const response = await this.srRequestService.PreviewUrls(params).toPromise();
 
     setTimeout(() => {
       this.playing = true;
       this.currentPlayId = cameraId;
-      response.Data.Url=response.Data.Url.indexOf('password') >0 
-      ? response.Data.Url:response.Data.Url+this.user.videoUserPwd;
-      const videoOptions = new HWSPlayerOptions(response.Data.Url, '');
+      // response.Data.Url=response.Data.Url.indexOf('password') >0 
+      // ? response.Data.Url:response.Data.Url+this.user.videoUserPwd;
+      const videoOptions = new HWSPlayerOptions(response.Url, '');
       this.player.reSizeView(this.playViewSize.width, this.playViewSize.height);
       this.player.playVideo(videoOptions, () => {
         this.playing = false;
