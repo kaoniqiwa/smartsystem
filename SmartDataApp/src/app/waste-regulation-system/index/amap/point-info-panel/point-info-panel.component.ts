@@ -25,7 +25,7 @@ export class PointInfoPanelComponent implements OnInit {
     constructor(
 
     ) {
-        this.GarbageStation.Members
+        // this.GarbageStation.Members
     }
 
     ngOnInit() {

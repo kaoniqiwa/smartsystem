@@ -1,9 +1,8 @@
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
-    CameraRequestService as AIOPCameraService,
     ResourceMediumRequestService,
-    ResourceSRServersRequestService
+    StationResourceSRServersRequestService
 } from '../../../data-core/repuest/resources.service';
 import { GarbageStation, GetGarbageStationsParams } from '../../../data-core/model/waste-regulation/garbage-station';
 import {
@@ -20,7 +19,6 @@ import { Response } from '../../../data-core/model/Response';
 import { MapListItem, MapListItemType } from './map-list-panel/map-list-item';
 import { Camera } from '../../../data-core/model/waste-regulation/camera';
 import { SessionUser } from '../../../common/tool/session-user';
-import { GetDivisionStatisticNumbersParams } from 'src/app/data-core/model/waste-regulation/division-number-statistic';
 import { GetGarbageStationStatisticNumbersParams } from 'src/app/data-core/model/waste-regulation/garbage-station-number-statistic';
 
 declare var $: any;
@@ -149,7 +147,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         private divisionService: DivisionRequestService,
         private mediaService: ResourceMediumRequestService,
         private cameraService: GarbageStationCameraRequestService,
-        private srService: ResourceSRServersRequestService
+        private srService: StationResourceSRServersRequestService
     ) {
 
         this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc());
@@ -582,7 +580,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
             this.amapService.videoPlayerService.playCameraName = camera.Name;
             this.amapService.videoPlayerService.playMode = PlayModeEnum.live;
-            this.amapService.videoPlayerService.playVideoVideoId = 'player';
+            this.amapService.videoPlayerService.playVideoVideoId = 'player';            
             response.Data.Url = response.Data.Url.indexOf('password') > 0
                 ? response.Data.Url : response.Data.Url + this.user.videoUserPwd;
             this.amapService.videoPlayerService.url = response.Data.Url;
