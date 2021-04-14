@@ -5,7 +5,7 @@ import { CustomTableEvent } from "../../../../shared-module/custom-table/custom-
 import { EventTable, CameraAIEventsRecord } from "./event-table";
 import { SearchControl } from "./search";
 import "../../../../common/string/hw-string";
-import { TheDayTime, TimeInterval,DateInterval } from "../../../../common/tool/tool.service";
+import { TheDayTime,DateInterval } from "../../../../common/tool/tool.service";
 import { EventRequestService } from "../../../../data-core/repuest/event-record.service";
 import { Page } from "../../../../data-core/model/page";
 import { TableAttribute, ListAttribute } from "../../../../common/tool/table-form-helper";
@@ -18,10 +18,10 @@ import { EventCards } from "./event-cards";
 import { GalleryTargetView } from "./gallery-target";
 import { PlayVideo } from "../../../common/play-video";
 import { ImageEventEnum } from "../../../../shared-module/gallery-target/gallery-target";
-import { GetVodUrlParams } from "../../../../data-core/model/aiop/video-url";
-import { ResourceSRServersRequestService } from "../../../../data-core/repuest/resources.service";
+import { GetVodUrlParams } from "../../../../data-core/model/aiop/video-url"; 
 import { SideNavService } from "../../../../common/tool/sidenav.service";
 import { SessionUser } from "../../../../common/tool/session-user";
+import { HWVideoService } from "../../../../data-core/dao/video-dao";
 @Injectable()
 export class EventTableService {
     dataSource_ = new Array<CameraAIEventRecord>();
@@ -42,9 +42,8 @@ export class EventTableService {
     playVideo: PlayVideo;
     fillMode: FillMode;
     camerasAIModel: CameraAIModel[] = new Array();
-
-    constructor(private eventRequestService: EventRequestService
-        , private srService: ResourceSRServersRequestService
+    videoService:HWVideoService;
+    constructor(private eventRequestService: EventRequestService 
         , private navService: SideNavService
         , private aiModelRequestService: AIModelRequestService
         , private datePipe: DatePipe) {
@@ -117,11 +116,11 @@ export class EventTableService {
         const params = new GetVodUrlParams();
         params.BeginTime = begin;
         params.EndTime = end;
-        params.Protocol = 'ws-ps';
-        params.StreamType = 1;
+        // params.Protocol = 'ws-ps';
+        // params.StreamType = 1;
         params.CameraId = cameraId;
-        const response = await this.srService.VodUrls(params).toPromise();
-        return response.Data;
+        const response = await this.videoService.vodUrl(params);
+        return response;
     }
 
     async getAIModels() {

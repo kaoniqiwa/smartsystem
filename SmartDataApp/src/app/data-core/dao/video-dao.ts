@@ -12,6 +12,11 @@ export class HWVideoService {
         , private userDalService: UserDalService) {
 
     }
+    /**
+     * 预览+回放时间
+     * @param param 
+     * @returns 
+     */
     async videoUrl(param: GetPreviewUrlParams|GetVodUrlParams) {
         var result:VideoUrl;
         const videoLive = '4', vu = new VideoUrl()
