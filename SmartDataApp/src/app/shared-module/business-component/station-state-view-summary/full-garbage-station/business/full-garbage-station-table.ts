@@ -18,7 +18,7 @@ import { GarbageStationDao } from "../../../../../data-core/dao/garbage-station-
 import { ResourceCameraDao } from "../../../../../data-core/dao/resources-camera-dao";
 import { DivisionDao } from "../../../../../data-core/dao/division-dao";
 import { DivisionRequestService } from "../../../../../data-core/repuest/division.service";
-import { CameraRequestService, ResourceSRServersRequestService } from "../../../../../data-core/repuest/resources.service";
+import { CameraRequestService } from "../../../../../data-core/repuest/resources.service";
 import { Camera as ResourceCamera } from "../../../../../data-core/model/aiop/camera";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
 import { MediumPicture } from "../../../../../data-core/url/aiop/resources";
@@ -31,7 +31,7 @@ import { DateDifference } from "../../../../../common/tool/tool.service";
 import { GetPreviewUrlParams } from "../../../../../data-core/model/aiop/video-url";
 import { SideNavService } from "../../../../../common/tool/sidenav.service";
 import { UserDalService } from "../../../../../dal/user/user-dal.service";
-import { SessionUser } from "../../../../../common/tool/session-user";
+import {HWVideoService  } from "../../../../../data-core/dao/video-dao"; 
 @Injectable()
 export class BusinessService extends EnumHelper {
     playVideo: PlayVideo;
@@ -54,6 +54,7 @@ export class BusinessService extends EnumHelper {
     get dataSource() {
         return this.dataSource_;
     }
+    videoService:HWVideoService;
 
     playVideoFn = async (id: string) => {
         const idV = id.split('&'),
@@ -64,7 +65,6 @@ export class BusinessService extends EnumHelper {
     }
     constructor(private garbageStationService: GarbageStationRequestService
         , private cameraService: CameraRequestService
-        , private srService: ResourceSRServersRequestService
         , private navService: SideNavService
         , private userDalService: UserDalService
         , divisionService: DivisionRequestService
@@ -146,14 +146,15 @@ export class BusinessService extends EnumHelper {
 
 
     async requestVideoUrl(cameraId: string) {
-        const  user = new SessionUser(), params = new GetPreviewUrlParams()
-        ,videoLive = '4'
-        ,config = await this.userDalService.getUserConfig(user.id, videoLive);        
+        const   params = new GetPreviewUrlParams();
+        //user = new SessionUser(),
+        // ,videoLive = '4'
+        // ,config = await this.userDalService.getUserConfig(user.id, videoLive);        
         params.CameraId = cameraId;
-        params.Protocol = 'ws-ps';
-        params.StreamType =config? parseInt(config):1;
-        const response = await this.srService.PreviewUrls(params).toPromise(); 
-        return response.Data;
+        // params.Protocol = 'ws-ps';
+        // params.StreamType =config? parseInt(config):1;
+        const response = await this.videoService.videoUrl(params); 
+        return response;
     }
 
     async stationStatistic() {

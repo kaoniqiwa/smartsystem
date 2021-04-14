@@ -13,8 +13,7 @@ import { DivisionRequestService } from "../../../../../data-core/repuest/divisio
 import { EventRequestService } from "../../../../../data-core/repuest/garbage-full-event-record";
 import { GetDivisionsParams, Division } from "../../../../../data-core/model/waste-regulation/division";
 import { GarbageStationRequestService, CameraRequestService } from "../../../../../data-core/repuest/garbage-station.service";
-import { GetGarbageStationsParams, GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station";
-import { ResourceSRServersRequestService } from "../../../../../data-core/repuest/resources.service";
+import { GetGarbageStationsParams, GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station"; 
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
 import { GarbageFullEventRecord } from "../../../../../data-core/model/waste-regulation/garbage-full-event-record";
 import { ImageEventEnum } from "../../../../gallery-target/gallery-target";
@@ -23,7 +22,6 @@ import { GalleryTargetView } from "./gallery-target";
 import { GetVodUrlParams } from "../../../../../data-core/model/aiop/video-url";
 import { PageListMode, EnumHelper } from "../../../../../common/tool/enum-helper";
 import { DivisionListView } from "../../../event-history/division-list-view";
-import { SideNavService } from "../../../../../common/tool/sidenav.service";
 import { GetGarbageStationCamerasParams } from "../../../../../data-core/model/waste-regulation/camera";
 import { SessionUser } from "../../../../../common/tool/session-user";
 import { GetEventRecordsParams } from "../../../../../data-core/model/waste-regulation/illegal-drop-event-record";
@@ -70,9 +68,7 @@ export class EventTableService extends ListAttribute {
     constructor(private eventRequestService: EventRequestService
         , private divisionService: DivisionRequestService
         , private garbageStationService: GarbageStationRequestService
-        , private resourceService: CameraRequestService
-        , private srService: ResourceSRServersRequestService
-        , private navService: SideNavService
+        , private resourceService: CameraRequestService 
         , private datePipe: DatePipe) {
         super();
         this.eventTable.scrollPageFn = (event: CustomTableEvent) => {
@@ -261,18 +257,7 @@ export class EventTableService extends ListAttribute {
             }
         })
 
-    }
-
-    async requestVideoUrl(begin: Date, end: Date, cameraId: string) {
-        const params = new GetVodUrlParams();
-        params.BeginTime = begin;
-        params.EndTime = end;
-        params.Protocol = 'ws-ps';
-        params.StreamType = 1;
-        params.CameraId = cameraId;
-        const response = await this.srService.VodUrls(params).toPromise();
-        return response.Data;
-    }
+    }  
 
     async requestResource() {
         const param = new GetGarbageStationCamerasParams();

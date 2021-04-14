@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {BusinessService  } from "./business/full-garbage-station-table";
+import { HWVideoService } from "../../../../data-core/dao/video-dao";
 @Component({
   selector: 'hw-full-garbage-station',
   templateUrl: './full-garbage-station.component.html',
-  providers: [BusinessService]
+  providers: [BusinessService,HWVideoService]
 })
 export class FullGarbageStationComponent implements OnInit {
 
@@ -26,7 +27,9 @@ export class FullGarbageStationComponent implements OnInit {
     this.businessService.playVideo = null;
   }
   constructor(
-     private businessService: BusinessService) { 
+    videoService:HWVideoService
+    , private businessService: BusinessService) { 
+      this.businessService.videoService=videoService;
   }
 
   async ngOnInit() {    
