@@ -28,9 +28,7 @@ import { GalleryTargetViewI } from "./gallery-target";
 import { ImageEventEnum } from "../../../../gallery-target/gallery-target";
 import { PlayVideo } from "../../../../../aiop-system/common/play-video";
 import { DateDifference } from "../../../../../common/tool/tool.service";
-import { GetPreviewUrlParams } from "../../../../../data-core/model/aiop/video-url";
-import { SideNavService } from "../../../../../common/tool/sidenav.service";
-import { UserDalService } from "../../../../../dal/user/user-dal.service";
+import { GetPreviewUrlParams } from "../../../../../data-core/model/aiop/video-url"; 
 import {HWVideoService  } from "../../../../../data-core/dao/video-dao"; 
 @Injectable()
 export class BusinessService extends EnumHelper {
@@ -60,13 +58,11 @@ export class BusinessService extends EnumHelper {
         const idV = id.split('&'),
             camera = this.cameras.find(x => x.Id == idV[1]),
          video = await this.requestVideoUrl(camera.Id);
-        this.playVideo = new PlayVideo(video.Url, camera.Name);
-        this.navService.playVideoBug.emit(true);
+        this.playVideo = new PlayVideo(null, camera.Name); 
+        this.playVideo.url=video.Url;
     }
     constructor(private garbageStationService: GarbageStationRequestService
-        , private cameraService: CameraRequestService
-        , private navService: SideNavService
-        , private userDalService: UserDalService
+        , private cameraService: CameraRequestService 
         , divisionService: DivisionRequestService
         , private datePipe: DatePipe) {
         super();
