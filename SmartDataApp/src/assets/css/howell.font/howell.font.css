@@ -2347,3 +2347,19 @@ a .howell-icon-flip-vertical:before {
 .howell-icon-garbagebags:before {
     content: "\f342";
 }
+
+.howell-icon-arrow2:before {
+    content: "\f343";
+}
+
+.howell-icon-neighborhood:before {
+    content: "\f344";
+}
+
+.howell-icon-man:before {
+    content: "\f345";
+}
+
+.howell-icon-phone:before {
+    content: "\f346";
+}

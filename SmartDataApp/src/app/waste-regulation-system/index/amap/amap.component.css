@@ -254,3 +254,10 @@ right: -79px;
   .map-bar.carousel.next{
     right: 22px;
   }
+
+
+  .map-bar.info-panel{
+     right: 10px;
+     bottom: 10px;
+     position: absolute;
+  }
