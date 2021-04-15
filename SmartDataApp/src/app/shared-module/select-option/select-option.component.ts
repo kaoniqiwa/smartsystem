@@ -23,15 +23,17 @@ export class SelectOptionComponent implements OnInit {
  
 
     this.componentService.selectOptionEventEmitter.subscribe((items:Array<{id:string,name:string}>)=>{ 
-      if(items){
-        const index = this.model.listNodes.findIndex(f=>f.name == items[0].name);
-        /**更新 数据列表 */
-        if(index >-1){
-          this.model.listNodes = items;
-          this.selectedItemLabel = items[0].name;
-          this.showBody=false;
+      setTimeout(() => {
+        if(items){
+          const index = this.model.listNodes.findIndex(f=>f.name == items[0].name);
+          /**更新 数据列表 */
+          if(index >-1){
+            this.model.listNodes = items;
+            this.selectedItemLabel = items[0].name;
+            this.showBody=false;
+          } 
         } 
-      }
+      });
     
     });
   } 
