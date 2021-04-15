@@ -6,8 +6,7 @@ import { CustomTableArgs, FootArgs, GalleryTdAttr, TableAttr, TableOperationBtn 
 import { CameraImageUrl } from "../../../../../data-core/model/waste-regulation/event-record";
 import { MediumPicture } from "../../../../../data-core/url/aiop/resources";
 import { GarbageDropEventRecord } from "../../../../../data-core/model/waste-regulation/garbage-drop-event-record";
-import { IBusinessData } from "../../../../../common/interface/IBusiness";
-import { GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station";
+import { IBusinessData } from "../../../../../common/interface/IBusiness"; 
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
 import { DivisionTypeEnum } from "../../../../../common/tool/enum-helper";
 import { DatePipe } from "@angular/common";
@@ -48,11 +47,11 @@ export class EventTable extends BusinessTable implements IConverter {
             tdInnerAttrName: "station"
         }),new TableAttr({
             HeadTitleName: "街道",
-            tdWidth: "14%",
+            tdWidth: "13%",
             tdInnerAttrName: "county"
         }), new TableAttr({
             HeadTitleName: "居委会",
-            tdWidth: "14%",
+            tdWidth: "13%",
             tdInnerAttrName: "committees"
         }), new TableAttr({
             HeadTitleName: "落地时间",
@@ -62,6 +61,10 @@ export class EventTable extends BusinessTable implements IConverter {
             HeadTitleName: "处置时间",
             tdWidth: "14%",
             tdInnerAttrName: "handleTime"
+        }), new TableAttr({
+            HeadTitleName: "已超时",
+            tdWidth: "10%",
+            tdInnerAttrName: "timeOut"
         })
     ],tableOperationBtns: [
         new TableOperationBtn({
@@ -105,7 +108,7 @@ export class EventTable extends BusinessTable implements IConverter {
            {
             output.values = items;
             output.galleryTd = tds;
-            output.galleryTdWidth='24%';
+            output.galleryTdWidth='16%';
            }
         return output;
     }
@@ -113,7 +116,7 @@ export class EventTable extends BusinessTable implements IConverter {
     toTableModel(event:GarbageDropEventRecord) {
         const tableField = new TableField(),division = this.findDivisionFn(event.Data.DivisionId);
         tableField.id = event.EventId;        
-        // tableField.timeOut = event.Data.IsTimeout ? '√':'-';
+        tableField.timeOut = event.Data.IsTimeout ? '√':'-';
         tableField.station =  event.Data.StationName;
         tableField.dropTime =  this.datePipe.transform(event.Data.DropTime,'yyyy-MM-dd HH:mm:ss');
         tableField.handleTime = event.Data.IsHandle ? this.datePipe.transform(event.Data.HandleTime,'yyyy-MM-dd HH:mm:ss'):'-';
@@ -147,7 +150,7 @@ export class GarbageDropEventsRecord implements IBusinessData {
 export class TableField implements ITableField {
     id: string;
     county: string;
-    // timeOut: string;
+    timeOut: string;
     committees: string;
     station: string;
     dropTime: string;
