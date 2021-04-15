@@ -138,6 +138,7 @@ export class BusinessService {
     async requestData(pageIndex: number, callBack?: (page: Page) => void) {
         const response = await this.eventRequestService.list(this.getRequsetParam(pageIndex, this.search)).toPromise();
         const data = new GarbageDropEventsRecord();
+        
         data.items = response.Data.Data.sort((a, b) => {
             return ''.naturalCompare(a.EventTime, b.EventTime);
         });

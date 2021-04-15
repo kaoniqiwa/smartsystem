@@ -2,20 +2,16 @@ import { BusinessTable } from "../../../../../aiop-system/common/business-table"
 import { ITableField } from "../../../../../aiop-system/common/ITableField";
 import { IConverter } from "../../../../../common/interface/IConverter";
 import { CustomTableEvent, CustomTableEventEnum } from "../../../../custom-table/custom-table-event";
-import { CustomTableArgs, FootArgs, GalleryTdAttr, TableAttr, TableOperationBtn ,TooltipTd} from "../../../../custom-table/custom-table-model";
-import { CameraImageUrl } from "../../../../../data-core/model/waste-regulation/event-record";
+import { CustomTableArgs, FootArgs, GalleryTdAttr, TableAttr ,TooltipTd} from "../../../../custom-table/custom-table-model";
 import { MediumPicture } from "../../../../../data-core/url/aiop/resources";
-import { GarbageDropEventRecord } from "../../../../../data-core/model/waste-regulation/garbage-drop-event-record";
 import { IBusinessData } from "../../../../../common/interface/IBusiness";
 import { GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
 import { DivisionTypeEnum } from "../../../../../common/tool/enum-helper";
-import { DatePipe } from "@angular/common";
-import { ChangeHourMinutestr } from "../../../../../common/tool/tool.service";
-import { ImgTypeEnum,TypeNameEnum,HWCameraImageUrl } from "../../../camera-img-url";
+import { DatePipe } from "@angular/common"; 
 import { GarbageStationNumberStatistic } from "../../../../../data-core/model/waste-regulation/garbage-station-number-statistic";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
-
+import { ToHoursMinutes } from "../../../../../common/tool/tool.service";
 export class EventTable extends BusinessTable implements IConverter {
      
     dataSource = new CustomTableArgs<any>({
@@ -37,12 +33,16 @@ export class EventTable extends BusinessTable implements IConverter {
             tdInnerAttrName: "station"
         }),new TableAttr({
             HeadTitleName: "街道",
-            tdWidth: "17%",
+            tdWidth: "13%",
             tdInnerAttrName: "county"
         }), new TableAttr({
             HeadTitleName: "居委会",
             tdWidth: "17%",
             tdInnerAttrName: "committees"
+        }), new TableAttr({
+            HeadTitleName: "垃圾堆数",
+            tdWidth: "15%",
+            tdInnerAttrName: "garbageCount"
         }), new TableAttr({
             HeadTitleName: "滞留时间",
             tdWidth: "15%",
@@ -54,7 +54,7 @@ export class EventTable extends BusinessTable implements IConverter {
         })
     ],
         galleryTd: [],
-        tooltipTd:  new TooltipTd('9%','人员'),
+        tooltipTd:  new TooltipTd('8%','人员'),
         footArgs: new FootArgs({
             hasSelectBtn: false,
             hasSelectCount: false
@@ -75,7 +75,7 @@ export class EventTable extends BusinessTable implements IConverter {
 
     Convert<GarbageDropEventsRecord, CustomTableArgs>(input: GarbageDropEventsRecord, output: CustomTableArgs) {
         const items = new Array<TableField>()
-         , tooltipTd = new TooltipTd('15%','人员'); 
+         , tooltipTd = new TooltipTd('8%','人员'); 
         var tds: GalleryTdAttr[] = new Array(); 
         tooltipTd.listMap =  new Map<string,Array<{icon:string,tip:string}>>();
         if (input instanceof GarbageDropEventsRecord)
@@ -91,7 +91,7 @@ export class EventTable extends BusinessTable implements IConverter {
             output.values = items;
             output.galleryTd = tds;
             output.tooltipTd = tooltipTd;
-            output.galleryTdWidth='25%'
+            output.galleryTdWidth='20%'
            }
         return output;
     }
@@ -100,7 +100,8 @@ export class EventTable extends BusinessTable implements IConverter {
         const tableField = new TableField(),station = this.findStationFn(statistic.Id)
         ,division = this.findDivisionFn(station.DivisionId)
         , toHour = (val: number) => {
-            return val >= 60 ? ChangeHourMinutestr(parseInt(val + '')) : '0:' + parseInt(val + '');
+            const hm= ToHoursMinutes(val)
+            return `${hm.hours}:${hm.minutes}`;
         }, toFormat=(val:string)=>{
             const arr = val.split(':');
             if(arr[0]=='0'&&arr[1]=='0')
@@ -112,6 +113,7 @@ export class EventTable extends BusinessTable implements IConverter {
         };
         tableField.id = statistic.Id;        
         tableField.station =  statistic.Name;
+        tableField.garbageCount=statistic.GarbageCount+'';
         tableField.currentGarbageTime=toFormat(toHour(statistic.CurrentGarbageTime));
         tableField.garbageDuration=toFormat(toHour(statistic.GarbageDuration));
         if(division.DivisionType == DivisionTypeEnum.County)
@@ -168,6 +170,7 @@ export class TableField implements ITableField {
     id: string;
     county: string;
     committees: string;
+    garbageCount:string;
     station: string;
     currentGarbageTime: string;
     garbageDuration: string;

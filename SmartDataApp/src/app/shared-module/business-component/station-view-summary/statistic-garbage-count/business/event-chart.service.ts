@@ -2,7 +2,7 @@ import { DatePipe } from "@angular/common";
 import { Injectable } from "@angular/core";
 import { GarbageStationRequestService } from "../../../../../data-core/repuest/garbage-station.service";
 import { EventRequestService } from "../../../../../data-core/repuest/Illegal-drop-event-record";
-import { TheDayTime, ChangeHourMinutestr, Decimal } from "../../../../../common/tool/tool.service";
+import { TheDayTime, Decimal ,ToHoursMinutes} from "../../../../../common/tool/tool.service";
 import { ListAttribute } from "../../../../../common/tool/table-form-helper";
 import { CandlestickOption } from '../../../../../common/directive/echarts/echart';
 import { GarbageStationGarbageCountStatistic, GarbageStationNumberStatisticV2, GetGarbageStationStatisticGarbageCountsParams, GetGarbageStationStatisticNumbersParamsV2 } from '../../../../../data-core/model/waste-regulation/garbage-station-number-statistic';
@@ -183,7 +183,8 @@ export class EventChartService extends ListAttribute {
     covertStatistical(statisticV2: Array<GarbageStationNumberStatisticV2>) {
         statisticV2.map(s => {//console.log(s);
             const toHour = (val: number) => {
-                return val >= 60 ? ChangeHourMinutestr(parseInt(val + '')) : '0:' + parseInt(val + '');
+                const hm= ToHoursMinutes(val)
+                return `${hm.hours}:${hm.minutes}`; 
             }
             this.statistical[0].vals[0].val = Decimal(s.GarbageRatio);
 
@@ -322,7 +323,8 @@ export class EventChartService extends ListAttribute {
 
                 const nameSpliteA = param.name.split(':')
                     , toHour = (val: number) => {
-                        return val >= 60 ? ChangeHourMinutestr(parseInt(val + '')) : '0:' + parseInt(val + '');
+                        const hm= ToHoursMinutes(val)
+                        return `${hm.hours}:${hm.minutes}`; 
                     }
                     , garbageCount = this.garbageCountStatistic.filter(e => {
                         const date = new Date(e.BeginTime);

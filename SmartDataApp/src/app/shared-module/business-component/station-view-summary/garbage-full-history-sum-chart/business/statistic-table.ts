@@ -8,7 +8,7 @@ import { IBusinessData } from "../../../../../common/interface/IBusiness";
 import { BusinessTable } from "../../../../../aiop-system/common/business-table";
 import { EventTypeEnum } from "../../../../../common/tool/enum-helper";
 import { EventNumber } from "../../../../../data-core/model/waste-regulation/event-number";
-import { IntegerDecimalNum, ChangeHourMinute, Percentage } from "../../../../../common/tool/tool.service";
+import { IntegerDecimalNum, ToHoursMinutes, Percentage } from "../../../../../common/tool/tool.service";
 import { OrderByEnum } from "../../../../custom-table/custom-table-model";
 import "../../../../../common/string/hw-string";
 export class StatisticTable extends BusinessTable implements IConverter {
@@ -121,7 +121,8 @@ export class StatisticTable extends BusinessTable implements IConverter {
             }, upClass = 'mdi mdi-arrow-up-bold red-text '
             , downClass = 'mdi mdi-arrow-down-bold green-text '
             , toHour = (val: number) => {
-                return (val > 60 ? ChangeHourMinute(parseInt(val + '')) : parseInt(val + '')) + '分钟';
+                const hm= ToHoursMinutes(val)
+                return  (val > 60 ?  `${hm.hours}小时${hm.minutes}分钟`:  hm.minutes+ '分钟'); 
             }, maxPercentage = (val: number) => {
                 return val >= 1000 ? '-' : (val + '%');
             };

@@ -1,5 +1,4 @@
-import { Injectable } from "@angular/core";
-import { iif } from "rxjs";
+import { Injectable } from "@angular/core"; 
 @Injectable()
 export class ToolService {
     windowScreen: { width: number, height: number };
@@ -8,6 +7,15 @@ export class ToolService {
             width: window.screen.width,
             height: window.screen.height
         }
+    }
+}
+
+export function ToHoursMinutes(val:number){
+    const hours = parseInt((val / 60).toString());
+    const minutes = parseInt((Math.ceil(val) % 60).toString());
+    return {
+        hours:hours,
+        minutes:minutes
     }
 }
 
@@ -62,22 +70,8 @@ export function DateDifference(faultDate:string,completeTime:Date){
     //var time = days + "天"+hours+"时"+minutes+"分";
     //var time = days;
     return time;
-  }
-export function ChangeHourMinute(str:number) {
-    if (str != 0 && str != null) 
-        return ((Math.floor(str / 60)).toString().length < 2 ? (Math.floor(str / 60)).toString() :
-            (Math.floor(str / 60)).toString()) + "小时" + ((str % 60).toString().length < 2 ? (str % 60).toString() : (str % 60).toString());
-    else 
-        return 0;    
-}
-
-export function ChangeHourMinutestr(str:number) {
-    if (str != 0 && str != null) 
-        return ((Math.floor(str / 60)).toString().length < 2 ? (Math.floor(str / 60)).toString() :
-            (Math.floor(str / 60)).toString()) + ":" + ((str % 60).toString().length < 2 ? (str % 60).toString() : (str % 60).toString());
-    else 
-        return '0';    
-}
+  } 
+ 
 export function pageCount(totalnum: number, limit: number) {
     return totalnum > 0 ?
         ((totalnum < limit)
