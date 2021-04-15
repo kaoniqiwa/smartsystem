@@ -154,6 +154,8 @@ export class BusinessService {
         });
         //默认行政区 用于事件卡片
         this.divisionBusinessService.eventDropCard.divisionType = param.divisionType;
+        this.divisionBusinessService.eventDropCard.dropDivisionType= param.divisionType;     
+       
     }
 
     async mixedIntoDropTopCard() {
