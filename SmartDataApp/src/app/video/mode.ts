@@ -121,14 +121,19 @@ export class VideoPlayArgs {
         return args;
     }
 
-    toString: () => string = () => {
+    toString: (querys?: string) => string = (querys?: string) => {
         switch (this.mode) {
             case PlayMode.live:
                 // 'ws://192.168.21.241:8800/ws/video/howellps/live/00310101031111111000073000000000/1/1/live.H265?user=howell&password=123456';
                 return `ws://${this.host}:${this.port}/ws/video/howellps/${this.mode}/${this.deviceId}/${this.slot}/${this.stream}/${this.mode}.H265?user=${this.username}&password=${this.password}`;
             case PlayMode.playback:
                 // ws://192.168.21.241:8800/ws/video/howellps/vod/00310101031111111000073000000000/1/1/2020-11-23T02:42:47.703Z_2020-11-23T02:47:47.703Z/vod.H265?user=howell&password=123456
-                return `ws://${this.host}:${this.port}/ws/video/howellps/${this.mode}/${this.deviceId}/${this.slot}/${this.stream}/${this.begin}_${this.end}/${this.mode}.H265?user=${this.username}&password=${this.password}`;
+                if (querys) {
+                    return `ws://${this.host}:${this.port}/ws/video/howellps/${this.mode}/${this.deviceId}/${this.slot}/${this.stream}/${this.begin}_${this.end}/${this.mode}.H265` + querys;
+                }
+                else {
+                    return `ws://${this.host}:${this.port}/ws/video/howellps/${this.mode}/${this.deviceId}/${this.slot}/${this.stream}/${this.begin}_${this.end}/${this.mode}.H265?user=${this.username}&password=${this.password}`;
+                }
             default:
                 return '';
         }
