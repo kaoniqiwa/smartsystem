@@ -27,9 +27,9 @@ export class StatisticGarbageCountComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.businessService.vodVideo = async (param, cb: (url: string) => void) => {
+    this.businessService.vodVideo = async (param, cb: (webUrl:string,url: string) => void) => {
       const video = await this.videoService.videoUrl(param);
-      cb(video.Url);
+      cb(video.WebUrl,video.Url);
     }
     this.businessService.playVideoToUrlFn = async (id, time, cb) => {
       const gb = this.businessService.findGarbageCountToTime(time + '');

@@ -39,6 +39,7 @@ export class HWVideoService {
         vu.Url=    result.Url ;
         vu.Password = result.Password || ''; 
         vu.Username = result.Username || '';;
+        vu.WebUrl = result.WebUrl;
         return vu;
     }
 
@@ -58,7 +59,8 @@ export class HWVideoService {
             ? result.Url : result.Url + user.videoUserPwd;
         vu.Url=    result.Url ;
         vu.Password = result.Password || ''; 
-        vu.Username = result.Username || '';;
+        vu.Username = result.Username || '';
+        vu.WebUrl = result.WebUrl;
         return vu;
     }
 }

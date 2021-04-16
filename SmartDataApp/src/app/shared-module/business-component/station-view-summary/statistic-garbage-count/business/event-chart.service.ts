@@ -35,7 +35,7 @@ export class EventChartService extends ListAttribute {
         station: ''
     }
     playVideoToUrlFn: (id: string, time: Date | string, cb: (webUrl:string, url: string) => void) => void;
-    vodVideo: (param: GetVodUrlParams, cb: (url: string) => void) => void;
+    vodVideo: (param: GetVodUrlParams, cb: (weburl:string,url: string) => void) => void;
 
     startDate = (date: any) => {
         this.search.date = this.datePipe.transform(date, 'yyyy-MM-dd');
@@ -95,7 +95,8 @@ export class EventChartService extends ListAttribute {
     /**乱扔垃圾事件视频 */
     illegalDropPlayVideo: {
         url: string,
-        name: string
+        name: string,
+        webUrl:string
     };
     /**浮动y坐标 */
     illegalViewY = 0;
@@ -514,10 +515,11 @@ export class EventChartService extends ListAttribute {
         param.BeginTime = event.EventTime;
         param.EndTime = event.EventTime;
         param.CameraId = event.ResourceId;
-        this.vodVideo(param, (url) => {
+        this.vodVideo(param, (webUrl,url) => {
             this.illegalDropPlayVideo = {
                 name: event.ResourceName,
-                url: url
+                url: url,
+                webUrl:webUrl
             }
         });
     }

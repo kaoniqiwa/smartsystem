@@ -186,30 +186,34 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
 
 
     play(webUrl:string, url: string, cameraName?: string) {
+ 
+setTimeout(() => {
+    this.WebUrl = webUrl;
+    this.url = url;
 
-        this.WebUrl = webUrl;
-        this.url = url;
 
+    if (!this.url || !this.WebUrl) {
+        return;
+    }
+    if (cameraName) {
+        this.secondName = cameraName;    
+    }
+ console.log(this.getSrc(this.WebUrl, this.url, cameraName));
+ 
+    this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc(this.WebUrl, this.url, cameraName));
+    this.VideoPlayingEventListen.emit(true);
+},500);
 
-        if (!this.url || !this.WebUrl) {
-            return;
-        }
-        if (cameraName) {
-            this.secondName = cameraName;
-        }
-
-        this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc(this.WebUrl, this.url, cameraName));
-        this.VideoPlayingEventListen.emit(true);
 
 
 
         setTimeout(() => {
             this.playing = true;
-        });
+        },510);
 
-        const size = domSize(this.divId);
-        this.player.clientWidth = size.width;
-        this.player.clientHeight = size.height;
+        // const size = domSize(this.divId);
+        // this.player.clientWidth = size.width;
+        // this.player.clientHeight = size.height;
     }
 
     closeWindow(): void {
