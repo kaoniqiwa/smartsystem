@@ -12,7 +12,7 @@
   <div class="fill-height fill-width hw-content-mask collapse" [class.in]="businessService.playVideo">
     <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
       <ng-container *ngIf="businessService.playVideo">
-        <hw-video-simple-card [closeFn]="videoClose" [url]="businessService.playVideo.url" [autostart]="true"
+        <hw-video-simple-card [closeFn]="videoClose" [url]="businessService.playVideo.url" [WebUrl]="businessService.playVideo.WebUrl" [autostart]="true"
           [cameraName]="businessService.playVideo.name"></hw-video-simple-card>
       </ng-container>
     </div>

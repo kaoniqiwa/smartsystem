@@ -58,7 +58,7 @@ export class BusinessService extends EnumHelper {
         const idV = id.split('&'),
             camera = this.cameras.find(x => x.Id == idV[1]),
          video = await this.requestVideoUrl(camera.Id);
-        this.playVideo = new PlayVideo(null, camera.Name); 
+        this.playVideo = new PlayVideo(video.WebUrl, null, camera.Name); 
         this.playVideo.url=video.Url;
     }
     constructor(private garbageStationService: GarbageStationRequestService
