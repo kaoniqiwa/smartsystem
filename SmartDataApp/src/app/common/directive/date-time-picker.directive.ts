@@ -1,4 +1,4 @@
-import { Directive, ElementRef, AfterContentInit, Input } from '@angular/core';
+import { Directive, ElementRef, AfterContentInit, Input, OnDestroy } from '@angular/core';
 import "../../common/string/hw-string";
 import { DatePipe } from "@angular/common";
 import { OneWeekDate } from "../tool/tool.service";
@@ -7,7 +7,7 @@ declare var $: any;
 @Directive({
   selector: '[DateTimePicker]'
 })
-export class DateTimePickerDirective implements AfterContentInit {
+export class DateTimePickerDirective implements AfterContentInit , OnDestroy {
   private ele: any;
   @Input('format') format = 'yyyy-mm-dd';
   @Input('defaultVal') defaultVal = '';
@@ -15,13 +15,19 @@ export class DateTimePickerDirective implements AfterContentInit {
   @Input('startView') startView = 2;
   @Input('minView') minView = 2; 
   constructor(e: ElementRef, private datePipe: DatePipe) {
+    
     this.ele = e.nativeElement;
+  }
+  ngOnDestroy(): void {
+    $(this.ele).datetimepicker('remove')
   }
 
   set setStartDate(val:string|Date){
+    
     $(this.ele).datetimepicker('update'); 
   }
   ngAfterContentInit() {
+    
     $(this.ele).datetimepicker({
       format: this.format,
       weekStart: 1,
@@ -41,7 +47,7 @@ export class DateTimePickerDirective implements AfterContentInit {
   }
 
   reInit(startView: number, minView: number, format: string, defaultVal: string, week?: boolean) {
-   
+    
     $(this.ele).val(''); 
     $(this.ele).datetimepicker('remove').off('changeDate').off('show');
     if (week) {  
