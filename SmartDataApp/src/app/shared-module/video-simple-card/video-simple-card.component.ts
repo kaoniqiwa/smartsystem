@@ -9,7 +9,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 
 declare var base64encode: (str: string) => string;
-
+declare var utf16to8:(str:string) => string;
 
 @Component({
     selector: 'hw-video-simple-card',
@@ -179,7 +179,8 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
         const port = document.location.port;
         let result = webUrl + '?url=' + base64encode(url);
         if (cameraName) {
-            result += "&name=" + base64encode(cameraName);
+            let name = utf16to8(cameraName);
+            result += "&name=" + base64encode(name);
         }
         return result;
     }
