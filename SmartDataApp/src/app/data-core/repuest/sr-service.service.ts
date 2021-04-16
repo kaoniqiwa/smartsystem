@@ -5,8 +5,8 @@ import { VideoUrl, GetPreviewUrlParams, GetVodUrlParams } from "../model/aiop/vi
 import { Injectable } from "@angular/core";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
 import { SaveModel } from "../model/save-model";
-import { VideoPlayArgs } from "src/app/video/mode";
-import { SessionUser } from "src/app/common/tool/session-user";
+import { VideoPlayArgs } from "../../../app/video/mode";
+import { SessionUser } from "../../../app/common/tool/session-user";
 
 @Injectable({
     providedIn: 'root'
