@@ -17,16 +17,16 @@ import { DivisionDao } from "../../../../../data-core/dao/division-dao";
 import { GarbageStationTypeDao } from "../../../../../data-core/dao/garbage-station-type-dao";
 import { DivisionRequestService } from "../../../../../data-core/repuest/division.service";
 import { GarbageStationTypeRequestService } from "../../../../../data-core/repuest/garbage-station.service";
-import { PlayVideo } from "../../../../../aiop-system/common/play-video"; 
+import { PlayVideo } from "../../../../../aiop-system/common/play-video";
 import { GarbageStationDao } from "../../../../../data-core/dao/garbage-station-dao"
 import { GalleryTargetViewI } from "../../../station-state-view-summary/full-garbage-station/business/gallery-target";
 import { ResourceCameraDao } from "../../../../../data-core/dao/resources-camera-dao";
 import { Camera as ResourceCamera } from "../../../../../data-core/model/aiop/camera";
-import { Camera } from "../../../../../data-core/model/waste-regulation/camera"; 
+import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
 import { CameraRequestService } from "../../../../../data-core/repuest/resources.service";
 import { HWVideoService } from "../../../../../data-core/dao/video-dao";
 import { ImageEventEnum } from "../../../../gallery-target/gallery-target";
-import { MediumPicture } from "../../../../../data-core/url/aiop/resources"; 
+import { MediumPicture } from "../../../../../data-core/url/aiop/resources";
 import { SessionUser } from "../../../../../common/tool/session-user";
 import { GetPreviewUrlParams } from "../../../../../data-core/model/aiop/video-url";
 @Injectable()
@@ -55,13 +55,13 @@ export class BusinessService {
     private divisionDao: DivisionDao;
     private garbageStationTypeDao: GarbageStationTypeDao;
     private garbageStationDao: GarbageStationDao;
-    videoService:HWVideoService;
+    videoService: HWVideoService;
     playVideoFn = async (id: string) => {
         const idV = id.split('&'),
             camera = this.cameras.find(x => x.Id == idV[1]);
         const video = await this.requestVideoUrl(camera.Id);
-        this.playVideo = new PlayVideo(null, camera.Name);
-        this.playVideo.url=video.Url;
+        this.playVideo = new PlayVideo(video.WebUrl, null, camera.Name);
+        this.playVideo.url = video.Url;
     }
 
     constructor(private datePipe: DatePipe, private garbageStationService: GarbageStationRequestService
@@ -126,9 +126,9 @@ export class BusinessService {
         this.galleryTargetView.manualCaptureFn = (stationId, cb) => {
             this.garbageStationDao.manualCapture(stationId).subscribe(result => {
                 if (result && result.Data) {
-                    const img = cb(result.Data);  
+                    const img = cb(result.Data);
                     this.table.dataSource.galleryTd.map(g => {
-                        const oldIndex = g.imgSrc.findIndex(f => f.indexOf(img.old)>0);
+                        const oldIndex = g.imgSrc.findIndex(f => f.indexOf(img.old) > 0);
                         if (oldIndex > 0 && g.key == stationId)
                             g.imgSrc[oldIndex] = img.new;
                     });
@@ -136,19 +136,19 @@ export class BusinessService {
             });
         }
 
-        this.table.findDivisionFn=(id)=>{
-            return this.divisions.find(d=>d.Id == id);
+        this.table.findDivisionFn = (id) => {
+            return this.divisions.find(d => d.Id == id);
         }
     }
 
     async requestVideoUrl(cameraId: string) {
-        const  user = new SessionUser(), params = new GetPreviewUrlParams();
+        const user = new SessionUser(), params = new GetPreviewUrlParams();
         // ,videoLive = '4'
         // ,config = await this.userDalService.getUserConfig(user.id, videoLive);        
         params.CameraId = cameraId;
         // params.Protocol = 'ws-ps';
         // params.StreamType =config? parseInt(config):1;
-        const response = await this.videoService.videoUrl(params); 
+        const response = await this.videoService.videoUrl(params);
         return response;
     }
 
@@ -205,7 +205,7 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
             HeadTitleName: "投放点",
             tdWidth: "20%",
             tdInnerAttrName: "name"
-        }),new TableAttr({
+        }), new TableAttr({
             HeadTitleName: "街道",
             tdWidth: "15%",
             tdInnerAttrName: "county"
@@ -227,7 +227,7 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
     findGarbageFn: (id: string) => GarbageStation;
     initGalleryTargetFn: (garbageId: string, event: Camera[], index: number) => void;
     playVideoFn: (id: string) => void;
-    findDivisionFn:(id:string)=>Division;
+    findDivisionFn: (id: string) => Division;
     constructor(private datePipe: DatePipe) {
         super();
     }
@@ -237,18 +237,17 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
     Convert<BusinessData, CustomTableArgs>(input: BusinessData, output: CustomTableArgs) {
         const items = new Array<TableField>();
         var tds: GalleryTdAttr[] = new Array();
-     
+
         if (input instanceof BusinessData)
             for (const item of input.statioins) {
                 items.push(this.toTableModel(item));
                 if (item.Cameras)
                     tds.push(this.toGalleryModel(input.items, item.Id, item.Cameras));
             }
-        if (output instanceof CustomTableArgs)
-           {
+        if (output instanceof CustomTableArgs) {
             output.values = items;
             output.galleryTd = tds;
-           }
+        }
         return output;
     }
 
@@ -257,9 +256,9 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
         tableField.id = station.Id;
         tableField.name = station.Name;
         const committees = this.findDivisionFn(station.DivisionId),
-        county  = this.findDivisionFn(committees.ParentId);
-        tableField.county =county.Name;
-        tableField.committees =committees.Name;
+            county = this.findDivisionFn(committees.ParentId);
+        tableField.county = county.Name;
+        tableField.committees = committees.Name;
         tableField.state = StationStateEnum[station.StationState];
         return tableField;
     }
@@ -272,7 +271,7 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
             if (find)
                 galleryTdAttr.imgSrc.push(pic.getJPG(find.ImageUrl));
         })
-        galleryTdAttr.key = key; 
+        galleryTdAttr.key = key;
         return galleryTdAttr;
     }
 }
@@ -294,8 +293,8 @@ export class BusinessData implements IBusinessData {
 export class TableField implements ITableField {
     id: string;
     updateTime: string;
-    name: string; 
-    committees: string;  
-    county: string; 
-    state:string;
+    name: string;
+    committees: string;
+    county: string;
+    state: string;
 }

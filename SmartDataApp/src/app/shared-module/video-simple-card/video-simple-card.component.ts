@@ -2,9 +2,15 @@
  * Developer 施文斌
  * LastUpdateTime  20/10/21
  */
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { VideoSimpleMode } from './video-simple';
 import { domSize } from "../../common/tool/jquery-help/jquery-help";
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
+
+declare var base64encode: (str: string) => string;
+
+
 @Component({
     selector: 'hw-video-simple-card',
     templateUrl: './video-simple-card.component.html',
@@ -12,16 +18,37 @@ import { domSize } from "../../common/tool/jquery-help/jquery-help";
     providers: []
 })
 export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewInit {
-    @Input() url: string;
+    @ViewChild('iframe') iframe: ElementRef;
+
+    if(cameraName) {
+        this.secondName = cameraName;
+    }
+    _url: string;
+    @Input()
+    set url(val: string) {
+        this._url = val;
+    }
+    get url() {
+        return this._url;
+    }
     @Input() cameraName: string;
     @Input() autostart: boolean
     @Input() closeFn: () => void;
     @Input() videoImgs: { id: string, imgSrc: string, name: string, time: Date | string }[];
-    @Input() playVideoToUrlFn: (id: string, time: Date | string, cb: (url: string) => void) => void;
+    @Input() playVideoToUrlFn: (id: string, time: Date | string, cb: (webUrl:string, url: string) => void) => void;
     @Input() bottomTool: { left: { label: string, color: string }[], right: { label: string, color: string }[] };
-    private delayPlayHandle: NodeJS.Timer;
 
-    private player: WSPlayer;
+    private srcUrl: SafeResourceUrl
+
+    @Input()
+    WebUrl: string;
+
+    private get player(): WSPlayer | undefined {
+        if (!this.iframe.nativeElement.src)
+            return;
+        return this.iframe.nativeElement.player;
+
+    };
     private secondName = '';
 
     playing = false;
@@ -35,13 +62,16 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
 
     @Output() VideoPlayingEventListen: EventEmitter<boolean> = new EventEmitter();
 
-    constructor() {
+    constructor(
+        private sanitizer: DomSanitizer,
+
+    ) {
 
     }
     ngAfterViewInit(): void {
 
         if (this.autostart)
-            this.play();
+            this.play(this.WebUrl, this.url, this.cameraName);
 
     }
 
@@ -116,8 +146,8 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
 
     simpleVideoClick(id: string, name: string, time: Date | string) {
 
-        this.playVideoToUrlFn(id, time, (url) => {
-            this.play(url, name);
+        this.playVideoToUrlFn(id, time, (webUrl, url) => {
+            this.play(webUrl, url, name);
             setTimeout(() => {
                 if (this.player) {
                     this.player.getPosition = (val: any) => {
@@ -142,64 +172,41 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
         return this.url;
     }
 
-    play(url?: string, cameraName?: string) {
 
-        if (url) {
-            this.url = url;
+
+    getSrc(webUrl:string, url: string, cameraName?: string) {
+        const host = document.location.hostname;
+        const port = document.location.port;
+        let result = webUrl + '?url=' + base64encode(url);
+        if (cameraName) {
+            result += "&name=" + base64encode(cameraName);
+        }
+        return result;
+    }
+
+
+    play(webUrl:string, url: string, cameraName?: string) {
+
+        this.WebUrl = webUrl;
+        this.url = url;
+
+
+        if (!this.url || !this.WebUrl) {
+            return;
         }
         if (cameraName) {
             this.secondName = cameraName;
         }
 
+        this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc(this.WebUrl, this.url, cameraName));
+        this.VideoPlayingEventListen.emit(true);
 
-        if (!this.url) {
-            return;
-        }
+
+
         setTimeout(() => {
             this.playing = true;
         });
 
-        if (this.player) {
-            if (this.player.status === 255) {
-                this.player.url = this.url;
-                this.player.name = this.cameraName;
-                this.player.play();
-                this.VideoPlayingEventListen.emit(true);
-            } else {
-                try {
-                    this.player.stop().then(() => {
-                        this.player.url = this.url;
-                        this.player.name = this.cameraName;
-                        this.player.play();
-                        this.VideoPlayingEventListen.emit(true);
-                    });
-                } catch (ex) {
-                    if (this.delayPlayHandle) {
-                        clearTimeout(this.delayPlayHandle);
-                        this.delayPlayHandle = null;
-                    }
-                    this.delayPlayHandle = setTimeout(() => {
-                        if (this.delayPlayHandle) {
-                            clearTimeout(this.delayPlayHandle);
-                            this.delayPlayHandle = null;
-                        }
-                        this.player.url = this.url;
-                        this.player.name = this.cameraName;
-                        this.player.play();
-                        this.VideoPlayingEventListen.emit(true);
-                    }, 1000);
-                }
-            }
-
-        } else {
-            this.player = new WSPlayer({
-                elementId: this.divId,
-                url: this.url
-            }); 
-            this.player.name = this.secondName;
-            this.player.play();
-            this.VideoPlayingEventListen.emit(true);
-        } 
         const size = domSize(this.divId);
         this.player.clientWidth = size.width;
         this.player.clientHeight = size.height;
@@ -216,8 +223,8 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
             this.secondName = '';
         }
         else {
-            // const sc = document.getElementById(this.divId);
-            // if (sc) { sc.parentElement.removeChild(sc); }
+             const sc = document.getElementById(this.divId);
+             if (sc) { sc.parentElement.removeChild(sc); }
             if (this.closeFn) this.closeFn();
         }
     }
@@ -232,7 +239,11 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
     }
 
     ngOnDestroy() {
-        this.player=null;
+        
+        const sc = document.getElementById(this.divId);
+        if (sc && sc.parentElement) {
+            sc.parentElement.removeChild(sc);
+        }
         // const sc = document.getElementById(this.divId);
         // if (sc && sc.parentElement) {
         //     sc.parentElement.removeChild(sc);

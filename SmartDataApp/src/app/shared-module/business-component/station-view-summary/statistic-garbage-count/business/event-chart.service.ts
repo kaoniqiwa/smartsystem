@@ -34,7 +34,7 @@ export class EventChartService extends ListAttribute {
         date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
         station: ''
     }
-    playVideoToUrlFn: (id: string, time: Date | string, cb: (url: string) => void) => void;
+    playVideoToUrlFn: (id: string, time: Date | string, cb: (webUrl:string, url: string) => void) => void;
     vodVideo: (param: GetVodUrlParams, cb: (url: string) => void) => void;
 
     startDate = (date: any) => {

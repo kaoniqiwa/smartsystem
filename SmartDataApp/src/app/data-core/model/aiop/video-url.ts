@@ -7,6 +7,8 @@
         Username: string;
         /**密码(可选) */
         Password: string;
+        /** 视频网页代理地址 */
+        WebUrl:string;
     }
 
      /**获取预览视频的URL地址请求参数 */

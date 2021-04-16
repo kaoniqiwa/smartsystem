@@ -107,7 +107,7 @@ export class GarbageDropEventHistoryComponent implements OnInit {
       param.BeginTime=time;
       param.EndTime=time;
       this.videoService.videoUrl(param).then(video=>{
-        cb(video.Url) 
+        cb(video.WebUrl, video.Url) 
       });
   }
      

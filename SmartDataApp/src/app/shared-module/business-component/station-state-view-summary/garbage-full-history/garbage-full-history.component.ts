@@ -8,7 +8,7 @@ import { SideNavService } from "../../../../common/tool/sidenav.service";
 import { DivisionBusinessService } from "../../../../waste-regulation-system/index/business-card-grid/division-business.service";
 import { SystemModeEnum } from '../../../../common/tool/table-form-helper';
 import { LevelListPanelComponent } from "../../event-history/level-list-panel/level-list-panel.component";
-import { Camera } from '../../../../data-core/model/waste-regulation/camera'; 
+import { Camera } from '../../../../data-core/model/waste-regulation/camera';
 import { HWVideoService } from "../../../../data-core/dao/video-dao";
 import { GetVodUrlParams } from '../../../../data-core/model/aiop/video-url';
 import { PlayVideo } from '../../../../aiop-system/common/play-video';
@@ -74,13 +74,13 @@ export class GarbageFullHistoryComponent implements OnInit {
 
   listGalleryTargetFn = (val: ImageDesc) => {
     const event = this.tableService.eventTable.findEventFn(val.id);
-    this.tableService.galleryTargetView.initGalleryTarget(event,0);
+    this.tableService.galleryTargetView.initGalleryTarget(event, 0);
     this.tableService.galleryTargetView.galleryTarget.videoName = true;
   }
 
   videoClose = () => {
     this.tableService.videoImgs = null;
-    this.tableService.playVideo=null;
+    this.tableService.playVideo = null;
   }
 
   constructor(private tableService: EventTableService
@@ -122,20 +122,20 @@ export class GarbageFullHistoryComponent implements OnInit {
     this.tableService.divisionListView.toLevelListPanel(this.tableService.divisions.filter(x => x.ParentId != null));
     this.tableService.allEventsRecordData();
 
-    this.tableService.playVideoToUrlFn = async (id, time, cb) => { 
-      const param = this.tableService.getVodUrlParam(null,id,time+'',time+'')
-      , video = await this.videoService.videoUrl(param);
-      cb(video.Url)
+    this.tableService.playVideoToUrlFn = async (id, time, cb) => {
+      const param = this.tableService.getVodUrlParam(null, id, time + '', time + '')
+        , video = await this.videoService.videoUrl(param);
+      cb(video.WebUrl, video.Url)
     }
 
-    this.tableService.playVideoFn =async (ids)=>{
+    this.tableService.playVideoFn = async (ids) => {
       const idV = ids.split('&')
-      ,param = this.tableService.getVodUrlParam(idV[1],idV[0])
-      , video = await this.videoService.videoUrl(param)
-      ,cameraName = this.tableService.getCameraName(idV[1],idV[0])
-      ,pv = new PlayVideo(video.Url,cameraName); 
+        , param = this.tableService.getVodUrlParam(idV[1], idV[0])
+        , video = await this.videoService.videoUrl(param)
+        , cameraName = this.tableService.getCameraName(idV[1], idV[0])
+        , pv = new PlayVideo(video.WebUrl, video.Url, cameraName);
       pv.url = video.Url;
-      this.tableService.playVideo =pv;
+      this.tableService.playVideo = pv;
     }
   }
 

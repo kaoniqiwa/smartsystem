@@ -1,10 +1,11 @@
 import { SessionUser } from "../../common/tool/session-user";
 
 export class PlayVideo {
+    WebUrl: string;
     url: string;
     name: string;
-    constructor(url: string,
-        name: string) {
+    constructor(webUrl: string, url: string, name: string) {
+        this.WebUrl = webUrl;
         this.url = '';
         this.name = name;
     }

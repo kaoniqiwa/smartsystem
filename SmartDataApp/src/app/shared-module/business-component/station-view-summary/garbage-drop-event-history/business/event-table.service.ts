@@ -29,7 +29,7 @@ export class BusinessService {
     /**视频播放 */
     videoImgs: Array<{ src: string, id: string, name: string, time: Date | string }>;
     playVideoViewTitle = '';
-    playVideoToUrlFn: (id: string, time: Date | string, cb: (url: string) => void) => void;
+    playVideoToUrlFn: (id: string, time: Date | string, cb: (webUrl:string, url: string) => void) => void;
     search = new SearchControl(this.datePipe);
     set dataSource(items: GarbageDropEventRecord[]) {
         for (const x of items)

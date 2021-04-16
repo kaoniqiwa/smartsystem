@@ -119,7 +119,7 @@ export class EventTableService extends ListAttribute {
             const user = new SessionUser(),
             video = await this.requestVideoUrl(DateInterval(event.EventTime+'',user.video.beforeInterval)
             , DateInterval(event.EventTime+'',user.video.afterInterval), event.ResourceId); 
-            this.playVideo = new PlayVideo(null, event.ResourceName); 
+            this.playVideo = new PlayVideo(video.WebUrl, null, event.ResourceName); 
             this.playVideo.url_ = video.Url;
             this.navService.playVideoBug.emit(true);
         }

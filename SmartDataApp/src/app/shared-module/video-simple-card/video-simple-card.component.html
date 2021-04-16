@@ -11,8 +11,9 @@
         </div>
         <div class="fill-width" [ngStyle]="{'height': bottomTool?'calc(100% - 70px)':'calc(100% - 30px)'}" style="border: 2px solid #3283E5;">
             <div class="fill-height fill-width collapse"  [class.in]="playing"  style="background-color: black;">
-                <div id="{{divId}}" class="video-control selected fill-height fill-width player">
-                </div>
+                <!-- <div id="{{divId}}" class="video-control selected fill-height fill-width player">
+                </div> -->
+                <iframe #iframe [src]="srcUrl" class="video-control selected fill-height fill-width"></iframe>
             </div> 
             <ng-container *ngIf="videoImgs&&!playing">
                 <ul class="hw-ul fill-height fill-width">                    

@@ -47,7 +47,7 @@ export class StatisticGarbageCountComponent implements OnInit, OnDestroy {
 
       const vodUrl = await this.videoService.vodUrl(param); console.log(vodUrl);
 
-      cb(vodUrl.Url);
+      cb(vodUrl.WebUrl, vodUrl.Url);
     }
   }
 

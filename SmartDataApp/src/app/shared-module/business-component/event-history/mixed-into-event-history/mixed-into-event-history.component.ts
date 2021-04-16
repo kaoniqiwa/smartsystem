@@ -116,7 +116,7 @@ export class MixedIntoEventHistoryComponent implements OnInit ,OnDestroy{
       param.CameraId=id;
       param.BeginTime=time;
       param.EndTime=time;
-      this.videoService.videoUrl(param).then(t=> cb(t.Url));
+      this.videoService.videoUrl(param).then(t=> cb(t.WebUrl, t.Url));
     }
   }
 

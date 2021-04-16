@@ -59,7 +59,7 @@ export class EventTableService extends ListAttribute {
         state: boolean;
         eventId: string;
     }[];
-    playVideoToUrlFn: (id: string, time: Date | string, cb: (url: string) => void) => void;
+    playVideoToUrlFn: (id: string, time: Date | string, cb: (webUrl:string, url: string) => void) => void;
     videoFilesFn: (id: string) => void;
     constructor(private eventRequestService: EventRequestService
         , private divisionService: DivisionRequestService

@@ -53,7 +53,7 @@ export class EventTableService extends ListAttribute {
     fillMode: FillMode;
     videoFilesFn: (id: string) => void;
     videoFileFn: (id: string) => void;
-    playVideoToUrlFn: (id: string, time: Date | string, cb: (url: string) => void) => void;
+    playVideoToUrlFn: (id: string, time: Date | string, cb: (webUrl:string, url: string) => void) => void;
     playVideoViewTitle = '';
     videoImgs: Array<{ src: string, id: string, name: string, time: Date | string }>;
     /**视频下载列表 */
