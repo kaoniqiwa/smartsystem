@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, ViewChild, OnDestroy, } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, OnDestroy, ElementRef, } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { GalleryRollPage } from "./gallery-roll-page";
 import { BasisCardComponent, ViewsModel } from '../../../common/abstract/base-view';
 import { HWVideoService } from "../../../data-core/dao/video-dao"; 
@@ -8,6 +9,7 @@ import { moveView2, domSize } from "../../../common/tool/jquery-help/jquery-help
 import { ArrayPagination } from "../../../common/tool/tool.service";
 import { UserDalService } from '../../../dal/user/user-dal.service';
 import { SessionUser } from "../../../common/tool/session-user";
+import {  WHSPlayer } from '../../../common/hws-player';
 @Component({
   selector: 'hw-gallery-roll-page',
   templateUrl: './gallery-roll-page.component.html',
@@ -18,8 +20,9 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
 
   @Input() model: GalleryRollPage;
 
-  @ViewChild(HWSPlayerDirective)
-  player: HWSPlayerDirective;
+  // @ViewChild(HWSPlayerDirective)
+  // player: HWSPlayerDirective;
+  p:WHSPlayer;
   playing = false;
   maxWindow = false;
   currentPlayId = '';
@@ -39,7 +42,9 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
   readonly interval_inspection_key = '99';
   user = new SessionUser();
   bigViewId = '';
+  @ViewChild('iframe') iframe: ElementRef;
   constructor(
+    private sanitizer: DomSanitizer,
     private videoService:HWVideoService, 
     private userDalService: UserDalService
   ) {
@@ -47,7 +52,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
   }
   ngOnDestroy() {
     this.maxWindow = false;
-    this.player.stopVideo();
+    this.p.stopVideo();
   }
 
   async ngOnInit() {
@@ -57,13 +62,16 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
         this.nextImgGroup();
     }
 
+    
+   
+
     /**实时监控 播放界面 */
     window.setInterval(() => {
       if (this.playing && this.currentPlayId) {
         const val = this.model.items.get(this.model.index), clearVideo = () => {
           this.playing = false;
           this.currentPlayId = '';
-          this.player.stopVideo();
+          this.p.stopVideo();
         };
         if (val && val.imgDesc) {
           const id = val.imgDesc.find(x => x.tag.id == this.currentPlayId);
@@ -89,7 +97,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
     if (this.playing) {
       this.playing = false;
       this.currentPlayId = '';
-      this.player.stopVideo();
+      this.p.stopVideo();
     }
   }
 
@@ -99,9 +107,8 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
       if (this.playing && window.screen.width != size.width) {
         const vSize = domSize('item__' + this.currentPlayId); console.log(vSize);
 
-        this.player.player.clientWidth = vSize.width;
-        this.player.player.clientHeight = vSize.height;
-        this.player.reSizeView();
+      
+        this.p.reSizeView(this.playViewSize.width, this.playViewSize.height);
         moveView2('item__' + this.currentPlayId, 'video__view_wrap', 0, 0);
       }
     }, 20);
@@ -131,7 +138,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
 
   fiveTimeVideo() {
     setTimeout(() => {
-      this.player.stopVideo();
+      this.p.stopVideo();
       this.playing = false;
     }, 300 * 1000);/**播放5 */
   }
@@ -153,17 +160,23 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
       this.currentPlayId = cameraId;
       // response.Data.Url=response.Data.Url.indexOf('password') >0 
       // ? response.Data.Url:response.Data.Url+this.user.videoUserPwd;
-      const videoOptions = new HWSPlayerOptions(response.Url, '');
-      this.player.reSizeView(this.playViewSize.width, this.playViewSize.height);
-      this.player.playVideo(videoOptions, () => {
-        this.playing = false;
-        this.player.playViewSize=this.playViewSize;
-        this.btnControl('stop');
-      });
-      this.fiveTimeVideo();
-      this.btnControl('play');
-
+      const videoOptions = new HWSPlayerOptions(response.WebUrl,response.Url, '');
+      this.p = new WHSPlayer(this.sanitizer);
+      this.p.playVideo(videoOptions.webUrl,videoOptions.url); 
+      setTimeout(() => {debugger
+        this.p.iframe=this.iframe;
+        this.p.reSizeView(this.playViewSize.width, this.playViewSize.height);
+        this.p.stopFn(()=>{
+          this.playing = false;
+          // this.player.playViewSize=this.playViewSize;
+          this.btnControl('stop');
+        });
+        this.fiveTimeVideo();
+        this.btnControl('play');
+      },500);
     });
+
+   
 
   }
 
@@ -248,7 +261,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
       this.model.index = 1;
     this.resetCarousel(this.carousel.time);
     this.tagClick(null, false);
-    this.player.stopVideo();
+    this.p.stopVideo();
   }
 
   /**上一组图片 */
@@ -259,7 +272,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
       this.model.index = this.model.items.size;
     this.resetCarousel(this.carousel.time);
     this.tagClick(null, false);
-    this.player.stopVideo();
+    this.p.stopVideo();
   }
 
 

@@ -44,7 +44,7 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
     WebUrl: string;
 
     private get player(): WSPlayer | undefined {
-        if (!this.iframe.nativeElement.src)
+        if (!this.iframe.nativeElement&&!this.iframe.nativeElement.src)
             return;
         return this.iframe.nativeElement.player;
 
