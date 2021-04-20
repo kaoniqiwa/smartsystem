@@ -54,7 +54,7 @@ export class IndexComponent implements OnInit {
     , titleService: Title
     ,private configService:ConfigRequestService
     , private navService: SideNavService) {
-    titleService.setTitle('生活垃圾监管平台');
+    titleService.setTitle('生活垃圾分类全程监管平台');
     this.u = new SessionUser();
     if (this.u.user.name == '' || this.u.user.pwd == '') this.router.navigateByUrl('login');
   }
