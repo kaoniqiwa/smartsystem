@@ -62,7 +62,7 @@ export class EventTable extends BusinessTable implements IConverter {
             tdWidth: "14%",
             tdInnerAttrName: "handleTime"
         }), new TableAttr({
-            HeadTitleName: "已超时",
+            HeadTitleName: "状态",
             tdWidth: "10%",
             tdInnerAttrName: "timeOut"
         })
@@ -116,7 +116,7 @@ export class EventTable extends BusinessTable implements IConverter {
     toTableModel(event:GarbageDropEventRecord) {
         const tableField = new TableField(),division = this.findDivisionFn(event.Data.DivisionId);
         tableField.id = event.EventId;        
-        tableField.timeOut = event.Data.IsTimeout ? '√':'-';
+        tableField.timeOut = event.Data.IsHandle ? (event.Data.IsTimeout ? '超时处置':'已处置'): (event.Data.IsTimeout ? '超时待处置':'待处置'); 
         tableField.station =  event.Data.StationName;
         tableField.dropTime =  this.datePipe.transform(event.Data.DropTime,'yyyy-MM-dd HH:mm:ss');
         tableField.handleTime = event.Data.IsHandle ? this.datePipe.transform(event.Data.HandleTime,'yyyy-MM-dd HH:mm:ss'):'-';
