@@ -203,11 +203,7 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
 
 
 
-    getSrc(webUrl: string, url: string, cameraName?: string) {
-        console.log(webUrl);
-        const host = document.location.hostname;
-        const port = document.location.port;
-        webUrl = "http://"+host+":"+port+"/video/wsplayer/wsplayer.html"
+    getSrc(webUrl: string, url: string, cameraName?: string) {        
         let result = webUrl + '?url=' + base64encode(url);
         if (cameraName) {
             let name = utf16to8(cameraName);

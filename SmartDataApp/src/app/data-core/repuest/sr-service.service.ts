@@ -44,7 +44,7 @@ export class SRServiceRequestSerivce extends SaveModel {
     }
 
     async preview(item: GetPreviewUrlParams) {
-        const response = await this.requestService.post<GetPreviewUrlParams, Response<VideoUrl>>(this.url.list(), item).toPromise();
+        const response = await this.requestService.post<GetPreviewUrlParams, Response<VideoUrl>>(this.url.preview(), item).toPromise();
         if (response.Data.Url) {
             let args = VideoPlayArgs.FromUrl(response.Data.Url);
             if (response.Data.Username) {
@@ -62,11 +62,16 @@ export class SRServiceRequestSerivce extends SaveModel {
             }
             response.Data.Url = url;
         }
+        if (location.hostname == "127.0.0.1") {
+            const host = document.location.hostname;
+            const port = document.location.port;
+            response.Data.WebUrl = "http://" + host + ":" + port + "/video/wsplayer/wsplayer.html";
+        }
         return response;
     }
 
     async vod(item: GetVodUrlParams) {
-        const response = await this.requestService.post<GetVodUrlParams, Response<VideoUrl>>(this.url.list(), item).toPromise();
+        const response = await this.requestService.post<GetVodUrlParams, Response<VideoUrl>>(this.url.vod(), item).toPromise();
         if (response.Data.Url) {
             let args = VideoPlayArgs.FromUrl(response.Data.Url);
             if (response.Data.Username) {
@@ -83,6 +88,12 @@ export class SRServiceRequestSerivce extends SaveModel {
                 url = args.toString();
             }
             response.Data.Url = url;
+        }
+        if (location.hostname == "127.0.0.1") {
+            
+            const host = document.location.hostname;
+            const port = document.location.port;
+            response.Data.WebUrl = "http://" + host + ":" + port + "/video/wsplayer/wsplayer.html";
         }
         return response;
     }

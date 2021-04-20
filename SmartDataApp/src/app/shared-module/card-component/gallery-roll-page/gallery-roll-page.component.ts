@@ -102,12 +102,13 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
   }
 
   autoVideoWindowSize() {
-    setTimeout(() => {
+    setTimeout(() => {      
       const size = domSize('video__view_wrap');
       if (this.playing && window.screen.width != size.width) {
         const vSize = domSize('item__' + this.currentPlayId); console.log(vSize);
 
-      
+      this.playViewSize.width = vSize.width;
+      this.playViewSize.height = vSize.height;
         this.p.reSizeView(this.playViewSize.width, this.playViewSize.height);
         moveView2('item__' + this.currentPlayId, 'video__view_wrap', 0, 0);
       }
@@ -115,6 +116,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
   }
 
   changeWindow() {
+    
     this.maxWindow = !this.maxWindow;
     this.galleryHeight = this.maxWindow ? '90%' : '86%';
     this.btnControl(this.maxWindow);

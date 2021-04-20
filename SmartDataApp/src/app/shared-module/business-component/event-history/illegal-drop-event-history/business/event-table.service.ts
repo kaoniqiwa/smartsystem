@@ -153,7 +153,7 @@ export class EventTableService extends ListAttribute {
         params.Protocol = 'ws-ps';
         params.StreamType = 1;
         params.CameraId = cameraId;
-        const response = await this.srService.VodUrls(params).toPromise();
+        const response = await this.srService.VodUrls(params);
         return response.Data;
     }
 

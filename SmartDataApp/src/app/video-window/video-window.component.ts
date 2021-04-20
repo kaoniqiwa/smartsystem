@@ -166,30 +166,12 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     changePlayMode(parm: PlayModeEnum, eleId: any) {
         this.playMode = parm;
         if (!this.player) { return; }
-        // const ele = document.getElementById('videoWindowView');
-        // switch (parm) {
-        //     case PlayModeEnum.live:
-        //         ele.style.width = '100%';
-        //         if (this.player) {
-        //             this.player.resize();
-        //         }
-        //         break;
-        //     case PlayModeEnum.vod:
-        //         ele.style.width = this.videoWidth;
-        //         if (this.player) {
-        //             // tslint:disable-next-line:radix
-        //             this.player.resize(parseInt(this.videoWidth) - 4);
-        //         }
-        //         break;
-        //     default:
-        //         break;
-        // }
         try {
             if (this.player) {
                 this.player.stop();
             }
         } catch (ex) {
-            console.warn(ex);
+            // console.warn(ex);
         }
         // this.playMode_ = parm;
         if (!eleId) {
@@ -329,11 +311,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         this.initDateTimePicker();
     }
 
-    getSrc(webUrl: string, url: string, cameraName?: string) {
-        console.log(webUrl);
-        const host = document.location.hostname;
-        const port = document.location.port;
-        webUrl = "http://"+host+":"+port+"/video/wsplayer/wsplayer.html"
+    getSrc(webUrl: string, url: string, cameraName?: string) {        
         let result = webUrl + '?url=' + base64encode(url);
         if (cameraName) {
             let name = utf16to8(cameraName);
@@ -343,8 +321,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     }
 
 
-    playVideo() {
-        debugger;
+    playVideo() {        
         const me = this;
         me.divId = 'div' + me.guid;
         me.screenId = 'screen' + me.guid;
