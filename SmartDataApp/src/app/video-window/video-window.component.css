@@ -304,3 +304,8 @@
     border:2px solid #3a93ff;
     box-shadow:#3a93ff 0px 0px 18px inset;
 }
+
+iframe{
+    border:none;
+    background-color: black;
+}

@@ -374,13 +374,13 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
 
         this.client.Events.OnMouseClick = async (position) => {
-
+            console.log("OnMouseClick");
         };
         this.client.Events.OnMouseDoubleClick = async (position) => {
-
+            console.log("OnMouseDoubleClick");
         };
         this.client.Events.OnElementsClicked = async (objs) => {
-
+            console.log("OnElementsClicked");
         };
 
         this.client.Events.OnElementsDoubleClicked = async (objs) => {
@@ -470,7 +470,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         };
 
 
-        this.client.Events.OnElementsClicked = function (objs) {
+        this.client.Events.OnElementsClicked = (objs) =>{
             const status = document.getElementsByClassName('map-bar status')[0];
             status['style'].display = '';
 
@@ -481,6 +481,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             prev['style'].display = 'none';
             const next = document.getElementsByClassName('carousel-control-next')[0];
             next['style'].display = 'none';
+            this.selectedGarbageStation = undefined;
         };
 
         this.client.Events.OnVillageClicked = async (village: CesiumDataController.Village) => {
@@ -580,11 +581,15 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
             this.amapService.videoPlayerService.playCameraName = camera.Name;
             this.amapService.videoPlayerService.playMode = PlayModeEnum.live;
-            this.amapService.videoPlayerService.playVideoVideoId = 'player';            
+            this.amapService.videoPlayerService.playVideoVideoId = 'player';
+            
             response.Data.Url = response.Data.Url.indexOf('password') > 0
                 ? response.Data.Url : response.Data.Url + this.user.videoUserPwd;
+
             this.amapService.videoPlayerService.url = response.Data.Url;
+            this.amapService.videoPlayerService.webUrl = response.Data.WebUrl;
             this.videoWindow.url = response.Data.Url;
+            this.videoWindow.WebUrl = response.Data.WebUrl;
             this.videoWindow.cameraName = camera.Name;
             this.videoWindow.playVideo();
         } catch (ex) {

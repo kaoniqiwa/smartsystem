@@ -7,7 +7,7 @@
   (OnVisibilityChanged)="OnPanelVisibilityChanged($event)" (OnItemClicked)="OnPanelItemClicked($event)"
   (OnItemDoubleClicked)="OnPanelItemDoubleClicked($event)" (OnItemHover)="OnPanelItemHover($event)"></app-map-list-panel>
 
-<app-point-info-panel class="map-bar info-panel" [GarbageStation]="selectedGarbageStation"></app-point-info-panel>
+<app-point-info-panel class="map-bar info-panel" *ngIf="selectedGarbageStation" [GarbageStation]="selectedGarbageStation"></app-point-info-panel>
 
 
 <div class="map-bar btn-list">
@@ -30,7 +30,7 @@
   </div>
 </div>
 
-<ul class="map-bar status">
+<ul class="map-bar status" *ngIf="!selectedGarbageStation">
   <li class="normal">
     <div></div>正常
   </li>
@@ -74,6 +74,7 @@
 <!-- <div class="amap-video playing"> -->
 <!-- style="height: 364px;width: 590px;z-index:4;display: none;" -->
 <app-video-window #videoWindow id="videoPlayer" (closeWindowEventListen)="OnVillageWindowClosed()"
+  [WebUrl]="amapService.videoPlayerService.webUrl"
   class="amap-video playing" (PlaybackClickedListen)="PlaybackClicked($event)"
   (VideoPlayingEventListen)="OnVideoPlaying($event)" [cameraName]="amapService.videoPlayerService.playCameraName"
   (changeModeEventListen)="changePlayMode($event)" (closeWindowOnloadEventListen)="isShowVideoView=false"
