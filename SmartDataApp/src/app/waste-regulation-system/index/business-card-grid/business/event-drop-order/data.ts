@@ -9,6 +9,7 @@ export class EventDropOrderInfo implements IBusinessData {
 }
 
 export class EventDropInfo{
+    id:string;
     division:string;
     dropNum:number;
     unit:string;

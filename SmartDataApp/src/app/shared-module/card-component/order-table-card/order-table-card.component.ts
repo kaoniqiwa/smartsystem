@@ -3,7 +3,8 @@ import { BasisCardComponent, ViewsModel } from '../../../common/abstract/base-vi
 import { OrderTable } from "./order-table";
 @Component({
   selector: 'app-order-table-card',
-  templateUrl: './order-table-card.component.html'
+  templateUrl: './order-table-card.component.html',
+  styles:['.link-text>h4:hover{ color:#6997ff}']
 })
 export class OrderTableCardComponent extends BasisCardComponent implements OnInit {
   @Input() model: OrderTable;
@@ -19,6 +20,11 @@ export class OrderTableCardComponent extends BasisCardComponent implements OnIni
 
   ngOnInit() {
     this.loadDatas(new ViewsModel());
+  }
+
+  itemClick(id:string){
+    if(id)
+    this.btnControl({ id:id,eventType:null});
   }
 
 }

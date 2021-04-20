@@ -163,6 +163,12 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
         this.tableService.search.stationId = this.businessManageService.station.Id;
       }, 500);
     }
+    else if (this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.TableLinkChild
+      &&this.fillMode) {
+      setTimeout(() => {
+        this.levelListPanel.defaultItem(this.fillMode.divisionId);      
+      }, 500);
+    }
   }
 
   goMoreHistroy() {

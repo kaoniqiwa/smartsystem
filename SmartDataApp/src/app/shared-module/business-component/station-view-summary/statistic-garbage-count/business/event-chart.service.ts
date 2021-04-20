@@ -23,6 +23,7 @@ export class EventChartService extends ListAttribute {
     divisionListView:DivisionListView;
     //garbageSelectOption: SelectOption;//厢房下拉
     //divisionSelectOption:SelectOption;//区划
+    stationDivision = '';
     garbageCountStatistic: Array<GarbageStationGarbageCountStatistic>;
     datePicker = {
         startView: 2,
@@ -55,14 +56,15 @@ export class EventChartService extends ListAttribute {
     //     this.illegalDropView = false;
     // }
     changeDivisionFn = (item:{id:string})=>{ 
-        if(item&&this.garbageStations.find(x=>x.Id==item.id)){
-            this.search.station = item.id; 
+        const station  =this.garbageStations.find(x=>x.Id==item.id);
+        if(item&&station){
+            this.search.station = item.id;          
+            this.stationDivision=this.getStationDivision(station);
             this.initStatistical();
             this.requestData();
             this.illegalDumpView = false;
             this.illegalDropView = false;
-        }
-       
+        } 
     }
 
     illegalDumpView = false;
@@ -127,6 +129,17 @@ export class EventChartService extends ListAttribute {
 
         this.initStatistical();
 
+    }
+
+    getStationDivision(station:GarbageStation){
+        var t1='',t2='';
+        const d1 = this.divisions.find(d=>d.Id ==station.DivisionId);
+        if(d1){
+            t2=d1.Name;
+            const d2 = this.divisions.find(d=>d.Id ==d1.ParentId);
+            if(d2) t1=d2.Name;
+        }
+        return t1+' '+t2;
     }
 
     clearView() {
