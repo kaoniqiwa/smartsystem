@@ -75,7 +75,8 @@ export class CameraTableService{
     }
 
     async requestData(pageIndex: number,callBack?:(page:Page)=>void) {
-        const response = await this.cameraService.postList(this.getRequsetParam(pageIndex, this.search)).toPromise();
+        const response = await this.cameraService.postList(this.getRequsetParam(pageIndex, this.search)).toPromise();console.log(response);
+        
         const data = new BusinessData();
         data.statioins=this.garbageStations; 
         data.resourceCameras=this.resourceCamera;
@@ -102,7 +103,8 @@ export class CameraTableService{
             param.Name =search.searchText   
         if(this.cameraStateTable == CameraStateTableEnum.online||this.cameraStateTable == CameraStateTableEnum.offline)
             param.OnlineStatus=this.cameraStateTable;
-        param.DivisionIds=[this.divisionsId]; 
+        param.DivisionIds=[this.divisionsId]; console.log(param);
+        
         return param;
     }
 }
