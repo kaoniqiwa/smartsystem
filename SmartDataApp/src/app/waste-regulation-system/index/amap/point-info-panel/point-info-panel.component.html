@@ -1,5 +1,34 @@
+<div class="map-bar marker-details" *ngIf="GarbageStation">
+  <div class="item">
+    <i class="howell-icon-garbage icon"></i>
+    <div class='content'>{{ GarbageStation.Name }}</div>
+  </div>
 
-<!-- [ngStyle]="{display:visibility?'':'none'}" -->
-<div class="panel" >
-       
-</div>
+  <div class="item">
+    <i class="howell-icon-neighborhood icon"></i>
+    <div class='content'>{{roadName}}&nbsp;&nbsp;&nbsp;&nbsp;{{committeeName}}</div>
+  </div>
+
+  
+  <div class="item" *ngIf="GarbageStation.Address">
+    <i class="howell-icon-map5 icon"></i>
+    <div class='content'>{{ GarbageStation.Address }}</div>
+  </div>
+
+  <div class="item" *ngFor="let member of GarbageStation.Members">
+    <div class="item-name">
+      <i class="howell-icon-man icon"></i>
+      <div class="item-name__info">
+        <div class="info-name">
+          {{ member.Name }}
+        </div>
+        <div class="info-dash"> - </div>
+        <div class="info-note">
+          {{ member.Note }}
+        </div>
+      </div>
+    </div>
+    <div class="item-phone">
+      <i class="howell-icon-phone icon"></i><span>{{ member.MobileNo }}</span>
+    </div>
+  </div>
