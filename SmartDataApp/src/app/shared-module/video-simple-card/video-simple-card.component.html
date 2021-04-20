@@ -14,7 +14,7 @@
                 <!-- <div id="{{divId}}" class="video-control selected fill-height fill-width player">
                 </div> -->
                 <ng-container *ngIf="srcUrl">
-                    <iframe #iframe id="iframe_wsplayer" [src]="srcUrl" (unload)="on_iframe_unload()" (load)="on_iframe_load()" class="video-control selected fill-height fill-width"></iframe>
+                    <iframe #iframe id="{{divId}}" [src]="srcUrl" (unload)="on_iframe_unload()" (load)="on_iframe_load()" class="video-control selected fill-height fill-width"></iframe>
                 </ng-container>  
             </div> 
             <ng-container *ngIf="videoImgs&&!playing">

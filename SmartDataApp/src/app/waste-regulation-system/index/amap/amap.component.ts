@@ -356,7 +356,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 }
             }, 2);
 
-            this.client.ContextMenu.AddItem('<i class="howell-icon-Subsystem" style="font-size: 18px"></i> 投放点巡检', async (id: string) => {
+            this.client.ContextMenu.AddItem('<i class="howell-icon-Subsystem" style="font-size: 18px"></i> 投放点信息', async (id: string) => {
                 debugger;
                 let station = this.garbages.find(x => x.Id === id);
                 if (!station) {

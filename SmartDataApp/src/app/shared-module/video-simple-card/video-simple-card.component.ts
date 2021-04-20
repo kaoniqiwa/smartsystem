@@ -4,29 +4,9 @@
  */
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { VideoSimpleMode } from './video-simple';
-import { domSize } from "../../common/tool/jquery-help/jquery-help";
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 
-declare var base64encode: (str: string) => string;
-declare var utf16to8: (str: string) => string;
-declare class WSPlayerProxy{
-    constructor(iframe:string|HTMLIFrameElement)
-    getPosition: (val: any) => void;
-    download(filename: string, type: string) :void;
-    resize(width: number, height: number) :void;
-    fullScreen() :void;
-    stop(): Promise<void>;
-    frame() :void;
-    resume() :void;
-    speedResume() :void;
-    pause() :void;
-    capturePicture() :void;
-    slow() :void;
-    fast() :void;
-    seek(value: number) :void;
-    onStoping: () => void;
-}
 
 @Component({
     selector: 'hw-video-simple-card',
@@ -97,20 +77,15 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
 
     }
     ngAfterViewInit(): void {
-
-
-
-
-        if (this.autostart)
+        if (this.autostart){
             this.play(this.WebUrl, this.url, this.cameraName);
-
+        }
     }
 
     playerRegistEvent() {
         if (this.player) {            
-            this.player.onStoping = () => {
-                console.log("stoping");
-                this.playing = false;
+            this.player.onButtonClicked = (btn:ButtonName) => {
+               
             }
         } else {
             setTimeout(() => {
@@ -206,9 +181,7 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
             setTimeout(() => {
                 if (this.player) {
                     this.player.getPosition = (val: any) => {
-                        if (val >= 1) {
-                            debugger;
-                            this.player.stop();
+                        if (val >= 1) {                            
                             this.playing = false;                            
                         }
                     }
@@ -252,7 +225,7 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
 
 
             if (!this.url || !this.WebUrl) {
-                debugger;
+                
                 return;
             }
             if (cameraName) {
@@ -277,12 +250,6 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
     }
 
     closeWindow(): void {
-        if (this.player)
-            setTimeout(() => {
-                debugger;
-                this.player.stop();
-            });
-
         if (this.playing && this.videoImgs) {
             this.playing = false;
             this.secondName = '';
