@@ -99,8 +99,10 @@ export class HWSPlayerOptions {
     name: string;
     width: number;
     height: number;
-    constructor(url: string, name: string) {
+    webUrl:string;
+    constructor( webUrl:string,url: string, name: string) {
         this.url = url;
         this.name = name;
+        this.webUrl=webUrl;
     }
 }
