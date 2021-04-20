@@ -28,6 +28,12 @@ export class SearchControl extends SearchHelper {
         });
     }
 
+    set chartType(val:ChartTypeEnum){
+        this.searchform.patchValue({
+            ChartType: val,
+        });
+    }
+    
     set divisionId(val: Array<string>) {
         this.searchform.patchValue({
             DivisionId: val.join(','),
@@ -79,7 +85,8 @@ export enum ClassTypeEnum{
 
 export enum ChartTypeEnum {
     Line = 'line',
-    Bar = 'bar'
+    Bar = 'bar',
+    _3dBar='_3dBar'
 }
 
 export class SearchParam {

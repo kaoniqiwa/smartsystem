@@ -26,6 +26,12 @@ export class SearchControl extends SearchHelper {
         });
     }
 
+    set chartType(val:ChartTypeEnum){
+        this.searchform.patchValue({
+            ChartType: val,
+        });
+    }
+
     set toStationsDropList(station: GarbageStation[]) {
         if (station) {
             this.stationsDropList = new Array();
@@ -98,7 +104,8 @@ export enum TimeUnitEnum {
 
 export enum ChartTypeEnum {
     Line = 'line',
-    Bar = 'bar'
+    Bar = 'bar',
+    _3dBar='_3dBar'
 }
 
 export class SearchParam {

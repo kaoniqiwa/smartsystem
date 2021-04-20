@@ -49,6 +49,7 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
       if (this.isDefaultSearch && this.divisionBusinessService.divisionsId) this.defaultSearch = this.divisionBusinessService.divisionsId;
     }, 1200);
     this.divisionDao.allDivisions().then(d=>this.businessService.divisions=d);
+    this.businessService.loadViewFn= ()=>{ this.search()};
   }
 
   changeView(tagIndex: number) {
@@ -92,18 +93,20 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
     this.timePicker.reInit(this.businessService.datePicker.startView
       , this.businessService.datePicker.minView
       , this.businessService.datePicker.formate, val.time, val.week);
-    this.search();
+      this.businessService.resetChartType();
+      this.search();
   }
 
   search() {
     const ids = new Array<string>();
     this.dropList.selectedTexts.map(x => ids.push(x.id));
-    if (ids.length <= 3 && ids.length > 0) {
+
+    if (ids.length <= this.businessService.maxObjects && ids.length > 0) {
       this.businessService.toDivisionIdsOrStationIds(ids);
       this.businessService.requestData(this.dropList.selectedTexts);
       this.businessService.requestTodayEventData(this.dropList.onlyDivisionNode,this.dropList.onlyCityNode);
     }
-    else if (ids.length > 3)
+    else if (ids.length > this.businessService.maxObjects)
       new MessageBar().response_warning('最大3个对象');
   }
   changeOtherView(val: OtherViewEnum) {
