@@ -62,7 +62,7 @@ export class SRServiceRequestSerivce extends SaveModel {
             }
             response.Data.Url = url;
         }
-        if (location.hostname == "127.0.0.1") {
+        if (location.hostname == "127.0.0.1" || location.hostname == "localhost") {
             const host = document.location.hostname;
             const port = document.location.port;
             response.Data.WebUrl = "http://" + host + ":" + port + "/video/wsplayer/wsplayer.html";
@@ -89,7 +89,7 @@ export class SRServiceRequestSerivce extends SaveModel {
             }
             response.Data.Url = url;
         }
-        if (location.hostname == "127.0.0.1") {
+        if (location.hostname == "127.0.0.1" || location.hostname == "localhost") {
             
             const host = document.location.hostname;
             const port = document.location.port;
