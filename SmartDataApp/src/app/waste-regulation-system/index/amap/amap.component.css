@@ -260,4 +260,5 @@ right: -79px;
      right: 10px;
      bottom: 10px;
      position: absolute;
+     z-index: 1;
   }

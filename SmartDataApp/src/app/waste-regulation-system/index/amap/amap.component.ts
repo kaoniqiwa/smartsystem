@@ -323,6 +323,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             this.LabelVisibility = false;
 
             this.client.ContextMenu.AddItem('<i class="howell-icon-nolittering" style="font-size: 18px"></i> 乱扔垃圾记录', async (id: string) => {
+                this.client.Events.OnElementsClicked(null);
                 if (this.ContextMenuIllegalDropClickedEvent) {
                     let station = this.garbages.find(x => x.Id === id);
                     if (!station) {
@@ -334,6 +335,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 }
             }, 0);
             this.client.ContextMenu.AddItem('<i class="howell-icon-mixlittering" style="font-size: 18px"></i> 混合投放记录', async (id: string) => {
+                this.client.Events.OnElementsClicked(null);
                 if (this.ContextMenuMixedIntoClickedEvent) {
                     let station = this.garbages.find(x => x.Id === id);
                     if (!station) {
@@ -345,6 +347,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 }
             }, 1);
             this.client.ContextMenu.AddItem('<i class="howell-icon-garbagebags" style="font-size: 18px"></i> 小包垃圾落地', async (id: string) => {
+                this.client.Events.OnElementsClicked(null);
                 if (this.ContextMenuGarbageCountClickedEvent) {
                     let station = this.garbages.find(x => x.Id === id);
                     if (!station) {
@@ -356,8 +359,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 }
             }, 2);
 
-            this.client.ContextMenu.AddItem('<i class="howell-icon-Subsystem" style="font-size: 18px"></i> 投放点巡检', async (id: string) => {
-                debugger;
+            this.client.ContextMenu.AddItem('<i class="howell-icon-Subsystem" style="font-size: 18px"></i> 投放点信息', async (id: string) => {
+                this.client.Events.OnElementsClicked(null);
                 let station = this.garbages.find(x => x.Id === id);
                 if (!station) {
                     const response = await this.garbageService.get(id).toPromise();
@@ -374,13 +377,13 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
 
         this.client.Events.OnMouseClick = async (position) => {
-
+            console.log("OnMouseClick");
         };
         this.client.Events.OnMouseDoubleClick = async (position) => {
-
+            console.log("OnMouseDoubleClick");
         };
         this.client.Events.OnElementsClicked = async (objs) => {
-
+            console.log("OnElementsClicked");
         };
 
         this.client.Events.OnElementsDoubleClicked = async (objs) => {
@@ -470,7 +473,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         };
 
 
-        this.client.Events.OnElementsClicked = function (objs) {
+        this.client.Events.OnElementsClicked = (objs) =>{
             const status = document.getElementsByClassName('map-bar status')[0];
             status['style'].display = '';
 
@@ -481,6 +484,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             prev['style'].display = 'none';
             const next = document.getElementsByClassName('carousel-control-next')[0];
             next['style'].display = 'none';
+            this.selectedGarbageStation = undefined;
         };
 
         this.client.Events.OnVillageClicked = async (village: CesiumDataController.Village) => {
@@ -576,15 +580,19 @@ export class AMapComponent implements AfterViewInit, OnInit {
             params.CameraId = camera.Id;
             params.Protocol = 'ws-ps';
             params.StreamType = this.videoWindow.stream;
-            const response = await this.srService.PreviewUrls(params).toPromise();
+            const response = await this.srService.PreviewUrls(params);
 
             this.amapService.videoPlayerService.playCameraName = camera.Name;
             this.amapService.videoPlayerService.playMode = PlayModeEnum.live;
-            this.amapService.videoPlayerService.playVideoVideoId = 'player';            
+            this.amapService.videoPlayerService.playVideoVideoId = 'player';
+            
             response.Data.Url = response.Data.Url.indexOf('password') > 0
                 ? response.Data.Url : response.Data.Url + this.user.videoUserPwd;
+
             this.amapService.videoPlayerService.url = response.Data.Url;
+            this.amapService.videoPlayerService.webUrl = response.Data.WebUrl;
             this.videoWindow.url = response.Data.Url;
+            this.videoWindow.WebUrl = response.Data.WebUrl;
             this.videoWindow.cameraName = camera.Name;
             this.videoWindow.playVideo();
         } catch (ex) {
@@ -631,7 +639,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 params.CameraId = this.currentCamera.Id;
                 params.Protocol = 'ws-ps';
                 params.StreamType = 1;
-                const response = await this.srService.PreviewUrls(params).toPromise();
+                const response = await this.srService.PreviewUrls(params);
                 response.Data.Url = response.Data.Url.indexOf('password') > 0
                     ? response.Data.Url : response.Data.Url + this.user.videoUserPwd;
                 this.videoWindow.url = response.Data.Url;
@@ -652,7 +660,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             params.Protocol = 'ws-ps';
             params.StreamType = 1;
             params.CameraId = this.currentCamera.Id;
-            const response = await this.srService.VodUrls(params).toPromise();
+            const response = await this.srService.VodUrls(params);
             response.Data.Url = response.Data.Url.indexOf('password') > 0
                 ? response.Data.Url : response.Data.Url + this.user.videoUserPwd;
             this.videoWindow.url = response.Data.Url;

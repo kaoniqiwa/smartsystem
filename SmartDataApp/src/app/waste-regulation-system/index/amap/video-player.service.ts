@@ -9,9 +9,11 @@ export class VideoPlayerService {
 
     videoPlayArgs?: VideoPlayArgs;
     url = '';
+    webUrl = '';
     playMode = PlayModeEnum.live;
     playVideoVideoId = '';
     playCameraName = '';
+
     constructor() {
         this.playCameraName = '视频';
     }

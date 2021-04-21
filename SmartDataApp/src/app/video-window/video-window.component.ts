@@ -7,6 +7,7 @@ import { UserDalService } from '../dal/user/user-dal.service';
 import { promise } from 'protractor';
 import { GarbageStations } from '../data-core/url/waste-regulation/garbage-station';
 import { ThrowStmt } from '@angular/compiler';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 declare var $: any;
 export const ConfigType = {
@@ -55,6 +56,9 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         }
     }
 
+    @Input()
+    WebUrl:string;
+
     hdVideo = false;
 
 
@@ -86,9 +90,16 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         saveDB(this.userId);
     }
 
-
-
-    player: WSPlayer;
+    private srcUrl: SafeResourceUrl;
+    
+    private _player:WSPlayerProxy
+    get player(): WSPlayerProxy{
+        if(!this._player)
+        {
+            this._player = new WSPlayerProxy(this.divId);
+        }
+        return this._player;
+    }
     isChangeMode = true;
     guid: string = Guid.NewGuid().ToString('N');
 
@@ -133,7 +144,10 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     }
 
 
-    constructor(private datePipe: DatePipe, private userDalService: UserDalService) {
+    constructor(
+        private sanitizer: DomSanitizer,
+        private datePipe: DatePipe, 
+        private userDalService: UserDalService) {
         if (this.hasControl) {
             if (this.viewModel_ == null) {
                 this.viewModel_ = new ViewModel();
@@ -152,30 +166,12 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     changePlayMode(parm: PlayModeEnum, eleId: any) {
         this.playMode = parm;
         if (!this.player) { return; }
-        // const ele = document.getElementById('videoWindowView');
-        // switch (parm) {
-        //     case PlayModeEnum.live:
-        //         ele.style.width = '100%';
-        //         if (this.player) {
-        //             this.player.resize();
-        //         }
-        //         break;
-        //     case PlayModeEnum.vod:
-        //         ele.style.width = this.videoWidth;
-        //         if (this.player) {
-        //             // tslint:disable-next-line:radix
-        //             this.player.resize(parseInt(this.videoWidth) - 4);
-        //         }
-        //         break;
-        //     default:
-        //         break;
-        // }
         try {
             if (this.player) {
                 this.player.stop();
             }
         } catch (ex) {
-            console.warn(ex);
+            // console.warn(ex);
         }
         // this.playMode_ = parm;
         if (!eleId) {
@@ -315,8 +311,17 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         this.initDateTimePicker();
     }
 
+    getSrc(webUrl: string, url: string, cameraName?: string) {        
+        let result = webUrl + '?url=' + base64encode(url);
+        if (cameraName) {
+            let name = utf16to8(cameraName);
+            result += "&name=" + base64encode(name);
+        }
+        return result;
+    }
 
-    playVideo() {
+
+    playVideo() {        
         const me = this;
         me.divId = 'div' + me.guid;
         me.screenId = 'screen' + me.guid;
@@ -329,56 +334,15 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         if (!this.url) {
             return;
         }
-
-
-        if (this.player) {
-            if (this.player.status === 255) {
-                this.player.url = this.url;
-                this.player.name = this.cameraName;
-                this.player.play();
-                this.VideoPlayingEventListen.emit(true);
-            } else {
-                try {
-                    this.player.stop().then(() => {
-                        this.player.url = this.url;
-                        this.player.name = this.cameraName;
-                        this.player.play();
-                        this.VideoPlayingEventListen.emit(true);
-                    });
-                } catch (ex) {
-                    if (this.delayPlayHandle) {
-                        clearTimeout(this.delayPlayHandle);
-                        this.delayPlayHandle = null;
-                    }
-                    this.delayPlayHandle = setTimeout(() => {
-                        if (this.delayPlayHandle) {
-                            clearTimeout(this.delayPlayHandle);
-                            this.delayPlayHandle = null;
-                        }
-                        this.player.url = this.url;
-                        this.player.name = this.cameraName;
-                        this.player.play();
-                        this.VideoPlayingEventListen.emit(true);
-                    }, 1000);
-                }
-            }
-
-        } else {
-            this.player = new WSPlayer({
-                elementId: this.divId,
-                url: me.url
-            });
-            this.player.name = this.cameraName;
-            this.player.play();
-            this.VideoPlayingEventListen.emit(true);
-        }
+setTimeout(()=>{
+    this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc(this.WebUrl, this.url, this.cameraName));
+        this.VideoPlayingEventListen.emit(true);
+}, 10);
+        
 
     }
 
-    closeWindow(): void {
-        if (this.player) {
-            this.player.stop();
-        }
+    closeWindow(): void {        
         const sc = document.getElementById(this.guid);
         if (sc) { sc.parentElement.removeChild(sc); }
         if (this.closeWindowEventListen) {

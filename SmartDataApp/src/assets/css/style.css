@@ -11050,6 +11050,10 @@ html body .p-l-30 {
 .overflow_hidden{
     overflow: hidden;
 }
+iframe.video-control{
+    background-color: black;
+    border:none;    
+}
 .video-control .mask {
     top: 0px;
     width: 100%;

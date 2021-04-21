@@ -1,15 +1,12 @@
 /**
  * Developer 施文斌
- * LastUpdateTime  20/10/21
+ * LastUpdateTime  2021/4/19
  */
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { VideoSimpleMode } from './video-simple';
-import { domSize } from "../../common/tool/jquery-help/jquery-help";
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 
-declare var base64encode: (str: string) => string;
-declare var utf16to8:(str:string) => string;
 
 @Component({
     selector: 'hw-video-simple-card',
@@ -18,7 +15,7 @@ declare var utf16to8:(str:string) => string;
     providers: []
 })
 export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewInit {
-    @ViewChild('iframe') iframe: ElementRef;
+    @ViewChild('iframe') iframe: ElementRef<HTMLIFrameElement>;
 
     if(cameraName) {
         this.secondName = cameraName;
@@ -35,18 +32,29 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
     @Input() autostart: boolean
     @Input() closeFn: () => void;
     @Input() videoImgs: { id: string, imgSrc: string, name: string, time: Date | string }[];
-    @Input() playVideoToUrlFn: (id: string, time: Date | string, cb: (webUrl:string, url: string) => void) => void;
+    @Input() playVideoToUrlFn: (id: string, time: Date | string, cb: (webUrl: string, url: string) => void) => void;
     @Input() bottomTool: { left: { label: string, color: string }[], right: { label: string, color: string }[] };
 
-    private srcUrl: SafeResourceUrl
+    private _srcUrl: SafeResourceUrl;
+    private get srcUrl(): SafeResourceUrl {
+        return this._srcUrl;
+    }
+    private set srcUrl(val: SafeResourceUrl) {
+        this._srcUrl = val;
+    }
 
     @Input()
     WebUrl: string;
 
-    private get player(): WSPlayer | undefined {
-        if (!this.iframe.nativeElement&&!this.iframe.nativeElement.src)
+    private _player:WSPlayerProxy;
+    private get player(): WSPlayerProxy {
+        if (!this.iframe || !this.iframe.nativeElement.src)
             return;
-        return this.iframe.nativeElement.player;
+        if(!this._player)
+        {
+            this._player = new WSPlayerProxy(this.iframe.nativeElement);
+        }
+        return this._player;
 
     };
     private secondName = '';
@@ -69,11 +77,33 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
 
     }
     ngAfterViewInit(): void {
-
-        if (this.autostart)
+        if (this.autostart){
             this.play(this.WebUrl, this.url, this.cameraName);
-
+        }
     }
+
+    playerRegistEvent() {
+        if (this.player) {            
+            this.player.onButtonClicked = (btn:ButtonName) => {
+               
+            }
+        } else {
+            setTimeout(() => {
+                this.playerRegistEvent();
+            }, 100)
+        }
+    }
+
+
+    on_iframe_unload(){
+        console.log("iframe onunload");
+    }
+
+    on_iframe_load() {
+        console.log("iframe load");
+        // this.playerRegistEvent();
+    }
+
 
     formatDate(date: Date) {
         let v: number | string;
@@ -151,9 +181,8 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
             setTimeout(() => {
                 if (this.player) {
                     this.player.getPosition = (val: any) => {
-                        if (val >= 1) {
-                            this.player.stop();
-                            this.playing = false;
+                        if (val >= 1) {                            
+                            this.playing = false;                            
                         }
                     }
                 }
@@ -174,9 +203,7 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
 
 
 
-    getSrc(webUrl:string, url: string, cameraName?: string) {
-        const host = document.location.hostname;
-        const port = document.location.port;
+    getSrc(webUrl: string, url: string, cameraName?: string) {        
         let result = webUrl + '?url=' + base64encode(url);
         if (cameraName) {
             let name = utf16to8(cameraName);
@@ -186,31 +213,32 @@ export class VideoSimpleCardComponent implements OnInit, OnDestroy, AfterViewIni
     }
 
 
-    play(webUrl:string, url: string, cameraName?: string) {
- 
-setTimeout(() => {
-    this.WebUrl = webUrl;
-    this.url = url;
+    play(webUrl: string, url: string, cameraName?: string) {
+
+        setTimeout(() => {
+            this.WebUrl = webUrl;
+            this.url = url;
 
 
-    if (!this.url || !this.WebUrl) {
-        return;
-    }
-    if (cameraName) {
-        this.secondName = cameraName;    
-    }
- console.log(this.getSrc(this.WebUrl, this.url, cameraName));
- 
-    this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc(this.WebUrl, this.url, cameraName));
-    this.VideoPlayingEventListen.emit(true);
-},500);
+            if (!this.url || !this.WebUrl) {
+                
+                return;
+            }
+            if (cameraName) {
+                this.secondName = cameraName;
+            }
+            console.log(this.getSrc(this.WebUrl, this.url, cameraName));
+
+            this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc(this.WebUrl, this.url, cameraName));
+            this.VideoPlayingEventListen.emit(true);
+        }, 100);
 
 
 
 
         setTimeout(() => {
             this.playing = true;
-        },510);
+        }, 110);
 
         // const size = domSize(this.divId);
         // this.player.clientWidth = size.width;
@@ -218,18 +246,13 @@ setTimeout(() => {
     }
 
     closeWindow(): void {
-        if (this.player)
-            setTimeout(() => {
-                this.player.stop();
-            });
-
         if (this.playing && this.videoImgs) {
             this.playing = false;
             this.secondName = '';
         }
         else {
-             const sc = document.getElementById(this.divId);
-             if (sc) { sc.parentElement.removeChild(sc); }
+            const sc = document.getElementById(this.divId);
+            if (sc) { sc.parentElement.removeChild(sc); }
             if (this.closeFn) this.closeFn();
         }
     }
@@ -237,14 +260,14 @@ setTimeout(() => {
     /**9宫格空白填补 */
     fillBlank(n: number) {
         const arr = new Array();
-        if (n < 4)        
+        if (n < 4)
             for (let i = 0; i < 4 - n; i++)
                 arr.push(1);
         return arr;
     }
 
     ngOnDestroy() {
-        
+
         const sc = document.getElementById(this.divId);
         if (sc && sc.parentElement) {
             sc.parentElement.removeChild(sc);

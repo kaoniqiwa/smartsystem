@@ -95,10 +95,16 @@ export class VideoPlayArgs {
         const uri = new HowellUri(url);
         const args = new VideoPlayArgs({
             host: uri.Host,
-            port: uri.Port,
-            username: uri.Querys['user'],
-            password: uri.Querys['password']
+            port: uri.Port
         });
+        if (uri.Querys) {
+            if (uri.Querys['user']) {
+                args.username = uri.Querys['user'];
+            }
+            if (uri.Querys['password']) {
+                args.password = uri.Querys['password'];
+            }
+        }
         const startIndex = url.indexOf('howellps');
         const modeIndex = url.indexOf('/', startIndex);
         const deviceIdIndex = url.indexOf('/', modeIndex + 1);

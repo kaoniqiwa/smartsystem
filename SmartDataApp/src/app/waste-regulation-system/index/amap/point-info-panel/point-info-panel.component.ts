@@ -1,36 +1,62 @@
-import { Component, Input, OnInit} from '@angular/core';
-import { GarbageStation } from 'src/app/data-core/model/waste-regulation/garbage-station';
-
+import { Component, Input, OnInit } from "@angular/core";
+import { _getOptionScrollPosition } from "@angular/material";
+import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
+import { DivisionRequestService } from "src/app/data-core/repuest/division.service";
 
 @Component({
-    selector: 'app-point-info-panel',
-    templateUrl: './point-info-panel.component.html',
-    styleUrls: ['./point-info-panel.component.css'],
-
+  selector: "app-point-info-panel",
+  templateUrl: "./point-info-panel.component.html",
+  styleUrls: ["./point-info-panel.component.css"],
 })
 export class PointInfoPanelComponent implements OnInit {
+  visibility: boolean;
 
-    visibility: boolean;
+  private committeeName: string = ""; // 居委会名称
+  private roadName: string = ""; // 街道名称
 
-    @Input()
-    GarbageStation: GarbageStation;
+  _GarbageStation: GarbageStation;
+  @Input()
+  set GarbageStation(val) {
+    this._GarbageStation = val;
 
+    this.divisionService
+      .get(this._GarbageStation.DivisionId)
+      .toPromise()
+      .then((res) => {
+        console.log("居委会", res);
+        this.committeeName = res.Data.Name;
+        this.divisionService
+          .get(res.Data.ParentId)
+          .toPromise()
+          .then((res) => {
+            console.log("街道", res);
+            this.roadName = res.Data.Name
+          });
+      });
+  }
+  get GarbageStation() {
+    return this._GarbageStation;
+  }
 
-    @Input()
-    VisibilityChange = (val: boolean) => {
-        this.visibility = val;
-    }
+  @Input()
+  VisibilityChange = (val: boolean) => {
+    this.visibility = val;
+  };
 
+  constructor(private divisionService: DivisionRequestService) {
+    // this.GarbageStation.Members
+  }
 
-    constructor(
-
-    ) {
-        // this.GarbageStation.Members
-    }
-
-    ngOnInit() {
-
-    }
-
+  ngOnInit() {}
+  private _division = 0;
+  get division() {
+    // this.divisionService.get(this.GarbageStation.DivisionId).toPromise().then(res=>{
+    //     console.log(res)
+    // })
+    console.log(++this._division);
+    return this._division;
+  }
+  set division(val) {
+    this._division = val;
+  }
 }
-

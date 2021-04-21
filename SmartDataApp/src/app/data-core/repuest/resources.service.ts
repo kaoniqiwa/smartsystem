@@ -18,6 +18,8 @@ import { HowellAuthHttpService } from './howell-auth-http.service';
 import { SRService } from '../url/aiop/sr-server';
 import { SRService as  StationSRService} from "../url/waste-regulation/sr-server";
 import { GetPreviewUrlParams, GetVodUrlParams, VideoUrl } from '../model/aiop/video-url';
+import { SessionUser } from 'src/app/common/tool/session-user';
+import { VideoPlayArgs } from 'src/app/video/mode';
 @Injectable({
     providedIn: 'root'
 })
@@ -234,16 +236,64 @@ export class ResourceMediumRequestService {
 })
 export class ResourceSRServersRequestService {
     url: SRService;
+    user = new SessionUser();
     constructor(private requestService: HowellAuthHttpService) {
         this.url = new SRService();
     }
 
-    PreviewUrls(params: GetPreviewUrlParams) {
-        return this.requestService.post<VideoUrl>(this.url.preview(), params);
+    async PreviewUrls(params: GetPreviewUrlParams) {
+        const response = await this.requestService.post<GetPreviewUrlParams, Response<VideoUrl>>(this.url.preview(), params).toPromise();
+        if (response.Data.Url) {
+            let args = VideoPlayArgs.FromUrl(response.Data.Url);
+            if (response.Data.Username) {
+                args.username = response.Data.Username;
+            }
+            if (response.Data.Password) {
+                args.password = response.Data.Password;
+            }
+            let url = "";
+            if (!(args.username && args.password)) {
+                url = args.toString(this.user.videoUserPwd);
+            }
+            else {
+                url = args.toString();
+            }
+            response.Data.Url = url;
+        }
+        if (location.hostname == "127.0.0.1") {
+            const host = document.location.hostname;
+            const port = document.location.port;
+            response.Data.WebUrl = "http://" + host + ":" + port + "/video/wsplayer/wsplayer.html";
+        }
+        return response;
     }
 
-    VodUrls(params: GetVodUrlParams) {
-        return this.requestService.post<VideoUrl>(this.url.vod(), params);
+    async VodUrls(params: GetVodUrlParams) {        
+        const response = await this.requestService.post<GetVodUrlParams, Response<VideoUrl>>(this.url.vod(), params).toPromise();
+        if (response.Data.Url) {
+            let args = VideoPlayArgs.FromUrl(response.Data.Url);
+            if (response.Data.Username) {
+                args.username = response.Data.Username;
+            }
+            if (response.Data.Password) {
+                args.password = response.Data.Password;
+            }
+            let url = "";
+            if (!(args.username && args.password)) {
+                url = args.toString(this.user.videoUserPwd);
+            }
+            else {
+                url = args.toString();
+            }
+            response.Data.Url = url;
+        }
+        if (location.hostname == "127.0.0.1") {
+            
+            const host = document.location.hostname;
+            const port = document.location.port;
+            response.Data.WebUrl = "http://" + host + ":" + port + "/video/wsplayer/wsplayer.html";
+        }
+        return response;
     }
 
 }
@@ -254,16 +304,66 @@ export class ResourceSRServersRequestService {
 })
 export class StationResourceSRServersRequestService {
     url: StationSRService;
+    user = new SessionUser();
     constructor(private requestService: HowellAuthHttpService) {
         this.url = new StationSRService();
     }
 
-    PreviewUrls(params: GetPreviewUrlParams) {
-        return this.requestService.post<VideoUrl>(this.url.preview(), params);
+    async PreviewUrls(params: GetPreviewUrlParams) {
+        // return this.requestService.post<VideoUrl>(this.url.preview(), params);
+        const response = await this.requestService.post<GetPreviewUrlParams, Response<VideoUrl>>(this.url.preview(), params).toPromise();
+        if (response.Data.Url) {
+            let args = VideoPlayArgs.FromUrl(response.Data.Url);
+            if (response.Data.Username) {
+                args.username = response.Data.Username;
+            }
+            if (response.Data.Password) {
+                args.password = response.Data.Password;
+            }
+            let url = "";
+            if (!(args.username && args.password)) {
+                url = args.toString(this.user.videoUserPwd);
+            }
+            else {
+                url = args.toString();
+            }
+            response.Data.Url = url;
+        }
+        if (location.hostname == "127.0.0.1") {
+            const host = document.location.hostname;
+            const port = document.location.port;
+            response.Data.WebUrl = "http://" + host + ":" + port + "/video/wsplayer/wsplayer.html";
+        }
+        return response;
     }
 
-    VodUrls(params: GetVodUrlParams) {
-        return this.requestService.post<VideoUrl>(this.url.vod(), params);
+    async VodUrls(params: GetVodUrlParams) {
+        // return this.requestService.post<VideoUrl>(this.url.vod(), params);
+        const response = await this.requestService.post<GetVodUrlParams, Response<VideoUrl>>(this.url.vod(), params).toPromise();
+        if (response.Data.Url) {
+            let args = VideoPlayArgs.FromUrl(response.Data.Url);
+            if (response.Data.Username) {
+                args.username = response.Data.Username;
+            }
+            if (response.Data.Password) {
+                args.password = response.Data.Password;
+            }
+            let url = "";
+            if (!(args.username && args.password)) {
+                url = args.toString(this.user.videoUserPwd);
+            }
+            else {
+                url = args.toString();
+            }
+            response.Data.Url = url;
+        }
+        if (location.hostname == "127.0.0.1") {
+            
+            const host = document.location.hostname;
+            const port = document.location.port;
+            response.Data.WebUrl = "http://" + host + ":" + port + "/video/wsplayer/wsplayer.html";
+        }
+        return response;
     }
 
 }

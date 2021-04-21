@@ -25,13 +25,13 @@ export class HWVideoService {
         param.StreamType  = config ? parseInt(config):1; 
         param.Protocol = 'ws-ps'; 
         if(param instanceof GetPreviewUrlParams){         
-            const response= await this.srService.PreviewUrls(param).toPromise();
+            const response= await this.srService.PreviewUrls(param);
             result = response.Data;
         }
         else{
             param.BeginTime = DateInterval(param.BeginTime+'',user.video.beforeInterval)
             param.EndTime= DateInterval(param.EndTime+'',user.video.afterInterval)
-            const response= await this.srService.VodUrls(param).toPromise();
+            const response= await this.srService.VodUrls(param);
             result = response.Data;
         } 
         result.Url = result.Url.indexOf('password') > 0
@@ -52,7 +52,7 @@ export class HWVideoService {
         param.Protocol = 'ws-ps'; 
         param.BeginTime =param.BeginTime;
         param.EndTime= param.EndTime;
-        const response= await this.srService.VodUrls(param).toPromise();
+        const response= await this.srService.VodUrls(param);
         result = response.Data;
        
         result.Url = result.Url.indexOf('password') > 0

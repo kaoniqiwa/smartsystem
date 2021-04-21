@@ -49,6 +49,43 @@ export class GarbageStation {
     Grade: number;//评级
     CountSchedule: TimeRange[];//	计数时间段
 
+    /**
+     *	地址	O
+     *
+     * @type {string}
+     * @memberof GarbageStation
+     */
+    Address?:string;
+/**
+ *	垃圾投放点类型	O
+ *
+ * @type {number}
+ * @memberof GarbageStation
+ */
+DumpPointType?:number;
+/**
+ *	停用的事件号列表	O
+ *
+ * @type {number[]}
+ * @memberof GarbageStation
+ */
+DisableEventTypes?:number[];
+/**
+ *	所属网格单元ID	O
+ *
+ * @type {string}
+ * @memberof GarbageStation
+ */
+GridCellId?:string;
+/**
+ *	垃圾相关参数	O
+ *
+ * @type {GarbageParameters}
+ * @memberof GarbageStation
+ */
+GarbageParameters?:GarbageParameters;
+
+
     Members	:Member[];//人员
 }
 export class Member {

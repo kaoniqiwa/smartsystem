@@ -21,8 +21,12 @@
       <div id="videoWindowView" data-time="0" data-full="0"
         style="height:calc(100% - 10px);width: calc(100% - 190px);float: left;border: 2px solid #3283E5;">
         <div style="background-color: black;width: 100%;height:calc(100%) ;">
-          <div id="{{divId}}" *ngIf="divId" class="video-control selected fill-height fill-width player">
-          </div>
+          <!-- <div id="{{divId}}" *ngIf="divId" class="video-control selected fill-height fill-width player">
+          </div> -->
+          <ng-container *ngIf="srcUrl">
+          <iframe id="{{divId}}" [src]="srcUrl" *ngIf="divId" class="video-control selected fill-height fill-width">
+          </iframe>
+          </ng-container>
         </div>
         <!-- <div [style.height]="playMode_.live==playMode?'calc(100% - 30px)':'calc(100% - 68px)'"
                 style="background-color: white;width: 100%;">
@@ -232,8 +236,12 @@
     </div>
     <div id="{{screenId}}" style="background-color:black;height:calc(100% - 30px)" *ngIf="!hasControl">
       <div class="fill-height fill-width">
-        <div id="{{divId}}" class="video-control selected fill-height fill-width">
-        </div>
+        <!-- <div id="{{divId}}" class="video-control selected fill-height fill-width">
+        </div> -->
+        <ng-container *ngIf="srcUrl">
+        <iframe id="{{divId}}" [src]="srcUrl" class="video-control selected fill-height fill-width">
+        </iframe>
+        </ng-container>
       </div>
     </div>
     <!-- </div> -->
