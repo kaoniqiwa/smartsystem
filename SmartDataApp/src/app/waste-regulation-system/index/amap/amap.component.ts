@@ -119,6 +119,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     selectedCameras: Camera[];
     garbages: GarbageStation[];
     private selectedVillageId?: string;
+    showVideoWindow = false;
     selectedGarbageStation?: GarbageStation;
 
     get Resource() {
@@ -557,54 +558,57 @@ export class AMapComponent implements AfterViewInit, OnInit {
         if (this.autoCloseWindowHandle) {
             clearTimeout(this.autoCloseWindowHandle);
         }
-        this.videoWindow.changePlayMode(PlayModeEnum.live, true);
-        const element = document.getElementById('videoPlayer');
-        element.style.display = 'none';
+        this.videoWindow.changePlayMode(PlayModeEnum.live, true);        
+        this.showVideoWindow = false;
 
     }
 
     async OnCameraClicked(camera: Camera) {
         if (!camera) { return; }
-        try {
 
-            this.videoWindow.changePlayMode(PlayModeEnum.live, true);
+        this.showVideoWindow = true;
 
-            this.currentCamera = camera;
-            this.maskLayerShow = true;
-            this.isShowVideoView = true;
-            const element = document.getElementById('videoPlayer');
-            element.style.display = '';
+        setTimeout(async ()=>{
+            try {
 
-            console.log(camera);
-            const params = new GetPreviewUrlParams();
-            params.CameraId = camera.Id;
-            params.Protocol = 'ws-ps';
-            params.StreamType = this.videoWindow.stream;
-            const response = await this.srService.PreviewUrls(params);
-
-            this.amapService.videoPlayerService.playCameraName = camera.Name;
-            this.amapService.videoPlayerService.playMode = PlayModeEnum.live;
-            this.amapService.videoPlayerService.playVideoVideoId = 'player';
-            
-            response.Data.Url = response.Data.Url.indexOf('password') > 0
-                ? response.Data.Url : response.Data.Url + this.user.videoUserPwd;
-
-            this.amapService.videoPlayerService.url = response.Data.Url;
-            this.amapService.videoPlayerService.webUrl = response.Data.WebUrl;
-            this.videoWindow.url = response.Data.Url;
-            this.videoWindow.WebUrl = response.Data.WebUrl;
-            this.videoWindow.cameraName = camera.Name;
-            this.videoWindow.playVideo();
-        } catch (ex) {
-            console.error(ex);
-        }
+                this.videoWindow.changePlayMode(PlayModeEnum.live, true);
+    
+                this.currentCamera = camera;
+                this.maskLayerShow = true;
+                this.isShowVideoView = true;
+                
+    
+                console.log(camera);
+                const params = new GetPreviewUrlParams();
+                params.CameraId = camera.Id;
+                params.Protocol = 'ws-ps';
+                params.StreamType = this.videoWindow.stream;
+                const response = await this.srService.PreviewUrls(params);
+    
+                this.amapService.videoPlayerService.playCameraName = camera.Name;
+                this.amapService.videoPlayerService.playMode = PlayModeEnum.live;
+                this.amapService.videoPlayerService.playVideoVideoId = 'player';
+                
+                response.Data.Url = response.Data.Url.indexOf('password') > 0
+                    ? response.Data.Url : response.Data.Url + this.user.videoUserPwd;
+    
+                this.amapService.videoPlayerService.url = response.Data.Url;
+                this.amapService.videoPlayerService.webUrl = response.Data.WebUrl;
+                this.videoWindow.url = response.Data.Url;
+                this.videoWindow.WebUrl = response.Data.WebUrl;
+                this.videoWindow.cameraName = camera.Name;
+                this.videoWindow.playVideo();
+            } catch (ex) {
+                console.error(ex);
+            }
+        }, 10)
+        
     }
 
     Playback(camera: Camera, begin: Date, end: Date) {
         if (!camera) { return; }
-        this.videoWindow.changePlayMode(PlayModeEnum.vod, false);
-        const element = document.getElementById('videoPlayer');
-        element.style.display = '';
+        this.videoWindow.changePlayMode(PlayModeEnum.vod, false);        
+        this.showVideoWindow = true;
         this.currentCamera = camera;
         this.videoWindow.date = begin.format('yyyy-MM-dd');
         this.videoWindow.setBeginTime(begin);
