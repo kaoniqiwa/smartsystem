@@ -13,7 +13,7 @@
             <div class="fill-height fill-width collapse"  [class.in]="playing"  style="background-color: black;">
                 <!-- <div id="{{divId}}" class="video-control selected fill-height fill-width player">
                 </div> -->
-                <ng-container *ngIf="srcUrl">
+                <ng-container *ngIf="srcUrl&&playing">
                     <iframe #iframe id="{{divId}}" [src]="srcUrl" (unload)="on_iframe_unload()" (load)="on_iframe_load()" class="video-control selected fill-height fill-width"></iframe>
                 </ng-container>  
             </div> 

@@ -210,8 +210,7 @@ right: -79px;
 
 
   
-.amap-video.playing{
-  background-color: black;
+.amap-video.playing{  
   text-align: center; /*让div内部文字居中*/			
 	margin: auto;
   position: absolute;

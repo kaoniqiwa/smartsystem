@@ -111,8 +111,14 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
 
     date: string;
 
-
-    divId = '';
+    private _devId = '';
+    get divId(){
+        return this._devId;
+    }
+    set divId(val:string){
+        this._devId = val;
+        this._player = new WSPlayerProxy(this._devId);
+    }
 
     screenId = '';
 
@@ -296,12 +302,12 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
                 // });
 
             });
-            setTimeout(() => {
-                if (me.playMode === me.playMode_.live) {
-                    me.playVideo();
-                }
+            // setTimeout(() => {
+            //     if (me.playMode === me.playMode_.live) {
+            //         me.playVideo();
+            //     }
 
-            }, 1200);
+            // }, 1200);
         } else {
             me.playVideo();
         }

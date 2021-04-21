@@ -2,8 +2,8 @@
  * Developer 施文斌
  * LastUpdateTime  
  */
-import { BaseUrl, IUrl } from "./IUrl";
-export class User  extends BaseUrl  {
+import { GarbageBaseUrl, IUrl } from "./IUrl";
+export class User  extends GarbageBaseUrl  {
     list() {
         return this.user+`Users`;
     }
@@ -28,7 +28,7 @@ export class User  extends BaseUrl  {
     }
 }
 
-export class Roles extends BaseUrl{
+export class Roles extends GarbageBaseUrl{
     list() {
         return this.user+`Roles`;
     }

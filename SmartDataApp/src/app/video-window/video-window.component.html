@@ -1,3 +1,4 @@
+<div class="mask">
 <div class="alert-window text-no-select">
   <div class="alert-window-bg p-10">
     <!-- <div *ngIf="isChangeMode"> -->
@@ -28,38 +29,6 @@
           </iframe>
           </ng-container>
         </div>
-        <!-- <div [style.height]="playMode_.live==playMode?'calc(100% - 30px)':'calc(100% - 68px)'"
-                style="background-color: white;width: 100%;">
-                <div id="{{divId}}" class="video-control selected fill-height fill-width">
-                </div>
-              </div> -->
-        <!-- <div [class.hide]="playMode_.playback!=playMode" class="fill-width m-t-10" style="height: 26px">
-                <div class="play-back-line" style="position: relative;">
-                  <label class="playback-beg" for="">00:00</label>
-                  <input type="range" value="0">
-                  <label class="playback-end" for="">00:00</label>
-                </div>
-      
-              </div> -->
-        <!-- <div style="position: relative">
-          <div style="width:200px;position: absolute;left: 10px;" [style.top]="playMode_.live==playMode?'4px':'0'">
-                  <i class="mdi mdi-bullhorn  pull-left"></i>
-                  <div class="pull-left m-t-10 m-l-10" class="video-sound">
-                    <input type="range" value="0" name="" id="">
-                  </div>
-                </div>
-                <div style="position: absolute;width: 200px;left: 40%;" *ngIf="playMode_.playback==playMode">
-                  <a href="" class="howell-icon-skipprevious"></a>
-                  <a href="" class="howell-icon-Square m-l-20"></a>
-                  <a href="" class="howell-icon-skipbackward m-l-20"></a>
-                  <a href="" class="mdi mdi-google-play m-l-20"></a>
-                  <a href="" class="howell-icon-skipforward  m-l-20"></a>
-                  <a href="" class="howell-icon-skipnext m-l-20"></a>
-                </div>
-                <div style="position: absolute;right: 10px;" [style.top]="playMode_.live==playMode?'2px':'0'" >
-                  <a href="javascript:void(0)" (click)="videoFullscreen()" class="howell-icon-arrowexpandall"></a>
-                </div>
-        </div> -->
       </div>
 
       <div class="datetime padded pull-right fill-height border" [class.hide]="playMode_.vod!=playMode">
@@ -212,40 +181,18 @@
 
 
 
-      <!-- <div class="pull-right fill-height" [class.hide]="playMode_.vod!=playMode">
-              <div data-picker="date" class="sm-date"></div>
-              <div class="m-t-10">
-                <button class="btn full-green custom " style="width: 176px;" (click)="searchFilesClick()">
-                  <span style="font-size: 14px;vertical-align: super;">查找</span>
-                </button>
-              </div>
-              <div class="video-list" infinite-scroll [infiniteScrollDistance]="viewModel.scroll.scrollDistance"
-                [infiniteScrollUpDistance]="viewModel.scroll.scrollUpDistance"
-                [infiniteScrollThrottle]="viewModel.scroll.throttle" [scrollWindow]="viewModel.scroll.scrollWindow"
-                style="overflow: auto;height: calc(100% - 252px);">
-                <div class="video-item" [class.selected]="d.isSelect" *ngFor="let d of viewModel.recordFilePage.list">
-                  <a href="javascript:void(0)" (dblclick)="videoItemClick(d)">{{ d.labelText}}</a>
-                </div>
-                <div class="fill-width fill-height text-center" [class.hide]="viewModel.recordFilePage.list.length>0">
-                  <label class="m-b-0" style="line-height: 238px;font-size: 14px;color: rgb(216, 244, 255);"
-                    for="">无录像文件</label>
-                </div>
-              </div>
-      
-            </div> -->
     </div>
-    <div id="{{screenId}}" style="background-color:black;height:calc(100% - 30px)" *ngIf="!hasControl">
-      <div class="fill-height fill-width">
-        <!-- <div id="{{divId}}" class="video-control selected fill-height fill-width">
-        </div> -->
+    <!-- <div id="{{screenId}}" style="background-color:black;height:calc(100% - 30px)" *ngIf="!hasControl">
+      <div class="fill-height fill-width">        
         <ng-container *ngIf="srcUrl">
         <iframe id="{{divId}}" [src]="srcUrl" class="video-control selected fill-height fill-width">
         </iframe>
         </ng-container>
       </div>
-    </div>
+    </div> -->
     <!-- </div> -->
 
   </div>
 
+</div>
 </div>

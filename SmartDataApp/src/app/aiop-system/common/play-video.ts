@@ -10,6 +10,7 @@ export class PlayVideo {
         this.name = name;
     }
     set url_(val: string) {
+        this.url = val;
         const user = new SessionUser();
         if (val.indexOf('password') < 0)
             this.url += val + user.videoUserPwd;

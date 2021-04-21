@@ -124,7 +124,7 @@
         style="position: absolute;z-index: 1;">
         <div id="video__view" [class.absolute]="imgs.length == 4"  [class.table-cell]="!bigViewId&&imgs.length > 4"
         class="fill-width fill-height player ">
-          <ng-container *ngIf="p&&p.safeResourceUrl">
+          <ng-container *ngIf="p&&p.safeResourceUrl&&p.playing">
               <iframe #iframe [src]="p.safeResourceUrl" class="video-control selected fill-height fill-width"></iframe>
           </ng-container>
       </div>

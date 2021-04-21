@@ -6,6 +6,7 @@ declare var base64encode: (str: string) => string;
  
 export class  WHSPlayer {
     iframe:ElementRef;
+    playing = false;
     private WebUrl:string;
     private url:string;
     safeResourceUrl: SafeResourceUrl;
@@ -17,11 +18,15 @@ export class  WHSPlayer {
     }
 
 
-     
-    player(): WSPlayer | undefined{
+     private _player:WSPlayerProxy | undefined;
+    player(): WSPlayerProxy | undefined{
         if (!this.iframe&&!this.iframe.nativeElement&&!this.iframe.nativeElement.src)
             return;
-        return this.iframe.nativeElement.player; 
+            if(!this._player)
+            {
+                this._player = new WSPlayerProxy(this.iframe.nativeElement);
+            }
+        return this._player; 
     }
 
 
@@ -51,11 +56,11 @@ export class  WHSPlayer {
             return;
         }     
         this.safeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc(this.WebUrl, this.url));
-         
+         this.playing = true;
         }, 300);
     }
 
-    stopFn(fn:Function){debugger
+    stopFn(fn:Function){
         this.player().onButtonClicked = (btn)=>{
             if(btn =='stop')
               fn(); 
@@ -66,14 +71,9 @@ export class  WHSPlayer {
         this.player().fullScreen();
     }
     stopVideo() {
-        if(this.player())
-        this.player().stop();
+        this.playing = false;
     }
 
     reSizeView(w?: number, h?: number) {
-        if (this.player())
-            if (w) this.player().resize(w, h);
-            else this.player().resize();
-
     }
 }
