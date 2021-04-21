@@ -64,7 +64,7 @@ export class DivisionBusinessService {
     /**事件卡片 参数记录 */
     eventDropCard: { eventType: EventTypeEnum, divisionType: DivisionTypeEnum, dropDivisionType: DivisionTypeEnum };
     user: SessionUser;
-    linkChildView: (id: string,eventType:EventTypeEnum) => void;
+    linkChildView: (id: string,eventType:EventTypeEnum,drop2:any) => void;
     constructor( 
         private cameraService: CameraRequestService
         , private componentService: ComponentService
@@ -216,10 +216,10 @@ export class DivisionBusinessService {
                 else if (x.list[0].view instanceof OrderTableCardComponent) {
                     /** 列表切换功能 */
                     x.list[0].view.btnControl = (item: {
-                        id: string, eventType: EventTypeEnum
+                        id: string, eventType: EventTypeEnum,drop2:any
                     }) => {
                      if(item.eventType == null){
-                         this.linkChildView(item.id,this.eventDropCard.eventType);
+                         this.linkChildView(item.id,this.eventDropCard.eventType,item.drop2);
                      }else{
                         const param = new BusinessParameter(), stationKey = 'station';
                         param.map.set('divisionId', this.divisionsId);

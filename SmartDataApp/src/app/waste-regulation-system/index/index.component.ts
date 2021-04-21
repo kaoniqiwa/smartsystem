@@ -122,23 +122,25 @@ export class IndexComponent implements OnInit {
       });
     }
 
-    this.divisionBusinessService.linkChildView = (id,eventType) => {
+    this.divisionBusinessService.linkChildView = (id,eventType,drop2) => {
       const mapStation = (station: any) => {
         this.businessManageService.viewDivisionType = ViewDivisionTypeEnum.TableLinkChild;
         this.businessManageService.station = station;
       }
+      
       this.stationDao.allGarbageStations().then(stations => {
         const station = stations.find(x => x.Id == id);
-        if (station) {
-          mapStation(station);
+        mapStation(station);
+        if (station&&drop2==null) { 
+         
           this.divisionBusinessService.stationListView = true;
           this.divisionBusinessService.eventHistoryView = true;
-        } else {
-          this.businessManageService.viewDivisionType = ViewDivisionTypeEnum.TableLinkChild;
+        } else {  
           if (eventType == EventTypeEnum.IllegalDrop)
             this.divisionBusinessService.illegalDrop(id);
           else if (eventType == EventTypeEnum.MixedInto)
             this.divisionBusinessService.mixedInto(id);
+          
         }
       });
     }
@@ -149,10 +151,7 @@ export class IndexComponent implements OnInit {
     this.user.clear = null;
   }
 
-
-  e() {
-
-  }
+ 
   showVsView() {
     this.divisionBusinessService.eventHistoryView = true;
     this.divisionBusinessService.vsClassStatistic = true;

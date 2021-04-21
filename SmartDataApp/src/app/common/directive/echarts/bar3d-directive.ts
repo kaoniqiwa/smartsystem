@@ -90,6 +90,9 @@ export class EChartBar3dDirective implements OnChanges {
                     }
                 }),
                 shading: 'lambert',
+                itemStyle: {
+                    opacity: 0.9
+                },
                 label: {
                     fontSize: 16,
                     borderWidth: 1,

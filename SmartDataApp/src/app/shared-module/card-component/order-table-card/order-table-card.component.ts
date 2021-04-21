@@ -24,7 +24,7 @@ export class OrderTableCardComponent extends BasisCardComponent implements OnIni
 
   itemClick(id:string){
     if(id)
-    this.btnControl({ id:id,eventType:null});
+    this.btnControl({ id:id,eventType:null,drop2:this.model.dropListV1});
   }
 
 }
