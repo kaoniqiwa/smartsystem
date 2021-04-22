@@ -18,17 +18,7 @@ export class  WHSPlayer {
     }
 
 
-<<<<<<< HEAD
-     private _player:WSPlayerProxy | undefined;
-    player(): WSPlayerProxy | undefined{
-        if (!this.iframe&&!this.iframe.nativeElement&&!this.iframe.nativeElement.src)
-            return;
-            if(!this._player)
-            {
-                this._player = new WSPlayerProxy(this.iframe.nativeElement);
-            }
-        return this._player; 
-=======
+
      
     private _player:WSPlayerProxy;
     player(): WSPlayerProxy | undefined{
@@ -38,7 +28,6 @@ export class  WHSPlayer {
             this._player = new WSPlayerProxy(this.iframe.nativeElement);        
         return this._player;
         
->>>>>>> 2ad6798029a69d5e33856d1c3633ff666f409b88
     }
 
 
@@ -72,12 +61,9 @@ export class  WHSPlayer {
         }, 300);
     }
 
-<<<<<<< HEAD
-    stopFn(fn:Function){
-=======
+
     stopFn(fn:Function){ 
         if (this.player())
->>>>>>> 2ad6798029a69d5e33856d1c3633ff666f409b88
         this.player().onButtonClicked = (btn)=>{
             if(btn =='stop')
               fn(); 
@@ -92,12 +78,5 @@ export class  WHSPlayer {
     }
 
     reSizeView(w?: number, h?: number) {
-<<<<<<< HEAD
-=======
-        // if (this.player())
-        //     if (w) this.player().resize(w, h);
-        //     else this.player().resize();
-
->>>>>>> 2ad6798029a69d5e33856d1c3633ff666f409b88
     }
 }

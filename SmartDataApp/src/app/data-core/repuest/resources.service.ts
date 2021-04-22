@@ -20,6 +20,7 @@ import { SRService as  StationSRService} from "../url/waste-regulation/sr-server
 import { GetPreviewUrlParams, GetVodUrlParams, VideoUrl } from '../model/aiop/video-url';
 import { SessionUser } from 'src/app/common/tool/session-user';
 import { VideoPlayArgs } from 'src/app/video/mode';
+import { isIPAddressOrLocalhost } from 'src/app/common/tool/tool.service';
 @Injectable({
     providedIn: 'root'
 })
@@ -260,7 +261,7 @@ export class ResourceSRServersRequestService {
             }
             response.Data.Url = url;
         }
-        if (location.hostname == "127.0.0.1" || location.hostname == "localhost") {
+        if (isIPAddressOrLocalhost()) {
             const host = document.location.hostname;
             const port = document.location.port;
             response.Data.WebUrl = "http://" + host + ":" + port + "/video/wsplayer/wsplayer.html";
@@ -287,7 +288,7 @@ export class ResourceSRServersRequestService {
             }
             response.Data.Url = url;
         }
-        if (location.hostname == "127.0.0.1" || location.hostname == "localhost") {
+        if (isIPAddressOrLocalhost()) {
             
             const host = document.location.hostname;
             const port = document.location.port;
@@ -329,7 +330,7 @@ export class StationResourceSRServersRequestService {
             }
             response.Data.Url = url;
         }
-        if (location.hostname == "127.0.0.1" || location.hostname == "localhost") {
+        if (isIPAddressOrLocalhost()) {
             const host = document.location.hostname;
             const port = document.location.port;
             response.Data.WebUrl = "http://" + host + ":" + port + "/video/wsplayer/wsplayer.html";
@@ -357,7 +358,7 @@ export class StationResourceSRServersRequestService {
             }
             response.Data.Url = url;
         }
-        if (location.hostname == "127.0.0.1" || location.hostname == "localhost") {
+        if (isIPAddressOrLocalhost()) {
             
             const host = document.location.hostname;
             const port = document.location.port;
