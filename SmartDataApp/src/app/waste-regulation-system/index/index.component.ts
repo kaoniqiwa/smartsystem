@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BarOption, LineOption, PieOption } from "../../common/directive/echarts/echart";
+import { EventTypeEnum } from "../../common/tool/enum-helper";
 import { IndexService } from "./business/index.service";
 import { BusinessService } from "./business/business.service";
 import { DivisionBusinessService } from "./business-card-grid/division-business.service";
@@ -10,12 +11,13 @@ import { Title } from '@angular/platform-browser';
 import { SessionUser } from "../../common/tool/session-user";
 import { ConfigRequestService } from "../../data-core/repuest/config.service";
 import { targetPosition, domSize } from "../../common/tool/jquery-help/jquery-help";
+import { GarbageStationDao } from "../../data-core/dao/garbage-station-dao";
 import { BusinessManageService, ViewDivisionTypeEnum } from "../../shared-module/business-component/business-manage-service";
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.styl'],
-  providers: [IndexService, BusinessService]
+  providers: [IndexService, BusinessService, GarbageStationDao]
 })
 export class IndexComponent implements OnInit {
 
@@ -25,6 +27,7 @@ export class IndexComponent implements OnInit {
   cardSize: { width: number, height: number };
 
   moveMapSite: () => void;
+
   user = new SessionUser();
   userDivisionName_ = '';
 
@@ -32,6 +35,7 @@ export class IndexComponent implements OnInit {
   @ViewChild('aMap')
   aMap: AMapComponent;
   constructor(
+    private stationDao: GarbageStationDao,
     private indexService: IndexService
     , private businessService: BusinessService
     , private titleService: Title
@@ -40,7 +44,7 @@ export class IndexComponent implements OnInit {
     , private eventPushService: EventPushService
     , private divisionBusinessService: DivisionBusinessService
     , private mqttSevice: MQTTEventService) {
-    titleService.setTitle('生活垃圾监管平台');
+    titleService.setTitle('生活垃圾分类全程监管平台');
     this.bar.seriesData = [
       [0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0]
@@ -102,11 +106,11 @@ export class IndexComponent implements OnInit {
       this.divisionBusinessService.aMap.VillageSelect(this.businessService.user.userDivision.pop().Id, false);
       this.aMap.ContextMenuIllegalDropClickedEvent.subscribe(station => {
         mapStation(station);
-        this.divisionBusinessService.illegalDrop();
+        this.divisionBusinessService.illegalDrop(this.divisionBusinessService.divisionsId);
       });
       this.aMap.ContextMenuMixedIntoClickedEvent.subscribe(station => {
         mapStation(station);
-        this.divisionBusinessService.mixedInto();
+        this.divisionBusinessService.mixedInto(this.divisionBusinessService.divisionsId);
       });
       this.aMap.ContextMenuStationPatrolClickedEvent.subscribe(station => {
         this.showInspectionView(station);
@@ -118,12 +122,36 @@ export class IndexComponent implements OnInit {
       });
     }
 
+    this.divisionBusinessService.linkChildView = (id,eventType,drop2) => {
+      const mapStation = (station: any) => {
+        this.businessManageService.viewDivisionType = ViewDivisionTypeEnum.TableLinkChild;
+        this.businessManageService.station = station;
+      }
+      
+      this.stationDao.allGarbageStations().then(stations => {
+        const station = stations.find(x => x.Id == id);
+        mapStation(station);
+        if (station&&drop2==null) { 
+         
+          this.divisionBusinessService.stationListView = true;
+          this.divisionBusinessService.eventHistoryView = true;
+        } else {  
+          if (eventType == EventTypeEnum.IllegalDrop)
+            this.divisionBusinessService.illegalDrop(id);
+          else if (eventType == EventTypeEnum.MixedInto)
+            this.divisionBusinessService.mixedInto(id);
+          
+        }
+      });
+    }
+
   }
 
   logOut() {
     this.user.clear = null;
   }
 
+ 
   showVsView() {
     this.divisionBusinessService.eventHistoryView = true;
     this.divisionBusinessService.vsClassStatistic = true;

@@ -84,6 +84,11 @@ export class MixedIntoEventHistoryComponent implements OnInit ,OnDestroy{
          const children = this.tableService.divisions.filter(f=>f.ParentId == division.Id);
          this.tableService.search.divisionId=children.pop().Id;
       }
+      else if(this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.TableLinkChild
+        &&division==null){
+         const station= this.tableService.garbageStations.find(s=>s.Id == this.fillMode.divisionId);
+         if(station)this.tableService.search.divisionId =station.DivisionId;
+      }
       else this.tableService.search.divisionId =this.fillMode.divisionId;
     }
     else  this.tableService.search.divisionId='';
@@ -94,8 +99,9 @@ export class MixedIntoEventHistoryComponent implements OnInit ,OnDestroy{
     this.tableService.fillMode = this.fillMode;
    // this.tableService.search.divisionId = this.fillMode ? this.fillMode.divisionId : '';
 
-    if (this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.MapStation
-      && this.businessManageService.station) {
+   if ((this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.MapStation
+    || this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.TableLinkChild)
+    && this.businessManageService.station) {
       this.tableService.search.stationId = this.businessManageService.station.Id;
     }
     
@@ -174,6 +180,16 @@ export class MixedIntoEventHistoryComponent implements OnInit ,OnDestroy{
       setTimeout(() => {
         this.levelListPanel.defaultItem(this.businessManageService.station.DivisionId);
         this.tableService.search.stationId = this.businessManageService.station.Id;
+      }, 500);
+    }
+    else if (this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.TableLinkChild
+      &&this.fillMode) {
+      setTimeout(() => {
+        if(this.businessManageService.station){
+          this.levelListPanel.defaultItem(this.businessManageService.station.DivisionId);  
+          this.tableService.search.stationId = this.businessManageService.station.Id; 
+        }
+        else  this.levelListPanel.defaultItem(this.fillMode.divisionId);    
       }, 500);
     }
   }

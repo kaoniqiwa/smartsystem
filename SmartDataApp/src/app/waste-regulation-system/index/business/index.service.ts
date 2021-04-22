@@ -41,6 +41,7 @@ export class IndexService {
         model.table = new Array();
         for (let i = 0; i < 10; i++) 
             model.table.push({
+                id:'',
                 name:'-',
                 subNameAfter:'起',
                 subName:'0'

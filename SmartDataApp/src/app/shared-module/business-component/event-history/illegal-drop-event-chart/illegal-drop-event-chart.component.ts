@@ -70,12 +70,13 @@ export class IllegalDropEventChartComponent implements OnInit {
     })
 
   }
-
+  
   changeTimeType() {
     const val = this.businessService.changeDatePicker();
     this.timePicker.reInit(this.businessService.datePicker.startView
       , this.businessService.datePicker.minView
       , this.businessService.datePicker.formate, val.time, val.week);
+    this.businessService.resetChartType();
     this.search();
   }
 

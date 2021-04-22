@@ -4,7 +4,8 @@
     <div class="placeholder {{textColor}}" [class.text-left]="textLeft" [class.text-right]="!textLeft">
       <ng-container *ngIf="!rightArrow">
         <i class="mdi mdi-menu-down"></i>
-      </ng-container>     
+      </ng-container>    
+      {{firstTitle}} 
       {{selectedText?selectedText.text:'请选择' }}  
       <ng-container *ngIf="rightArrow">
         <i class="mdi mdi-menu-down"></i>
@@ -12,7 +13,7 @@
     </div>
      
   </div>
-  <div  class="fill-width body-wrap collapse" [class.in]="showBody">   
+  <div  class="body-wrap collapse" style="width: 320px;" [class.in]="showBody">   
     <div class="fill-width m-b-10">
       <div>
         <hw-input-search [placeholder]="'名称'" [searchEvent]="searchTree"></hw-input-search>

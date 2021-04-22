@@ -14,7 +14,7 @@ export class SystemModeComponent implements OnInit {
   constructor(private route: Router
     ,titleService:Title
     , private sideNavService: SideNavService) {
-      titleService.setTitle('生活垃圾监管平台');
+      titleService.setTitle('生活垃圾分类全程监管平台');
     this.systems.push(new SystemMode(
       'howell-icon-cam-all1'
      , '数据统计', 98, SystemModeEnum.gisSmartData));

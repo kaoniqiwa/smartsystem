@@ -80,6 +80,7 @@
          style="width: 100px;" formControlName="ChartType">
           <option value="line">折线图</option>
           <option value="bar">柱状图</option>
+          <option value="_3dBar" *ngIf="businessService._3dBarOption">3D柱状图</option>
         </select>
       </div>
     </div>
@@ -95,12 +96,14 @@
     style="position: absolute;">
       <ng-container *ngIf="businessService.barChartOption">
         <div class="height98 fill-width" [options]="businessService.barChartOption" EChartBar></div>
-      </ng-container>
+      </ng-container> 
+    </div>
+    <div class="fill-width fill-height"  [class.chart-hide]="!businessService._3dBarChartView" 
+    style="position: absolute;"> 
       <ng-container *ngIf="businessService.bar3dOption">
         <div  class="height98 fill-width"  [options]="businessService.bar3dOption" EChartBar3d></div>
       </ng-container>
     </div>
-
 
   </div>
 </div>

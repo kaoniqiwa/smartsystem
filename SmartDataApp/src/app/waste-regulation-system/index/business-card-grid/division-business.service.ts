@@ -31,7 +31,7 @@ import { targetPosition, domSize } from "../../../common/tool/jquery-help/jquery
 import { isBoolean, isString } from "util";
 import { BusinessEventTypeEnum } from '../../../shared-module/business-component/event-history/business-event-type';
 import { ComponentService } from "../../../shared-module/component-service";
-import { SessionUser } from "../../../common/tool/session-user";
+import { SessionUser } from "../../../common/tool/session-user"; 
 @Injectable({
     providedIn: 'root'
 })
@@ -64,7 +64,9 @@ export class DivisionBusinessService {
     /**事件卡片 参数记录 */
     eventDropCard: { eventType: EventTypeEnum, divisionType: DivisionTypeEnum, dropDivisionType: DivisionTypeEnum };
     user: SessionUser;
-    constructor(private cameraService: CameraRequestService
+    linkChildView: (id: string,eventType:EventTypeEnum,drop2:any) => void;
+    constructor( 
+        private cameraService: CameraRequestService
         , private componentService: ComponentService
         , private eventRequestService: EventRequestService
         , private stationService: GarbageStationRequestService) {
@@ -80,16 +82,16 @@ export class DivisionBusinessService {
     }
 
     /**显示乱扔垃圾view */
-    illegalDrop() {
+    illegalDrop(divisionsId:string) {
         this.illegalDropMode = new FillMode();
-        this.illegalDropMode.divisionId = this.divisionsId;
+        this.illegalDropMode.divisionId = divisionsId;
         this.eventHistoryView = true;
     }
 
     /**显示混合投放view */
-    mixedInto() {
+    mixedInto(divisionsId:string) {
         this.mixedIntoMode = new FillMode();
-        this.mixedIntoMode.divisionId = this.divisionsId;
+        this.mixedIntoMode.divisionId = divisionsId;
         this.eventHistoryView = true;
     }
 
@@ -214,9 +216,11 @@ export class DivisionBusinessService {
                 else if (x.list[0].view instanceof OrderTableCardComponent) {
                     /** 列表切换功能 */
                     x.list[0].view.btnControl = (item: {
-                        id: string, eventType: EventTypeEnum
+                        id: string, eventType: EventTypeEnum,drop2:any
                     }) => {
-
+                     if(item.eventType == null){
+                         this.linkChildView(item.id,this.eventDropCard.eventType,item.drop2);
+                     }else{
                         const param = new BusinessParameter(), stationKey = 'station';
                         param.map.set('divisionId', this.divisionsId);
                         if (item.id == 'IllegalDrop' || item.id == 'MixedInto') { 
@@ -247,8 +251,6 @@ export class DivisionBusinessService {
                                 } 
                             } 
                         }
-
-
                         for (const x of this.componets) {
                             if (x.list[0].view instanceof OrderTableCardComponent) {
 
@@ -262,6 +264,8 @@ export class DivisionBusinessService {
 
                             }
                         }
+                     }
+                    
                     }
                 }
             }

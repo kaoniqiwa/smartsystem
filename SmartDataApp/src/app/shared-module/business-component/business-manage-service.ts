@@ -55,5 +55,7 @@ export enum ViewDivisionTypeEnum {
     /**	居委会 */
     //Committees,
     /**地图投放点 */
-    MapStation
+    MapStation,
+    /**主页数据列表 */
+    TableLinkChild,
 }

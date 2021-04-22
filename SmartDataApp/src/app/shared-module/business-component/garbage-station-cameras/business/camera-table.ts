@@ -39,16 +39,20 @@ export class CameraTable extends BusinessTable implements IConverter {
             tdInnerAttrName: "name"
         }), new TableAttr({
             HeadTitleName: "状态",
-            tdWidth: "18%",
+            tdWidth: "10%",
             tdInnerAttrName: "state"
         }), new TableAttr({
-            HeadTitleName: "区划名称",
-            tdWidth: "20%",
+            HeadTitleName: "投放点",
+            tdWidth: "15%",
+            tdInnerAttrName: "garbageStationName"
+        }), new TableAttr({
+            HeadTitleName: "街道",
+            tdWidth: "15%",
             tdInnerAttrName: "divisionName"
         }), new TableAttr({
-            HeadTitleName: "垃圾房",
-            tdWidth: "20%",
-            tdInnerAttrName: "garbageStationName"
+            HeadTitleName: "居委会",
+            tdWidth: "15%",
+            tdInnerAttrName: "committees"
         })],
         footArgs: new FootArgs({
             hasSelectBtn: false,
@@ -70,10 +74,13 @@ export class CameraTable extends BusinessTable implements IConverter {
             for (const item of input.cameras) {
                 const station = input.statioins.find(x => x.Id == item.GarbageStationId),
                 camera = input.resourceCameras.find(x=>x.Id==item.Id);
-                var division:Division;
-                if(station)
-                  division = input.divisions.find(x=>x.Id==station.DivisionId);
-                items.push(this.toTableModel(item, station,division,camera));
+                var division:Division,committees:Division;
+                if(station){
+                    committees = input.divisions.find(x=>x.Id==station.DivisionId);
+                    if(committees)division= input.divisions.find(x=>x.Id==committees.ParentId);
+                }
+                
+                items.push(this.toTableModel(item, station,division,camera,committees));
             }
         if (output instanceof CustomTableArgs)
             output.values = items;
@@ -81,11 +88,13 @@ export class CameraTable extends BusinessTable implements IConverter {
         return output;
     }
 
-    toTableModel(camera: Camera, statioin: GarbageStation,division:Division,resourceCamera:ResourceCamera) {
+    toTableModel(camera: Camera, statioin: GarbageStation,division:Division,resourceCamera:ResourceCamera
+        ,committees:Division) {
         let tableField = new TableField();
         tableField.id = camera.Id; 
         tableField.name = camera.Name;
         tableField.divisionName=division?division.Name:'-';
+        tableField.committees=committees?committees.Name:'-';
         tableField.imageUrl= resourceCamera?new MediumPicture().getJPG(resourceCamera.ImageUrl):'';
         tableField.garbageStationName = statioin ? statioin.Name : '-'; 
         tableField.state = camera ? (camera.OnlineStatus == 0 ? '正常' : '离线') : '离线';
@@ -107,4 +116,5 @@ export class TableField implements ITableField {
     divisionName: string;
     imageUrl:string;
     garbageStationName: string;
+    committees:string;
 }

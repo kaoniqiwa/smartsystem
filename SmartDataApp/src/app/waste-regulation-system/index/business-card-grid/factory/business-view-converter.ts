@@ -265,6 +265,7 @@ export class DropOrderConverter implements IConverter {
             });
             for (const x of sort)
                 output.views[0].table.push({
+                    id:x.id,
                     name: x.division,
                     subName: x.dropNum + '',
                     subNameAfter: '起'
@@ -274,6 +275,7 @@ export class DropOrderConverter implements IConverter {
             if (len < 6)
                 for (let i = 0; i < (6 - len); i++)
                     output.views[0].table.push({
+                        id:'',
                         name: '-',
                         subName: '0',
                         subNameAfter: '起'
@@ -314,6 +316,7 @@ export class IllegalDropOrderConverter implements IConverter {
             });
             for (const x of sort)
                 output.views[0].table.push({
+                    id:x.id,
                     name: x.division,
                     subName: x.dropNum + '',
                     subNameAfter: '起'
@@ -323,6 +326,7 @@ export class IllegalDropOrderConverter implements IConverter {
             if (len < 6)
                 for (let i = 0; i < (6 - len); i++)
                     output.views[0].table.push({
+                        id:'',
                         name: '-',
                         subName: '0',
                         subNameAfter: '起'
@@ -357,6 +361,7 @@ export class MixedIntoDropOrderConverter implements IConverter {
             });
             for (const x of sort)
                 output.views[0].table.push({
+                    id:x.id,
                     name: x.division,
                     subName: x.dropNum + '',
                     subNameAfter: '起'
@@ -366,6 +371,7 @@ export class MixedIntoDropOrderConverter implements IConverter {
             if (len < 6)
                 for (let i = 0; i < (6 - len); i++)
                     output.views[0].table.push({
+                        id:'',
                         name: '-',
                         subName: '0',
                         subNameAfter: '起'
@@ -398,6 +404,7 @@ export class StationDisposeScoreConverter implements IConverter {
             for (const x of sort) {
                 if (i == 100) break;
                 output.views[0].table.push({
+                      id:x.id,
                     name: x.station,
                     subName: IntegerDecimalNum(x.score + ''),
                     subNameAfter: x.unit
@@ -410,6 +417,7 @@ export class StationDisposeScoreConverter implements IConverter {
             if (len < 6)
                 for (let i = 0; i < (6 - len); i++)
                     output.views[0].table.push({
+                        id:'',
                         name: '-',
                         subName: '0',
                         subNameAfter: '起'

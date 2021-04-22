@@ -24,7 +24,10 @@
           </div>
         </div>
         <div fxFlex="54">
-          <h4 class="light-blue-text ele-nowrap">{{item.name}}</h4>
+          <a href="javascript:" class="link-text" (click)="itemClick(item.id)">
+            <h4 class="light-blue-text ele-nowrap">{{item.name}}</h4>
+          </a>
+        
         </div>
         <div fxFlex="34">
           <h4 class="m-0 sky-blue-text2 " style="text-align: right;">{{ item.subName}}

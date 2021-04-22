@@ -106,6 +106,11 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
          const children = this.tableService.divisions.filter(f=>f.ParentId == division.Id);
          this.tableService.search.divisionId=children.pop().Id;
       }
+      else if(this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.TableLinkChild
+        &&division==null){//id 是投放点的
+         const station= this.tableService.garbageStations.find(s=>s.Id == this.fillMode.divisionId);
+         if(station)this.tableService.search.divisionId =station.DivisionId;
+      }
       else this.tableService.search.divisionId =this.fillMode.divisionId;
     }
     else  this.tableService.search.divisionId='';
@@ -124,7 +129,8 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
         this.tableService.search.divisionId = this.divisionBusinessService.divisionsId;
       }
     }
-    if (this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.MapStation
+    if ((this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.MapStation
+      || this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.TableLinkChild)
       && this.businessManageService.station) {
       this.tableService.search.stationId = this.businessManageService.station.Id;
     }
@@ -161,6 +167,17 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         this.levelListPanel.defaultItem(this.businessManageService.station.DivisionId);
         this.tableService.search.stationId = this.businessManageService.station.Id;
+      }, 500);
+    }
+    else if (this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.TableLinkChild
+      &&this.fillMode) {
+      setTimeout(() => {
+        
+        if(this.businessManageService.station){
+          this.levelListPanel.defaultItem(this.businessManageService.station.DivisionId);  
+          this.tableService.search.stationId = this.businessManageService.station.Id; 
+        }
+        else  this.levelListPanel.defaultItem(this.fillMode.divisionId);   
       }, 500);
     }
   }

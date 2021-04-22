@@ -107,7 +107,7 @@ export class EventTableService {
             video = await this.requestVideoUrl(DateInterval(event.EventTime+'',user.video.beforeInterval)
             , DateInterval(event.EventTime+'',user.video.afterInterval), event.ResourceId);
             this.playVideo = new PlayVideo(video.WebUrl, null, event.ResourceName);
-            this.playVideo.url_=video.Url;
+            this.playVideo.url=video.Url;
             this.navService.playVideoBug.emit(true);
         }
     }

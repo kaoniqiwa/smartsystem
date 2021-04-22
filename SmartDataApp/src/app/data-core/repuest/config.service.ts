@@ -13,7 +13,7 @@ export class ConfigRequestService {
     }
 
     getMQTT(){
-      return  this.http.get<{Port:number}>('assets/mqtt.json');
+      return  this.http.get<{Port:number,Username:string,Password:string}>('assets/mqtt.json');
     }
 
     getVideo(){

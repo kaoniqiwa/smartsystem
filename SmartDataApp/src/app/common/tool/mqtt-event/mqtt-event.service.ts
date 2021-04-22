@@ -12,7 +12,7 @@ export class MQTTEventService {
     constructor(private pushService: EventPushService, private configService: ConfigRequestService) {
         // this.mqtt = new MqttComponent('192.168.21.241', 15883);
         configService.getMQTT().subscribe(x =>
-            this.mqtt = new MqttComponent(document.location.hostname, x.Port));
+            this.mqtt = new MqttComponent(document.location.hostname, x.Port,x.Username,x.Password));
     }
 
     listenerIllegalDrop(divisionsId?: string) {

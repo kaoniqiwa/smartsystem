@@ -23,7 +23,8 @@ export class GarbageStationSummaryComponent implements OnInit {
    { }
 
   ngOnInit() {
-    if(this.businessManageService.viewDivisionType ==ViewDivisionTypeEnum.MapStation)
+    if(this.businessManageService.viewDivisionType ==ViewDivisionTypeEnum.MapStation
+      || this.businessManageService.viewDivisionType ==ViewDivisionTypeEnum.TableLinkChild)
       this.acceptOtherView(OtherViewEnum.chart);
   }
   acceptOtherView(val: OtherViewEnum) {  

@@ -26,6 +26,7 @@ export class StationDisposeScore extends BaseBusinessRefresh {
                const info = new StationScoreInfo();
                model.items.push(info);
                info.station = s.Name;
+               info.id=s.Id;
                info.score = s.GarbageRatio;
                info.unit='分';
             });

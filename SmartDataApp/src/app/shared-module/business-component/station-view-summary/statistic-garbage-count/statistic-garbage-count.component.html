@@ -48,15 +48,11 @@
             class="hw-form-control form-control  p-r-0" style="padding:0;width: 190px;">
           <i class="mdi mdi-menu-down arrow-time light-blue-text"></i>
         </div>
-        <div class="pull-right" style="width: 300px;height: 34px;">
+        <div class="pull-right" style="width: 600px;height: 34px;">
           <hw-tree-drop-list-v2 [rightArrow]="true" [textColor]="'light-blue-text'" [textLeft]="false" [onlyDivisionNode]="divisionMode" 
-          [selectedItemFn]="businessService.changeDivisionFn" [selectItemNodeMode]="selectItemNodeMode"></hw-tree-drop-list-v2>
-          <!-- <ng-container *ngIf="businessService.divisionListView">
-            <hw-level-list-panel [model]="businessService.divisionListView.dataSource"
-            [selectedFn]="businessService.changeDivisionFn"></hw-level-list-panel>
-          </ng-container> -->
-         
-        </div>
+          [selectedItemFn]="businessService.changeDivisionFn" [selectItemNodeMode]="selectItemNodeMode" [firstTitle]="businessService.stationDivision">
+        </hw-tree-drop-list-v2>
+        </div> 
       </div>
     </div>
     <div class="fill-width" style="height: 80px;padding: 0 30px;">

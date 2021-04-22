@@ -11,11 +11,13 @@ export class MqttComponent implements OnDestroy {
     private _subscription: Subscription;
     private MQTT_SERVICE_OPTIONS: IMqttServiceOptions;
     private _mqttService: MqttService; 
-    constructor(private host: string, private port: number) {
+    constructor(private host: string, private port: number,username:string,pwd:string) {
         this.MQTT_SERVICE_OPTIONS = {
             hostname: host,
             port: port,
-            path: '/mqtt'
+            path: '/mqtt',
+            username:username,
+            password:pwd
         };
         this._mqttService = new MqttService(this.MQTT_SERVICE_OPTIONS);
         this._mqttService.state.subscribe((x)=>{

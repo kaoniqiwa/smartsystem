@@ -165,7 +165,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
       const videoOptions = new HWSPlayerOptions(response.WebUrl,response.Url, '');
       this.p = new WHSPlayer(this.sanitizer);
       this.p.playVideo(videoOptions.webUrl,videoOptions.url); 
-      setTimeout(() => {debugger
+      setTimeout(() => {
         this.p.iframe=this.iframe;
         this.p.reSizeView(this.playViewSize.width, this.playViewSize.height);
         this.p.stopFn(()=>{

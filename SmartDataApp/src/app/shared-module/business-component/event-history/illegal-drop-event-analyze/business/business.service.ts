@@ -28,6 +28,8 @@ export class BusinessService extends ListAttribute {
     bar3dOption:Bar3dOption;
     barChartView = true;
     lineChartView = false;
+    _3dBarChartView = false;
+    _3dBarOption = false;
     datePicker = {
         startView: 2,
         minView: 2,
@@ -38,6 +40,7 @@ export class BusinessService extends ListAttribute {
     reportType = '';
     dataSources: Map<string, EventNumberStatistic[]>;
     businessEventType = BusinessEventTypeEnum.IllegalDrop;
+    loadViewFn : ()=>void;
     constructor(private divisionService: DivisionRequestService
         , private datePipe: DatePipe
         , private garbageStationService: GarbageStationRequestService
@@ -352,8 +355,7 @@ export class BusinessService extends ListAttribute {
 
     convertBarData(statistic: Map<string, EventNumberStatistic[]>, search: SearchControl, param: Array<{ id: string, text: string }>
         , mapEvents?: Map<string, Array<IllegalDropEventRecord | MixedIntoEventRecord>>) {
-        const s = search.toSearchParam(); 
-        if (s.TimeUnit == TimeUnitEnum.Week)return;
+        const s = search.toSearchParam();  
         this.barChartOption = new BarOption();
         var xAxisData = new Array(), monthMaxDay = 0; 
         if (s.TimeUnit == TimeUnitEnum.Hour) {
@@ -438,9 +440,9 @@ export class BusinessService extends ListAttribute {
     convertBar3dData(statistic: Map<string, EventNumberStatistic[]>, search: SearchControl, param: Array<{ id: string, text: string }>
          ) {
         const s = search.toSearchParam(), seriesData = new Array()
-        , weekNumberMap = new Map<number,Array<Array<number>>>(); 
-        if (s.TimeUnit == TimeUnitEnum.Week) { 
-            this.barChartOption=null;
+        , weekNumberMap = new Map<number,Array<Array<number|string>>>(); 
+        if (s.TimeUnit == TimeUnitEnum.Week && s.ChartType ==ChartTypeEnum._3dBar) { 
+         
             this.bar3dOption = new Bar3dOption();
             this.bar3dOption.yAxis3dData = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
             this.bar3dOption.xAxis3dData = new Array();
@@ -450,10 +452,29 @@ export class BusinessService extends ListAttribute {
                 weekNumberMap.set(i,new Array());   
                 for (let j = 0; j < param.length; j++){
                     const arr = weekNumberMap.get(i);
-                    arr.push([i,j,0]);
+                    arr.push([i,j,0,`${this.bar3dOption.yAxis3dData[i]},${param[j].text}`]);
                 }
             } 
         } 
+        else if (s.TimeUnit == TimeUnitEnum.Day && s.ChartType ==ChartTypeEnum._3dBar) { 
+            const date = new Date(Number.parseInt(s.Year)
+            , Number.parseInt(s.Month) - 1)
+            , lastDay = MonthLastDay(date.getFullYear(), date.getMonth() + 1);
+            this.bar3dOption = new Bar3dOption();
+            this.bar3dOption.yAxis3dData = new Array();
+            this.bar3dOption.xAxis3dData = new Array();
+            param.map(m=>this.bar3dOption.xAxis3dData.push(m.text));
+            for (let i = 1; i <= lastDay; i++)  
+                this.bar3dOption.yAxis3dData.push(`${i}日`);
+
+            for (let i = 0; i < lastDay; i++)  {
+                weekNumberMap.set(i,new Array());   
+                for (let j = 0; j < param.length; j++){
+                    const arr = weekNumberMap.get(i);
+                    arr.push([i,j,0,`${(i+1)}日,${param[j].text}`]);
+                }
+            } 
+        }
         else return;
         
         var xTag = 0;
@@ -462,7 +483,7 @@ export class BusinessService extends ListAttribute {
             const data = statistic.get(val.id);         
             
             for (let i = 0; i < data.length; i++) {
-              
+                if(data[i])
                 convertEventData(this.businessEventType, data[i].EventNumbers, s.TimeUnit == TimeUnitEnum.Hour)
                 .map(ed=>{
                     const wnm= weekNumberMap.get(i);
@@ -544,16 +565,38 @@ export class BusinessService extends ListAttribute {
         return param;
     }
 
+      
+    resetChartType(){
+        this.search.chartType = ChartTypeEnum.Bar;      
+        this.changeChartType();
+    }
+
     changeChartType() {
         const param = this.search.toSearchParam();
         if (param.ChartType == ChartTypeEnum.Bar) {
             this.barChartView = true;
             this.lineChartView = false;
+            this._3dBarChartView=false;
         }
         else if (param.ChartType == ChartTypeEnum.Line) {
             this.barChartView = false;
             this.lineChartView = true;
+            this._3dBarChartView=false;
         }
+        else if (param.ChartType == ChartTypeEnum._3dBar) {
+            this.barChartView = false;
+            this.lineChartView = false;
+            this._3dBarChartView=true;
+            this.bar3dOption=null;
+            this.loadViewFn();
+        } 
+    }
+
+    get maxObjects(){
+        const param = this.search.toSearchParam();
+        if (param.ChartType == ChartTypeEnum._3dBar)
+        return 3;
+        else return 3;
     }
 
     changeClassType(fn: (ct:string) => void) {
@@ -573,6 +616,7 @@ export class BusinessService extends ListAttribute {
             this.datePicker.startView = 2;
             this.datePicker.formate = 'yyyy年mm月dd日';
             this.reportType = '日报表';
+            this._3dBarOption=false; 
             return {
                 time: `${param.Year}年${param.Month}月${param.Day}日`,
                 week: false
@@ -583,6 +627,7 @@ export class BusinessService extends ListAttribute {
             this.datePicker.startView = 3;
             this.datePicker.formate = 'yyyy年mm月';
             this.reportType = '月报表';
+            this._3dBarOption=true;
             return {
                 time: `${param.Year}年${param.Month}月`,
                 week: false
@@ -593,11 +638,13 @@ export class BusinessService extends ListAttribute {
             this.datePicker.startView = 2;
             this.datePicker.formate = 'yyyy年mm月dd日';
             this.reportType = '周报表';
+            this._3dBarOption=true;
             return {
                 time: `${param.Year}年${param.Month}月${param.Day}日`,
                 week: true
             };
         }
+        this.bar3dOption=null;
     }
 
 

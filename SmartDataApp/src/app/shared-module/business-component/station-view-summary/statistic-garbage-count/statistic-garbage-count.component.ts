@@ -83,13 +83,13 @@ export class StatisticGarbageCountComponent implements OnInit, OnDestroy {
       
       // this.businessService.divisionListView.toStationList(x);
       // this.businessService.covertStationList(x);
-      setTimeout(() => {
-        if (this.businessManageService.viewDivisionType != ViewDivisionTypeEnum.MapStation
-           )
-          this.lp.defaultItem(x[0].Id,(cb)=>{});
-        else if (this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.MapStation
-          && this.businessManageService)
-          this.lp.defaultItem(this.businessManageService.station.Id,(cb)=>{});
+      setTimeout(() => {      
+        if ((this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.MapStation
+          ||this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.TableLinkChild)
+          && this.businessManageService)          
+            this.lp.defaultItem(this.businessManageService.station.Id,(cb)=>{});          
+        else  
+         this.lp.defaultItem(x[0].Id,(cb)=>{});
       }, 500);
 
     });

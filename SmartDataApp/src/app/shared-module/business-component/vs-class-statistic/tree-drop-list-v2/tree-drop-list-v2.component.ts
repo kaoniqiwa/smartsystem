@@ -31,6 +31,7 @@ export class TreeDropListV2Component implements OnInit {
   @Input() textLeft = true;
   @Input() textColor = 'text-white';
   @Input() selectItemNodeMode = SelectItemNodeModeEnum.None;
+  @Input() firstTitle = '';
 
   @Input()
   selectedItemFn: (item: { id: string, text: string }) => void;
