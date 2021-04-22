@@ -474,7 +474,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         };
 
 
-        this.client.Events.OnElementsClicked = (objs) =>{
+        this.client.Events.OnElementsClicked = (objs) => {
             const status = document.getElementsByClassName('map-bar status')[0];
             status['style'].display = '';
 
@@ -558,7 +558,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         if (this.autoCloseWindowHandle) {
             clearTimeout(this.autoCloseWindowHandle);
         }
-        this.videoWindow.changePlayMode(PlayModeEnum.live, true);        
+        this.videoWindow.changePlayMode(PlayModeEnum.live, true);
         this.showVideoWindow = false;
 
     }
@@ -568,30 +568,30 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
         this.showVideoWindow = true;
 
-        setTimeout(async ()=>{
+        setTimeout(async () => {
             try {
 
                 this.videoWindow.changePlayMode(PlayModeEnum.live, true);
-    
+
                 this.currentCamera = camera;
                 this.maskLayerShow = true;
                 this.isShowVideoView = true;
-                
-    
+
+
                 console.log(camera);
                 const params = new GetPreviewUrlParams();
                 params.CameraId = camera.Id;
                 params.Protocol = 'ws-ps';
                 params.StreamType = this.videoWindow.stream;
                 const response = await this.srService.PreviewUrls(params);
-    
+
                 this.amapService.videoPlayerService.playCameraName = camera.Name;
                 this.amapService.videoPlayerService.playMode = PlayModeEnum.live;
                 this.amapService.videoPlayerService.playVideoVideoId = 'player';
-                
+
                 response.Data.Url = response.Data.Url.indexOf('password') > 0
                     ? response.Data.Url : response.Data.Url + this.user.videoUserPwd;
-    
+
                 this.amapService.videoPlayerService.url = response.Data.Url;
                 this.amapService.videoPlayerService.webUrl = response.Data.WebUrl;
                 this.videoWindow.url = response.Data.Url;
@@ -602,18 +602,22 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 console.error(ex);
             }
         }, 10)
-        
+
     }
 
     Playback(camera: Camera, begin: Date, end: Date) {
         if (!camera) { return; }
-        this.videoWindow.changePlayMode(PlayModeEnum.vod, false);        
         this.showVideoWindow = true;
-        this.currentCamera = camera;
-        this.videoWindow.date = begin.format('yyyy-MM-dd');
-        this.videoWindow.setBeginTime(begin);
-        this.videoWindow.setEndTime(end);
-        this.PlaybackClicked({ begin: begin, end: end });
+
+        setTimeout(() => {
+            this.videoWindow.changePlayMode(PlayModeEnum.vod, false);
+            this.currentCamera = camera;
+            this.videoWindow.date = begin.format('yyyy-MM-dd');
+            this.videoWindow.setBeginTime(begin);
+            this.videoWindow.setEndTime(end);
+            this.PlaybackClicked({ begin: begin, end: end });
+        }, 10);
+
     }
 
 

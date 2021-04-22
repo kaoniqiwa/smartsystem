@@ -2,27 +2,27 @@ import { GarbageBaseUrl } from "../IUrl";
 
 export class EventRecord extends GarbageBaseUrl{
     infoList() {
-        return this.aiop+`Events/Infos/List`;
+        return this.garbage+`Events/Infos/List`;
     }
 
     infoEventType() {
-        return this.aiop+`Events/Infos/<EventType>`;
+        return this.garbage+`Events/Infos/<EventType>`;
     }
 
     illegalDrop() {
-        return this.aiop+ `Events/Records/IllegalDrop/List`;
+        return this.garbage+ `Events/Records/IllegalDrop/List`;
     }
 
     mixedIntoList() {
-        return this.aiop+`Events/Records/MixedInto/List`;
+        return this.garbage+`Events/Records/MixedInto/List`;
     }
 
     garbageFullList(){
-        return this.aiop+'Events/Records/GarbageFull/List';
+        return this.garbage+'Events/Records/GarbageFull/List';
     }
 
     garbageDropList(){
-        return this.aiop+'Events/Records/GarbageDrop/List';
+        return this.garbage+'Events/Records/GarbageDrop/List';
     }
 }
  
