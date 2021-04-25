@@ -28,7 +28,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     @Input() playMode: PlayModeEnum;
     @Input() cameraId = ''; // 00310101031111111000003001000003
     @Input() nodeId: Array<String>;
-    @Input() hasControl = true;
+    @Input() hasControl = true;    
     // @Input() cameraName = '';
 
     protected _cameraName = '';
@@ -131,9 +131,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     @Output() VideoPlayingEventListen: EventEmitter<boolean> = new EventEmitter();
     @Output() DownloadClickedEventListen: EventEmitter<{ begin: Date, end: Date }> = new EventEmitter();
 
-    private initBeginTime = false;
     setBeginTime(time: Date) {
-        this.initBeginTime = true;
         $('#txt_begin_time').wickedpicker({
             now: time.format('HH : mm : ss'),
             twentyFour: true,
@@ -141,9 +139,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         });
         this.beginTime = time.format('HH : mm : ss');
     }
-    private initEndTime = false;
     setEndTime(time: Date) {
-        this.initEndTime = true;
         $('#txt_end_time').wickedpicker({
             now: time.format('HH : mm : ss'),
             twentyFour: true,
@@ -254,6 +250,14 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         }
     }
 
+
+    initTime() {
+        let date = new Date();
+        this.setEndTime(date);
+        date.setMinutes(date.getMinutes() - 5);
+        this.setBeginTime(date);
+    }
+
     async ngOnInit() {
         const me = this;
 
@@ -282,18 +286,8 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
                 });
             });
             setTimeout(() => {
-
-
                 const date = new Date();
-                if (!this.initEndTime) {
-                    this.setEndTime(date);
-                }
-                date.setMinutes(date.getMinutes() - 5);
-                if (!this.initBeginTime) {
-                    this.setBeginTime(date);
-                }
                 this.date = date.format('yyyy-MM-dd');
-
                 // $('#txt_end_time').timepicker({
                 //     minuteStep: 1,
                 //     showSeconds: true,

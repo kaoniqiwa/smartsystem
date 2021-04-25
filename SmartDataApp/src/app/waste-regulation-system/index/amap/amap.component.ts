@@ -119,7 +119,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     selectedCameras: Camera[];
     garbages: GarbageStation[];
     private selectedVillageId?: string;
-    showVideoWindow = false;
+    showVideoWindow = false;    
     selectedGarbageStation?: GarbageStation;
 
     get Resource() {
@@ -566,10 +566,11 @@ export class AMapComponent implements AfterViewInit, OnInit {
         if (!camera) { return; }
 
         this.showVideoWindow = true;
+        
 
         setTimeout(async () => {
             try {
-
+                this.videoWindow.initTime();
                 this.videoWindow.changePlayMode(PlayModeEnum.live, true);
 
                 this.currentCamera = camera;
@@ -606,7 +607,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
     Playback(camera: Camera, begin: Date, end: Date) {
         if (!camera) { return; }
-        this.showVideoWindow = true;
+
+        this.showVideoWindow = true;        
 
         setTimeout(() => {
             this.videoWindow.changePlayMode(PlayModeEnum.vod, false);
