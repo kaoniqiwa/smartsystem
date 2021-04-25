@@ -57,7 +57,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     }
 
     @Input()
-    WebUrl:string;
+    WebUrl: string;
 
     hdVideo = false;
 
@@ -91,11 +91,10 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     }
 
     private srcUrl: SafeResourceUrl;
-    
-    private _player:WSPlayerProxy
-    get player(): WSPlayerProxy{
-        if(!this._player)
-        {
+
+    private _player: WSPlayerProxy
+    get player(): WSPlayerProxy {
+        if (!this._player) {
             this._player = new WSPlayerProxy(this.divId);
         }
         return this._player;
@@ -112,10 +111,10 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     date: string;
 
     private _devId = '';
-    get divId(){
+    get divId() {
         return this._devId;
     }
-    set divId(val:string){
+    set divId(val: string) {
         this._devId = val;
         this._player = new WSPlayerProxy(this._devId);
     }
@@ -132,7 +131,9 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     @Output() VideoPlayingEventListen: EventEmitter<boolean> = new EventEmitter();
     @Output() DownloadClickedEventListen: EventEmitter<{ begin: Date, end: Date }> = new EventEmitter();
 
+    private initBeginTime = false;
     setBeginTime(time: Date) {
+        this.initBeginTime = true;
         $('#txt_begin_time').wickedpicker({
             now: time.format('HH : mm : ss'),
             twentyFour: true,
@@ -140,7 +141,9 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         });
         this.beginTime = time.format('HH : mm : ss');
     }
+    private initEndTime = false;
     setEndTime(time: Date) {
+        this.initEndTime = true;
         $('#txt_end_time').wickedpicker({
             now: time.format('HH : mm : ss'),
             twentyFour: true,
@@ -152,7 +155,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
 
     constructor(
         private sanitizer: DomSanitizer,
-        private datePipe: DatePipe, 
+        private datePipe: DatePipe,
         private userDalService: UserDalService) {
         if (this.hasControl) {
             if (this.viewModel_ == null) {
@@ -282,9 +285,13 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
 
 
                 const date = new Date();
-                this.setEndTime(date);
+                if (!this.initEndTime) {
+                    this.setEndTime(date);
+                }
                 date.setMinutes(date.getMinutes() - 5);
-                this.setBeginTime(date);
+                if (!this.initBeginTime) {
+                    this.setBeginTime(date);
+                }
                 this.date = date.format('yyyy-MM-dd');
 
                 // $('#txt_end_time').timepicker({
@@ -317,7 +324,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         this.initDateTimePicker();
     }
 
-    getSrc(webUrl: string, url: string, cameraName?: string) {        
+    getSrc(webUrl: string, url: string, cameraName?: string) {
         let result = webUrl + '?url=' + base64encode(url);
         if (cameraName) {
             let name = utf16to8(cameraName);
@@ -327,7 +334,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     }
 
 
-    playVideo() {        
+    playVideo() {
         const me = this;
         me.divId = 'div' + me.guid;
         me.screenId = 'screen' + me.guid;
@@ -340,15 +347,15 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
         if (!this.url) {
             return;
         }
-setTimeout(()=>{
-    this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc(this.WebUrl, this.url, this.cameraName));
-        this.VideoPlayingEventListen.emit(true);
-}, 10);
-        
+        setTimeout(() => {
+            this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc(this.WebUrl, this.url, this.cameraName));
+            this.VideoPlayingEventListen.emit(true);
+        }, 10);
+
 
     }
 
-    closeWindow(): void {        
+    closeWindow(): void {
         const sc = document.getElementById(this.guid);
         if (sc) { sc.parentElement.removeChild(sc); }
         if (this.closeWindowEventListen) {

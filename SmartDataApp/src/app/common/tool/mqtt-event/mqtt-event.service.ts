@@ -11,8 +11,13 @@ export class MQTTEventService {
     mqtt: MqttComponent;
     constructor(private pushService: EventPushService, private configService: ConfigRequestService) {
         // this.mqtt = new MqttComponent('192.168.21.241', 15883);
+        let hostname = document.location.hostname;
+        if(hostname == "127.0.0.1" || hostname == "localhost")
+        {
+            hostname = "garbage01.51hws.com"
+        }
         configService.getMQTT().subscribe(x =>
-            this.mqtt = new MqttComponent(document.location.hostname, x.Port,x.Username,x.Password));
+            this.mqtt = new MqttComponent(hostname, x.Port,x.Username,x.Password));
     }
 
     listenerIllegalDrop(divisionsId?: string) {

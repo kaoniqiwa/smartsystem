@@ -7,6 +7,8 @@ import { HowellAuthHttpService } from "./howell-auth-http.service";
 import { SaveModel } from "../model/save-model";
 import { VideoPlayArgs } from "../../../app/video/mode";
 import { SessionUser } from "../../../app/common/tool/session-user";
+import { isIPAddressOrLocalhost } from "src/app/common/tool/tool.service";
+import { isIP } from "net";
 
 @Injectable({
     providedIn: 'root'
@@ -62,7 +64,7 @@ export class SRServiceRequestSerivce extends SaveModel {
             }
             response.Data.Url = url;
         }
-        if (location.hostname == "127.0.0.1" || location.hostname == "localhost") {
+        if (isIPAddressOrLocalhost()) {
             const host = document.location.hostname;
             const port = document.location.port;
             response.Data.WebUrl = "http://" + host + ":" + port + "/video/wsplayer/wsplayer.html";
@@ -89,7 +91,7 @@ export class SRServiceRequestSerivce extends SaveModel {
             }
             response.Data.Url = url;
         }
-        if (location.hostname == "127.0.0.1" || location.hostname == "localhost") {
+        if (isIPAddressOrLocalhost()) {
             
             const host = document.location.hostname;
             const port = document.location.port;

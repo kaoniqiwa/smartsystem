@@ -362,6 +362,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
             this.client.ContextMenu.AddItem('<i class="howell-icon-Subsystem" style="font-size: 18px"></i> 投放点信息', async (id: string) => {
                 this.client.Events.OnElementsClicked(null);
+                const status = document.getElementsByClassName('map-bar status')[0];
+                status['style'].display = 'none';
                 let station = this.garbages.find(x => x.Id === id);
                 if (!station) {
                     const response = await this.garbageService.get(id).toPromise();
@@ -382,9 +384,6 @@ export class AMapComponent implements AfterViewInit, OnInit {
         };
         this.client.Events.OnMouseDoubleClick = async (position) => {
             console.log("OnMouseDoubleClick");
-        };
-        this.client.Events.OnElementsClicked = async (objs) => {
-            console.log("OnElementsClicked");
         };
 
         this.client.Events.OnElementsDoubleClicked = async (objs) => {
@@ -651,6 +650,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 response.Data.Url = response.Data.Url.indexOf('password') > 0
                     ? response.Data.Url : response.Data.Url + this.user.videoUserPwd;
                 this.videoWindow.url = response.Data.Url;
+                this.videoWindow.WebUrl = response.Data.WebUrl;
                 this.videoWindow.cameraName = this.currentCamera.Name;
                 this.videoWindow.playVideo();
             }
@@ -672,6 +672,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             response.Data.Url = response.Data.Url.indexOf('password') > 0
                 ? response.Data.Url : response.Data.Url + this.user.videoUserPwd;
             this.videoWindow.url = response.Data.Url;
+            this.videoWindow.WebUrl = response.Data.WebUrl;
             this.videoWindow.cameraName = this.currentCamera.Name;
             this.videoWindow.playVideo();
         } catch (ex) {
