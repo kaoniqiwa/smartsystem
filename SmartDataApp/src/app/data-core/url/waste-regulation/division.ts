@@ -1,6 +1,6 @@
 import { IUrl, BaseUrl, GarbageBaseUrl } from "../IUrl";
 
-export class Division extends GarbageBaseUrl implements IUrl {
+export class DivisionUrl extends GarbageBaseUrl implements IUrl {
     create(): string {
         return this.garbage + 'Divisions';
     }

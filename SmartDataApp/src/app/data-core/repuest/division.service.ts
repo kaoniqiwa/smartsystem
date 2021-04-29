@@ -14,10 +14,10 @@ import { HowellAuthHttpService } from "./howell-auth-http.service";
     providedIn:'root'
 })
 export class DivisionRequestService extends SaveModel{
-    url: url.Division;
+    url: url.DivisionUrl;
     constructor(private requestService: HowellAuthHttpService) {
         super();
-        this.url = new url.Division();
+        this.url = new url.DivisionUrl();
     }
     create(item:Division){ 
         return this.requestService.post<Division, Response<Division>>(this.url.create(), this.toModel(item,this.formMustField.division));

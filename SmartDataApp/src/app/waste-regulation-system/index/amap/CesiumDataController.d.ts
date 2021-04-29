@@ -25,7 +25,7 @@ declare namespace CesiumDataController {
         Remove: (villageId: string) => boolean;
         GetByBuildingId: (buildingId: string) => Building;
         Asyn: AsynVillageController;
-        Point: any;
+        Point: PointController;
         Polyline: any;
         Ellipsoid: any;
     }

@@ -52,6 +52,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
   }
   ngOnDestroy() {
     this.maxWindow = false;
+    if(this.p)
     this.p.stopVideo();
   }
 
@@ -71,6 +72,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
         const val = this.model.items.get(this.model.index), clearVideo = () => {
           this.playing = false;
           this.currentPlayId = '';
+          if(this.p)
           this.p.stopVideo();
         };
         if (val && val.imgDesc) {
@@ -97,6 +99,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
     if (this.playing) {
       this.playing = false;
       this.currentPlayId = '';
+      if(this.p)
       this.p.stopVideo();
     }
   }
@@ -109,6 +112,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
 
       this.playViewSize.width = vSize.width;
       this.playViewSize.height = vSize.height;
+      if(this.p)
         this.p.reSizeView(this.playViewSize.width, this.playViewSize.height);
         moveView2('item__' + this.currentPlayId, 'video__view_wrap', 0, 0);
       }
@@ -140,6 +144,7 @@ export class GalleryRollPageComponent extends BasisCardComponent implements OnIn
 
   fiveTimeVideo() {
     setTimeout(() => {
+      if(this.p)
       this.p.stopVideo();
       this.playing = false;
     }, 300 * 1000);/**播放5 */

@@ -119,7 +119,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     selectedCameras: Camera[];
     garbages: GarbageStation[];
     private selectedVillageId?: string;
-    showVideoWindow = false;    
+    showVideoWindow = false;
     selectedGarbageStation?: GarbageStation;
 
     get Resource() {
@@ -193,14 +193,20 @@ export class AMapComponent implements AfterViewInit, OnInit {
         const opts = new Array();
         for (let i = 0; i < list.Data.Data.length; i++) {
             const data = list.Data.Data[i];
-
+            const station = stations.find(x => x.Id == data.Id);
             if (data.CurrentGarbageTime > 0) {
-                const point = this.points[data.Id];
+                let point = this.points[data.Id];
+                if (!point) {
+                    point = this.client.DataController.Village.Point.Get(station.DivisionId, station.Id);
+                    this.points[point.id] = point;
+                };
+                if (!point) continue;
                 const opt = new CesiumDataController.LabelOptions();
                 opt.position = point.position;
                 opt.id = point.id;
 
-                const p = data.CurrentGarbageTime / 240;
+                let p = data.CurrentGarbageTime / 240;
+                p = p > 1 ? 1: p;
 
                 console.log(data);
                 const hours = parseInt((data.CurrentGarbageTime / 60).toString());
@@ -566,7 +572,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         if (!camera) { return; }
 
         this.showVideoWindow = true;
-        
+
 
         setTimeout(async () => {
             try {
@@ -608,7 +614,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     Playback(camera: Camera, begin: Date, end: Date) {
         if (!camera) { return; }
 
-        this.showVideoWindow = true;        
+        this.showVideoWindow = true;
 
         setTimeout(() => {
             this.videoWindow.changePlayMode(PlayModeEnum.vod, false);
