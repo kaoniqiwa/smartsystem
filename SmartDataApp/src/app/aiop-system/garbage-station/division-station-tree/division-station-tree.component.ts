@@ -62,8 +62,13 @@ export class DivisionStationTreeComponent implements OnInit {
       if (ancestorDivision) {
         for (let i = 0; i < ancestorDivision.length; i++) {
           const element = ancestorDivision[i];
-          this.dataService.garbageStations = await this.dataService.requestGarbageStation(element.Id);
-          this.stationTreeService.garbageStationModel = this.dataService.garbageStations;
+          let stations = await this.dataService.requestGarbageStation(element.Id);          
+          this.stationTreeService.garbageStationModel = stations;
+          if(!this.dataService.garbageStations)
+          {
+            this.dataService.garbageStations = [];
+          }
+          this.dataService.garbageStations = this.dataService.garbageStations.concat(stations);          
           this.stationTreeService.convertStationTreeNode();
         }
       }
