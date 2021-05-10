@@ -175,7 +175,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
     }
 
     async refresh() {
-        const response = await this.garbageService.list(new GetGarbageStationsParams()).toPromise();
+        let params = new GetGarbageStationsParams()
+        params.PageSize = 9999;
+        const response = await this.garbageService.list(params).toPromise();
 
         this.garbages = response.Data.Data;
         if (!this.villageGarbages) {
@@ -187,6 +189,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
     async setLabel(stations: GarbageStation[]) {
         const params = new GetGarbageStationStatisticNumbersParams();
+        params.PageSize = 9999;
         params.Ids = stations.map(x => x.Id);
         const list = await this.garbageService.statisticNumberList(params).toPromise();
 
@@ -273,6 +276,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     async getBaseDivision() {
 
         const params = new GetDivisionsParams();
+        params.PageSize = 9999;
         params.DivisionType = this.Resource.ResourceType;
 
         const response = await this.divisionService.get(this.Resource.Id).toPromise();
@@ -288,7 +292,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
         this.client = new CesiumMapClient(this.iframe.nativeElement);
         this.client.Events.OnLoading = async () => {
             this.dataController = this.client.DataController;
-            const response = await this.garbageService.list(new GetGarbageStationsParams()).toPromise();
+            let params = new GetGarbageStationsParams();
+            params.PageSize = 9999;
+            const response = await this.garbageService.list(params).toPromise();
 
             this.garbages = response.Data.Data;
             if (!this.villageGarbages) {
@@ -516,6 +522,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             let response: Response<PagedList<Division | GarbageStation>>;
 
             params = new GetDivisionsParams();
+            params.PageSize = 9999;
             params.ParentId = village.id;
             response = await this.divisionService.list(params).toPromise();
             console.log(response);
@@ -529,6 +536,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 });
             } else {
                 params = new GetGarbageStationsParams();
+                params.PageSize = 9999;
                 params.DivisionId = village.id;
                 response = await this.garbageService.list(params).toPromise();
                 this.amapService.childrenOfList = (response as Response<PagedList<GarbageStation>>).Data.Data.map(x => {
