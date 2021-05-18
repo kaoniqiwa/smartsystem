@@ -471,7 +471,7 @@ a.hw-link-underline.sky-blue-text2:hover
   /* border-radius: 5px; */
   color: #fff;
   /*这里显示的内容为表格中自定义的labelTooltip属性对应的值*/
-  content: var(--tooltip-string); 
+  content: attr(data-tipLabel); 
   z-index: 2;
   line-height: 20px;
   font-size: 14px;
