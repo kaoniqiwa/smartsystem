@@ -186,7 +186,7 @@ declare namespace CesiumMap {
         OnLoaded(): void;
         OnBuildingClicked(building: CesiumDataController.Building): void;
         OnFloorClicked(floor: CesiumDataController.Floor): void;
-        OnElementsClicked<T extends CesiumDataController.Element>(elements: Array<T>): void;
+        OnElementsClicked<T extends CesiumDataController.Element>(elements: Array<T>|null): void;
         OnElementsDoubleClicked<T extends CesiumDataController.Element>(elements: Array<T>): void;
         OnVillageClicked(village: CesiumDataController.Village): void;
         GetCoordinate(lng: number, lat: number): void;
