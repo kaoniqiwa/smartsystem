@@ -35,15 +35,15 @@ enum PanelEventType {
     providers: [AMapService]
 })
 export class AMapComponent implements AfterViewInit, OnInit {
-    @ViewChild('iframe') iframe: ElementRef;
+    @ViewChild('iframe') iframe!: ElementRef;
     @ViewChild('videoWindow')
-    videoWindow: VideoWindowComponent;
+    videoWindow!: VideoWindowComponent;
 
     @ViewChild('villageTreeList')
     villageTreeList: any;
 
-    @ViewChild('video_list_prev') video_list_prev: ElementRef;
-    @ViewChild('video_list_next') video_list_next: ElementRef;
+    @ViewChild('video_list_prev') video_list_prev!: ElementRef;
+    @ViewChild('video_list_next') video_list_next!: ElementRef;
 
 
 
@@ -209,7 +209,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 opt.id = point.id;
 
                 let p = data.CurrentGarbageTime / 240;
-                p = p > 1 ? 1: p;
+                p = p > 1 ? 1 : p;
 
                 console.log(data);
                 const hours = parseInt((data.CurrentGarbageTime / 60).toString());
@@ -325,6 +325,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
             const p = this.getBaseDivision();
             p.then((baseDivision) => {
+                if (!baseDivision) return;
                 this.baseDivisionId = baseDivision.Id;
                 this.client.Village.Select(baseDivision.Id, true);
                 this.refresh();
@@ -374,7 +375,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
             this.client.ContextMenu.AddItem('<i class="howell-icon-Subsystem" style="font-size: 18px"></i> 投放点信息', async (id: string) => {
                 this.client.Events.OnElementsClicked(null);
-                const status = document.getElementsByClassName('map-bar status')[0];
+                const status = document.getElementsByClassName('map-bar status')[0] as HTMLElement;
                 status['style'].display = 'none';
                 let station = this.garbages.find(x => x.Id === id);
                 if (!station) {
@@ -402,7 +403,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
             if (!objs || objs.length <= 0) { return; }
             const id = objs[0].id;
-            const list = document.getElementsByClassName('map-bar video-list')[0];
+            const list = document.getElementsByClassName('map-bar video-list')[0] as HTMLElement;
             if (list && objs && objs.length > 0) {
 
                 try {
@@ -446,7 +447,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
                 }
                 finally {
                     list['style'].display = 'block';
-                    const status = document.getElementsByClassName('map-bar status')[0];
+                    const status = document.getElementsByClassName('map-bar status')[0] as HTMLElement;
                     status['style'].display = 'none';
                 }
 
