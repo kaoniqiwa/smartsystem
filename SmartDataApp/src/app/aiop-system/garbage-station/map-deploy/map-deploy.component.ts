@@ -119,6 +119,19 @@ export class MapDeployComponent implements OnInit {
     // item.id;
   }
 
+  checkPoints(village: CesiumDataController.Village) {
+    const points = village.points;
+    for (const pointId in points) {
+      if (Object.prototype.hasOwnProperty.call(points, pointId)) {
+        const point = points[pointId];
+        this.points[pointId] = point;
+        const node = this.stationTree.findNode(point.id);
+        node.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
+      }
+    }
+  }
+
+
   selectDivisionClick = async (item: FlatNode, lastNode: boolean) => {
     this.GarbageStation = null;
 
@@ -135,6 +148,9 @@ export class MapDeployComponent implements OnInit {
       this.client.Viewer.MoveTo(village.center);
       this.wantUnbindNode = undefined;
       this.pointSelected = undefined;
+      debugger;
+      this.checkPoints(village);
+
       return;
     }
     // 如果选中的是垃圾厢房
@@ -152,8 +168,14 @@ export class MapDeployComponent implements OnInit {
       }
 
 
+
+
       try {
         const point = this.dataController.Village.Point.Get(data[0].DivisionId, data[0].Id);
+
+        const node = this.stationTree.findNode(point.id);
+        node.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
+
         this.pointSelected = point;
         this.client.Viewer.MoveTo(point.position);
 
@@ -207,24 +229,24 @@ export class MapDeployComponent implements OnInit {
     this.client = new CesiumMapClient(this.iframe.nativeElement);
     this.client.Events.OnLoading = () => {
       this.dataController = this.client.DataController;
-      const villages = this.dataController.Village.List();
+      // const villages = this.dataController.Village.List();
 
-      for (const villageId in villages) {
-        if (Object.prototype.hasOwnProperty.call(villages, villageId)) {
-          const village = villages[villageId];
-          const points = village.points;
-          for (const pointId in points) {
-            if (Object.prototype.hasOwnProperty.call(points, pointId)) {
-              const point = points[pointId];
-              this.points[pointId] = point;
+      // for (const villageId in villages) {
+      //   if (Object.prototype.hasOwnProperty.call(villages, villageId)) {
+      //     const village = villages[villageId];
+      //     const points = village.points;
+      //     for (const pointId in points) {
+      //       if (Object.prototype.hasOwnProperty.call(points, pointId)) {
+      //         const point = points[pointId];
+      //         this.points[pointId] = point;
 
 
-              const node = this.stationTree.findNode(point.id);
-              node.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
-            }
-          }
-        }
-      }
+      //         const node = this.stationTree.findNode(point.id);
+      //         node.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
+      //       }
+      //     }
+      //   }
+      // }
     };
     this.client.Events.OnLoaded = () => {
 
