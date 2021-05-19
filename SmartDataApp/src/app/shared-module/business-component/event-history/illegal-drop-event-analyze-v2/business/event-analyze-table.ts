@@ -49,7 +49,7 @@ export class EventAnalyzeTable extends BusinessTable implements IConverter {
                 id: FieldOrderNameEnum.DivisionName
             },
         }), new TableAttr({
-            HeadTitleName: "乱扔垃圾",
+            HeadTitleName: "乱丢垃圾",
             tdWidth: "30%",
             tdInnerAttrName: "eventNumber",
             orderBy: {

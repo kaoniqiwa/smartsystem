@@ -63,7 +63,7 @@ export class IllegalDropEventAnalyzeV2Component implements OnInit {
   }
 
   get pageTitle(){
-    return  this.businessEventType == BusinessEventTypeEnum.IllegalDrop ? '乱扔垃圾' : '混合投放';
+    return  this.businessEventType == BusinessEventTypeEnum.IllegalDrop ? '乱丢垃圾' : '混合投放';
   }
 
   exportExcel() {
