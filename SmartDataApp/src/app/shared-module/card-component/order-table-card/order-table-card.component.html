@@ -24,10 +24,10 @@
           </div>
         </div>
         <div fxFlex="54">
-          <a href="javascript:" class="link-text" (click)="itemClick(item.id)">
-            <h4 class="light-blue-text ele-nowrap">{{item.name}}</h4>
-          </a>
-        
+          <a href="javascript:" class="link-text hw-link-underline "  title="查看{{item.name}}{{model.title.replace('排名','')}}事件记录"        
+           (click)="itemClick(item.id)">
+            <h4 class="light-blue-text ele-nowrap ">{{item.name}}</h4>
+          </a>        
         </div>
         <div fxFlex="34">
           <h4 class="m-0 sky-blue-text2 " style="text-align: right;">{{ item.subName}}

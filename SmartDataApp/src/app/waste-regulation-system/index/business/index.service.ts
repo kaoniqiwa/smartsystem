@@ -37,14 +37,15 @@ export class IndexService {
         const model = new OrderTable();
         const view = new ViewsModel();
         view.views = [model];
-        model.title='乱扔垃圾行为TOP10';
+        model.title='乱丢垃圾行为TOP10';
         model.table = new Array();
         for (let i = 0; i < 10; i++) 
             model.table.push({
                 id:'',
                 name:'-',
                 subNameAfter:'起',
-                subName:'0'
+                subName:'0',
+                linkTipLabel:'查看事件记录'
             });        
        
         return view;

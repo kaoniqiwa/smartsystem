@@ -3,10 +3,11 @@
     <ng-container *ngFor="let item of model">
     
       <ng-container *ngIf="item.tag">
-        <div class="hint-card move" style="cursor: pointer;" (click)="tagClick(item.tag)">
+        <a  href="javascript:void(0)" title="{{item.linkTipLabel}}"
+        class="hint-card move hw-link-underline"   (click)="tagClick(item.tag)">
           <h5 class="m-b-5">{{item.title}}</h5>
-          <label  class="{{item.subTitleColor}}">{{item.subTitle}}</label>
-        </div> 
+          <a href="javascript:void(0)" class="{{item.subTitleColor}} hw-link-underline a-text">{{item.subTitle}}</a>
+        </a> 
       </ng-container>
       <ng-container *ngIf="!item.tag">
         <div class="hint-card">

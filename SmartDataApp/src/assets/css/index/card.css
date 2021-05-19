@@ -408,7 +408,7 @@ padding-right: 5px;
      height: 71px;
      background-image: url('/assets/img/hint-card.png');
   }
-  .hint-card label{
+  .hint-card a{
     font-size: 24px; 
     margin: 0;
     line-height: 1;
@@ -423,7 +423,7 @@ padding-right: 5px;
   }
 
   .subTitle-icon:hover{
-    color:#7f94ff;
+    color:#cfd7ff;
   }
   .subTitle-icon.selected{
     color: #5e6ebf;
@@ -437,46 +437,26 @@ padding-right: 5px;
     background-size: 930px 100%;
   }
 
-  a.hw-link-underline:hover {
+  a.hw-link-underline:hover 
+  , a.hw-link-underline:hover a
+  , a.hw-link-underline-v2:hover h2{
     text-decoration:underline;
 }
 
+a.hw-link-underline.hint-card:hover{
+  text-decoration:none;
+}
+
 a.hw-link-underline.sky-blue-text2:hover 
+,a.hw-link-underline.link-text:hover 
+,a.hw-link-underline-v2.a-text:hover  h2
+,a.hw-link-underline.hint-card:hover
+,a.hw-link-underline.hint-card:hover a
 ,a.hw-link-underline.sky-blue-text2:hover  h4
-,a.hw-link-underline h2:hover,a.hw-link-underline h4:hover {
+,a.hw-link-underline h2:hover {
   color: #6997ff;
 }
 
 
  
- 
-@keyframes delay_show {
-  0%{
-      opacity:0;
-  }
-  66%{ /*这里表示3s的66%也就是大约2秒的时候*/
-      opacity:0;
-  }
-  100%{
-      opacity:1;
-  }
-}
-
-.hw-link-tooltip:hover:after {
-  position: absolute;
-  left: var(--tooltip-left); 
-  bottom: var(--tooltip-bottom);
-  padding:0 5px; 
-  background-color:rgb(0, 0,0,0.8);
-  /* border-radius: 5px; */
-  color: #fff;
-  /*这里显示的内容为表格中自定义的labelTooltip属性对应的值*/
-  content: attr(data-tipLabel); 
-  z-index: 2;
-  line-height: 20px;
-  font-size: 14px;
-  width: var(--tooltip-width);
-  animation:delay_show 2s 1 forwards;
-} 
-
- 
+  

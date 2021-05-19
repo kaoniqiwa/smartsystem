@@ -3,7 +3,8 @@
     <h2 class="{{model.titleColor}}">{{ model.title}}</h2>
     <div class="time-label-wrapper" *ngIf="model.subTitle!=''">
       <h4 class="m-0 sky-blue-text" >
-        <a class="howell-icon-video sky-blue-text2  subTitle-icon" href="javascript:void(0)" (click)="tagClick()"></a>
+        <a class="howell-icon-video sky-blue-text2  subTitle-icon "  title="播放视频"       
+        href="javascript:" (click)="tagClick()"></a>
         {{model.subTitle}}</h4>
     </div>
     <div class="content-wrapper p-r-20">

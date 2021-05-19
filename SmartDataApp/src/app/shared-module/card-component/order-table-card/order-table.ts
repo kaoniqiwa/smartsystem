@@ -1,10 +1,12 @@
 export class OrderTable{
     title:string;
+
     table:{
         id:string;
         name:string;
         subName:string;
         subNameAfter:string;
+        linkTipLabel:string;
     }[];
     dropList:{
         listNodes:Array<{
