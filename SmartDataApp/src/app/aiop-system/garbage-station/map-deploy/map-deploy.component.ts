@@ -125,7 +125,7 @@ export class MapDeployComponent implements OnInit {
       if (Object.prototype.hasOwnProperty.call(points, pointId)) {
         const point = points[pointId];
         this.points[pointId] = point;
-        const node = this.stationTree.findNode(point.id);
+        const node = this.stationTree.findNode(point.id);        
         node.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
       }
     }
@@ -147,10 +147,8 @@ export class MapDeployComponent implements OnInit {
       const village = this.dataController.Village.Get(data[0].Id);
       this.client.Viewer.MoveTo(village.center);
       this.wantUnbindNode = undefined;
-      this.pointSelected = undefined;
-      debugger;
-      this.checkPoints(village);
-
+      this.pointSelected = undefined;      
+      this.checkPoints(village);      
       return;
     }
     // 如果选中的是垃圾厢房
@@ -172,19 +170,19 @@ export class MapDeployComponent implements OnInit {
 
       try {
         const point = this.dataController.Village.Point.Get(data[0].DivisionId, data[0].Id);
+        if (point) {
+          item.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
 
-        const node = this.stationTree.findNode(point.id);
-        node.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
 
-        this.pointSelected = point;
-        this.client.Viewer.MoveTo(point.position);
+          this.pointSelected = point;
+          this.client.Viewer.MoveTo(point.position);
 
-        this.client.Point.Name.Hide();
+          this.client.Point.Name.Hide();
 
-        setTimeout(() => {
-          this.client.Point.Name.Show(point.id);
-        }, 500);
-
+          setTimeout(() => {
+            this.client.Point.Name.Show(point.id);
+          }, 500);
+        }
 
 
       } catch (error) {
@@ -229,6 +227,7 @@ export class MapDeployComponent implements OnInit {
     this.client = new CesiumMapClient(this.iframe.nativeElement);
     this.client.Events.OnLoading = () => {
       this.dataController = this.client.DataController;
+
       // const villages = this.dataController.Village.List();
 
       // for (const villageId in villages) {

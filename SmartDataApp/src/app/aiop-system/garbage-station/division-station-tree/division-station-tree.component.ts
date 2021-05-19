@@ -62,13 +62,12 @@ export class DivisionStationTreeComponent implements OnInit {
       if (ancestorDivision) {
         for (let i = 0; i < ancestorDivision.length; i++) {
           const element = ancestorDivision[i];
-          let stations = await this.dataService.requestGarbageStation(element.Id);          
+          let stations = await this.dataService.requestGarbageStation(element.Id);
           this.stationTreeService.garbageStationModel = stations;
-          if(!this.dataService.garbageStations)
-          {
+          if (!this.dataService.garbageStations) {
             this.dataService.garbageStations = [];
           }
-          this.dataService.garbageStations = this.dataService.garbageStations.concat(stations);          
+          this.dataService.garbageStations = this.dataService.garbageStations.concat(stations);
           this.stationTreeService.convertStationTreeNode();
         }
       }
@@ -97,11 +96,17 @@ export class DivisionStationTreeComponent implements OnInit {
     return nodes;
   }
 
-  addNodeRightBtn(item: { iconClass: string, btns: RightBtn[] }) {
+  addNodeRightBtn(item: { iconClass?: string, id?: string, btns: RightBtn[] }) {
     if (this.treeListMode === TreeListMode.rightBtn && item) {
-      const nodes = this.findBindNode(item.iconClass);
-      for (const n of nodes) {
-        n.rightClassBtn = item.btns;
+      if (item.id) {
+        let n = this.findNode(item.id);
+        n.rightClassBtn = item.btns;        
+      }
+      if (item.iconClass) {
+        const nodes = this.findBindNode(item.iconClass);
+        for (const n of nodes) {
+          n.rightClassBtn = item.btns;
+        }
       }
     }
   }
