@@ -57,7 +57,7 @@ export class EventTable extends BusinessTable implements IConverter {
         , tableOperationBtns: [
             new TableOperationBtn({
                 css: 'howell-icon-video td-icon',
-                title: '视频',
+                title: '播放视频',
                 callback: (item: TableField) => {
                     this.playVideosFn('1&'+item.id);
                 }
