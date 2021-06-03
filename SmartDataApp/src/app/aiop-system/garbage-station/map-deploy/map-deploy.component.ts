@@ -4,10 +4,12 @@ import { FlatNode, RightBtn } from '../../../shared-module/custom-tree/custom-tr
 import { DataService as TypeDataService } from '../garbage-station/business/data.service';
 import { DataService as CameraDataService } from './business/data.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Division } from '../../../data-core/model/waste-regulation/division';
+import { Division, GisArea, GisPoint, GisType } from '../../../data-core/model/waste-regulation/division';
 import { GarbageStation } from '../../../data-core/model/waste-regulation/garbage-station';
 import { MessageBar } from '../../../common/tool/message-bar';
 import { ConfirmDialog } from '../../../shared-module/confirm-dialog/confirm-dialog.component';
+import { DivisionRequestService } from 'src/app/data-core/repuest/division.service';
+import { GarbageStationRequestService } from 'src/app/data-core/repuest/garbage-station.service';
 
 
 @Component({
@@ -54,6 +56,8 @@ export class MapDeployComponent implements OnInit {
 
   // 是否可拖拽
   draggable = false;
+
+  gisPointChanging = false;
 
   mouseLon = 0;
   mouseLat = 0;
@@ -124,12 +128,19 @@ export class MapDeployComponent implements OnInit {
     for (const pointId in points) {
       if (Object.prototype.hasOwnProperty.call(points, pointId)) {
         const point = points[pointId];
-        this.points[pointId] = point;
-        const node = this.stationTree.findNode(point.id);        
-        node.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
+        (function (that, pointId, point) {
+          setTimeout(() => {
+            that.points[pointId] = point;
+            const node = that.stationTree.findNode(pointId);
+
+            node.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
+          }, 0);
+
+        })(this, pointId, point)
       }
     }
   }
+
 
 
   selectDivisionClick = async (item: FlatNode, lastNode: boolean) => {
@@ -141,14 +152,39 @@ export class MapDeployComponent implements OnInit {
     data = this.stationTree.dataService.divisions.filter(x => {
       return x.Id === item.id;
     });
+
     if (data && data.length > 0) {
       this.DivisionId = data[0].Id;
       this.client.Village.Select(data[0].Id);
       const village = this.dataController.Village.Get(data[0].Id);
+      try {
+        if (this.gisPointChanging) {
+          data[0].GisArea = new GisArea();
+          data[0].GisArea.GisType = GisType.GCJ02;
+          data[0].GisArea.GisPoint = village.areas.map(x => {
+            return new GisPoint(x, GisType.GCJ02);
+          });
+          data[0].GisPoint = new GisPoint([village.center.lon, village.center.lat], GisType.GCJ02)
+
+          let response = await this.divisionService.set(data[0]).toPromise();
+          console.log(response);
+          if (!response.FaultCode) {
+            throw new Error(response.FaultReason);
+          }
+          new MessageBar().response_success('录入区划坐标成功');
+        }
+      } catch (error) {
+        new MessageBar().response_Error('录入区划坐标失败');
+      }
+
+
       this.client.Viewer.MoveTo(village.center);
       this.wantUnbindNode = undefined;
-      this.pointSelected = undefined;      
-      this.checkPoints(village);      
+      this.pointSelected = undefined;
+      setTimeout(() => {
+        this.checkPoints(village);
+      }, 0);
+
       return;
     }
     // 如果选中的是垃圾厢房
@@ -172,6 +208,20 @@ export class MapDeployComponent implements OnInit {
         const point = this.dataController.Village.Point.Get(data[0].DivisionId, data[0].Id);
         if (point) {
           item.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
+          try {
+            if (this.gisPointChanging) {
+              data[0].GisPoint = new GisPoint([point.position.lon, point.position.lat], GisType.GCJ02);
+              let response = await this.garbageService.set(data[0]).toPromise();
+              console.log(response);
+              if (!response.FaultCode) {
+                throw new Error(response.FaultReason);
+              }
+              new MessageBar().response_success('录入点位坐标成功');
+            }
+          } catch (error) {
+
+            new MessageBar().response_Error('录入点位坐标失败');
+          }
 
 
           this.pointSelected = point;
@@ -199,6 +249,8 @@ export class MapDeployComponent implements OnInit {
   constructor(private typeDataService: TypeDataService,
     private cameraDataService: CameraDataService,
     private sanitizer: DomSanitizer,
+    private divisionService: DivisionRequestService,
+    private garbageService: GarbageStationRequestService
   ) {
     this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc());
 
@@ -431,6 +483,14 @@ export class MapDeployComponent implements OnInit {
 
   }
 
+  GisPointClicked() {
+    this.gisPointChanging = !this.gisPointChanging;
+    if (this.gisPointChanging) {
+      new MessageBar().response_success('录入点位坐标已开启');
+    } else {
+      new MessageBar().response_warning('录入点位坐标已关闭');
+    }
+  }
 
 
 }

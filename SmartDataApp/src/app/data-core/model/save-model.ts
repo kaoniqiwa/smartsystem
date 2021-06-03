@@ -1,7 +1,7 @@
 import { isArray, isObject } from "util";
 import { FormMustField } from "../model/must-field";
 export class SaveModel {
-protected  formMustField = new FormMustField();
+  protected formMustField = new FormMustField();
   toModel<T>(model: T, mustField: string[]) {
     var saveObj = new Object();
     const serialization = (obj: any) => {
@@ -40,6 +40,8 @@ protected  formMustField = new FormMustField();
           if (model[key] != null && model[key] != '' && model[key] != 'null') {
             saveObj[key] = model[key];
           }
+          if (model[key] == 0)
+            saveObj[key] = model[key];
         }
       }
 

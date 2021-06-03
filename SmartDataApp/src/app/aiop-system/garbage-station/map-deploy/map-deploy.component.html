@@ -13,6 +13,9 @@
         <button class="hw-red-btn m-r-10" *ngIf="pointSelected" [ngClass]="{'hw-green-btn': draggable}" (click)="RemovePointClicked()" title="删除已选中地图点位">
           删除
         </button>
+        <button class="hw-blue-btn m-r-10" [ngClass]="{'hw-green-btn': gisPointChanging}" (click)="GisPointClicked()" title="录入坐标">
+          录入坐标
+        </button>
       </div>
       <div class="pull-right">
         <input class="text" [value]="mouseLon">
