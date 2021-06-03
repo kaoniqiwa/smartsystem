@@ -86,10 +86,10 @@ export enum CategoryNameEnum {
 }
 
 export enum CategoryNameTextEnum {
-    garbageRatio = '评分',
+    garbageRatio = '达标率',
     avgGarbageTime = '平均落地时长',
     maxGarbageTime = '最大落地时长',
     garbageDuration = '总落地时长',
-    illegalDrop = '乱扔垃圾',
+    illegalDrop = '乱丢垃圾',
     mixedInto='混合投放'
 } 

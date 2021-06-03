@@ -216,7 +216,7 @@ export class StatisticTable extends BusinessTable implements IConverter, IPageTa
             tdWidth: "15%",
             tdInnerAttrName: "state"
         }), new TableAttr({
-            HeadTitleName: "滞留时间",
+            HeadTitleName: "满溢时间",
             tdWidth: "15%",
             tdInnerAttrName: "stranded"
         })],

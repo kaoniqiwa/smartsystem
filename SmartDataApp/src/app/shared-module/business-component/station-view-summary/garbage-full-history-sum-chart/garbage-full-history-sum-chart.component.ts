@@ -148,7 +148,7 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
         , reportTitle = this.dtp.nativeElement.value + ' ' + this.levelListPanel.selectedItem + ' ' + reportType
         , sheet = excel.addWorksheet(book, reportTitle)
         , colName = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
-        , fieldName = ['序号', '名称', '评分', '平均落地时长', '最大落地时长', '总落地时长', '乱扔垃圾', '混合投放']
+        , fieldName = ['序号', '名称', '达标率', '平均落地时长', '最大落地时长', '总落地时长', '乱丢垃圾', '混合投放']
         , toCellValue = (fieldStr: string) => {
           const field: FieldDesc = JSON.parse(fieldStr);
           var value = '';

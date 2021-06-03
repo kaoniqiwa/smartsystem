@@ -156,19 +156,22 @@ export class DevStatusCardConverter implements IConverter {
                 label: '全部设备数量',
                 number: input.cameraNumber + '',
                 color: ColorEnum["sky-blue-text2"],
-                tag: CameraStateTableEnum.none
+                tag: CameraStateTableEnum.none,
+                linkTipLabel:'查看全部设备信息'
             });
             output.views[0].detail.push({
                 label: '在线设备数量',
                 number: (input.cameraNumber - input.offlineCameraNumber) + '',
                 color: ColorEnum["green-text"],
-                tag: CameraStateTableEnum.online
+                tag: CameraStateTableEnum.online,
+                linkTipLabel:'查看在线设备信息'
             });
             output.views[0].detail.push({
                 label: '离线设备数量',
                 number: input.offlineCameraNumber + '',
                 color: ColorEnum["powder-red-text"],
-                tag: CameraStateTableEnum.offline
+                tag: CameraStateTableEnum.offline,
+                linkTipLabel:'查看离线设备信息'
             });
         }
         return output;
@@ -199,6 +202,9 @@ export class DivisionListConverter implements IConverter {
                 output.views[0].changebodyView = countys[0].id;
 
         }
+        // setTimeout(() => {
+        //     poshytip();  
+        // },300);
         return output;
     }
 }
@@ -268,7 +274,8 @@ export class DropOrderConverter implements IConverter {
                     id:x.id,
                     name: x.division,
                     subName: x.dropNum + '',
-                    subNameAfter: '起'
+                    subNameAfter: '起',
+                    linkTipLabel:'查看事件记录'
                 });
             /**补空行 */
             const len = output.views[0].table.length;
@@ -278,7 +285,8 @@ export class DropOrderConverter implements IConverter {
                         id:'',
                         name: '-',
                         subName: '0',
-                        subNameAfter: '起'
+                        subNameAfter: '起',
+                        linkTipLabel:'查看事件记录'
                     });
 
             output.views[0].dropListV1 = {
@@ -319,7 +327,8 @@ export class IllegalDropOrderConverter implements IConverter {
                     id:x.id,
                     name: x.division,
                     subName: x.dropNum + '',
-                    subNameAfter: '起'
+                    subNameAfter: '起',
+                    linkTipLabel:'查看事件记录'
                 });
             /**补空行 */
             const len = output.views[0].table.length;
@@ -329,7 +338,8 @@ export class IllegalDropOrderConverter implements IConverter {
                         id:'',
                         name: '-',
                         subName: '0',
-                        subNameAfter: '起'
+                        subNameAfter: '起',
+                        linkTipLabel:'查看事件记录'
                     });
 
 
@@ -364,7 +374,8 @@ export class MixedIntoDropOrderConverter implements IConverter {
                     id:x.id,
                     name: x.division,
                     subName: x.dropNum + '',
-                    subNameAfter: '起'
+                    subNameAfter: '起',
+                    linkTipLabel:'查看事件记录'
                 });
             /**补空行 */
             const len = output.views[0].table.length;
@@ -374,7 +385,8 @@ export class MixedIntoDropOrderConverter implements IConverter {
                         id:'',
                         name: '-',
                         subName: '0',
-                        subNameAfter: '起'
+                        subNameAfter: '起',
+                        linkTipLabel:'查看事件记录'
                     });
             if (input.dropList)
                 output.views[0].dropList = {
@@ -395,7 +407,7 @@ export class StationDisposeScoreConverter implements IConverter {
         output.pageSize = 1;
         output.pageIndex = 1;
         if (input instanceof StationsScoreInfo) {
-            output.views[0].title = '小包垃圾处置排名';
+            output.views[0].title = '小包垃圾处置达标率排名';
             output.views[0].table = new Array();
             var i = 0;
             const sort = input.items.sort((a, b) => {
@@ -407,7 +419,8 @@ export class StationDisposeScoreConverter implements IConverter {
                       id:x.id,
                     name: x.station,
                     subName: IntegerDecimalNum(x.score + ''),
-                    subNameAfter: x.unit
+                    subNameAfter: x.unit,
+                    linkTipLabel:'查看小包垃圾处置记录'
                 });
                 i += 1;
             }
@@ -420,7 +433,8 @@ export class StationDisposeScoreConverter implements IConverter {
                         id:'',
                         name: '-',
                         subName: '0',
-                        subNameAfter: '起'
+                        subNameAfter: '起',
+                        linkTipLabel:'查看小包垃圾处置记录'
                     });
         }
         return output;
@@ -437,30 +451,35 @@ export class DivisionGarbageSpecificationConverter implements IConverter {
         if (input instanceof Specification) {
             var hint = new Hint(), hints = new Array<Hint>();
             hint.title = '垃圾投放点数量';
+            hint.linkTipLabel='查看垃圾投放点信息';
             hint.subTitleColor = ColorEnum["sky-blue-text2"];
             hint.subTitle = input.garbagePushNumber + '';
             hint.tag = HintTag.GarbageStation;
             hints.push(hint);
             hint = new Hint();
             hint.title = '小包垃圾滞留';
+            hint.linkTipLabel='查看小包垃圾滞留信息';
             hint.tag = HintTag.StationStranded;
             hint.subTitleColor = ColorEnum["green-text"];
             hint.subTitle = input.garbageStrandedNumber + '';
             hints.push(hint);
             hint = new Hint();
             hint.title = '已满溢投放点数量';
+            hint.linkTipLabel='查看满溢投放点信息';
             hint.subTitleColor = ColorEnum["orange-text"];
             hint.subTitle = input.fullPushNumber + '';
             hint.tag = HintTag.FullStation;
             hints.push(hint);
             hint = new Hint();
             hint.title = '乱丢垃圾';
+            hint.linkTipLabel='查看乱丢垃圾事件记录';
             hint.subTitleColor = ColorEnum["powder-red-text"];
             hint.subTitle = input.illegalDropNumber + '';
             hint.tag = HintTag.IllegalDrop;
             hints.push(hint);
             hint = new Hint();
-            hint.title = '混合投放垃圾';
+            hint.linkTipLabel='查看混合投放事件记录';
+            hint.title = '混合投放';
             hint.tag = HintTag.MixedInto;
             hint.subTitleColor = ColorEnum["light-purple-text"];
             hint.subTitle = input.hybridPushNumber + '';

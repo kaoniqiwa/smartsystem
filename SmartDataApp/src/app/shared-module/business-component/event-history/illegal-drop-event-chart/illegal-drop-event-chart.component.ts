@@ -53,7 +53,7 @@ export class IllegalDropEventChartComponent implements OnInit {
     , private divisionBusinessService: DivisionBusinessService) { }
 
     get pageTitle(){
-      return  this.businessEventType == BusinessEventTypeEnum.IllegalDrop ? '乱扔垃圾' : '混合投放';
+      return  this.businessEventType == BusinessEventTypeEnum.IllegalDrop ? '乱丢垃圾' : '混合投放';
     }
     
   async ngOnInit() {

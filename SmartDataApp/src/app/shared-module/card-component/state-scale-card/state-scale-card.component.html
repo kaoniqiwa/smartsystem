@@ -19,13 +19,15 @@
     <div fxLayout="row" style="height: 40%;" fxLayoutAlign="space-between end">
       <ng-container *ngFor="let item of model.detail">
         <div fxFlex="130px" (click)="itemClick(item)" class="foot-wrap">
-          <div class="border-background ">
-            <div style="padding: 10px 5px 10px 5px;">
-              <h4 class="light-blue-text text-center">{{item.label}}</h4>
-              <div class="blue-parting-line"></div>
-              <h2 class="text-center m-b-0 m-t-5 {{item.color}}">{{item.number}}</h2>
-            </div>
-          </div>  
+          <a  href="javascript:" class="hw-link-underline-v2 a-text " title="{{item.linkTipLabel}}">
+            <div class="border-background ">
+              <div style="padding: 10px 5px 10px 5px;">
+                <h4  class="light-blue-text text-center">{{item.label}}</h4>
+                <div class="blue-parting-line"></div> 
+                <h2 class="text-center m-b-0 m-t-5 {{item.color}}">{{item.number}}</h2>
+              </div>
+            </div>  
+          </a>
         </div>
       </ng-container>      
     </div>

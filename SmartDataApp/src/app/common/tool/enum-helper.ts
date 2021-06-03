@@ -16,7 +16,7 @@ export class EnumHelper {
         this.cameraState.set(1, '设备故障');
         this.cameraState.set(2, '平台故障');
 
-        this.eventType.set(EventTypeEnum.IllegalDrop, '乱扔垃圾');
+        this.eventType.set(EventTypeEnum.IllegalDrop, '乱丢垃圾');
         this.eventType.set(EventTypeEnum.MixedInto, '混合投放');
         this.eventType.set(EventTypeEnum.GarbageVolume, '垃圾容量');
         this.eventType.set(EventTypeEnum.GarbageFull, '垃圾满溢');

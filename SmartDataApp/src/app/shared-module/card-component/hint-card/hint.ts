@@ -4,6 +4,7 @@ export class Hint {
     subTitle: string;
     subTitleColor: ColorEnum;
     tag:any;
+    linkTipLabel:string;
 }
 
 export class HintList{

@@ -18,6 +18,7 @@ export class StateScale {
         number: string;
         color:ColorEnum;
         tag:any;
+        linkTipLabel:string;
     }[];
     constructor() {
         this.title = '';

@@ -50,7 +50,7 @@ export class StatisticTable extends BusinessTable implements IConverter {
                 id: null
             },
         }), new TableAttr({
-            HeadTitleName: "评分",
+            HeadTitleName: "达标率",
             tdWidth: "13.7%",
             iocnClassLabel: true,
             orderBy: {
@@ -86,7 +86,7 @@ export class StatisticTable extends BusinessTable implements IConverter {
             },
             tdInnerAttrName: "garbageDuration"
         }), new TableAttr({
-            HeadTitleName: "乱扔垃圾",
+            HeadTitleName: "乱丢垃圾",
             tdWidth: "13.7%",
             iocnClassLabel: true,
             orderBy: {
