@@ -26,8 +26,13 @@ export class EChartLineDirective implements OnChanges {
     }
 
     init() {
-        const checkDataIndex = (index: number, displayDataIndex: number[]): boolean => {
-            if (displayDataIndex.length == 0)
+        const checkDataIndex = (index: number, displayDataIndex: number[]): boolean => { 
+            var max = -1;
+            (this.options.seriesData as number[]).map(m=>{
+                if(m > max)max=m;
+            })
+            if(max== this.options.seriesData[index]) return true;            
+            else if (displayDataIndex.length == 0)
                 return true;
             const i = displayDataIndex.indexOf(index);
             return i > -1;
