@@ -50,7 +50,7 @@ export class IllegalDropHistoryCardConverter implements IConverter {
     }
 
     private joinPart(t1: LineECharts) {
-        t1.title = "今日乱扔垃圾";
+        t1.title = "今日乱丢垃圾";
         t1.option = new LineOption();
         t1.option.xAxisData = [];
         for (let i = 1; i <= 12; i++) {
