@@ -14,7 +14,7 @@ export declare class HowellExcelJS {
 
     addImageToSheet(worksheet:any, imageId:any, cell:any):any;
 
-     writeFile(workbook:any,filename:string):any;
+     writeFile(workbook:any,filename:string,extension?:string):any;
 
      load(workbook:any,data:any,cb:(wk:any)=>void):void;
 
