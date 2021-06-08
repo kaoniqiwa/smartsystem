@@ -116,16 +116,17 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
 
   }
 
-  exportExcel() {
+  exportExcel() { 
     if (this.businessService.dataSources) {
-
+      
 
       const data = this.businessService.exportExcel(this.businessService.dataSources, this.businessService.search, this.dropList.selectedTexts);
+   
       this.configRequestService.xls('column.xlsx').subscribe(async (x) => {
 
         const a = new HowellExcelJS();
         const b = a.createBook();
-        const s = a.addWorksheet(b, 'Table'), colName = ['A', 'B', 'C', 'D', 'E']
+        const s = a.addWorksheet(b, 'Table'), colName = ['A', 'B', 'C', 'D', 'E','F','G','H']
         , evenTypeLabel = this.pageTitle;
         var i = 3, c = 3, timeTag = 0, className = '', sum = 0;
         this.dropList.selectedTexts.map(x => className += ' ' + x.text);
@@ -149,7 +150,7 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
             }
             a.setCellValue(s, colName[c] + i, x.val);
             i += 1;
-            sum += x.val;
+            sum += (x.val||0);
           });
           a.setCellValue(s, colName[c] + i, sum);
           c += 1;
@@ -169,7 +170,7 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
 
           he.generate(buffer, data.table.title, 2, 4, true, sheetArr);
         });
-      })
+      });
     }
   }
 }

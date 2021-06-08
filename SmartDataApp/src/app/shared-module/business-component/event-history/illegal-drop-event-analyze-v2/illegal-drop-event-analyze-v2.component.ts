@@ -68,14 +68,13 @@ export class IllegalDropEventAnalyzeV2Component implements OnInit {
 
   exportExcel() {
     if (this.businessService.dataSources) {
-      this.configRequestService.xls('bar.xlsx').subscribe((x) => {
-        const data = this.businessService.exportExcel(this.businessService.dataSources, this.businessService.search)
+      const data = this.businessService.exportExcel(this.businessService.dataSources, this.businessService.search)
           , evenTypeLabel = this.pageTitle;
         const a = new HowellExcelJS();
         const b = a.createBook();
         const s = a.addWorksheet(b, 'Table');
         data.table.title = this.dtp.nativeElement.value + this.classText + evenTypeLabel + '总数据' + this.businessService.reportType;
-        data.chart.chartTitle = data.table.title;
+        //data.chart.chartTitle = data.table.title;
         a.setCellValue(s, 'B1', data.table.title);
         a.setCellValue(s, 'A2', data.table.fieldName[0]);
         a.setCellValue(s, 'B2', data.table.fieldName[1]);
@@ -89,18 +88,10 @@ export class IllegalDropEventAnalyzeV2Component implements OnInit {
           i += 1;
         });
 
-        let he = new HowellExcelV1(data.chart);
-        he.loadZip(x);
-        var sheetArr: any;
-        /**图表 数据 */
-        he.read({ file: 'xl/worksheets/sheet1.xml' }, (err: any, o: any) => {
-          sheetArr = { $: o.worksheet.$, sheetViews: o.worksheet.sheetViews, drawing: o.worksheet.drawing };
-        });
-        a.getBuffer(b, (buffer) => {
-
-          he.generate(buffer, data.table.title + '.xlsx', 3, 2, false, sheetArr);
-        });
-      })
+        a.writeFile(b, data.table.title);
+      // this.configRequestService.xls('bar.xlsx').subscribe((x) => {
+        
+      // })
     }
   }
 }
