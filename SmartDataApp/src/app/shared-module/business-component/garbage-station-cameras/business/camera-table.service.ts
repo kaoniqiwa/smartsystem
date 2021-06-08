@@ -4,11 +4,8 @@ import {CameraTable  ,BusinessData} from "./camera-table";
 import { SearchControl } from "./search";
 import "../../../../common/string/hw-string";
 import { Page } from "../../../../data-core/model/page";
-import { ListAttribute} from "../../../../common/tool/table-form-helper";
 import { DatePipe } from "@angular/common";
-import { CameraRequestService as  ResourceRequestService } from "../../../../data-core/repuest/resources.service"; 
 import { Camera, GetGarbageStationCamerasParams } from "../../../../data-core/model/waste-regulation/camera";
-import { Camera as ResourceCamera } from "../../../../data-core/model/aiop/camera";
 import { GarbageStationDao } from "../../../../data-core/dao/garbage-station-dao";
 import {  ResourceCameraDao} from "../../../../data-core/dao/resources-camera-dao";
 import { DivisionDao } from "../../../../data-core/dao/division-dao";
@@ -35,14 +32,13 @@ export class CameraTableService{
     resourceCameraDao:ResourceCameraDao;
     divisionDao:DivisionDao;
     garbageStations = new Array<GarbageStation>(); 
-    resourceCamera=new Array<ResourceCamera>();
+    resourceCamera=new Array<Camera>();
     divisions=new Array<Division>();
     cameraStateTable:CameraStateTableEnum;
     findImgSrc = '';
     divisionsId='';
     constructor(garbageStationService: GarbageStationRequestService
        ,private cameraService:CameraRequestService
-       , resourceRequestService:ResourceRequestService
         ,divisionRequestService:DivisionRequestService
         ,private datePipe:DatePipe) { 
        
@@ -50,7 +46,7 @@ export class CameraTableService{
             this.requestData(event.data as any); 
         } 
         this.garbageStationDao = new GarbageStationDao(garbageStationService);
-        this.resourceCameraDao=new ResourceCameraDao(resourceRequestService);
+        this.resourceCameraDao=new ResourceCameraDao(cameraService);
         this.divisionDao=new DivisionDao(divisionRequestService);
 
         this.table.showImgFn = (id:string)=>{

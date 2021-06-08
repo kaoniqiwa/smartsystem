@@ -10,7 +10,7 @@ import { BusinessTable } from "../../../../../aiop-system/common/business-table"
 import { Injectable } from "@angular/core";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
 import { Page } from "../../../../../data-core/model/page";
-import { StationStateEnum } from "../../../../../common/tool/enum-helper";
+import { StationStateEnum, DivisionTypeEnum } from "../../../../../common/tool/enum-helper";
 import { GarbageStationRequestService } from "../../../../../data-core/repuest/garbage-station.service";
 import { SearchControl } from "./search";
 import { DivisionDao } from "../../../../../data-core/dao/division-dao";
@@ -20,10 +20,9 @@ import { GarbageStationTypeRequestService } from "../../../../../data-core/repue
 import { PlayVideo } from "../../../../../aiop-system/common/play-video";
 import { GarbageStationDao } from "../../../../../data-core/dao/garbage-station-dao"
 import { GalleryTargetViewI } from "../../../station-state-view-summary/full-garbage-station/business/gallery-target";
-import { ResourceCameraDao } from "../../../../../data-core/dao/resources-camera-dao";
-import { Camera as ResourceCamera } from "../../../../../data-core/model/aiop/camera";
+import { ResourceCameraDao } from "../../../../../data-core/dao/resources-camera-dao"; 
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
-import { CameraRequestService } from "../../../../../data-core/repuest/resources.service";
+import { CameraRequestService } from "../../../../../data-core/repuest/garbage-station.service";
 import { HWVideoService } from "../../../../../data-core/dao/video-dao";
 import { ImageEventEnum } from "../../../../gallery-target/gallery-target";
 import { MediumPicture } from "../../../../../data-core/url/aiop/resources";
@@ -34,7 +33,7 @@ export class BusinessService {
     playVideo: PlayVideo;
     galleryTargetView = new GalleryTargetViewI(this.datePipe);
     resourceCameraDao: ResourceCameraDao;
-    cameras: ResourceCamera[] = new Array();
+    cameras: Camera[] = new Array();
 
     dataSource_ = new Array<GarbageStation>();
 
@@ -66,7 +65,7 @@ export class BusinessService {
 
     constructor(private datePipe: DatePipe, private garbageStationService: GarbageStationRequestService
         , divisionService: DivisionRequestService
-        , private cameraService: CameraRequestService
+        , private cameraService:  CameraRequestService
         , garbageStationTypeService: GarbageStationTypeRequestService) {
         this.divisionDao = new DivisionDao(divisionService);
         this.garbageStationDao = new GarbageStationDao(garbageStationService);
@@ -115,7 +114,7 @@ export class BusinessService {
         }
 
         this.table.initGalleryTargetFn = (garbageId, event, index) => {
-            const cameras = new Array<ResourceCamera>();
+            const cameras = new Array<Camera>();
             event.map(x => {
                 const find = this.cameras.find(c => c.Id == x.Id);
                 cameras.push(find);
@@ -254,16 +253,23 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
     toTableModel(station: GarbageStation) {
         let tableField = new TableField();
         tableField.id = station.Id;
-        tableField.name = station.Name;
-        const committees = this.findDivisionFn(station.DivisionId),
-            county = this.findDivisionFn(committees.ParentId);
-        tableField.county = county.Name;
-        tableField.committees = committees.Name;
+        tableField.name = station.Name; 
+        tableField.committees='-';
+        const division1 = this.findDivisionFn(station.DivisionId),
+            division2 = this.findDivisionFn(division1.ParentId);
+        if (division1 && division1.DivisionType == DivisionTypeEnum.County)
+            tableField.county = division1.Name;
+        else if (division1 && division1.DivisionType == DivisionTypeEnum.Committees)
+            tableField.committees = division1.Name;
+        if (division2 && division2.DivisionType == DivisionTypeEnum.County)
+            tableField.county = division2.Name;
+        else if (division2 && division2.DivisionType == DivisionTypeEnum.Committees)
+            tableField.committees = division2.Name;
         tableField.state = StationStateEnum[station.StationState];
         return tableField;
     }
 
-    toGalleryModel(resourceCameras: ResourceCamera[], key: string, camera: Camera[]) {
+    toGalleryModel(resourceCameras: Camera[], key: string, camera: Camera[]) {
         const pic = new MediumPicture(), galleryTdAttr = new GalleryTdAttr();
         galleryTdAttr.imgSrc = new Array<string>();
         camera.map(x => {
@@ -279,7 +285,7 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
 export class BusinessData implements IBusinessData {
     types: GarbageStationType[];
     statioins: GarbageStation[];
-    items: ResourceCamera[];
+    items: Camera[];
     divisions: Division[];
     constructor(types: GarbageStationType[],
         statioins: GarbageStation[],

@@ -18,8 +18,7 @@ import { GarbageStationDao } from "../../../../../data-core/dao/garbage-station-
 import { ResourceCameraDao } from "../../../../../data-core/dao/resources-camera-dao";
 import { DivisionDao } from "../../../../../data-core/dao/division-dao";
 import { DivisionRequestService } from "../../../../../data-core/repuest/division.service";
-import { CameraRequestService } from "../../../../../data-core/repuest/resources.service";
-import { Camera as ResourceCamera } from "../../../../../data-core/model/aiop/camera";
+import { CameraRequestService } from "../../../../../data-core/repuest/garbage-station.service";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
 import { MediumPicture } from "../../../../../data-core/url/aiop/resources";
 import { StationStateEnum, EnumHelper } from "../../../../../common/tool/enum-helper";
@@ -37,7 +36,7 @@ export class BusinessService extends EnumHelper {
     garbageStationDao: GarbageStationDao;
     resourceCameraDao: ResourceCameraDao;
     divisionDao: DivisionDao;
-    cameras: ResourceCamera[] = new Array();
+    cameras: Camera[] = new Array();
     divisions = new Array<Division>();
     table = new StatisticTable();
     search = new SearchControl();
@@ -129,7 +128,7 @@ export class BusinessService extends EnumHelper {
         }
 
         this.table.initGalleryTargetFn = (garbageId, event, index) => {
-            const cameras = new Array<ResourceCamera>();
+            const cameras = new Array<Camera>();
             event.map(x => {
                 const find = this.cameras.find(c => c.Id == x.Id);
                 cameras.push(find);
@@ -142,13 +141,8 @@ export class BusinessService extends EnumHelper {
 
 
     async requestVideoUrl(cameraId: string) {
-        const   params = new GetPreviewUrlParams();
-        //user = new SessionUser(),
-        // ,videoLive = '4'
-        // ,config = await this.userDalService.getUserConfig(user.id, videoLive);        
+        const   params = new GetPreviewUrlParams();      
         params.CameraId = cameraId;
-        // params.Protocol = 'ws-ps';
-        // params.StreamType =config? parseInt(config):1;
         const response = await this.videoService.videoUrl(params); 
         return response;
     }
@@ -251,7 +245,6 @@ export class StatisticTable extends BusinessTable implements IConverter, IPageTa
         const items = new Array<TableField>();
         var tds: GalleryTdAttr[] = new Array();
         if (input instanceof Statistics) {
-            //  var stations = input.garbageStations.filter(x => x.DryFull || x.WetFull);
             const stations = input.garbageStations.sort((a, b) => {
                 return ''.naturalCompare(b.DryFull, a.DryFull);
             });
@@ -288,7 +281,7 @@ export class StatisticTable extends BusinessTable implements IConverter, IPageTa
         return tableField;
     }
 
-    toGalleryModel(resourceCameras: ResourceCamera[], key: string, camera: Camera[]) {
+    toGalleryModel(resourceCameras: Camera[], key: string, camera: Camera[]) {
         const pic = new MediumPicture(), galleryTdAttr = new GalleryTdAttr();
         galleryTdAttr.imgSrc = new Array<string>();
         camera.map(x => {
@@ -306,7 +299,7 @@ export class StatisticTable extends BusinessTable implements IConverter, IPageTa
 }
 
 export class Statistics implements IBusinessData {
-    items: ResourceCamera[];
+    items: Camera[];
     divisions: Division[];
     garbageStations: GarbageStation[];
 }
