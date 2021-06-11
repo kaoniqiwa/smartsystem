@@ -9,7 +9,7 @@ import { SearchControl } from "./search";
 import { DatePipe } from "@angular/common";
 import { TheDayTime, MonthLastDay, OneWeekDate } from "../../../../../common/tool/tool.service";
 import { ChartTypeEnum, TimeUnitEnum, ClassTypeEnum } from "./search";
-import { LineOption, BarOption,Bar3dOption } from "../../../../../common/directive/echarts/echart";
+import { LineOption, BarOption, Bar3dOption } from "../../../../../common/directive/echarts/echart";
 import "../../../../../common/string/hw-string";
 import { ExcelData } from "../../../../../common/tool/hw-excel-js/data";
 import { BusinessEventTypeEnum, convertEventData } from "../../business-event-type";
@@ -22,10 +22,10 @@ import { DivisionTypeEnum } from "../../../../../common/tool/enum-helper";
 export class BusinessService extends ListAttribute {
 
     search = new SearchControl(this.datePipe);
-    divisions:Array<Division>;
+    divisions: Array<Division>;
     lineChartOption: LineOption;
     barChartOption: BarOption;
-    bar3dOption:Bar3dOption;
+    bar3dOption: Bar3dOption;
     barChartView = true;
     lineChartView = false;
     _3dBarChartView = false;
@@ -40,7 +40,7 @@ export class BusinessService extends ListAttribute {
     reportType = '';
     dataSources: Map<string, EventNumberStatistic[]>;
     businessEventType = BusinessEventTypeEnum.IllegalDrop;
-    loadViewFn : ()=>void;
+    loadViewFn: () => void;
     constructor(private divisionService: DivisionRequestService
         , private datePipe: DatePipe
         , private garbageStationService: GarbageStationRequestService
@@ -53,7 +53,7 @@ export class BusinessService extends ListAttribute {
 
     toDivisionIdsOrStationIds(ids: string[]) {
         const s = this.search.toSearchParam();
-        if (s.ClassType == ClassTypeEnum.Committees||s.ClassType == ClassTypeEnum.County) {
+        if (s.ClassType == ClassTypeEnum.Committees || s.ClassType == ClassTypeEnum.County) {
             this.search.divisionId = ids;
             this.search.stationId = new Array();
         }
@@ -63,9 +63,9 @@ export class BusinessService extends ListAttribute {
         }
     }
 
-    get cityOption(){
-        return new SessionUser().userDivisionType == (DivisionTypeEnum.City+'');
-     }
+    get cityOption() {
+        return new SessionUser().userDivisionType == (DivisionTypeEnum.City + '');
+    }
 
     exportExcel(dataSources: Map<string, EventNumberStatistic[]>, search: SearchControl, param: Array<{ id: string, text: string }>)
         : {
@@ -83,6 +83,8 @@ export class BusinessService extends ListAttribute {
         const map = new Map<string, { no: number, date: string, name: string, val: number }[]>();
         table.data = map;
         param.map(x => {
+            const data = dataSources.get(x.id);
+            if (data == null) return;
             table.fieldName.push(x.text);
             var timeKey = new Array<{ no: number, date: string, name: string, val: number }>();
             if (s.TimeUnit == TimeUnitEnum.Hour) {
@@ -91,6 +93,7 @@ export class BusinessService extends ListAttribute {
                     if (i < 10) timeKey.push({ no: i + 1, date: '', name: `0${i}:00`, val: 0 });
                     else timeKey.push({ no: i + 1, date: '', name: `${i}:00`, val: 0 });
                 }
+                chart.dataLen = 26;
             }
             else if (s.TimeUnit == TimeUnitEnum.Day) {
                 const date = new Date(s.BeginTime)
@@ -100,7 +103,7 @@ export class BusinessService extends ListAttribute {
                     if (i < 10) timeKey.push({ no: i, date: '', name: `0${i}日`, val: 0 });
                     else timeKey.push({ no: i, date: '', name: `${i}日`, val: 0 });
                 }
-                chart.dataLen = (lastDay+2);
+                chart.dataLen = (lastDay + 2);
             }
             else if (s.TimeUnit == TimeUnitEnum.Week) {
                 ["周一", "周二", "周三", "周四", "周五", "周六", "周日"].map((x, index) => {
@@ -114,6 +117,7 @@ export class BusinessService extends ListAttribute {
         param.map((val) => {
 
             const data = dataSources.get(val.id);
+            if (data == null) return;
             const dayNum = new Array<number>(), dates = new Array<string>();
 
             chart.dataKey.push(val.id);
@@ -152,11 +156,6 @@ export class BusinessService extends ListAttribute {
                     dates.push(this.datePipe.transform(x.BeginTime, 'yyyy年MM月dd日'));
                     convertEventData(this.businessEventType, x.EventNumbers, s.TimeUnit == TimeUnitEnum.Hour)
                         .map(ed => dayNum.push(ed));
-                    // for (const e of x.EventNumbers)
-                    //     if (e.EventType == EventTypeEnum.IllegalDrop)
-                    //         if (s.TimeUnit == TimeUnitEnum.Hour)
-                    //             dayNum.push(e.DeltaNumber);
-                    //         else dayNum.push(e.DayNumber);
                 }
             var i = 0, j = 0;
             for (const dv of map.get(val.id).values()) {
@@ -173,64 +172,119 @@ export class BusinessService extends ListAttribute {
                 chart.data[val.id][k] = dayNum[j];
                 j += 1;
             }
-        });
+        });  
+
         return {
             table: table,
             chart: chart
         };
     }
 
-    async requestTodayEventData(onlyDivision: boolean,cityDivisionNode:boolean) {
-        const requsetParam = this.getTodayEventRequsetParam(this.search)
-            , groupEventData = new Map<string, Array<IllegalDropEventRecord | MixedIntoEventRecord>>()
-            , fillGroupEventData = (event: IllegalDropEventRecord | MixedIntoEventRecord) => {console.log(event);
-                if(cityDivisionNode&&onlyDivision==false){
-                    const committees = this.divisions.find(d=>d.Id==event.Data.DivisionId)
-                    ,division=this.divisions.find(d=>d.Id == committees.ParentId);
-                    
-                    if(groupEventData.has(division.Name)){console.log(division);
-                        const e = groupEventData.get(division.Name);
-                        e.push(event);
-                        groupEventData.set(division.Name, e);
-                    }
-                    else{
-                        groupEventData.set(division.Name, [event]);console.log(1);
-                        
-                    }
-                }
-                else{
-                    if (onlyDivision && groupEventData.has(event.Data.DivisionName)) {
-                        const e = groupEventData.get(event.Data.DivisionName);
-                        e.push(event);
-                        groupEventData.set(event.Data.DivisionName, e);
-                    }
-                    else if (onlyDivision && groupEventData.has(event.Data.DivisionName) == false)
-                        groupEventData.set(event.Data.DivisionName, [event]);
-    
-                    if (onlyDivision == false && groupEventData.has(event.Data.StationName)) {
-                        const e = groupEventData.get(event.Data.StationName);
-                        e.push(event);
-                        groupEventData.set(event.Data.StationName, e);
-                    }
-                    else if (onlyDivision == false && groupEventData.has(event.Data.StationName) == false)
-                        groupEventData.set(event.Data.StationName, [event]);
-                }
-                
-            };
+    async requestTodayEventData(onlyDivision: boolean, cityDivisionNode: boolean) {
+        const s = this.search.toSearchParam();
+        if (s.TimeUnit == TimeUnitEnum.Hour) {
 
-        if (this.businessEventType == BusinessEventTypeEnum.IllegalDrop&&requsetParam) {
-            const response = await this.illegalDropEventService.list(requsetParam).toPromise();
-            if (response.Data && response.Data.Data)
-                response.Data.Data.map(m => fillGroupEventData(m));
+            const requsetParam = this.getTodayEventRequsetParam(this.search)
+                , groupEventData = new Map<string, Array<IllegalDropEventRecord | MixedIntoEventRecord>>()
+                , tempEventDataName = new Map<string, string>()
+                , fillGroupEventData = (event: IllegalDropEventRecord | MixedIntoEventRecord) => {
+                    if (cityDivisionNode && onlyDivision == false) {
+                        const committees = this.divisions.find(d => d.Id == event.Data.DivisionId)
+                            , division = this.divisions.find(d => d.Id == committees.ParentId);
+
+                        if (groupEventData.has(division.Name)) {
+                            const e = groupEventData.get(division.Name);
+                            e.push(event);
+                            groupEventData.set(division.Name, e);
+                        }
+                        else {
+                            groupEventData.set(division.Name, [event]);
+                            tempEventDataName.set(division.Name, division.Id);
+                        }
+                    }
+                    else {
+                        if (onlyDivision && groupEventData.has(event.Data.DivisionName)) {
+                            const e = groupEventData.get(event.Data.DivisionName);
+                            e.push(event);
+                            groupEventData.set(event.Data.DivisionName, e);
+                            tempEventDataName.set(event.Data.DivisionName, event.Data.DivisionId);
+                        }
+                        else if (onlyDivision && groupEventData.has(event.Data.DivisionName) == false) {
+                            groupEventData.set(event.Data.DivisionName, [event]);
+                            tempEventDataName.set(event.Data.DivisionName, event.Data.DivisionId);
+                        }
+                        if (onlyDivision == false && groupEventData.has(event.Data.StationName)) {
+                            const e = groupEventData.get(event.Data.StationName);
+                            e.push(event);
+                            groupEventData.set(event.Data.StationName, e);
+                            tempEventDataName.set(event.Data.StationName, event.Data.StationId);
+                        }
+                        else if (onlyDivision == false && groupEventData.has(event.Data.StationName) == false) {
+                            groupEventData.set(event.Data.StationName, [event]);
+                            tempEventDataName.set(event.Data.StationName, event.Data.StationId);
+                        }
+                    }
+
+                };
+
+            if (this.businessEventType == BusinessEventTypeEnum.IllegalDrop && requsetParam) {
+                const response = await this.illegalDropEventService.list(requsetParam).toPromise();
+                if (response.Data && response.Data.Data)
+                    response.Data.Data.map(m => fillGroupEventData(m));
+                this.todayEventGroupData(groupEventData, tempEventDataName);
+            }
+            if (this.businessEventType == BusinessEventTypeEnum.MixedInfo && requsetParam) {
+                const response = await this.mixedIntoEventService.list(requsetParam).toPromise();
+                if (response.Data && response.Data.Data)
+                    response.Data.Data.map(m => fillGroupEventData(m));
+                this.todayEventGroupData(groupEventData, tempEventDataName);
+            }
+
+            this.convertLineData(null, this.search, null, groupEventData);
+            this.convertBarData(null, this.search, null, groupEventData);
         }
-        if (this.businessEventType == BusinessEventTypeEnum.MixedInfo&&requsetParam) {
-            const response = await this.mixedIntoEventService.list(requsetParam).toPromise();
-            if (response.Data && response.Data.Data)
-                response.Data.Data.map(m => fillGroupEventData(m));
-        }
-        this.convertLineData(null, this.search,null, groupEventData);
-        this.convertBarData(null, this.search,null, groupEventData);
+
     }
+
+    todayEventGroupData(param: Map<string, Array<IllegalDropEventRecord | MixedIntoEventRecord>>, tempEventDataName: Map<string, string>) {
+
+        const statisticMap = new Map<string, EventNumberStatistic[]>();
+        for (const key of param.keys()) {
+            const events = param.get(key), vals = new Array<EventNumberStatistic>();
+            statisticMap.set(tempEventDataName.get(key), vals);
+
+            for (let i = 0; i < 24; i++) {
+                const eventTimeFilter = events.filter(e => {
+                    const bt = new Date(e.EventTime);
+
+                    return bt.getHours() == i;
+                });
+                if (eventTimeFilter.length) {
+                    const es = {
+                        BeginTime: eventTimeFilter[0].EventTime,
+                        EventNumbers: [{
+                            EventType: eventTimeFilter[0].EventType,
+                            DeltaNumber: eventTimeFilter.length
+                        }]
+                    }
+                    vals.push(es as any);
+                }
+                else {
+                    const eet = new Date(events[0].EventTime);
+                    const es = {
+                        BeginTime: this.datePipe.transform(eet, 'yyyy-MM-dd') + ` ${i}:00`,
+                        EventNumbers: [{
+                            EventType: events[0].EventType,
+                            DeltaNumber: 0
+                        }]
+                    }
+                    vals.push(es as any);
+                }
+            }
+        }
+        this.dataSources = statisticMap; 
+
+    };
 
     async requestData(param: Array<{ id: string, text: string }>) {
         const s = this.search.toSearchParam()
@@ -243,8 +297,8 @@ export class BusinessService extends ListAttribute {
                 mapData.set(x, response.Data.Data);
             }
             this.convertLineData(mapData, this.search, param);
-            this.convertBarData(mapData, this.search, param); 
-            this.convertBar3dData(mapData,this.search,param);
+            this.convertBarData(mapData, this.search, param);
+            this.convertBar3dData(mapData, this.search, param);
         }
         else if (s.DivisionId && requsetParam) {
             const divisionIds = s.DivisionId.split(',')
@@ -257,7 +311,7 @@ export class BusinessService extends ListAttribute {
 
             this.convertLineData(mapData, this.search, param);
             this.convertBarData(mapData, this.search, param);
-            this.convertBar3dData(mapData,this.search,param);
+            this.convertBar3dData(mapData, this.search, param);
         }
     }
 
@@ -355,9 +409,9 @@ export class BusinessService extends ListAttribute {
 
     convertBarData(statistic: Map<string, EventNumberStatistic[]>, search: SearchControl, param: Array<{ id: string, text: string }>
         , mapEvents?: Map<string, Array<IllegalDropEventRecord | MixedIntoEventRecord>>) {
-        const s = search.toSearchParam();  
+        const s = search.toSearchParam();
         this.barChartOption = new BarOption();
-        var xAxisData = new Array(), monthMaxDay = 0; 
+        var xAxisData = new Array(), monthMaxDay = 0;
         if (s.TimeUnit == TimeUnitEnum.Hour) {
             for (let i = 0; i < 24; i++) {
                 if (i < 10) xAxisData.push(`0${i}:00`);
@@ -377,9 +431,9 @@ export class BusinessService extends ListAttribute {
         }
         else if (s.TimeUnit == TimeUnitEnum.Week) {
             xAxisData = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
-            this.barChartOption.barWidth = 20; 
+            this.barChartOption.barWidth = 20;
         }
-        this.bar3dOption=null;
+        this.bar3dOption = null;
         this.barChartOption.xAxisData = xAxisData;
         this.barChartOption.seriesData = new Array();
         this.barChartOption.subTitle = '';
@@ -425,8 +479,8 @@ export class BusinessService extends ListAttribute {
                 else
                     for (const x of data)
                         convertEventData(this.businessEventType, x.EventNumbers, s.TimeUnit == TimeUnitEnum.Hour)
-                        .map(ed => dayNum.push(ed));
-                      
+                            .map(ed => dayNum.push(ed));
+
 
                 this.barChartOption.legendData.data.push(val.text);
                 this.barChartOption.seriesName.push(val.text);
@@ -438,72 +492,74 @@ export class BusinessService extends ListAttribute {
 
 
     convertBar3dData(statistic: Map<string, EventNumberStatistic[]>, search: SearchControl, param: Array<{ id: string, text: string }>
-         ) {
+    ) {
         const s = search.toSearchParam(), seriesData = new Array()
-        , weekNumberMap = new Map<number,Array<Array<number|string>>>(); 
-        if (s.TimeUnit == TimeUnitEnum.Week && s.ChartType ==ChartTypeEnum._3dBar) { 
-         
+            , weekNumberMap = new Map<number, Array<Array<number | string>>>();
+        if (s.TimeUnit == TimeUnitEnum.Week && s.ChartType == ChartTypeEnum._3dBar) {
+
             this.bar3dOption = new Bar3dOption();
             this.bar3dOption.yAxis3dData = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
             this.bar3dOption.xAxis3dData = new Array();
-            param.map(m=>this.bar3dOption.xAxis3dData.push(m.text));
-                 
-            for (let i = 0; i < 7; i++)  {
-                weekNumberMap.set(i,new Array());   
-                for (let j = 0; j < param.length; j++){
+            param.map(m => this.bar3dOption.xAxis3dData.push(m.text));
+
+            for (let i = 0; i < 7; i++) {
+                weekNumberMap.set(i, new Array());
+                for (let j = 0; j < param.length; j++) {
                     const arr = weekNumberMap.get(i);
-                    arr.push([i,j,0,`${this.bar3dOption.yAxis3dData[i]},${param[j].text}`]);
+                    arr.push([i, j, 0, `${this.bar3dOption.yAxis3dData[i]},${param[j].text}`]);
                 }
-            } 
-        } 
-        else if (s.TimeUnit == TimeUnitEnum.Day && s.ChartType ==ChartTypeEnum._3dBar) { 
+            }
+        }
+        else if (s.TimeUnit == TimeUnitEnum.Day && s.ChartType == ChartTypeEnum._3dBar) {
             const date = new Date(Number.parseInt(s.Year)
-            , Number.parseInt(s.Month) - 1)
-            , lastDay = MonthLastDay(date.getFullYear(), date.getMonth() + 1);
+                , Number.parseInt(s.Month) - 1)
+                , lastDay = MonthLastDay(date.getFullYear(), date.getMonth() + 1);
             this.bar3dOption = new Bar3dOption();
             this.bar3dOption.yAxis3dData = new Array();
             this.bar3dOption.xAxis3dData = new Array();
-            param.map(m=>this.bar3dOption.xAxis3dData.push(m.text));
-            for (let i = 1; i <= lastDay; i++)  
+            param.map(m => this.bar3dOption.xAxis3dData.push(m.text));
+            for (let i = 1; i <= lastDay; i++)
                 this.bar3dOption.yAxis3dData.push(`${i}日`);
 
-            for (let i = 0; i < lastDay; i++)  {
-                weekNumberMap.set(i,new Array());   
-                for (let j = 0; j < param.length; j++){
+            for (let i = 0; i < lastDay; i++) {
+                weekNumberMap.set(i, new Array());
+                for (let j = 0; j < param.length; j++) {
                     const arr = weekNumberMap.get(i);
-                    arr.push([i,j,0,`${(i+1)}日,${param[j].text}`]);
+                    arr.push([i, j, 0, `${(i + 1)}日,${param[j].text}`]);
                 }
-            } 
+            }
         }
         else return;
-        
+
         var xTag = 0;
-        this.bar3dOption.maxNumber=1;
+        this.bar3dOption.maxNumber = 1;
         param.map((val) => {
-            const data = statistic.get(val.id);         
-            
+            const data = statistic.get(val.id);
+
             for (let i = 0; i < data.length; i++) {
-                if(data[i])
-                convertEventData(this.businessEventType, data[i].EventNumbers, s.TimeUnit == TimeUnitEnum.Hour)
-                .map(ed=>{
-                    const wnm= weekNumberMap.get(i);
-                    wnm[xTag][2] = ed;  
-                    this.bar3dOption.maxNumber = ed > this.bar3dOption.maxNumber ? ed :this.bar3dOption.maxNumber;
-                });
-            } 
-            xTag+=1;
-            
-        });  
-      
-        for (const v of weekNumberMap.values()) 
-            v.map(m=>{
-                seriesData.push(m); 
-            }); 
-        this.bar3dOption.seriesData=seriesData;
+                if (data[i])
+                    convertEventData(this.businessEventType, data[i].EventNumbers, s.TimeUnit == TimeUnitEnum.Hour)
+                        .map(ed => {
+                            const wnm = weekNumberMap.get(i);
+                            wnm[xTag][2] = ed;
+                            wnm[xTag][2] = ed;
+                            wnm[xTag][2] = ed;
+                            this.bar3dOption.maxNumber = ed > this.bar3dOption.maxNumber ? ed : this.bar3dOption.maxNumber;
+                        });
+            }
+            xTag += 1;
+
+        });
+
+        for (const v of weekNumberMap.values())
+            v.map(m => {
+                seriesData.push(m);
+            });
+        this.bar3dOption.seriesData = seriesData;
     }
 
     assertTodayDate(year: number, month: number, day: number) {
-        const date = new Date(); console.log(date.getFullYear(), date.getMonth(), date.getDate());
+        const date = new Date();  
         return date.getFullYear() == year && (date.getMonth() + 1) == month && date.getDate() == day;
     }
 
@@ -565,9 +621,9 @@ export class BusinessService extends ListAttribute {
         return param;
     }
 
-      
-    resetChartType(){
-        this.search.chartType = ChartTypeEnum.Bar;      
+
+    resetChartType() {
+        this.search.chartType = ChartTypeEnum.Bar;
         this.changeChartType();
     }
 
@@ -576,32 +632,32 @@ export class BusinessService extends ListAttribute {
         if (param.ChartType == ChartTypeEnum.Bar) {
             this.barChartView = true;
             this.lineChartView = false;
-            this._3dBarChartView=false;
+            this._3dBarChartView = false;
         }
         else if (param.ChartType == ChartTypeEnum.Line) {
             this.barChartView = false;
             this.lineChartView = true;
-            this._3dBarChartView=false;
+            this._3dBarChartView = false;
         }
         else if (param.ChartType == ChartTypeEnum._3dBar) {
             this.barChartView = false;
             this.lineChartView = false;
-            this._3dBarChartView=true;
-            this.bar3dOption=null;
+            this._3dBarChartView = true;
+            this.bar3dOption = null;
             this.loadViewFn();
-        } 
+        }
     }
 
-    get maxObjects(){
+    get maxObjects() {
         const param = this.search.toSearchParam();
         if (param.ChartType == ChartTypeEnum._3dBar)
-        return 3;
+            return 3;
         else return 3;
     }
 
-    changeClassType(fn: (ct:string) => void) {
+    changeClassType(fn: (ct: string) => void) {
         const param = this.search.toSearchParam();
-        if (param.ClassType == ClassTypeEnum.Committees||param.ClassType == ClassTypeEnum.County)
+        if (param.ClassType == ClassTypeEnum.Committees || param.ClassType == ClassTypeEnum.County)
             this.divisionNode = true;
 
         else if (param.ClassType == ClassTypeEnum.Station)
@@ -616,7 +672,7 @@ export class BusinessService extends ListAttribute {
             this.datePicker.startView = 2;
             this.datePicker.formate = 'yyyy年mm月dd日';
             this.reportType = '日报表';
-            this._3dBarOption=false; 
+            this._3dBarOption = false;
             return {
                 time: `${param.Year}年${param.Month}月${param.Day}日`,
                 week: false
@@ -627,7 +683,7 @@ export class BusinessService extends ListAttribute {
             this.datePicker.startView = 3;
             this.datePicker.formate = 'yyyy年mm月';
             this.reportType = '月报表';
-            this._3dBarOption=true;
+            this._3dBarOption = true;
             return {
                 time: `${param.Year}年${param.Month}月`,
                 week: false
@@ -638,13 +694,13 @@ export class BusinessService extends ListAttribute {
             this.datePicker.startView = 2;
             this.datePicker.formate = 'yyyy年mm月dd日';
             this.reportType = '周报表';
-            this._3dBarOption=true;
+            this._3dBarOption = true;
             return {
                 time: `${param.Year}年${param.Month}月${param.Day}日`,
                 week: true
             };
         }
-        this.bar3dOption=null;
+        this.bar3dOption = null;
     }
 
 

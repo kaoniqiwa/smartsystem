@@ -475,7 +475,7 @@ class HowellExcelV1 {
 					} else {
 						o["c:chartSpace"]["c:chart"]["c:plotArea"]["c:" + chart + "Chart"]["c:ser"] = ser;
 					};
-			});
+			}); 
 			me.removeUnusedCharts(o);
 
 			if (me.chartTitle) {
@@ -611,7 +611,7 @@ class HowellExcelV1 {
 		else await me.writeChart(1, row, col);
 		setTimeout(() => {
 			var result = me.zip.generate({ type: 'blob' });
-			download(result, writeName + '.xlsx', "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			download(result, writeName + '.xls', "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		}, 450);
 
 	}

@@ -114,13 +114,14 @@ export class IllegalDropEventChartComponent implements OnInit {
 
         const a = new HowellExcelJS();
         const b = a.createBook();
-        const s = a.addWorksheet(b, 'Table'), colName = ['A', 'B', 'C', 'D', 'E']
+        const s = a.addWorksheet(b, 'Table'), colName = ['A', 'B', 'C', 'D', 'E','F','G','H']
         , evenTypeLabel = this.pageTitle;
         var i = 3, c = 3, timeTag = 0, sum = 0;
 
         data.table.title = `${this.dtp.nativeElement.value} ${param.text}${evenTypeLabel}${this.businessService.reportType}`;
         data.chart.titles = [data.table.title];
         data.chart.chartTitle = data.table.title;
+        
         a.setCellValue(s, 'B1', data.table.title);
 
         data.table.fieldName.map((v, i) => {
@@ -138,7 +139,7 @@ export class IllegalDropEventChartComponent implements OnInit {
             }
             a.setCellValue(s, colName[c] + i, x.val);
             i += 1;
-            sum += x.val || 0;
+            sum +=(x.val || 0);
           });
           a.setCellValue(s, colName[c] + i, sum);
           c += 1;

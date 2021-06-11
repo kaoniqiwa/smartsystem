@@ -1,8 +1,9 @@
-import { CameraRequestService } from "../../data-core/repuest/resources.service"; 
+import { CameraRequestService } from "../../data-core/repuest/garbage-station.service"; 
 import { ListAttribute } from "../../common/tool/table-form-helper";
 import { AppCaChe } from "../../common/tool/app-cache/app-cache";
-import { GetCamerasParams } from "../model/aiop/encode-devices-params";
-import { Camera } from "../model/aiop/camera";
+import { GetGarbageStationCamerasParams } from "../model/waste-regulation/camera";
+import { Camera } from "../model/waste-regulation/camera";
+
 export class ResourceCameraDao extends ListAttribute {
     cache = new AppCaChe(60*10 * 1000);
     readonly resourceCameras = 'ResourceCameras';
@@ -13,10 +14,10 @@ export class ResourceCameraDao extends ListAttribute {
     async allResourceCameras() {
         var result = this.cache.get<Camera[]>(this.resourceCameras);
         if (!result) {
-            const param = new GetCamerasParams();
+            const param = new GetGarbageStationCamerasParams();
             param.PageIndex = 1;
-            param.PageSize = this.maxSize;
-            const response = await this.requestService.list(param).toPromise();
+            param.PageSize = this.maxSize; 
+            const response = await this.requestService.postList(param).toPromise();
             this.cache.set(this.resourceCameras, response.Data.Data);
             result= response.Data.Data;
         }

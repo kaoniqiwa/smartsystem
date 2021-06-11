@@ -7,7 +7,6 @@ import { ITableField } from "../../../../aiop-system/common/ITableField";
 import { IBusinessData } from "../../../../common/interface/IBusiness";
 import { BusinessTable } from "../../../../aiop-system/common/business-table";
 import { Camera } from "../../../../data-core/model/waste-regulation/camera";
-import { Camera as ResourceCamera } from "../../../../data-core/model/aiop/camera";
 import { Division } from "../../../../data-core/model/waste-regulation/division";
 import { MediumPicture } from "../../../../data-core/url/aiop/resources";
 export class CameraTable extends BusinessTable implements IConverter {
@@ -88,7 +87,7 @@ export class CameraTable extends BusinessTable implements IConverter {
         return output;
     }
 
-    toTableModel(camera: Camera, statioin: GarbageStation,division:Division,resourceCamera:ResourceCamera
+    toTableModel(camera: Camera, statioin: GarbageStation,division:Division,resourceCamera:Camera
         ,committees:Division) {
         let tableField = new TableField();
         tableField.id = camera.Id; 
@@ -105,7 +104,7 @@ export class CameraTable extends BusinessTable implements IConverter {
 export class BusinessData implements IBusinessData {
     statioins: GarbageStation[];
     cameras: Camera[];
-    resourceCameras:ResourceCamera[];
+    resourceCameras:Camera[];
     divisions:Division[];
 }
 

@@ -63,7 +63,7 @@ export class BusinessService extends ListAttribute {
             , requsetParam = this.getRequsetParam(this.search)
             , _3dRequsetParam = this.get3dRequsetParam(this.search)
             , mapData = new Map<string, EventNumberStatistic[]>();
-        this.dataSources = mapData; console.log(_3dRequsetParam);
+        this.dataSources = mapData; 
         
         if (s.StationId) {
             const response = await this.garbageStationService.eventNumbersHistory(requsetParam.searchParam, requsetParam.stationId).toPromise();
@@ -128,6 +128,7 @@ export class BusinessService extends ListAttribute {
                     if (i < 10) timeKey.push({ no: i + 1, date: '', name: `0${i}:00`, val: 0 });
                     else timeKey.push({ no: i + 1, date: '', name: `${i}:00`, val: 0 });
                 }
+                chart.dataLen = 26;
             }
             else if (s.TimeUnit == TimeUnitEnum.Day) {
                 const date = new Date(s.BeginTime)

@@ -48,9 +48,10 @@ class HowellExcelJS {
         return worksheet.addImage(imageId, cell);
     }
 
-     writeFile(workbook,filename){
+     writeFile(workbook,filename,extension){
+        extension = extension||'.xlsx';
         workbook.xlsx.writeBuffer().then(x=>{             
-            download(new Blob([x]), filename+'.xls', "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            download(new Blob([x]), filename+extension, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
              
         }); 
     }

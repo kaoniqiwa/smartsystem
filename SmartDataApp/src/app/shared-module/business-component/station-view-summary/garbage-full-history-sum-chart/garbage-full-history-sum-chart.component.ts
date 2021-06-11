@@ -135,6 +135,7 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
   }
 
   exportExcel() {
+     
     if (this.businessService.statisticTable.dataSource.values.length) {
       enum ReportTypeEnum {
         day = '日报表',
@@ -142,11 +143,21 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
         month = '月报表'
       }
       const sp = this.businessService.search.toSearchParam()
+        , reportTitle = () => {
+          var title = '';
+          if (this.levelListPanel)
+            title = this.dtp.nativeElement.value + ' ' + this.levelListPanel.selectedItem + ' ' + reportType;
+          else if (this.businessManageService.viewDivisionType == this.businessManageService.viewDivisionTypeEnum.City) {
+            const dropItem = this.businessService.search.divisionsDropList.find(f => f.id == sp.DivisionId);
+            title = this.dtp.nativeElement.value + ' ' + dropItem.name + ' ' + reportType;
+          }
+          return title;
+        }
         , excel = new HowellExcelJS()
         , book = excel.createBook()
         , reportType = ReportTypeEnum[sp.TimeUnit]
-        , reportTitle = this.dtp.nativeElement.value + ' ' + this.levelListPanel.selectedItem + ' ' + reportType
-        , sheet = excel.addWorksheet(book, reportTitle)
+        //  , reportTitle = this.dtp.nativeElement.value + ' ' + this.levelListPanel.selectedItem + ' ' + reportType
+        , sheet = excel.addWorksheet(book, reportTitle())
         , colName = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
         , fieldName = ['序号', '名称', '达标率', '平均落地时长', '最大落地时长', '总落地时长', '乱丢垃圾', '混合投放']
         , toCellValue = (fieldStr: string) => {
@@ -161,7 +172,7 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
           return value;
         };
       var no = 1, tag = 3;
-      excel.setCellValue(sheet, 'A1', reportTitle);
+      excel.setCellValue(sheet, 'A1', reportTitle());
       for (let i = 0; i < fieldName.length; i++)
         excel.setCellValue(sheet, colName[i] + '2', fieldName[i]);
 
@@ -181,10 +192,9 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
 
       });
 
-      excel.writeFile(book, reportTitle);
+      excel.writeFile(book, reportTitle());
     }
 
   }
 
 }
- 
