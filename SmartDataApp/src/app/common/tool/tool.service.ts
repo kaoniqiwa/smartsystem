@@ -141,6 +141,19 @@ export function OneWeekDate(now: Date) {
     }
 }
 
+//获取周1 - 周7
+export function OneWeekDay(now: Date) {
+    var week = now.getDay(); //获取时间的星期数
+    var minus = week ? week - 1 : 6;
+    var monday = new Date(now);
+    monday.setDate(now.getDate() - minus); //获取minus天前的日期
+    let days = new Array<string>();
+    for (let i = 0; i < 7; i++) 
+    days.push(`${monday.getFullYear()}-${monday.getMonth()+1}-${monday.getDate()+i}`);
+    return days;    
+}
+
+
 export function Percentage(num: number, total: number) {
     if (num == total) return 100;
     else if (total == 0) return 0;
