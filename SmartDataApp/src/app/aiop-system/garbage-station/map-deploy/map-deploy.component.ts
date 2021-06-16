@@ -1,31 +1,37 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { DivisionStationTreeComponent } from '../division-station-tree/division-station-tree.component';
-import { FlatNode, RightBtn } from '../../../shared-module/custom-tree/custom-tree';
-import { DataService as TypeDataService } from '../garbage-station/business/data.service';
-import { DataService as CameraDataService } from './business/data.service';
-import { DomSanitizer } from '@angular/platform-browser';
-import { Division, GisArea, GisPoint, GisType } from '../../../data-core/model/waste-regulation/division';
-import { GarbageStation } from '../../../data-core/model/waste-regulation/garbage-station';
-import { MessageBar } from '../../../common/tool/message-bar';
-import { ConfirmDialog } from '../../../shared-module/confirm-dialog/confirm-dialog.component';
-import { DivisionRequestService } from 'src/app/data-core/repuest/division.service';
-import { GarbageStationRequestService } from 'src/app/data-core/repuest/garbage-station.service';
-
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { DivisionStationTreeComponent } from "../division-station-tree/division-station-tree.component";
+import {
+  FlatNode,
+  RightBtn,
+} from "../../../shared-module/custom-tree/custom-tree";
+import { DataService as TypeDataService } from "../garbage-station/business/data.service";
+import { DataService as CameraDataService } from "./business/data.service";
+import { DomSanitizer } from "@angular/platform-browser";
+import {
+  Division,
+  GisArea,
+  GisPoint,
+  GisType,
+} from "../../../data-core/model/waste-regulation/division";
+import { GarbageStation } from "../../../data-core/model/waste-regulation/garbage-station";
+import { MessageBar } from "../../../common/tool/message-bar";
+import { ConfirmDialog } from "../../../shared-module/confirm-dialog/confirm-dialog.component";
+import { DivisionRequestService } from "src/app/data-core/repuest/division.service";
+import { GarbageStationRequestService } from "src/app/data-core/repuest/garbage-station.service";
 
 @Component({
-  selector: 'app-map-deploy',
-  templateUrl: './map-deploy.component.html',
-  styleUrls: ['./map-deploy.component.css'],
-  providers: [TypeDataService, CameraDataService]
+  selector: "app-map-deploy",
+  templateUrl: "./map-deploy.component.html",
+  styleUrls: ["./map-deploy.component.css"],
+  providers: [TypeDataService, CameraDataService],
 })
 export class MapDeployComponent implements OnInit {
-
   // 行政及垃圾厢房列表
-  @ViewChild('stationTree')
+  @ViewChild("stationTree")
   stationTree: DivisionStationTreeComponent;
 
   // 地图iframe
-  @ViewChild('iframe')
+  @ViewChild("iframe")
   iframe: ElementRef;
 
   // // 提示框
@@ -36,18 +42,26 @@ export class MapDeployComponent implements OnInit {
   // unbindConfirm: ConfirmComponent;
 
   locationDialog = new ConfirmDialog({
-    title: '提示',
-    content: '是否保存当前位置？',
-    okFn: () => { this.locationYesClicked(); },
-    cancelFn: () => { this.locationCancelClicked(); }
+    title: "提示",
+    content: "是否保存当前位置？",
+    okFn: () => {
+      this.locationYesClicked();
+    },
+    cancelFn: () => {
+      this.locationCancelClicked();
+    },
   });
   locationDisplay = false;
 
   unbindDialog = new ConfirmDialog({
-    title: '提示',
-    content: '是否解除绑定？',
-    okFn: () => { this.unbindYesClicked(); },
-    cancelFn: () => { this.unbindCancelClicked(); }
+    title: "提示",
+    content: "是否解除绑定？",
+    okFn: () => {
+      this.unbindYesClicked();
+    },
+    cancelFn: () => {
+      this.unbindCancelClicked();
+    },
   });
   unbindDisplay = false;
 
@@ -62,11 +76,8 @@ export class MapDeployComponent implements OnInit {
   mouseLon = 0;
   mouseLat = 0;
 
-
   // 地图地址
   srcUrl: any;
-
-
 
   // 列表所选中的垃圾厢房
   GarbageStation: GarbageStation;
@@ -90,7 +101,7 @@ export class MapDeployComponent implements OnInit {
   pointSelected: CesiumDataController.Point;
 
   // 列表右侧按钮
-  rightBtn: { iconClass: string, btns: RightBtn[] };
+  rightBtn: { iconClass: string; btns: RightBtn[] };
 
   rightBtnFn = (item: FlatNode) => {
     console.log(item);
@@ -100,7 +111,6 @@ export class MapDeployComponent implements OnInit {
     }
 
     console.log(item);
-
 
     switch (item.rightClassBtn[0].tag) {
       case RightButtonTag.Link:
@@ -116,12 +126,10 @@ export class MapDeployComponent implements OnInit {
         break;
       default:
         break;
-
     }
 
-
     // item.id;
-  }
+  };
 
   checkPoints(village: CesiumDataController.Village) {
     const points = village.points;
@@ -133,15 +141,14 @@ export class MapDeployComponent implements OnInit {
             that.points[pointId] = point;
             const node = that.stationTree.findNode(pointId);
 
-            node.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
+            node.rightClassBtn = [
+              new RightBtn("howell-icon-Unlink", RightButtonTag.Unlink),
+            ];
           }, 0);
-
-        })(this, pointId, point)
+        })(this, pointId, point);
       }
     }
   }
-
-
 
   selectDivisionClick = async (item: FlatNode, lastNode: boolean) => {
     this.GarbageStation = null;
@@ -149,7 +156,7 @@ export class MapDeployComponent implements OnInit {
     // this.stationTree.garbageStationTree.getParentNode(item);
     let data: Division[] | GarbageStation[];
     // 如果选中的是区域项
-    data = this.stationTree.dataService.divisions.filter(x => {
+    data = this.stationTree.dataService.divisions.filter((x) => {
       return x.Id === item.id;
     });
 
@@ -161,22 +168,24 @@ export class MapDeployComponent implements OnInit {
         if (this.gisPointChanging) {
           data[0].GisArea = new GisArea();
           data[0].GisArea.GisType = GisType.GCJ02;
-          data[0].GisArea.GisPoint = village.areas.map(x => {
+          data[0].GisArea.GisPoint = village.areas.map((x) => {
             return new GisPoint(x, GisType.GCJ02);
           });
-          data[0].GisPoint = new GisPoint([village.center.lon, village.center.lat], GisType.GCJ02)
+          data[0].GisPoint = new GisPoint(
+            [village.center.lon, village.center.lat],
+            GisType.GCJ02
+          );
 
           let response = await this.divisionService.set(data[0]).toPromise();
           console.log(response);
-          if (!response.FaultCode) {
+          if (response.FaultCode === undefined || response.FaultCode != 0) {
             throw new Error(response.FaultReason);
           }
-          new MessageBar().response_success('录入区划坐标成功');
+          new MessageBar().response_success("录入区划坐标成功");
         }
       } catch (error) {
-        new MessageBar().response_Error('录入区划坐标失败');
+        new MessageBar().response_Error("录入区划坐标失败");
       }
-
 
       this.client.Viewer.MoveTo(village.center);
       this.wantUnbindNode = undefined;
@@ -188,7 +197,7 @@ export class MapDeployComponent implements OnInit {
       return;
     }
     // 如果选中的是垃圾厢房
-    data = this.stationTree.dataService.garbageStations.filter(x => {
+    data = this.stationTree.dataService.garbageStations.filter((x) => {
       return x.Id === item.id;
     });
     if (data && data.length > 0) {
@@ -201,28 +210,31 @@ export class MapDeployComponent implements OnInit {
         this.pointSelected = undefined;
       }
 
-
-
-
       try {
-        const point = this.dataController.Village.Point.Get(data[0].DivisionId, data[0].Id);
+        const point = this.dataController.Village.Point.Get(
+          data[0].DivisionId,
+          data[0].Id
+        );
         if (point) {
-          item.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
+          item.rightClassBtn = [
+            new RightBtn("howell-icon-Unlink", RightButtonTag.Unlink),
+          ];
           try {
             if (this.gisPointChanging) {
-              data[0].GisPoint = new GisPoint([point.position.lon, point.position.lat], GisType.GCJ02);
+              data[0].GisPoint = new GisPoint(
+                [point.position.lon, point.position.lat],
+                GisType.GCJ02
+              );
               let response = await this.garbageService.set(data[0]).toPromise();
               console.log(response);
-              if (!response.FaultCode) {
+              if (response.FaultCode === undefined || response.FaultCode != 0) {
                 throw new Error(response.FaultReason);
               }
-              new MessageBar().response_success('录入点位坐标成功');
+              new MessageBar().response_success("录入点位坐标成功");
             }
           } catch (error) {
-
-            new MessageBar().response_Error('录入点位坐标失败');
+            new MessageBar().response_Error("录入点位坐标失败");
           }
-
 
           this.pointSelected = point;
           this.client.Viewer.MoveTo(point.position);
@@ -233,32 +245,27 @@ export class MapDeployComponent implements OnInit {
             this.client.Point.Name.Show(point.id);
           }, 500);
         }
-
-
       } catch (error) {
         // const village = this.dataController.Village.Get(data[0].DivisionId);
         // this.client.Viewer.MoveTo(village.center);
       }
       return;
     }
+  };
 
-
-
-  }
-
-  constructor(private typeDataService: TypeDataService,
+  constructor(
+    private typeDataService: TypeDataService,
     private cameraDataService: CameraDataService,
     private sanitizer: DomSanitizer,
     private divisionService: DivisionRequestService,
     private garbageService: GarbageStationRequestService
   ) {
     this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc());
-
   }
   getSrc() {
     const host = document.location.hostname;
     const port = document.location.port;
-    return 'http://' + host + ':' + port + '/amap/map_ts.html?v=20200925';
+    return "http://" + host + ":" + port + "/amap/map_ts.html?v=20200925";
   }
 
   expandableParentNode(node: FlatNode) {
@@ -270,10 +277,9 @@ export class MapDeployComponent implements OnInit {
   }
 
   async ngOnInit() {
-
     this.rightBtn = {
-      iconClass: 'howell-icon-garbage',
-      btns: [new RightBtn('howell-icon-Link', RightButtonTag.Link)]
+      iconClass: "howell-icon-garbage",
+      btns: [new RightBtn("howell-icon-Link", RightButtonTag.Link)],
     };
 
     this.client = new CesiumMapClient(this.iframe.nativeElement);
@@ -291,7 +297,6 @@ export class MapDeployComponent implements OnInit {
       //         const point = points[pointId];
       //         this.points[pointId] = point;
 
-
       //         const node = this.stationTree.findNode(point.id);
       //         node.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
       //       }
@@ -299,25 +304,13 @@ export class MapDeployComponent implements OnInit {
       //   }
       // }
     };
-    this.client.Events.OnLoaded = () => {
-
-
-
-
-
-
-
-
-
-
-
-    };
-    this.client.Events.OnElementsDoubleClicked = async (objs) => {
-
-    };
+    this.client.Events.OnLoaded = () => {};
+    this.client.Events.OnElementsDoubleClicked = async (objs) => {};
 
     this.client.Events.OnElementsClicked = async (objs) => {
-      if (!objs || objs.length <= 0) { return; }
+      if (!objs || objs.length <= 0) {
+        return;
+      }
 
       const element = objs[0];
       this.pointSelected = element as unknown as CesiumDataController.Point;
@@ -326,15 +319,12 @@ export class MapDeployComponent implements OnInit {
       // this.stationTree.garbageStationTree.getParentNode(node);
       // this.expandableParentNode(node);
       // this.stationTree.searchTree(element.name);
-
     };
-
 
     this.client.Events.OnMouseMoving = async (lon: number, lat: number) => {
       this.mouseLon = lon;
       this.mouseLat = lat;
     };
-
 
     this.client.Events.OnMouseDoubleClick = async (position) => {
       if (this.wantBindNode) {
@@ -353,28 +343,34 @@ export class MapDeployComponent implements OnInit {
         point.position = position;
         point.position.height = 18;
         try {
-          const parentNode = this.stationTree.garbageStationTree.getParentNode(this.wantBindNode);
-          this.dataController.Village.Point.Create(parentNode.id, point.id, point);
-          new MessageBar().response_success('点位数据创建成功');
+          const parentNode = this.stationTree.garbageStationTree.getParentNode(
+            this.wantBindNode
+          );
+          this.dataController.Village.Point.Create(
+            parentNode.id,
+            point.id,
+            point
+          );
+          new MessageBar().response_success("点位数据创建成功");
         } catch (ex) {
-          new MessageBar().response_Error('点位数据创建失败');
+          new MessageBar().response_Error("点位数据创建失败");
         }
         this.points[point.id] = point;
         this.client.Point.Create(point);
         this.pointSelected = point;
         const node = this.stationTree.findNode(point.id);
         this.wantUnbindNode = node;
-        node.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
+        node.rightClassBtn = [
+          new RightBtn("howell-icon-Unlink", RightButtonTag.Unlink),
+        ];
       }
     };
-
 
     this.client.Events.OnElementDragend = async (element, position) => {
       // this.locationConfirm.display = true;
       this.locationDisplay = true;
       this.DragendPoint = element;
       this.DragendPosition = position;
-
     };
   }
   locationYesClicked() {
@@ -390,20 +386,20 @@ export class MapDeployComponent implements OnInit {
           this.dataController.Village.Point.Update(
             this.DragendPoint.parentId,
             this.DragendPoint.id,
-            (this.DragendPoint as CesiumDataController.Point)
+            this.DragendPoint as CesiumDataController.Point
           );
-          new MessageBar().response_success('地图数据修改成功');
+          new MessageBar().response_success("地图数据修改成功");
         } catch (error) {
-          new MessageBar().response_Error('地图数据修改失败');
+          new MessageBar().response_Error("地图数据修改失败");
         }
 
-        this.points[this.DragendPoint.id] = this.DragendPoint as CesiumDataController.Point;
+        this.points[this.DragendPoint.id] = this
+          .DragendPoint as CesiumDataController.Point;
         this.client.Point.Remove(this.DragendPoint.id);
         const point = this.points[this.DragendPoint.id];
         this.client.Point.Create(point);
       }
-    }
-    finally {
+    } finally {
       this.locationDisplay = false;
     }
   }
@@ -414,15 +410,13 @@ export class MapDeployComponent implements OnInit {
         const point = this.points[this.DragendPoint.id];
         this.client.Point.Create(point);
       }
-    }
-    finally {
+    } finally {
       this.locationDisplay = false;
     }
   }
   unbindYesClicked() {
     let result = false;
     try {
-
       if (this.pointSelected) {
         result = this.RemovePoint(this.pointSelected);
         return;
@@ -431,8 +425,7 @@ export class MapDeployComponent implements OnInit {
         this.pointSelected = this.points[this.wantUnbindNode.id];
         result = this.RemovePoint(this.pointSelected);
       }
-    }
-    finally {
+    } finally {
       if (result) {
         this.pointSelected = undefined;
       }
@@ -443,14 +436,13 @@ export class MapDeployComponent implements OnInit {
     this.unbindDisplay = false;
   }
 
-
   DraggableClicked() {
     this.draggable = !this.draggable;
     this.client.Point.Draggable(this.draggable);
     if (this.draggable) {
-      new MessageBar().response_success('点位拖拽已开启');
+      new MessageBar().response_success("点位拖拽已开启");
     } else {
-      new MessageBar().response_warning('点位拖拽已关闭');
+      new MessageBar().response_warning("点位拖拽已关闭");
     }
   }
 
@@ -462,9 +454,7 @@ export class MapDeployComponent implements OnInit {
     }
   }
 
-
   RemovePoint(point: CesiumDataController.Point) {
-
     try {
       if (!this.wantUnbindNode) {
         this.wantUnbindNode = this.stationTree.findNode(this.pointSelected.id);
@@ -472,33 +462,29 @@ export class MapDeployComponent implements OnInit {
       this.dataController.Village.Point.Remove(point.villageId, point.id);
       this.client.Point.Remove(point.id);
       delete this.points[point.id];
-      this.wantUnbindNode.rightClassBtn = [new RightBtn('howell-icon-Link', RightButtonTag.Link)];
-      new MessageBar().response_success('地图数据删除成功');
+      this.wantUnbindNode.rightClassBtn = [
+        new RightBtn("howell-icon-Link", RightButtonTag.Link),
+      ];
+      new MessageBar().response_success("地图数据删除成功");
       return true;
     } catch (ex) {
-      new MessageBar().response_Error('地图数据删除失败');
+      new MessageBar().response_Error("地图数据删除失败");
       return false;
     }
-
-
   }
 
   GisPointClicked() {
     this.gisPointChanging = !this.gisPointChanging;
     if (this.gisPointChanging) {
-      new MessageBar().response_success('录入点位坐标已开启');
+      new MessageBar().response_success("录入点位坐标已开启");
     } else {
-      new MessageBar().response_warning('录入点位坐标已关闭');
+      new MessageBar().response_warning("录入点位坐标已关闭");
     }
   }
-
-
 }
 
 enum RightButtonTag {
-  Unlink = '0',
-  Link = '1',
-  position = '2'
+  Unlink = "0",
+  Link = "1",
+  position = "2",
 }
-
-
