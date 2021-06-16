@@ -8,6 +8,8 @@ import { ConfigRequestService } from "../../../../data-core/repuest/config.servi
 import { HowellExcelV1 } from "../../../../common/tool/hw-excel-js/hw-excel-v1";
 import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
 import { BusinessEventTypeEnum } from '../business-event-type';
+import { HowellCSV } from "../../../../common/tool/hw-excel-js/hw-csv";
+import { TITLEKEY ,COLNAME} from "../../../../common/tool/hw-excel-js/data";
 @Component({
   selector: 'hw-illegal-drop-event-chart',
   templateUrl: './illegal-drop-event-chart.component.html',
@@ -90,26 +92,58 @@ export class IllegalDropEventChartComponent implements OnInit {
     }, 280);
   }
 
+
+  get paramTextId(){
+    var param: { id: string, text: string };
+    const s = this.businessService.search.toSearchParam()
+    if (s.StationId) {
+      const find = this.businessService.garbageStations.find(x => x.Id == s.StationId);
+      param = {
+        id: find.Id,
+        text: find.Name
+      }
+
+    }
+    else if (s.DivisionId) {
+      const find = this.businessService.divisions.find(x => x.Id == s.DivisionId);
+      param = {
+        id: find.Id,
+        text: find.Name
+      }
+    }
+    return param;
+  }
+
+  exportCSV(){
+    if (this.businessService.dataSources) {
+     
+      const data = this.businessService.exportExcel(this.businessService.dataSources, this.businessService.search, [this.paramTextId]);
+  
+      const evenTypeLabel = this.pageTitle, csvDataMap =  new Map<string,Array<string>>(); 
+      var sum = 0;
+
+      data.table.title = `${this.dtp.nativeElement.value} ${this.paramTextId.text}${evenTypeLabel}${this.businessService.reportType}`;
+      data.chart.titles = [data.table.title]; 
+       
+      csvDataMap.set(TITLEKEY,[data.table.title]);
+      csvDataMap.set(COLNAME,data.table.fieldName);
+      for (const k of data.table.data.keys()) {
+        const field = data.table.data.get(k);
+        field.map(x => {
+          csvDataMap.set(x.no+'',[x.no+'',x.date,x.name,((x.val=== undefined ? '':(x.val||0))+'')]); 
+          sum +=(x.val || 0);
+        }); 
+        csvDataMap.set('sum',['合计','','',sum+'']);
+        sum = 0; 
+      } 
+      new HowellCSV(csvDataMap).writeCsvFile(data.table.title);
+    }
+  }
+
   exportExcel() {
     if (this.businessService.dataSources) {
-      var param: { id: string, text: string };
-      const s = this.businessService.search.toSearchParam()
-      if (s.StationId) {
-        const find = this.businessService.garbageStations.find(x => x.Id == s.StationId);
-        param = {
-          id: find.Id,
-          text: find.Name
-        }
-
-      }
-      else if (s.DivisionId) {
-        const find = this.businessService.divisions.find(x => x.Id == s.DivisionId);
-        param = {
-          id: find.Id,
-          text: find.Name
-        }
-      }
-      const data = this.businessService.exportExcel(this.businessService.dataSources, this.businessService.search, [param]);
+      
+      const data = this.businessService.exportExcel(this.businessService.dataSources, this.businessService.search, [this.paramTextId]);
       this.configRequestService.xls('column.xlsx').subscribe(async (x) => {
 
         const a = new HowellExcelJS();
@@ -118,7 +152,7 @@ export class IllegalDropEventChartComponent implements OnInit {
         , evenTypeLabel = this.pageTitle;
         var i = 3, c = 3, timeTag = 0, sum = 0;
 
-        data.table.title = `${this.dtp.nativeElement.value} ${param.text}${evenTypeLabel}${this.businessService.reportType}`;
+        data.table.title = `${this.dtp.nativeElement.value} ${this.paramTextId.text}${evenTypeLabel}${this.businessService.reportType}`;
         data.chart.titles = [data.table.title];
         data.chart.chartTitle = data.table.title;
         

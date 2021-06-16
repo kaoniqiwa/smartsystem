@@ -5,8 +5,9 @@ import { OtherViewEnum } from "../illegal-drop-event-summary/illegal-drop-event-
 import { DivisionDao } from "../../../../data-core/dao/division-dao";
 import { GarbageStationDao } from "../../../../data-core/dao/garbage-station-dao";
 import { ConfigRequestService } from "../../../../data-core/repuest/config.service";
-import { HowellExcelV1 } from "../../../../common/tool/hw-excel-js/hw-excel-v1";
 import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
+import { HowellCSV } from "../../../../common/tool/hw-excel-js/hw-csv";
+import { TITLEKEY ,COLNAME} from "../../../../common/tool/hw-excel-js/data";
 import { BusinessEventTypeEnum } from '../business-event-type'; 
 @Component({
   selector: 'hw-illegal-drop-event-analyze-v2',
@@ -66,6 +67,20 @@ export class IllegalDropEventAnalyzeV2Component implements OnInit {
     return  this.businessEventType == BusinessEventTypeEnum.IllegalDrop ? '乱丢垃圾' : '混合投放';
   }
 
+  exportCSV(){
+    if (this.businessService.dataSources) {
+      const data = this.businessService.exportExcel(this.businessService.dataSources, this.businessService.search)
+      ,csvDataMap =  new Map<string,Array<string>>() , evenTypeLabel = this.pageTitle;
+  
+      data.table.title = this.dtp.nativeElement.value + this.classText + evenTypeLabel + '总数据' + this.businessService.reportType;
+      csvDataMap.set(TITLEKEY,[data.table.title]);
+      csvDataMap.set(COLNAME,data.table.fieldName);
+      data.table.data.map(m=>csvDataMap.set(m.no+'',[m.no+'',m.name,m.val+'']));
+      new HowellCSV(csvDataMap).writeCsvFile(data.table.title);
+    
+    }
+  }
+
   exportExcel() {
     if (this.businessService.dataSources) {
       const data = this.businessService.exportExcel(this.businessService.dataSources, this.businessService.search)
@@ -74,7 +89,7 @@ export class IllegalDropEventAnalyzeV2Component implements OnInit {
         const b = a.createBook();
         const s = a.addWorksheet(b, 'Table');
         data.table.title = this.dtp.nativeElement.value + this.classText + evenTypeLabel + '总数据' + this.businessService.reportType;
-        //data.chart.chartTitle = data.table.title;
+      
         a.setCellValue(s, 'B1', data.table.title);
         a.setCellValue(s, 'A2', data.table.fieldName[0]);
         a.setCellValue(s, 'B2', data.table.fieldName[1]);

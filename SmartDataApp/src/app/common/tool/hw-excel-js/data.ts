@@ -12,3 +12,6 @@ export  class ExcelData{
         this.dataLen = 9;
     }
 }
+/**csv 导出 标题 及 列标题key */
+export const   TITLEKEY='TITLEKEY';
+export const   COLNAME='COLNAME';

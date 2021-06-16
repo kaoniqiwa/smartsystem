@@ -7,6 +7,8 @@ import { MessageBar } from '../../../../common/tool/message-bar';
 import { ConfigRequestService } from "../../../../data-core/repuest/config.service";
 import { HowellExcelV1 } from "../../../../common/tool/hw-excel-js/hw-excel-v1";
 import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
+import { HowellCSV } from "../../../../common/tool/hw-excel-js/hw-csv";
+import { TITLEKEY ,COLNAME} from "../../../../common/tool/hw-excel-js/data";
 import { OtherViewEnum } from "../view-helper";
 @Component({
   selector: 'hw-statistic-garbage-analyze',
@@ -95,16 +97,15 @@ export class StatisticGarbageAnalyzeComponent implements OnInit {
               a.setCellValue(s, 'A' + i + '', x.no);
               a.setCellValue(s, 'B' + i + '', x.date);
               a.setCellValue(s, 'C' + i + '', x.name);
-             // a.setCellValue(s, 'A' + (3 + field.length) + '', '合计')
+            
             }
             a.setCellValue(s, colName[c] + i, x.val);
             i += 1;
-            //sum += parseFloat(x.val);
+         
           });
-          //a.setCellValue(s, colName[c] + i, sum);
+         
           c += 1;
           i = 3;
-          //sum = 0;
           timeTag = 1;
         }
 
@@ -120,6 +121,37 @@ export class StatisticGarbageAnalyzeComponent implements OnInit {
           he.generate(buffer, data.table.title, 2, 4, true, sheetArr);
         });
       })
+    }
+  }
+
+  exportCSV(){
+    if (this.businessService.dataSource) {
+      const data = this.businessService.exportExcel(this.businessService.dataSource, this.businessService.search)
+      ,csvDataMap =  new Map<string,Array<string>>() , findKeyNum = (findKey:string)=>{
+        const numArr = new Array();
+        for (const k of data.table.data.keys()) {
+          const field = data.table.data.get(k);
+          field.map(f=>{
+             if(f.name == findKey)numArr.push(f.val||0);
+          });
+        }
+        return numArr;
+      };
+      var  className = '',tag=0;
+      this.dropList.selectedTexts.map(x => className += ' ' + x.text);
+      data.table.title = `${this.dtp.nativeElement.value} ${className} ${data.categoryName}${this.businessService.reportType} 单位(${data.dataUnit})`;
+      csvDataMap.set(TITLEKEY,[data.table.title]);
+      csvDataMap.set(COLNAME,data.table.fieldName);
+      for (const k of data.table.data.keys()) {
+        const field = data.table.data.get(k);
+        field.map(x => {        
+          csvDataMap.set(tag+'',[x.no+'',x.date,x.name,...findKeyNum(x.name)]);            
+          tag+=1;
+        }); 
+        break;
+      }
+    
+       new HowellCSV(csvDataMap).writeCsvFile(data.table.title);
     }
   }
 
