@@ -32,4 +32,6 @@ import { Resource } from "./Resource";
         HardwareVersion: string;
         /**设备类型(可选) NVR，IPC，DVS */
         DeviceType: string;
+        SRSId: string;	//String	流媒体ID
+SRServerId: string;	//String	流媒体服务器ID
     }

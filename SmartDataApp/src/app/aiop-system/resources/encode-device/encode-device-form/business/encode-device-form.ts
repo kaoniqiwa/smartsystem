@@ -6,7 +6,7 @@ import { EncodeDevice } from "../../../../../data-core/model/aiop/encode-device"
 import { EncodeDeviceRequestService, LabelRequestService, ResourceLabelRequestService } from "../../../../../data-core/repuest/resources.service";
 import { InputTagArea } from "../../../../../shared-module/input-tag-area/input-tag-area";
 import { ResourceLabel } from "../../../../../data-core/model/aiop/resource-label"; 
-import { ListAttribute, FormAttribute, FormStateEnum } from "../../../../../common/tool/table-form-helper"; 
+import { FormAttribute, FormStateEnum } from "../../../../../common/tool/table-form-helper"; 
 import { InputLabelService } from "../../../../common/input-label";
 @Injectable()
 export class EncodeDeviceFormService extends InputLabelService implements FormAttribute {
@@ -88,7 +88,7 @@ export class EncodeDeviceFormService extends InputLabelService implements FormAt
             this.formState = FormStateEnum.create;
             for (const item of response.Data) {
                 // this.protocolTypes.push(item.ProtocolType);
-                if (item.Url.indexOf('https') > -1)
+                if (item.Url.indexOf('http') > -1)
                     transType = TransTypeEnum.TCP;
                 else if (item.Url.indexOf('tcp') > -1)
                     transType = TransTypeEnum.UDP;
@@ -129,11 +129,9 @@ export class EncodeDeviceFormService extends InputLabelService implements FormAt
         dev = (this.editItem && this.formState == FormStateEnum.edit) ? this.editItem : new EncodeDevice();
         if (check) {
             const resourceType = 'EncodeDevice';
-            if (item.TransType == TransTypeEnum.UDP)
-                dev.Url = 'tcp://' + item.Url_ + ':' + item.Port + '/';
-            else if (item.TransType == TransTypeEnum.TCP)
-                dev.Url = 'http://' + item.Url_ + ':' + item.Port + '/';
+            dev.Url = 'http://' + item.Url_ + ':' + item.Port + '/';
             dev.Username = item.Username;
+            dev.Password=item.Password;
             if (item.TransType)
                 dev.TransType = Number.parseInt(item.TransType);
             dev.ProtocolType = item.ProtocolType;
