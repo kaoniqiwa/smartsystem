@@ -8,6 +8,7 @@ class HowellCSV {
         
         let COLNAME = 'COLNAME',TITLEKEY='TITLEKEY';
         if (this.data) {
+            let start="\uFEFF";
             var content = '';
            this.data.get(TITLEKEY).map(t => content = t + '\n');
             content += this.data.get(COLNAME).join(',') + '\n';
@@ -15,7 +16,7 @@ class HowellCSV {
                 if (key != TITLEKEY && key != COLNAME)
                     content += this.data.get(key).join(',') + '\n';
 
-         download(new Blob([content]), filename+'.csv', "application/csv");
+         download(new Blob([start+content]), filename+'.csv', "application/csv");
         }
     };
 }
