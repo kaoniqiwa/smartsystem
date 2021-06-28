@@ -36,6 +36,7 @@ import { MapDeployComponent } from './garbage-station/map-deploy/map-deploy.comp
 import { FullTrashCanComponent } from './garbage-station/full-trash-can/full-trash-can.component';
 import { AIModelEventComponent } from './event-history/aimodel-event/aimodel-event.component';
 import { ConfirmComponent } from './garbage-station/map-deploy/confirm/confirm.component'; 
+import { CoordinateManageComponent } from './garbage-station/map-deploy/coordinate-manage/coordinate-manage.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -54,7 +55,7 @@ import { ConfirmComponent } from './garbage-station/map-deploy/confirm/confirm.c
   , RegionCameraTreeComponent, GarbageStationComponent, GarbageStationFormComponent,FullTrashCanComponent, AIModelEventComponent
   , CameraAIModelMgrComponent, SRServersMgrComponent, SRServerFormComponent, RegionCameraCopyComponent
   , DeployCameraComponent, TrashIconsListComponent, 
-  ConfirmComponent, MapDeployComponent,
+  CoordinateManageComponent, ConfirmComponent, MapDeployComponent,
   CameraRegionMoveComponent, GarbageStationMgrComponent, StationChartComponent, DivisionStationTreeComponent, 
   RegionCameraTreeComponent, GarbageStationComponent, GarbageStationFormComponent, FullTrashCanComponent ],
   exports:[

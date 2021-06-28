@@ -1,38 +1,65 @@
 <div class="fill-height fill-width">
-  <div style="width:320px" class="card-wrap m-r-20 pull-left">
+  <div style="width: 320px" class="card-wrap m-r-20 pull-left">
     <h2 class="m-b-20">投放点列表</h2>
-    <hw-division-station-tree #stationTree [treeHeight]="'calc(100% - 80px)'" [rightBtn]="rightBtn"
-      [rightBtnFn]="rightBtnFn" [selectedItemFn]="selectDivisionClick"></hw-division-station-tree>
+    <hw-division-station-tree
+      #stationTree
+      [treeHeight]="'calc(100% - 80px)'"
+      [rightBtn]="rightBtn"
+      [rightBtnFn]="rightBtnFn"
+      [selectedItemFn]="selectDivisionClick"
+    ></hw-division-station-tree>
   </div>
-  <div style="width: calc(100% - 340px);padding:10px" class="card-wrap pull-left map-box">
+  <div
+    style="width: calc(100% - 340px); padding: 10px"
+    class="card-wrap pull-left map-box"
+  >
     <div class="tools">
       <div class="pull-left">
-        <button class="hw-blue-btn m-r-10" [ngClass]="{'hw-green-btn': draggable}" (click)="DraggableClicked()" title="开启地图点位拖拽">
+        <button
+          class="hw-blue-btn m-r-10"
+          [ngClass]="{ 'hw-green-btn': draggable }"
+          (click)="DraggableClicked()"
+          title="开启地图点位拖拽"
+        >
           拖拽
         </button>
-        <button class="hw-red-btn m-r-10" *ngIf="pointSelected" [ngClass]="{'hw-green-btn': draggable}" (click)="RemovePointClicked()" title="删除已选中地图点位">
+        <button
+          class="hw-red-btn m-r-10"
+          *ngIf="pointSelected"
+          [ngClass]="{ 'hw-green-btn': draggable }"
+          (click)="RemovePointClicked()"
+          title="删除已选中地图点位"
+        >
           删除
         </button>
-        <button class="hw-blue-btn m-r-10" [ngClass]="{'hw-green-btn': gisPointChanging}" (click)="GisPointClicked()" title="录入坐标">
+        <button
+          class="hw-blue-btn m-r-10"
+          [ngClass]="{ 'hw-green-btn': gisPointChanging }"
+          (click)="GisPointClicked()"
+          title="录入坐标"
+        >
           录入坐标
         </button>
       </div>
       <div class="pull-right">
-        <input class="text" [value]="mouseLon">
-        <input class="text" [value]="mouseLat">
+        <input class="text" [value]="mouseLon" />
+        <input class="text" [value]="mouseLat" />
       </div>
     </div>
 
-    <iframe class="map" [src]="srcUrl" #iframe width="100%" height="100%"></iframe>
-
+    <iframe
+      class="map"
+      [src]="srcUrl"
+      #iframe
+      width="100%"
+      height="100%"
+    ></iframe>
   </div>
   <div class="fill-height fill-width hw-content-mask" *ngIf="locationDisplay">
-    <hw-confirm-dialog [dialog]="locationDialog">
-    </hw-confirm-dialog>
+    <hw-confirm-dialog [dialog]="locationDialog"> </hw-confirm-dialog>
   </div>
   <div class="fill-height fill-width hw-content-mask" *ngIf="unbindDisplay">
-    <hw-confirm-dialog [dialog]="unbindDialog">
-    </hw-confirm-dialog>
+    <hw-confirm-dialog [dialog]="unbindDialog"> </hw-confirm-dialog>
   </div>
   <!-- <app-confirm #locationConfirm
   [message]="'是否保存当前位置？'"
@@ -45,6 +72,11 @@
     (YesClickedEvent)="unbindYesClicked()"
     (CancelClickedEvent)="unbindCancelClicked()"
   ></app-confirm> -->
-
-
 </div>
+
+<app-coordinate-manage
+  *ngIf="mapCoordinateWubdiwDataService.Display"
+  [title]="mapCoordinateWubdiwDataService.Title"
+  (YesClickedEvent)="mapCoordinateWubdiwDataService.YesEvent($event)"
+  (CancelClickedEvent)="mapCoordinateWubdiwDataService.NoEvent()"
+></app-coordinate-manage>

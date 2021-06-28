@@ -5,7 +5,7 @@ import {
   RightBtn,
 } from "../../../shared-module/custom-tree/custom-tree";
 import { DataService as TypeDataService } from "../garbage-station/business/data.service";
-import { DataService as CameraDataService } from "./business/data.service";
+import { MapDeployCoordinateWindowService } from "./business/map-deploy-coordinate-window-data.service";
 import { DomSanitizer } from "@angular/platform-browser";
 import {
   Division,
@@ -23,7 +23,7 @@ import { GarbageStationRequestService } from "src/app/data-core/repuest/garbage-
   selector: "app-map-deploy",
   templateUrl: "./map-deploy.component.html",
   styleUrls: ["./map-deploy.component.css"],
-  providers: [TypeDataService, CameraDataService],
+  providers: [TypeDataService, MapDeployCoordinateWindowService],
 })
 export class MapDeployComponent implements OnInit {
   // 行政及垃圾厢房列表
@@ -111,16 +111,33 @@ export class MapDeployComponent implements OnInit {
     }
 
     console.log(item);
+    debugger;
 
     switch (item.rightClassBtn[0].tag) {
       case RightButtonTag.Link:
         this.wantBindNode = item;
+
+        this.mapCoordinateWubdiwDataService.Display = true;
+        this.mapCoordinateWubdiwDataService.Title = item.name;
+
+        if (this.wantBindNode) {
+          const point = new CesiumDataController.Point();
+          point.id = this.wantBindNode.id;
+          point.name = this.wantBindNode.name;
+          point.parentId = this.DivisionId;
+          point.villageId = this.DivisionId;
+          point.type = CesiumDataController.ElementType.Camera;
+          point.position.height = 18;
+          this.mapCoordinateWubdiwDataService.standbyPoint = point;
+        }
+
         break;
       case RightButtonTag.Unlink:
         // this.unbindConfirm.display = true;
         this.unbindDisplay = true;
         this.wantUnbindNode = item;
         this.pointSelected = this.points[item.id];
+
         break;
       case RightButtonTag.position:
         break;
@@ -131,24 +148,28 @@ export class MapDeployComponent implements OnInit {
     // item.id;
   };
 
-  checkPoints(village: CesiumDataController.Village) {
+  checkPoints(village: CesiumDataController.Village, nodes: FlatNode[]) {
     const points = village.points;
     for (const pointId in points) {
       if (Object.prototype.hasOwnProperty.call(points, pointId)) {
         const point = points[pointId];
-        (function (that, pointId, point) {
-          setTimeout(() => {
-            that.points[pointId] = point;
-            const node = that.stationTree.findNode(pointId);
 
-            node.rightClassBtn = [
-              new RightBtn("howell-icon-Unlink", RightButtonTag.Unlink),
-            ];
-          }, 0);
-        })(this, pointId, point);
+        this.points[pointId] = point;
+        const node = nodes.find((x) => x.id == pointId);
+        node.rightClassBtn = [
+          new RightBtn("howell-icon-Unlink", RightButtonTag.Unlink),
+        ];
       }
     }
   }
+  // checkPoints(nodes: FlatNode[]) {
+  //   for (let i = 0; i < nodes.length; i++) {
+  //     const node = nodes[i];
+  //     node.rightClassBtn = [
+  //       new RightBtn("howell-icon-Unlink", RightButtonTag.Unlink),
+  //     ];
+  //   }
+  // }
 
   selectDivisionClick = async (item: FlatNode, lastNode: boolean) => {
     this.GarbageStation = null;
@@ -190,10 +211,9 @@ export class MapDeployComponent implements OnInit {
       this.client.Viewer.MoveTo(village.center);
       this.wantUnbindNode = undefined;
       this.pointSelected = undefined;
-      setTimeout(() => {
-        this.checkPoints(village);
-      }, 0);
-
+      if (item.children) {
+        this.checkPoints(village, item.children);
+      }
       return;
     }
     // 如果选中的是垃圾厢房
@@ -255,13 +275,30 @@ export class MapDeployComponent implements OnInit {
 
   constructor(
     private typeDataService: TypeDataService,
-    private cameraDataService: CameraDataService,
+    private mapCoordinateWubdiwDataService: MapDeployCoordinateWindowService,
     private sanitizer: DomSanitizer,
     private divisionService: DivisionRequestService,
     private garbageService: GarbageStationRequestService
   ) {
     this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc());
+    mapCoordinateWubdiwDataService.OnPointCreated = (
+      point: CesiumDataController.Point
+    ) => {
+      this.onPointCreated(point);
+    };
   }
+
+  onPointCreated(point: CesiumDataController.Point) {
+    this.points[point.id] = point;
+    this.client.Point.Create(point);
+    this.pointSelected = point;
+    const node = this.stationTree.findNode(point.id);
+    node.rightClassBtn = [
+      new RightBtn("howell-icon-Unlink", RightButtonTag.Unlink),
+    ];
+    this.wantUnbindNode = undefined;
+  }
+
   getSrc() {
     const host = document.location.hostname;
     const port = document.location.port;
@@ -285,7 +322,9 @@ export class MapDeployComponent implements OnInit {
     this.client = new CesiumMapClient(this.iframe.nativeElement);
     this.client.Events.OnLoading = () => {
       this.dataController = this.client.DataController;
-
+      this.mapCoordinateWubdiwDataService.client = this.client;
+      this.mapCoordinateWubdiwDataService.dataController =
+        this.client.DataController;
       // const villages = this.dataController.Village.List();
 
       // for (const villageId in villages) {
@@ -359,7 +398,7 @@ export class MapDeployComponent implements OnInit {
         this.client.Point.Create(point);
         this.pointSelected = point;
         const node = this.stationTree.findNode(point.id);
-        this.wantUnbindNode = node;
+        this.wantUnbindNode = undefined;
         node.rightClassBtn = [
           new RightBtn("howell-icon-Unlink", RightButtonTag.Unlink),
         ];
@@ -416,6 +455,7 @@ export class MapDeployComponent implements OnInit {
   }
   unbindYesClicked() {
     let result = false;
+
     try {
       if (this.pointSelected) {
         result = this.RemovePoint(this.pointSelected);

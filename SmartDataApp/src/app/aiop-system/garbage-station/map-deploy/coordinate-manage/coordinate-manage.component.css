@@ -1,0 +1,17 @@
+.window .content {
+  color: #c4cedb;
+}
+
+.window>.title {
+  margin-bottom: 25px;
+}
+
+.window .content>div {
+  display: flex;
+  margin: 10px;
+}
+
+.window .content>div .title {
+  width: 20%;
+  line-height: 34px;
+}

@@ -1,0 +1,34 @@
+<div #confirm class="fill-height fill-width hw-content-mask ">
+  <div class="hw-form-wrap " style="height: 250px;">
+  
+    <div class="custom-form-wrap text-center window" style="width: 400px;">
+  <h2 class="title">{{title}}</h2>    
+      <div class="content">
+        <div class="lon">
+          <div class="title">
+            经度
+          </div>
+          <div>
+            <input #lon type="text" class="custom form-control">
+          </div>
+        </div>
+        <div class="lat">
+        <div class="title">
+        维度
+          </div>
+          <div>
+            <input #lat type="text" class="custom form-control">
+          </div>
+        </div>
+      </div>
+      <div class="text-center" style="margin-top: 40px;">
+        <button class="hw-green-m-btn m-r-10" (click)="OnYesClicked()">
+          <i class="howell-icon-Check"></i>
+        </button>
+        <button class="hw-gray-m-btn" (click)="OnCancelClicked()">
+          <i class="howell-icon-Close"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

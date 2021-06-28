@@ -1,6 +1,4 @@
-export class CustomExtension {
-
-}
+export class CustomExtension {}
 
 export class TreeNode {
   id: string;
@@ -17,7 +15,6 @@ export class InputTreeNode extends TreeNode {
   inputVal: string;
 }
 
-
 /** Flat node with expandable and level information */
 export class FlatNode {
   expandable: boolean;
@@ -32,26 +29,26 @@ export class FlatNode {
   rightClassBtn: RightBtn[];
   checkBoxState: CheckBoxStateEnum;
   checkedChilds: number = 0;
-
+  children: FlatNode[];
 }
 
 export enum CheckBoxStateEnum {
   part,
   all,
-  self
+  self,
 }
 
 export enum TreeListMode {
   nomal,
   rightInput,
   checkedBox,
-  rightBtn
+  rightBtn,
 }
 
 export enum ColorEnum {
-  'white' = 'text-white',
-  'lightbBlue' = 'light-blue-text',
-  'green' = 'green-text'
+  "white" = "text-white",
+  "lightbBlue" = "light-blue-text",
+  "green" = "green-text",
 }
 
 export class RightBtn {
