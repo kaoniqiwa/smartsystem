@@ -1,15 +1,14 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, ElementRef, } from '@angular/core';
 import { BusinessService, } from "./business/business.service";
-import { TimeUnitEnum } from "./business/search";
-import { TableField, FieldDesc } from "./business/statistic-table";
 import { DateTimePickerDirective } from "../../../../common/directive/date-time-picker.directive";
 import { GarbageStationDao } from "../../../../data-core/dao/garbage-station-dao";
 import { DivisionDao } from "../../../../data-core/dao/division-dao";
 import { LevelListPanelComponent } from "../../event-history/level-list-panel/level-list-panel.component";
 import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
-import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
 import { BusinessManageService, ViewDivisionTypeEnum } from "../../business-manage-service";
 import { OtherViewEnum } from "../view-helper";
+import { HWCsvContext, StationSumHistoryCsv } from "../../export-csv-file";
+import { HWXlsxContext, StationSumHistoryXlsx } from "../../export-xlsx-file";
 @Component({
   selector: 'hw-garbage-full-history-sum-chart',
   templateUrl: './garbage-full-history-sum-chart.component.html',
@@ -134,67 +133,48 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
     }, 280);
   }
 
-  exportExcel() {
-     
-    if (this.businessService.statisticTable.dataSource.values.length) {
-      enum ReportTypeEnum {
-        day = '日报表',
-        week = '周报表',
-        month = '月报表'
-      }
-      const sp = this.businessService.search.toSearchParam()
-        , reportTitle = () => {
-          var title = '';
-          if (this.levelListPanel)
-            title = this.dtp.nativeElement.value + ' ' + this.levelListPanel.selectedItem + ' ' + reportType;
-          else if (this.businessManageService.viewDivisionType == this.businessManageService.viewDivisionTypeEnum.City) {
-            const dropItem = this.businessService.search.divisionsDropList.find(f => f.id == sp.DivisionId);
-            title = this.dtp.nativeElement.value + ' ' + dropItem.name + ' ' + reportType;
-          }
-          return title;
-        }
-        , excel = new HowellExcelJS()
-        , book = excel.createBook()
-        , reportType = ReportTypeEnum[sp.TimeUnit]
-        //  , reportTitle = this.dtp.nativeElement.value + ' ' + this.levelListPanel.selectedItem + ' ' + reportType
-        , sheet = excel.addWorksheet(book, reportTitle())
-        , colName = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
-        , fieldName = ['序号', '名称', '达标率', '平均落地时长', '最大落地时长', '总落地时长', '乱丢垃圾', '混合投放']
-        , toCellValue = (fieldStr: string) => {
-          const field: FieldDesc = JSON.parse(fieldStr);
-          var value = '';
-          if (field.tdVal == '0')
-            return '0';
-          else {
-            value += field.tdVal;
-            value += field.iconClass.indexOf('up') > -1 ? ('↑' + field.label) : ('↓' + field.label);
-          }
-          return value;
-        };
-      var no = 1, tag = 3;
-      excel.setCellValue(sheet, 'A1', reportTitle());
-      for (let i = 0; i < fieldName.length; i++)
-        excel.setCellValue(sheet, colName[i] + '2', fieldName[i]);
-
-      this.businessService.statisticTable.dataSource.values.map((v: TableField) => {
-        if (v.garbageRatio) {
-          excel.setCellValue(sheet, colName[0] + (tag + ''), no);
-          excel.setCellValue(sheet, colName[1] + (tag + ''), v.name);
-          excel.setCellValue(sheet, colName[2] + (tag + ''), toCellValue(v.garbageRatio));
-          excel.setCellValue(sheet, colName[3] + (tag + ''), toCellValue(v.avgGarbageTime));
-          excel.setCellValue(sheet, colName[4] + (tag + ''), toCellValue(v.maxGarbageTime));
-          excel.setCellValue(sheet, colName[5] + (tag + ''), toCellValue(v.garbageDuration));
-          excel.setCellValue(sheet, colName[6] + (tag + ''), toCellValue(v.illegalDrop));
-          excel.setCellValue(sheet, colName[7] + (tag + ''), toCellValue(v.mixedInto));
-          no += 1;
-          tag += 1;
-        }
-
-      });
-
-      excel.writeFile(book, reportTitle());
+  get reportTitle() {
+    enum ReportTypeEnum {
+      day = '日报表',
+      week = '周报表',
+      month = '月报表'
     }
+    const sp = this.businessService.search.toSearchParam()
+      , reportType = ReportTypeEnum[sp.TimeUnit]
+      , reportTitle = () => {
+        var title = '';
+        if (this.levelListPanel)
+          title = this.dtp.nativeElement.value + ' ' + this.levelListPanel.selectedItem + ' ' + reportType;
+        else if (this.businessManageService.viewDivisionType == this.businessManageService.viewDivisionTypeEnum.City) {
+          const dropItem = this.businessService.search.divisionsDropList.find(f => f.id == sp.DivisionId);
+          title = this.dtp.nativeElement.value + ' ' + dropItem.name + ' ' + reportType;
+        }
+        return title;
+      }
 
+    return {
+      title: reportTitle()
+    }
+  }
+
+  exportCsv() {
+    if (this.businessService.statisticTable.dataSource.values.length) {
+      let csv = new StationSumHistoryCsv()
+        , csvCt = new HWCsvContext(csv);
+      csvCt.title = this.reportTitle.title;
+      csvCt.fieldVal = this.businessService.statisticTable.dataSource.values;
+      csvCt.export();
+    }
+  }
+
+  exportExcel() {
+    if (this.businessService.statisticTable.dataSource.values.length) {
+      const xlsx = new StationSumHistoryXlsx()
+        , xlsxCt = new HWXlsxContext(xlsx);
+      xlsxCt.title = this.reportTitle.title;
+      xlsxCt.fieldVal = this.businessService.statisticTable.dataSource.values;
+      xlsxCt.export();
+    }
   }
 
 }

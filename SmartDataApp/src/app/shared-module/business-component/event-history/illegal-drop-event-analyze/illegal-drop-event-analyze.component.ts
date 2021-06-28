@@ -11,6 +11,8 @@ import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
 import { BusinessEventTypeEnum } from '../business-event-type';
 import { ClassTypeEnum } from "./business/search";
 import { DivisionDao } from "../../../../data-core/dao/division-dao";
+import { HowellCSV } from "../../../../common/tool/hw-excel-js/hw-csv";
+import { TITLEKEY ,COLNAME} from "../../../../common/tool/hw-excel-js/data";
 @Component({
   selector: 'hw-illegal-drop-event-analyze',
   templateUrl: './illegal-drop-event-analyze.component.html',
@@ -116,9 +118,49 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
 
   }
 
-  exportExcel() { 
+  exportCSV(){
     if (this.businessService.dataSources) {
-      
+      const data = this.businessService.exportExcel(this.businessService.dataSources, this.businessService.search, this.dropList.selectedTexts);
+      const evenTypeLabel = this.pageTitle, csvDataMap =  new Map<string,Array<string>>()
+      , sumTr = ['合计','','']
+      , findKeyNum = (findKey:string)=>{
+        const numArr = new Array();
+        for (const k of data.table.data.keys()) {
+          const field = data.table.data.get(k);
+          field.map(f=>{
+             if(f.name == findKey)numArr.push(f.val||0);
+          });
+        }
+        return numArr;
+      };
+      var className = '', tag = 0,sum = 0; 
+      this.dropList.selectedTexts.map(x => className += ' ' + x.text);
+      data.table.title = `${this.dtp.nativeElement.value} ${className} ${evenTypeLabel}数据比较${this.businessService.reportType}`;
+      csvDataMap.set(TITLEKEY,[data.table.title]);
+      csvDataMap.set(COLNAME,data.table.fieldName);
+      for (const k of data.table.data.keys()) {
+        const field = data.table.data.get(k);
+        field.map(x => {        
+          csvDataMap.set(tag+'',[x.no+'',x.date,x.name,...findKeyNum(x.name)]);            
+          tag+=1;
+        }); 
+        break;
+      }
+      for (const k of data.table.data.keys()) {
+        const field = data.table.data.get(k);
+        field.map(x => {  
+          sum +=(x.val || 0); 
+        });  
+        sumTr.push(sum+'');
+        sum = 0; 
+      } 
+      csvDataMap.set('sum', sumTr);
+      new HowellCSV(csvDataMap).writeCsvFile(data.table.title);
+    }
+  }
+
+  exportExcel() { 
+    if (this.businessService.dataSources) {     
 
       const data = this.businessService.exportExcel(this.businessService.dataSources, this.businessService.search, this.dropList.selectedTexts);
    

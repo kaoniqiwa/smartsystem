@@ -457,8 +457,8 @@ export class DivisionGarbageSpecificationConverter implements IConverter {
             hint.tag = HintTag.GarbageStation;
             hints.push(hint);
             hint = new Hint();
-            hint.title = '小包垃圾滞留';
-            hint.linkTipLabel='查看小包垃圾滞留信息';
+            hint.title = '垃圾滞留投放点';
+            hint.linkTipLabel='查看垃圾滞留投放点信息';
             hint.tag = HintTag.StationStranded;
             hint.subTitleColor = ColorEnum["green-text"];
             hint.subTitle = input.garbageStrandedNumber + '';

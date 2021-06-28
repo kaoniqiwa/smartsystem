@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { enterKeyDown, createVideo } from "../../common/tool/jquery-help/jquery-help";
 import { UserLoginService } from "./user-login.service";
 import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router'; 
 @Component({
   selector: 'app-user-login',
   templateUrl: './user-login.component.html',
@@ -14,7 +15,8 @@ export class UserLoginComponent implements OnInit {
 
   showBg = true;
 
-  constructor(private userLoginService: UserLoginService, titleService: Title) {
+  constructor(private userLoginService: UserLoginService, titleService: Title
+    , private route: ActivatedRoute) {
     titleService.setTitle('用户登录');
   }
 
@@ -28,6 +30,15 @@ export class UserLoginComponent implements OnInit {
     setTimeout(() => {
       this.showBg = false;
     }, 1000);
+    this.route.queryParams.subscribe(params => {
+      setTimeout(() => {
+        /**url 授权登录 */
+        this.userLoginService.urlAuthLogin({
+          Auto:params.Auth
+        });
+      }, 1200);
+        
+    });
   }
 
   autoLoginCheck() {

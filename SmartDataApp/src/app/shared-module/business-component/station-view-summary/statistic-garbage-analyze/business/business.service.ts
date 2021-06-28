@@ -4,7 +4,7 @@ import { GarbageStationNumberStatisticV2, GetGarbageStationStatisticNumbersParam
 import { ListAttribute } from "../../../../../common/tool/table-form-helper";
 import { SearchControl, TimeUnitEnum, ChartTypeEnum, CategoryNameEnum ,CategoryNameTextEnum} from "./search";
 import { DatePipe } from "@angular/common";
-import { OneWeekDate, MonthLastDay } from "../../../../../common/tool/tool.service";
+import { OneWeekDate, MonthLastDay,OneWeekDay } from "../../../../../common/tool/tool.service";
 import { BarOption, LineOption } from "../../../../../common/directive/echarts/echart";
 import { EventTypeEnum } from "../../../../../common/tool/enum-helper";
 import { EventNumber } from "../../../../../data-core/model/waste-regulation/event-number";
@@ -346,8 +346,11 @@ export class BusinessService extends ListAttribute {
             }
         }
         else if (s.TimeUnit == TimeUnitEnum.Week) {
+            let weekDays=  OneWeekDay(new Date(Number.parseInt(s.Year)
+            , Number.parseInt(s.Month) - 1, Number.parseInt(s.Day)));
+            
             ["周一", "周二", "周三", "周四", "周五", "周六", "周日"].map((x, index) => {
-                timeKey.push({ no: index + 1, date: '', name: x, val: 0 });
+                timeKey.push({ no: index + 1, date: weekDays[index], name: x, val: 0 });
             }); 
         }
         map.set(key, timeKey);

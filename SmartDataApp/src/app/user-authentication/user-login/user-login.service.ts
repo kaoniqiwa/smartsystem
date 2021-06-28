@@ -9,7 +9,8 @@ import { HowellAuthHttpService } from "../../data-core/repuest/howell-auth-http.
 import { User } from "../../data-core/url/user-url";
 import { BaseUrl } from "../../data-core/url/IUrl";
 import { SessionUser } from "../../common/tool/session-user";
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';  
+import { Base64 } from '../../common/tool/base64';
 @Injectable()
 export class UserLoginService {
     sessionUser: SessionUser;
@@ -38,6 +39,22 @@ export class UserLoginService {
             this.formVal = formVal;
             this.auth(formVal.name);
         }
+    }
+
+    urlAuthLogin(param:{ Auto:string}){
+        if(param&&param.Auto){
+            let base64=new Base64(),urlParam = base64.decode(param.Auto)
+            ,paramSplit = urlParam.split('&');
+           try{
+            this.form.patchValue({
+                name:paramSplit[0],
+                pwd: paramSplit[1]
+            });
+            this.login();
+           }catch{
+               
+           }
+        } 
     }
 
     fillUserForm() {

@@ -1,18 +1,20 @@
+<ng-container *ngIf="hideButton" >
+  <a class="nav-link waves-effect waves-dark logout p-t-0 p-b-0" href="javascript:void(0)" data-toggle="dropdown"
+    aria-haspopup="true" aria-expanded="false">
+    <i class="howell-icon-account m-r-10 light-blue text-icon"></i>
+  </a>
+  <a href="/help/help.html" target="_blank" class="nav-link waves-effect waves-dark help  p-t-0 p-b-0">
+    <i class="mdi mdi-help-circle light-blue text-icon"></i>
+  </a>
+</ng-container>
 
-
-
-<a class="nav-link waves-effect waves-dark logout p-t-0 p-b-0"  href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-  <i class="howell-icon-account m-r-10 light-blue text-icon"></i>   
-</a> 
-<a href="/help/help.html" target="_blank"  class="nav-link waves-effect waves-dark help  p-t-0 p-b-0"  >
-  <i class="mdi mdi-help-circle light-blue text-icon"></i>
-</a>
 <div class="dropdown-menu p-b-0 p-t-0 m-t-10 list-wrap" x-placement="bottom-start">
-  <div  class=" light-blue-text ele-nowrap user-name">
-      <i class="howell-icon-account m-r-5">
-      </i>
-      {{sessionUser.name}}
+  <div class=" light-blue-text ele-nowrap user-name">
+    <i class="howell-icon-account m-r-5">
+    </i>
+    {{sessionUser.name}}
   </div>
-  <a routerLink="/login"  href="javascript:void(0)" class="dropdown-item light-blue-text" style="font-size: 16px;" (click)="logOut()">
+  <a routerLink="/login" href="javascript:void(0)" class="dropdown-item light-blue-text" style="font-size: 16px;"
+    (click)="logOut()">
     <i class="mdi mdi-logout p-r-5"></i>退出登录</a>
 </div>
