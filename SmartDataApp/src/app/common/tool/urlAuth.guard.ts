@@ -16,7 +16,7 @@ import { Base64 } from '../../common/tool/base64';
 export class UrlAuthGuard implements CanActivate {
   sessionUser: SessionUser;
   msg: MessageBar;
-  formVal:{name:string,pwd:string};
+  formVal: { name: string, pwd: string };
   constructor(private router: Router
     , private httpService: HowellAuthHttpService) {
     this.sessionUser = new SessionUser();
@@ -28,30 +28,38 @@ export class UrlAuthGuard implements CanActivate {
     state: RouterStateSnapshot): true | UrlTree {
     let url: string = state.url;
     return this.checkLogin(url);
-  } 
+  }
 
-  checkLogin(url: string): true | UrlTree {     
+  checkLogin(url: string): true | UrlTree {
     if (url.indexOf('Auth') > -1) {
-      try{
-        let authUrl = url.split('Auth=')
-        ,base64=new Base64()
-        ,urlParam = base64.decode(unescape(authUrl[1]))
-        ,paramSplit = urlParam.split('&');
-        this.formVal ={
-          name:paramSplit[0],
-          pwd:paramSplit[1]
+      try {
+        let hideButton = '&HideButton=true';
+        if (url.indexOf(hideButton) > -1) {
+          url=url.replace(hideButton,'');
+          window.sessionStorage.setItem('HideButton', hideButton);
         }
-        this.auth(this.formVal.name); 
+
+        let authUrl = url.split('Auth=')
+          , base64 = new Base64()
+          , urlParam = base64.decode(unescape(authUrl[1]))
+          , paramSplit = urlParam.split('&');
+        this.formVal = {
+          name: paramSplit[0],
+          pwd: paramSplit[1]
+        }
+
+        this.auth(this.formVal.name);
+
         setTimeout(() => {
-          return true 
-        },2000);
-      }catch{
+          return true
+        }, 2000);
+      } catch {
         return this.router.parseUrl('/login');
       }
-      
+
     }
     else
-      return true; 
+      return true;
   }
   handleLoginError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
@@ -73,14 +81,14 @@ export class UrlAuthGuard implements CanActivate {
             }[],
             Resources: Array<{ Id: string, Name: string, ResourceType: number }>
           }) => {
-            if (result) { 
+            if (result) {
               if (result.Role && result.Role.length > 0
                 && result.Role[0].PictureData === 1
                 && result.Role[0].PrivacyData === 1
                 && result.Role[0].StaticData === 1
                 && result.Role[0].UserData === 1) {
                 this.router.navigateByUrl('system-mode');
-              } else { this.router.navigateByUrl('waste-regulation'); } 
+              } else { this.router.navigateByUrl('waste-regulation'); }
               this.memory(this.formVal.name, this.formVal.pwd, result.Id, result.Resources);
             }
           });
@@ -91,13 +99,13 @@ export class UrlAuthGuard implements CanActivate {
 
   handleLoginError2<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-        if (error.status == 403) {
-            this.msg.response_Error('账号或密码错误');
-            this.router.navigateByUrl('/login');
-        }
-        return of(result as T);
+      if (error.status == 403) {
+        this.msg.response_Error('账号或密码错误');
+        this.router.navigateByUrl('/login');
+      }
+      return of(result as T);
     };
- }
+  }
 
   memory(name: string, pwd: string, id: string, userDivision: Array<{ Id: string, Name: string, ResourceType: number }>) {
     this.sessionUser.autoLogin = false;
