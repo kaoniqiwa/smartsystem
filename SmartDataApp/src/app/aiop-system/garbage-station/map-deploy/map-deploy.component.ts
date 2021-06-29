@@ -175,29 +175,29 @@ export class MapDeployComponent implements OnInit {
     this.GarbageStation = null;
 
     // this.stationTree.garbageStationTree.getParentNode(item);
-    let data: Division[] | GarbageStation[];
+    let data: Division | GarbageStation;
     // 如果选中的是区域项
-    data = this.stationTree.dataService.divisions.filter((x) => {
+    data = this.stationTree.dataService.divisions.find((x) => {
       return x.Id === item.id;
     });
 
-    if (data && data.length > 0) {
-      this.DivisionId = data[0].Id;
-      this.client.Village.Select(data[0].Id);
-      const village = this.dataController.Village.Get(data[0].Id);
+    if (data) {
+      this.DivisionId = data.Id;
+      this.client.Village.Select(data.Id);
+      const village = this.dataController.Village.Get(data.Id);
       try {
         if (this.gisPointChanging) {
-          data[0].GisArea = new GisArea();
-          data[0].GisArea.GisType = GisType.GCJ02;
-          data[0].GisArea.GisPoint = village.areas.map((x) => {
+          data.GisArea = new GisArea();
+          data.GisArea.GisType = GisType.GCJ02;
+          data.GisArea.GisPoint = village.areas.map((x) => {
             return new GisPoint(x, GisType.GCJ02);
           });
-          data[0].GisPoint = new GisPoint(
+          data.GisPoint = new GisPoint(
             [village.center.lon, village.center.lat],
             GisType.GCJ02
           );
 
-          let response = await this.divisionService.set(data[0]).toPromise();
+          let response = await this.divisionService.set(data).toPromise();
           console.log(response);
           if (response.FaultCode === undefined || response.FaultCode != 0) {
             throw new Error(response.FaultReason);
@@ -217,13 +217,13 @@ export class MapDeployComponent implements OnInit {
       return;
     }
     // 如果选中的是垃圾厢房
-    data = this.stationTree.dataService.garbageStations.filter((x) => {
+    data = this.stationTree.dataService.garbageStations.find((x) => {
       return x.Id === item.id;
     });
-    if (data && data.length > 0) {
-      this.DivisionId = data[0].DivisionId;
-      this.GarbageStation = data[0];
-      this.client.Village.Select(data[0].DivisionId);
+    if (data) {
+      this.DivisionId = data.DivisionId;
+      this.GarbageStation = data;
+      this.client.Village.Select(data.DivisionId);
 
       this.wantUnbindNode = item;
       if (!this.points[item.id]) {
@@ -232,8 +232,8 @@ export class MapDeployComponent implements OnInit {
 
       try {
         const point = this.dataController.Village.Point.Get(
-          data[0].DivisionId,
-          data[0].Id
+          data.DivisionId,
+          data.Id
         );
         if (point) {
           item.rightClassBtn = [
@@ -241,11 +241,11 @@ export class MapDeployComponent implements OnInit {
           ];
           try {
             if (this.gisPointChanging) {
-              data[0].GisPoint = new GisPoint(
+              data.GisPoint = new GisPoint(
                 [point.position.lon, point.position.lat],
                 GisType.GCJ02
               );
-              let response = await this.garbageService.set(data[0]).toPromise();
+              let response = await this.garbageService.set(data).toPromise();
               console.log(response);
               if (response.FaultCode === undefined || response.FaultCode != 0) {
                 throw new Error(response.FaultReason);
@@ -297,6 +297,27 @@ export class MapDeployComponent implements OnInit {
       new RightBtn("howell-icon-Unlink", RightButtonTag.Unlink),
     ];
     this.wantUnbindNode = undefined;
+
+    let data = this.stationTree.dataService.garbageStations.find((x) => {
+      return x.Id === point.id;
+    });
+    if (data) {
+      data.GisPoint = new GisPoint(
+        [point.position.lon, point.position.lat],
+        GisType.GCJ02
+      );
+      let promise = this.garbageService.set(data).toPromise();
+      promise
+        .then((res) => {
+          if (res.FaultCode === undefined || res.FaultCode != 0) {
+            new MessageBar().response_Error("点位坐标录入失败");
+          }
+          new MessageBar().response_success("点位坐标录入成功");
+        })
+        .catch((ex) => {
+          new MessageBar().response_Error("点位坐标录入失败");
+        });
+    }
   }
 
   getSrc() {
