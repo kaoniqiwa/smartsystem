@@ -8,6 +8,7 @@ import {
   TreeListMode,
   RightBtn,
 } from "../../../shared-module/custom-tree/custom-tree";
+import { Output, EventEmitter } from "@angular/core";
 @Component({
   selector: "hw-division-station-tree",
   templateUrl: "./division-station-tree.component.html",
@@ -31,6 +32,16 @@ export class DivisionStationTreeComponent implements OnInit {
       this.selectedItemFn(item, this.stationTreeService.isLastNode(item.id));
     }
   };
+
+  @Output()
+  itemExpandClickedEvent: EventEmitter<FlatNode> = new EventEmitter();
+
+  itemExpandClicked(node: FlatNode) {
+    if (this.itemExpandClickedEvent) {
+      console.log(this);
+      this.itemExpandClickedEvent.emit(node);
+    }
+  }
 
   @Input()
   treeListMode = TreeListMode.rightBtn;

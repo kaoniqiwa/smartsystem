@@ -148,6 +148,25 @@ export class MapDeployComponent implements OnInit {
     // item.id;
   };
 
+  onItemExpandClicked(node: FlatNode) {
+    let village = this.dataController.Village.Get(node.id);
+    let points = village.points;
+    for (const pointId in points) {
+      if (Object.prototype.hasOwnProperty.call(points, pointId)) {
+        const point = points[pointId];
+        if (!this.points[pointId]) {
+          this.points[pointId] = point;
+        }
+        let item = node.children.find((x) => x.id === pointId);
+        if (item) {
+          item.rightClassBtn = [
+            new RightBtn("howell-icon-Unlink", RightButtonTag.Unlink),
+          ];
+        }
+      }
+    }
+  }
+
   checkPoints(village: CesiumDataController.Village, nodes: FlatNode[]) {
     const points = village.points;
     for (const pointId in points) {

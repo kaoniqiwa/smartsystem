@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, EventEmitter } from "@angular/core";
 import { FlatTreeControl } from "@angular/cdk/tree";
 import {
   MatTreeFlatDataSource,
@@ -12,6 +12,7 @@ import {
   ColorEnum,
   RightBtn,
 } from "./custom-tree";
+import { Output } from "@angular/core";
 @Component({
   selector: "hw-custom-tree",
   templateUrl: "./custom-tree.component.html",
@@ -27,6 +28,16 @@ export class CustomTreeComponent implements OnInit {
   @Input() selectedItemFn: (item: FlatNode, inputVal?: string) => void;
   @Input() checkedItemFn: (item: FlatNode) => void;
   @Input() rightBtnFn: (item: FlatNode, btn: RightBtn) => void;
+
+  @Output()
+  itemExpandClickedEvent: EventEmitter<FlatNode> = new EventEmitter();
+
+  itemExpandClicked(node: FlatNode) {
+    if (this.itemExpandClickedEvent) {
+      this.itemExpandClickedEvent.emit(node);
+    }
+  }
+
   @Input() treeData: TreeNode[];
   @Input() mode = TreeListMode.nomal;
 

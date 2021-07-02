@@ -1,12 +1,19 @@
 <div class="m-b-20">
-  <hw-input-search [placeholder]="'名称'" [searchEvent]="searchTree"></hw-input-search>
+  <hw-input-search
+    [placeholder]="'名称'"
+    [searchEvent]="searchTree"
+  ></hw-input-search>
 </div>
-<div class="fine" [ngStyle]="{'height': treeHeight}" style="overflow: scroll;">
-  <ng-container *ngIf="dataService.divisions&&dataService.garbageStations">
-    <hw-custom-tree #garbageStationTree [treeData]="stationTreeService.treeNode" 
-    [mode]="treeListMode"
-    [rightBtnFn]="rightBtnClick"
-    [selectedItemFn]="selectedItemClick">
+<div class="fine" [ngStyle]="{ height: treeHeight }" style="overflow: scroll">
+  <ng-container *ngIf="dataService.divisions && dataService.garbageStations">
+    <hw-custom-tree
+      #garbageStationTree
+      [treeData]="stationTreeService.treeNode"
+      [mode]="treeListMode"
+      [rightBtnFn]="rightBtnClick"
+      [selectedItemFn]="selectedItemClick"
+      (itemExpandClickedEvent)="itemExpandClicked($event)"
+    >
     </hw-custom-tree>
   </ng-container>
 </div>

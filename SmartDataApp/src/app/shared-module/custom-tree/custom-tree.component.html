@@ -1,81 +1,147 @@
 <ng-container *ngIf="treeData">
   <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-    <!-- This is the tree node template for leaf nodes   bottom: 7px -->     
-    <mat-tree-node *matTreeNodeDef="let node;" matTreeNodePadding [matTreeNodePaddingIndent]="30"
-      [class.selected]="node.id==selectedItemClass">
+    <!-- This is the tree node template for leaf nodes   bottom: 7px -->
+    <mat-tree-node
+      *matTreeNodeDef="let node"
+      matTreeNodePadding
+      [matTreeNodePaddingIndent]="30"
+      [class.selected]="node.id == selectedItemClass"
+    >
       <div class="parent-node" (click)="itemClick(node)">
-        <button type="button" class="btn to-right" [class.collapse]="node.level"
-          [class.visibility-hidden]="node.level==0"  >
+        <button
+          type="button"
+          class="btn to-right"
+          [class.collapse]="node.level"
+          [class.visibility-hidden]="node.level == 0"
+        >
           <i class="mdi mdi-menu-down"></i>
         </button>
-        <ng-container *ngIf="mode == listMode.checkedBox&&node.level!=0">
-          <div class="ckbox" style="margin-top:6px;">
-            <i class="howell-icon-Check" style="font-size: small;" *ngIf="node.checkBoxState==checkBoxState.self"></i>
-            <i class="howell-icon-Square" style="font-size: x-small;position: relative;bottom: 3px;" *ngIf="node.checkBoxState==checkBoxState.all"></i>
+        <ng-container *ngIf="mode == listMode.checkedBox && node.level != 0">
+          <div class="ckbox" style="margin-top: 6px">
+            <i
+              class="howell-icon-Check"
+              style="font-size: small"
+              *ngIf="node.checkBoxState == checkBoxState.self"
+            ></i>
+            <i
+              class="howell-icon-Square"
+              style="font-size: x-small; position: relative; bottom: 3px"
+              *ngIf="node.checkBoxState == checkBoxState.all"
+            ></i>
           </div>
         </ng-container>
-        <label title="{{node.name}}" [class.light-blue-text]="node.id!=selectedItemClass" [class.text-white]="node.id==selectedItemClass"
-        [class.default-label-width]="mode==listMode.nomal||listMode.rightBtn==mode"
-        class="m-0 default-label default-label-width {{node.labelColor}}">
-
-          <i  class="{{node.iconClass}}"></i>
-          {{node.name}}</label>
+        <label
+          title="{{ node.name }}"
+          [class.light-blue-text]="node.id != selectedItemClass"
+          [class.text-white]="node.id == selectedItemClass"
+          [class.default-label-width]="
+            mode == listMode.nomal || listMode.rightBtn == mode
+          "
+          class="m-0 default-label default-label-width {{ node.labelColor }}"
+        >
+          <i class="{{ node.iconClass }}"></i>
+          {{ node.name }}</label
+        >
         <!-- <ng-container >
            <label style="color:white" class="m-0">{{sumChildChecked(node)}}</label>
         </ng-container> -->
-        <ng-container *ngIf="listMode.rightInput==mode">
-          <div class="pull-right  p-r-10" style="padding-top:4px;">
-            <label class="m-0" style="color:#cfd7ff"> {{node.label}}</label>
-            <i class="howell-icon-arrowright m-r-10 m-l-10" style="color:#cfd7ff"></i>
-            <div class="pull-right" style="width:60px">
-              <input type="text" value=" {{node.inputVal}}" [event]="touchSpinEvent" NgTouchSpin
-                class="form-control custom touchspin">
+        <ng-container *ngIf="listMode.rightInput == mode">
+          <div class="pull-right p-r-10" style="padding-top: 4px">
+            <label class="m-0" style="color: #cfd7ff"> {{ node.label }}</label>
+            <i
+              class="howell-icon-arrowright m-r-10 m-l-10"
+              style="color: #cfd7ff"
+            ></i>
+            <div class="pull-right" style="width: 60px">
+              <input
+                type="text"
+                value=" {{ node.inputVal }}"
+                [event]="touchSpinEvent"
+                NgTouchSpin
+                class="form-control custom touchspin"
+              />
             </div>
           </div>
-        </ng-container> 
-        <ng-container *ngIf="listMode.rightBtn==mode">
-          <div class="pull-right   right-btn-wrapper">
-            <ng-container *ngFor="let b of node.rightClassBtn;let i=index">
-              <a href="javascript:void(0)" [ngStyle]="{'padding-left': i>0?'2px':'unset'}"
-              (click)="rightBtnClick(node,b)"  class="{{b.cssClass}} "></a>
-           </ng-container> 
+        </ng-container>
+        <ng-container *ngIf="listMode.rightBtn == mode">
+          <div class="pull-right right-btn-wrapper">
+            <ng-container *ngFor="let b of node.rightClassBtn; let i = index">
+              <a
+                href="javascript:void(0)"
+                [ngStyle]="{ 'padding-left': i > 0 ? '2px' : 'unset' }"
+                (click)="rightBtnClick(node, b)"
+                class="{{ b.cssClass }} "
+              ></a>
+            </ng-container>
           </div>
         </ng-container>
       </div>
-
     </mat-tree-node>
     <!-- This is the tree node template for expandable nodes -->
-    <mat-tree-node *matTreeNodeDef="let node;when: hasChild" [class.selected]="node.id==selectedItemClass"
-      matTreeNodePaddingIndent="20" matTreeNodePadding>
+    <mat-tree-node
+      *matTreeNodeDef="let node; when: hasChild"
+      [class.selected]="node.id == selectedItemClass"
+      matTreeNodePaddingIndent="20"
+      matTreeNodePadding
+    >
       <div class="parent-node" (click)="itemClick(node)">
-        <button type="button" class="btn to-right" matTreeNodeToggle  >
-          <i class="mdi" [class.mdi-menu-right]="!treeControl.isExpanded(node)"
-            [class.mdi-menu-down]="treeControl.isExpanded(node)"></i>
+        <button
+          type="button"
+          class="btn to-right"
+          matTreeNodeToggle
+          (click)="itemExpandClicked(node)"
+        >
+          <i
+            class="mdi"
+            [class.mdi-menu-right]="!treeControl.isExpanded(node)"
+            [class.mdi-menu-down]="treeControl.isExpanded(node)"
+          ></i>
         </button>
-        <label [class.default-label-width]="mode==listMode.nomal||listMode.rightBtn==mode"
-        [class.light-blue-text]="node.id!=selectedItemClass" [class.text-white]="node.id==selectedItemClass"
-        class="m-0 default-label {{node.labelColor}}">
+        <label
+          [class.default-label-width]="
+            mode == listMode.nomal || listMode.rightBtn == mode
+          "
+          [class.light-blue-text]="node.id != selectedItemClass"
+          [class.text-white]="node.id == selectedItemClass"
+          class="m-0 default-label {{ node.labelColor }}"
+        >
           <ng-container *ngIf="mode == listMode.checkedBox">
-            <div class="ckbox" style="margin-top:2px;">
-              <i class="howell-icon-Check" style="font-size: small;position: relative;bottom: 2px;"  *ngIf="node.checkBoxState==checkBoxState.all"></i>
-              <i class="howell-icon-Square" style="font-size: x-small;position: relative;bottom: 3px;" *ngIf="node.checkBoxState==checkBoxState.self"></i>
+            <div class="ckbox" style="margin-top: 2px">
+              <i
+                class="howell-icon-Check"
+                style="font-size: small; position: relative; bottom: 2px"
+                *ngIf="node.checkBoxState == checkBoxState.all"
+              ></i>
+              <i
+                class="howell-icon-Square"
+                style="font-size: x-small; position: relative; bottom: 3px"
+                *ngIf="node.checkBoxState == checkBoxState.self"
+              ></i>
             </div>
           </ng-container>
-          <i class="{{node.iconClass}}"></i>
-          {{node.name}}
+          <i class="{{ node.iconClass }}"></i>
+          {{ node.name }}
         </label>
         <!-- <label style="float: right;color: white;padding-right: 20px;" class="m-0">{{node.checkedChilds}}</label> -->
-        <ng-container *ngIf="listMode.rightInput==mode">
-          <div class="pull-right  p-r-10" style="padding-top:4px">
-            <label class="m-0" style="color:#cfd7ff"> {{node.label}}</label>
-            <i class="howell-icon-arrowright m-r-10 m-l-10" style="color:#cfd7ff"></i>
-            <div class="pull-right" style="width:60px">
-              <input type="text" value=" {{node.inputVal}}" NgTouchSpin [event]="touchSpinEvent"
-                class="form-control custom touchspin">
+        <ng-container *ngIf="listMode.rightInput == mode">
+          <div class="pull-right p-r-10" style="padding-top: 4px">
+            <label class="m-0" style="color: #cfd7ff"> {{ node.label }}</label>
+            <i
+              class="howell-icon-arrowright m-r-10 m-l-10"
+              style="color: #cfd7ff"
+            ></i>
+            <div class="pull-right" style="width: 60px">
+              <input
+                type="text"
+                value=" {{ node.inputVal }}"
+                NgTouchSpin
+                [event]="touchSpinEvent"
+                class="form-control custom touchspin"
+              />
             </div>
           </div>
         </ng-container>
       </div>
-    </mat-tree-node> 
+    </mat-tree-node>
   </mat-tree>
 </ng-container>

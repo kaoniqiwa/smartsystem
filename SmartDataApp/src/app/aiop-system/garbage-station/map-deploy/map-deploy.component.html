@@ -7,8 +7,10 @@
       [rightBtn]="rightBtn"
       [rightBtnFn]="rightBtnFn"
       [selectedItemFn]="selectDivisionClick"
+      (itemExpandClickedEvent)="onItemExpandClicked($event)"
     ></hw-division-station-tree>
   </div>
+
   <div
     style="width: calc(100% - 340px); padding: 10px"
     class="card-wrap pull-left map-box"
