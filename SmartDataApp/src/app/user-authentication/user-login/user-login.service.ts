@@ -31,6 +31,9 @@ export class UserLoginService {
     this.msg = new MessageBar();
   }
 
+  onLoginSuccessed?: () => void;
+  onLoginFaulted?: () => void;
+
   login() {
     const formVal: { name: string; pwd: string } = this.form.value;
     if (!formVal.name) this.msg.response_warning("请输入账号");
@@ -78,6 +81,9 @@ export class UserLoginService {
     return (error: any): Observable<T> => {
       if (error.status == 403) {
         this.msg.response_Error("账号或密码错误");
+      }
+      if (this.onLoginFaulted) {
+        this.onLoginFaulted();
       }
       return of(result as T);
     };
@@ -130,6 +136,10 @@ export class UserLoginService {
                   this.router.navigateByUrl("system-mode");
                 } else {
                   this.router.navigateByUrl("waste-regulation");
+                }
+
+                if (this.onLoginSuccessed) {
+                  this.onLoginSuccessed();
                 }
 
                 this.memory(

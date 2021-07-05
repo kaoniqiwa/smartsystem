@@ -24,14 +24,19 @@ export class UserLoginComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     titleService.setTitle("用户登录");
+    this.userLoginService.onLoginSuccessed = () => {
+      this.onLoginSuccessed();
+    };
+  }
+
+  onLoginSuccessed() {
+    enterKeyDown(undefined);
   }
 
   ngOnInit() {
     this.userName.nativeElement.focus();
     enterKeyDown(() => {
-      this.login().then((x) => {
-        enterKeyDown(undefined);
-      });
+      this.login();
     });
     this.userLoginService.fillUserForm();
     createVideo("videoLogin", "assets/img/login.webm", "videoWrap");
