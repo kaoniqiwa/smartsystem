@@ -1,25 +1,27 @@
-import { Component, AfterViewInit } from '@angular/core';
-import { isNullOrUndefined } from 'util';
+import { Component, AfterViewInit } from "@angular/core";
+import { isNullOrUndefined } from "util";
 import { SessionUser } from "../../../common/tool/session-user";
 @Component({
-  selector: 'app-user-tool',
-  templateUrl: './user-tool.component.html'
+  selector: "app-user-tool",
+  templateUrl: "./user-tool.component.html",
 })
 export class UserToolComponent implements AfterViewInit {
   sessionUser = new SessionUser();
   hideButton = false;
-  constructor() {
-  }
+  constructor() {}
   ngAfterViewInit(): void {
-    let HideButton = 'HideButton';
-    this.hideButton = isNullOrUndefined(window.sessionStorage.getItem(HideButton));
-    window.sessionStorage.removeItem(HideButton)
+    setTimeout(() => {
+      let HideButton = "HideButton";
+
+      this.hideButton = isNullOrUndefined(
+        window.sessionStorage.getItem(HideButton)
+      );
+      window.sessionStorage.removeItem(HideButton);
+    }, 0);
   }
 
   logOut() {
     this.sessionUser.clear = true;
-    window.location.href = '/login'
+    window.location.href = "/login";
   }
-
 }
-
