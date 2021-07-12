@@ -7,7 +7,7 @@ import { Base64 } from '../../common/tool/base64';
 import { HowellAuthHttpService } from './howell-auth-http.service';
 import { Md5 } from 'ts-md5';
 import { PagedList, Role, User } from '../model/page';
-import { Fault } from '../model/Response';
+import { Fault } from '../model/response';
 
 
 @Injectable({
