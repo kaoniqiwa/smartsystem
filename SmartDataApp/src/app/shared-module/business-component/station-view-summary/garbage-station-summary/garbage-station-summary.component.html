@@ -1,18 +1,30 @@
-<div  class="fill-height" style="position: relative;">
+<div class="fill-height" style="position: relative">
   <div class="fill-height collapse" [class.in]="viewsShow[0]">
-    <hw-garbage-station (OtherViewEvent)="acceptOtherView($event)"  [divisionsId]="divisionsId">      
+    <hw-garbage-station
+      (OtherViewEvent)="acceptOtherView($event)"
+      [divisionsId]="divisionsId"
+      (GarbageStationMoveToPosition)="onGarbageStationMoveToPosition($event)"
+    >
     </hw-garbage-station>
   </div>
-  <div class="fill-height collapse"  [class.in]="viewsShow[1]">
-    <hw-statistic-garbage-count (OtherViewEvent)="acceptOtherView($event)"></hw-statistic-garbage-count>
-  </div>    
-  <div class="fill-height collapse"  [class.in]="viewsShow[2]">
-    <hw-garbage-full-history-sum-chart (OtherViewEvent)="acceptOtherView($event)"></hw-garbage-full-history-sum-chart>
+  <div class="fill-height collapse" [class.in]="viewsShow[1]">
+    <hw-statistic-garbage-count
+      (OtherViewEvent)="acceptOtherView($event)"
+    ></hw-statistic-garbage-count>
   </div>
-  <div class="fill-height collapse"  [class.in]="viewsShow[3]">
-    <hw-statistic-garbage-analyze  (OtherViewEvent)="acceptOtherView($event)"></hw-statistic-garbage-analyze>
+  <div class="fill-height collapse" [class.in]="viewsShow[2]">
+    <hw-garbage-full-history-sum-chart
+      (OtherViewEvent)="acceptOtherView($event)"
+    ></hw-garbage-full-history-sum-chart>
   </div>
-  <div class="fill-height collapse"  [class.in]="viewsShow[4]">
-    <hw-garbage-drop-event-history  (OtherViewEvent)="acceptOtherView($event)"></hw-garbage-drop-event-history>
+  <div class="fill-height collapse" [class.in]="viewsShow[3]">
+    <hw-statistic-garbage-analyze
+      (OtherViewEvent)="acceptOtherView($event)"
+    ></hw-statistic-garbage-analyze>
   </div>
-</div> 
+  <div class="fill-height collapse" [class.in]="viewsShow[4]">
+    <hw-garbage-drop-event-history
+      (OtherViewEvent)="acceptOtherView($event)"
+    ></hw-garbage-drop-event-history>
+  </div>
+</div>

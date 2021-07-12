@@ -1,15 +1,31 @@
-
-<div class="panel" [ngStyle]="{display:visibility?'':'none'}">
-    <div class="background">
-        <div class="inner">
-            <ng-container *ngFor="let item of dataSource">
-                <div class="item" [title]="item.Name" (mouseover)="itemHover(item)" (click)="itemClick(item)" (dblclick)="itemDoubleClick(item)">{{item.Name}}</div>
-            </ng-container>
-        </div>
+<div class="panel" [ngStyle]="{ display: visibility ? '' : 'none' }">
+  <div class="background">
+    <div class="inner">
+      <div class="data-list">
+        <ng-container *ngFor="let item of dataSource">
+          <div
+            class="item"
+            [title]="item.Name"
+            (mouseover)="itemHover(item)"
+            (click)="itemClick(item)"
+            (dblclick)="itemDoubleClick(item)"
+          >
+            {{ item.Name }}
+          </div>
+        </ng-container>
+      </div>
+      <div class="search">
+        <hw-input-search
+          [searchEvent]="search"
+          [placeholder]="'投放点名称'"
+          [focusToSelectContent]="'true'"
+        ></hw-input-search>
+      </div>
     </div>
+  </div>
 </div>
 <div class="btn" (click)="ButtonClick()" title="区域菜单栏">
-    <div class="inner">
-        <i class="howell-icon-ul"></i>
-    </div>
+  <div class="inner">
+    <i class="howell-icon-ul"></i>
+  </div>
 </div>

@@ -1,5 +1,12 @@
 <div class="search-wrap">
-  <input type="text" #input [placeholder]="placeholder" [formControl]="searchInput" class="custom form-control">
+  <input
+    type="text"
+    #input
+    [placeholder]="placeholder"
+    [formControl]="searchInput"
+    class="custom form-control"
+    (focus)="focus(this)"
+  />
   <button type="button" #searchBtn>
     <i class="mdi mdi-magnify"></i>
   </button>

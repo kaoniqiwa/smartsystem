@@ -1,121 +1,151 @@
 .btn {
-    position: relative;
-    
-    bottom: 0px;
-    left: 0px;
-    width: 36px;
-    height: 32px;
-    background-color: #2d76ce;
-    cursor: pointer;
-    clip-path: polygon(
-        25% 0%,
-        75% 0%,
-            100% 50%,                    
-            75% 100%,
-            25% 100%,
-            0% 50%);
-            padding: 1px;
+  position: relative;
+
+  bottom: 0px;
+  left: 0px;
+  width: 36px;
+  height: 32px;
+  background-color: #2d76ce;
+  cursor: pointer;
+  clip-path: polygon(25% 0%,
+      75% 0%,
+      100% 50%,
+      75% 100%,
+      25% 100%,
+      0% 50%);
+  padding: 1px;
 }
-.btn .inner{
-    height: 100%;
-    width: 100%;
-    background-color: #040b39;
-    clip-path: polygon(
-        25% 0%,
-        75% 0%,
-            100% 50%,                    
-            75% 100%,
-            25% 100%,
-            0% 50%);
-            color: white;
-            line-height: 28px;
-            opacity: 0.8;
-            font-size: 18px;
+
+.btn .inner {
+  height: 100%;
+  width: 100%;
+  background-color: #040b39;
+  clip-path: polygon(25% 0%,
+      75% 0%,
+      100% 50%,
+      75% 100%,
+      25% 100%,
+      0% 50%);
+  color: white;
+  line-height: 28px;
+  opacity: 0.8;
+  font-size: 18px;
 }
-.btn .inner:hover
-{
-    opacity: 1;
+
+.btn .inner:hover {
+  opacity: 1;
 }
-::-webkit-scrollbar {  
-    width:4px;  
-    height:4px; 
-}  
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
 
 
 .panel {
-    height: 255px;
-    width: 161px;
-    position: relative;
-    bottom: -6px;
-    left: 20px;
-    
-    background-color: #2d76ce;
-    clip-path: polygon(
-        0% 10px,
-        5px 5px,
-        20% 5px,
-        calc(20% + 5px) 0%,
-        calc(100% - 5px) 0%,
-        100% 5px,
-        100% calc(100% - 10px),
-        calc(100% - 5px) calc(100% - 5px),
-        60% calc(100% - 5px),
-        calc(60% - 5px) 100%,
-        16px 100%,
-        10px calc(100% - 10px),
-        0% calc(100% - 10px)
-    );
+  height: 265px;
+  width: 161px;
+  position: relative;
+  bottom: -6px;
+  left: 20px;
 
-    z-index: 1;
-    overflow: hidden;
-    padding: 2px;
-    
-    -webkit-user-select:none;
-   -moz-user-select:none;
-   -ms-user-select:none;
-   user-select:none;
+  background-color: #2d76ce;
+  clip-path: polygon(0% 10px,
+      5px 5px,
+      20% 5px,
+      calc(20% + 5px) 0%,
+      calc(100% - 5px) 0%,
+      100% 5px,
+      100% calc(100% - 10px),
+      calc(100% - 5px) calc(100% - 5px),
+      60% calc(100% - 5px),
+      calc(60% - 5px) 100%,
+      16px 100%,
+      10px calc(100% - 10px),
+      0% calc(100% - 10px));
+
+  z-index: 1;
+  overflow: hidden;
+  padding: 2px;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
-.panel .background{
-    height: 100%;
-    width: 100%;
-    
-    background-color: #13224d;
-    clip-path: polygon(
-        0% 10px,
-        5px 5px,
-        20% 5px,
-        calc(20% + 5px) 0%,
-        calc(100% - 5px) 0%,
-        100% 5px,
-        100% calc(100% - 10px),
-        calc(100% - 5px) calc(100% - 5px),
-        calc(60% - 1px) calc(100% - 5px),
-        calc(60% - 6px) 100%,
-        16px 100%,
-        10px calc(100% - 10px),
-        0% calc(100% - 10px)
-    );
-    padding: 10px 5px 15px 5px;
+
+.panel .background {
+  height: 100%;
+  width: 100%;
+
+  background-color: #13224d;
+  clip-path: polygon(0% 10px,
+      5px 5px,
+      20% 5px,
+      calc(20% + 5px) 0%,
+      calc(100% - 5px) 0%,
+      100% 5px,
+      100% calc(100% - 10px),
+      calc(100% - 5px) calc(100% - 5px),
+      calc(60% - 1px) calc(100% - 5px),
+      calc(60% - 6px) 100%,
+      16px 100%,
+      10px calc(100% - 10px),
+      0% calc(100% - 10px));
+  padding: 10px 5px 15px 5px;
 }
-.panel .inner{
-    width: 100%;
-    height: 100%;
-    
-    overflow-y: auto;
-    overflow-x: hidden;
+
+.panel .inner {
+  width: 100%;
+  height: 100%;
 }
-.panel .background .item{
-    width: 100%;
-    height: 28px;
-    line-height: 28px;
-    background-color: #7586e055;
-    color: white;
-    cursor: pointer;
-    margin-bottom: 2px;
-    padding-left: 14px;
-    font-size: 16px;
-    white-space:nowrap;
+
+.panel .inner .data-list {
+
+  width: 100%;
+  height: calc(100% - 24px - 2px);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
-.panel .background .item:hover{
-    background-color: #6997ff;
+
+.panel .inner .search {
+  width: 100%;
+  height: calc(24px + 2px);
+  margin-top: 2px;
+}
+
+.panel .inner .search::ng-deep hw-input-search .custom.form-control {
+  font-size: 16px;
+  min-height: 28px;
+  border: 1px solid rgba(120, 130, 140, 0.33);
+  background-color: transparent;
+}
+
+.panel .inner .search::ng-deep hw-input-search .search-wrap button {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+
+
+.panel .background .item {
+  width: 100%;
+  height: 28px;
+  line-height: 28px;
+  background-color: #7586e055;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 2px;
+  padding-left: 14px;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.panel .background .item:last-child {
+  margin-bottom: 0;
+}
+
+.panel .background .item:hover {
+  background-color: #6997ff;
 }

@@ -1,18 +1,19 @@
 <div class="map-bar marker-details" *ngIf="GarbageStation">
   <div class="item">
     <i class="howell-icon-garbage icon"></i>
-    <div class='content'>{{ GarbageStation.Name }}</div>
+    <div class="content">{{ GarbageStation.Name }}</div>
   </div>
 
   <div class="item">
     <i class="howell-icon-neighborhood icon"></i>
-    <div class='content'>{{roadName}}&nbsp;&nbsp;&nbsp;&nbsp;{{committeeName}}</div>
+    <div class="content">
+      {{ roadName }}&nbsp;&nbsp;&nbsp;&nbsp;{{ committeeName }}
+    </div>
   </div>
 
-  
   <div class="item" *ngIf="GarbageStation.Address">
     <i class="howell-icon-map5 icon"></i>
-    <div class='content'>{{ GarbageStation.Address }}</div>
+    <div class="content">{{ GarbageStation.Address }}</div>
   </div>
 
   <div class="item" *ngFor="let member of GarbageStation.Members">
@@ -22,7 +23,7 @@
         <div class="info-name">
           {{ member.Name }}
         </div>
-        <div class="info-dash"> - </div>
+        <div class="info-dash">-</div>
         <div class="info-note">
           {{ member.Note }}
         </div>
@@ -32,3 +33,31 @@
       <i class="howell-icon-phone icon"></i><span>{{ member.MobileNo }}</span>
     </div>
   </div>
+
+  <div class="statistic">
+    <div class="item" title="查看垃圾滞留投放点信息">
+      <div><i class="howell-icon-garbagebags"></i></div>
+      <a class="hw-link-underline value green-text a-text">{{
+        GarbageCount
+      }}</a>
+    </div>
+    <div class="item" title="查看满溢投放点信息">
+      <div><i class="howell-icon-full"></i></div>
+      <a class="hw-link-underline value orange-text a-text">{{
+        MaxGarbageCount
+      }}</a>
+    </div>
+    <div class="item" title="查看乱丢垃圾事件记录">
+      <div><i class="howell-icon-nolittering"></i></div>
+      <a class="hw-link-underline value powder-red-text a-text">{{
+        IllegalDropCount
+      }}</a>
+    </div>
+    <div class="item" title="查看混合投放事件记录">
+      <div><i class="howell-icon-mixlittering"></i></div>
+      <a class="hw-link-underline value light-purple-text a-text">{{
+        MixedIntoCount
+      }}</a>
+    </div>
+  </div>
+</div>

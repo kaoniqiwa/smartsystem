@@ -1,44 +1,66 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  OnInit,
+  ViewChild,
+  EventEmitter,
+} from "@angular/core";
 import { StatisticGarbageCountComponent } from "../statistic-garbage-count/statistic-garbage-count.component";
 import { StatisticGarbageAnalyzeComponent } from "../statistic-garbage-analyze/statistic-garbage-analyze.component";
-import { BusinessManageService,ViewDivisionTypeEnum } from "../../business-manage-service";
+import {
+  BusinessManageService,
+  ViewDivisionTypeEnum,
+} from "../../business-manage-service";
 import { GarbageFullHistorySumChartComponent } from "../garbage-full-history-sum-chart/garbage-full-history-sum-chart.component";
 import { OtherViewEnum } from "../view-helper";
+import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
 @Component({
-  selector: 'hw-garbage-station-summary',
-  templateUrl: './garbage-station-summary.component.html'
+  selector: "hw-garbage-station-summary",
+  templateUrl: "./garbage-station-summary.component.html",
 })
 export class GarbageStationSummaryComponent implements OnInit {
-  viewsShow = [true, false,false,false,false];
-  @Input() divisionsId = '';
+  viewsShow = [true, false, false, false, false];
+  @Input() divisionsId = "";
   @ViewChild(StatisticGarbageCountComponent)
   garbageCountComponent: StatisticGarbageCountComponent;
 
   @ViewChild(StatisticGarbageAnalyzeComponent)
-  analyzeComponent:StatisticGarbageAnalyzeComponent;
+  analyzeComponent: StatisticGarbageAnalyzeComponent;
 
   @ViewChild(GarbageFullHistorySumChartComponent)
-  garbageAnalyzeComponent:GarbageFullHistorySumChartComponent;
-  constructor(private businessManageService:BusinessManageService)
-   { }
+  garbageAnalyzeComponent: GarbageFullHistorySumChartComponent;
+
+  @Output()
+  garbageStationMoveToPosition = new EventEmitter<GarbageStation>();
+
+  constructor(private businessManageService: BusinessManageService) {}
 
   ngOnInit() {
-    if(this.businessManageService.viewDivisionType ==ViewDivisionTypeEnum.MapStation
-      || this.businessManageService.viewDivisionType ==ViewDivisionTypeEnum.TableLinkChild)
+    if (
+      this.businessManageService.viewDivisionType ==
+        ViewDivisionTypeEnum.MapStation ||
+      this.businessManageService.viewDivisionType ==
+        ViewDivisionTypeEnum.TableLinkChild
+    )
       this.acceptOtherView(OtherViewEnum.chart);
   }
-  acceptOtherView(val: OtherViewEnum) {  
+  acceptOtherView(val: OtherViewEnum) {
     this.viewsShow[0] = val == OtherViewEnum.info;
-    this.viewsShow[1] = val == OtherViewEnum.chart;    
+    this.viewsShow[1] = val == OtherViewEnum.chart;
     this.viewsShow[2] = val == OtherViewEnum.sumChart;
     this.viewsShow[3] = val == OtherViewEnum.analyzeChart;
     this.viewsShow[4] = val == OtherViewEnum.event;
-    if (val == OtherViewEnum.chart)
-      this.garbageCountComponent.defaultStation();
-    else if(val == OtherViewEnum.analyzeChart)
-    this.analyzeComponent.initChart();
-    else if(val == OtherViewEnum.sumChart)
-    this.garbageAnalyzeComponent.initView();
+    if (val == OtherViewEnum.chart) this.garbageCountComponent.defaultStation();
+    else if (val == OtherViewEnum.analyzeChart)
+      this.analyzeComponent.initChart();
+    else if (val == OtherViewEnum.sumChart)
+      this.garbageAnalyzeComponent.initView();
+  }
+
+  onGarbageStationMoveToPosition(station: GarbageStation) {
+    if (this.garbageStationMoveToPosition) {
+      this.garbageStationMoveToPosition.emit(station);
+    }
   }
 }
- 

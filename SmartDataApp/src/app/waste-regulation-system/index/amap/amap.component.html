@@ -1,65 +1,96 @@
 <iframe class="map" [src]="srcUrl" #iframe width="100%" height="100%"></iframe>
 
+<app-map-list-panel
+  class="map-bar list-panel"
+  [dataSource]="this.amapService.childrenOfList"
+  (OnVisibilityChanged)="OnPanelVisibilityChanged($event)"
+  (OnItemClicked)="OnPanelItemClicked($event)"
+  (OnItemDoubleClicked)="OnPanelItemDoubleClicked($event)"
+  (OnItemHover)="OnPanelItemHover($event)"
+  (OnSearching)="OnSearching($event)"
+></app-map-list-panel>
 
-
-
-<app-map-list-panel class="map-bar list-panel" [dataSource]="this.amapService.childrenOfList"
-  (OnVisibilityChanged)="OnPanelVisibilityChanged($event)" (OnItemClicked)="OnPanelItemClicked($event)"
-  (OnItemDoubleClicked)="OnPanelItemDoubleClicked($event)" (OnItemHover)="OnPanelItemHover($event)"></app-map-list-panel>
-
-<app-point-info-panel class="map-bar info-panel" *ngIf="selectedGarbageStation" [GarbageStation]="selectedGarbageStation"></app-point-info-panel>
-
+<app-point-info-panel
+  class="map-bar info-panel"
+  *ngIf="selectedGarbageStation"
+  [GarbageStation]="selectedGarbageStation"
+></app-point-info-panel>
 
 <div class="map-bar btn-list">
-  <div class="btn hw-link-tooltip" (click)=Button1Clicked()  title="投放点巡检">
+  <div
+    class="btn hw-link-tooltip"
+    (click)="Button1Clicked()"
+    title="投放点巡检"
+  >
     <div class="inner">
       <i class="howell-icon-refresh"></i>
     </div>
   </div>
-  <div class="btn" (click)=Button2Clicked() style="display:none;">
-    <div class="inner" style="line-height: 26px;">
-      vs
-    </div>
+  <div class="btn" (click)="Button2Clicked()" style="display: none">
+    <div class="inner" style="line-height: 26px">vs</div>
   </div>
-  <div class="btn" (click)=Button3Clicked() [ngStyle]="{'background-color': LabelVisibility ? '#2bcf38':'#2d76ce'}" title="小包垃圾滞留时长">
-    <div class="inner" >
+  <div
+    class="btn"
+    (click)="Button3Clicked()"
+    [ngStyle]="{ 'background-color': LabelVisibility ? '#2bcf38' : '#2d76ce' }"
+    title="小包垃圾滞留时长"
+  >
+    <div class="inner">
       <i class="howell-icon-garbagebags"></i>
       <!-- <i [ngClass]="LabelVisibility ? 'howell-icon-residual': 'howell-icon-recyclable'"></i> -->
       <!-- <i *ngIf="!LabelVisibility" class="howell-icon-zoomout"></i>       -->
+    </div>
+  </div>
+  <div
+    class="btn"
+    (click)="Button4Clicked()"
+    *ngIf="LabelVisibility"
+    [ngStyle]="{
+      'background-color': StationVisibilityByLabel ? '#2bcf38' : '#2d76ce'
+    }"
+  >
+    <div class="inner" style="line-height: 26px">
+      <i class="howell-icon-garbage"></i>
     </div>
   </div>
 </div>
 
 <ul class="map-bar status">
   <li class="normal">
-    <div></div>正常
+    <div></div>
+    正常
   </li>
   <li class="warm">
-    <div></div>满溢
+    <div></div>
+    满溢
   </li>
   <li class="error">
-    <div></div>异常
+    <div></div>
+    异常
   </li>
 </ul>
 <div class="map-bar carousel prev">
-  <a class="carousel-control-prev" #video_list_prev style="display: none;">
+  <a class="carousel-control-prev" #video_list_prev style="display: none">
     <div class="howell-icon-arrowleftbold blue-text arrow-wrap"></div>
   </a>
 </div>
-<div class="map-bar video-list" style="display: none;">
+<div class="map-bar video-list" style="display: none">
   <ul class="ul">
     <ng-container *ngFor="let camera of selectedCameras">
       <!-- [ngClass]="{'error': camera.CameraState>0}" -->
       <li class="video" (click)="OnCameraClicked(camera)">
-
-        <div *ngIf="camera.OnlineStatus!=0" class="error">NO SIGNAL</div>
-        <img [src]="camera.ImageUrl" (error)="OnImageError($event)" [title]="camera.Name" />
+        <div *ngIf="camera.OnlineStatus != 0" class="error">NO SIGNAL</div>
+        <img
+          [src]="camera.ImageUrl"
+          (error)="OnImageError($event)"
+          [title]="camera.Name"
+        />
       </li>
     </ng-container>
   </ul>
 </div>
 <div class="map-bar carousel next">
-  <a class="carousel-control-next" #video_list_next style="display: none;">
+  <a class="carousel-control-next" #video_list_next style="display: none">
     <div class="howell-icon-arrowrightbold blue-text arrow-wrap"></div>
   </a>
 </div>
@@ -70,20 +101,27 @@
   [cameraName]="'测试'"
 ></app-video> -->
 
-
 <!-- <div class="amap-video playing"> -->
 <!-- style="height: 364px;width: 590px;z-index:4;display: none;" -->
 <ng-container *ngIf="showVideoWindow">
-<app-video-window #videoWindow id="videoPlayer" (closeWindowEventListen)="OnVillageWindowClosed()"
-
-  [WebUrl]="amapService.videoPlayerService.webUrl"
-  class="amap-video playing" (PlaybackClickedListen)="PlaybackClicked($event)"  
-  (VideoPlayingEventListen)="OnVideoPlaying($event)" [cameraName]="amapService.videoPlayerService.playCameraName"
-  (changeModeEventListen)="changePlayMode($event)" (closeWindowOnloadEventListen)="isShowVideoView=false"
-  (DownloadClickedEventListen)="onVideoWindowDownload($event)"
-  [videoPlayArgs]="amapService.videoPlayerService.videoPlayArgs" [playMode]="amapService.videoPlayerService.playMode"
-  [cameraId]="amapService.videoPlayerService.playVideoVideoId" [url]="amapService.videoPlayerService.url"
-  style="height: 382px;width: 794px;z-index:4;">
-</app-video-window>
+  <app-video-window
+    #videoWindow
+    id="videoPlayer"
+    (closeWindowEventListen)="OnVillageWindowClosed()"
+    [WebUrl]="amapService.videoPlayerService.webUrl"
+    class="amap-video playing"
+    (PlaybackClickedListen)="PlaybackClicked($event)"
+    (VideoPlayingEventListen)="OnVideoPlaying($event)"
+    [cameraName]="amapService.videoPlayerService.playCameraName"
+    (changeModeEventListen)="changePlayMode($event)"
+    (closeWindowOnloadEventListen)="isShowVideoView = false"
+    (DownloadClickedEventListen)="onVideoWindowDownload($event)"
+    [videoPlayArgs]="amapService.videoPlayerService.videoPlayArgs"
+    [playMode]="amapService.videoPlayerService.playMode"
+    [cameraId]="amapService.videoPlayerService.playVideoVideoId"
+    [url]="amapService.videoPlayerService.url"
+    style="height: 382px; width: 794px; z-index: 4"
+  >
+  </app-video-window>
 </ng-container>
 <!-- </div> -->

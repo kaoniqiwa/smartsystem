@@ -28,7 +28,6 @@ export class MapDeployCoordinateWindowService {
         gcj02[1],
         18
       );
-      debugger;
       try {
         this.dataController.Village.Point.Create(
           this.standbyPoint.villageId,
