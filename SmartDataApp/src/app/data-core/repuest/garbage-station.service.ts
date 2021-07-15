@@ -19,7 +19,7 @@ import {
 } from "../model/waste-regulation/trashCan";
 import * as url from "../url/waste-regulation/garbage-station";
 import { PagedList } from "../model/page";
-import { Response } from "../model/Response";
+import { Response } from "../model/response";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
 import {
   GetGarbageStationnEventNumbersParams,

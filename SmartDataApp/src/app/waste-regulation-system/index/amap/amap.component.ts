@@ -38,7 +38,7 @@ import {
   GetDivisionsParams,
 } from "../../../data-core/model/waste-regulation/division";
 import { PagedList } from "../../../data-core/model/page";
-import { Response } from "../../../data-core/model/Response";
+import { Response } from "../../../data-core/model/response";
 import { MapListItem, MapListItemType } from "./map-list-panel/map-list-item";
 import { Camera } from "../../../data-core/model/waste-regulation/camera";
 import { SessionUser } from "../../../common/tool/session-user";
@@ -640,7 +640,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
       }
     };
   }
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
 
   async showGarbageStationCameraList(id: string) {
     const list = document.getElementsByClassName(
@@ -877,7 +877,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
           );
           this.client.Viewer.MoveTo(point.position);
           this.client.Point.Select(point.id);
-        } catch (ex) {}
+        } catch (ex) { }
         break;
       default:
         return;
@@ -945,7 +945,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             item.Id
           );
           position = point.position;
-        } catch (ex) {}
+        } catch (ex) { }
         break;
       default:
         return;
@@ -955,9 +955,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
     // }
   }
 
-  VisibilityChange() {}
+  VisibilityChange() { }
 
-  OnPanelVisibilityChanged(visibility: boolean) {}
+  OnPanelVisibilityChanged(visibility: boolean) { }
 
   MapReload() {
     const id = this.selectedVillageId;
@@ -1035,7 +1035,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     });
   }
 
-  ChangePointInfoPanelVisibility() {}
+  ChangePointInfoPanelVisibility() { }
 
   Button4Clicked() {
     this.StationVisibilityByLabel = !this.StationVisibilityByLabel;
