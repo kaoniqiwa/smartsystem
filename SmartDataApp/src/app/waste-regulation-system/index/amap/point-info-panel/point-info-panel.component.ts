@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { _getOptionScrollPosition } from "@angular/material";
+import { Language } from "src/app/common/tool/language";
 import { EventType } from "src/app/data-core/model/waste-regulation/event-number";
 import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
 import { GetGarbageStationStatisticGarbageCountsParams } from "src/app/data-core/model/waste-regulation/garbage-station-number-statistic";
@@ -55,7 +56,9 @@ export class PointInfoPanelComponent implements OnInit {
   }
 
   onGarbageStationChanged(station: GarbageStation) {
-    station.StationState
+    debugger;
+    this.state = Language.StationStateFlags(station.StationStateFlags);
+
     this.divisionService
       .get(station.DivisionId)
       .toPromise()

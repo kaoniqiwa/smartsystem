@@ -356,8 +356,7 @@ export class DivisionBusinessService {
                 enumHelper = new EnumHelper(),
                 pic = new MediumPicture(),
                 state = (gs: GarbageStation) => {
-                  debugger;
-                  return Language.StationStateFlags(gs.StationState);
+                  return Language.StationStateFlags(gs.StationStateFlags);
                   // if (gs.StationState == 0) return "正常";
                   // else if (
                   //   enumHelper.stationState.err.indexOf(gs.StationState) > -1
@@ -370,9 +369,7 @@ export class DivisionBusinessService {
                 };
               if (item.g && item.g.title) {
                 /**更新投放点 */
-                const station = await this.stationService
-                  .get(item.g.title.id)
-                  .toPromise();
+                const station = await this.stationService.get(item.g.title.id);
                 if (station && station.Data) {
                   item.g.title.state = state(station.Data);
                   station.Data.Cameras.map((m) => {

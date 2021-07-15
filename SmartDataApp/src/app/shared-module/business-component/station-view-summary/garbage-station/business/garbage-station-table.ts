@@ -130,7 +130,7 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
       tableField.county = division2.Name;
     else if (division2 && division2.DivisionType == DivisionTypeEnum.Committees)
       tableField.committees = division2.Name;
-    tableField.state = Language.StationStateFlags(station.StationState);
+    tableField.state = Language.StationStateFlags(station.StationStateFlags);
     return tableField;
   }
 

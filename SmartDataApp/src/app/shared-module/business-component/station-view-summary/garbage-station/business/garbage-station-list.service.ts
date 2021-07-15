@@ -172,9 +172,9 @@ export class BusinessService {
   }
 
   async requestData(pageIndex: number, callBack?: (page: Page) => void) {
-    const response = await this.garbageStationService
-      .list(this.getRequsetParam(pageIndex, this.search))
-      .toPromise();
+    const response = await this.garbageStationService.list(
+      this.getRequsetParam(pageIndex, this.search)
+    );
     let data = new BusinessData(
       this.garbageStationTypes,
       response.Data.Data,

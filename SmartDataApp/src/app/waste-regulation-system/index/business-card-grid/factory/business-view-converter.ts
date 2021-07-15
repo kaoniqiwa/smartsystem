@@ -602,8 +602,7 @@ export class GarbageStationInspectionCardConverter implements IConverter {
           ),
           gallery = new Gallery(),
           state = () => {
-            debugger;
-            return Language.StationStateFlags(gs.StationState);
+            return Language.StationStateFlags(gs.StationStateFlags);
             // if (gs.StationState == 0) return "正常";
             // else if (enumHelper.stationState.err.indexOf(gs.StationState) > -1)
             //   return "异常";

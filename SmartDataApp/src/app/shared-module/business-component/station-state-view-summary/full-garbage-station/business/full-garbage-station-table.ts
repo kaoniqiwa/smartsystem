@@ -166,9 +166,9 @@ export class BusinessService extends EnumHelper {
   }
 
   async requestData(pageIndex: number, callBack?: (page: Page) => void) {
-    const response = await this.garbageStationService
-      .list(this.getRequsetParam(pageIndex, this.search))
-      .toPromise();
+    const response = await this.garbageStationService.list(
+      this.getRequsetParam(pageIndex, this.search)
+    );
     let data = new Statistics();
     data.garbageStations = response.Data.Data;
     data.items = this.cameras;
@@ -294,7 +294,7 @@ export class StatisticTable
     tableField.id = item.Id;
     tableField.name = item.Name;
 
-    tableField.state = Language.StationStateFlags(item.StationState);
+    tableField.state = Language.StationStateFlags(item.StationStateFlags);
 
     tableField.stranded = DateDifference(item.DryFullTime + "", new Date());
     const division = divisions.find((x) => x.Id == item.DivisionId);

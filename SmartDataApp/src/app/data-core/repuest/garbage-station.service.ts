@@ -35,6 +35,7 @@ import {
 } from "../model/waste-regulation/garbage-station-number-statistic";
 import { GarbageStationType } from "../model/waste-regulation/garbage-station-type";
 import { CameraPictureUrl } from "../model/waste-regulation/camera-picture-url";
+import { Observable } from "rxjs";
 @Injectable({
   providedIn: "root",
 })
@@ -51,8 +52,26 @@ export class GarbageStationRequestService extends SaveModel {
     );
   }
 
-  get(id: string) {
-    return this.requestService.get<GarbageStation>(this.url.get(id));
+  async get(id: string) {
+    // tap(response) {
+    //   let station = new GarbageStation();
+    //   Object.assign(station, response.Data);
+    //   response.Data = station;
+    // },
+    let observable = this.requestService.get<GarbageStation>(this.url.get(id));
+    // obs.pipe((response:Observable<Response<GarbageStation>>)=>{
+    //   response.lift
+    //   let station = new GarbageStation();
+    //   Object.assign(station, response.Data);
+    //   response.Data = station;
+    //   return response;
+    // })
+    let response = await observable.toPromise();
+    let station = new GarbageStation();
+    Object.assign(station, response.Data);
+    station.StationState = response.Data.StationState;
+    response.Data = station;
+    return response;
   }
 
   set(item: GarbageStation) {
@@ -66,11 +85,20 @@ export class GarbageStationRequestService extends SaveModel {
     return this.requestService.delete<GarbageStation>(this.url.del(id));
   }
 
-  list(item: GetGarbageStationsParams) {
-    return this.requestService.post<
-      GetGarbageStationsParams,
-      Response<PagedList<GarbageStation>>
-    >(this.url.list(), item);
+  async list(item: GetGarbageStationsParams) {
+    let response = await this.requestService
+      .post<GetGarbageStationsParams, Response<PagedList<GarbageStation>>>(
+        this.url.list(),
+        item
+      )
+      .toPromise();
+    for (let i = 0; i < response.Data.Data.length; i++) {
+      let station = new GarbageStation();
+      Object.assign(station, response.Data.Data[i]);
+      station.StationState = response.Data.Data[i].StationState;
+      response.Data.Data[i] = station;
+    }
+    return response;
   }
 
   volumesHistory(item: GetGarbageStationVolumesParams, divisionsId: string) {

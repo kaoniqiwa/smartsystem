@@ -44,8 +44,26 @@ export class GarbageStation {
   /**最大湿垃圾容积，单位：L */
   MaxWetVolume: number;
 
+  private stationState = 0;
   // 垃圾厢房状态
-  StationState: Flags<StationState> = new Flags(0);
+  get StationState(): StationState {
+    return this.stationState;
+  }
+  set StationState(val: StationState) {
+    this.stationState = val;
+    this.StationStateFlags = new Flags<StationState>(val);
+  }
+
+  private stationStateFlags?;
+  get StationStateFlags(): Flags<StationState> {
+    if (!this.stationStateFlags) {
+      this.stationStateFlags = new Flags<StationState>(this.StationState);
+    }
+    return this.stationStateFlags;
+  }
+  set StationStateFlags(val: Flags<StationState>) {
+    this.stationStateFlags = val;
+  }
 
   Grade: number; //评级
   CountSchedule: TimeRange[]; //	计数时间段

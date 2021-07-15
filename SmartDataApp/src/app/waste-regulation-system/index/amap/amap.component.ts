@@ -228,7 +228,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
   async refresh() {
     let params = new GetGarbageStationsParams();
     params.PageSize = 9999;
-    const response = await this.garbageService.list(params).toPromise();
+    const response = await this.garbageService.list(params);
 
     this.garbages = response.Data.Data;
     if (!this.villageGarbages) {
@@ -355,9 +355,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
           id: station.Id,
           status: 0,
         };
-        if (station.StationState.contains(StationState.Error)) {
+        if (station.StationStateFlags.contains(StationState.Error)) {
           status.status = StationState.Error;
-        } else if (station.StationState.contains(StationState.Full)) {
+        } else if (station.StationStateFlags.contains(StationState.Full)) {
           status.status = StationState.Full;
         } else {
           status.status = 0;
@@ -392,7 +392,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
       this.dataController = this.client.DataController;
       let params = new GetGarbageStationsParams();
       params.PageSize = 9999;
-      const response = await this.garbageService.list(params).toPromise();
+      const response = await this.garbageService.list(params);
 
       this.garbages = response.Data.Data;
       if (!this.villageGarbages) {
@@ -446,7 +446,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
           if (this.ContextMenuIllegalDropClickedEvent) {
             let station = this.garbages.find((x) => x.Id === id);
             if (!station) {
-              const response = await this.garbageService.get(id).toPromise();
+              const response = await this.garbageService.get(id);
               station = response.Data;
               this.garbages.push(station);
             }
@@ -462,7 +462,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
           if (this.ContextMenuMixedIntoClickedEvent) {
             let station = this.garbages.find((x) => x.Id === id);
             if (!station) {
-              const response = await this.garbageService.get(id).toPromise();
+              const response = await this.garbageService.get(id);
               station = response.Data;
               this.garbages.push(station);
             }
@@ -478,7 +478,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
           if (this.ContextMenuGarbageCountClickedEvent) {
             let station = this.garbages.find((x) => x.Id === id);
             if (!station) {
-              const response = await this.garbageService.get(id).toPromise();
+              const response = await this.garbageService.get(id);
               station = response.Data;
               this.garbages.push(station);
             }
@@ -498,7 +498,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
           status["style"].display = "none";
           let station = this.garbages.find((x) => x.Id === id);
           if (!station) {
-            const response = await this.garbageService.get(id).toPromise();
+            const response = await this.garbageService.get(id);
             station = response.Data;
             this.garbages.push(station);
           }
@@ -610,7 +610,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         params = new GetGarbageStationsParams();
         params.PageSize = 9999;
         params.DivisionId = village.id;
-        response = await this.garbageService.list(params).toPromise();
+        response = await this.garbageService.list(params);
         this.amapService.childrenOfList = (
           response as Response<PagedList<GarbageStation>>
         ).Data.Data.map((x) => {
@@ -912,7 +912,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     params.Name = text;
     params.PageSize = 999;
     let response = this.garbageService.list(params);
-    response.toPromise().then((garbages) => {
+    response.then((garbages) => {
       let list = garbages.Data.Data.map((x) => {
         return new MapListItem(x.Id, x.Name, MapListItemType.GarbageStation, x);
       });
