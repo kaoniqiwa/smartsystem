@@ -17,12 +17,10 @@ import { ITableField } from "../../../../../aiop-system/common/ITableField";
 import { IBusinessData } from "../../../../../common/interface/IBusiness";
 import { BusinessTable } from "../../../../../aiop-system/common/business-table";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
-import {
-  StationStateEnum,
-  DivisionTypeEnum,
-} from "../../../../../common/tool/enum-helper";
+import { DivisionTypeEnum } from "../../../../../common/tool/enum-helper";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
 import { MediumPicture } from "../../../../../data-core/url/aiop/resources";
+import { Language } from "src/app/common/tool/language";
 
 export class GarbageStationTable extends BusinessTable implements IConverter {
   dataSource = new CustomTableArgs<any>({
@@ -132,7 +130,7 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
       tableField.county = division2.Name;
     else if (division2 && division2.DivisionType == DivisionTypeEnum.Committees)
       tableField.committees = division2.Name;
-    tableField.state = StationStateEnum[station.StationState];
+    tableField.state = Language.StationStateFlags(station.StationState);
     return tableField;
   }
 

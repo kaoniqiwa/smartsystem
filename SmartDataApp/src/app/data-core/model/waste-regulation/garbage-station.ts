@@ -1,5 +1,6 @@
 import { TrashCan } from "./trashCan";
 import { Camera } from "./camera";
+import { Flags } from "src/app/common/tool/flags";
 /**投放点信息 */
 export class GarbageStation {
   /**垃圾房ID */
@@ -44,10 +45,10 @@ export class GarbageStation {
   MaxWetVolume: number;
 
   // 垃圾厢房状态
-  StationState: number = 0;
+  StationState: Flags<StationState> = new Flags(0);
 
-  Grade: number;//评级
-  CountSchedule: TimeRange[];//	计数时间段
+  Grade: number; //评级
+  CountSchedule: TimeRange[]; //	计数时间段
 
   /**
    *	地址	O
@@ -85,9 +86,26 @@ export class GarbageStation {
    */
   GarbageParameters?: GarbageParameters;
 
-
-  Members: Member[];//人员
+  Members: Member[]; //人员
 }
+
+/**
+ * 垃圾房状态
+ *
+ * @export
+ * @enum {number}
+ */
+export enum StationState {
+  /**
+   *	满溢	1
+   */
+  Full = 1,
+  /**
+   *	异常	2
+   */
+  Error = 2,
+}
+
 export class Member {
   /**
    *	成员ID	M
@@ -176,7 +194,7 @@ export enum Gender {
   /**
    *  女
    */
-  Female = 2
+  Female = 2,
 }
 
 export class GarbageParameters {
@@ -219,5 +237,4 @@ export class GetGarbageStationsParams {
   WetFull?: boolean;
   /**祖辈ID(可选)，返回该ID下的所有子孙区划及其本身的垃圾房 */
   AncestorId: string;
-
 }

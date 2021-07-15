@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { _getOptionScrollPosition } from "@angular/material";
+import { EventType } from "src/app/data-core/model/waste-regulation/event-number";
 import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
 import { GetGarbageStationStatisticGarbageCountsParams } from "src/app/data-core/model/waste-regulation/garbage-station-number-statistic";
 import { DivisionRequestService } from "src/app/data-core/repuest/division.service";
@@ -54,6 +55,7 @@ export class PointInfoPanelComponent implements OnInit {
   }
 
   onGarbageStationChanged(station: GarbageStation) {
+    station.StationState
     this.divisionService
       .get(station.DivisionId)
       .toPromise()
@@ -74,12 +76,36 @@ export class PointInfoPanelComponent implements OnInit {
       .then((res) => {
         let statistic = res.Data;
         this.GarbageCount = statistic.GarbageCount;
-        this.MaxGarbageCount = statistic.MaxGarbageCount;
+        // 是否满溢
+        // DryFull
+        // 评分
+        // Grade
+        // 当前时长
+        // CurrentGarbageTime
+        if (statistic.TodayEventNumbers) {
+          for (let i = 0; i < statistic.TodayEventNumbers.length; i++) {
+            const item = statistic.TodayEventNumbers[i];
+            switch (item.EventType) {
+              case EventType.IllegalDrop:
+                this.IllegalDropCount = item.DeltaNumber;
+                break;
+              case EventType.MixedInto:
+                this.MixedIntoCount = item.DeltaNumber;
+                break;
+
+              default:
+                break;
+            }
+          }
+        }
+        console.log(statistic);
       });
   }
 
-  GarbageCount: number;
-  MaxGarbageCount: number;
-  IllegalDropCount: number;
-  MixedIntoCount: number;
+  GarbageCount: number = 0;
+  MaxGarbageCount: number = 0;
+  IllegalDropCount: number = 0;
+  MixedIntoCount: number = 0;
+
+  state: string = "";
 }

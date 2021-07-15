@@ -48,6 +48,7 @@ import { ColorEnum } from "../../../../shared-module/card-component/card-content
 import { CameraStateTableEnum } from "../../../../shared-module/business-component/garbage-station-cameras/business/camera-table.service";
 import { isBoolean } from "util";
 import { SessionUser } from "../../../../common/tool/session-user";
+import { Language } from "src/app/common/tool/language";
 export class IllegalDropHistoryCardConverter implements IConverter {
   Convert<DropEvent, ViewsModel>(
     input: DropEvent,
@@ -601,11 +602,13 @@ export class GarbageStationInspectionCardConverter implements IConverter {
           ),
           gallery = new Gallery(),
           state = () => {
-            if (gs.StationState == 0) return "正常";
-            else if (enumHelper.stationState.err.indexOf(gs.StationState) > -1)
-              return "异常";
-            else if (enumHelper.stationState.full.indexOf(gs.StationState) > -1)
-              return "满溢";
+            debugger;
+            return Language.StationStateFlags(gs.StationState);
+            // if (gs.StationState == 0) return "正常";
+            // else if (enumHelper.stationState.err.indexOf(gs.StationState) > -1)
+            //   return "异常";
+            // else if (enumHelper.stationState.full.indexOf(gs.StationState) > -1)
+            //   return "满溢";
           };
         gallery.title = {
           state: state(),

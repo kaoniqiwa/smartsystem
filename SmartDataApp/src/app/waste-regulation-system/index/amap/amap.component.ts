@@ -16,6 +16,7 @@ import {
 import {
   GarbageStation,
   GetGarbageStationsParams,
+  StationState,
 } from "../../../data-core/model/waste-regulation/garbage-station";
 import {
   CameraRequestService as GarbageStationCameraRequestService,
@@ -42,6 +43,7 @@ import { MapListItem, MapListItemType } from "./map-list-panel/map-list-item";
 import { Camera } from "../../../data-core/model/waste-regulation/camera";
 import { SessionUser } from "../../../common/tool/session-user";
 import { GetGarbageStationStatisticNumbersParams } from "src/app/data-core/model/waste-regulation/garbage-station-number-statistic";
+import { Flags } from "src/app/common/tool/flags";
 
 declare var $: any;
 
@@ -353,8 +355,12 @@ export class AMapComponent implements AfterViewInit, OnInit {
           id: station.Id,
           status: 0,
         };
-        if (station.StationState > 0) {
-          status.status = station.StationState === 1 ? 1 : 2;
+        if (station.StationState.contains(StationState.Error)) {
+          status.status = StationState.Error;
+        } else if (station.StationState.contains(StationState.Full)) {
+          status.status = StationState.Full;
+        } else {
+          status.status = 0;
         }
 
         arrayStatus.push(status);

@@ -39,6 +39,7 @@ import { BusinessEventTypeEnum } from "../../../shared-module/business-component
 import { ComponentService } from "../../../shared-module/component-service";
 import { SessionUser } from "../../../common/tool/session-user";
 import { EventType } from "src/app/data-core/model/waste-regulation/event-number";
+import { Language } from "src/app/common/tool/language";
 @Injectable({
   providedIn: "root",
 })
@@ -355,15 +356,17 @@ export class DivisionBusinessService {
                 enumHelper = new EnumHelper(),
                 pic = new MediumPicture(),
                 state = (gs: GarbageStation) => {
-                  if (gs.StationState == 0) return "正常";
-                  else if (
-                    enumHelper.stationState.err.indexOf(gs.StationState) > -1
-                  )
-                    return "异常";
-                  else if (
-                    enumHelper.stationState.full.indexOf(gs.StationState) > -1
-                  )
-                    return "满溢";
+                  debugger;
+                  return Language.StationStateFlags(gs.StationState);
+                  // if (gs.StationState == 0) return "正常";
+                  // else if (
+                  //   enumHelper.stationState.err.indexOf(gs.StationState) > -1
+                  // )
+                  //   return "异常";
+                  // else if (
+                  //   enumHelper.stationState.full.indexOf(gs.StationState) > -1
+                  // )
+                  //   return "满溢";
                 };
               if (item.g && item.g.title) {
                 /**更新投放点 */
