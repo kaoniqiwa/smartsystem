@@ -59,20 +59,14 @@ export class PointInfoPanelComponent implements OnInit {
     debugger;
     this.state = Language.StationStateFlags(station.StationStateFlags);
 
-    this.divisionService
-      .get(station.DivisionId)
-      .toPromise()
-      .then((res) => {
-        console.log("居委会", res);
-        this.committeeName = res.Data.Name;
-        this.divisionService
-          .get(res.Data.ParentId)
-          .toPromise()
-          .then((res) => {
-            console.log("街道", res);
-            this.roadName = res.Data.Name;
-          });
+    this.divisionService.get(station.DivisionId).then((res) => {
+      console.log("居委会", res);
+      this.committeeName = res.Name;
+      this.divisionService.get(res.ParentId).then((res) => {
+        console.log("街道", res);
+        this.roadName = res.Name;
       });
+    });
     this.garbageStationService
       .statisticNumber(station.Id)
       .toPromise()

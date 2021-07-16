@@ -19,7 +19,7 @@ import {
 } from "../model/waste-regulation/trashCan";
 import * as url from "../url/waste-regulation/garbage-station";
 import { PagedList } from "../model/page";
-import { Response } from "../model/response";
+import { HowellResponse } from "../model/response";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
 import {
   GetGarbageStationnEventNumbersParams,
@@ -40,16 +40,18 @@ import { plainToClass } from "class-transformer";
 @Injectable({
   providedIn: "root",
 })
-export class GarbageStationRequestService extends SaveModel {
+export class GarbageStationRequestService {
   url: url.GarbageStations;
   constructor(private requestService: HowellAuthHttpService) {
-    super();
     this.url = new url.GarbageStations();
   }
   create(item: GarbageStation) {
-    return this.requestService.post<GarbageStation, Response<GarbageStation>>(
+    return this.requestService.post<
+      GarbageStation,
+      HowellResponse<GarbageStation>
+    >(
       this.url.create(),
-      this.toModel(item, this.formMustField.garbageStation)
+      SaveModel.toModel(item, SaveModel.formMustField.garbageStation)
     );
   }
 
@@ -60,9 +62,12 @@ export class GarbageStationRequestService extends SaveModel {
   }
 
   set(item: GarbageStation) {
-    return this.requestService.put<GarbageStation, Response<GarbageStation>>(
+    return this.requestService.put<
+      GarbageStation,
+      HowellResponse<GarbageStation>
+    >(
       this.url.edit(item.Id),
-      this.toModel(item, this.formMustField.garbageStation)
+      SaveModel.toModel(item, SaveModel.formMustField.garbageStation)
     );
   }
 
@@ -72,10 +77,10 @@ export class GarbageStationRequestService extends SaveModel {
 
   async list(item: GetGarbageStationsParams) {
     let response = await this.requestService
-      .post<GetGarbageStationsParams, Response<PagedList<GarbageStation>>>(
-        this.url.list(),
-        item
-      )
+      .post<
+        GetGarbageStationsParams,
+        HowellResponse<PagedList<GarbageStation>>
+      >(this.url.list(), item)
       .toPromise();
     response.Data.Data = plainToClass(GarbageStation, response.Data.Data);
     return response.Data;
@@ -84,7 +89,7 @@ export class GarbageStationRequestService extends SaveModel {
   volumesHistory(item: GetGarbageStationVolumesParams, divisionsId: string) {
     return this.requestService.post<
       GetGarbageStationVolumesParams,
-      Response<PagedList<GarbageVolume>>
+      HowellResponse<PagedList<GarbageVolume>>
     >(this.url.volumesHistory(divisionsId), item);
   }
 
@@ -94,7 +99,7 @@ export class GarbageStationRequestService extends SaveModel {
   ) {
     return this.requestService.post<
       GetGarbageStationnEventNumbersParams,
-      Response<PagedList<EventNumberStatistic>>
+      HowellResponse<PagedList<EventNumberStatistic>>
     >(this.url.eventNumbersHistory(divisionsId), item);
   }
 
@@ -107,19 +112,19 @@ export class GarbageStationRequestService extends SaveModel {
   statisticNumberList(item: GetGarbageStationStatisticNumbersParams) {
     return this.requestService.post<
       GetGarbageStationStatisticNumbersParams,
-      Response<PagedList<GarbageStationNumberStatistic>>
+      HowellResponse<PagedList<GarbageStationNumberStatistic>>
     >(this.url.statisticNumberList(), item);
   }
 
   statisticNumberListV2(item: GetGarbageStationStatisticNumbersParamsV2) {
     return this.requestService.post<
       GetGarbageStationStatisticNumbersParamsV2,
-      Response<GarbageStationNumberStatisticV2[]>
+      HowellResponse<GarbageStationNumberStatisticV2[]>
     >(this.url.statisticNumberHistoryList(), item);
   }
 
   manualCapture(stationId: string) {
-    return this.requestService.post<any, Response<CameraPictureUrl[]>>(
+    return this.requestService.post<any, HowellResponse<CameraPictureUrl[]>>(
       this.url.manualCapture(stationId)
     );
   }
@@ -141,7 +146,7 @@ export class GarbageStationRequestService extends SaveModel {
     beginTime: string,
     endTime: string
   ) {
-    return this.requestService.post<any, Response<RecordFileUrl>>(
+    return this.requestService.post<any, HowellResponse<RecordFileUrl>>(
       this.url.cameraFile(stationId, cameraId, beginTime, endTime)
     );
   }
@@ -149,7 +154,7 @@ export class GarbageStationRequestService extends SaveModel {
   statisticGarbageCount(item: GetGarbageStationStatisticGarbageCountsParams) {
     return this.requestService.post<
       GetGarbageStationStatisticGarbageCountsParams,
-      Response<GarbageStationGarbageCountStatistic[]>
+      HowellResponse<GarbageStationGarbageCountStatistic[]>
     >(this.url.statisticGarbageCountHistoryList(), item);
   }
 }
@@ -157,14 +162,13 @@ export class GarbageStationRequestService extends SaveModel {
 @Injectable({
   providedIn: "root",
 })
-export class CameraRequestService extends SaveModel {
+export class CameraRequestService {
   url: url.Camera;
   constructor(private requestService: HowellAuthHttpService) {
-    super();
     this.url = new url.Camera();
   }
   create(item: Camera) {
-    return this.requestService.post<Camera, Response<Camera>>(
+    return this.requestService.post<Camera, HowellResponse<Camera>>(
       this.url.create(item.GarbageStationId),
       item
     );
@@ -181,7 +185,7 @@ export class CameraRequestService extends SaveModel {
   }
 
   set(item: Camera) {
-    return this.requestService.put<Camera, Response<Camera>>(
+    return this.requestService.put<Camera, HowellResponse<Camera>>(
       this.url.edit(item.GarbageStationId, item.Id),
       item
     );
@@ -196,7 +200,7 @@ export class CameraRequestService extends SaveModel {
   postList(item: GetGarbageStationCamerasParams) {
     return this.requestService.post<
       GetGarbageStationCamerasParams,
-      Response<PagedList<Camera>>
+      HowellResponse<PagedList<Camera>>
     >(this.url.list(), item);
   }
 }
@@ -204,14 +208,13 @@ export class CameraRequestService extends SaveModel {
 @Injectable({
   providedIn: "root",
 })
-export class CameraTrashCanRequestService extends SaveModel {
+export class CameraTrashCanRequestService {
   url: url.CameraTrashCans;
   constructor(private requestService: HowellAuthHttpService) {
-    super();
     this.url = new url.CameraTrashCans();
   }
   create(item: TrashCan) {
-    return this.requestService.post<TrashCan, Response<TrashCan>>(
+    return this.requestService.post<TrashCan, HowellResponse<TrashCan>>(
       this.url.create(item.GarbageStationId, item.CameraId),
       item
     );
@@ -224,7 +227,7 @@ export class CameraTrashCanRequestService extends SaveModel {
   }
 
   set(item: TrashCan) {
-    return this.requestService.put<TrashCan, Response<TrashCan>>(
+    return this.requestService.put<TrashCan, HowellResponse<TrashCan>>(
       this.url.edit(item.GarbageStationId, item.CameraId, item.Id),
       item
     );
@@ -246,14 +249,13 @@ export class CameraTrashCanRequestService extends SaveModel {
 @Injectable({
   providedIn: "root",
 })
-export class GarbageStationTrashCanRequestService extends SaveModel {
+export class GarbageStationTrashCanRequestService {
   url: url.GarbageStationTrashCans;
   constructor(private requestService: HowellAuthHttpService) {
-    super();
     this.url = new url.GarbageStationTrashCans();
   }
   create(item: TrashCan) {
-    return this.requestService.post<TrashCan, Response<TrashCan>>(
+    return this.requestService.post<TrashCan, HowellResponse<TrashCan>>(
       this.url.create(item.GarbageStationId),
       item
     );
@@ -266,7 +268,7 @@ export class GarbageStationTrashCanRequestService extends SaveModel {
   }
 
   set(item: TrashCan) {
-    return this.requestService.put<TrashCan, Response<TrashCan>>(
+    return this.requestService.put<TrashCan, HowellResponse<TrashCan>>(
       this.url.edit(item.GarbageStationId, item.Id),
       item
     );
@@ -281,7 +283,7 @@ export class GarbageStationTrashCanRequestService extends SaveModel {
   list(item: GetGarbageStationTrashCansParams) {
     return this.requestService.post<
       GetGarbageStationTrashCansParams,
-      Response<PagedList<TrashCan>>
+      HowellResponse<PagedList<TrashCan>>
     >(this.url.postList(), item);
   }
 }
@@ -289,19 +291,18 @@ export class GarbageStationTrashCanRequestService extends SaveModel {
 @Injectable({
   providedIn: "root",
 })
-export class GarbageStationTypeRequestService extends SaveModel {
+export class GarbageStationTypeRequestService {
   url: url.GarbageStationType;
   constructor(private requestService: HowellAuthHttpService) {
-    super();
     this.url = new url.GarbageStationType();
   }
   create(item: GarbageStationType) {
     return this.requestService.post<
       GarbageStationType,
-      Response<GarbageStationType>
+      HowellResponse<GarbageStationType>
     >(
       this.url.create(),
-      this.toModel(item, this.formMustField.garbageStationType)
+      SaveModel.toModel(item, SaveModel.formMustField.garbageStationType)
     );
   }
 
@@ -312,10 +313,10 @@ export class GarbageStationTypeRequestService extends SaveModel {
   set(item: GarbageStationType) {
     return this.requestService.put<
       GarbageStationType,
-      Response<GarbageStationType>
+      HowellResponse<GarbageStationType>
     >(
       this.url.edit(item.Type + ""),
-      this.toModel(item, this.formMustField.garbageStationType)
+      SaveModel.toModel(item, SaveModel.formMustField.garbageStationType)
     );
   }
 

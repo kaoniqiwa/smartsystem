@@ -92,10 +92,10 @@ export class BusinessService extends ListAttribute {
           this.barChartOption2,
         ]);
       } else if (s.ClassType == ClassTypeEnum.Division) {
-        const response = await this.divisionService
-          .statisticNumberListV2(requsetParam as any)
-          .toPromise();
-        this.convertBarData(response.Data, this.search, [
+        const response = await this.divisionService.statisticNumberListV2(
+          requsetParam as any
+        );
+        this.convertBarData(response, this.search, [
           this.barChartOption,
           this.barChartOption2,
         ]);

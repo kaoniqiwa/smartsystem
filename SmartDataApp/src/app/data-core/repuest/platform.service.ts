@@ -1,5 +1,5 @@
 import { Platform as PlatformUrl } from "../url/aiop/platforms";
-import { Response } from "../model/response";
+import { HowellResponse } from "../model/response";
 import { Platform as PlatformModel, Platform } from "../model/aiop/platform";
 import { Injectable } from "@angular/core";
 import { GetPlatformsParams } from "../model/aiop/platforms-params";
@@ -9,17 +9,22 @@ import { HowellAuthHttpService } from "./howell-auth-http.service";
 import { SaveModel } from "../model/save-model";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
-export class PlatformRequestSerivce extends SaveModel {
+export class PlatformRequestSerivce {
   url: PlatformUrl;
   constructor(private requestService: HowellAuthHttpService) {
-    super();
     this.url = new PlatformUrl();
   }
 
   create(item: PlatformModel) {
-    return this.requestService.post<PlatformModel, Response<PlatformModel>>(this.url.create(), this.toModel(item, this.formMustField.platform));
+    return this.requestService.post<
+      PlatformModel,
+      HowellResponse<PlatformModel>
+    >(
+      this.url.create(),
+      SaveModel.toModel(item, SaveModel.formMustField.platform)
+    );
   }
 
   get(id: string) {
@@ -27,7 +32,10 @@ export class PlatformRequestSerivce extends SaveModel {
   }
 
   set(item: PlatformModel) {
-    return this.requestService.put<PlatformModel, Response<PlatformModel>>(this.url.edit(item.Id), item);
+    return this.requestService.put<
+      PlatformModel,
+      HowellResponse<PlatformModel>
+    >(this.url.edit(item.Id), item);
   }
 
   del(id: string) {
@@ -35,7 +43,10 @@ export class PlatformRequestSerivce extends SaveModel {
   }
 
   list(item: GetPlatformsParams) {
-    return this.requestService.post<GetPlatformsParams, Response<PagedList<Platform>>>(this.url.list(), item);
+    return this.requestService.post<
+      GetPlatformsParams,
+      HowellResponse<PagedList<Platform>>
+    >(this.url.list(), item);
   }
 
   protocol() {

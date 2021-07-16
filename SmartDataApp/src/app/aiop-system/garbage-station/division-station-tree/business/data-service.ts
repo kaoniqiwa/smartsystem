@@ -34,7 +34,7 @@ export class DataService {
     const param = new GetDivisionsParams();
     param.PageIndex = 1;
     param.PageSize = new ListAttribute().maxSize;
-    const response = await this.divisionService.list(param).toPromise();
-    return response.Data.Data;
+    const response = await this.divisionService.list(param);
+    return response.Data;
   }
 }

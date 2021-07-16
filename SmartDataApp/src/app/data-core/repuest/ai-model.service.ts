@@ -1,23 +1,25 @@
 import { Injectable } from "@angular/core";
 import { RequestService } from "./request.service";
 import { PagedList } from "../model/page";
-import { Response } from "../model/response";
+import { HowellResponse } from "../model/response";
 import { CameraAIModel } from "../model/aiop/camera-ai-model";
 import * as url from "../url/aiop/ai-models";
 import { GetAIModelsParams } from "../model/aiop/camera-ai-event-records-params";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
 import { SaveModel } from "../model/save-model";
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
-export class AIModelRequestService extends SaveModel {
+export class AIModelRequestService {
   url: url.AIModel;
   constructor(private requestService: HowellAuthHttpService) {
-    super();
     this.url = new url.AIModel();
   }
   create(item: CameraAIModel) {
-    return this.requestService.post<CameraAIModel, Response<CameraAIModel>>(this.url.create(), item);
+    return this.requestService.post<
+      CameraAIModel,
+      HowellResponse<CameraAIModel>
+    >(this.url.create(), item);
   }
 
   get(id: string) {
@@ -25,7 +27,13 @@ export class AIModelRequestService extends SaveModel {
   }
 
   set(item: CameraAIModel) {
-    return this.requestService.put<CameraAIModel, Response<CameraAIModel>>(this.url.edit(item.Id), this.toModel(item, this.formMustField.division));
+    return this.requestService.put<
+      CameraAIModel,
+      HowellResponse<CameraAIModel>
+    >(
+      this.url.edit(item.Id),
+      SaveModel.toModel(item, SaveModel.formMustField.division)
+    );
   }
 
   del(id: string) {
@@ -33,10 +41,16 @@ export class AIModelRequestService extends SaveModel {
   }
 
   list(item: GetAIModelsParams) {
-    return this.requestService.post<GetAIModelsParams, Response<PagedList<CameraAIModel>>>(this.url.list(), item);
+    return this.requestService.post<
+      GetAIModelsParams,
+      HowellResponse<PagedList<CameraAIModel>>
+    >(this.url.list(), item);
   }
 
   parse(base64JSONData: string) {
-    return this.requestService.postString<any, Response<CameraAIModel>>(this.url.parse(), base64JSONData);
+    return this.requestService.postString<any, HowellResponse<CameraAIModel>>(
+      this.url.parse(),
+      base64JSONData
+    );
   }
 }

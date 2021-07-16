@@ -38,7 +38,6 @@ import {
   GetDivisionsParams,
 } from "../../../data-core/model/waste-regulation/division";
 import { PagedList } from "../../../data-core/model/page";
-import { Response } from "../../../data-core/model/response";
 import { MapListItem, MapListItemType } from "./map-list-panel/map-list-item";
 import { Camera } from "../../../data-core/model/waste-regulation/camera";
 import { SessionUser } from "../../../common/tool/session-user";
@@ -377,11 +376,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
     params.PageSize = 9999;
     params.DivisionType = this.Resource.ResourceType;
 
-    const response = await this.divisionService
-      .get(this.Resource.Id)
-      .toPromise();
-    if (response.Data) {
-      return response.Data;
+    const response = await this.divisionService.get(this.Resource.Id);
+    if (response) {
+      return response;
     }
   }
 
@@ -577,21 +574,19 @@ export class AMapComponent implements AfterViewInit, OnInit {
       next["style"].display = "none";
 
       let params: GetDivisionsParams | GetGarbageStationsParams;
-      let response:
-        | Response<PagedList<Division | GarbageStation>>
-        | PagedList<Division | GarbageStation>;
+      let response: PagedList<Division | GarbageStation>;
 
       params = new GetDivisionsParams();
       params.PageSize = 9999;
       params.ParentId = village.id;
-      response = await this.divisionService.list(params).toPromise();
+      response = await this.divisionService.list(params);
       console.log(response);
       let itemType: MapListItemType;
       let parentId = village.parentId;
-      if (response.Data.Page.TotalRecordCount > 0) {
+      if (response.Page.TotalRecordCount > 0) {
         this.amapService.childrenOfList = (
-          response as Response<PagedList<Division>>
-        ).Data.Data.map((x) => {
+          response as PagedList<Division>
+        ).Data.map((x) => {
           const item = new MapListItem(
             x.Id,
             x.Name,
@@ -622,9 +617,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         itemType = MapListItemType.Division;
       }
       if (!parentId) {
-        parentId = await (
-          await this.divisionService.get(village.id).toPromise()
-        ).Data.ParentId;
+        parentId = await (await this.divisionService.get(village.id)).ParentId;
       }
       switch (itemType) {
         case MapListItemType.Division:

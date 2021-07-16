@@ -3,21 +3,23 @@ import { SaveModel } from "../model/save-model";
 import { Region, GetRegionsParams } from "../model/aiop/region";
 import * as url from "../url/aiop/region";
 import { PagedList } from "../model/page";
-import { Response } from "../model/response";
+import { HowellResponse } from "../model/response";
 import { BatchRequest, BatchResult, SingleResult } from "../model/batch";
 import { Resource } from "../model/aiop/resource";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
-export class RegionRequestService extends SaveModel {
+export class RegionRequestService {
   url: url.Region;
   constructor(private requestService: HowellAuthHttpService) {
-    super();
     this.url = new url.Region();
   }
   create(item: Region) {
-    return this.requestService.post<Region, Response<Region>>(this.url.create(), this.toModel(item, this.formMustField.region));
+    return this.requestService.post<Region, HowellResponse<Region>>(
+      this.url.create(),
+      SaveModel.toModel(item, SaveModel.formMustField.region)
+    );
   }
 
   get(id: string) {
@@ -25,8 +27,10 @@ export class RegionRequestService extends SaveModel {
   }
 
   set(item: Region) {
-
-    return this.requestService.put<Region, Response<Region>>(this.url.edit(item.Id), this.toModel(item, this.formMustField.region));
+    return this.requestService.put<Region, HowellResponse<Region>>(
+      this.url.edit(item.Id),
+      SaveModel.toModel(item, SaveModel.formMustField.region)
+    );
   }
 
   del(id: string) {
@@ -34,12 +38,15 @@ export class RegionRequestService extends SaveModel {
   }
 
   list(item: GetRegionsParams) {
-    return this.requestService.post<GetRegionsParams, Response<PagedList<Region>>>(this.url.list(), item);
+    return this.requestService.post<
+      GetRegionsParams,
+      HowellResponse<PagedList<Region>>
+    >(this.url.list(), item);
   }
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class RegionResourceRequestService {
   url: url.RegionsResources;
@@ -47,19 +54,27 @@ export class RegionResourceRequestService {
     this.url = new url.RegionsResources();
   }
   batch(regionId: string, item: BatchRequest) {
-    return this.requestService.post<BatchRequest, BatchResult>(this.url.batch(regionId), item);
+    return this.requestService.post<BatchRequest, BatchResult>(
+      this.url.batch(regionId),
+      item
+    );
   }
 
   create(regionId: string, resourceId: string) {
-    return this.requestService.post<null, Resource>(this.url.create(regionId, resourceId));
+    return this.requestService.post<null, Resource>(
+      this.url.create(regionId, resourceId)
+    );
   }
 
   get(regionId: string, resourceId: string) {
-    return this.requestService.get<Resource>(this.url.get(regionId, resourceId));
+    return this.requestService.get<Resource>(
+      this.url.get(regionId, resourceId)
+    );
   }
 
   del(regionId: string, resourceId: string) {
-    return this.requestService.delete<Resource>(this.url.del(regionId, resourceId));
+    return this.requestService.delete<Resource>(
+      this.url.del(regionId, resourceId)
+    );
   }
-
 }

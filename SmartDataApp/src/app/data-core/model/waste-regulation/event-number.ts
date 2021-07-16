@@ -1,5 +1,5 @@
 /**事件数量 */
-export interface EventNumber {
+export class EventNumber {
   /**事件类型 */
   EventType: EventType;
   /**当日事件数量 */

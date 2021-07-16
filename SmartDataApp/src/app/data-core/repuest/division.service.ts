@@ -22,91 +22,130 @@ import {
 import * as url from "../url/waste-regulation/division";
 import { PagedList } from "../model/page";
 import { BatchRequest, BatchResult } from "../model/batch";
-import { Response } from "../model/response";
+import { HowellResponse } from "../model/response";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
+import { plainToClass } from "class-transformer";
 @Injectable({
   providedIn: "root",
 })
-export class DivisionRequestService extends SaveModel {
+export class DivisionRequestService {
   url: url.DivisionUrl;
   constructor(private requestService: HowellAuthHttpService) {
-    super();
     this.url = new url.DivisionUrl();
   }
-  create(item: Division) {
-    return this.requestService.post<Division, Response<Division>>(
-      this.url.create(),
-      this.toModel(item, this.formMustField.division)
-    );
+  async create(item: Division) {
+    let response = await this.requestService
+      .post<Division, HowellResponse<Division>>(
+        this.url.create(),
+        SaveModel.toModel(item, SaveModel.formMustField.division)
+      )
+      .toPromise();
+    return plainToClass(Division, response.Data);
   }
 
-  createMore(item: BatchRequest) {
-    return this.requestService.post<BatchRequest, Response<BatchResult>>(
-      this.url.create(),
-      item
-    );
+  async createMore(item: BatchRequest) {
+    let response = await this.requestService
+      .post<BatchRequest, HowellResponse<BatchResult>>(this.url.create(), item)
+      .toPromise();
+    return plainToClass(BatchResult, response.Data);
   }
 
-  get(id: string) {
-    return this.requestService.get<Division>(this.url.get(id));
+  async get(id: string) {
+    let response = await this.requestService
+      .get<Division>(this.url.get(id))
+      .toPromise();
+    return plainToClass(Division, response.Data);
   }
 
-  set(item: Division) {
-    return this.requestService.put<Division, Response<Division>>(
-      this.url.edit(item.Id),
-      this.toModel(item, this.formMustField.division)
-    );
+  async set(item: Division) {
+    let response = await this.requestService
+      .put<Division, HowellResponse<Division>>(
+        this.url.edit(item.Id),
+        SaveModel.toModel(item, SaveModel.formMustField.division)
+      )
+      .toPromise();
+    return plainToClass(Division, response.Data);
   }
 
-  del(id: string) {
-    return this.requestService.delete<Division>(this.url.del(id));
+  async del(id: string) {
+    let response = await this.requestService
+      .delete<Division>(this.url.del(id))
+      .toPromise();
+    return plainToClass(Division, response.Data);
   }
 
-  list(item: GetDivisionsParams) {
-    return this.requestService.post<
-      GetDivisionsParams,
-      Response<PagedList<Division>>
-    >(this.url.list(), item);
+  async list(item: GetDivisionsParams) {
+    let response = await this.requestService
+      .post<GetDivisionsParams, HowellResponse<PagedList<Division>>>(
+        this.url.list(),
+        item
+      )
+      .toPromise();
+    let result = response.Data;
+    result.Data = plainToClass(Division, response.Data.Data);
+    return result;
   }
 
-  tree() {
-    return this.requestService.get<DivisionTree>(this.url.tree());
+  async tree() {
+    let response = await this.requestService
+      .get<DivisionTree>(this.url.tree())
+      .toPromise();
+    return plainToClass(DivisionTree, response.Data);
   }
 
-  volumesHistory(item: GetDivisionVolumesParams, divisionsId: string) {
-    return this.requestService.post<
-      GetDivisionVolumesParams,
-      Response<PagedList<GarbageVolume>>
-    >(this.url.volumesHistory(divisionsId), item);
+  async volumesHistory(item: GetDivisionVolumesParams, divisionsId: string) {
+    let response = await this.requestService
+      .post<GetDivisionVolumesParams, HowellResponse<PagedList<GarbageVolume>>>(
+        this.url.volumesHistory(divisionsId),
+        item
+      )
+      .toPromise();
+    let result = response.Data;
+    result.Data = plainToClass(GarbageVolume, response.Data.Data);
+    return result;
   }
 
-  eventNumbersHistory(
+  async eventNumbersHistory(
     item: GetDivisionEventNumbersParams,
     divisionsId: string
   ) {
-    return this.requestService.post<
-      GetDivisionEventNumbersParams,
-      Response<PagedList<EventNumberStatistic>>
-    >(this.url.eventNumbersHistory(divisionsId), item);
+    let response = await this.requestService
+      .post<
+        GetDivisionEventNumbersParams,
+        HowellResponse<PagedList<EventNumberStatistic>>
+      >(this.url.eventNumbersHistory(divisionsId), item)
+      .toPromise();
+    let result = response.Data;
+    result.Data = plainToClass(EventNumberStatistic, response.Data.Data);
+    return result;
   }
 
-  statisticNumber(divisionsId: string) {
-    return this.requestService.get<DivisionNumberStatistic>(
-      this.url.statisticNumber(divisionsId)
-    );
+  async statisticNumber(divisionsId: string) {
+    let response = await this.requestService
+      .get<DivisionNumberStatistic>(this.url.statisticNumber(divisionsId))
+      .toPromise();
+    return plainToClass(DivisionNumberStatistic, response.Data);
   }
 
-  statisticNumberList(item: GetDivisionStatisticNumbersParams) {
-    return this.requestService.post<
-      GetDivisionStatisticNumbersParams,
-      Response<PagedList<DivisionNumberStatistic>>
-    >(this.url.statisticNumberList(), item);
+  async statisticNumberList(item: GetDivisionStatisticNumbersParams) {
+    let response = await this.requestService
+      .post<
+        GetDivisionStatisticNumbersParams,
+        HowellResponse<PagedList<DivisionNumberStatistic>>
+      >(this.url.statisticNumberList(), item)
+      .toPromise();
+    let result = response.Data;
+    result.Data = plainToClass(DivisionNumberStatistic, response.Data.Data);
+    return result;
   }
 
-  statisticNumberListV2(item: GetDivisionStatisticNumbersParamsV2) {
-    return this.requestService.post<
-      GetDivisionStatisticNumbersParamsV2,
-      Response<DivisionNumberStatisticV2[]>
-    >(this.url.statisticNumberHistoryList(), item);
+  async statisticNumberListV2(item: GetDivisionStatisticNumbersParamsV2) {
+    let response = await this.requestService
+      .post<
+        GetDivisionStatisticNumbersParamsV2,
+        HowellResponse<DivisionNumberStatisticV2[]>
+      >(this.url.statisticNumberHistoryList(), item)
+      .toPromise();
+    return plainToClass(DivisionNumberStatisticV2, response.Data);
   }
 }

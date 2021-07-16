@@ -1,7 +1,11 @@
 import { SRService as SRServiceUrl } from "../url/aiop/sr-server";
-import { Response } from "../model/response";
+import { HowellResponse } from "../model/response";
 import { SRServer } from "../model/aiop/sr-server";
-import { VideoUrl, GetPreviewUrlParams, GetVodUrlParams } from "../model/aiop/video-url";
+import {
+  VideoUrl,
+  GetPreviewUrlParams,
+  GetVodUrlParams,
+} from "../model/aiop/video-url";
 import { Injectable } from "@angular/core";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
 import { SaveModel } from "../model/save-model";
@@ -11,18 +15,20 @@ import { isIPAddressOrLocalhost } from "src/app/common/tool/tool.service";
 import { isIP } from "net";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
-export class SRServiceRequestSerivce extends SaveModel {
+export class SRServiceRequestSerivce {
   url: SRServiceUrl;
   user = new SessionUser();
   constructor(private requestService: HowellAuthHttpService) {
-    super();
     this.url = new SRServiceUrl();
   }
 
   create(item: SRServer) {
-    return this.requestService.post<SRServer, Response<SRServer>>(this.url.create(), this.toModel(item, this.formMustField.srServer));
+    return this.requestService.post<SRServer, HowellResponse<SRServer>>(
+      this.url.create(),
+      SaveModel.toModel(item, SaveModel.formMustField.srServer)
+    );
   }
 
   get(id: string) {
@@ -30,7 +36,10 @@ export class SRServiceRequestSerivce extends SaveModel {
   }
 
   set(item: SRServer) {
-    return this.requestService.put<SRServer, Response<SRServer>>(this.url.edit(item.Id), item);
+    return this.requestService.put<SRServer, HowellResponse<SRServer>>(
+      this.url.edit(item.Id),
+      item
+    );
   }
 
   del(id: string) {
@@ -46,7 +55,12 @@ export class SRServiceRequestSerivce extends SaveModel {
   }
 
   async preview(item: GetPreviewUrlParams) {
-    const response = await this.requestService.post<GetPreviewUrlParams, Response<VideoUrl>>(this.url.preview(), item).toPromise();
+    const response = await this.requestService
+      .post<GetPreviewUrlParams, HowellResponse<VideoUrl>>(
+        this.url.preview(),
+        item
+      )
+      .toPromise();
     if (response.Data.Url) {
       let args = VideoPlayArgs.FromUrl(response.Data.Url);
       if (response.Data.Username) {
@@ -58,8 +72,7 @@ export class SRServiceRequestSerivce extends SaveModel {
       let url = "";
       if (!(args.username && args.password)) {
         url = args.toString(this.user.videoUserPwd);
-      }
-      else {
+      } else {
         url = args.toString();
       }
       response.Data.Url = url;
@@ -67,13 +80,16 @@ export class SRServiceRequestSerivce extends SaveModel {
     if (isIPAddressOrLocalhost()) {
       const host = document.location.hostname;
       const port = document.location.port;
-      response.Data.WebUrl = "http://" + host + ":" + port + "/video/wsplayer/wsplayer.html";
+      response.Data.WebUrl =
+        "http://" + host + ":" + port + "/video/wsplayer/wsplayer.html";
     }
     return response;
   }
 
   async vod(item: GetVodUrlParams) {
-    const response = await this.requestService.post<GetVodUrlParams, Response<VideoUrl>>(this.url.vod(), item).toPromise();
+    const response = await this.requestService
+      .post<GetVodUrlParams, HowellResponse<VideoUrl>>(this.url.vod(), item)
+      .toPromise();
     if (response.Data.Url) {
       let args = VideoPlayArgs.FromUrl(response.Data.Url);
       if (response.Data.Username) {
@@ -85,17 +101,16 @@ export class SRServiceRequestSerivce extends SaveModel {
       let url = "";
       if (!(args.username && args.password)) {
         url = args.toString(this.user.videoUserPwd);
-      }
-      else {
+      } else {
         url = args.toString();
       }
       response.Data.Url = url;
     }
     if (isIPAddressOrLocalhost()) {
-
       const host = document.location.hostname;
       const port = document.location.port;
-      response.Data.WebUrl = "http://" + host + ":" + port + "/video/wsplayer/wsplayer.html";
+      response.Data.WebUrl =
+        "http://" + host + ":" + port + "/video/wsplayer/wsplayer.html";
     }
     return response;
   }

@@ -113,11 +113,11 @@ export class BusinessService extends ListAttribute {
       s.ClassType == ClassTypeEnum.County
     ) {
       this.table.classType = s.ClassType;
-      const response = await this.divisionService
-        .statisticNumberListV2(requsetParam as any)
-        .toPromise();
-      this.dataSources = response.Data;
-      const td = this.convertTableData(response.Data, this.search);
+      const response = await this.divisionService.statisticNumberListV2(
+        requsetParam as any
+      );
+      this.dataSources = response;
+      const td = this.convertTableData(response, this.search);
       this.table.clearItems();
       this.table.Convert(td, this.table.dataSource);
     }

@@ -216,11 +216,8 @@ export class MapDeployComponent implements OnInit {
             GisType.GCJ02
           );
 
-          let response = await this.divisionService.set(data).toPromise();
+          let response = await this.divisionService.set(data);
           console.log(response);
-          if (response.FaultCode === undefined || response.FaultCode != 0) {
-            throw new Error(response.FaultReason);
-          }
           new MessageBar().response_success("录入区划坐标成功");
         }
       } catch (error) {

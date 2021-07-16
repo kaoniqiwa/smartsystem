@@ -101,10 +101,11 @@ export class StatisticalDataBufferService
       param.EndTime = dayTime.end.toISOString();
       param.PageIndex = 1;
       param.PageSize = this.maxSize;
-      const response = await this.divisionService
-        .eventNumbersHistory(param, divisionsId)
-        .toPromise();
-      result = response.Data.Data;
+      const response = await this.divisionService.eventNumbersHistory(
+        param,
+        divisionsId
+      );
+      result = response.Data;
       this.cache.set(this.eventNumbersHistory + divisionsId, result);
     }
     return result;
@@ -115,10 +116,7 @@ export class StatisticalDataBufferService
       this.statisticNumber + divisionsId
     );
     if (!result) {
-      const response = await this.divisionService
-        .statisticNumber(divisionsId)
-        .toPromise();
-      result = response.Data;
+      const result = await this.divisionService.statisticNumber(divisionsId);
       this.cache.set(this.statisticNumber + divisionsId, result);
     }
     return result;
@@ -133,10 +131,8 @@ export class StatisticalDataBufferService
       param.PageIndex = 1;
       param.PageSize = this.maxSize;
       param.Ids = divisionsIds;
-      const response = await this.divisionService
-        .statisticNumberList(param)
-        .toPromise();
-      result = response.Data.Data;
+      const response = await this.divisionService.statisticNumberList(param);
+      result = response.Data;
 
       this.cache.set(
         this.divisionStatisticNumberList + Md5.hashStr(divisionsIds.join("-")),
@@ -152,8 +148,8 @@ export class StatisticalDataBufferService
       const param = new GetDivisionsParams();
       param.PageIndex = 1;
       param.PageSize = this.maxSize;
-      const response = await this.divisionService.list(param).toPromise();
-      result = response.Data.Data;
+      const response = await this.divisionService.list(param);
+      result = response.Data;
       this.cache.set(this.division, result);
     }
     return result;
@@ -170,8 +166,8 @@ export class StatisticalDataBufferService
       if (!result1) {
         param.PageSize = 1;
         param.Ids = [divisionId];
-        const response = await this.divisionService.list(param).toPromise();
-        result1 = response.Data.Data;
+        const response = await this.divisionService.list(param);
+        result1 = response.Data;
         this.cache.set(this.divisionId + Md5.hashStr(divisionId), result);
       }
       return result1;
@@ -182,8 +178,8 @@ export class StatisticalDataBufferService
       if (!result) {
         param.PageSize = this.maxSize;
         param.AncestorId = ancestorId;
-        const response = await this.divisionService.list(param).toPromise();
-        result = response.Data.Data;
+        const response = await this.divisionService.list(param);
+        result = response.Data;
         this.cache.set(
           this.ancestorIdDivisions + Md5.hashStr(ancestorId),
           result

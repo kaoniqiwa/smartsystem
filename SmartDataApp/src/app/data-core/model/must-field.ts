@@ -1,26 +1,25 @@
- 
-export class FormMustField{
-    resource = [
-        'Name','ResourceType','Id'
-    ];
-    encodeDevice = [
-        'Name','ResourceType', 'Url','Id'
-    ];
-    camera=[
-        'CameraType','CameraState','ChannelNo','EncodeDeviceId','Id'
-    ];
+export class FormMustField {
+  resource = ["Name", "ResourceType", "Id"];
+  encodeDevice = ["Name", "ResourceType", "Url", "Id"];
+  camera = ["CameraType", "CameraState", "ChannelNo", "EncodeDeviceId", "Id"];
 
-    region = ['Id','Name','IsLeaf','RegionType'];
-    
-    platform =['Id','ProtocolType','Url','State','EventCodes'];
+  region = ["Id", "Name", "IsLeaf", "RegionType"];
 
-    srServer  = ['Id','Name','ProtocolType','Addresses'];
-  
-    division =['Id','Name','IsLeaf','DivisionType'];
+  platform = ["Id", "ProtocolType", "Url", "State", "EventCodes"];
 
-    garbageStation=['Id','Name','StationType','MaxDryVolume','MaxWetVolume'];
+  srServer = ["Id", "Name", "ProtocolType", "Addresses"];
 
-    garbageStationType=['Type','Name','No','CanType','CameraUsage'];
+  division = ["Id", "Name", "IsLeaf", "DivisionType"];
 
-    cameraAIModel=['Id','ModelJSON'];
+  garbageStation = [
+    "Id",
+    "Name",
+    "StationType",
+    "MaxDryVolume",
+    "MaxWetVolume",
+  ];
+
+  garbageStationType = ["Type", "Name", "No", "CanType", "CameraUsage"];
+
+  cameraAIModel = ["Id", "ModelJSON"];
 }
