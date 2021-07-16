@@ -379,10 +379,9 @@ export class DivisionBusinessService {
                     }
                   });
                 }
-                this.getStationsIllegalDropEvent([item.g.title.id]).subscribe(
+                this.getStationsIllegalDropEvent([item.g.title.id]).then(
                   (x) => {
-                    if (x.Data && x.Data.Data)
-                      item.g.title.eventNumber = x.Data.Data.length;
+                    if (x && x.Data) item.g.title.eventNumber = x.Data.length;
                   }
                 );
                 this.stationService

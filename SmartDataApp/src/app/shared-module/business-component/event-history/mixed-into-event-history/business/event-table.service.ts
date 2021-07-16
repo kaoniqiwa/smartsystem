@@ -283,11 +283,11 @@ export class EventTableService extends ListAttribute {
 
   async requestData(pageIndex: number, callBack?: (page: Page) => void) {
     if (this.search.state == false) {
-      const response = await this.eventRequestService
-        .list(this.getRequsetParam(pageIndex, this.search))
-        .toPromise();
+      const response = await this.eventRequestService.list(
+        this.getRequsetParam(pageIndex, this.search)
+      );
       let data = new MixedIntoEventsRecord();
-      data.items = response.Data.Data.sort((a, b) => {
+      data.items = response.Data.sort((a, b) => {
         return "".naturalCompare(a.EventTime, b.EventTime);
       });
 
@@ -297,75 +297,75 @@ export class EventTableService extends ListAttribute {
       this.eventTable.clearItems();
       this.dataSource_ = new Array();
       this.eventTable.Convert(data, this.eventTable.dataSource);
-      this.eventTable.totalCount = response.Data.Page.TotalRecordCount;
-      this.dataSource = response.Data.Data;
-      if (callBack) callBack(response.Data.Page);
+      this.eventTable.totalCount = response.Page.TotalRecordCount;
+      this.dataSource = response.Data;
+      if (callBack) callBack(response.Page);
     }
   }
 
   async requestDataX(pageIndex: number, callBack?: (page: Page) => void) {
     if (this.search.state == false) {
-      const response = await this.eventRequestService
-        .list(this.getRequsetParam(pageIndex, this.search, 15))
-        .toPromise();
+      const response = await this.eventRequestService.list(
+        this.getRequsetParam(pageIndex, this.search, 15)
+      );
       let data = new MixedIntoEventsRecord();
-      data.items = response.Data.Data.sort((a, b) => {
+      data.items = response.Data.sort((a, b) => {
         return "".naturalCompare(a.EventTime, b.EventTime);
       });
       this.eventCards.clearData();
       this.eventCards.Convert(data.items);
       this.eventCards.cardList = this.eventCards.dataSource;
-      this.dataSource = response.Data.Data;
-      if (callBack) callBack(response.Data.Page);
+      this.dataSource = response.Data;
+      if (callBack) callBack(response.Page);
     }
   }
 
   async searchData(pageIndex: number, callBack?: (page: Page) => void) {
     if (this.search.state) {
-      const response = await this.eventRequestService
-        .list(this.getRequsetParam(pageIndex, this.search))
-        .toPromise();
+      const response = await this.eventRequestService.list(
+        this.getRequsetParam(pageIndex, this.search)
+      );
 
       let data = new MixedIntoEventsRecord();
-      data.items = response.Data.Data.sort((a, b) => {
+      data.items = response.Data.sort((a, b) => {
         return "".naturalCompare(a.EventTime, b.EventTime);
       });
       this.eventTable.clearItems();
       this.dataSource_ = new Array();
       this.eventTable.Convert(data, this.eventTable.dataSource);
-      this.eventTable.totalCount = response.Data.Page.TotalRecordCount;
-      this.dataSource = response.Data.Data;
-      if (callBack) callBack(response.Data.Page);
+      this.eventTable.totalCount = response.Page.TotalRecordCount;
+      this.dataSource = response.Data;
+      if (callBack) callBack(response.Page);
     }
   }
 
   async searchDataX(pageIndex: number, callBack?: (page: Page) => void) {
     if (this.search.state) {
-      const response = await this.eventRequestService
-        .list(this.getRequsetParam(pageIndex, this.search))
-        .toPromise();
+      const response = await this.eventRequestService.list(
+        this.getRequsetParam(pageIndex, this.search)
+      );
 
       let data = new MixedIntoEventsRecord();
-      data.items = response.Data.Data.sort((a, b) => {
+      data.items = response.Data.sort((a, b) => {
         return "".naturalCompare(a.EventTime, b.EventTime);
       });
       this.eventCards.clearData();
       this.eventCards.Convert(data.items);
       this.eventCards.cardList = this.eventCards.dataSource;
-      this.dataSource = response.Data.Data;
-      if (callBack) callBack(response.Data.Page);
+      this.dataSource = response.Data;
+      if (callBack) callBack(response.Page);
     }
   }
 
   async allEventsRecordData() {
-    const response = await this.eventRequestService
-      .list(this.getRequsetParam(1, this.search, new ListAttribute().maxSize))
-      .toPromise();
+    const response = await this.eventRequestService.list(
+      this.getRequsetParam(1, this.search, new ListAttribute().maxSize)
+    );
     let data = new MixedIntoEventsRecord();
-    data.items = response.Data.Data.sort((a, b) => {
+    data.items = response.Data.sort((a, b) => {
       return "".naturalCompare(a.EventTime, b.EventTime);
     });
-    this.allDataSource = response.Data.Data;
+    this.allDataSource = response.Data;
   }
 
   getRequsetParam(pageIndex: number, search: SearchControl, pageSize?: number) {

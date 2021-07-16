@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { SaveModel, ServiceResponseProcessor } from "../model/save-model";
+import { SaveModel } from "../model/save-model";
 import {
   Division,
   GetDivisionsParams,
@@ -25,6 +25,7 @@ import { BatchRequest, BatchResult } from "../model/batch";
 import { HowellResponse } from "../model/response";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
 import { plainToClass } from "class-transformer";
+import { ServiceResponseProcessor } from "../model/waste-regulation/request-service-processor";
 @Injectable({
   providedIn: "root",
 })

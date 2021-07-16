@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { SaveModel, ServiceResponseProcessor } from "../model/save-model";
+import { SaveModel } from "../model/save-model";
 import {
   GarbageStation,
   GetGarbageStationsParams,
@@ -37,6 +37,7 @@ import { GarbageStationType } from "../model/waste-regulation/garbage-station-ty
 import { CameraPictureUrl } from "../model/waste-regulation/camera-picture-url";
 import { Observable } from "rxjs";
 import { plainToClass } from "class-transformer";
+import { ServiceResponseProcessor } from "../model/waste-regulation/request-service-processor";
 @Injectable({
   providedIn: "root",
 })

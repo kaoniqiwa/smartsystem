@@ -7,6 +7,7 @@ import {
   GarbageDropEventRecord,
 } from "../model/waste-regulation/garbage-drop-event-record";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
+import { ServiceResponseProcessor } from "../model/waste-regulation/request-service-processor";
 @Injectable({
   providedIn: "root",
 })
@@ -16,10 +17,16 @@ export class EventRequestService {
     this.url = new url.EventRecord();
   }
 
-  list(item: GetGarbageDropEventRecordsParams) {
-    return this.requestService.post<
-      GetGarbageDropEventRecordsParams,
-      HowellResponse<PagedList<GarbageDropEventRecord>>
-    >(this.url.garbageDropList(), item);
+  async list(item: GetGarbageDropEventRecordsParams) {
+    let response = await this.requestService
+      .post<
+        GetGarbageDropEventRecordsParams,
+        HowellResponse<PagedList<GarbageDropEventRecord>>
+      >(this.url.garbageDropList(), item)
+      .toPromise();
+    return ServiceResponseProcessor.ResponseProcess(
+      response,
+      GarbageDropEventRecord
+    );
   }
 }

@@ -643,14 +643,12 @@ export class EventChartService extends ListAttribute {
       result1 = await this.stationRequestService.statisticGarbageCount(
         param.garbageCountsParam
       ),
-      eventHistory = await this.eventRequestService
-        .list(param.eventParam)
-        .toPromise();
+      eventHistory = await this.eventRequestService.list(param.eventParam);
     this.garbageCountStatistic = result1;
     //   console.log(result1.Data);
 
-    this.eventDataSource = eventHistory.Data.Data;
-    this.fillCandlestickOption(result1, eventHistory.Data.Data);
+    this.eventDataSource = eventHistory.Data;
+    this.fillCandlestickOption(result1, eventHistory.Data);
 
     const statisticNumbers2 =
       await this.stationRequestService.statisticNumberListV2(

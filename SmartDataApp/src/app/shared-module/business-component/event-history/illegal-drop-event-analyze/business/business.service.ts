@@ -293,22 +293,18 @@ export class BusinessService extends ListAttribute {
         this.businessEventType == BusinessEventTypeEnum.IllegalDrop &&
         requsetParam
       ) {
-        const response = await this.illegalDropEventService
-          .list(requsetParam)
-          .toPromise();
-        if (response.Data && response.Data.Data)
-          response.Data.Data.map((m) => fillGroupEventData(m));
+        const response = await this.illegalDropEventService.list(requsetParam);
+        if (response.Data && response.Data)
+          response.Data.map((m) => fillGroupEventData(m));
         this.todayEventGroupData(groupEventData, tempEventDataName);
       }
       if (
         this.businessEventType == BusinessEventTypeEnum.MixedInfo &&
         requsetParam
       ) {
-        const response = await this.mixedIntoEventService
-          .list(requsetParam)
-          .toPromise();
-        if (response.Data && response.Data.Data)
-          response.Data.Data.map((m) => fillGroupEventData(m));
+        const response = await this.mixedIntoEventService.list(requsetParam);
+        if (response.Data && response.Data)
+          response.Data.map((m) => fillGroupEventData(m));
         this.todayEventGroupData(groupEventData, tempEventDataName);
       }
 
