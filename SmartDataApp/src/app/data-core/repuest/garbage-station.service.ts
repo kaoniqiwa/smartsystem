@@ -36,6 +36,7 @@ import {
 import { GarbageStationType } from "../model/waste-regulation/garbage-station-type";
 import { CameraPictureUrl } from "../model/waste-regulation/camera-picture-url";
 import { Observable } from "rxjs";
+import { plainToClass } from "class-transformer";
 @Injectable({
   providedIn: "root",
 })
@@ -53,25 +54,9 @@ export class GarbageStationRequestService extends SaveModel {
   }
 
   async get(id: string) {
-    // tap(response) {
-    //   let station = new GarbageStation();
-    //   Object.assign(station, response.Data);
-    //   response.Data = station;
-    // },
     let observable = this.requestService.get<GarbageStation>(this.url.get(id));
-    // obs.pipe((response:Observable<Response<GarbageStation>>)=>{
-    //   response.lift
-    //   let station = new GarbageStation();
-    //   Object.assign(station, response.Data);
-    //   response.Data = station;
-    //   return response;
-    // })
     let response = await observable.toPromise();
-    let station = new GarbageStation();
-    Object.assign(station, response.Data);
-    station.StationState = response.Data.StationState;
-    response.Data = station;
-    return response;
+    return plainToClass(GarbageStation, response.Data);
   }
 
   set(item: GarbageStation) {
@@ -92,13 +77,8 @@ export class GarbageStationRequestService extends SaveModel {
         item
       )
       .toPromise();
-    for (let i = 0; i < response.Data.Data.length; i++) {
-      let station = new GarbageStation();
-      Object.assign(station, response.Data.Data[i]);
-      station.StationState = response.Data.Data[i].StationState;
-      response.Data.Data[i] = station;
-    }
-    return response;
+    response.Data.Data = plainToClass(GarbageStation, response.Data.Data);
+    return response.Data;
   }
 
   volumesHistory(item: GetGarbageStationVolumesParams, divisionsId: string) {

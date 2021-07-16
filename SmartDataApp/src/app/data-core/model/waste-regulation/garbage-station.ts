@@ -1,6 +1,7 @@
 import { TrashCan } from "./trashCan";
 import { Camera } from "./camera";
 import { Flags } from "src/app/common/tool/flags";
+import { Expose, Type } from "class-transformer";
 /**投放点信息 */
 export class GarbageStation {
   /**垃圾房ID */
@@ -24,8 +25,10 @@ export class GarbageStation {
   /**所属区划ID(可选) */
   DivisionId: string;
   /**垃圾桶列表(可选) */
+  @Type(() => TrashCan)
   TrashCans: TrashCan[];
   /**摄像机列表(可选) */
+  @Type(() => Camera)
   Cameras: Camera[];
   /**干垃圾满溢(可选) */
   DryFull?: boolean;
@@ -46,6 +49,8 @@ export class GarbageStation {
 
   private stationState = 0;
   // 垃圾厢房状态
+
+  @Expose({ name: "StationState" })
   get StationState(): StationState {
     return this.stationState;
   }

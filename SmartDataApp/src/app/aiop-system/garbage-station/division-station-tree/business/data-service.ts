@@ -27,7 +27,7 @@ export class DataService {
     if (divisionId) param.DivisionId = divisionId;
     param.PageSize = new ListAttribute().maxSize;
     const response = await this.garbageStationService.list(param);
-    return response.Data.Data;
+    return response.Data;
   }
 
   async requestDivision() {

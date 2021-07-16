@@ -335,7 +335,7 @@ export class EventTableService extends ListAttribute {
     param.PageIndex = 1;
     param.PageSize = this.maxSize;
     const result = await this.garbageStationService.list(param);
-    return result.Data.Data;
+    return result.Data;
   }
 
   async requestData(pageIndex: number, callBack?: (page: Page) => void) {

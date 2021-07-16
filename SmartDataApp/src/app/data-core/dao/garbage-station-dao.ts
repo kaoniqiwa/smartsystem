@@ -25,8 +25,8 @@ export class GarbageStationDao extends ListAttribute {
       param.PageIndex = 1;
       param.PageSize = this.maxSize;
       const response = await this.requestService.list(param);
-      this.cache.set(this.garbageStation, response.Data.Data);
-      result = response.Data.Data;
+      this.cache.set(this.garbageStation, response.Data);
+      result = response.Data;
     }
     return result;
   }
@@ -43,9 +43,9 @@ export class GarbageStationDao extends ListAttribute {
       param.AncestorId = ancestorId;
       param.PageSize = new ListAttribute().maxSize;
       const response = await this.requestService.list(param);
-      cacheData.set(ancestorId, response.Data.Data);
+      cacheData.set(ancestorId, response.Data);
       this.cache.set(this.divisionStations, cacheData);
-      return response.Data.Data;
+      return response.Data;
     }
   }
 

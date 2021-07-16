@@ -170,15 +170,15 @@ export class BusinessService extends EnumHelper {
       this.getRequsetParam(pageIndex, this.search)
     );
     let data = new Statistics();
-    data.garbageStations = response.Data.Data;
+    data.garbageStations = response.Data;
     data.items = this.cameras;
     data.divisions = this.divisions;
     this.table.clearItems();
     this.dataSource = [];
     this.table.Convert(data, this.table.dataSource);
-    this.table.totalCount = response.Data.Page.TotalRecordCount;
-    this.dataSource = response.Data.Data;
-    if (callBack) callBack(response.Data.Page);
+    this.table.totalCount = response.Page.TotalRecordCount;
+    this.dataSource = response.Data;
+    if (callBack) callBack(response.Page);
   }
 
   getRequsetParam(pageIndex: number, search: SearchControl) {

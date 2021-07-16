@@ -230,7 +230,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     params.PageSize = 9999;
     const response = await this.garbageService.list(params);
 
-    this.garbages = response.Data.Data;
+    this.garbages = response.Data;
     if (!this.villageGarbages) {
       this.villageGarbages = this.garbages;
     }
@@ -394,7 +394,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
       params.PageSize = 9999;
       const response = await this.garbageService.list(params);
 
-      this.garbages = response.Data.Data;
+      this.garbages = response.Data;
       if (!this.villageGarbages) {
         this.villageGarbages = this.garbages;
       }
@@ -446,8 +446,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
           if (this.ContextMenuIllegalDropClickedEvent) {
             let station = this.garbages.find((x) => x.Id === id);
             if (!station) {
-              const response = await this.garbageService.get(id);
-              station = response.Data;
+              const station = await this.garbageService.get(id);
               this.garbages.push(station);
             }
             this.ContextMenuIllegalDropClickedEvent.emit(station);
@@ -462,8 +461,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
           if (this.ContextMenuMixedIntoClickedEvent) {
             let station = this.garbages.find((x) => x.Id === id);
             if (!station) {
-              const response = await this.garbageService.get(id);
-              station = response.Data;
+              const station = await this.garbageService.get(id);
               this.garbages.push(station);
             }
             this.ContextMenuMixedIntoClickedEvent.emit(station);
@@ -478,8 +476,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
           if (this.ContextMenuGarbageCountClickedEvent) {
             let station = this.garbages.find((x) => x.Id === id);
             if (!station) {
-              const response = await this.garbageService.get(id);
-              station = response.Data;
+              const station = await this.garbageService.get(id);
               this.garbages.push(station);
             }
             this.ContextMenuGarbageCountClickedEvent.emit(station);
@@ -498,8 +495,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
           status["style"].display = "none";
           let station = this.garbages.find((x) => x.Id === id);
           if (!station) {
-            const response = await this.garbageService.get(id);
-            station = response.Data;
+            const station = await this.garbageService.get(id);
             this.garbages.push(station);
           }
           this.selectedGarbageStation = station;
@@ -581,7 +577,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
       next["style"].display = "none";
 
       let params: GetDivisionsParams | GetGarbageStationsParams;
-      let response: Response<PagedList<Division | GarbageStation>>;
+      let response:
+        | Response<PagedList<Division | GarbageStation>>
+        | PagedList<Division | GarbageStation>;
 
       params = new GetDivisionsParams();
       params.PageSize = 9999;
@@ -612,8 +610,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
         params.DivisionId = village.id;
         response = await this.garbageService.list(params);
         this.amapService.childrenOfList = (
-          response as Response<PagedList<GarbageStation>>
-        ).Data.Data.map((x) => {
+          response as PagedList<GarbageStation>
+        ).Data.map((x) => {
           return new MapListItem(
             x.Id,
             x.Name,
@@ -640,7 +638,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
       }
     };
   }
-  ngAfterViewInit() { }
+  ngAfterViewInit() {}
 
   async showGarbageStationCameraList(id: string) {
     const list = document.getElementsByClassName(
@@ -877,7 +875,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
           );
           this.client.Viewer.MoveTo(point.position);
           this.client.Point.Select(point.id);
-        } catch (ex) { }
+        } catch (ex) {}
         break;
       default:
         return;
@@ -913,7 +911,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     params.PageSize = 999;
     let response = this.garbageService.list(params);
     response.then((garbages) => {
-      let list = garbages.Data.Data.map((x) => {
+      let list = garbages.Data.map((x) => {
         return new MapListItem(x.Id, x.Name, MapListItemType.GarbageStation, x);
       });
       this.amapService.childrenOfList = list;
@@ -945,7 +943,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
             item.Id
           );
           position = point.position;
-        } catch (ex) { }
+        } catch (ex) {}
         break;
       default:
         return;
@@ -955,9 +953,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
     // }
   }
 
-  VisibilityChange() { }
+  VisibilityChange() {}
 
-  OnPanelVisibilityChanged(visibility: boolean) { }
+  OnPanelVisibilityChanged(visibility: boolean) {}
 
   MapReload() {
     const id = this.selectedVillageId;
@@ -1035,7 +1033,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     });
   }
 
-  ChangePointInfoPanelVisibility() { }
+  ChangePointInfoPanelVisibility() {}
 
   Button4Clicked() {
     this.StationVisibilityByLabel = !this.StationVisibilityByLabel;

@@ -83,7 +83,7 @@ export class StatisticalDataBufferService
       param.PageSize = this.maxSize;
       param.DivisionId = divisionsId;
       const response = await this.garbageStationService.list(param);
-      result = response.Data.Data;
+      result = response.Data;
       this.cache.set(this.garbageStation, result);
     }
     return result;

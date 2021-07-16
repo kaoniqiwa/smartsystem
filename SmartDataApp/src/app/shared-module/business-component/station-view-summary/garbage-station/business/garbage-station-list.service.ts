@@ -177,16 +177,16 @@ export class BusinessService {
     );
     let data = new BusinessData(
       this.garbageStationTypes,
-      response.Data.Data,
+      response.Data,
       this.divisions
     );
     data.items = this.cameras;
     this.table.clearItems();
     this.dataSource = [];
     this.table.Convert(data, this.table.dataSource);
-    this.table.totalCount = response.Data.Page.TotalRecordCount;
-    this.dataSource = response.Data.Data;
-    if (callBack) callBack(response.Data.Page);
+    this.table.totalCount = response.Page.TotalRecordCount;
+    this.dataSource = response.Data;
+    if (callBack) callBack(response.Page);
   }
 
   getRequsetParam(pageIndex: number, search: SearchControl) {

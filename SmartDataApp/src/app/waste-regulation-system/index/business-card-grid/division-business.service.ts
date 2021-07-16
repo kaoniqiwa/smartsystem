@@ -370,9 +370,9 @@ export class DivisionBusinessService {
               if (item.g && item.g.title) {
                 /**更新投放点 */
                 const station = await this.stationService.get(item.g.title.id);
-                if (station && station.Data) {
-                  item.g.title.state = state(station.Data);
-                  station.Data.Cameras.map((m) => {
+                if (station) {
+                  item.g.title.state = state(station);
+                  station.Cameras.map((m) => {
                     if (m.ImageUrl) {
                       const desc = item.g.imgDesc.find((i) => i.tag.id == m.Id);
                       if (desc) desc.src = pic.getData(m.ImageUrl);
