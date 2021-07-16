@@ -370,10 +370,11 @@ export class BusinessService extends ListAttribute {
         mapData = new Map<string, EventNumberStatistic[]>();
       this.dataSources = mapData;
       for (const x of stationIds) {
-        const response = await this.garbageStationService
-          .eventNumbersHistory(requsetParam.searchParam, x)
-          .toPromise();
-        mapData.set(x, response.Data.Data);
+        const response = await this.garbageStationService.eventNumbersHistory(
+          requsetParam.searchParam,
+          x
+        );
+        mapData.set(x, response.Data);
       }
       this.convertLineData(mapData, this.search, param);
       this.convertBarData(mapData, this.search, param);

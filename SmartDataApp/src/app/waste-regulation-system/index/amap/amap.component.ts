@@ -255,21 +255,19 @@ export class AMapComponent implements AfterViewInit, OnInit {
     const params = new GetGarbageStationStatisticNumbersParams();
     params.PageSize = 9999;
     params.Ids = stations.map((x) => x.Id);
-    const list = await this.garbageService
-      .statisticNumberList(params)
-      .toPromise();
+    const list = await this.garbageService.statisticNumberList(params);
 
     if (test) {
-      for (let i = 0; i < list.Data.Data.length; i++) {
-        if (list.Data.Data[i].Id === test.id) {
-          list.Data.Data[i].CurrentGarbageTime = test.value;
-          this.testName = list.Data.Data[i].Name;
+      for (let i = 0; i < list.Data.length; i++) {
+        if (list.Data[i].Id === test.id) {
+          list.Data[i].CurrentGarbageTime = test.value;
+          this.testName = list.Data[i].Name;
           break;
         }
       }
     }
 
-    let notDropIds = list.Data.Data.filter((x) => {
+    let notDropIds = list.Data.filter((x) => {
       return x.CurrentGarbageTime === 0;
     }).map((x) => {
       return x.Id;
@@ -280,8 +278,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
     );
 
     const opts = new Array();
-    for (let i = 0; i < list.Data.Data.length; i++) {
-      const data = list.Data.Data[i];
+    for (let i = 0; i < list.Data.length; i++) {
+      const data = list.Data[i];
       const station = stations.find((x) => x.Id == data.Id);
 
       if (data.CurrentGarbageTime > 0) {
@@ -639,8 +637,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
     )[0] as HTMLElement;
 
     try {
-      const response = await this.cameraService.list(id).toPromise();
-      const datas = response.Data.sort((a, b) => {
+      const response = await this.cameraService.list(id);
+      const datas = response.sort((a, b) => {
         return a.Name.length - b.Name.length || a.Name.localeCompare(b.Name);
       });
 
@@ -1007,18 +1005,16 @@ export class AMapComponent implements AfterViewInit, OnInit {
       args.end.setTime(args.begin.getTime() + 5 * 1000 * 60);
     }
 
-    const response = this.garbageService
-      .cameraFileUrl(
-        this.currentCamera.GarbageStationId,
-        this.currentCamera.Id,
-        args.begin.toISOString(),
-        args.end.toISOString()
-      )
-      .toPromise();
+    const response = this.garbageService.cameraFileUrl(
+      this.currentCamera.GarbageStationId,
+      this.currentCamera.Id,
+      args.begin.toISOString(),
+      args.end.toISOString()
+    );
     response.then((data) => {
-      if (data && data.Data && data.Data.Url) {
+      if (data && data.Url) {
         const a = document.createElement("a");
-        a.href = data.Data.Url;
+        a.href = data.Url;
         a.click();
         document.body.appendChild(a);
         document.body.removeChild(a);

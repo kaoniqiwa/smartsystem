@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { SaveModel } from "../model/save-model";
+import { SaveModel, ServiceResponseProcessor } from "../model/save-model";
 import {
   Division,
   GetDivisionsParams,
@@ -40,21 +40,21 @@ export class DivisionRequestService {
         SaveModel.toModel(item, SaveModel.formMustField.division)
       )
       .toPromise();
-    return plainToClass(Division, response.Data);
+    return ServiceResponseProcessor.ResponseProcess(response, Division);
   }
 
   async createMore(item: BatchRequest) {
     let response = await this.requestService
       .post<BatchRequest, HowellResponse<BatchResult>>(this.url.create(), item)
       .toPromise();
-    return plainToClass(BatchResult, response.Data);
+    return ServiceResponseProcessor.ResponseProcess(response, BatchResult);
   }
 
   async get(id: string) {
     let response = await this.requestService
       .get<Division>(this.url.get(id))
       .toPromise();
-    return plainToClass(Division, response.Data);
+    return ServiceResponseProcessor.ResponseProcess(response, Division);
   }
 
   async set(item: Division) {
@@ -64,14 +64,14 @@ export class DivisionRequestService {
         SaveModel.toModel(item, SaveModel.formMustField.division)
       )
       .toPromise();
-    return plainToClass(Division, response.Data);
+    return ServiceResponseProcessor.ResponseProcess(response, Division);
   }
 
   async del(id: string) {
     let response = await this.requestService
       .delete<Division>(this.url.del(id))
       .toPromise();
-    return plainToClass(Division, response.Data);
+    return ServiceResponseProcessor.ResponseProcess(response, Division);
   }
 
   async list(item: GetDivisionsParams) {
@@ -81,16 +81,14 @@ export class DivisionRequestService {
         item
       )
       .toPromise();
-    let result = response.Data;
-    result.Data = plainToClass(Division, response.Data.Data);
-    return result;
+    return ServiceResponseProcessor.ResponseProcess(response, Division);
   }
 
   async tree() {
     let response = await this.requestService
       .get<DivisionTree>(this.url.tree())
       .toPromise();
-    return plainToClass(DivisionTree, response.Data);
+    return ServiceResponseProcessor.ResponseProcess(response, DivisionTree);
   }
 
   async volumesHistory(item: GetDivisionVolumesParams, divisionsId: string) {
@@ -100,9 +98,7 @@ export class DivisionRequestService {
         item
       )
       .toPromise();
-    let result = response.Data;
-    result.Data = plainToClass(GarbageVolume, response.Data.Data);
-    return result;
+    return ServiceResponseProcessor.ResponseProcess(response, GarbageVolume);
   }
 
   async eventNumbersHistory(
@@ -115,16 +111,21 @@ export class DivisionRequestService {
         HowellResponse<PagedList<EventNumberStatistic>>
       >(this.url.eventNumbersHistory(divisionsId), item)
       .toPromise();
-    let result = response.Data;
-    result.Data = plainToClass(EventNumberStatistic, response.Data.Data);
-    return result;
+    return ServiceResponseProcessor.ResponseProcess(
+      response,
+      EventNumberStatistic
+    );
   }
 
   async statisticNumber(divisionsId: string) {
     let response = await this.requestService
       .get<DivisionNumberStatistic>(this.url.statisticNumber(divisionsId))
       .toPromise();
-    return plainToClass(DivisionNumberStatistic, response.Data);
+
+    return ServiceResponseProcessor.ResponseProcess(
+      response,
+      DivisionNumberStatistic
+    );
   }
 
   async statisticNumberList(item: GetDivisionStatisticNumbersParams) {
@@ -134,9 +135,10 @@ export class DivisionRequestService {
         HowellResponse<PagedList<DivisionNumberStatistic>>
       >(this.url.statisticNumberList(), item)
       .toPromise();
-    let result = response.Data;
-    result.Data = plainToClass(DivisionNumberStatistic, response.Data.Data);
-    return result;
+    return ServiceResponseProcessor.ResponseProcess(
+      response,
+      DivisionNumberStatistic
+    );
   }
 
   async statisticNumberListV2(item: GetDivisionStatisticNumbersParamsV2) {
@@ -146,6 +148,9 @@ export class DivisionRequestService {
         HowellResponse<DivisionNumberStatisticV2[]>
       >(this.url.statisticNumberHistoryList(), item)
       .toPromise();
-    return plainToClass(DivisionNumberStatisticV2, response.Data);
+    return ServiceResponseProcessor.ResponseProcess(
+      response,
+      DivisionNumberStatisticV2
+    );
   }
 }

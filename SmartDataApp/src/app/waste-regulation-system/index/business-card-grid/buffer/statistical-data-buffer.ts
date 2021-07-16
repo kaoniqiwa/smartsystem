@@ -112,18 +112,18 @@ export class StatisticalDataBufferService
   }
 
   async getDivisionStatisticNumber(divisionsId: string) {
-    var result = this.cache.get<DivisionNumberStatistic>(
+    let result = this.cache.get<DivisionNumberStatistic>(
       this.statisticNumber + divisionsId
     );
     if (!result) {
-      const result = await this.divisionService.statisticNumber(divisionsId);
+      result = await this.divisionService.statisticNumber(divisionsId);
       this.cache.set(this.statisticNumber + divisionsId, result);
     }
     return result;
   }
 
   async postDivisionStatisticNumbers(divisionsIds: string[]) {
-    var result = this.cache.get<DivisionNumberStatistic[]>(
+    let result = this.cache.get<DivisionNumberStatistic[]>(
       this.divisionStatisticNumberList + Md5.hashStr(divisionsIds.join("-"))
     );
     if (!result) {
@@ -199,10 +199,10 @@ export class StatisticalDataBufferService
       param.PageIndex = 1;
       param.PageSize = this.maxSize;
       param.Ids = divisionsIds;
-      const response = await this.garbageStationService
-        .statisticNumberList(param)
-        .toPromise();
-      result = response.Data.Data;
+      const response = await this.garbageStationService.statisticNumberList(
+        param
+      );
+      result = response.Data;
       this.cache.set(
         this.garbageStationStatisticNumberList +
           Md5.hashStr(divisionsIds.join("-")),
@@ -226,10 +226,9 @@ export class StatisticalDataBufferService
       param.BeginTime = day.begin.toISOString();
       param.EndTime = day.end.toISOString();
       param.GarbageStationIds = stationIds;
-      const statisticNumbers2 = await this.garbageStationService
-        .statisticNumberListV2(param)
-        .toPromise();
-      result = statisticNumbers2.Data;
+      const statisticNumbers2 =
+        await this.garbageStationService.statisticNumberListV2(param);
+      result = statisticNumbers2;
       this.cache.set(
         this.garbageStationStatisticNumberList +
           Md5.hashStr(stationIds.join(",")),

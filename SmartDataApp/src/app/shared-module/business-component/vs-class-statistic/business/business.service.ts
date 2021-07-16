@@ -84,10 +84,10 @@ export class BusinessService extends ListAttribute {
     if ((s.DivisionId1 && s.DivisionId2) || (s.StationId1 && s.StationId2)) {
       const requsetParam = this.getRequsetParam(this.search);
       if (s.ClassType == ClassTypeEnum.Station) {
-        const response = await this.garbageStationService
-          .statisticNumberListV2(requsetParam as any)
-          .toPromise();
-        this.convertBarData(response.Data, this.search, [
+        const response = await this.garbageStationService.statisticNumberListV2(
+          requsetParam as any
+        );
+        this.convertBarData(response, this.search, [
           this.barChartOption,
           this.barChartOption2,
         ]);

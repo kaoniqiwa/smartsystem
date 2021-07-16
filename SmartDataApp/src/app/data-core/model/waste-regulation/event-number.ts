@@ -5,7 +5,7 @@ export class EventNumber {
   /**当日事件数量 */
   DayNumber: number;
   /**当日时间段内事件数量(可选) */
-  DeltaNumber: number | null;
+  DeltaNumber?: number;
 }
 
 /**

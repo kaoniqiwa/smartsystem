@@ -67,36 +67,32 @@ export class PointInfoPanelComponent implements OnInit {
         this.roadName = res.Name;
       });
     });
-    this.garbageStationService
-      .statisticNumber(station.Id)
-      .toPromise()
-      .then((res) => {
-        let statistic = res.Data;
-        this.GarbageCount = statistic.GarbageCount;
-        // 是否满溢
-        // DryFull
-        // 评分
-        // Grade
-        // 当前时长
-        // CurrentGarbageTime
-        if (statistic.TodayEventNumbers) {
-          for (let i = 0; i < statistic.TodayEventNumbers.length; i++) {
-            const item = statistic.TodayEventNumbers[i];
-            switch (item.EventType) {
-              case EventType.IllegalDrop:
-                this.IllegalDropCount = item.DeltaNumber;
-                break;
-              case EventType.MixedInto:
-                this.MixedIntoCount = item.DeltaNumber;
-                break;
+    this.garbageStationService.statisticNumber(station.Id).then((statistic) => {
+      this.GarbageCount = statistic.GarbageCount;
+      // 是否满溢
+      // DryFull
+      // 评分
+      // Grade
+      // 当前时长
+      // CurrentGarbageTime
+      if (statistic.TodayEventNumbers) {
+        for (let i = 0; i < statistic.TodayEventNumbers.length; i++) {
+          const item = statistic.TodayEventNumbers[i];
+          switch (item.EventType) {
+            case EventType.IllegalDrop:
+              this.IllegalDropCount = item.DeltaNumber;
+              break;
+            case EventType.MixedInto:
+              this.MixedIntoCount = item.DeltaNumber;
+              break;
 
-              default:
-                break;
-            }
+            default:
+              break;
           }
         }
-        console.log(statistic);
-      });
+      }
+      console.log(statistic);
+    });
   }
 
   GarbageCount: number = 0;

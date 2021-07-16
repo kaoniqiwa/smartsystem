@@ -387,10 +387,10 @@ export class DivisionBusinessService {
                 );
                 this.stationService
                   .manualCapture(item.g.title.id)
-                  .subscribe((data) => {
+                  .then((data) => {
                     item.catchState.o = true;
-                    if (data && data.Data) {
-                      data.Data.map((m) => {
+                    if (data) {
+                      data.map((m) => {
                         if (m.Result) {
                           const desc = item.g.imgDesc.find(
                             (i) => i.tag.id == m.CameraId

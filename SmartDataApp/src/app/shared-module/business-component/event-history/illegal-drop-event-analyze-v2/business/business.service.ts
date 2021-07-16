@@ -100,12 +100,13 @@ export class BusinessService extends ListAttribute {
 
     if (s.ClassType == ClassTypeEnum.Station) {
       this.table.classType = s.ClassType;
-      const response = await this.garbageStationService
-        .statisticNumberListV2(requsetParam as any)
-        .toPromise();
-      this.dataSources = response.Data;
-      this.convertTableData(response.Data, this.search);
-      const td = this.convertTableData(response.Data, this.search);
+      const response = await this.garbageStationService.statisticNumberListV2(
+        requsetParam as any
+      );
+
+      this.dataSources = response;
+      this.convertTableData(response, this.search);
+      const td = this.convertTableData(response, this.search);
       this.table.clearItems();
       this.table.Convert(td, this.table.dataSource);
     } else if (

@@ -126,9 +126,9 @@ export class BusinessService {
     };
 
     this.galleryTargetView.manualCaptureFn = (stationId, cb) => {
-      this.garbageStationDao.manualCapture(stationId).subscribe((result) => {
-        if (result && result.Data) {
-          const img = cb(result.Data);
+      this.garbageStationDao.manualCapture(stationId).then((result) => {
+        if (result && result) {
+          const img = cb(result);
           this.table.dataSource.galleryTd.map((g) => {
             const oldIndex = g.imgSrc.findIndex((f) => f.indexOf(img.old) > 0);
             if (oldIndex > 0 && g.key == stationId)

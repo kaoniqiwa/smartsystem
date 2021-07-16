@@ -154,13 +154,16 @@ export class EventTableService extends ListAttribute {
           event.EventTime + "",
           user.video.afterInterval
         ).toISOString(),
-        video = await this.garbageStationService
-          .cameraFileUrl(event.Data.StationId, event.ResourceId, s, e)
-          .toPromise();
+        video = await this.garbageStationService.cameraFileUrl(
+          event.Data.StationId,
+          event.ResourceId,
+          s,
+          e
+        );
       if (video) {
         new MessageBar().response_success("正在下载中...");
         const a = document.createElement("a");
-        a.href = video.Data.Url;
+        a.href = video.Url;
         a.click();
         document.body.appendChild(a);
         document.body.removeChild(a);
@@ -186,8 +189,8 @@ export class EventTableService extends ListAttribute {
     const param = new GetGarbageStationCamerasParams();
     param.PageIndex = 1;
     param.PageSize = this.maxSize;
-    const result = await this.resourceService.postList(param).toPromise();
-    return result.Data.Data;
+    const result = await this.resourceService.postList(param);
+    return result.Data;
   }
 
   async requestDivisions() {

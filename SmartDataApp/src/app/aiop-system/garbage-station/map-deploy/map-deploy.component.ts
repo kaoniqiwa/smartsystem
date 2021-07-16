@@ -261,11 +261,8 @@ export class MapDeployComponent implements OnInit {
                 [point.position.lon, point.position.lat],
                 GisType.GCJ02
               );
-              let response = await this.garbageService.set(data).toPromise();
+              let response = await this.garbageService.set(data);
               console.log(response);
-              if (response.FaultCode === undefined || response.FaultCode != 0) {
-                throw new Error(response.FaultReason);
-              }
               new MessageBar().response_success("录入点位坐标成功");
             }
           } catch (error) {
@@ -322,12 +319,9 @@ export class MapDeployComponent implements OnInit {
         [point.position.lon, point.position.lat],
         GisType.GCJ02
       );
-      let promise = this.garbageService.set(data).toPromise();
+      let promise = this.garbageService.set(data);
       promise
         .then((res) => {
-          if (res.FaultCode === undefined || res.FaultCode != 0) {
-            new MessageBar().response_Error("点位坐标录入失败");
-          }
           new MessageBar().response_success("点位坐标录入成功");
         })
         .catch((ex) => {

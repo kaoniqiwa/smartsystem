@@ -53,9 +53,7 @@ export class GarbageStationDao extends ListAttribute {
     const param = new GetGarbageStationStatisticNumbersParams();
     param.PageIndex = 1;
     param.PageSize = this.maxSize;
-    const result = await this.requestService
-      .statisticNumberList(param)
-      .toPromise();
+    const result = await this.requestService.statisticNumberList(param);
     return result.Data;
   }
 

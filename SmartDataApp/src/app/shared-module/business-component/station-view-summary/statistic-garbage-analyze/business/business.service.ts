@@ -54,14 +54,13 @@ export class BusinessService extends ListAttribute {
   async requestData() {
     const param = this.getRequsetParam(this.search);
 
-    const statisticNumbers2 = await this.garbageStationService
-      .statisticNumberListV2(param)
-      .toPromise();
+    const statisticNumbers2 =
+      await this.garbageStationService.statisticNumberListV2(param);
     console.log(statisticNumbers2);
-    this.dataSource = statisticNumbers2.Data;
+    this.dataSource = statisticNumbers2;
     this.searchStations = new Array();
-    this.convertLineData(statisticNumbers2.Data, this.search);
-    this.convertBarData(statisticNumbers2.Data, this.search);
+    this.convertLineData(statisticNumbers2, this.search);
+    this.convertBarData(statisticNumbers2, this.search);
   }
   changeChartType() {
     const param = this.search.toSearchParam();

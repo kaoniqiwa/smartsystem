@@ -84,12 +84,13 @@ export class BusinessService extends ListAttribute {
     this.dataSources = mapData;
 
     if (s.StationId) {
-      const response = await this.garbageStationService
-        .eventNumbersHistory(requsetParam.searchParam, requsetParam.stationId)
-        .toPromise();
-      mapData.set(s.StationId, response.Data.Data);
-      this.convertLineData(response.Data.Data, this.search);
-      this.convertBarData(response.Data.Data, this.search);
+      const response = await this.garbageStationService.eventNumbersHistory(
+        requsetParam.searchParam,
+        requsetParam.stationId
+      );
+      mapData.set(s.StationId, response.Data);
+      this.convertLineData(response.Data, this.search);
+      this.convertBarData(response.Data, this.search);
       if (_3dRequsetParam) {
         const statistic = new Array<EventNumberStatistic>(),
           o = new Array();

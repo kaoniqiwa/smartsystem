@@ -3,26 +3,26 @@ import { GarbageStationTypeRequestService } from "../../../../data-core/repuest/
 import { GarbageStationType } from "../../../../data-core/model/waste-regulation/garbage-station-type";
 @Injectable()
 export class DataService {
-    types: GarbageStationType[];
-    constructor(private typeService: GarbageStationTypeRequestService) { }
+  types: GarbageStationType[];
+  constructor(private typeService: GarbageStationTypeRequestService) {}
 
-    async requestGarbageStationType() {
-        const response = await this.typeService.list().toPromise(); 
-        return response.Data;
-    }
+  async requestGarbageStationType() {
+    const response = await this.typeService.list();
+    return response;
+  }
 
-    async addGarbageStationType(item: GarbageStationType) {
-        const response = await this.typeService.create(item).toPromise();
-        return response;
-    }
+  async addGarbageStationType(item: GarbageStationType) {
+    const response = await this.typeService.create(item);
+    return response;
+  }
 
-    async editGarbageStationType(item: GarbageStationType) {
-        const response = await this.typeService.set(item).toPromise();
-        return response.Data;
-    }
+  async editGarbageStationType(item: GarbageStationType) {
+    const response = await this.typeService.set(item);
+    return response;
+  }
 
-    async delGarbageStationType(type: string) {
-        const response = await this.typeService.del(type).toPromise();
-        return response.FaultCode==0;
-    }
+  async delGarbageStationType(type: string) {
+    const response = await this.typeService.del(type);
+    return !!response;
+  }
 }
