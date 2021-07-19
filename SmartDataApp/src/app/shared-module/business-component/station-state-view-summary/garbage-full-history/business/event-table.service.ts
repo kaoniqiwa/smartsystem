@@ -44,7 +44,7 @@ import { GetGarbageStationCamerasParams } from "../../../../../data-core/model/w
 import { SessionUser } from "../../../../../common/tool/session-user";
 import { GetEventRecordsParams } from "../../../../../data-core/model/waste-regulation/illegal-drop-event-record";
 import { GalleryTargetItem } from "./gallery-target";
-import { MediumPicture } from "../../../../../data-core/url/aiop/resources";
+import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 @Injectable()
 export class EventTableService extends ListAttribute {
   dataSource_ = new Array<GarbageFullEventRecord>();
@@ -156,8 +156,7 @@ export class EventTableService extends ListAttribute {
     };
 
     this.eventTable.playVideosFn = async (ids) => {
-      const idV = ids.split("&"),
-        mp = new MediumPicture();
+      const idV = ids.split("&");
       var event = this.dataSource.find((x) => {
         if (idV.length == 1) return x.EventId == idV[0];
         else return x.EventId == idV[1];
@@ -170,7 +169,7 @@ export class EventTableService extends ListAttribute {
         this.videoImgs = new Array();
         event.Data.CameraImageUrls.map((u) => {
           this.videoImgs.push({
-            src: mp.getJPG(u.ImageUrl),
+            src: AIOPMediumPictureUrl.getJPG(u.ImageUrl),
             id: u.CameraId,
             name: u.CameraName,
             time: event.EventTime,

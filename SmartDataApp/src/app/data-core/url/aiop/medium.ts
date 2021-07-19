@@ -1,17 +1,13 @@
-import { IUrl } from "../IUrl";
+export class AIOPMediumPictureUrl {
+  add() {
+    return `Medium/Pictures`;
+  }
 
-export class MediumPicture {
-    add() {
-        return `Medium/Pictures`;
-    }
+  getData(id: string) {
+    return `Medium/Pictures/${id}/Data`;
+  }
 
-    getData(id: string) {
-        return `Medium/Pictures/${id}/Data`;
-    }
-
-    getJPG(id: string) {
-        return `Medium/Pictures/${id}.jpg`;
-    }
-
-
+  getJPG(id: string) {
+    return `Medium/Pictures/${id}.jpg`;
+  }
 }

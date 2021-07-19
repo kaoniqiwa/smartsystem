@@ -3,7 +3,7 @@ import { RequestService } from "./request.service";
 import { PagedList } from "../model/page";
 import { HowellResponse } from "../model/response";
 import { CameraAIModel } from "../model/aiop/camera-ai-model";
-import * as url from "../url/aiop/ai-models";
+import { AIOPAIModelUrl } from "../url/aiop/ai-models";
 import { GetAIModelsParams } from "../model/aiop/camera-ai-event-records-params";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
 import { SaveModel } from "../model/save-model";
@@ -11,19 +11,16 @@ import { SaveModel } from "../model/save-model";
   providedIn: "root",
 })
 export class AIModelRequestService {
-  url: url.AIModel;
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new url.AIModel();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
   create(item: CameraAIModel) {
     return this.requestService.post<
       CameraAIModel,
       HowellResponse<CameraAIModel>
-    >(this.url.create(), item);
+    >(AIOPAIModelUrl.create(), item);
   }
 
   get(id: string) {
-    return this.requestService.get<CameraAIModel>(this.url.get(id));
+    return this.requestService.get<CameraAIModel>(AIOPAIModelUrl.get(id));
   }
 
   set(item: CameraAIModel) {
@@ -31,25 +28,25 @@ export class AIModelRequestService {
       CameraAIModel,
       HowellResponse<CameraAIModel>
     >(
-      this.url.edit(item.Id),
+      AIOPAIModelUrl.edit(item.Id),
       SaveModel.toModel(item, SaveModel.formMustField.division)
     );
   }
 
   del(id: string) {
-    return this.requestService.delete<CameraAIModel>(this.url.del(id));
+    return this.requestService.delete<CameraAIModel>(AIOPAIModelUrl.del(id));
   }
 
   list(item: GetAIModelsParams) {
     return this.requestService.post<
       GetAIModelsParams,
       HowellResponse<PagedList<CameraAIModel>>
-    >(this.url.list(), item);
+    >(AIOPAIModelUrl.list(), item);
   }
 
   parse(base64JSONData: string) {
     return this.requestService.postString<any, HowellResponse<CameraAIModel>>(
-      this.url.parse(),
+      AIOPAIModelUrl.parse(),
       base64JSONData
     );
   }

@@ -31,7 +31,7 @@ import { DivisionDao } from "../../../../../data-core/dao/division-dao";
 import { DivisionRequestService } from "../../../../../data-core/repuest/division.service";
 import { CameraRequestService } from "../../../../../data-core/repuest/garbage-station.service";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
-import { MediumPicture } from "../../../../../data-core/url/aiop/resources";
+import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 import { EnumHelper } from "../../../../../common/tool/enum-helper";
 import { DatePipe } from "@angular/common";
 import { GalleryTargetViewI } from "./gallery-target";
@@ -303,13 +303,13 @@ export class StatisticTable
   }
 
   toGalleryModel(resourceCameras: Camera[], key: string, camera: Camera[]) {
-    const pic = new MediumPicture(),
-      galleryTdAttr = new GalleryTdAttr();
+    const galleryTdAttr = new GalleryTdAttr();
     galleryTdAttr.imgSrc = new Array<string>();
     camera.map((x) => {
       if (this.helper.cameraUsage.garbageFull.indexOf(x.CameraUsage) > -1) {
         const find = resourceCameras.find((x1) => x1.Id == x.Id);
-        if (find) galleryTdAttr.imgSrc.push(pic.getJPG(find.ImageUrl));
+        if (find)
+          galleryTdAttr.imgSrc.push(AIOPMediumPictureUrl.getJPG(find.ImageUrl));
       }
     });
     galleryTdAttr.key = key;

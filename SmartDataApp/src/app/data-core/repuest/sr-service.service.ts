@@ -1,4 +1,4 @@
-import { SRService as SRServiceUrl } from "../url/aiop/sr-server";
+import { AIOPSRServiceUrl } from "../url/aiop/sr-server";
 import { HowellResponse } from "../model/response";
 import { SRServer } from "../model/aiop/sr-server";
 import {
@@ -18,46 +18,43 @@ import { isIP } from "net";
   providedIn: "root",
 })
 export class SRServiceRequestSerivce {
-  url: SRServiceUrl;
   user = new SessionUser();
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new SRServiceUrl();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
 
   create(item: SRServer) {
     return this.requestService.post<SRServer, HowellResponse<SRServer>>(
-      this.url.create(),
+      AIOPSRServiceUrl.create(),
       SaveModel.toModel(item, SaveModel.formMustField.srServer)
     );
   }
 
   get(id: string) {
-    return this.requestService.get<SRServer>(this.url.get(id));
+    return this.requestService.get<SRServer>(AIOPSRServiceUrl.get(id));
   }
 
   set(item: SRServer) {
     return this.requestService.put<SRServer, HowellResponse<SRServer>>(
-      this.url.edit(item.Id),
+      AIOPSRServiceUrl.edit(item.Id),
       item
     );
   }
 
   del(id: string) {
-    return this.requestService.delete<SRServer>(this.url.del(id));
+    return this.requestService.delete<SRServer>(AIOPSRServiceUrl.del(id));
   }
 
   list() {
-    return this.requestService.get<SRServer[]>(this.url.list());
+    return this.requestService.get<SRServer[]>(AIOPSRServiceUrl.list());
   }
 
   sync(id: string) {
-    return this.requestService.post<any>(this.url.sync(id));
+    return this.requestService.post<any>(AIOPSRServiceUrl.sync(id));
   }
 
   async preview(item: GetPreviewUrlParams) {
     const response = await this.requestService
       .post<GetPreviewUrlParams, HowellResponse<VideoUrl>>(
-        this.url.preview(),
+        AIOPSRServiceUrl.preview(),
         item
       )
       .toPromise();
@@ -88,7 +85,10 @@ export class SRServiceRequestSerivce {
 
   async vod(item: GetVodUrlParams) {
     const response = await this.requestService
-      .post<GetVodUrlParams, HowellResponse<VideoUrl>>(this.url.vod(), item)
+      .post<GetVodUrlParams, HowellResponse<VideoUrl>>(
+        AIOPSRServiceUrl.vod(),
+        item
+      )
       .toPromise();
     if (response.Data.Url) {
       let args = VideoPlayArgs.FromUrl(response.Data.Url);

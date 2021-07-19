@@ -6,7 +6,7 @@ import { catchError } from "rxjs/operators";
 import { MessageBar } from "../../common/tool/message-bar";
 import { Digest } from "../../data-core/repuest/digest";
 import { HowellAuthHttpService } from "../../data-core/repuest/howell-auth-http.service";
-import { User } from "../../data-core/url/user-url";
+import { UserUrl } from "../../data-core/url/user-url";
 import { BaseUrl } from "../../data-core/url/IUrl";
 import { SessionUser } from "../../common/tool/session-user";
 import { Router } from "@angular/router";
@@ -93,8 +93,8 @@ export class UserLoginService {
     return (error: any): Observable<T> => {
       if (error.status == 403) {
         let header = error.headers as Headers,
-          userUrl = new User().login(this.formVal.name);
-        let digest = new Digest(header, new BaseUrl().user);
+          userUrl = UserUrl.login(this.formVal.name);
+        let digest = new Digest(header, BaseUrl.user);
         var challenge = digest.parseServerChallenge(null);
         let authHeader = digest.generateRequestHeader(
           1,
@@ -173,7 +173,7 @@ export class UserLoginService {
   async auth(name: string) {
     return this.httpService
       .auth(
-        new User().login(name),
+        UserUrl.login(name),
         new HttpHeaders({ "X-WebBrowser-Authentication": "Forbidden" })
       )
       .pipe(catchError(this.handleLoginError<any>()))

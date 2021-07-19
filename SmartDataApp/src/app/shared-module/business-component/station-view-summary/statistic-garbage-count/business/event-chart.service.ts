@@ -24,7 +24,7 @@ import { GetVodUrlParams } from "../../../../../data-core/model/aiop/video-url";
 import { GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
 import { moveView3 } from "../../../../../common/tool/jquery-help/jquery-help";
-import { MediumPicture } from "../../../../../data-core/url/aiop/resources";
+import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 import { DivisionListView } from "../../../event-history/division-list-view";
 
 @Injectable()
@@ -295,7 +295,6 @@ export class EventChartService extends ListAttribute {
           return x.Id == this.search.station;
         }),
         eh = new EnumHelper(),
-        mp = new MediumPicture(),
         cameras = station.Cameras.filter((c) => {
           return eh.cameraUsage.outside.indexOf(c.CameraUsage) > -1;
         });
@@ -304,7 +303,7 @@ export class EventChartService extends ListAttribute {
         cameras.map((c) => {
           this.illegalDumpVideoImgs.push({
             id: c.Id,
-            src: mp.getJPG(c.ImageUrl),
+            src: AIOPMediumPictureUrl.getJPG(c.ImageUrl),
             name: c.Name,
             time: this.search.date + " " + time,
           });
@@ -339,7 +338,6 @@ export class EventChartService extends ListAttribute {
           return x.Id == garbageCount.Id;
         }),
         eh = new EnumHelper(),
-        mp = new MediumPicture(),
         cameras = station.Cameras.filter((c) => {
           return eh.cameraUsage.outside.indexOf(c.CameraUsage) > -1;
         });
@@ -348,7 +346,7 @@ export class EventChartService extends ListAttribute {
         cameras.map((c) => {
           this.illegalDumpVideoImgs.push({
             id: c.Id,
-            src: mp.getJPG(c.ImageUrl),
+            src: AIOPMediumPictureUrl.getJPG(c.ImageUrl),
             name: c.Name,
             time: garbageCount.BeginTime,
           });
@@ -383,7 +381,6 @@ export class EventChartService extends ListAttribute {
     eventNumberStatistic: Array<IllegalDropEventRecord>
   ) {
     this.candlestickOption = new CandlestickOption();
-    const mp = new MediumPicture();
     this.candlestickOption.itemClick = (param) => {
       //console.log(param);
       var offsetX = param.event.offsetX - 100;
@@ -407,13 +404,15 @@ export class EventChartService extends ListAttribute {
 
         if (param.seriesName == "theBar") {
           this.illegalDropImg = events.length
-            ? mp.getJPG(events[0].ImageUrl)
+            ? AIOPMediumPictureUrl.getJPG(events[0].ImageUrl)
             : "";
           this.illegalDropId = events.length ? events[0].EventId : "";
         } else if (param.seriesName == "theBarA") {
           this.illegalDropId = events.length ? events[1].EventId : "";
           this.illegalDropImg =
-            events.length > 1 ? mp.getJPG(events[1].ImageUrl) : "";
+            events.length > 1
+              ? AIOPMediumPictureUrl.getJPG(events[1].ImageUrl)
+              : "";
         }
 
         if (this.illegalViewsMap.get(this.illegalDropId)) {

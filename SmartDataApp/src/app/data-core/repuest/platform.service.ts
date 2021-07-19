@@ -1,4 +1,4 @@
-import { Platform as PlatformUrl } from "../url/aiop/platforms";
+import { AIOPPlatformUrl } from "../url/aiop/platforms";
 import { HowellResponse } from "../model/response";
 import { Platform as PlatformModel, Platform } from "../model/aiop/platform";
 import { Injectable } from "@angular/core";
@@ -12,48 +12,45 @@ import { SaveModel } from "../model/save-model";
   providedIn: "root",
 })
 export class PlatformRequestSerivce {
-  url: PlatformUrl;
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new PlatformUrl();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
 
   create(item: PlatformModel) {
     return this.requestService.post<
       PlatformModel,
       HowellResponse<PlatformModel>
     >(
-      this.url.create(),
+      AIOPPlatformUrl.create(),
       SaveModel.toModel(item, SaveModel.formMustField.platform)
     );
   }
 
   get(id: string) {
-    return this.requestService.get<PlatformModel>(this.url.get(id));
+    return this.requestService.get<PlatformModel>(AIOPPlatformUrl.get(id));
   }
 
   set(item: PlatformModel) {
     return this.requestService.put<
       PlatformModel,
       HowellResponse<PlatformModel>
-    >(this.url.edit(item.Id), item);
+    >(AIOPPlatformUrl.edit(item.Id), item);
   }
 
   del(id: string) {
-    return this.requestService.delete<PlatformModel>(this.url.del(id));
+    return this.requestService.delete<PlatformModel>(AIOPPlatformUrl.del(id));
   }
 
   list(item: GetPlatformsParams) {
     return this.requestService.post<
       GetPlatformsParams,
       HowellResponse<PagedList<Platform>>
-    >(this.url.list(), item);
+    >(AIOPPlatformUrl.list(), item);
   }
 
   protocol() {
-    return this.requestService.get<Protocol[]>(this.url.protocols());
+    return this.requestService.get<Protocol[]>(AIOPPlatformUrl.protocols());
   }
 
   sync(id: string) {
-    return this.requestService.post<any>(this.url.sync(id));
+    return this.requestService.post<any>(AIOPPlatformUrl.sync(id));
   }
 }

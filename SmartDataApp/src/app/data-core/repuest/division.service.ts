@@ -19,25 +19,21 @@ import {
   GarbageVolume,
   GetDivisionVolumesParams,
 } from "../model/waste-regulation/garbage-volume";
-import * as url from "../url/waste-regulation/division";
 import { PagedList } from "../model/page";
 import { BatchRequest, BatchResult } from "../model/batch";
 import { HowellResponse } from "../model/response";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
-import { plainToClass } from "class-transformer";
 import { ServiceResponseProcessor } from "../model/waste-regulation/request-service-processor";
+import { DivisionUrl } from "../url/waste-regulation/division";
 @Injectable({
   providedIn: "root",
 })
 export class DivisionRequestService {
-  url: url.DivisionUrl;
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new url.DivisionUrl();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
   async create(item: Division) {
     let response = await this.requestService
       .post<Division, HowellResponse<Division>>(
-        this.url.create(),
+        DivisionUrl.create(),
         SaveModel.toModel(item, SaveModel.formMustField.division)
       )
       .toPromise();
@@ -46,14 +42,17 @@ export class DivisionRequestService {
 
   async createMore(item: BatchRequest) {
     let response = await this.requestService
-      .post<BatchRequest, HowellResponse<BatchResult>>(this.url.create(), item)
+      .post<BatchRequest, HowellResponse<BatchResult>>(
+        DivisionUrl.create(),
+        item
+      )
       .toPromise();
     return ServiceResponseProcessor.ResponseProcess(response, BatchResult);
   }
 
   async get(id: string) {
     let response = await this.requestService
-      .get<Division>(this.url.get(id))
+      .get<Division>(DivisionUrl.get(id))
       .toPromise();
     return ServiceResponseProcessor.ResponseProcess(response, Division);
   }
@@ -61,7 +60,7 @@ export class DivisionRequestService {
   async set(item: Division) {
     let response = await this.requestService
       .put<Division, HowellResponse<Division>>(
-        this.url.edit(item.Id),
+        DivisionUrl.edit(item.Id),
         SaveModel.toModel(item, SaveModel.formMustField.division)
       )
       .toPromise();
@@ -70,7 +69,7 @@ export class DivisionRequestService {
 
   async del(id: string) {
     let response = await this.requestService
-      .delete<Division>(this.url.del(id))
+      .delete<Division>(DivisionUrl.del(id))
       .toPromise();
     return ServiceResponseProcessor.ResponseProcess(response, Division);
   }
@@ -78,7 +77,7 @@ export class DivisionRequestService {
   async list(item: GetDivisionsParams) {
     let response = await this.requestService
       .post<GetDivisionsParams, HowellResponse<PagedList<Division>>>(
-        this.url.list(),
+        DivisionUrl.list(),
         item
       )
       .toPromise();
@@ -87,7 +86,7 @@ export class DivisionRequestService {
 
   async tree() {
     let response = await this.requestService
-      .get<DivisionTree>(this.url.tree())
+      .get<DivisionTree>(DivisionUrl.tree())
       .toPromise();
     return ServiceResponseProcessor.ResponseProcess(response, DivisionTree);
   }
@@ -95,7 +94,7 @@ export class DivisionRequestService {
   async volumesHistory(item: GetDivisionVolumesParams, divisionsId: string) {
     let response = await this.requestService
       .post<GetDivisionVolumesParams, HowellResponse<PagedList<GarbageVolume>>>(
-        this.url.volumesHistory(divisionsId),
+        DivisionUrl.volumesHistory(divisionsId),
         item
       )
       .toPromise();
@@ -110,7 +109,7 @@ export class DivisionRequestService {
       .post<
         GetDivisionEventNumbersParams,
         HowellResponse<PagedList<EventNumberStatistic>>
-      >(this.url.eventNumbersHistory(divisionsId), item)
+      >(DivisionUrl.eventNumbersHistory(divisionsId), item)
       .toPromise();
     return ServiceResponseProcessor.ResponseProcess(
       response,
@@ -120,7 +119,7 @@ export class DivisionRequestService {
 
   async statisticNumber(divisionsId: string) {
     let response = await this.requestService
-      .get<DivisionNumberStatistic>(this.url.statisticNumber(divisionsId))
+      .get<DivisionNumberStatistic>(DivisionUrl.statisticNumber(divisionsId))
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(
@@ -134,7 +133,7 @@ export class DivisionRequestService {
       .post<
         GetDivisionStatisticNumbersParams,
         HowellResponse<PagedList<DivisionNumberStatistic>>
-      >(this.url.statisticNumberList(), item)
+      >(DivisionUrl.statisticNumberList(), item)
       .toPromise();
     return ServiceResponseProcessor.ResponseProcess(
       response,
@@ -147,7 +146,7 @@ export class DivisionRequestService {
       .post<
         GetDivisionStatisticNumbersParamsV2,
         HowellResponse<DivisionNumberStatisticV2[]>
-      >(this.url.statisticNumberHistoryList(), item)
+      >(DivisionUrl.statisticNumberHistoryList(), item)
       .toPromise();
     return ServiceResponseProcessor.ResponseProcess(
       response,

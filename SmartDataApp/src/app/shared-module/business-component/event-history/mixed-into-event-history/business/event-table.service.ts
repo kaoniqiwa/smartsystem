@@ -40,7 +40,7 @@ import { DivisionListView } from "../../division-list-view";
 import { GetGarbageStationCamerasParams } from "../../../../../data-core/model/waste-regulation/camera";
 import { SessionUser } from "../../../../../common/tool/session-user";
 import { EnumHelper } from "../../../../../common/tool/enum-helper";
-import { MediumPicture } from "../../../../../data-core/url/aiop/resources";
+import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 import { MessageBar } from "../../../../../common/tool/message-bar";
 @Injectable()
 export class EventTableService extends ListAttribute {
@@ -148,12 +148,11 @@ export class EventTableService extends ListAttribute {
       const station = this.garbageStations.find(
           (x) => x.Id == event.Data.StationId
         ),
-        eh = new EnumHelper(),
-        mp = new MediumPicture();
+        eh = new EnumHelper();
       this.videoImgs = new Array();
       this.playVideoViewTitle = station.Name;
       this.videoImgs.push({
-        src: mp.getJPG(event.ImageUrl),
+        src: AIOPMediumPictureUrl.getJPG(event.ImageUrl),
         id: event.ResourceId,
         name: event.ResourceName,
         time: event.EventTime,
@@ -162,7 +161,7 @@ export class EventTableService extends ListAttribute {
         station.Cameras.map((m) => {
           if (eh.cameraUsage.outside.indexOf(m.CameraUsage) > -1)
             this.videoImgs.push({
-              src: mp.getJPG(m.ImageUrl),
+              src: AIOPMediumPictureUrl.getJPG(m.ImageUrl),
               id: m.Id,
               name: m.Name,
               time: event.EventTime,

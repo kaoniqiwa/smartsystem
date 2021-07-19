@@ -18,7 +18,7 @@ import { ImageEventEnum } from "../../../../gallery-target/gallery-target";
 import { EventTable, GarbageDropEventsRecord } from "./event-table";
 import { HWCameraImageUrl, ImgTypeEnum, TypeNameEnum } from "./camera-img-url";
 import { DivisionListView } from "../../../event-history/division-list-view";
-import { MediumPicture } from "../../../../../data-core/url/aiop/resources";
+import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
 @Injectable()
 export class BusinessService {
@@ -123,14 +123,13 @@ export class BusinessService {
     };
 
     this.table.playVideoFn = (id) => {
-      const event = this.table.findEventFn(id),
-        mp = new MediumPicture();
+      const event = this.table.findEventFn(id);
       this.videoImgs = new Array();
       this.playVideoViewTitle = event.Data.StationName;
       event.Data.DropImageUrls.map((m) => {
         if (this.videoImgs.findIndex((f) => f.id == m.CameraId) == -1)
           this.videoImgs.push({
-            src: mp.getJPG(m.ImageUrl),
+            src: AIOPMediumPictureUrl.getJPG(m.ImageUrl),
             id: m.CameraId,
             name: m.CameraName,
             time: event.Data.DropTime,
@@ -139,7 +138,7 @@ export class BusinessService {
       event.Data.HandleImageUrls.map((m) => {
         if (this.videoImgs.findIndex((f) => f.id == m.CameraId) == -1)
           this.videoImgs.push({
-            src: mp.getJPG(m.ImageUrl),
+            src: AIOPMediumPictureUrl.getJPG(m.ImageUrl),
             id: m.CameraId,
             name: m.CameraName,
             time: event.Data.HandleTime,

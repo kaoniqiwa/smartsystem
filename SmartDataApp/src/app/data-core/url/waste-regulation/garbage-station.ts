@@ -1,128 +1,160 @@
-import { IUrl, GarbageBaseUrl } from '../IUrl';
+import { GarbageBaseUrl } from "../IUrl";
 
-export class GarbageStations extends GarbageBaseUrl implements IUrl {
-    garbagestations = 'garbage_management/';
-    create(): string {
-        return this.garbage + 'GarbageStations';
-    }
-    edit(id: string): string {
-        return this.garbage + `GarbageStations/${id}`;
-    }
-    del(id: string): string {
-        return this.garbage + `GarbageStations/${id}`;
-    }
-    get(id: string): string {
-        return this.garbage + `GarbageStations/${id}`;
-    }
-    list(): string {
-        return this.garbage + `GarbageStations/List`;
-    }
+export class GarbageStationsUrl extends GarbageBaseUrl {
+  garbagestations = "garbage_management/";
+  static create(): string {
+    return this.garbage + "GarbageStations";
+  }
+  static edit(id: string): string {
+    return this.garbage + `GarbageStations/${id}`;
+  }
+  static del(id: string): string {
+    return this.garbage + `GarbageStations/${id}`;
+  }
+  static get(id: string): string {
+    return this.garbage + `GarbageStations/${id}`;
+  }
+  static list(): string {
+    return this.garbage + `GarbageStations/List`;
+  }
 
-    volumesHistory(id: string): string {
-        return this.garbage + `GarbageStations/${id}/Volumes/History/List`;
-    }
+  static volumesHistory(id: string): string {
+    return this.garbage + `GarbageStations/${id}/Volumes/History/List`;
+  }
 
-    eventNumbersHistory(id: string): string {
-        return this.garbage + `GarbageStations/${id}/EventNumbers/History/List`;
-    }
+  static eventNumbersHistory(id: string): string {
+    return this.garbage + `GarbageStations/${id}/EventNumbers/History/List`;
+  }
 
-    statisticNumber(id: string): string {
-        return this.garbage + `GarbageStations/${id}/Statistic/Number`;
-    }
+  static statisticNumber(id: string): string {
+    return this.garbage + `GarbageStations/${id}/Statistic/Number`;
+  }
 
-    statisticNumberList(): string {
-        return this.garbage + `GarbageStations/Statistic/Number/List`;
-    }
+  static statisticNumberList(): string {
+    return this.garbage + `GarbageStations/Statistic/Number/List`;
+  }
 
-    manualCapture(id: string){ 
-        return this.garbage +`GarbageStations/${id}/ManualCapture`;
-    }
+  static manualCapture(id: string) {
+    return this.garbage + `GarbageStations/${id}/ManualCapture`;
+  }
 
-    cameraFile(stationId:string,cameraId:string,beginTime:string,endTime:string){
-        return this.garbage+`GarbageStations/${stationId}/Cameras/${cameraId}/Files?BeginTime=${beginTime}&EndTime=${endTime}`;
-    }
+  static cameraFile(
+    stationId: string,
+    cameraId: string,
+    beginTime: string,
+    endTime: string
+  ) {
+    return (
+      this.garbage +
+      `GarbageStations/${stationId}/Cameras/${cameraId}/Files?BeginTime=${beginTime}&EndTime=${endTime}`
+    );
+  }
 
-    statisticNumberHistoryList():string{
-        return this.garbage+`GarbageStations/Statistic/Number/History/List`;
-    }
+  static statisticNumberHistoryList(): string {
+    return this.garbage + `GarbageStations/Statistic/Number/History/List`;
+  }
 
-    statisticGarbageCountHistoryList(){
-        return this.garbage+'GarbageStations/Statistic/GarbageCount/History/List';
-    }
- 
+  static statisticGarbageCountHistoryList() {
+    return this.garbage + "GarbageStations/Statistic/GarbageCount/History/List";
+  }
 }
 
-export class Camera extends GarbageBaseUrl implements IUrl {
-    create(stationId: string): string {
-        return this.garbage + `GarbageStations/${stationId}/Cameras`;
-    }
-    edit(stationId: string, cameraId: string): string {
-        return this.garbage + `GarbageStations/${stationId}/Cameras/${cameraId}`;
-    }
-    del(stationId: string, cameraId: string): string {
-        return this.garbage + `GarbageStations/${stationId}/Cameras/${cameraId}`;
-    }
-    get(stationId: string, cameraId: string): string {
-        return this.garbage + `GarbageStations/${stationId}/Cameras/${cameraId}`;
-    }
-    list(): string {
-        return this.garbage + `GarbageStations/Cameras/List`;
-    }
+export class CameraUrl extends GarbageBaseUrl {
+  static create(stationId: string): string {
+    return this.garbage + `GarbageStations/${stationId}/Cameras`;
+  }
+  static edit(stationId: string, cameraId: string): string {
+    return this.garbage + `GarbageStations/${stationId}/Cameras/${cameraId}`;
+  }
+  static del(stationId: string, cameraId: string): string {
+    return this.garbage + `GarbageStations/${stationId}/Cameras/${cameraId}`;
+  }
+  static get(stationId: string, cameraId: string): string {
+    return this.garbage + `GarbageStations/${stationId}/Cameras/${cameraId}`;
+  }
+  static list(): string {
+    return this.garbage + `GarbageStations/Cameras/List`;
+  }
 }
 
-export class CameraTrashCans extends GarbageBaseUrl implements IUrl {
-    create(stationId: string, cameraId: string): string {
-        return this.garbage + `GarbageStations/${stationId}/Cameras/${cameraId}/TrashCans`;
-    }
-    edit(stationId: string, cameraId: string, trashCansId: string): string {
-        return this.garbage + `GarbageStations/${stationId}/Cameras/${cameraId}/TrashCans/${trashCansId}`;
-    }
-    del(stationId: string, cameraId: string, trashCansId: string): string {
-        return this.garbage + `GarbageStations/${stationId}/Cameras/${cameraId}/TrashCans/${trashCansId}`;
-    }
-    get(stationId: string, cameraId: string, trashCansId: string): string {
-        return this.garbage + `GarbageStations/${stationId}/Cameras/${cameraId}/TrashCans/${trashCansId}`;
-    }
-    list(stationId: string, cameraId: string): string {
-        return this.garbage + `GarbageStations/${stationId}/Cameras/${cameraId}/TrashCans`;
-    }
+export class CameraTrashCansUrl extends GarbageBaseUrl {
+  static create(stationId: string, cameraId: string): string {
+    return (
+      this.garbage +
+      `GarbageStations/${stationId}/Cameras/${cameraId}/TrashCans`
+    );
+  }
+  static edit(
+    stationId: string,
+    cameraId: string,
+    trashCansId: string
+  ): string {
+    return (
+      this.garbage +
+      `GarbageStations/${stationId}/Cameras/${cameraId}/TrashCans/${trashCansId}`
+    );
+  }
+  static del(stationId: string, cameraId: string, trashCansId: string): string {
+    return (
+      this.garbage +
+      `GarbageStations/${stationId}/Cameras/${cameraId}/TrashCans/${trashCansId}`
+    );
+  }
+  static get(stationId: string, cameraId: string, trashCansId: string): string {
+    return (
+      this.garbage +
+      `GarbageStations/${stationId}/Cameras/${cameraId}/TrashCans/${trashCansId}`
+    );
+  }
+  static list(stationId: string, cameraId: string): string {
+    return (
+      this.garbage +
+      `GarbageStations/${stationId}/Cameras/${cameraId}/TrashCans`
+    );
+  }
 }
 
-export class GarbageStationTrashCans extends GarbageBaseUrl implements IUrl {
-    create(stationId: string): string {
-        return this.garbage + `GarbageStations/${stationId}/TrashCans`;
-    }
-    edit(stationId: string, trashCansId: string): string {
-        return this.garbage + `GarbageStations/${stationId}/TrashCans/${trashCansId}`;
-    }
-    del(stationId: string, trashCansId: string): string {
-        return this.garbage + `GarbageStations/${stationId}/TrashCans/${trashCansId}`;
-    }
-    get(stationId: string, trashCansId: string): string {
-        return this.garbage + `GarbageStations/${stationId}/TrashCans/${trashCansId}`;
-    }
-    postList(): string {
-        return this.garbage + `GarbageStations/TrashCans/List`;
-    }
-    list(stationId: string): string {
-        return this.garbage + `GarbageStations/${stationId}/TrashCans`;
-    }
+export class GarbageStationTrashCansUrl extends GarbageBaseUrl {
+  static create(stationId: string): string {
+    return this.garbage + `GarbageStations/${stationId}/TrashCans`;
+  }
+  static edit(stationId: string, trashCansId: string): string {
+    return (
+      this.garbage + `GarbageStations/${stationId}/TrashCans/${trashCansId}`
+    );
+  }
+  static del(stationId: string, trashCansId: string): string {
+    return (
+      this.garbage + `GarbageStations/${stationId}/TrashCans/${trashCansId}`
+    );
+  }
+  static get(stationId: string, trashCansId: string): string {
+    return (
+      this.garbage + `GarbageStations/${stationId}/TrashCans/${trashCansId}`
+    );
+  }
+  static postList(): string {
+    return this.garbage + `GarbageStations/TrashCans/List`;
+  }
+  static list(stationId: string): string {
+    return this.garbage + `GarbageStations/${stationId}/TrashCans`;
+  }
 }
 
-export class GarbageStationType  extends GarbageBaseUrl implements IUrl {
-    create(): string {
-        return this.garbage + 'GarbageStations/Types';
-    }
-    edit(id: string): string {
-        return this.garbage + `GarbageStations/Types/${id}`;
-    }
-    del(id: string): string {
-        return this.garbage + `GarbageStations/Types/${id}`;
-    }
-    get(id: string): string {
-        return this.garbage + `GarbageStations/Types/${id}`;
-    }
-    list(){
-        return this.garbage + 'GarbageStations/Types';
-    }
+export class GarbageStationTypeUrl extends GarbageBaseUrl {
+  static create(): string {
+    return this.garbage + "GarbageStations/Types";
+  }
+  static edit(id: string): string {
+    return this.garbage + `GarbageStations/Types/${id}`;
+  }
+  static del(id: string): string {
+    return this.garbage + `GarbageStations/Types/${id}`;
+  }
+  static get(id: string): string {
+    return this.garbage + `GarbageStations/Types/${id}`;
+  }
+  static list() {
+    return this.garbage + "GarbageStations/Types";
+  }
 }

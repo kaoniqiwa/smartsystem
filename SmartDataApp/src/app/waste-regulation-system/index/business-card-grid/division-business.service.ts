@@ -24,7 +24,7 @@ import { FillMode } from "../../../shared-module/business-component/event-histor
 import { ColorEnum } from "../../../shared-module/card-component/card-content-factory";
 import { CameraStateTableEnum } from "../../../shared-module/business-component/garbage-station-cameras/business/camera-table.service";
 import { GarbageStationRequestService } from "../../../data-core/repuest/garbage-station.service";
-import { MediumPicture } from "../../../data-core/url/aiop/resources";
+import { AIOPMediumPictureUrl } from "../../../data-core/url/aiop/resources";
 import { GarbageStation } from "../../../data-core/model/waste-regulation/garbage-station";
 import { GetEventRecordsParams } from "../../../data-core/model/waste-regulation/illegal-drop-event-record";
 import { TheDayTime } from "../../../common/tool/tool.service";
@@ -354,7 +354,6 @@ export class DivisionBusinessService {
                   catchState: { o: boolean };
                 },
                 enumHelper = new EnumHelper(),
-                pic = new MediumPicture(),
                 state = (gs: GarbageStation) => {
                   return Language.StationStateFlags(gs.StationStateFlags);
                   // if (gs.StationState == 0) return "正常";
@@ -375,7 +374,8 @@ export class DivisionBusinessService {
                   station.Cameras.map((m) => {
                     if (m.ImageUrl) {
                       const desc = item.g.imgDesc.find((i) => i.tag.id == m.Id);
-                      if (desc) desc.src = pic.getData(m.ImageUrl);
+                      if (desc)
+                        desc.src = AIOPMediumPictureUrl.getData(m.ImageUrl);
                     }
                   });
                 }
@@ -394,7 +394,8 @@ export class DivisionBusinessService {
                           const desc = item.g.imgDesc.find(
                             (i) => i.tag.id == m.CameraId
                           );
-                          if (desc) desc.src = pic.getData(m.Id);
+                          if (desc)
+                            desc.src = AIOPMediumPictureUrl.getData(m.Id);
                         }
                       });
                     }

@@ -19,7 +19,7 @@ import { BusinessTable } from "../../../../../aiop-system/common/business-table"
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
 import { DivisionTypeEnum } from "../../../../../common/tool/enum-helper";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
-import { MediumPicture } from "../../../../../data-core/url/aiop/resources";
+import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 import { Language } from "src/app/common/tool/language";
 
 export class GarbageStationTable extends BusinessTable implements IConverter {
@@ -135,12 +135,12 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
   }
 
   toGalleryModel(resourceCameras: Camera[], key: string, camera: Camera[]) {
-    const pic = new MediumPicture(),
-      galleryTdAttr = new GalleryTdAttr();
+    const galleryTdAttr = new GalleryTdAttr();
     galleryTdAttr.imgSrc = new Array<string>();
     camera.map((x) => {
       const find = resourceCameras.find((x1) => x1.Id == x.Id);
-      if (find) galleryTdAttr.imgSrc.push(pic.getJPG(find.ImageUrl));
+      if (find)
+        galleryTdAttr.imgSrc.push(AIOPMediumPictureUrl.getJPG(find.ImageUrl));
     });
     galleryTdAttr.key = key;
     return galleryTdAttr;

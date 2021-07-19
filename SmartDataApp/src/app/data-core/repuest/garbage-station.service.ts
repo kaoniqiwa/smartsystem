@@ -17,7 +17,13 @@ import {
   TrashCan,
   GetGarbageStationTrashCansParams,
 } from "../model/waste-regulation/trashCan";
-import * as url from "../url/waste-regulation/garbage-station";
+import {
+  CameraTrashCansUrl,
+  CameraUrl,
+  GarbageStationsUrl,
+  GarbageStationTrashCansUrl,
+  GarbageStationTypeUrl,
+} from "../url/waste-regulation/garbage-station";
 import { PagedList } from "../model/page";
 import { HowellResponse } from "../model/response";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
@@ -42,14 +48,11 @@ import { ServiceResponseProcessor } from "../model/waste-regulation/request-serv
   providedIn: "root",
 })
 export class GarbageStationRequestService {
-  url: url.GarbageStations;
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new url.GarbageStations();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
   async create(item: GarbageStation) {
     let response = await this.requestService
       .post<GarbageStation, HowellResponse<GarbageStation>>(
-        this.url.create(),
+        GarbageStationsUrl.create(),
         SaveModel.toModel(item, SaveModel.formMustField.garbageStation)
       )
       .toPromise();
@@ -57,7 +60,9 @@ export class GarbageStationRequestService {
   }
 
   async get(id: string) {
-    let observable = this.requestService.get<GarbageStation>(this.url.get(id));
+    let observable = this.requestService.get<GarbageStation>(
+      GarbageStationsUrl.get(id)
+    );
     let response = await observable.toPromise();
     return ServiceResponseProcessor.ResponseProcess(response, GarbageStation);
   }
@@ -65,7 +70,7 @@ export class GarbageStationRequestService {
   async set(item: GarbageStation) {
     let response = await this.requestService
       .put<GarbageStation, HowellResponse<GarbageStation>>(
-        this.url.edit(item.Id),
+        GarbageStationsUrl.edit(item.Id),
         SaveModel.toModel(item, SaveModel.formMustField.garbageStation)
       )
       .toPromise();
@@ -74,7 +79,7 @@ export class GarbageStationRequestService {
 
   async del(id: string) {
     let response = await this.requestService
-      .delete<GarbageStation>(this.url.del(id))
+      .delete<GarbageStation>(GarbageStationsUrl.del(id))
       .toPromise();
     return ServiceResponseProcessor.ResponseProcess(response, GarbageStation);
   }
@@ -84,7 +89,7 @@ export class GarbageStationRequestService {
       .post<
         GetGarbageStationsParams,
         HowellResponse<PagedList<GarbageStation>>
-      >(this.url.list(), item)
+      >(GarbageStationsUrl.list(), item)
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(response, GarbageStation);
@@ -98,7 +103,7 @@ export class GarbageStationRequestService {
       .post<
         GetGarbageStationVolumesParams,
         HowellResponse<PagedList<GarbageVolume>>
-      >(this.url.volumesHistory(divisionsId), item)
+      >(GarbageStationsUrl.volumesHistory(divisionsId), item)
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(response, GarbageVolume);
@@ -112,7 +117,7 @@ export class GarbageStationRequestService {
       .post<
         GetGarbageStationnEventNumbersParams,
         HowellResponse<PagedList<EventNumberStatistic>>
-      >(this.url.eventNumbersHistory(divisionsId), item)
+      >(GarbageStationsUrl.eventNumbersHistory(divisionsId), item)
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(
@@ -124,7 +129,7 @@ export class GarbageStationRequestService {
   async statisticNumber(garbageStationId: string) {
     let response = await this.requestService
       .get<GarbageStationNumberStatistic>(
-        this.url.statisticNumber(garbageStationId)
+        GarbageStationsUrl.statisticNumber(garbageStationId)
       )
       .toPromise();
 
@@ -139,7 +144,7 @@ export class GarbageStationRequestService {
       .post<
         GetGarbageStationStatisticNumbersParams,
         HowellResponse<PagedList<GarbageStationNumberStatistic>>
-      >(this.url.statisticNumberList(), item)
+      >(GarbageStationsUrl.statisticNumberList(), item)
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(
@@ -153,7 +158,7 @@ export class GarbageStationRequestService {
       .post<
         GetGarbageStationStatisticNumbersParamsV2,
         HowellResponse<GarbageStationNumberStatisticV2[]>
-      >(this.url.statisticNumberHistoryList(), item)
+      >(GarbageStationsUrl.statisticNumberHistoryList(), item)
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(
@@ -165,7 +170,7 @@ export class GarbageStationRequestService {
   async manualCapture(stationId: string) {
     let response = await this.requestService
       .post<any, HowellResponse<CameraPictureUrl[]>>(
-        this.url.manualCapture(stationId)
+        GarbageStationsUrl.manualCapture(stationId)
       )
       .toPromise();
     return ServiceResponseProcessor.ResponseProcess(response, CameraPictureUrl);
@@ -178,7 +183,9 @@ export class GarbageStationRequestService {
     endTime: string
   ) {
     return this.requestService
-      .getStream(this.url.cameraFile(stationId, cameraId, beginTime, endTime))
+      .getStream(
+        GarbageStationsUrl.cameraFile(stationId, cameraId, beginTime, endTime)
+      )
       .toPromise();
   }
 
@@ -190,7 +197,7 @@ export class GarbageStationRequestService {
   ) {
     let response = await this.requestService
       .post<any, HowellResponse<RecordFileUrl>>(
-        this.url.cameraFile(stationId, cameraId, beginTime, endTime)
+        GarbageStationsUrl.cameraFile(stationId, cameraId, beginTime, endTime)
       )
       .toPromise();
 
@@ -204,7 +211,7 @@ export class GarbageStationRequestService {
       .post<
         GetGarbageStationStatisticGarbageCountsParams,
         HowellResponse<GarbageStationGarbageCountStatistic[]>
-      >(this.url.statisticGarbageCountHistoryList(), item)
+      >(GarbageStationsUrl.statisticGarbageCountHistoryList(), item)
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(
@@ -218,14 +225,11 @@ export class GarbageStationRequestService {
   providedIn: "root",
 })
 export class CameraRequestService {
-  url: url.Camera;
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new url.Camera();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
   async create(item: Camera) {
     let response = await this.requestService
       .post<Camera, HowellResponse<Camera>>(
-        this.url.create(item.GarbageStationId),
+        CameraUrl.create(item.GarbageStationId),
         item
       )
       .toPromise();
@@ -235,7 +239,7 @@ export class CameraRequestService {
 
   async get(garbageStationId: string, cameraId: string) {
     let response = await this.requestService
-      .get<Camera>(this.url.get(garbageStationId, cameraId))
+      .get<Camera>(CameraUrl.get(garbageStationId, cameraId))
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(response, Camera);
@@ -243,7 +247,7 @@ export class CameraRequestService {
 
   async list(garbageStationId: string) {
     let response = await this.requestService
-      .get<Camera[]>(this.url.create(garbageStationId))
+      .get<Camera[]>(CameraUrl.create(garbageStationId))
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(response, Camera);
@@ -252,7 +256,7 @@ export class CameraRequestService {
   async set(item: Camera) {
     let response = await this.requestService
       .put<Camera, HowellResponse<Camera>>(
-        this.url.edit(item.GarbageStationId, item.Id),
+        CameraUrl.edit(item.GarbageStationId, item.Id),
         item
       )
       .toPromise();
@@ -262,7 +266,7 @@ export class CameraRequestService {
 
   async del(garbageStationId: string, cameraId: string) {
     let response = await this.requestService
-      .delete<Camera>(this.url.del(garbageStationId, cameraId))
+      .delete<Camera>(CameraUrl.del(garbageStationId, cameraId))
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(response, Camera);
@@ -271,7 +275,7 @@ export class CameraRequestService {
   async postList(item: GetGarbageStationCamerasParams) {
     let response = await this.requestService
       .post<GetGarbageStationCamerasParams, HowellResponse<PagedList<Camera>>>(
-        this.url.list(),
+        CameraUrl.list(),
         item
       )
       .toPromise();
@@ -284,14 +288,11 @@ export class CameraRequestService {
   providedIn: "root",
 })
 export class CameraTrashCanRequestService {
-  url: url.CameraTrashCans;
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new url.CameraTrashCans();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
   async create(item: TrashCan) {
     let response = await this.requestService
       .post<TrashCan, HowellResponse<TrashCan>>(
-        this.url.create(item.GarbageStationId, item.CameraId),
+        CameraTrashCansUrl.create(item.GarbageStationId, item.CameraId),
         item
       )
       .toPromise();
@@ -301,7 +302,9 @@ export class CameraTrashCanRequestService {
 
   async get(garbageStationId: string, cameraId: string, trashCanId: string) {
     let response = await this.requestService
-      .get<TrashCan>(this.url.get(garbageStationId, cameraId, trashCanId))
+      .get<TrashCan>(
+        CameraTrashCansUrl.get(garbageStationId, cameraId, trashCanId)
+      )
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(response, TrashCan);
@@ -310,7 +313,7 @@ export class CameraTrashCanRequestService {
   async set(item: TrashCan) {
     let response = await this.requestService
       .put<TrashCan, HowellResponse<TrashCan>>(
-        this.url.edit(item.GarbageStationId, item.CameraId, item.Id),
+        CameraTrashCansUrl.edit(item.GarbageStationId, item.CameraId, item.Id),
         item
       )
       .toPromise();
@@ -320,7 +323,9 @@ export class CameraTrashCanRequestService {
 
   async del(garbageStationId: string, cameraId: string, trashCanId: string) {
     let response = await this.requestService
-      .delete<TrashCan>(this.url.del(garbageStationId, cameraId, trashCanId))
+      .delete<TrashCan>(
+        CameraTrashCansUrl.del(garbageStationId, cameraId, trashCanId)
+      )
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(response, TrashCan);
@@ -328,7 +333,7 @@ export class CameraTrashCanRequestService {
 
   async list(garbageStationId: string, cameraId: string) {
     let response = await this.requestService
-      .get<TrashCan[]>(this.url.list(garbageStationId, cameraId))
+      .get<TrashCan[]>(CameraTrashCansUrl.list(garbageStationId, cameraId))
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(response, TrashCan);
@@ -339,14 +344,11 @@ export class CameraTrashCanRequestService {
   providedIn: "root",
 })
 export class GarbageStationTrashCanRequestService {
-  url: url.GarbageStationTrashCans;
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new url.GarbageStationTrashCans();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
   async create(item: TrashCan) {
     let response = await this.requestService
       .post<TrashCan, HowellResponse<TrashCan>>(
-        this.url.create(item.GarbageStationId),
+        GarbageStationTrashCansUrl.create(item.GarbageStationId),
         item
       )
       .toPromise();
@@ -356,7 +358,7 @@ export class GarbageStationTrashCanRequestService {
 
   async get(garbageStationId: string, cameraId: string) {
     let response = await this.requestService
-      .get<TrashCan>(this.url.get(garbageStationId, cameraId))
+      .get<TrashCan>(GarbageStationTrashCansUrl.get(garbageStationId, cameraId))
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(response, TrashCan);
@@ -365,7 +367,7 @@ export class GarbageStationTrashCanRequestService {
   async set(item: TrashCan) {
     let response = await this.requestService
       .put<TrashCan, HowellResponse<TrashCan>>(
-        this.url.edit(item.GarbageStationId, item.Id),
+        GarbageStationTrashCansUrl.edit(item.GarbageStationId, item.Id),
         item
       )
       .toPromise();
@@ -375,7 +377,9 @@ export class GarbageStationTrashCanRequestService {
 
   async del(garbageStationId: string, cameraId: string) {
     let response = await this.requestService
-      .delete<TrashCan>(this.url.del(garbageStationId, cameraId))
+      .delete<TrashCan>(
+        GarbageStationTrashCansUrl.del(garbageStationId, cameraId)
+      )
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(response, TrashCan);
@@ -386,7 +390,7 @@ export class GarbageStationTrashCanRequestService {
       .post<
         GetGarbageStationTrashCansParams,
         HowellResponse<PagedList<TrashCan>>
-      >(this.url.postList(), item)
+      >(GarbageStationTrashCansUrl.postList(), item)
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(response, TrashCan);
@@ -397,14 +401,11 @@ export class GarbageStationTrashCanRequestService {
   providedIn: "root",
 })
 export class GarbageStationTypeRequestService {
-  url: url.GarbageStationType;
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new url.GarbageStationType();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
   async create(item: GarbageStationType) {
     let response = await this.requestService
       .post<GarbageStationType, HowellResponse<GarbageStationType>>(
-        this.url.create(),
+        GarbageStationTypeUrl.create(),
         SaveModel.toModel(item, SaveModel.formMustField.garbageStationType)
       )
       .toPromise();
@@ -417,14 +418,14 @@ export class GarbageStationTypeRequestService {
 
   async get(type: string) {
     let response = await this.requestService.get<GarbageStationType>(
-      this.url.get(type)
+      GarbageStationTypeUrl.get(type)
     );
   }
 
   async set(item: GarbageStationType) {
     let response = await this.requestService
       .put<GarbageStationType, HowellResponse<GarbageStationType>>(
-        this.url.edit(item.Type + ""),
+        GarbageStationTypeUrl.edit(item.Type + ""),
         SaveModel.toModel(item, SaveModel.formMustField.garbageStationType)
       )
       .toPromise();
@@ -437,7 +438,7 @@ export class GarbageStationTypeRequestService {
 
   async del(type: string) {
     let response = await this.requestService
-      .delete<GarbageStationType>(this.url.del(type))
+      .delete<GarbageStationType>(GarbageStationTypeUrl.del(type))
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(
@@ -448,7 +449,7 @@ export class GarbageStationTypeRequestService {
 
   async list() {
     let response = await this.requestService
-      .get<GarbageStationType[]>(this.url.list())
+      .get<GarbageStationType[]>(GarbageStationTypeUrl.list())
       .toPromise();
 
     return ServiceResponseProcessor.ResponseProcess(

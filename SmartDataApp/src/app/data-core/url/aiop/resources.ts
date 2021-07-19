@@ -1,148 +1,134 @@
-import { IUrl, BaseUrl } from "../IUrl";
+import { BaseUrl } from "../IUrl";
 
-export class Resource extends BaseUrl implements IUrl {
-    create(): string {
-        return this.aiop + 'Resources';
-    }
-    edit(id: string): string {
-        return this.aiop + `Resources/${id}`;
-    }
-    del(id: string): string {
-        return this.aiop + `Resources/${id}`;
-    }
-    get(id: string): string {
-        return this.aiop + `Resources/${id}`;
-    }
-    list(): string {
-        return this.aiop + 'Resources/List';
-    }
-
+export class AIOPResourceUrl extends BaseUrl {
+  static create(): string {
+    return this.aiop + "Resources";
+  }
+  static edit(id: string): string {
+    return this.aiop + `Resources/${id}`;
+  }
+  static del(id: string): string {
+    return this.aiop + `Resources/${id}`;
+  }
+  static get(id: string): string {
+    return this.aiop + `Resources/${id}`;
+  }
+  static list(): string {
+    return this.aiop + "Resources/List";
+  }
 }
 
-export class MediumPicture extends BaseUrl{
+export class AIOPMediumPictureUrl extends BaseUrl {
+  static add() {
+    return this.aiop + `Medium/Pictures`;
+  }
 
-    add() {
-        return this.aiop + `Medium/Pictures`;
-    }
+  static binary() {
+    return this.aiop + "Medium/Pictures/Binary";
+  }
 
-    binary() {
-        return this.aiop + 'Medium/Pictures/Binary';
-    }
+  static getData(id: string) {
+    return this.aiop + `Medium/Pictures/${id}/Data`;
+  }
 
-
-    getData(id: string) {
-        return this.aiop + `Medium/Pictures/${id}/Data`;
-    }
-
-    getJPG(id: string) {
-        return this.aiop + `Medium/Pictures/${id}.jpg`;
-    }
-
-
+  static getJPG(id: string) {
+    return this.aiop + `Medium/Pictures/${id}.jpg`;
+  }
 }
 
+export class AIOPResourceEncodeDeviceUrl extends BaseUrl {
+  static create(): string {
+    return this.aiop + "Resources/EncodeDevices";
+  }
+  static edit(devId: string): string {
+    return this.aiop + `Resources/EncodeDevices/${devId}`;
+  }
+  static del(devId: string): string {
+    return this.aiop + `Resources/EncodeDevices/${devId}`;
+  }
+  static get(devId: string): string {
+    return this.aiop + `Resources/EncodeDevices/${devId}`;
+  }
+  static list(): string {
+    return this.aiop + "Resources/EncodeDevices/List";
+  }
 
-
-
-export class ResourceEncodeDevice extends BaseUrl implements IUrl {
-    create(): string {
-        return this.aiop + 'Resources/EncodeDevices';
-    }
-    edit(devId: string): string {
-        return this.aiop + `Resources/EncodeDevices/${devId}`;
-    }
-    del(devId: string): string {
-        return this.aiop + `Resources/EncodeDevices/${devId}`;
-    }
-    get(devId: string): string {
-        return this.aiop + `Resources/EncodeDevices/${devId}`;
-    }
-    list(): string {
-        return this.aiop + 'Resources/EncodeDevices/List';
-    }
-
-    protocol() {
-        return this.aiop + 'Resources/EncodeDevices/Protocols';
-    }
-
+  static protocol() {
+    return this.aiop + "Resources/EncodeDevices/Protocols";
+  }
 }
 
-export class ResourceCamera extends BaseUrl implements IUrl {
-    create(): string {
-        return this.aiop + 'Resources/Cameras';
-    }
-    edit(id: string): string {
-        return this.aiop + `Resources/Cameras/${id}`;
-    }
-    del(id: string): string {
-        return this.aiop + `Resources/Cameras/${id}`;
-    }
-    get(id: string): string {
-        return this.aiop + `Resources/Cameras/${id}`;
-    }
-    list(): string {
-        return this.aiop + 'Resources/Cameras/List';
-    }
-
-
+export class AIOPResourceCameraUrl extends BaseUrl {
+  static create(): string {
+    return this.aiop + "Resources/Cameras";
+  }
+  static edit(id: string): string {
+    return this.aiop + `Resources/Cameras/${id}`;
+  }
+  static del(id: string): string {
+    return this.aiop + `Resources/Cameras/${id}`;
+  }
+  static get(id: string): string {
+    return this.aiop + `Resources/Cameras/${id}`;
+  }
+  static list(): string {
+    return this.aiop + "Resources/Cameras/List";
+  }
 }
 
-export class ResourceCameraAIModel extends BaseUrl implements IUrl {
-    create(cameraId: string, modelId: string): string {
-        return this.aiop + `Resources/Cameras/${cameraId}/AIModels/${modelId}`;
-    }
-    edit(cameraId: string, modelId: string): string {
-        return ``;
-    }
-    del(cameraId: string, modelId: string): string {
-        return this.aiop + `Resources/Cameras/${cameraId}/AIModels/${modelId}`;
-    }
-    get(cameraId: string, modelId: string): string {
-        return this.aiop + `Resources/Cameras/${cameraId}/AIModels/${modelId}`;
-    }
-    list(cameraId: string): string {
-        return this.aiop + `Resources/Cameras/${cameraId}/AIModels`;
-    }
-    copy(cameraId: string) {
-        return this.aiop + `Resources/Cameras/${cameraId}/AIModels/CopyTo`;
-    }
-
+export class AIOPResourceCameraAIModelUrl extends BaseUrl {
+  static create(cameraId: string, modelId: string): string {
+    return this.aiop + `Resources/Cameras/${cameraId}/AIModels/${modelId}`;
+  }
+  static edit(cameraId: string, modelId: string): string {
+    return ``;
+  }
+  static del(cameraId: string, modelId: string): string {
+    return this.aiop + `Resources/Cameras/${cameraId}/AIModels/${modelId}`;
+  }
+  static get(cameraId: string, modelId: string): string {
+    return this.aiop + `Resources/Cameras/${cameraId}/AIModels/${modelId}`;
+  }
+  static list(cameraId: string): string {
+    return this.aiop + `Resources/Cameras/${cameraId}/AIModels`;
+  }
+  static copy(cameraId: string) {
+    return this.aiop + `Resources/Cameras/${cameraId}/AIModels/CopyTo`;
+  }
 }
 
-export class Label extends BaseUrl implements IUrl {
-    create(): string {
-        return this.aiop + 'Resources/Labels';
-    }
-    edit(id: string): string {
-        return this.aiop + `Resources/Labels/${id}`;
-    }
-    del(id: string): string {
-        return this.aiop + `Resources/Labels/${id}`;
-    }
-    get(id: string): string {
-        return this.aiop + `Resources/Labels/${id}`;
-    }
-    list(): string {
-        return this.aiop + 'Resources/Labels/List';
-    }
-
+export class AIOPLabelUrl extends BaseUrl {
+  static create(): string {
+    return this.aiop + "Resources/Labels";
+  }
+  static edit(id: string): string {
+    return this.aiop + `Resources/Labels/${id}`;
+  }
+  static del(id: string): string {
+    return this.aiop + `Resources/Labels/${id}`;
+  }
+  static get(id: string): string {
+    return this.aiop + `Resources/Labels/${id}`;
+  }
+  static list(): string {
+    return this.aiop + "Resources/Labels/List";
+  }
 }
 
-export class ResourceLabel extends BaseUrl implements IUrl {
-    create(sourceId: string, labelId: string): string {
-        return this.aiop + `Resources/${sourceId}/Labels/${labelId}`;
-    }
-    edit(id: string): string {
-        return ``;
-    }
-    del(sourceId: string, labelId: string): string {
-        return this.aiop + `Resources/${sourceId}/Labels/${labelId}`;
-    }
-    get(sourceId: string, labelId: string): string {
-        return this.aiop + `Resources/${sourceId}/Labels/${labelId}`;
-    }
-    list(id: string): string {
-        return this.aiop + `Resources/${id}/Labels`;
-    }
-
+export class AIOPResourceLabelUrl extends BaseUrl {
+  static create(sourceId: string, labelId: string): string {
+    return this.aiop + `Resources/${sourceId}/Labels/${labelId}`;
+  }
+  static edit(id: string): string {
+    return ``;
+  }
+  static del(sourceId: string, labelId: string): string {
+    return this.aiop + `Resources/${sourceId}/Labels/${labelId}`;
+  }
+  static get(sourceId: string, labelId: string): string {
+    return this.aiop + `Resources/${sourceId}/Labels/${labelId}`;
+  }
+  static list(id: string): string {
+    return this.aiop + `Resources/${id}/Labels`;
+  }
 }

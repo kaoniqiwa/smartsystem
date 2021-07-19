@@ -9,7 +9,6 @@ import {
 import { Protocol } from "../model/aiop/protocol";
 import { Camera as CameraModel } from "../model/aiop/camera";
 import { CameraAIModel } from "../model/aiop/camera-ai-model";
-import * as url from "../url/aiop/resources";
 import { PagedList } from "../model/page";
 import { HowellResponse } from "../model/response";
 import { GetResourcesParams } from "../model/aiop/resources-params";
@@ -18,8 +17,8 @@ import { SaveModel } from "../model/save-model";
 import { BatchCopyRequest } from "../model/aiop/ai-models-params";
 import { BatchResult } from "../model/batch";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
-import { SRService } from "../url/aiop/sr-server";
-import { SRService as StationSRService } from "../url/waste-regulation/sr-server";
+import { AIOPSRServiceUrl } from "../url/aiop/sr-server";
+import { SRServiceUrl as StationSRServiceUrl } from "../url/waste-regulation/sr-server";
 import {
   GetPreviewUrlParams,
   GetVodUrlParams,
@@ -28,41 +27,47 @@ import {
 import { SessionUser } from "src/app/common/tool/session-user";
 import { VideoPlayArgs } from "src/app/video/mode";
 import { isIPAddressOrLocalhost } from "src/app/common/tool/tool.service";
+import {
+  AIOPLabelUrl,
+  AIOPMediumPictureUrl,
+  AIOPResourceCameraAIModelUrl,
+  AIOPResourceCameraUrl,
+  AIOPResourceEncodeDeviceUrl,
+  AIOPResourceLabelUrl,
+  AIOPResourceUrl,
+} from "../url/aiop/resources";
 @Injectable({
   providedIn: "root",
 })
 export class ResourceRequestService {
-  url: url.Resource;
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new url.Resource();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
   create(item: ResourceModel) {
     return this.requestService.post<ResourceModel, ResourceModel>(
-      this.url.create(),
+      AIOPResourceUrl.create(),
       SaveModel.toModel(item, SaveModel.formMustField.resource)
     );
   }
 
   get(id: string) {
-    return this.requestService.get<ResourceModel>(this.url.get(id));
+    return this.requestService.get<ResourceModel>(AIOPResourceUrl.get(id));
   }
 
   set(item: ResourceModel) {
     return this.requestService.put<ResourceModel, ResourceModel>(
-      this.url.edit(item.Id),
+      AIOPResourceUrl.edit(item.Id),
       SaveModel.toModel(item, SaveModel.formMustField.resource)
     );
   }
 
   del(id: string) {
-    return this.requestService.delete<ResourceModel>(this.url.del(id));
+    return this.requestService.delete<ResourceModel>(AIOPResourceUrl.del(id));
   }
 
   list(item: GetResourcesParams) {
     return this.requestService.post<
       GetResourcesParams,
       HowellResponse<PagedList<ResourceModel>>
-    >(this.url.list(), item);
+    >(AIOPResourceUrl.list(), item);
   }
 }
 
@@ -70,22 +75,21 @@ export class ResourceRequestService {
   providedIn: "root",
 })
 export class EncodeDeviceRequestService {
-  url: url.ResourceEncodeDevice;
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new url.ResourceEncodeDevice();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
   create(item: EncodeDeviceModel) {
     return this.requestService.post<
       EncodeDeviceModel,
       HowellResponse<EncodeDeviceModel>
     >(
-      this.url.create(),
+      AIOPResourceEncodeDeviceUrl.create(),
       SaveModel.toModel(item, SaveModel.formMustField.encodeDevice)
     );
   }
 
   get(id: string) {
-    return this.requestService.get<EncodeDeviceModel>(this.url.get(id));
+    return this.requestService.get<EncodeDeviceModel>(
+      AIOPResourceEncodeDeviceUrl.get(id)
+    );
   }
 
   set(item: EncodeDeviceModel) {
@@ -93,24 +97,28 @@ export class EncodeDeviceRequestService {
       EncodeDeviceModel,
       HowellResponse<EncodeDeviceModel>
     >(
-      this.url.edit(item.Id),
+      AIOPResourceEncodeDeviceUrl.edit(item.Id),
       SaveModel.toModel(item, SaveModel.formMustField.encodeDevice)
     );
   }
 
   del(id: string) {
-    return this.requestService.delete<EncodeDeviceModel>(this.url.del(id));
+    return this.requestService.delete<EncodeDeviceModel>(
+      AIOPResourceEncodeDeviceUrl.del(id)
+    );
   }
 
   list(item: GetEncodeDevicesParams) {
     return this.requestService.post<
       GetEncodeDevicesParams,
       HowellResponse<PagedList<EncodeDeviceModel>>
-    >(this.url.list(), item);
+    >(AIOPResourceEncodeDeviceUrl.list(), item);
   }
 
   protocol() {
-    return this.requestService.get<Protocol[]>(this.url.protocol());
+    return this.requestService.get<Protocol[]>(
+      AIOPResourceEncodeDeviceUrl.protocol()
+    );
   }
 }
 
@@ -118,37 +126,36 @@ export class EncodeDeviceRequestService {
   providedIn: "root",
 })
 export class CameraRequestService {
-  url: url.ResourceCamera;
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new url.ResourceCamera();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
   create(item: CameraModel) {
     return this.requestService.post<CameraModel, HowellResponse<CameraModel>>(
-      this.url.create(),
+      AIOPResourceCameraUrl.create(),
       SaveModel.toModel(item, SaveModel.formMustField.camera)
     );
   }
 
   get(id: string) {
-    return this.requestService.get<CameraModel>(this.url.get(id));
+    return this.requestService.get<CameraModel>(AIOPResourceCameraUrl.get(id));
   }
 
   set(item: CameraModel) {
     return this.requestService.put<CameraModel, HowellResponse<CameraModel>>(
-      this.url.edit(item.Id),
+      AIOPResourceCameraUrl.edit(item.Id),
       SaveModel.toModel(item, SaveModel.formMustField.camera)
     );
   }
 
   del(id: string) {
-    return this.requestService.delete<CameraModel>(this.url.del(id));
+    return this.requestService.delete<CameraModel>(
+      AIOPResourceCameraUrl.del(id)
+    );
   }
 
   list(item: GetCamerasParams) {
     return this.requestService.post<
       GetCamerasParams,
       HowellResponse<PagedList<CameraModel>>
-    >(this.url.list(), item);
+    >(AIOPResourceCameraUrl.list(), item);
   }
 }
 
@@ -156,30 +163,29 @@ export class CameraRequestService {
   providedIn: "root",
 })
 export class AIModelRequestService {
-  url: url.ResourceCameraAIModel;
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new url.ResourceCameraAIModel();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
   create(cameraId: string, aiModelId: string) {
     return this.requestService.post<
       CameraAIModel,
       HowellResponse<CameraAIModel>
-    >(this.url.create(cameraId, aiModelId));
+    >(AIOPResourceCameraAIModelUrl.create(cameraId, aiModelId));
   }
 
   get(cameraId: string, aiModelId: string) {
     return this.requestService.get<CameraAIModel>(
-      this.url.get(cameraId, aiModelId)
+      AIOPResourceCameraAIModelUrl.get(cameraId, aiModelId)
     );
   }
 
   list(cameraId: string) {
-    return this.requestService.get<CameraAIModel[]>(this.url.list(cameraId));
+    return this.requestService.get<CameraAIModel[]>(
+      AIOPResourceCameraAIModelUrl.list(cameraId)
+    );
   }
 
   del(cameraId: string, aiModelId: string) {
     return this.requestService.delete<CameraAIModel>(
-      this.url.del(cameraId, aiModelId)
+      AIOPResourceCameraAIModelUrl.del(cameraId, aiModelId)
     );
   }
 
@@ -187,7 +193,7 @@ export class AIModelRequestService {
     return this.requestService.post<
       BatchCopyRequest,
       HowellResponse<BatchResult>
-    >(this.url.copy(tagCameraId), param);
+    >(AIOPResourceCameraAIModelUrl.copy(tagCameraId), param);
   }
 }
 
@@ -195,37 +201,34 @@ export class AIModelRequestService {
   providedIn: "root",
 })
 export class LabelRequestService {
-  url: url.Label;
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new url.Label();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
   create(item: ResourceLabelModel) {
     return this.requestService.post<
       ResourceLabelModel,
       HowellResponse<ResourceLabelModel>
-    >(this.url.create(), item);
+    >(AIOPLabelUrl.create(), item);
   }
 
   get(id: string) {
-    return this.requestService.get<ResourceLabelModel>(this.url.get(id));
+    return this.requestService.get<ResourceLabelModel>(AIOPLabelUrl.get(id));
   }
 
   set(item: ResourceLabelModel) {
     return this.requestService.put<ResourceLabelModel, ResourceLabelModel>(
-      this.url.edit(item.Id),
+      AIOPLabelUrl.edit(item.Id),
       item
     );
   }
 
   del(id: string) {
-    return this.requestService.delete<ResourceLabelModel>(this.url.del(id));
+    return this.requestService.delete<ResourceLabelModel>(AIOPLabelUrl.del(id));
   }
 
   list(item: GetResourceLabelsParams) {
     return this.requestService.post<
       GetResourceLabelsParams,
       HowellResponse<PagedList<ResourceLabelModel>>
-    >(this.url.list(), item);
+    >(AIOPLabelUrl.list(), item);
   }
 }
 
@@ -233,30 +236,27 @@ export class LabelRequestService {
   providedIn: "root",
 })
 export class ResourceLabelRequestService {
-  url: url.ResourceLabel;
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new url.ResourceLabel();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
   create(sourceId: string, labelId: string) {
     return this.requestService.post<
       ResourceLabelModel,
       HowellResponse<ResourceLabelModel>
-    >(this.url.create(sourceId, labelId));
+    >(AIOPResourceLabelUrl.create(sourceId, labelId));
   }
 
   get(sourceId: string, labelId: string) {
     return this.requestService.get<ResourceLabelModel>(
-      this.url.get(sourceId, labelId)
+      AIOPResourceLabelUrl.get(sourceId, labelId)
     );
   }
 
   // list(sourceId:string){
-  //     return this.requestService.get<ResourceLabelModel[]>>(this.url.list(sourceId));
+  //     return this.requestService.get<ResourceLabelModel[]>>(AIOPResourceLabelUrl.list(sourceId));
   // }
 
   del(sourceId: string, labelId: string) {
     return this.requestService.delete<ResourceLabelModel>(
-      this.url.del(sourceId, labelId)
+      AIOPResourceLabelUrl.del(sourceId, labelId)
     );
   }
 }
@@ -265,20 +265,17 @@ export class ResourceLabelRequestService {
   providedIn: "root",
 })
 export class ResourceMediumRequestService {
-  url: url.MediumPicture;
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new url.MediumPicture();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
 
   binary() {
-    return this.url.binary();
+    return AIOPMediumPictureUrl.binary();
   }
 
   getJPG(id: string) {
-    return this.url.getJPG(id);
+    return AIOPMediumPictureUrl.getJPG(id);
   }
   getData(id: string) {
-    return this.url.getData(id);
+    return AIOPMediumPictureUrl.getData(id);
   }
 }
 
@@ -286,16 +283,13 @@ export class ResourceMediumRequestService {
   providedIn: "root",
 })
 export class ResourceSRServersRequestService {
-  url: SRService;
   user = new SessionUser();
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new SRService();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
 
   async PreviewUrls(params: GetPreviewUrlParams) {
     const response = await this.requestService
       .post<GetPreviewUrlParams, HowellResponse<VideoUrl>>(
-        this.url.preview(),
+        AIOPSRServiceUrl.preview(),
         params
       )
       .toPromise();
@@ -326,7 +320,10 @@ export class ResourceSRServersRequestService {
 
   async VodUrls(params: GetVodUrlParams) {
     const response = await this.requestService
-      .post<GetVodUrlParams, HowellResponse<VideoUrl>>(this.url.vod(), params)
+      .post<GetVodUrlParams, HowellResponse<VideoUrl>>(
+        AIOPSRServiceUrl.vod(),
+        params
+      )
       .toPromise();
     if (response.Data.Url) {
       let args = VideoPlayArgs.FromUrl(response.Data.Url);
@@ -358,17 +355,14 @@ export class ResourceSRServersRequestService {
   providedIn: "root",
 })
 export class StationResourceSRServersRequestService {
-  url: StationSRService;
   user = new SessionUser();
-  constructor(private requestService: HowellAuthHttpService) {
-    this.url = new StationSRService();
-  }
+  constructor(private requestService: HowellAuthHttpService) {}
 
   async PreviewUrls(params: GetPreviewUrlParams) {
-    // return this.requestService.post<VideoUrl>(this.url.preview(), params);
+    // return this.requestService.post<VideoUrl>(StationSRServiceUrl.preview(), params);
     const response = await this.requestService
       .post<GetPreviewUrlParams, HowellResponse<VideoUrl>>(
-        this.url.preview(),
+        StationSRServiceUrl.preview(),
         params
       )
       .toPromise();
@@ -398,9 +392,12 @@ export class StationResourceSRServersRequestService {
   }
 
   async VodUrls(params: GetVodUrlParams) {
-    // return this.requestService.post<VideoUrl>(this.url.vod(), params);
+    // return this.requestService.post<VideoUrl>(StationSRServiceUrl.vod(), params);
     const response = await this.requestService
-      .post<GetVodUrlParams, HowellResponse<VideoUrl>>(this.url.vod(), params)
+      .post<GetVodUrlParams, HowellResponse<VideoUrl>>(
+        StationSRServiceUrl.vod(),
+        params
+      )
       .toPromise();
     if (response.Data.Url) {
       let args = VideoPlayArgs.FromUrl(response.Data.Url);

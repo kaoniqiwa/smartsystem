@@ -39,7 +39,7 @@ import {
   IntegerDecimalNum,
 } from "../../../../common/tool/tool.service";
 import { EnumHelper } from "../../../../common/tool/enum-helper";
-import { MediumPicture } from "../../../../data-core/url/aiop/resources";
+import { AIOPMediumPictureUrl } from "../../../../data-core/url/aiop/resources";
 import {
   EventNumber,
   EventType,
@@ -266,11 +266,12 @@ export class IllegalDropEventConverter implements IConverter {
       const user = new SessionUser();
       for (let i = 0; i < input.items.length; i++) {
         output.views.push(new ImageTheme());
-        const pic = new MediumPicture();
 
         output.views[i].imgDesc1 = input.items[i].DivisionName;
         output.views[i].imgDesc2 = input.items[i].StationName;
-        output.views[i].imgSrc = pic.getJPG(input.items[i].ImageUrl);
+        output.views[i].imgSrc = AIOPMediumPictureUrl.getJPG(
+          input.items[i].ImageUrl
+        );
         output.views[i].title = "乱扔垃圾";
         output.views[i].imgDesc1Icon = "howell-icon-signal2";
         output.views[i].imgDesc1IconColor = ColorEnum["green-text"];
@@ -587,8 +588,7 @@ export class GarbageStationInspectionCardConverter implements IConverter {
     output.pageSize = 1;
     output.pageIndex = 1;
     if (input instanceof GarbageStationInspection) {
-      const model = new GalleryRollPage(),
-        pic = new MediumPicture();
+      const model = new GalleryRollPage();
       model.items = new Map();
       model.leftBottom = {
         text: 0,
@@ -624,7 +624,7 @@ export class GarbageStationInspectionCardConverter implements IConverter {
           })
           .map((x) => {
             gallery.imgDesc.push({
-              src: pic.getJPG(x.ImageUrl),
+              src: AIOPMediumPictureUrl.getJPG(x.ImageUrl),
               tag: {
                 id: x.Id,
               },
