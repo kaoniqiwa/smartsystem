@@ -1,32 +1,56 @@
 <div class="fill-height fill-width">
   <div class="custom-form-wrap">
     <div class="title-wrap">
-      <div class="pull-left" [ngStyle]="{'width': model&&model.subName?'400px':'220px'}"><ng-container *ngIf="model">{{model.enlargeImageName}}</ng-container>
-        <ng-container *ngIf="model&&model.subName">
-            <label class="m-b-0 {{model.subName.class}}">_{{model.subName.label}}</label>
+      <div
+        class="pull-left"
+        [ngStyle]="{ width: model && model.subName ? '400px' : '220px' }"
+      >
+        <ng-container *ngIf="model">{{ model.enlargeImageName }}</ng-container>
+        <ng-container *ngIf="model && model.subName">
+          <label class="m-b-0 {{ model.subName.class }}"
+            >_{{ model.subName.label }}</label
+          >
         </ng-container>
-        <ng-container *ngIf="model&&model.refreshImg">
-          <div *ngIf="model.refreshImg.state" class="spinner-border spinner-border-sm green-text" role="status">
-          </div>
-          <label class="m-b-0 green-text" style="font-size:xx-small;position: relative;bottom: 4px;"  *ngIf="!model.refreshImg.state">
-            ●</label>
-        </ng-container>    
+        <ng-container *ngIf="model && model.refreshImg">
+          <div
+            *ngIf="model.refreshImg.state"
+            class="spinner-border spinner-border-sm green-text"
+            role="status"
+          ></div>
+          <label
+            class="m-b-0 green-text"
+            style="font-size: xx-small; position: relative; bottom: 4px"
+            *ngIf="!model.refreshImg.state"
+          >
+            ●</label
+          >
+        </ng-container>
       </div>
       <div class="pull-right">
-        <ng-container *ngIf="model&&model.polygon">
+        <ng-container *ngIf="model && model.polygon">
           <div class="switch-wrap">
-            <label class="m-b-0 m-r-10" style="font-size: 14px;">目标信息</label>
+            <label class="m-b-0 m-r-10" style="font-size: 14px">目标信息</label>
             <hw-switch [onFn]="onDescFn" [on]="onDesc"></hw-switch>
           </div>
         </ng-container>
 
         <ng-container *ngIf="model">
           <ng-container *ngIf="model.videoName">
-            <a href="javascript:" (click)="videoFileClick()" title="下载视频" class="m-r-10">
-              <i class="howell-icon-videodownload  sky-blue-text"></i>
-            </a>           
+            <a
+              href="javascript:"
+              (click)="videoFileClick()"
+              title="下载视频"
+              class="m-r-10"
+            >
+              <i class="howell-icon-videodownload sky-blue-text"></i>
+            </a>
           </ng-container>
-          <a href="{{model.enlargeImage}}" title="下载图片" class="m-r-10" download="{{model.downloadImgName}}.png">
+          <a
+            href="{{ model.enlargeImage }}"
+            title="下载图片"
+            class="m-r-10"
+            download="{{ model.downloadImgName }}.png"
+          >
             <i class="howell-icon-picturedownload sky-blue-text"></i>
           </a>
           <ng-container *ngIf="videoFn">
@@ -34,29 +58,50 @@
               <i class="howell-icon-video sky-blue-text"></i>
             </a>
           </ng-container>
-         
         </ng-container>
-        <a href="javascript:void(0)" class="close-winow" (click)="closeViewClick()">
+        <a
+          href="javascript:void(0)"
+          class="close-winow"
+          (click)="closeViewClick()"
+        >
           <i class="howell-icon-Close alert-window-close-btn"></i>
         </a>
       </div>
     </div>
     <div class="fill-width img-wrap">
       <ng-container *ngIf="model">
-        <img id="enlargeImage" width="100%" class="fill-height " src="{{model.enlargeImage}}"
-          onerror="this.src='../assets/img/timg-pic.jpg'" alt="">
-        <canvas class="collapse canvas-position" [class.in]="onDesc" id="polygonCanvas"
-          width="{{enlargeImageSize.width}}" height="{{ enlargeImageSize.height}}"></canvas>
-        <a class="carousel-control-prev" [ngStyle]="{'visibility': model.imgPrev ?'visible':'hidden'}"
-          href="javascript:void(0)" (click)="imgPageClick(imgEvent.prev)">
+        <img
+          id="enlargeImage"
+          width="100%"
+          class="fill-height"
+          src="{{ model.enlargeImage }}"
+          onerror="this.src='../assets/img/timg-pic.jpg'"
+          alt=""
+        />
+        <canvas
+          class="collapse canvas-position"
+          [class.in]="onDesc"
+          id="polygonCanvas"
+          width="{{ enlargeImageSize.width }}"
+          height="{{ enlargeImageSize.height }}"
+        ></canvas>
+        <a
+          class="carousel-control-prev"
+          [ngStyle]="{ visibility: model.imgPrev ? 'visible' : 'hidden' }"
+          href="javascript:void(0)"
+          (click)="imgPageClick(imgEvent.prev)"
+        >
           <div class="howell-icon-arrowleftbold blue-text arrow-wrap"></div>
         </a>
-        <a class="carousel-control-next" [ngStyle]="{'visibility': model.imgNext ?'visible':'hidden'}"
-          (click)="imgPageClick(imgEvent.next)">
+        <a
+          class="carousel-control-next"
+          [ngStyle]="{ visibility: model.imgNext ? 'visible' : 'hidden' }"
+          href="javascript:void(0)"
+          (click)="imgPageClick(imgEvent.next)"
+        >
           <div class="howell-icon-arrowrightbold blue-text arrow-wrap"></div>
         </a>
       </ng-container>
     </div>
   </div>
-
 </div>

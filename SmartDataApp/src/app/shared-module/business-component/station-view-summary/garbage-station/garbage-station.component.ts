@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { BusinessService } from "./business/garbage-station-list.service";
 import { OtherViewEnum } from "../view-helper";
 import { HWVideoService } from "../../../../data-core/dao/video-dao";
-import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
+import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
 @Component({
   selector: "hw-garbage-station",
   templateUrl: "./garbage-station.component.html",

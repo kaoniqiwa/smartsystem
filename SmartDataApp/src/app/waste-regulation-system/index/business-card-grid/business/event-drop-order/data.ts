@@ -1,4 +1,4 @@
-import { EventType } from "src/app/data-core/model/waste-regulation/event-number";
+import { EventType } from "../../../../../data-core/model/enum";
 import { IBusinessData } from "../../../../../common/interface/IBusiness";
 
 export class EventDropOrderInfo implements IBusinessData {

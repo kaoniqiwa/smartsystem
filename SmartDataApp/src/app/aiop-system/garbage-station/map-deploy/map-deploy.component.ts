@@ -11,13 +11,13 @@ import {
   Division,
   GisArea,
   GisPoint,
-  GisType,
 } from "../../../data-core/model/waste-regulation/division";
 import { GarbageStation } from "../../../data-core/model/waste-regulation/garbage-station";
 import { MessageBar } from "../../../common/tool/message-bar";
 import { ConfirmDialog } from "../../../shared-module/confirm-dialog/confirm-dialog.component";
-import { DivisionRequestService } from "src/app/data-core/repuest/division.service";
-import { GarbageStationRequestService } from "src/app/data-core/repuest/garbage-station.service";
+import { DivisionRequestService } from "../../../data-core/repuest/division.service";
+import { GarbageStationRequestService } from "../../../data-core/repuest/garbage-station.service";
+import { GisType } from "../../../data-core/model/enum";
 
 @Component({
   selector: "app-map-deploy",

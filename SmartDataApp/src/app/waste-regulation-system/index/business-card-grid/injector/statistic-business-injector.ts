@@ -20,8 +20,7 @@ import { StatisticalDataBufferService } from "../buffer/statistical-data-buffer"
 import { BaseBusinessRefresh } from "../../../../common/tool/base-business-refresh";
 import { DatePipe } from "@angular/common";
 import { EventPushService } from "../../../../common/tool/mqtt-event/event-push.service";
-import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
-import { EventType } from "src/app/data-core/model/waste-regulation/event-number";
+import { DivisionType, EventType } from "../../../../data-core/model/enum";
 @Injectable({
   providedIn: "root",
 })
@@ -95,7 +94,7 @@ export class StatisticBusinessInjector {
     businessConfig: Partial<{
       business: string;
       dataTime: number;
-      divisionType: DivisionTypeEnum;
+      divisionType: DivisionType;
       state: boolean;
       eventType: EventType;
       stationId: string;

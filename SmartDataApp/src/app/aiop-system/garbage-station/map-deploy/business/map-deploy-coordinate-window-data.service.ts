@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { CameraRequestService } from "../../../../data-core/repuest/garbage-station.service";
 import { Camera } from "../../../../data-core/model/waste-regulation/camera";
 import { ICoordinate } from "../coordinate-manage/coordinate-manage.component";
-import { MessageBar } from "src/app/common/tool/message-bar";
+import { MessageBar } from "../../../../common/tool/message-bar";
 import { CoordinateTransform } from "./CoordinateTransform";
 @Injectable()
 export class MapDeployCoordinateWindowService {

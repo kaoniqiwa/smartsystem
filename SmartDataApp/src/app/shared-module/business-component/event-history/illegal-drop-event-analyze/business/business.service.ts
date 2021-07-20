@@ -29,12 +29,13 @@ import {
 } from "../../business-event-type";
 import { MixedIntoEventRecord } from "../../../../../data-core/model/waste-regulation/mixed-into-event-record";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
+import { DivisionType } from "../../../../../data-core/model/enum";
 import {
   GetEventRecordsParams,
   IllegalDropEventRecord,
 } from "../../../../../data-core/model/waste-regulation/illegal-drop-event-record";
 import { SessionUser } from "../../../../../common/tool/session-user";
-import { DivisionTypeEnum } from "../../../../../common/tool/enum-helper";
+
 @Injectable()
 export class BusinessService extends ListAttribute {
   search = new SearchControl(this.datePipe);
@@ -84,7 +85,7 @@ export class BusinessService extends ListAttribute {
   }
 
   get cityOption() {
-    return new SessionUser().userDivisionType == DivisionTypeEnum.City + "";
+    return new SessionUser().userDivisionType == DivisionType.City + "";
   }
 
   exportExcel(

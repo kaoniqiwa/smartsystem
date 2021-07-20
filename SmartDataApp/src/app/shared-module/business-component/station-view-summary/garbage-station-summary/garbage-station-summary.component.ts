@@ -14,7 +14,7 @@ import {
 } from "../../business-manage-service";
 import { GarbageFullHistorySumChartComponent } from "../garbage-full-history-sum-chart/garbage-full-history-sum-chart.component";
 import { OtherViewEnum } from "../view-helper";
-import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
+import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
 @Component({
   selector: "hw-garbage-station-summary",
   templateUrl: "./garbage-station-summary.component.html",

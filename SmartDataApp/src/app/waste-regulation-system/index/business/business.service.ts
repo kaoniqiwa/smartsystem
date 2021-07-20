@@ -1,9 +1,8 @@
 import { Injectable } from "@angular/core";
 import { StatisticalDataBufferService } from "../business-card-grid/buffer/statistical-data-buffer";
-import { DivisionTypeEnum } from "../../../common/tool/enum-helper";
 import { SessionUser } from "../../../common/tool/session-user";
 import { DivisionBusinessService } from "../business-card-grid/division-business.service";
-import { EventType } from "src/app/data-core/model/waste-regulation/event-number";
+import { DivisionType, EventType } from "../../../data-core/model/enum";
 @Injectable()
 export class BusinessService {
   user: SessionUser;
@@ -47,7 +46,7 @@ export class BusinessService {
 
   async illegalDropEventCard() {
     const param = await this.eventDropTopCardParam();
-    if (param.divisionType == DivisionTypeEnum.County) {
+    if (param.divisionType == DivisionType.County) {
       this.illegalDropEventCardConfig = new Array();
       this.illegalDropEventCardConfig.push({
         business: "IllegalDropEvent",
@@ -190,19 +189,19 @@ export class BusinessService {
           this.user.userDivision.pop().Id
         ),
         divisionsIds = new Array<string>();
-      if (parentDivision[0].DivisionType == DivisionTypeEnum.City)
+      if (parentDivision[0].DivisionType == DivisionType.City)
         childrenDivision
           .filter(
             (d) =>
-              d.DivisionType == DivisionTypeEnum.County &&
+              d.DivisionType == DivisionType.County &&
               d.ParentId == parentDivision[0].Id
           )
           .map((f) => divisionsIds.push(f.Id));
-      else if (parentDivision[0].DivisionType == DivisionTypeEnum.County)
+      else if (parentDivision[0].DivisionType == DivisionType.County)
         childrenDivision
           .filter(
             (d) =>
-              d.DivisionType == DivisionTypeEnum.Committees &&
+              d.DivisionType == DivisionType.Committees &&
               d.ParentId == parentDivision[0].Id
           )
           .map((f) => divisionsIds.push(f.Id));

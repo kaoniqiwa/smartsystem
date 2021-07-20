@@ -1,22 +1,31 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter, ElementRef, } from '@angular/core';
-import { BusinessService, } from "./business/business.service";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  Output,
+  EventEmitter,
+  ElementRef,
+} from "@angular/core";
+import { BusinessService } from "./business/business.service";
 import { DateTimePickerDirective } from "../../../../common/directive/date-time-picker.directive";
 import { GarbageStationDao } from "../../../../data-core/dao/garbage-station-dao";
 import { DivisionDao } from "../../../../data-core/dao/division-dao";
 import { LevelListPanelComponent } from "../../event-history/level-list-panel/level-list-panel.component";
-import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
-import { BusinessManageService, ViewDivisionTypeEnum } from "../../business-manage-service";
+import {
+  BusinessManageService,
+  ViewDivisionTypeEnum,
+} from "../../business-manage-service";
 import { OtherViewEnum } from "../view-helper";
 import { HWCsvContext, StationSumHistoryCsv } from "../../export-csv-file";
 import { HWXlsxContext, StationSumHistoryXlsx } from "../../export-xlsx-file";
+import { DivisionType } from "../../../../data-core/model/enum";
 @Component({
-  selector: 'hw-garbage-full-history-sum-chart',
-  templateUrl: './garbage-full-history-sum-chart.component.html',
-  styleUrls: ['./garbage-full-history-sum-chart.component.styl'],
-  providers: [BusinessService, GarbageStationDao, DivisionDao]
+  selector: "hw-garbage-full-history-sum-chart",
+  templateUrl: "./garbage-full-history-sum-chart.component.html",
+  styleUrls: ["./garbage-full-history-sum-chart.component.styl"],
+  providers: [BusinessService, GarbageStationDao, DivisionDao],
 })
 export class GarbageFullHistorySumChartComponent implements OnInit {
-
   @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
 
   @ViewChild(DateTimePickerDirective)
@@ -27,55 +36,62 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
 
   otherView = OtherViewEnum;
 
-  @ViewChild('dtp')
+  @ViewChild("dtp")
   dtp: ElementRef;
 
   startDate = (b: Date) => {
     this.businessService.search.formBeginDate = b;
     this.businessService.requestData();
-  }
+  };
   changeDivisionFn = (id: string) => {
-    const county = this.businessService.divisions.find(d => d.DivisionType == DivisionTypeEnum.County && d.Id == id);
+    const county = this.businessService.divisions.find(
+      (d) => d.DivisionType == DivisionType.County && d.Id == id
+    );
     if (id && this.businessService.garbageStations && county == null) {
-      const filter = this.businessService.garbageStations.filter(x => x.DivisionId == id);
+      const filter = this.businessService.garbageStations.filter(
+        (x) => x.DivisionId == id
+      );
       const ids = new Array<string>();
-      filter.map(c => ids.push(c.Id));
+      filter.map((c) => ids.push(c.Id));
       this.businessService.search.stationId = ids;
-    }
-    else if (county) {
+    } else if (county) {
       const ids = new Array<string>();
-      this.businessService.garbageStations.map(c => ids.push(c.Id));
+      this.businessService.garbageStations.map((c) => ids.push(c.Id));
       this.businessService.search.stationId = ids;
-
     }
     this.businessService.requestData();
-  }
+  };
 
-  constructor(private businessService: BusinessService
-    , private divisionDao: DivisionDao
-    , private businessManageService: BusinessManageService
-    , private garbageStationDao: GarbageStationDao) { }
+  constructor(
+    private businessService: BusinessService,
+    private divisionDao: DivisionDao,
+    private businessManageService: BusinessManageService,
+    private garbageStationDao: GarbageStationDao
+  ) {}
 
-  async ngOnInit() {
-
-  }
+  async ngOnInit() {}
 
   async initView() {
     const divisions = await this.businessManageService.getParentDivision();
     this.businessManageService.divisionType(divisions.pop());
 
-    if (this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.City) {
-      this.businessManageService.getchildrenDivision().then(c => {
-        this.businessService.search.toDivisionsDropList = c.filter(f => f.DivisionType == DivisionTypeEnum.County);
+    if (
+      this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.City
+    ) {
+      this.businessManageService.getchildrenDivision().then((c) => {
+        this.businessService.search.toDivisionsDropList = c.filter(
+          (f) => f.DivisionType == DivisionType.County
+        );
         if (this.businessService.search.divisionsDropList.length) {
-          this.businessService.search.divisionId = this.businessService.search.divisionsDropList[0].id;
-          this.changeDivision(this.businessService.search.divisionsDropList[0].id);
+          this.businessService.search.divisionId =
+            this.businessService.search.divisionsDropList[0].id;
+          this.changeDivision(
+            this.businessService.search.divisionsDropList[0].id
+          );
         }
       });
-
-    }
-    else {
-      this.garbageStationDao.allGarbageStations().then(stations => {
+    } else {
+      this.garbageStationDao.allGarbageStations().then((stations) => {
         this.businessService.garbageStations = stations;
         // const ids = new Array<string>();
         // stations.map(c => ids.push(c.Id));
@@ -89,37 +105,40 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
         //   TotalRecordCount:this.businessService.statisticTable.dataSource.values.length,
         // },  (index) => {});
       });
-      this.divisionDao.allDivisions().then(divisions => {
+      this.divisionDao.allDivisions().then((divisions) => {
         this.businessService.divisions = divisions;
         this.businessService.initDivisionListView();
-        const county = divisions.find(d => d.DivisionType == DivisionTypeEnum.County);
+        const county = divisions.find(
+          (d) => d.DivisionType == DivisionType.County
+        );
         setTimeout(() => {
           if (county) {
             this.levelListPanel.defaultItem(county.Id);
           }
-
         }, 50);
-
       });
     }
-
   }
 
   changeDivision(id: string) {
     const ids = new Array<string>();
-    this.businessManageService.getGarbageStations(id).then(items => {
+    this.businessManageService.getGarbageStations(id).then((items) => {
       console.log(items);
 
-      items.map(i => ids.push(i.Id));
+      items.map((i) => ids.push(i.Id));
       this.businessService.search.stationId = ids;
     });
   }
 
   changeTimeType() {
     const val = this.businessService.changeDatePicker();
-    this.timePicker.reInit(this.businessService.datePicker.startView
-      , this.businessService.datePicker.minView
-      , this.businessService.datePicker.formate, val.time, val.week);
+    this.timePicker.reInit(
+      this.businessService.datePicker.startView,
+      this.businessService.datePicker.minView,
+      this.businessService.datePicker.formate,
+      val.time,
+      val.week
+    );
     this.search();
   }
 
@@ -135,32 +154,47 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
 
   get reportTitle() {
     enum ReportTypeEnum {
-      day = '日报表',
-      week = '周报表',
-      month = '月报表'
+      day = "日报表",
+      week = "周报表",
+      month = "月报表",
     }
-    const sp = this.businessService.search.toSearchParam()
-      , reportType = ReportTypeEnum[sp.TimeUnit]
-      , reportTitle = () => {
-        var title = '';
+    const sp = this.businessService.search.toSearchParam(),
+      reportType = ReportTypeEnum[sp.TimeUnit],
+      reportTitle = () => {
+        var title = "";
         if (this.levelListPanel)
-          title = this.dtp.nativeElement.value + ' ' + this.levelListPanel.selectedItem + ' ' + reportType;
-        else if (this.businessManageService.viewDivisionType == this.businessManageService.viewDivisionTypeEnum.City) {
-          const dropItem = this.businessService.search.divisionsDropList.find(f => f.id == sp.DivisionId);
-          title = this.dtp.nativeElement.value + ' ' + dropItem.name + ' ' + reportType;
+          title =
+            this.dtp.nativeElement.value +
+            " " +
+            this.levelListPanel.selectedItem +
+            " " +
+            reportType;
+        else if (
+          this.businessManageService.viewDivisionType ==
+          this.businessManageService.viewDivisionTypeEnum.City
+        ) {
+          const dropItem = this.businessService.search.divisionsDropList.find(
+            (f) => f.id == sp.DivisionId
+          );
+          title =
+            this.dtp.nativeElement.value +
+            " " +
+            dropItem.name +
+            " " +
+            reportType;
         }
         return title;
-      }
+      };
 
     return {
-      title: reportTitle()
-    }
+      title: reportTitle(),
+    };
   }
 
   exportCsv() {
     if (this.businessService.statisticTable.dataSource.values.length) {
-      let csv = new StationSumHistoryCsv()
-        , csvCt = new HWCsvContext(csv);
+      let csv = new StationSumHistoryCsv(),
+        csvCt = new HWCsvContext(csv);
       csvCt.title = this.reportTitle.title;
       csvCt.fieldVal = this.businessService.statisticTable.dataSource.values;
       csvCt.export();
@@ -169,12 +203,11 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
 
   exportExcel() {
     if (this.businessService.statisticTable.dataSource.values.length) {
-      const xlsx = new StationSumHistoryXlsx()
-        , xlsxCt = new HWXlsxContext(xlsx);
+      const xlsx = new StationSumHistoryXlsx(),
+        xlsxCt = new HWXlsxContext(xlsx);
       xlsxCt.title = this.reportTitle.title;
       xlsxCt.fieldVal = this.businessService.statisticTable.dataSource.values;
       xlsxCt.export();
     }
   }
-
 }

@@ -5,10 +5,8 @@ import { ViewPagination } from "../../../../shared-module/card-list-panel/card-l
 import { Page } from "../../../../data-core/model/page";
 import { CardList } from "../../../../shared-module/business-component/event-history/illegal-drop-event-card-list/card-list";
 import { CameraAIEventRecord } from "../../../../data-core/model/aiop/camera-ai-event-record";
-import {
-  EnumHelper,
-  ResourceTypeEnum,
-} from "../../../../common/tool/enum-helper";
+import { ResourceTypeEnum } from "../../../../common/tool/enum-helper";
+import { Language } from "../../../..//common/tool/language";
 export class EventCards {
   dataSource = new Array<ImageDesc>();
   cardList_: CardList;
@@ -52,7 +50,7 @@ export class EventCards {
     return new ImageDesc(
       item.EventId,
       AIOPMediumPictureUrl.getJPG(item.ImageUrl),
-      [item.ResourceName, new EnumHelper().eventType.get(item.EventType)],
+      [item.ResourceName, Language.EventType(item.EventType)],
       [
         this.datePipe.transform(item.EventTime, "MM-dd HH:mm:ss"),
         ResourceTypeEnum[item.ResourceType],

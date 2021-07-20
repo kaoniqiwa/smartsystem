@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { Division } from "src/app/data-core/model/waste-regulation/division";
-import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
+import { Division } from "../../../../data-core/model/waste-regulation/division";
+import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
 import { MapListItem } from "./map-list-item";
 
 @Component({

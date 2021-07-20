@@ -1,11 +1,12 @@
+import { Output, EventEmitter } from "@angular/core";
 import { Component, Input, OnInit } from "@angular/core";
 import { _getOptionScrollPosition } from "@angular/material";
-import { Language } from "src/app/common/tool/language";
-import { EventType } from "src/app/data-core/model/waste-regulation/event-number";
-import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
-import { GetGarbageStationStatisticGarbageCountsParams } from "src/app/data-core/model/waste-regulation/garbage-station-number-statistic";
-import { DivisionRequestService } from "src/app/data-core/repuest/division.service";
-import { GarbageStationRequestService } from "src/app/data-core/repuest/garbage-station.service";
+
+import { Language } from "../../../../common/tool/language";
+import { EventType, StationState } from "../../../../data-core/model/enum";
+import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
+import { DivisionRequestService } from "../../../../data-core/repuest/division.service";
+import { GarbageStationRequestService } from "../../../../data-core/repuest/garbage-station.service";
 
 @Component({
   selector: "app-point-info-panel",
@@ -35,6 +36,24 @@ export class PointInfoPanelComponent implements OnInit {
     this.visibility = val;
   };
 
+  /**
+   *  状态点击事件
+   *
+   * @type {EventEmitter<GarbageStation>}
+   * @memberof PointInfoPanelComponent
+   */
+  @Output()
+  StateClickedEvent: EventEmitter<GarbageStation> = new EventEmitter();
+
+  @Output()
+  GarbageCountClickedEvent: EventEmitter<GarbageStation> = new EventEmitter();
+
+  @Output()
+  IllegalDropClickedEvent: EventEmitter<GarbageStation> = new EventEmitter();
+
+  @Output()
+  MixedIntoClickedEvent: EventEmitter<GarbageStation> = new EventEmitter();
+
   constructor(
     private divisionService: DivisionRequestService,
     private garbageStationService: GarbageStationRequestService
@@ -56,8 +75,14 @@ export class PointInfoPanelComponent implements OnInit {
   }
 
   onGarbageStationChanged(station: GarbageStation) {
-    debugger;
-    this.state = Language.StationStateFlags(station.StationStateFlags);
+    this.state.language = Language.StationStateFlags(station.StationStateFlags);
+    if (station.StationStateFlags.contains(StationState.Error)) {
+      this.state.className = "error";
+    } else if (station.StationStateFlags.contains(StationState.Full)) {
+      this.state.className = "warm";
+    } else {
+      this.state.className = "normal";
+    }
 
     this.divisionService.get(station.DivisionId).then((res) => {
       console.log("居委会", res);
@@ -96,9 +121,32 @@ export class PointInfoPanelComponent implements OnInit {
   }
 
   GarbageCount: number = 0;
-  MaxGarbageCount: number = 0;
   IllegalDropCount: number = 0;
   MixedIntoCount: number = 0;
 
-  state: string = "";
+  state = {
+    language: "",
+    className: "normal",
+  };
+
+  onGarbageCountClicked() {
+    if (this.GarbageCountClickedEvent) {
+      this.GarbageCountClickedEvent.emit(this.GarbageStation);
+    }
+  }
+  onIllegalDropClicked() {
+    if (this.IllegalDropClickedEvent) {
+      this.IllegalDropClickedEvent.emit(this.GarbageStation);
+    }
+  }
+  onMixedIntoClicked() {
+    if (this.MixedIntoClickedEvent) {
+      this.MixedIntoClickedEvent.emit(this.GarbageStation);
+    }
+  }
+  onStateClicked() {
+    if (this.StateClickedEvent) {
+      this.StateClickedEvent.emit(this.GarbageStation);
+    }
+  }
 }

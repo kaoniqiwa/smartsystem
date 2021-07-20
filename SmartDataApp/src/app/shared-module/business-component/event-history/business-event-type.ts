@@ -1,7 +1,5 @@
-import {
-  EventNumber,
-  EventType,
-} from "../../../data-core/model/waste-regulation/event-number";
+import { EventNumber } from "../../../data-core/model/waste-regulation/event-number";
+import { EventType } from "../../../data-core/model/enum";
 export enum BusinessEventTypeEnum {
   IllegalDrop = "IllegalDropEvent",
   MixedInfo = "MixedInfoEvent",

@@ -1,8 +1,7 @@
-
-    /**
-     * 
-     */
+/**
+ *
+ */
 export class ResourceLabel {
-    Id: string;
-    Name: string;
+  Id!: string;
+  Name!: string;
 }

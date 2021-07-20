@@ -1,7 +1,8 @@
 import { TrashCan } from "./trashCan";
 import { Camera } from "./camera";
-import { Flags } from "src/app/common/tool/flags";
+import { Flags } from "../flags";
 import { Expose, Type } from "class-transformer";
+import { Gender, StationState } from "../enum";
 /**投放点信息 */
 export class GarbageStation {
   /**垃圾房ID */
@@ -112,23 +113,6 @@ export class GarbageStation {
   Members: Member[]; //人员
 }
 
-/**
- * 垃圾房状态
- *
- * @export
- * @enum {number}
- */
-export enum StationState {
-  /**
-   *	满溢	1
-   */
-  Full = 1,
-  /**
-   *	异常	2
-   */
-  Error = 2,
-}
-
 export class Member {
   /**
    *	成员ID	M
@@ -207,17 +191,6 @@ export class Member {
    * @memberof Member
    */
   UpdateTime: string | Date;
-}
-
-export enum Gender {
-  /**
-   *  男
-   */
-  Male = 1,
-  /**
-   *  女
-   */
-  Female = 2,
 }
 
 export class GarbageParameters {

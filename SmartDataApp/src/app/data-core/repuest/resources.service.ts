@@ -24,9 +24,9 @@ import {
   GetVodUrlParams,
   VideoUrl,
 } from "../model/aiop/video-url";
-import { SessionUser } from "src/app/common/tool/session-user";
-import { VideoPlayArgs } from "src/app/video/mode";
-import { isIPAddressOrLocalhost } from "src/app/common/tool/tool.service";
+import { SessionUser } from "../../common/tool/session-user";
+import { VideoPlayArgs } from "../../video/mode";
+import { isIPAddressOrLocalhost } from "../../common/tool/tool.service";
 import {
   AIOPLabelUrl,
   AIOPMediumPictureUrl,

@@ -12,10 +12,8 @@ import {
 import { ITableField } from "../../../../../aiop-system/common/ITableField";
 import { IBusinessData } from "../../../../../common/interface/IBusiness";
 import { BusinessTable } from "../../../../../aiop-system/common/business-table";
-import {
-  EventNumber,
-  EventType,
-} from "../../../../../data-core/model/waste-regulation/event-number";
+import { EventNumber } from "../../../../../data-core/model/waste-regulation/event-number";
+import { EventType } from "../../../../../data-core/model/enum";
 import {
   IntegerDecimalNum,
   ToHoursMinutes,

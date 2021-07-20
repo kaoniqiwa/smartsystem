@@ -16,7 +16,7 @@ import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resource
 import { IBusinessData } from "../../../../../common/interface/IBusiness";
 import { BusinessTable } from "../../../../../aiop-system/common/business-table";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
-import { DivisionTypeEnum } from "../../../../../common/tool/enum-helper";
+import { DivisionType } from "../../../../../data-core/model/enum";
 export class EventTable extends BusinessTable implements IConverter {
   findEventFn: (id: string) => MixedIntoEventRecord;
   initGalleryTargetFn: (event: MixedIntoEventRecord) => void;
@@ -142,7 +142,7 @@ export class EventTable extends BusinessTable implements IConverter {
     tableField.imageUrl = AIOPMediumPictureUrl.getJPG(item.ImageUrl);
     tableField.committees = "-";
     const division = this.findDivisionFn(item.Data.DivisionId);
-    if (division.DivisionType == DivisionTypeEnum.Committees) {
+    if (division.DivisionType == DivisionType.Committees) {
       tableField.committees = division.Name;
       const county = this.findDivisionFn(division.ParentId);
       if (county) tableField.county = county.Name;

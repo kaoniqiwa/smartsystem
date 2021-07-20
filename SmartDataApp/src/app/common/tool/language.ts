@@ -1,5 +1,10 @@
-import { StationState } from "src/app/data-core/model/waste-regulation/garbage-station";
-import { Flags } from "./flags";
+import {
+  CameraState,
+  CameraType,
+  EventType,
+  StationState,
+} from "../../data-core/model/enum";
+import { Flags } from "../../data-core/model/flags";
 
 export class Language {
   static StationState(state: StationState) {
@@ -20,6 +25,66 @@ export class Language {
       return Language.StationState(StationState.Full);
     } else {
       return Language.StationState(0);
+    }
+  }
+
+  static CameraType(type: CameraType) {
+    switch (type) {
+      case CameraType.Gun:
+        return "枪机";
+      case CameraType.Ball:
+        return "球机";
+      case CameraType.HalfBall:
+        return "半球";
+      case CameraType.AIO:
+        return "一体机";
+      default:
+        return "";
+    }
+  }
+
+  static EventType(type: EventType) {
+    switch (type) {
+      case EventType.IllegalDrop:
+        return "乱丢垃圾";
+      case EventType.MixedInto:
+        return "混合投放";
+      case EventType.GarbageVolume:
+        return "垃圾容量";
+      case EventType.GarbageFull:
+        return "垃圾满溢";
+      case EventType.GarbageDrop:
+        return "小包垃圾待处置";
+      case EventType.GarbageDropTimeout:
+        return "小包垃圾超时待处置";
+      case EventType.GarbageDropHandle:
+        return "小包垃圾已处置";
+      default:
+        return "";
+    }
+  }
+  static GarbageDropEventType(type: EventType) {
+    switch (type) {
+      case EventType.GarbageDrop:
+        return "待处置";
+      case EventType.GarbageDropTimeout:
+        return "超时待处置";
+      case EventType.GarbageDropHandle:
+        return "已处置";
+      default:
+        return "";
+    }
+  }
+
+  static CameraState(state: CameraState) {
+    switch (state) {
+      case CameraState.DeviceError:
+        return "设备故障";
+      case CameraState.PlatformError:
+        return "平台故障";
+
+      default:
+        return "";
     }
   }
 }

@@ -100,3 +100,33 @@
 .light-purple-text:not([href]):not([tabindex]) {
   color: #ca98f9
 }
+
+.map-bar.marker-details .state {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 16px;
+}
+
+.map-bar.marker-details .state.error {
+  color: #eb2d2c;
+  cursor: pointer;
+
+}
+
+.map-bar.marker-details .state.error:hover {
+  text-decoration: underline;
+}
+
+.map-bar.marker-details .state.warm {
+  color: #febd00;
+  cursor: pointer;
+}
+
+.map-bar.marker-details .state.warm:hover {
+  text-decoration: underline;
+}
+
+.map-bar.marker-details .state.normal {
+  color: #2bcf38;
+}

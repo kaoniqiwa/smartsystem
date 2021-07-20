@@ -17,10 +17,10 @@ import { ITableField } from "../../../../../aiop-system/common/ITableField";
 import { IBusinessData } from "../../../../../common/interface/IBusiness";
 import { BusinessTable } from "../../../../../aiop-system/common/business-table";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
-import { DivisionTypeEnum } from "../../../../../common/tool/enum-helper";
+import { DivisionType } from "../../../../../data-core/model/enum";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
 import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
-import { Language } from "src/app/common/tool/language";
+import { Language } from "../../../../../common/tool/language";
 
 export class GarbageStationTable extends BusinessTable implements IConverter {
   dataSource = new CustomTableArgs<any>({
@@ -122,13 +122,13 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
     tableField.committees = "-";
     const division1 = this.findDivisionFn(station.DivisionId),
       division2 = this.findDivisionFn(division1.ParentId);
-    if (division1 && division1.DivisionType == DivisionTypeEnum.County)
+    if (division1 && division1.DivisionType == DivisionType.County)
       tableField.county = division1.Name;
-    else if (division1 && division1.DivisionType == DivisionTypeEnum.Committees)
+    else if (division1 && division1.DivisionType == DivisionType.Committees)
       tableField.committees = division1.Name;
-    if (division2 && division2.DivisionType == DivisionTypeEnum.County)
+    if (division2 && division2.DivisionType == DivisionType.County)
       tableField.county = division2.Name;
-    else if (division2 && division2.DivisionType == DivisionTypeEnum.Committees)
+    else if (division2 && division2.DivisionType == DivisionType.Committees)
       tableField.committees = division2.Name;
     tableField.state = Language.StationStateFlags(station.StationStateFlags);
     return tableField;

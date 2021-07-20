@@ -5,10 +5,7 @@ import {
 import { IllegalDropEvent } from "./data";
 import { BusinessParameter } from "../../../../../common/interface/IBusiness";
 import { BaseBusinessRefresh } from "../../../../../common/tool/base-business-refresh";
-import {
-  EventNumber,
-  EventType,
-} from "../../../../../data-core/model/waste-regulation/event-number";
+import { EventType } from "../../../../../data-core/model/enum";
 export class IllegalDropHistory extends BaseBusinessRefresh {
   constructor(
     dataServe: StatisticalDataBufferService,

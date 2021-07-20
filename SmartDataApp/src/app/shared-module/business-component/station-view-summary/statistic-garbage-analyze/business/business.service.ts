@@ -22,10 +22,8 @@ import {
   BarOption,
   LineOption,
 } from "../../../../../common/directive/echarts/echart";
-import {
-  EventNumber,
-  EventType,
-} from "../../../../../data-core/model/waste-regulation/event-number";
+import { EventNumber } from "../../../../../data-core/model/waste-regulation/event-number";
+import { EventType } from "../../../../../data-core/model/enum";
 import { IntegerDecimalNum } from "../../../../../common/tool/tool.service";
 import { ExcelData } from "../../../../../common/tool/hw-excel-js/data";
 

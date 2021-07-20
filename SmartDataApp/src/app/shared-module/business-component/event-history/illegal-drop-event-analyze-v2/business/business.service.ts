@@ -21,7 +21,6 @@ import {
   TimeUnitEnum,
   ClassTypeEnum,
 } from "../../illegal-drop-event-analyze/business/search";
-import { DivisionTypeEnum } from "../../../../../common/tool/enum-helper";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
 import { GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station";
 import "../../../../../common/string/hw-string";
@@ -32,7 +31,7 @@ import {
 import { ExcelData } from "../../../../../common/tool/hw-excel-js/data";
 import { EventAnalyzeTable, EventsAnalyzeRecord } from "./event-analyze-table";
 import { SessionUser } from "../../../../../common/tool/session-user";
-import { EventType } from "src/app/data-core/model/waste-regulation/event-number";
+import { DivisionType, EventType } from "../../../../../data-core/model/enum";
 @Injectable()
 export class BusinessService extends ListAttribute {
   divisions: Array<Division>;
@@ -69,7 +68,7 @@ export class BusinessService extends ListAttribute {
   }
 
   get cityOption() {
-    return new SessionUser().userDivisionType == DivisionTypeEnum.City + "";
+    return new SessionUser().userDivisionType == DivisionType.City + "";
   }
 
   toDivisionIdsOrStationIds() {
@@ -77,13 +76,13 @@ export class BusinessService extends ListAttribute {
       ids = new Array<string>();
     if (s.ClassType == ClassTypeEnum.Committees) {
       this.divisions.map((x) => {
-        if (x.DivisionType == DivisionTypeEnum.Committees) ids.push(x.Id);
+        if (x.DivisionType == DivisionType.Committees) ids.push(x.Id);
       });
       this.search.divisionId = ids;
       this.search.stationId = new Array();
     } else if (s.ClassType == ClassTypeEnum.County) {
       this.divisions.map((x) => {
-        if (x.DivisionType == DivisionTypeEnum.County) ids.push(x.Id);
+        if (x.DivisionType == DivisionType.County) ids.push(x.Id);
       });
       this.search.divisionId = ids;
       this.search.stationId = new Array();

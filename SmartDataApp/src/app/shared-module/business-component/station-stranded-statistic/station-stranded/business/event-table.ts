@@ -16,7 +16,7 @@ import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resource
 import { IBusinessData } from "../../../../../common/interface/IBusiness";
 import { GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
-import { DivisionTypeEnum } from "../../../../../common/tool/enum-helper";
+import { DivisionType } from "../../../../../data-core/model/enum";
 import { DatePipe } from "@angular/common";
 import { GarbageStationNumberStatistic } from "../../../../../data-core/model/waste-regulation/garbage-station-number-statistic";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
@@ -139,9 +139,9 @@ export class EventTable extends BusinessTable implements IConverter {
       toHour(statistic.CurrentGarbageTime)
     );
     tableField.garbageDuration = toFormat(toHour(statistic.GarbageDuration));
-    if (division.DivisionType == DivisionTypeEnum.County)
+    if (division.DivisionType == DivisionType.County)
       tableField.county = division.Name;
-    else if (division.DivisionType == DivisionTypeEnum.Committees) {
+    else if (division.DivisionType == DivisionType.Committees) {
       tableField.committees = division.Name;
       const parentDivision = this.findDivisionFn(division.ParentId);
       if (parentDivision) tableField.county = parentDivision.Name;

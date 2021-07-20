@@ -38,17 +38,14 @@ import {
   DateInterval,
   IntegerDecimalNum,
 } from "../../../../common/tool/tool.service";
-import { EnumHelper } from "../../../../common/tool/enum-helper";
 import { AIOPMediumPictureUrl } from "../../../../data-core/url/aiop/resources";
-import {
-  EventNumber,
-  EventType,
-} from "../../../../data-core/model/waste-regulation/event-number";
+import { EventNumber } from "../../../../data-core/model/waste-regulation/event-number";
+import { EventType } from "../../../../data-core/model/enum";
 import { ColorEnum } from "../../../../shared-module/card-component/card-content-factory";
 import { CameraStateTableEnum } from "../../../../shared-module/business-component/garbage-station-cameras/business/camera-table.service";
 import { isBoolean } from "util";
 import { SessionUser } from "../../../../common/tool/session-user";
-import { Language } from "src/app/common/tool/language";
+import { Language } from "../../../../common/tool/language";
 export class IllegalDropHistoryCardConverter implements IConverter {
   Convert<DropEvent, ViewsModel>(
     input: DropEvent,
@@ -596,7 +593,6 @@ export class GarbageStationInspectionCardConverter implements IConverter {
 
       for (let i = 0; i < input.garbageStations.length; i++) {
         const gs = input.garbageStations[i],
-          enumHelper = new EnumHelper(),
           stationEvents = input.todayStationsEvent.filter(
             (x) => x.Data.StationId == gs.Id
           ),

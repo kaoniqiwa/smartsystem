@@ -17,7 +17,7 @@ import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resource
 import { GarbageDropEventRecord } from "../../../../../data-core/model/waste-regulation/garbage-drop-event-record";
 import { IBusinessData } from "../../../../../common/interface/IBusiness";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
-import { DivisionTypeEnum } from "../../../../../common/tool/enum-helper";
+import { DivisionType } from "../../../../../data-core/model/enum";
 import { DatePipe } from "@angular/common";
 import { ImgTypeEnum, TypeNameEnum, HWCameraImageUrl } from "./camera-img-url";
 
@@ -167,9 +167,9 @@ export class EventTable extends BusinessTable implements IConverter {
     tableField.handleTime = event.Data.IsHandle
       ? this.datePipe.transform(event.Data.HandleTime, "yyyy-MM-dd HH:mm:ss")
       : "-";
-    if (division.DivisionType == DivisionTypeEnum.County)
+    if (division.DivisionType == DivisionType.County)
       tableField.county = division.Name;
-    else if (division.DivisionType == DivisionTypeEnum.Committees) {
+    else if (division.DivisionType == DivisionType.Committees) {
       tableField.committees = division.Name;
       const parentDivision = this.findDivisionFn(division.ParentId);
       if (parentDivision) tableField.county = parentDivision.Name;

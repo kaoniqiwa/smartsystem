@@ -11,7 +11,7 @@ import { HowellAuthHttpService } from "./howell-auth-http.service";
 import { SaveModel } from "../model/save-model";
 import { VideoPlayArgs } from "../../../app/video/mode";
 import { SessionUser } from "../../../app/common/tool/session-user";
-import { isIPAddressOrLocalhost } from "src/app/common/tool/tool.service";
+import { isIPAddressOrLocalhost } from "../../common/tool/tool.service";
 import { isIP } from "net";
 
 @Injectable({

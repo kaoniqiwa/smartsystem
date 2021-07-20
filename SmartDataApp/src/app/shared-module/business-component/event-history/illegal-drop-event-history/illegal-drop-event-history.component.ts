@@ -1,22 +1,33 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { CustomTableComponent } from '../../../../shared-module/custom-table/custom-table.component';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  Input,
+  Output,
+  EventEmitter,
+  OnDestroy,
+} from "@angular/core";
+import { CustomTableComponent } from "../../../../shared-module/custom-table/custom-table.component";
 import { EventTableService, FillMode } from "./business/event-table.service";
 import { PageListMode } from "../../../../common/tool/enum-helper";
-import { ImageDesc } from '../../../image-desc-card/image-desc';
-import { Router } from '@angular/router';
+import { ImageDesc } from "../../../image-desc-card/image-desc";
+import { Router } from "@angular/router";
 import { SideNavService } from "../../../../common/tool/sidenav.service";
 import { DivisionBusinessService } from "../../../../waste-regulation-system/index/business-card-grid/division-business.service";
-import { SystemModeEnum } from '../../../../common/tool/table-form-helper';
+import { SystemModeEnum } from "../../../../common/tool/table-form-helper";
 import { LevelListPanelComponent } from "../level-list-panel/level-list-panel.component";
-import { Camera } from '../../../../data-core/model/waste-regulation/camera';
+import { Camera } from "../../../../data-core/model/waste-regulation/camera";
 import { OtherViewEnum } from "../illegal-drop-event-summary/illegal-drop-event-summary.component";
-import { BusinessManageService, ViewDivisionTypeEnum } from "../../business-manage-service";
-import { DivisionTypeEnum } from "../../../../common/tool/enum-helper";
+import {
+  BusinessManageService,
+  ViewDivisionTypeEnum,
+} from "../../business-manage-service";
+import { DivisionType } from "../../../../data-core/model/enum";
 @Component({
-  selector: 'hw-illegal-drop-event-history',
-  templateUrl: './illegal-drop-event-history.component.html',
-  styleUrls: ['./illegal-drop-event-history.component.styl'],
-  providers: [EventTableService]
+  selector: "hw-illegal-drop-event-history",
+  templateUrl: "./illegal-drop-event-history.component.html",
+  styleUrls: ["./illegal-drop-event-history.component.styl"],
+  providers: [EventTableService],
 })
 export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
   listTypeView = false;
@@ -24,11 +35,11 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
   otherView = OtherViewEnum;
   listMode = PageListMode.table;
   pageListMode = PageListMode;
-  tableMinusHeight = 'calc(100% - 0px)';
-  tableSearchHeight = 'calc(100% - 44px)';
+  tableMinusHeight = "calc(100% - 0px)";
+  tableSearchHeight = "calc(100% - 44px)";
   @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
 
-  @ViewChild('table')
+  @ViewChild("table")
   table: CustomTableComponent;
   @ViewChild(LevelListPanelComponent)
   levelListPanel: LevelListPanelComponent;
@@ -42,185 +53,238 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
   @Input() changeViewFn: (index: number) => void;
   startDate = (b: Date) => {
     this.tableService.search.formBeginDate = b;
-  }
+  };
 
   endDate = (b: Date) => {
     this.tableService.search.formEndDate = b;
-  }
+  };
   galleryTargetFn = () => {
     this.tableService.galleryTargetView.galleryTarget = null;
-  }
+  };
 
   changeDivisionFn = (divisionId: string) => {
     if (divisionId) {
-      const garbageStations = this.tableService.garbageStations.filter(x => x.DivisionId == divisionId);
+      const garbageStations = this.tableService.garbageStations.filter(
+        (x) => x.DivisionId == divisionId
+      );
       this.tableService.search.toStationsDropList = garbageStations;
-      const resources = new Array<Camera>()
-      garbageStations.map(x => {
-        this.tableService.resources.filter(r => r.GarbageStationId == x.Id).map(c => {
-          resources.push(c);
-        });
+      const resources = new Array<Camera>();
+      garbageStations.map((x) => {
+        this.tableService.resources
+          .filter((r) => r.GarbageStationId == x.Id)
+          .map((c) => {
+            resources.push(c);
+          });
       });
       this.tableService.search.toResourcesDropList = resources;
       this.tableService.search.divisionId = divisionId;
-      this.tableService.search.stationId = '';
+      this.tableService.search.stationId = "";
+    } else {
+      this.tableService.search.toResourcesDropList =
+        this.tableService.resources;
+      this.tableService.search.toStationsDropList =
+        this.tableService.garbageStations;
     }
-    else {
-      this.tableService.search.toResourcesDropList = this.tableService.resources;
-      this.tableService.search.toStationsDropList = this.tableService.garbageStations;
-    }
-
-  }
+  };
 
   listGalleryTargetFn = (val: ImageDesc) => {
     const event = this.tableService.eventTable.findEventFn(val.id);
     this.tableService.galleryTargetView.initGalleryTarget(event);
     this.tableService.galleryTargetView.galleryTarget.videoName = true;
-  }
+  };
 
   videoClose = () => {
     this.tableService.playVideo = null;
-  }
+  };
 
-  constructor(private tableService: EventTableService
-    , private navService: SideNavService
-    , private businessManageService: BusinessManageService
-    , private divisionBusinessService: DivisionBusinessService
-    , private router: Router) {
-
-  }
+  constructor(
+    private tableService: EventTableService,
+    private navService: SideNavService,
+    private businessManageService: BusinessManageService,
+    private divisionBusinessService: DivisionBusinessService,
+    private router: Router
+  ) {}
 
   changeStation(val: string) {
     this.tableService.search.toResourcesDropList =
-      this.tableService.resources.filter(r => r.GarbageStationId == val);
+      this.tableService.resources.filter((r) => r.GarbageStationId == val);
   }
 
   ngOnDestroy() {
     this.businessManageService.resetNone();
   }
 
-  setSearchDivision(){
-    if(this.fillMode){ 
-      const division = this.tableService.divisions.find(d => d.Id==this.fillMode.divisionId);
-      if (division && division.DivisionType == DivisionTypeEnum.City){
-         const children = this.tableService.divisions.filter(f=>f.ParentId == division.Id);
-         this.tableService.search.divisionId=children.pop().Id;
-      }
-      else if(this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.TableLinkChild
-        &&division==null){//id 是投放点的
-         const station= this.tableService.garbageStations.find(s=>s.Id == this.fillMode.divisionId);
-         if(station)this.tableService.search.divisionId =station.DivisionId;
-      }
-      else this.tableService.search.divisionId =this.fillMode.divisionId;
-    }
-    else  this.tableService.search.divisionId='';
+  setSearchDivision() {
+    if (this.fillMode) {
+      const division = this.tableService.divisions.find(
+        (d) => d.Id == this.fillMode.divisionId
+      );
+      if (division && division.DivisionType == DivisionType.City) {
+        const children = this.tableService.divisions.filter(
+          (f) => f.ParentId == division.Id
+        );
+        this.tableService.search.divisionId = children.pop().Id;
+      } else if (
+        this.businessManageService.viewDivisionType ==
+          ViewDivisionTypeEnum.TableLinkChild &&
+        division == null
+      ) {
+        //id 是投放点的
+        const station = this.tableService.garbageStations.find(
+          (s) => s.Id == this.fillMode.divisionId
+        );
+        if (station) this.tableService.search.divisionId = station.DivisionId;
+      } else this.tableService.search.divisionId = this.fillMode.divisionId;
+    } else this.tableService.search.divisionId = "";
   }
-  async ngOnInit() {     
+  async ngOnInit() {
     //this.tableService.search.divisionId = this.fillMode ? this.fillMode.divisionId : '';
-    this.listMode = this.fillMode ? this.fillMode.pageListMode : PageListMode.table;
+    this.listMode = this.fillMode
+      ? this.fillMode.pageListMode
+      : PageListMode.table;
     this.tableService.fillMode = this.fillMode;
     if (this.isPage) {
-      this.tableMinusHeight = 'calc(100% - 20px)';
-      this.tableSearchHeight = 'calc(100% - 64px)';
+      this.tableMinusHeight = "calc(100% - 20px)";
+      this.tableSearchHeight = "calc(100% - 64px)";
       this.tableService.fillMode = new FillMode();
-      this.tableService.fillMode.divisionId = this.divisionBusinessService.divisionsId;
+      this.tableService.fillMode.divisionId =
+        this.divisionBusinessService.divisionsId;
 
       if (this.divisionBusinessService.divisionsId) {
-        this.tableService.search.divisionId = this.divisionBusinessService.divisionsId;
+        this.tableService.search.divisionId =
+          this.divisionBusinessService.divisionsId;
       }
     }
-    if ((this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.MapStation
-      || this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.TableLinkChild)
-      && this.businessManageService.station) {
-      this.tableService.search.stationId = this.businessManageService.station.Id;
+    if (
+      (this.businessManageService.viewDivisionType ==
+        ViewDivisionTypeEnum.MapStation ||
+        this.businessManageService.viewDivisionType ==
+          ViewDivisionTypeEnum.TableLinkChild) &&
+      this.businessManageService.station
+    ) {
+      this.tableService.search.stationId =
+        this.businessManageService.station.Id;
     }
     this.tableService.divisions = await this.tableService.requestDivisions();
-    this.setSearchDivision();  
+    this.setSearchDivision();
     this.initTableList();
     // this.tableService.eventTable.tableSelectIds = this.tableSelectIds;
-   
-    this.tableService.garbageStations = await this.tableService.requestGarbageStations();
+
+    this.tableService.garbageStations =
+      await this.tableService.requestGarbageStations();
     this.tableService.resources = await this.tableService.requestResource();
     this.tableService.search.toResourcesDropList = this.tableService.resources;
-    this.tableService.search.toStationsDropList = this.tableService.garbageStations;
+    this.tableService.search.toStationsDropList =
+      this.tableService.garbageStations;
 
-    this.tableService.divisionListView.toLevelListPanel(this.tableService.divisions.filter(x => x.ParentId != null));
+    this.tableService.divisionListView.toLevelListPanel(
+      this.tableService.divisions.filter((x) => x.ParentId != null)
+    );
     await this.tableService.allEventsRecordData();
     //this.allEvallEventsRecord();
   }
 
   moreSearch() {
     this.tableService.search.other = !this.tableService.search.other;
-    if (this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.None)
+    if (
+      this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.None
+    )
       setTimeout(() => {
-        if (this.levelListPanel && this.divisionBusinessService.divisionsId){
-          const division = this.tableService.divisions.find(d => d.Id==this.divisionBusinessService.divisionsId);
-          if (division && division.DivisionType == DivisionTypeEnum.City){
-             const children = this.tableService.divisions.filter(f=>f.ParentId == division.Id);
-             this.levelListPanel.defaultItem(children.pop().Id);
-          }
-          else this.levelListPanel.defaultItem(this.divisionBusinessService.divisionsId);
-        } 
-      }, 500);
-    else if (this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.MapStation
-      && this.businessManageService.station) {
-      setTimeout(() => {
-        this.levelListPanel.defaultItem(this.businessManageService.station.DivisionId);
-        this.tableService.search.stationId = this.businessManageService.station.Id;
-      }, 500);
-    }
-    else if (this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.TableLinkChild
-      &&this.fillMode) {
-      setTimeout(() => {
-        
-        if(this.businessManageService.station){
-          this.levelListPanel.defaultItem(this.businessManageService.station.DivisionId);  
-          this.tableService.search.stationId = this.businessManageService.station.Id; 
+        if (this.levelListPanel && this.divisionBusinessService.divisionsId) {
+          const division = this.tableService.divisions.find(
+            (d) => d.Id == this.divisionBusinessService.divisionsId
+          );
+          if (division && division.DivisionType == DivisionType.City) {
+            const children = this.tableService.divisions.filter(
+              (f) => f.ParentId == division.Id
+            );
+            this.levelListPanel.defaultItem(children.pop().Id);
+          } else
+            this.levelListPanel.defaultItem(
+              this.divisionBusinessService.divisionsId
+            );
         }
-        else  this.levelListPanel.defaultItem(this.fillMode.divisionId);   
+      }, 500);
+    else if (
+      this.businessManageService.viewDivisionType ==
+        ViewDivisionTypeEnum.MapStation &&
+      this.businessManageService.station
+    ) {
+      setTimeout(() => {
+        this.levelListPanel.defaultItem(
+          this.businessManageService.station.DivisionId
+        );
+        this.tableService.search.stationId =
+          this.businessManageService.station.Id;
+      }, 500);
+    } else if (
+      this.businessManageService.viewDivisionType ==
+        ViewDivisionTypeEnum.TableLinkChild &&
+      this.fillMode
+    ) {
+      setTimeout(() => {
+        if (this.businessManageService.station) {
+          this.levelListPanel.defaultItem(
+            this.businessManageService.station.DivisionId
+          );
+          this.tableService.search.stationId =
+            this.businessManageService.station.Id;
+        } else this.levelListPanel.defaultItem(this.fillMode.divisionId);
       }, 500);
     }
   }
 
   goMoreHistroy() {
     this.navService.systemMode = SystemModeEnum.illegalDropEvent;
-    this.router.navigateByUrl('aiop/event-history/illegal-drop-event?p=1');
-
+    this.router.navigateByUrl("aiop/event-history/illegal-drop-event?p=1");
   }
 
   changeView(tagIndex: number) {
     this.changeViewFn(tagIndex);
   }
 
-  async initTableList() {   
-       
+  async initTableList() {
     if (this.tableService.search.state == false) {
       if (this.listMode == PageListMode.table)
         await this.tableService.requestData(1, (page) => {
-          this.tableService.eventTable.initPagination(page, async (index) => {
-            await this.tableService.requestData(index);
-          }, !this.isPage);
+          this.tableService.eventTable.initPagination(
+            page,
+            async (index) => {
+              await this.tableService.requestData(index);
+            },
+            !this.isPage
+          );
         });
       else if (this.listMode == PageListMode.list)
         await this.tableService.requestDataX(1, (page) => {
-          this.tableService.eventCards.initPagination(page, async (index) => {
-            await this.tableService.requestDataX(index);
-          }, !this.isPage);
+          this.tableService.eventCards.initPagination(
+            page,
+            async (index) => {
+              await this.tableService.requestDataX(index);
+            },
+            !this.isPage
+          );
         });
-    }
-    else {
-
+    } else {
       if (this.listMode == PageListMode.table)
         await this.tableService.searchData(1, (page) => {
-          this.tableService.eventTable.initPagination(page, async (index) => {
-            await this.tableService.searchData(index);
-          }, !this.isPage);
+          this.tableService.eventTable.initPagination(
+            page,
+            async (index) => {
+              await this.tableService.searchData(index);
+            },
+            !this.isPage
+          );
         });
       else if (this.listMode == PageListMode.list)
         await this.tableService.searchDataX(1, (page) => {
-          this.tableService.eventCards.initPagination(page, async (index) => {
-            await this.tableService.searchDataX(index);
-          }, !this.isPage);
+          this.tableService.eventCards.initPagination(
+            page,
+            async (index) => {
+              await this.tableService.searchDataX(index);
+            },
+            !this.isPage
+          );
         });
     }
   }
@@ -240,28 +304,33 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
     }, 50);
   }
 
-
   async search() {
     this.tableService.search.state = true;
     if (this.listMode == PageListMode.table)
       await this.tableService.searchData(1, (page) => {
-        this.tableService.eventTable.initPagination(page, async (index) => {
-          await this.tableService.searchData(index);
-        }, !this.isPage);
+        this.tableService.eventTable.initPagination(
+          page,
+          async (index) => {
+            await this.tableService.searchData(index);
+          },
+          !this.isPage
+        );
       });
     else if (this.listMode == PageListMode.list)
       await this.tableService.searchDataX(1, (page) => {
-        this.tableService.eventCards.initPagination(page, async (index) => {
-          await this.tableService.searchDataX(index);
-        }, !this.isPage);
+        this.tableService.eventCards.initPagination(
+          page,
+          async (index) => {
+            await this.tableService.searchDataX(index);
+          },
+          !this.isPage
+        );
       });
     this.tableService.allEventsRecordData();
   }
-
-
 }
 
 export enum ContentModeEnum {
   View,
-  Page
+  Page,
 }

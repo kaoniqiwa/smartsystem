@@ -4,7 +4,6 @@ import { BusinessParameter } from "../../../common/interface/IBusiness";
 import { BaseBusinessRefresh } from "../../../common/tool/base-business-refresh";
 import { EventDropHistory } from "./business/event-drop-history/event-drop-history";
 import { EventDropOrder } from "./business/event-drop-order/event-drop-order";
-import { DivisionTypeEnum, EnumHelper } from "../../../common/tool/enum-helper";
 import { MessageBar } from "../../../common/tool/message-bar";
 import { HeaderSquareListComponent } from "../../../shared-module/header-square-list/header-square-list.component";
 import { BusinessViewComponetConstructor } from "./business-card-slot.service";
@@ -38,8 +37,9 @@ import { isBoolean, isString } from "util";
 import { BusinessEventTypeEnum } from "../../../shared-module/business-component/event-history/business-event-type";
 import { ComponentService } from "../../../shared-module/component-service";
 import { SessionUser } from "../../../common/tool/session-user";
-import { EventType } from "src/app/data-core/model/waste-regulation/event-number";
-import { Language } from "src/app/common/tool/language";
+import { DivisionType, EventType } from "../../../data-core/model/enum";
+import { Language } from "../../../common/tool/language";
+
 @Injectable({
   providedIn: "root",
 })
@@ -72,8 +72,8 @@ export class DivisionBusinessService {
   /**事件卡片 参数记录 */
   eventDropCard: {
     eventType: EventType;
-    divisionType: DivisionTypeEnum;
-    dropDivisionType: DivisionTypeEnum;
+    divisionType: DivisionType;
+    dropDivisionType: DivisionType;
   };
   user: SessionUser;
   linkChildView: (id: string, eventType: EventType, drop2: any) => void;
@@ -119,12 +119,12 @@ export class DivisionBusinessService {
   }
 
   bindingEvent() {
-    const resetDropDivisionType = (val: DivisionTypeEnum) => {
-      if (val == DivisionTypeEnum.City)
-        this.eventDropCard.dropDivisionType = DivisionTypeEnum.County;
-      else if (val == DivisionTypeEnum.County)
-        this.eventDropCard.dropDivisionType = DivisionTypeEnum.Committees;
-      else if (val == DivisionTypeEnum.Committees)
+    const resetDropDivisionType = (val: DivisionType) => {
+      if (val == DivisionType.City)
+        this.eventDropCard.dropDivisionType = DivisionType.County;
+      else if (val == DivisionType.County)
+        this.eventDropCard.dropDivisionType = DivisionType.Committees;
+      else if (val == DivisionType.Committees)
         this.eventDropCard.dropDivisionType = "station" as any;
     };
     setTimeout(() => {
@@ -132,7 +132,7 @@ export class DivisionBusinessService {
         if (x.list[0].view instanceof HeaderSquareListComponent) {
           x.list[0].view.btnControl = (val: {
             id: string;
-            type: DivisionTypeEnum;
+            type: DivisionType;
           }) => {
             const param = new BusinessParameter(),
               eventTypes = [EventType.IllegalDrop, EventType.MixedInto];
@@ -164,22 +164,22 @@ export class DivisionBusinessService {
                   ) {
                     setTimeout(() => {
                       const divisionDrop = new Map<
-                        DivisionTypeEnum,
+                        DivisionType,
                         Array<{ id: string; name: string }>
                       >();
-                      divisionDrop.set(DivisionTypeEnum.City, [
+                      divisionDrop.set(DivisionType.City, [
                         {
-                          id: DivisionTypeEnum.County + "",
+                          id: DivisionType.County + "",
                           name: "街道",
                         },
                         {
-                          id: DivisionTypeEnum.Committees + "",
+                          id: DivisionType.Committees + "",
                           name: "居委",
                         },
                       ]);
-                      divisionDrop.set(DivisionTypeEnum.County, [
+                      divisionDrop.set(DivisionType.County, [
                         {
-                          id: DivisionTypeEnum.Committees + "",
+                          id: DivisionType.Committees + "",
                           name: "居委",
                         },
                         {
@@ -279,18 +279,16 @@ export class DivisionBusinessService {
                   param.map.set("dropList", stationKey);
                   this.eventDropCard.dropDivisionType = stationKey as any;
                 } else {
-                  if (
-                    this.eventDropCard.divisionType == DivisionTypeEnum.City
-                  ) {
-                    if (item.id == DivisionTypeEnum.Committees + "")
-                      param.map.set("divisionType", DivisionTypeEnum.County);
-                    else if (item.id == DivisionTypeEnum.County + "")
-                      param.map.set("divisionType", DivisionTypeEnum.City);
+                  if (this.eventDropCard.divisionType == DivisionType.City) {
+                    if (item.id == DivisionType.Committees + "")
+                      param.map.set("divisionType", DivisionType.County);
+                    else if (item.id == DivisionType.County + "")
+                      param.map.set("divisionType", DivisionType.City);
                     param.map.set("dropList", item.id);
                     this.eventDropCard.dropDivisionType = item.id as any;
                   } else {
-                    if (item.id == DivisionTypeEnum.Committees + "")
-                      param.map.set("divisionType", DivisionTypeEnum.County);
+                    if (item.id == DivisionType.Committees + "")
+                      param.map.set("divisionType", DivisionType.County);
                     this.eventDropCard.dropDivisionType =
                       param.map.get("divisionType");
                   }
@@ -353,7 +351,6 @@ export class DivisionBusinessService {
                   msg: boolean;
                   catchState: { o: boolean };
                 },
-                enumHelper = new EnumHelper(),
                 state = (gs: GarbageStation) => {
                   return Language.StationStateFlags(gs.StationStateFlags);
                   // if (gs.StationState == 0) return "正常";

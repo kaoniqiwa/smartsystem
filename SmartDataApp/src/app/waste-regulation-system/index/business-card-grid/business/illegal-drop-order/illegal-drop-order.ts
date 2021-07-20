@@ -5,11 +5,8 @@ import {
 import { IllegalDropOrderInfo, IllegalDropInfo } from "./data";
 import { BusinessParameter } from "../../../../../common/interface/IBusiness";
 import { BaseBusinessRefresh } from "../../../../../common/tool/base-business-refresh";
-import {
-  EventNumber,
-  EventType,
-} from "../../../../../data-core/model/waste-regulation/event-number";
-import { DivisionTypeEnum } from "../../../../../common/tool/enum-helper";
+import { DivisionType, EventType } from "../../../../../data-core/model/enum";
+
 export class IllegalDropOrder extends BaseBusinessRefresh {
   constructor(
     dataServe: StatisticalDataBufferService,
@@ -25,12 +22,12 @@ export class IllegalDropOrder extends BaseBusinessRefresh {
     const divisionsId = this.businessParameter.map.get("divisionsId") as string,
       divisionsType = this.businessParameter.map.get(
         "divisionsType"
-      ) as DivisionTypeEnum;
+      ) as DivisionType;
 
     const model = new IllegalDropOrderInfo();
     model.items = new Array();
 
-    if (divisionsType == DivisionTypeEnum.Committees) {
+    if (divisionsType == DivisionType.Committees) {
       const stations = await (
           this.dataServe as StatisticalDataBufferService
         ).getGarbageStations(divisionsId),
@@ -52,7 +49,7 @@ export class IllegalDropOrder extends BaseBusinessRefresh {
         }
       }
     } else if (
-      divisionsType == DivisionTypeEnum.County ||
+      divisionsType == DivisionType.County ||
       divisionsType == void 0
     ) {
       if (divisionsId && divisionsIds == void 0) {
@@ -61,7 +58,7 @@ export class IllegalDropOrder extends BaseBusinessRefresh {
         ).getDivisions();
         divisionsIds = new Array();
         divisions
-          .filter((x) => x.DivisionType == DivisionTypeEnum.Committees)
+          .filter((x) => x.DivisionType == DivisionType.Committees)
           .map((x) => divisionsIds.push(x.Id));
       }
       const data = await (

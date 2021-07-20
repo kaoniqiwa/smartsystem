@@ -1,3 +1,5 @@
+import { DivisionType, GisType } from "../enum";
+
 /**区划信息 */
 export class Division {
   /**区划ID */
@@ -15,9 +17,9 @@ export class Division {
   /**描述信息(可选) */
   Description: string;
   /**人口(可选) */
-  Population: number | null;
+  Population?: number;
   /**区划类型，用于图标区分 */
-  DivisionType: number;
+  DivisionType: DivisionType;
   /**创建时间 */
   CreateTime: Date | string;
   /**更新事件 */
@@ -34,7 +36,7 @@ export class GisArea {
    * @type {GisPoint[]}
    * @memberof GisArea
    */
-  GisPoint: GisPoint[]
+  GisPoint: GisPoint[];
   /**
    *	Int32	坐标系类型	M
    *
@@ -44,7 +46,6 @@ export class GisArea {
   GisType: number;
 }
 export class GisPoint {
-
   constructor(point?: number[], type?: GisType) {
     if (point) {
       this.Longitude = point[0];
@@ -92,56 +93,22 @@ export class GisPoint {
   GisType?: GisType;
 }
 
-export enum GisType {
-  /**
-   * WGS84 1 
-   */
-  WGS84 = 1,
-  /**
-   * CGCS2000 2 
-   */
-  CGCS2000 = 2,
-  /**
-   * BD09 3 
-   */
-  BD09 = 3,
-  /**
-   * GCJ02 4 
-   */
-  GCJ02 = 4,
-  /**
-   * 西安80 5 
-   */
-  XA80 = 5,
-  /**
-   * 北京54 6 
-   */
-  BJ54 = 6,
-  /**
-   * 其他 7 
-   */
-  Other = 7
-}
-
 /**获取区划列表参数 */
 export class GetDivisionsParams {
   /**页码[1-n](可选) */
-  PageIndex: number | null;
+  PageIndex?: number;
   /**分页大小[1-100](可选) */
-  PageSize: number | null;
+  PageSize?: number;
   /**区划ID(可选) */
-  Ids: string[];
+  Ids?: string[];
   /**区划名称，支持LIKE(可选) */
-  Name: string;
+  Name?: string;
   /**区划类型(可选) */
-  DivisionType: number | null;
+  DivisionType?: DivisionType;
   /**父ID(可选) */
-  ParentId: string;
+  ParentId?: string;
   /**区划完整路径(可选)，含本节点，@进行分割，上级节点在前，支持LIKE */
-  DivisionPath: string;
+  DivisionPath?: string;
   /**祖辈ID(可选)，返回该ID下的所有子孙区划信息 */
-  AncestorId: string;
-
+  AncestorId?: string;
 }
-
-

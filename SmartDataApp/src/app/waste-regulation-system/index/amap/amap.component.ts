@@ -16,7 +16,6 @@ import {
 import {
   GarbageStation,
   GetGarbageStationsParams,
-  StationState,
 } from "../../../data-core/model/waste-regulation/garbage-station";
 import {
   CameraRequestService as GarbageStationCameraRequestService,
@@ -41,8 +40,8 @@ import { PagedList } from "../../../data-core/model/page";
 import { MapListItem, MapListItemType } from "./map-list-panel/map-list-item";
 import { Camera } from "../../../data-core/model/waste-regulation/camera";
 import { SessionUser } from "../../../common/tool/session-user";
-import { GetGarbageStationStatisticNumbersParams } from "src/app/data-core/model/waste-regulation/garbage-station-number-statistic";
-import { Flags } from "src/app/common/tool/flags";
+import { GetGarbageStationStatisticNumbersParams } from "../../../data-core/model/waste-regulation/garbage-station-number-statistic";
+import { StationState } from "../../../data-core/model/enum";
 
 declare var $: any;
 
@@ -600,8 +599,10 @@ export class AMapComponent implements AfterViewInit, OnInit {
       } else {
         params = new GetGarbageStationsParams();
         params.PageSize = 9999;
-        params.DivisionId = village.id;
-        response = await this.garbageService.list(params);
+        (params as GetGarbageStationsParams).DivisionId = village.id;
+        response = await this.garbageService.list(
+          params as GetGarbageStationsParams
+        );
         this.amapService.childrenOfList = (
           response as PagedList<GarbageStation>
         ).Data.map((x) => {

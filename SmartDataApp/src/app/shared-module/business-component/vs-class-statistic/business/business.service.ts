@@ -19,7 +19,7 @@ import {
   GarbageStationNumberStatisticV2,
   GetGarbageStationStatisticNumbersParamsV2,
 } from "../../../../data-core/model/waste-regulation/garbage-station-number-statistic";
-import { EventType } from "src/app/data-core/model/waste-regulation/event-number";
+import { EventType } from "../../../../data-core/model/enum";
 
 @Injectable()
 export class BusinessService extends ListAttribute {

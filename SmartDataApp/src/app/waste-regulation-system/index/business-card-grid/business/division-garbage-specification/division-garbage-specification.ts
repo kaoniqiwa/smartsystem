@@ -2,8 +2,8 @@ import { StatisticalDataBufferService } from "../../buffer/statistical-data-buff
 import { Specification } from "./data";
 import { BusinessParameter } from "../../../../../common/interface/IBusiness";
 import { BaseBusinessRefresh } from "../../../../../common/tool/base-business-refresh";
-import { DivisionTypeEnum } from "../../../../../common/tool/enum-helper";
-import { EventType } from "src/app/data-core/model/waste-regulation/event-number";
+import { DivisionType, EventType } from "../../../../../data-core/model/enum";
+
 export class DivisionGarbageSpecification extends BaseBusinessRefresh {
   constructor(
     dataServe: StatisticalDataBufferService,
@@ -19,7 +19,7 @@ export class DivisionGarbageSpecification extends BaseBusinessRefresh {
       divisionsId = this.businessParameter.map.get("divisionId") as string,
       divisionsType = this.businessParameter.map.get(
         "divisionsType"
-      ) as DivisionTypeEnum,
+      ) as DivisionType,
       model = new Specification(),
       data = await (
         this.dataServe as StatisticalDataBufferService
@@ -29,7 +29,7 @@ export class DivisionGarbageSpecification extends BaseBusinessRefresh {
     model.garbagePushNumber = data.StationNumber || 0;
     model.hybridPushNumber = 0;
     model.illegalDropNumber = 0;
-    if (divisionsType == DivisionTypeEnum.Committees) {
+    if (divisionsType == DivisionType.Committees) {
       const stations = await (
           this.dataServe as StatisticalDataBufferService
         ).getGarbageStations(divisionsId),
@@ -48,7 +48,7 @@ export class DivisionGarbageSpecification extends BaseBusinessRefresh {
               model.hybridPushNumber += v.DayNumber;
         }
       }
-    } else if (divisionsType == DivisionTypeEnum.County) {
+    } else if (divisionsType == DivisionType.County) {
       const data = await (
         this.dataServe as StatisticalDataBufferService
       ).postDivisionStatisticNumbers(divisionsIds);

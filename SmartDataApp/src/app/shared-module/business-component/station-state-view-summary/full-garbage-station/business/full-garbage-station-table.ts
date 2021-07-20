@@ -40,7 +40,7 @@ import { PlayVideo } from "../../../../../aiop-system/common/play-video";
 import { DateDifference } from "../../../../../common/tool/tool.service";
 import { GetPreviewUrlParams } from "../../../../../data-core/model/aiop/video-url";
 import { HWVideoService } from "../../../../../data-core/dao/video-dao";
-import { Language } from "src/app/common/tool/language";
+import { Language } from "../../../../../common/tool/language";
 @Injectable()
 export class BusinessService extends EnumHelper {
   playVideo: PlayVideo;
