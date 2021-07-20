@@ -23,9 +23,9 @@ export class IllegalDropEventData {
 /**获取事件记录参数 */
 export class GetEventRecordsParams {
   /**页码[1-n](可选) */
-  PageIndex: number | null;
+  PageIndex?: number;
   /**分页大小[1-100](可选) */
-  PageSize: number | null;
+  PageSize?: number;
   /**开始时间 */
   BeginTime: Date | string;
   /**结束时间 */

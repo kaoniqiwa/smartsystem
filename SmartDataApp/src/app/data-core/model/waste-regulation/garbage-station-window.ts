@@ -1,3 +1,4 @@
+import { CanType } from "../enum";
 
     /**垃圾投放窗口 */
     export class GarbageStationWindow
@@ -7,7 +8,7 @@
         /**名称(可选) */
         Name: string;
         /**垃圾桶类型 */
-        CanType: number;
+        CanType: CanType;
         /**垃圾桶数量，（保留） */
-        TrashCanNumber: number | null;
+        TrashCanNumber??: number;
     }

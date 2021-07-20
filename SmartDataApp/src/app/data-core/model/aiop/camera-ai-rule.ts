@@ -1,15 +1,14 @@
 import { Point } from "../point";
 
-
 /**
  * 摄像机AI规则信息
  */
 export class CameraAIRule {
   RuleId: string;
-  TriggerType: number | null;
-  Direction: number | null;
+  TriggerType?: number;
+  Direction?: number;
   /**
-   * 规则的归一化多边形(可选) 
+   * 规则的归一化多边形(可选)
    */
   Polygon: Point[];
   /**

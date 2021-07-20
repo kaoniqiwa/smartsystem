@@ -1,6 +1,5 @@
 import { Point } from "../point";
 
-
 /**
  * AI摄像机识别的目标
  */
@@ -17,11 +16,11 @@ export class CameraAIDataObject {
   /**
    * 是否有效(可选)
    */
-  Valid: boolean | null;
+  Valid?: boolean;
   /**
    * 是否可见(可选)
    */
-  Visible: boolean | null;
+  Visible?: boolean;
   ObjectImageUrl: string;
   /**
    *  标签信息，包括所有子标签 (可选)
@@ -50,7 +49,7 @@ export class CameraAIDataObjectLabel {
   /**数值描述(可选) */
   DataDescription: string;
   /**是否为与页标签(可选) */
-  IsLeaf: boolean | null;
+  IsLeaf?: boolean;
   /**父标签ID(可选) */
   ParentLabelId: string;
 }

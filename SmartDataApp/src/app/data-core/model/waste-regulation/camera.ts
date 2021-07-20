@@ -1,5 +1,3 @@
-
-
 /**摄像机信息 */
 export class Camera {
   /**摄像机ID */
@@ -33,9 +31,9 @@ export class Camera {
 /**获取摄像机列表参数 */
 export class GetGarbageStationCamerasParams {
   /**页码[1-n](可选) */
-  PageIndex: number | null;
+  PageIndex?: number;
   /**分页大小[1-100](可选) */
-  PageSize: number | null;
+  PageSize?: number;
   /**摄像机ID(可选) */
   Ids: string[];
   /**垃圾房ID(可选) */
@@ -43,7 +41,7 @@ export class GetGarbageStationCamerasParams {
   /**摄像机名称(可选) */
   Name: string;
   /**摄像机用途(可选) */
-  CameraUsage: number | null;
+  CameraUsage?: number;
 
   OnlineStatus: number;
 

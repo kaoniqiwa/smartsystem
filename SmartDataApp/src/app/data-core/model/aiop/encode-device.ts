@@ -2,11 +2,11 @@ import { Resource } from "./resource";
 /**编码设备信息 */
 export class EncodeDevice extends Resource {
   /**传输类型(可选)　0：UDP，1：TCP */
-  TransType: number | null;
+  TransType?: number;
   /**协议类型(可选) Howell，Hikvision，UniView */
   ProtocolType: string;
   /**状态(可选) 0-正常,1-离线 */
-  OnlineStatus: number | null;
+  OnlineStatus?: number;
   /**型号(可选) */
   Model: string;
   /**序列号(可选) */
@@ -31,6 +31,6 @@ export class EncodeDevice extends Resource {
   HardwareVersion: string;
   /**设备类型(可选) NVR，IPC，DVS */
   DeviceType: string;
-  SRSId: string;	//String	流媒体ID
-  SRServerId: string;	//String	流媒体服务器ID
+  SRSId: string; //String	流媒体ID
+  SRServerId: string; //String	流媒体服务器ID
 }
