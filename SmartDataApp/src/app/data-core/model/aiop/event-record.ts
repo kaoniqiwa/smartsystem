@@ -1,4 +1,4 @@
-import { EventType } from "../enum";
+import { EventType, ResourceType } from "../enum";
 
 /**事件记录 */
 export class EventRecord {
@@ -18,7 +18,7 @@ export class EventRecord {
    * EncodeDevice：编码设备
    * IoTSensor：物联网传感器
    */
-  ResourceType: string;
+  ResourceType: ResourceType;
   /**资源名称(可选) */
   ResourceName: string;
   /**图片ID、图片地址(可选) */

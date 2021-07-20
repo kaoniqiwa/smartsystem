@@ -45,7 +45,7 @@ export class GetGarbageStationTrashCansParams {
   /**垃圾桶编号(可选) */
   No?: string;
   /**垃圾桶类型(可选) */
-  CanType?: number;
+  CanType?: CanType;
   /**垃圾桶盖子状态(可选), 0：打开，1：关闭 */
   LidState?: number;
 }

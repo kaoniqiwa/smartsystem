@@ -12,11 +12,11 @@ import {
   TableOperationBtn,
 } from "../../../../shared-module/custom-table/custom-table-model";
 import { ITableField } from "../../../common/ITableField";
-import { ResourceTypeEnum } from "../../../../common/tool/enum-helper";
 import { AIOPMediumPictureUrl } from "../../../../data-core/url/aiop/resources";
 import { IBusinessData } from "../../../../common/interface/IBusiness";
 import { BusinessTable } from "../../../common/business-table";
 import { Language } from "../../../../common/tool/language";
+
 export class EventTable extends BusinessTable implements IConverter {
   initGalleryTargetFn: (event: CameraAIEventRecord) => void;
   findEventFn: (id: string) => CameraAIEventRecord;
@@ -119,7 +119,7 @@ export class EventTable extends BusinessTable implements IConverter {
     tableField.imageUrl = AIOPMediumPictureUrl.getJPG(item.ImageUrl);
     tableField.modelName = item.Data.ModelName;
     tableField.resourceName = item.ResourceName;
-    tableField.resourceType = ResourceTypeEnum[item.ResourceType];
+    tableField.resourceType = Language.ResourceType[item.ResourceType];
 
     return tableField;
   }

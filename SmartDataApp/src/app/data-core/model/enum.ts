@@ -142,3 +142,43 @@ export enum StationState {
    */
   Error = 2,
 }
+export enum CameraUsage {
+  /** 容量检测 */
+  Volume = 1,
+  /**混合投放 */
+  MixedInto = 2,
+  /**乱扔垃圾 */
+  IllegalDrop = 3,
+  /**垃圾满溢 */
+  GarbageFull = 4,
+}
+export enum CameraUsageData {
+  /** 干垃圾桶*/
+  Dry = 9,
+  /**湿垃圾桶 */
+  Wet = 11,
+  /** 可回收垃圾桶*/
+  Recycle = 9,
+  /** 有害垃圾桶*/
+  Hazard = 9,
+
+  Other = 4,
+}
+export enum ResourceType {
+  /**
+   *  监控点
+   */
+  Camera = "Camera",
+  /**
+   *  编码设备
+   */
+  EncodeDevice = "EncodeDevice",
+  /**
+   *  物联网传感器
+   */
+  IoTSensor = "IoTSensor",
+  /**
+   *  垃圾房
+   */
+  GarbageStation = "GarbageStation",
+}

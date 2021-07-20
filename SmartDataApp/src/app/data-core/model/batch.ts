@@ -12,7 +12,7 @@ export class BatchRequest {
   /**资源ID列表 */
   ResourceIds: string[];
   /**是否删除数据，(可选)，默认：true */
-  IsDelete: boolean | null;
+  IsDelete?: boolean;
 }
 
 /**单个操作结果 */

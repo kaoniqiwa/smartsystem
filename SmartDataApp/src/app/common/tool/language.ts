@@ -2,6 +2,7 @@ import {
   CameraState,
   CameraType,
   EventType,
+  ResourceType,
   StationState,
 } from "../../data-core/model/enum";
 import { Flags } from "../../data-core/model/flags";
@@ -82,6 +83,22 @@ export class Language {
         return "设备故障";
       case CameraState.PlatformError:
         return "平台故障";
+
+      default:
+        return "";
+    }
+  }
+
+  static ResourceType(type: ResourceType) {
+    switch (type) {
+      case ResourceType.Camera:
+        return "监控点";
+      case ResourceType.EncodeDevice:
+        return "编码设备";
+      case ResourceType.IoTSensor:
+        return "物联网传感器";
+      case ResourceType.GarbageStation:
+        return "垃圾房";
 
       default:
         return "";
