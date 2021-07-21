@@ -143,13 +143,15 @@ export class EventTable extends BusinessTable implements IConverter {
     tableField.imageUrl = AIOPMediumPictureUrl.getJPG(item.ImageUrl);
     tableField.committees = "-";
     const division = this.findDivisionFn(item.Data.DivisionId);
-    if (division.DivisionType == DivisionType.Committees) {
-      tableField.committees = division.Name;
-      const county = this.findDivisionFn(division.ParentId);
-      if (county) tableField.county = county.Name;
-    } else {
-      //tableField.committees=item.Data.DivisionName;
-      tableField.county = item.Data.DivisionName;
+    if (division) {
+      if (division.DivisionType == DivisionType.Committees) {
+        tableField.committees = division.Name;
+        const county = this.findDivisionFn(division.ParentId);
+        if (county) tableField.county = county.Name;
+      } else {
+        //tableField.committees=item.Data.DivisionName;
+        tableField.county = item.Data.DivisionName;
+      }
     }
     tableField.station = item.Data.StationName;
     return tableField;

@@ -136,13 +136,15 @@ export class EventTable extends BusinessTable implements IConverter {
     tableField.resourceName = item.ResourceName;
     tableField.station = item.Data.StationName;
     const division = this.findDivisionFn(item.Data.DivisionId);
-    if (division.DivisionType == DivisionType.Committees) {
-      tableField.committees = division.Name;
-      const county = this.findDivisionFn(division.ParentId);
-      tableField.county = county.Name;
-    } else {
-      tableField.committees = item.Data.DivisionName;
-      tableField.county = item.Data.DivisionName;
+    if (division) {
+      if (division.DivisionType == DivisionType.Committees) {
+        tableField.committees = division.Name;
+        const county = this.findDivisionFn(division.ParentId);
+        tableField.county = county.Name;
+      } else {
+        tableField.committees = item.Data.DivisionName;
+        tableField.county = item.Data.DivisionName;
+      }
     }
 
     if (

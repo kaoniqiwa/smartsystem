@@ -66,10 +66,32 @@
   justify-content: space-around;
 }
 
-.map-bar.marker-details .statistic>.item {
+.map-bar.marker-details .statistic .left {
+  display: flex;
+  align-items: baseline;
+  width: 33.333333333%;
+  justify-content: center;
+}
+
+.map-bar.marker-details .statistic .left .number {
+  font-size: 36px;
+  color: #cfd7ff;
+}
+
+.map-bar.marker-details .statistic .left .suffix {
+  color: #6997ff
+}
+
+
+.map-bar.marker-details .statistic .right {
+  width: 66.66666666%;
+  display: flex;
+}
+
+.map-bar.marker-details .statistic .right>.item {
   border-right: 1px solid #3a93ff;
   border-image: linear-gradient(transparent, #3a93ff, transparent) 0 1;
-  width: 33.333333333333%;
+  width: 30%;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -77,11 +99,15 @@
 
 }
 
-.map-bar.marker-details .statistic>.item:hover>a {
+.map-bar.marker-details .statistic .right>.item:first-child {
+  width: 40%;
+}
+
+.map-bar.marker-details .statistic .right>.item:hover>a {
   text-decoration: underline;
 }
 
-.map-bar.marker-details .statistic>.item:last-child {
+.map-bar.marker-details .statistic .right>.item:last-child {
   border-right: none;
 }
 
@@ -129,4 +155,46 @@
 
 .map-bar.marker-details .state.normal {
   color: #2bcf38;
+}
+
+.map-bar.marker-details .statistic1 {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.map-bar.marker-details .statistic1>.grade {
+  width: 33.33333%;
+  display: flex;
+  align-items: baseline;
+}
+
+.map-bar.marker-details .statistic1>div:last-child {
+  width: inherit;
+}
+
+.map-bar.marker-details .statistic1 .grade .number {
+  font-size: 36px;
+}
+
+.map-bar.marker-details .statistic1 .grade .suffix {}
+
+.map-bar.marker-details .statistic1 .garbage-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50%;
+}
+
+.map-bar.marker-details .statistic1 .event-history {
+  border-top: 1px solid #3a93ff;
+  border-image: linear-gradient(to left, transparent, #3a93ff, transparent) 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 50%;
+}
+
+.map-bar.marker-details .statistic1 i {
+  margin-right: 10px;
 }

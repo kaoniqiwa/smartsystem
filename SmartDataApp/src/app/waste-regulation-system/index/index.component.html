@@ -113,11 +113,13 @@
         >
           <hw-illegal-drop-event-summary
             [businessEventType]="divisionBusinessService.businessEventType"
+            [GarbageStation]="divisionBusinessService.selected.GarbageStation"
           ></hw-illegal-drop-event-summary>
         </ng-container>
         <ng-container *ngIf="divisionBusinessService.fullStationsView">
           <hw-full-garbage-station-summary
             [divisionsId]="divisionBusinessService.divisionsId"
+            [GarbageStation]="divisionBusinessService.selected.GarbageStation"
           ></hw-full-garbage-station-summary>
         </ng-container>
         <ng-container *ngIf="divisionBusinessService.stationListView">
@@ -138,7 +140,9 @@
           <vs-class-statistic></vs-class-statistic>
         </ng-container>
         <ng-container *ngIf="divisionBusinessService.stationStrandedView">
-          <hw-station-stranded></hw-station-stranded>
+          <hw-station-stranded
+            [GarbageStation]="divisionBusinessService.selected.GarbageStation"
+          ></hw-station-stranded>
         </ng-container>
       </div>
     </div>
@@ -178,6 +182,18 @@
             (mapLoadedEvent)="mapLoaded($event)"
             (vsButtonClicked)="showVsView()"
             (patrolButtonClicked)="showInspectionView()"
+            (GarbageCountClickedEvent)="
+              divisionBusinessService.openStationStranded($event)
+            "
+            (MixedIntoClickedEvent)="
+              divisionBusinessService.openMixedInto($event)
+            "
+            (IllegalDropClickedEvent)="
+              divisionBusinessService.openIllegalDrop($event)
+            "
+            (StateClickedEvent)="
+              divisionBusinessService.openFullStation($event)
+            "
           ></app-amap>
         </div>
         <div class="card-angle top-left"></div>

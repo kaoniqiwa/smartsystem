@@ -35,44 +35,88 @@
   </div>
 
   <div class="statistic">
-    <div
-      class="item"
-      title="查看垃圾滞留投放点信息"
-      (click)="onGarbageCountClicked()"
-    >
-      <!-- <div><i class="howell-icon-garbagebags"></i></div> -->
-      <div>垃圾滞留点</div>
-      <a class="hw-link-underline value green-text a-text">{{
-        GarbageCount
-      }}</a>
+    <div class="left">
+      <div class="number">{{ GarbageStationGrade }}</div>
+      <div class="suffix">分</div>
     </div>
-    <!-- <div class="item" title="查看满溢投放点信息">
-      <div><i class="howell-icon-full"></i></div>
-      <a class="hw-link-underline value orange-text a-text">{{
-        MaxGarbageCount
-      }}</a>
-    </div> -->
-    <div
-      class="item"
-      title="查看乱丢垃圾事件记录"
-      (click)="onIllegalDropClicked()"
-    >
-      <!-- <div><i class="howell-icon-nolittering"></i></div> -->
-      <div>乱丢垃圾</div>
-      <a class="hw-link-underline value powder-red-text a-text">{{
-        IllegalDropCount
-      }}</a>
+    <div class="right">
+      <div
+        class="item"
+        title="查看垃圾滞留投放点信息"
+        (click)="onGarbageCountClicked()"
+      >
+        <div><i class="howell-icon-garbagebags"></i></div>
+        <!-- GarbageCount -->
+        <a class="hw-link-underline value green-text a-text">{{
+          GarbageInterval
+        }}</a>
+      </div>
+      <div
+        class="item"
+        title="查看乱丢垃圾事件记录"
+        (click)="onIllegalDropClicked()"
+      >
+        <div><i class="howell-icon-nolittering"></i></div>
+        <a class="hw-link-underline value powder-red-text a-text">{{
+          IllegalDropCount
+        }}</a>
+      </div>
+      <div
+        class="item"
+        title="查看混合投放事件记录"
+        (click)="onMixedIntoClicked()"
+      >
+        <div><i class="howell-icon-mixlittering"></i></div>
+        <a class="hw-link-underline value light-purple-text a-text">{{
+          MixedIntoCount
+        }}</a>
+      </div>
     </div>
-    <div
-      class="item"
-      title="查看混合投放事件记录"
-      (click)="onMixedIntoClicked()"
-    >
-      <!-- <div><i class="howell-icon-mixlittering"></i></div> -->
-      <div>混合投放</div>
-      <a class="hw-link-underline value light-purple-text a-text">{{
-        MixedIntoCount
-      }}</a>
+  </div>
+
+  <div class="statistic1" style="display: none">
+    <div class="grade">
+      <div class="number">{{ GarbageStationGrade }}</div>
+      <div class="suffix">分</div>
+    </div>
+    <div>
+      <div class="garbage-count">
+        <div
+          class="item"
+          title="查看垃圾滞留投放点信息"
+          (click)="onGarbageCountClicked()"
+        >
+          <div><i class="howell-icon-garbagebags"></i></div>
+          <!-- <div>垃圾滞留点</div> -->
+          <a class="hw-link-underline value green-text a-text">{{
+            GarbageInterval
+          }}</a>
+        </div>
+      </div>
+      <div class="event-history">
+        <div
+          class="item"
+          title="查看乱丢垃圾事件记录"
+          (click)="onIllegalDropClicked()"
+        >
+          <div><i class="howell-icon-nolittering"></i></div>
+          <!-- <div>乱丢垃圾</div> -->
+          <a class="hw-link-underline value powder-red-text a-text">{{
+            IllegalDropCount
+          }}</a>
+        </div>
+        <div
+          class="item"
+          title="查看混合投放事件记录"
+          (click)="onMixedIntoClicked()"
+        >
+          <div><i class="howell-icon-mixlittering"></i></div>
+          <!-- <div>混合投放</div> -->
+          <a class="hw-link-underline value light-purple-text a-text">{{
+            MixedIntoCount
+          }}</a>
+        </div>
+      </div>
     </div>
   </div>
 

@@ -23,6 +23,7 @@ import {
   ViewDivisionTypeEnum,
 } from "../../business-manage-service";
 import { DivisionType } from "../../../../data-core/model/enum";
+import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
 @Component({
   selector: "hw-illegal-drop-event-history",
   templateUrl: "./illegal-drop-event-history.component.html",
@@ -51,6 +52,20 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
    */
   @Input() isPage: boolean;
   @Input() changeViewFn: (index: number) => void;
+
+  private _GarbageStation: GarbageStation;
+  public get GarbageStation(): GarbageStation {
+    return this._GarbageStation;
+  }
+  @Input()
+  public set GarbageStation(v: GarbageStation) {
+    this._GarbageStation = v;
+    if (this._GarbageStation) {
+      this.tableService.search.stationId = v.Id;
+      this.search();
+    }
+  }
+
   startDate = (b: Date) => {
     this.tableService.search.formBeginDate = b;
   };

@@ -114,6 +114,18 @@ export class AMapComponent implements AfterViewInit, OnInit {
   @Output()
   ContextMenuStationInformationClickedEvent: EventEmitter<GarbageStation> = new EventEmitter();
 
+  @Output()
+  StateClickedEvent: EventEmitter<GarbageStation> = new EventEmitter();
+
+  @Output()
+  GarbageCountClickedEvent: EventEmitter<GarbageStation> = new EventEmitter();
+
+  @Output()
+  IllegalDropClickedEvent: EventEmitter<GarbageStation> = new EventEmitter();
+
+  @Output()
+  MixedIntoClickedEvent: EventEmitter<GarbageStation> = new EventEmitter();
+
   labelNumber = 0;
   labels: Global.Dictionary<CesiumDataController.LabelOptions> = {};
   labelHandle: NodeJS.Timer;
@@ -1042,5 +1054,33 @@ export class AMapComponent implements AfterViewInit, OnInit {
         this.StationVisibilityByLabel = this.StationVisibilityByLabel;
       }, 5000);
     });
+  }
+
+  onPanelStateClicked(station: GarbageStation) {
+    if (station.StationStateFlags.contains(StationState.Error)) {
+      this.selectedGarbageStation = undefined;
+      this.showGarbageStationCameraList(station.Id);
+    }
+    if (this.StateClickedEvent) {
+      this.StateClickedEvent.emit(station);
+    }
+  }
+
+  onPanelGarbageCountClicked(station: GarbageStation) {
+    if (this.GarbageCountClickedEvent) {
+      this.GarbageCountClickedEvent.emit(station);
+    }
+  }
+
+  onPanelIllegalDropClicked(station: GarbageStation) {
+    if (this.IllegalDropClickedEvent) {
+      this.IllegalDropClickedEvent.emit(station);
+    }
+  }
+
+  onPanelMixedIntoClicked(station: GarbageStation) {
+    if (this.MixedIntoClickedEvent) {
+      this.MixedIntoClickedEvent.emit(station);
+    }
   }
 }

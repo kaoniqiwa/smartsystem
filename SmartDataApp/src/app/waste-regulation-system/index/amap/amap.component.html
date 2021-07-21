@@ -14,6 +14,10 @@
   class="map-bar info-panel"
   *ngIf="selectedGarbageStation"
   [GarbageStation]="selectedGarbageStation"
+  (StateClickedEvent)="onPanelStateClicked($event)"
+  (GarbageCountClickedEvent)="onPanelGarbageCountClicked($event)"
+  (IllegalDropClickedEvent)="onPanelIllegalDropClicked($event)"
+  (MixedIntoClickedEvent)="onPanelMixedIntoClicked($event)"
 ></app-point-info-panel>
 
 <div class="map-bar btn-list">

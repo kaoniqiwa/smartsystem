@@ -37,8 +37,16 @@ import { isBoolean, isString } from "util";
 import { BusinessEventTypeEnum } from "../../../shared-module/business-component/event-history/business-event-type";
 import { ComponentService } from "../../../shared-module/component-service";
 import { SessionUser } from "../../../common/tool/session-user";
-import { DivisionType, EventType } from "../../../data-core/model/enum";
+import {
+  DivisionType,
+  EventType,
+  StationState,
+} from "../../../data-core/model/enum";
 import { Language } from "../../../common/tool/language";
+
+class DivisionBusinessServiceSelected {
+  GarbageStation?: GarbageStation;
+}
 
 @Injectable({
   providedIn: "root",
@@ -77,6 +85,9 @@ export class DivisionBusinessService {
   };
   user: SessionUser;
   linkChildView: (id: string, eventType: EventType, drop2: any) => void;
+
+  selected: DivisionBusinessServiceSelected = {};
+
   constructor(
     private cameraService: CameraRequestService,
     private componentService: ComponentService,
@@ -221,6 +232,7 @@ export class DivisionBusinessService {
           };
         } else if (x.list[0].view instanceof HintCardComponent) {
           x.list[0].view.btnControl = (tag) => {
+            this.selected.GarbageStation = undefined;
             if (x.list[0].business instanceof BaseBusinessRefresh) {
               if (tag == HintTag.IllegalDrop) {
                 this.illegalDropMode = new FillMode();
@@ -439,5 +451,32 @@ export class DivisionBusinessService {
     this.stationCameraView = false;
     this.vsClassStatistic = false;
     this.stationStrandedView = false;
+  }
+
+  openStationStranded(station: GarbageStation) {
+    this.selected.GarbageStation = station;
+    this.stationStrandedView = true;
+    this.eventHistoryView = true;
+  }
+
+  openMixedInto(station: GarbageStation) {
+    console.log("openMixedInto", station);
+    this.mixedInto(station.DivisionId);
+    this.selected.GarbageStation = station;
+  }
+
+  openIllegalDrop(station: GarbageStation) {
+    console.log("openIllegalDrop", station);
+    this.illegalDrop(station.DivisionId);
+    this.selected.GarbageStation = station;
+  }
+
+  openFullStation(station: GarbageStation) {
+    if (station.StationStateFlags.contains(StationState.Full)) {
+      this.selected.GarbageStation = station;
+      this.fullStationsView = true;
+      this.fullGarbageStationIntoMode = new FillMode();
+      this.eventHistoryView = true;
+    }
   }
 }

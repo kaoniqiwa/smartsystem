@@ -1,3 +1,4 @@
+import { DatePipe } from "@angular/common";
 import { Output, EventEmitter } from "@angular/core";
 import { Component, Input, OnInit } from "@angular/core";
 import { _getOptionScrollPosition } from "@angular/material";
@@ -56,7 +57,8 @@ export class PointInfoPanelComponent implements OnInit {
 
   constructor(
     private divisionService: DivisionRequestService,
-    private garbageStationService: GarbageStationRequestService
+    private garbageStationService: GarbageStationRequestService,
+    private datePipe: DatePipe
   ) {
     // this.GarbageStation.Members
   }
@@ -81,14 +83,13 @@ export class PointInfoPanelComponent implements OnInit {
     } else if (station.StationStateFlags.contains(StationState.Full)) {
       this.state.className = "warm";
     } else {
+      this.state.language = "";
       this.state.className = "normal";
     }
 
     this.divisionService.get(station.DivisionId).then((res) => {
-      console.log("居委会", res);
       this.committeeName = res.Name;
       this.divisionService.get(res.ParentId).then((res) => {
-        console.log("街道", res);
         this.roadName = res.Name;
       });
     });
@@ -100,6 +101,20 @@ export class PointInfoPanelComponent implements OnInit {
       // Grade
       // 当前时长
       // CurrentGarbageTime
+      console.log("statisticNumber", statistic);
+      this.GarbageStationGrade =
+        statistic.GarbageRatio === 100
+          ? "100"
+          : statistic.GarbageRatio.toFixed(2);
+
+      let hour = Math.floor(statistic.CurrentGarbageTime / 60);
+      let minute = Math.ceil(statistic.CurrentGarbageTime % 60);
+
+      this.GarbageInterval = hour ? hour + "小时" : "";
+      this.GarbageInterval = this.GarbageInterval
+        ? this.GarbageInterval
+        : minute + "分钟";
+
       if (statistic.TodayEventNumbers) {
         for (let i = 0; i < statistic.TodayEventNumbers.length; i++) {
           const item = statistic.TodayEventNumbers[i];
@@ -116,10 +131,10 @@ export class PointInfoPanelComponent implements OnInit {
           }
         }
       }
-      console.log(statistic);
     });
   }
-
+  GarbageStationGrade: string = "0";
+  GarbageInterval: string = "";
   GarbageCount: number = 0;
   IllegalDropCount: number = 0;
   MixedIntoCount: number = 0;
@@ -130,23 +145,30 @@ export class PointInfoPanelComponent implements OnInit {
   };
 
   onGarbageCountClicked() {
+    if (this.GarbageCount <= 0) return;
     if (this.GarbageCountClickedEvent) {
       this.GarbageCountClickedEvent.emit(this.GarbageStation);
     }
   }
   onIllegalDropClicked() {
+    if (this.IllegalDropCount <= 0) return;
     if (this.IllegalDropClickedEvent) {
       this.IllegalDropClickedEvent.emit(this.GarbageStation);
     }
   }
   onMixedIntoClicked() {
+    if (this.MixedIntoCount <= 0) return;
     if (this.MixedIntoClickedEvent) {
       this.MixedIntoClickedEvent.emit(this.GarbageStation);
     }
   }
   onStateClicked() {
-    if (this.StateClickedEvent) {
-      this.StateClickedEvent.emit(this.GarbageStation);
-    }
+    if (
+      this.GarbageStation.StationStateFlags.contains(StationState.Error) ||
+      this.GarbageStation.StationStateFlags.contains(StationState.Full)
+    )
+      if (this.StateClickedEvent) {
+        this.StateClickedEvent.emit(this.GarbageStation);
+      }
   }
 }

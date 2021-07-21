@@ -1,24 +1,35 @@
-<div  class="fill-height" style="position: relative;">
+<div class="fill-height" style="position: relative">
   <div class="fill-height collapse" [class.in]="viewsShow[0]">
-    <hw-illegal-drop-event-history [fillMode]="divisionBusinessService.illegalDropMode" 
-    (OtherViewEvent)="acceptOtherView($event)" [isPage]="defaultSearch"
-   ></hw-illegal-drop-event-history>
+    <hw-illegal-drop-event-history
+      [fillMode]="divisionBusinessService.illegalDropMode"
+      (OtherViewEvent)="acceptOtherView($event)"
+      [isPage]="defaultSearch"
+      [GarbageStation]="GarbageStation"
+    ></hw-illegal-drop-event-history>
   </div>
-  <div class="fill-height collapse"  [class.in]="viewsShow[1]">
-    <hw-illegal-drop-event-analyze   [businessEventType]="businessEventType"
-    (OtherViewEvent)="acceptOtherView($event)"></hw-illegal-drop-event-analyze>
+  <div class="fill-height collapse" [class.in]="viewsShow[1]">
+    <hw-illegal-drop-event-analyze
+      [businessEventType]="businessEventType"
+      (OtherViewEvent)="acceptOtherView($event)"
+    ></hw-illegal-drop-event-analyze>
   </div>
-  <div class="fill-height collapse"  [class.in]="viewsShow[2]">
-    <hw-illegal-drop-event-chart  [isDefaultSearch]="true"   [businessEventType]="businessEventType"
-    (OtherViewEvent)="acceptOtherView($event)"></hw-illegal-drop-event-chart>
+  <div class="fill-height collapse" [class.in]="viewsShow[2]">
+    <hw-illegal-drop-event-chart
+      [isDefaultSearch]="true"
+      [businessEventType]="businessEventType"
+      (OtherViewEvent)="acceptOtherView($event)"
+    ></hw-illegal-drop-event-chart>
   </div>
-  <div class="fill-height collapse"  [class.in]="viewsShow[3]">
-    <hw-illegal-drop-event-analyze-v2   [businessEventType]="businessEventType"
-    (OtherViewEvent)="acceptOtherView($event)"></hw-illegal-drop-event-analyze-v2>
-  </div> 
-  <div class="fill-height collapse"  [class.in]="viewsShow[4]">
-    <hw-mixed-into-event-history  [fillMode]="divisionBusinessService.mixedIntoMode" 
-     (OtherViewEvent)="acceptOtherView($event)"></hw-mixed-into-event-history>
+  <div class="fill-height collapse" [class.in]="viewsShow[3]">
+    <hw-illegal-drop-event-analyze-v2
+      [businessEventType]="businessEventType"
+      (OtherViewEvent)="acceptOtherView($event)"
+    ></hw-illegal-drop-event-analyze-v2>
   </div>
- 
-</div> 
+  <div class="fill-height collapse" [class.in]="viewsShow[4]">
+    <hw-mixed-into-event-history
+      [fillMode]="divisionBusinessService.mixedIntoMode"
+      (OtherViewEvent)="acceptOtherView($event)"
+    ></hw-mixed-into-event-history>
+  </div>
+</div>
