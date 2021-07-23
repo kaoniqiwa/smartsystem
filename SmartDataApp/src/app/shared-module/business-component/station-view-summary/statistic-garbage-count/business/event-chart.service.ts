@@ -26,6 +26,7 @@ import { Division } from "../../../../../data-core/model/waste-regulation/divisi
 import { moveView3 } from "../../../../../common/tool/jquery-help/jquery-help";
 import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 import { DivisionListView } from "../../../event-history/division-list-view";
+import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
 
 @Injectable()
 export class EventChartService extends ListAttribute {
@@ -303,7 +304,7 @@ export class EventChartService extends ListAttribute {
         cameras.map((c) => {
           this.illegalDumpVideoImgs.push({
             id: c.Id,
-            src: AIOPMediumPictureUrl.getJPG(c.ImageUrl),
+            src: ResourceMediumRequestService.getJPG(c.ImageUrl),
             name: c.Name,
             time: this.search.date + " " + time,
           });
@@ -346,7 +347,7 @@ export class EventChartService extends ListAttribute {
         cameras.map((c) => {
           this.illegalDumpVideoImgs.push({
             id: c.Id,
-            src: AIOPMediumPictureUrl.getJPG(c.ImageUrl),
+            src: ResourceMediumRequestService.getJPG(c.ImageUrl),
             name: c.Name,
             time: garbageCount.BeginTime,
           });
@@ -404,14 +405,14 @@ export class EventChartService extends ListAttribute {
 
         if (param.seriesName == "theBar") {
           this.illegalDropImg = events.length
-            ? AIOPMediumPictureUrl.getJPG(events[0].ImageUrl)
+            ? ResourceMediumRequestService.getJPG(events[0].ImageUrl)
             : "";
           this.illegalDropId = events.length ? events[0].EventId : "";
         } else if (param.seriesName == "theBarA") {
           this.illegalDropId = events.length ? events[1].EventId : "";
           this.illegalDropImg =
             events.length > 1
-              ? AIOPMediumPictureUrl.getJPG(events[1].ImageUrl)
+              ? ResourceMediumRequestService.getJPG(events[1].ImageUrl)
               : "";
         }
 

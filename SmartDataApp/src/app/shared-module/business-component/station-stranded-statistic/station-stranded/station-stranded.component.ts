@@ -3,7 +3,7 @@ import { BusinessService } from "./business/business.service";
 import { DivisionDao } from "../../../../data-core/dao/division-dao";
 import { GarbageStationDao } from "../../../../data-core/dao/garbage-station-dao";
 import { GarbageStationCameraDao } from "../../../../data-core/dao/garbage-station-camera-dao";
-import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
+import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
 // import { HWVideoService } from "../../../../data-core/dao/video-dao";
 @Component({
   selector: "hw-station-stranded",

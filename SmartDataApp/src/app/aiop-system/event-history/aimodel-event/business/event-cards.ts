@@ -1,11 +1,11 @@
 import { DatePipe } from "@angular/common";
 import { ImageDesc } from "../../../../shared-module/image-desc-card/image-desc";
-import { AIOPMediumPictureUrl } from "../../../../data-core/url/aiop/resources";
 import { ViewPagination } from "../../../../shared-module/card-list-panel/card-list-panel";
 import { Page } from "../../../../data-core/model/page";
 import { CardList } from "../../../../shared-module/business-component/event-history/illegal-drop-event-card-list/card-list";
 import { CameraAIEventRecord } from "../../../../data-core/model/aiop/camera-ai-event-record";
-import { Language } from "../../../..//common/tool/language";
+import { Language } from "../../../../common/tool/language";
+import { ResourceMediumRequestService } from "../../../../data-core/repuest/resources.service";
 export class EventCards {
   dataSource = new Array<ImageDesc>();
   cardList_: CardList;
@@ -48,7 +48,7 @@ export class EventCards {
   toTableModel(item: CameraAIEventRecord) {
     return new ImageDesc(
       item.EventId,
-      AIOPMediumPictureUrl.getJPG(item.ImageUrl),
+      ResourceMediumRequestService.getJPG(item.ImageUrl),
       [item.ResourceName, Language.EventType(item.EventType)],
       [
         this.datePipe.transform(item.EventTime, "MM-dd HH:mm:ss"),

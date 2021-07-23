@@ -41,6 +41,7 @@ import { DateDifference } from "../../../../../common/tool/tool.service";
 import { GetPreviewUrlParams } from "../../../../../data-core/model/aiop/video-url";
 import { HWVideoService } from "../../../../../data-core/dao/video-dao";
 import { Language } from "../../../../../common/tool/language";
+import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
 @Injectable()
 export class BusinessService extends EnumHelper {
   playVideo: PlayVideo;
@@ -309,7 +310,9 @@ export class StatisticTable
       if (this.helper.cameraUsage.garbageFull.indexOf(x.CameraUsage) > -1) {
         const find = resourceCameras.find((x1) => x1.Id == x.Id);
         if (find)
-          galleryTdAttr.imgSrc.push(AIOPMediumPictureUrl.getJPG(find.ImageUrl));
+          galleryTdAttr.imgSrc.push(
+            ResourceMediumRequestService.getJPG(find.ImageUrl)
+          );
       }
     });
     galleryTdAttr.key = key;

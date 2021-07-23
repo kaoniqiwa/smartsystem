@@ -58,6 +58,7 @@ export class DivisionStationTreeComponent implements OnInit {
     }
   };
   searchTree = (text: string) => {
+    debugger;
     const nodeType = this.onlyDivisionNode
       ? NodeTypeEnum.map
       : NodeTypeEnum.station;

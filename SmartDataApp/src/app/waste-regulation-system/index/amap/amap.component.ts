@@ -661,7 +661,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
           const camera = datas[i];
           if (camera) {
             if (camera.ImageUrl) {
-              camera.ImageUrl = this.mediaService.getData(camera.ImageUrl);
+              camera.ImageUrl = await this.mediaService.getData(camera.ImageUrl);
             } else {
               camera.ImageUrl = "assets/img/timg.png";
             }

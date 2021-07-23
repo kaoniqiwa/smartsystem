@@ -7,6 +7,7 @@ import { GalleryTargetView } from "../../../event-history/gallery-target";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
 import { Camera as SourceCamera } from "../../../../../data-core/model/aiop/camera";
 import { CameraPictureUrl } from "../../../../../data-core/model/waste-regulation/camera-picture-url";
+import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
 export class GalleryTargetViewI extends GalleryTargetView {
   /**抓图 */
   manualCaptureFn: (
@@ -45,7 +46,9 @@ export class GalleryTargetViewI extends GalleryTargetView {
       idV = id.split("&");
 
     if (e == ImageEventEnum.next && page.next.item) {
-      const enlargeImage = AIOPMediumPictureUrl.getJPG(page.next.item.ImageUrl);
+      const enlargeImage = ResourceMediumRequestService.getJPG(
+        page.next.item.ImageUrl
+      );
       this.galleryTarget = new GalleryTarget(
         null,
         null,
@@ -55,7 +58,9 @@ export class GalleryTargetViewI extends GalleryTargetView {
         this.toDownLoadImgNameI(page.next.item)
       );
     } else if (e == ImageEventEnum.prev && page.prev.item) {
-      const enlargeImage = AIOPMediumPictureUrl.getJPG(page.prev.item.ImageUrl);
+      const enlargeImage = ResourceMediumRequestService.getJPG(
+        page.prev.item.ImageUrl
+      );
       this.galleryTarget = new GalleryTarget(
         null,
         null,
@@ -71,7 +76,9 @@ export class GalleryTargetViewI extends GalleryTargetView {
 
   initGalleryTargetI(garbageId: string, cameras: Camera[], index: number) {
     if (cameras && cameras.length) {
-      const enlargeImage = AIOPMediumPictureUrl.getJPG(cameras[index].ImageUrl),
+      const enlargeImage = ResourceMediumRequestService.getJPG(
+          cameras[index].ImageUrl
+        ),
         ids = new Array();
       cameras.map((x) => ids.push(x.Id));
       this.galleryTarget = new GalleryTarget(
@@ -93,10 +100,9 @@ export class GalleryTargetViewI extends GalleryTargetView {
           };
           urls.map((x) => {
             if (x.CameraId == cameras[index].Id) {
-              obj.new = AIOPMediumPictureUrl.getJPG(x.Id);
-              this.galleryTarget.enlargeImage = AIOPMediumPictureUrl.getJPG(
-                x.Id
-              );
+              obj.new = ResourceMediumRequestService.getJPG(x.Id);
+              this.galleryTarget.enlargeImage =
+                ResourceMediumRequestService.getJPG(x.Id);
               this.galleryTarget.refreshImg.state = false;
             }
           });

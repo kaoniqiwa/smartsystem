@@ -8,7 +8,10 @@ import { MessageBar } from "../../../common/tool/message-bar";
 import { HeaderSquareListComponent } from "../../../shared-module/header-square-list/header-square-list.component";
 import { BusinessViewComponetConstructor } from "./business-card-slot.service";
 import { AMapComponent } from "../amap/amap.component";
-import { CameraRequestService } from "../../../data-core/repuest/resources.service";
+import {
+  CameraRequestService,
+  ResourceMediumRequestService,
+} from "../../../data-core/repuest/resources.service";
 import { OrderTableCardComponent } from "../../../shared-module/card-component/order-table-card/order-table-card.component";
 import { StateScaleCardComponent } from "../../../shared-module/card-component/state-scale-card/state-scale-card.component";
 import { ImageThemeCardComponent } from "../../../shared-module/card-component/image-theme-card/image-theme-card.component";
@@ -384,7 +387,9 @@ export class DivisionBusinessService {
                     if (m.ImageUrl) {
                       const desc = item.g.imgDesc.find((i) => i.tag.id == m.Id);
                       if (desc)
-                        desc.src = AIOPMediumPictureUrl.getData(m.ImageUrl);
+                        desc.src = ResourceMediumRequestService.getData(
+                          m.ImageUrl
+                        );
                     }
                   });
                 }
@@ -404,7 +409,9 @@ export class DivisionBusinessService {
                             (i) => i.tag.id == m.CameraId
                           );
                           if (desc)
-                            desc.src = AIOPMediumPictureUrl.getData(m.Id);
+                            desc.src = ResourceMediumRequestService.getData(
+                              m.Id
+                            );
                         }
                       });
                     }

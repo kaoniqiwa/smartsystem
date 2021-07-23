@@ -19,7 +19,6 @@ export class IllegalDropEventSummaryComponent implements OnInit {
   }
   @Input()
   public set GarbageStation(v: GarbageStation) {
-    debugger;
     this._GarbageStation = v;
     console.log("IllegalDropEventSummaryComponent", v);
   }

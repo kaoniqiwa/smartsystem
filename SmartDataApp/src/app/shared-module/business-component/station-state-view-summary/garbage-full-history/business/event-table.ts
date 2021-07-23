@@ -20,6 +20,7 @@ import { IBusinessData } from "../../../../../common/interface/IBusiness";
 import { BusinessTable } from "../../../../../aiop-system/common/business-table";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
 import { DivisionType } from "../../../../../data-core/model/enum";
+import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
 export class EventTable extends BusinessTable implements IConverter {
   findEventFn: (id: string) => GarbageFullEventRecord;
   initGalleryTargetFn: (event: GarbageFullEventRecord) => void;
@@ -152,7 +153,7 @@ export class EventTable extends BusinessTable implements IConverter {
       item.Data.CameraImageUrls &&
       item.Data.CameraImageUrls.length
     )
-      tableField.imageUrl = AIOPMediumPictureUrl.getJPG(
+      tableField.imageUrl = ResourceMediumRequestService.getJPG(
         item.Data.CameraImageUrls[0].ImageUrl
       );
     return tableField;

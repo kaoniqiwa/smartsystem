@@ -20,6 +20,7 @@ import { HWCameraImageUrl, ImgTypeEnum, TypeNameEnum } from "./camera-img-url";
 import { DivisionListView } from "../../../event-history/division-list-view";
 import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
+import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
 @Injectable()
 export class BusinessService {
   playVideo: PlayVideo;
@@ -129,7 +130,7 @@ export class BusinessService {
       event.Data.DropImageUrls.map((m) => {
         if (this.videoImgs.findIndex((f) => f.id == m.CameraId) == -1)
           this.videoImgs.push({
-            src: AIOPMediumPictureUrl.getJPG(m.ImageUrl),
+            src: ResourceMediumRequestService.getJPG(m.ImageUrl),
             id: m.CameraId,
             name: m.CameraName,
             time: event.Data.DropTime,
@@ -138,7 +139,7 @@ export class BusinessService {
       event.Data.HandleImageUrls.map((m) => {
         if (this.videoImgs.findIndex((f) => f.id == m.CameraId) == -1)
           this.videoImgs.push({
-            src: AIOPMediumPictureUrl.getJPG(m.ImageUrl),
+            src: ResourceMediumRequestService.getJPG(m.ImageUrl),
             id: m.CameraId,
             name: m.CameraName,
             time: event.Data.HandleTime,

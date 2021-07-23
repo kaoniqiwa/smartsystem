@@ -1,6 +1,7 @@
 import { DatePipe } from "@angular/common";
+import { ResourceMediumRequestService } from "../../../data-core/repuest/resources.service";
 import { IllegalDropEventRecord } from "../../../data-core/model/waste-regulation/illegal-drop-event-record";
-import { AIOPMediumPictureUrl } from "../../../data-core/url/aiop/resources";
+
 import {
   GalleryTarget,
   ImageEventEnum,
@@ -39,7 +40,9 @@ export class GalleryTargetView {
     const page = this.showImagePage(id, e),
       v = this.galleryTarget.videoName || false;
     if (e == ImageEventEnum.next && page.next.item) {
-      const enlargeImage = AIOPMediumPictureUrl.getJPG(page.next.item.ImageUrl);
+      const enlargeImage = ResourceMediumRequestService.getJPG(
+        page.next.item.ImageUrl
+      );
       this.galleryTarget = new GalleryTarget(
         page.next.item.Data.Objects[0].Id,
         page.next.item.Data.Objects[0].Confidence + "",
@@ -49,7 +52,9 @@ export class GalleryTargetView {
         this.toDownLoadImgName(page.next.item)
       );
     } else if (e == ImageEventEnum.prev && page.prev.item) {
-      const enlargeImage = AIOPMediumPictureUrl.getJPG(page.prev.item.ImageUrl);
+      const enlargeImage = ResourceMediumRequestService.getJPG(
+        page.prev.item.ImageUrl
+      );
       this.galleryTarget = new GalleryTarget(
         page.prev.item.Data.Objects[0].Id,
         page.prev.item.Data.Objects[0].Confidence + "",
@@ -66,7 +71,7 @@ export class GalleryTargetView {
   };
 
   initGalleryTarget(event: IllegalDropEventRecord) {
-    const enlargeImage = AIOPMediumPictureUrl.getJPG(event.ImageUrl),
+    const enlargeImage = ResourceMediumRequestService.getJPG(event.ImageUrl),
       page = this.showImagePage(event.EventId, ImageEventEnum.none);
     this.galleryTarget = new GalleryTarget(
       event.Data.Objects[0].Id,

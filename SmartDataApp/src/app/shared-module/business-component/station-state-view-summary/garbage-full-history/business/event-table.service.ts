@@ -45,6 +45,7 @@ import { SessionUser } from "../../../../../common/tool/session-user";
 import { GetEventRecordsParams } from "../../../../../data-core/model/waste-regulation/illegal-drop-event-record";
 import { GalleryTargetItem } from "./gallery-target";
 import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
+import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
 @Injectable()
 export class EventTableService extends ListAttribute {
   dataSource_ = new Array<GarbageFullEventRecord>();
@@ -169,7 +170,7 @@ export class EventTableService extends ListAttribute {
         this.videoImgs = new Array();
         event.Data.CameraImageUrls.map((u) => {
           this.videoImgs.push({
-            src: AIOPMediumPictureUrl.getJPG(u.ImageUrl),
+            src: ResourceMediumRequestService.getJPG(u.ImageUrl),
             id: u.CameraId,
             name: u.CameraName,
             time: event.EventTime,
@@ -322,10 +323,7 @@ export class EventTableService extends ListAttribute {
   }
 
   async requestDivisions() {
-    const param = new GetDivisionsParams();
-    param.PageIndex = 1;
-    param.PageSize = this.maxSize;
-    const result = await this.divisionService.list(param);
+    const result = await this.divisionService.list();
     return result.Data;
   }
 

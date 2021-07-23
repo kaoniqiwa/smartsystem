@@ -1,3 +1,4 @@
+import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
 import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 import {
   GalleryTarget,
@@ -34,7 +35,9 @@ export class GalleryTargetViewI extends GalleryTargetView {
       idV = id.split("&");
 
     if (e == ImageEventEnum.next && page.next.item) {
-      const enlargeImage = AIOPMediumPictureUrl.getJPG(page.next.item.ImageUrl);
+      const enlargeImage = ResourceMediumRequestService.getJPG(
+        page.next.item.ImageUrl
+      );
       this.galleryTarget = new GalleryTarget(
         null,
         null,
@@ -49,7 +52,9 @@ export class GalleryTargetViewI extends GalleryTargetView {
         class: TypeNameColorEnum[page.next.item.imgType],
       };
     } else if (e == ImageEventEnum.prev && page.prev.item) {
-      const enlargeImage = AIOPMediumPictureUrl.getJPG(page.prev.item.ImageUrl);
+      const enlargeImage = ResourceMediumRequestService.getJPG(
+        page.prev.item.ImageUrl
+      );
       this.galleryTarget = new GalleryTarget(
         null,
         null,
@@ -75,7 +80,9 @@ export class GalleryTargetViewI extends GalleryTargetView {
   ) {
     if (cameras && cameras.length) {
       for (let i = 0; i < cameras.length; i++) cameras[i].id = i + "";
-      const enlargeImage = AIOPMediumPictureUrl.getJPG(cameras[index].ImageUrl),
+      const enlargeImage = ResourceMediumRequestService.getJPG(
+          cameras[index].ImageUrl
+        ),
         ids = new Array();
       cameras.map((x) => ids.push(x.id));
       this.galleryTarget = new GalleryTarget(

@@ -16,13 +16,13 @@ export class DivisionDao extends ListAttribute {
 
   async allDivisions() {
     var result = this.cache.get<Division[]>(this.division);
+
     if (!result) {
-      const param = new GetDivisionsParams();
-      param.PageIndex = 1;
-      param.PageSize = this.maxSize;
-      const response = await this.requestService.list(param);
+      const response = await this.requestService.list();
       this.cache.set(this.division, response.Data);
       result = response.Data;
+    } else {
+      debugger;
     }
     return result;
   }

@@ -16,6 +16,7 @@ import { AIOPMediumPictureUrl } from "../../../../data-core/url/aiop/resources";
 import { IBusinessData } from "../../../../common/interface/IBusiness";
 import { BusinessTable } from "../../../common/business-table";
 import { Language } from "../../../../common/tool/language";
+import { ResourceMediumRequestService } from "../../../../data-core/repuest/resources.service";
 
 export class EventTable extends BusinessTable implements IConverter {
   initGalleryTargetFn: (event: CameraAIEventRecord) => void;
@@ -116,7 +117,7 @@ export class EventTable extends BusinessTable implements IConverter {
       "yyyy-MM-dd HH:mm:ss"
     );
     tableField.eventType = Language.EventType(item.EventType);
-    tableField.imageUrl = AIOPMediumPictureUrl.getJPG(item.ImageUrl);
+    tableField.imageUrl = ResourceMediumRequestService.getJPG(item.ImageUrl);
     tableField.modelName = item.Data.ModelName;
     tableField.resourceName = item.ResourceName;
     tableField.resourceType = Language.ResourceType[item.ResourceType];

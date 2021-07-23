@@ -43,7 +43,7 @@ import { GarbageStationType } from "../model/waste-regulation/garbage-station-ty
 import { CameraPictureUrl } from "../model/waste-regulation/camera-picture-url";
 import { Observable } from "rxjs";
 import { plainToClass } from "class-transformer";
-import { ServiceResponseProcessor } from "../model/waste-regulation/request-service-processor";
+import { ServiceHelper } from "../model/waste-regulation/request-service-processor";
 @Injectable({
   providedIn: "root",
 })
@@ -56,7 +56,7 @@ export class GarbageStationRequestService {
         SaveModel.toModel(item, SaveModel.formMustField.garbageStation)
       )
       .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(response, GarbageStation);
+    return ServiceHelper.ResponseProcess(response, GarbageStation);
   }
 
   async get(id: string) {
@@ -64,7 +64,7 @@ export class GarbageStationRequestService {
       GarbageStationsUrl.get(id)
     );
     let response = await observable.toPromise();
-    return ServiceResponseProcessor.ResponseProcess(response, GarbageStation);
+    return ServiceHelper.ResponseProcess(response, GarbageStation);
   }
 
   async set(item: GarbageStation) {
@@ -74,14 +74,14 @@ export class GarbageStationRequestService {
         SaveModel.toModel(item, SaveModel.formMustField.garbageStation)
       )
       .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(response, GarbageStation);
+    return ServiceHelper.ResponseProcess(response, GarbageStation);
   }
 
   async del(id: string) {
     let response = await this.requestService
       .delete<GarbageStation>(GarbageStationsUrl.del(id))
       .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(response, GarbageStation);
+    return ServiceHelper.ResponseProcess(response, GarbageStation);
   }
 
   async list(item: GetGarbageStationsParams) {
@@ -92,7 +92,7 @@ export class GarbageStationRequestService {
       >(GarbageStationsUrl.list(), item)
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, GarbageStation);
+    return ServiceHelper.ResponseProcess(response, GarbageStation);
   }
 
   async volumesHistory(
@@ -106,7 +106,7 @@ export class GarbageStationRequestService {
       >(GarbageStationsUrl.volumesHistory(divisionsId), item)
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, GarbageVolume);
+    return ServiceHelper.ResponseProcess(response, GarbageVolume);
   }
 
   async eventNumbersHistory(
@@ -120,10 +120,7 @@ export class GarbageStationRequestService {
       >(GarbageStationsUrl.eventNumbersHistory(divisionsId), item)
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(
-      response,
-      EventNumberStatistic
-    );
+    return ServiceHelper.ResponseProcess(response, EventNumberStatistic);
   }
 
   async statisticNumber(garbageStationId: string) {
@@ -133,7 +130,7 @@ export class GarbageStationRequestService {
       )
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(
+    return ServiceHelper.ResponseProcess(
       response,
       GarbageStationNumberStatistic
     );
@@ -147,7 +144,7 @@ export class GarbageStationRequestService {
       >(GarbageStationsUrl.statisticNumberList(), item)
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(
+    return ServiceHelper.ResponseProcess(
       response,
       GarbageStationNumberStatistic
     );
@@ -161,7 +158,7 @@ export class GarbageStationRequestService {
       >(GarbageStationsUrl.statisticNumberHistoryList(), item)
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(
+    return ServiceHelper.ResponseProcess(
       response,
       GarbageStationNumberStatisticV2
     );
@@ -173,7 +170,7 @@ export class GarbageStationRequestService {
         GarbageStationsUrl.manualCapture(stationId)
       )
       .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(response, CameraPictureUrl);
+    return ServiceHelper.ResponseProcess(response, CameraPictureUrl);
   }
 
   async cameraFile(
@@ -201,7 +198,7 @@ export class GarbageStationRequestService {
       )
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, RecordFileUrl);
+    return ServiceHelper.ResponseProcess(response, RecordFileUrl);
   }
 
   async statisticGarbageCount(
@@ -214,7 +211,7 @@ export class GarbageStationRequestService {
       >(GarbageStationsUrl.statisticGarbageCountHistoryList(), item)
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(
+    return ServiceHelper.ResponseProcess(
       response,
       GarbageStationGarbageCountStatistic
     );
@@ -234,7 +231,7 @@ export class CameraRequestService {
       )
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, Camera);
+    return ServiceHelper.ResponseProcess(response, Camera);
   }
 
   async get(garbageStationId: string, cameraId: string) {
@@ -242,7 +239,7 @@ export class CameraRequestService {
       .get<Camera>(CameraUrl.get(garbageStationId, cameraId))
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, Camera);
+    return ServiceHelper.ResponseProcess(response, Camera);
   }
 
   async list(garbageStationId: string) {
@@ -250,7 +247,7 @@ export class CameraRequestService {
       .get<Camera[]>(CameraUrl.create(garbageStationId))
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, Camera);
+    return ServiceHelper.ResponseProcess(response, Camera);
   }
 
   async set(item: Camera) {
@@ -261,7 +258,7 @@ export class CameraRequestService {
       )
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, Camera);
+    return ServiceHelper.ResponseProcess(response, Camera);
   }
 
   async del(garbageStationId: string, cameraId: string) {
@@ -269,7 +266,7 @@ export class CameraRequestService {
       .delete<Camera>(CameraUrl.del(garbageStationId, cameraId))
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, Camera);
+    return ServiceHelper.ResponseProcess(response, Camera);
   }
 
   async postList(item: GetGarbageStationCamerasParams) {
@@ -280,7 +277,7 @@ export class CameraRequestService {
       )
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, Camera);
+    return ServiceHelper.ResponseProcess(response, Camera);
   }
 }
 
@@ -297,7 +294,7 @@ export class CameraTrashCanRequestService {
       )
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, TrashCan);
+    return ServiceHelper.ResponseProcess(response, TrashCan);
   }
 
   async get(garbageStationId: string, cameraId: string, trashCanId: string) {
@@ -307,7 +304,7 @@ export class CameraTrashCanRequestService {
       )
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, TrashCan);
+    return ServiceHelper.ResponseProcess(response, TrashCan);
   }
 
   async set(item: TrashCan) {
@@ -318,7 +315,7 @@ export class CameraTrashCanRequestService {
       )
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, TrashCan);
+    return ServiceHelper.ResponseProcess(response, TrashCan);
   }
 
   async del(garbageStationId: string, cameraId: string, trashCanId: string) {
@@ -328,7 +325,7 @@ export class CameraTrashCanRequestService {
       )
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, TrashCan);
+    return ServiceHelper.ResponseProcess(response, TrashCan);
   }
 
   async list(garbageStationId: string, cameraId: string) {
@@ -336,7 +333,7 @@ export class CameraTrashCanRequestService {
       .get<TrashCan[]>(CameraTrashCansUrl.list(garbageStationId, cameraId))
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, TrashCan);
+    return ServiceHelper.ResponseProcess(response, TrashCan);
   }
 }
 
@@ -353,7 +350,7 @@ export class GarbageStationTrashCanRequestService {
       )
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, TrashCan);
+    return ServiceHelper.ResponseProcess(response, TrashCan);
   }
 
   async get(garbageStationId: string, cameraId: string) {
@@ -361,7 +358,7 @@ export class GarbageStationTrashCanRequestService {
       .get<TrashCan>(GarbageStationTrashCansUrl.get(garbageStationId, cameraId))
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, TrashCan);
+    return ServiceHelper.ResponseProcess(response, TrashCan);
   }
 
   async set(item: TrashCan) {
@@ -372,7 +369,7 @@ export class GarbageStationTrashCanRequestService {
       )
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, TrashCan);
+    return ServiceHelper.ResponseProcess(response, TrashCan);
   }
 
   async del(garbageStationId: string, cameraId: string) {
@@ -382,7 +379,7 @@ export class GarbageStationTrashCanRequestService {
       )
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, TrashCan);
+    return ServiceHelper.ResponseProcess(response, TrashCan);
   }
 
   async list(item: GetGarbageStationTrashCansParams) {
@@ -393,7 +390,7 @@ export class GarbageStationTrashCanRequestService {
       >(GarbageStationTrashCansUrl.postList(), item)
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(response, TrashCan);
+    return ServiceHelper.ResponseProcess(response, TrashCan);
   }
 }
 
@@ -410,10 +407,7 @@ export class GarbageStationTypeRequestService {
       )
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(
-      response,
-      GarbageStationType
-    );
+    return ServiceHelper.ResponseProcess(response, GarbageStationType);
   }
 
   async get(type: string) {
@@ -430,10 +424,7 @@ export class GarbageStationTypeRequestService {
       )
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(
-      response,
-      GarbageStationType
-    );
+    return ServiceHelper.ResponseProcess(response, GarbageStationType);
   }
 
   async del(type: string) {
@@ -441,10 +432,7 @@ export class GarbageStationTypeRequestService {
       .delete<GarbageStationType>(GarbageStationTypeUrl.del(type))
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(
-      response,
-      GarbageStationType
-    );
+    return ServiceHelper.ResponseProcess(response, GarbageStationType);
   }
 
   async list() {
@@ -452,9 +440,6 @@ export class GarbageStationTypeRequestService {
       .get<GarbageStationType[]>(GarbageStationTypeUrl.list())
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(
-      response,
-      GarbageStationType
-    );
+    return ServiceHelper.ResponseProcess(response, GarbageStationType);
   }
 }

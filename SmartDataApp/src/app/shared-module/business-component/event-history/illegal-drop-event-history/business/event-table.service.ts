@@ -194,10 +194,7 @@ export class EventTableService extends ListAttribute {
   }
 
   async requestDivisions() {
-    const param = new GetDivisionsParams();
-    param.PageIndex = 1;
-    param.PageSize = this.maxSize;
-    const result = await this.divisionService.list(param);
+    const result = await this.divisionService.list();
     return result.Data;
   }
 

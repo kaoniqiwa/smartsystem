@@ -36,6 +36,7 @@ import {
   AIOPResourceLabelUrl,
   AIOPResourceUrl,
 } from "../url/aiop/resources";
+import { ServiceHelper } from "../model/waste-regulation/request-service-processor";
 @Injectable({
   providedIn: "root",
 })
@@ -267,15 +268,21 @@ export class ResourceLabelRequestService {
 export class ResourceMediumRequestService {
   constructor(private requestService: HowellAuthHttpService) {}
 
-  binary() {
+  static binary() {
     return AIOPMediumPictureUrl.binary();
   }
 
-  getJPG(id: string) {
+  static getJPG(id: string) {
     return AIOPMediumPictureUrl.getJPG(id);
   }
-  getData(id: string) {
+  static getData(id: string) {
     return AIOPMediumPictureUrl.getData(id);
+  }
+
+  getData(id: string) {
+    debugger;
+    let url = AIOPMediumPictureUrl.getData(id);
+    return this.requestService.getCache<string>(url).toPromise();
   }
 }
 

@@ -23,7 +23,7 @@ import {
   ViewDivisionTypeEnum,
 } from "../../business-manage-service";
 import { DivisionType } from "../../../../data-core/model/enum";
-import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
+import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
 @Component({
   selector: "hw-illegal-drop-event-history",
   templateUrl: "./illegal-drop-event-history.component.html",

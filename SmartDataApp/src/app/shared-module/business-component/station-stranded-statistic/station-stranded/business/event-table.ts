@@ -21,6 +21,7 @@ import { DatePipe } from "@angular/common";
 import { GarbageStationNumberStatistic } from "../../../../../data-core/model/waste-regulation/garbage-station-number-statistic";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
 import { ToHoursMinutes } from "../../../../../common/tool/tool.service";
+import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
 export class EventTable extends BusinessTable implements IConverter {
   dataSource = new CustomTableArgs<any>({
     hasTableOperationTd: false,
@@ -167,7 +168,7 @@ export class EventTable extends BusinessTable implements IConverter {
   // toGalleryModel(dropImageUrls: Array<CameraImageUrl>, key: string) {
   //     const galleryTdAttr = new GalleryTdAttr();
   //     galleryTdAttr.imgSrc = new Array<string>();
-  //     if(dropImageUrls)dropImageUrls.map(u=> galleryTdAttr.imgSrc.push(AIOPMediumPictureUrl.getJPG(u.ImageUrl)));
+  //     if(dropImageUrls)dropImageUrls.map(u=> galleryTdAttr.imgSrc.push(ResourceMediumRequestService.getJPG(u.ImageUrl)));
   //     galleryTdAttr.key = key;
   //     return galleryTdAttr;
   // }
@@ -177,7 +178,9 @@ export class EventTable extends BusinessTable implements IConverter {
     galleryTdAttr.imgSrc = new Array<string>();
 
     station.Cameras.map((x) => {
-      galleryTdAttr.imgSrc.push(AIOPMediumPictureUrl.getJPG(x.ImageUrl));
+      galleryTdAttr.imgSrc.push(
+        ResourceMediumRequestService.getJPG(x.ImageUrl)
+      );
     });
     galleryTdAttr.key = station.Id;
     return galleryTdAttr;

@@ -23,7 +23,7 @@ import {
   ViewDivisionTypeEnum,
 } from "../../shared-module/business-component/business-manage-service";
 import { EventType } from "../../data-core/model/enum";
-import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
+
 @Component({
   selector: "app-index",
   templateUrl: "./index.component.html",

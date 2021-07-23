@@ -5,7 +5,7 @@ import { EventRecordUrl } from "../url/waste-regulation/event";
 import { GetEventRecordsParams } from "../model/waste-regulation/illegal-drop-event-record";
 import { MixedIntoEventRecord } from "../model/waste-regulation/mixed-into-event-record";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
-import { ServiceResponseProcessor } from "../model/waste-regulation/request-service-processor";
+import { ServiceHelper } from "../model/waste-regulation/request-service-processor";
 @Injectable({
   providedIn: "root",
 })
@@ -19,9 +19,6 @@ export class EventRequestService {
         HowellResponse<PagedList<MixedIntoEventRecord>>
       >(EventRecordUrl.mixedIntoList(), item)
       .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(
-      response,
-      MixedIntoEventRecord
-    );
+    return ServiceHelper.ResponseProcess(response, MixedIntoEventRecord);
   }
 }

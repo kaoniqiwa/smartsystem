@@ -1,4 +1,5 @@
 import { DatePipe } from "@angular/common";
+import { ResourceMediumRequestService } from "../../../../data-core/repuest/resources.service";
 import { CameraAIEventRecord } from "../../../../data-core/model/aiop/camera-ai-event-record";
 import { AIOPMediumPictureUrl } from "../../../../data-core/url/aiop/resources";
 import {
@@ -38,7 +39,9 @@ export class GalleryTargetView {
   galleryTargetPageFn = (e: ImageEventEnum, id: string) => {
     const page = this.showImagePage(id, e);
     if (e == ImageEventEnum.next && page.next.item) {
-      const enlargeImage = AIOPMediumPictureUrl.getJPG(page.next.item.ImageUrl);
+      const enlargeImage = ResourceMediumRequestService.getJPG(
+        page.next.item.ImageUrl
+      );
       this.galleryTarget = new GalleryTarget(
         page.next.item.Data.Objects[0].Id,
         page.next.item.Data.Objects[0].Confidence + "",
@@ -48,7 +51,9 @@ export class GalleryTargetView {
         this.toDownLoadImgName(page.next.item)
       );
     } else if (e == ImageEventEnum.prev && page.prev.item) {
-      const enlargeImage = AIOPMediumPictureUrl.getJPG(page.prev.item.ImageUrl);
+      const enlargeImage = ResourceMediumRequestService.getJPG(
+        page.prev.item.ImageUrl
+      );
       this.galleryTarget = new GalleryTarget(
         page.prev.item.Data.Objects[0].Id,
         page.prev.item.Data.Objects[0].Confidence + "",
@@ -64,7 +69,7 @@ export class GalleryTargetView {
   };
 
   initGalleryTarget(event: CameraAIEventRecord) {
-    const enlargeImage = AIOPMediumPictureUrl.getJPG(event.ImageUrl),
+    const enlargeImage = ResourceMediumRequestService.getJPG(event.ImageUrl),
       page = this.showImagePage(event.EventId, ImageEventEnum.none);
     this.galleryTarget = new GalleryTarget(
       event.Data.Objects[0].Id,

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from "@angular/core";
-import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
+import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
 import { DivisionBusinessService } from "../../../../waste-regulation-system/index/business-card-grid/division-business.service";
 @Component({
   selector: "hw-full-garbage-station-summary",

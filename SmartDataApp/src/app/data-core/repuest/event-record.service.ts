@@ -4,7 +4,7 @@ import { HowellResponse } from "../model/response";
 import { GetCameraAIEventRecordsParams } from "../model/aiop/camera-ai-event-records-params";
 import { CameraAIEventRecord } from "../model/aiop/camera-ai-event-record";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
-import { ServiceResponseProcessor } from "../model/waste-regulation/request-service-processor";
+import { ServiceHelper } from "../model/waste-regulation/request-service-processor";
 import { EventRecordUrl } from "../url/event";
 @Injectable({
   providedIn: "root",
@@ -19,9 +19,6 @@ export class EventRequestService {
         HowellResponse<PagedList<CameraAIEventRecord>>
       >(EventRecordUrl.list(), item)
       .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(
-      response,
-      CameraAIEventRecord
-    );
+    return ServiceHelper.ResponseProcess(response, CameraAIEventRecord);
   }
 }

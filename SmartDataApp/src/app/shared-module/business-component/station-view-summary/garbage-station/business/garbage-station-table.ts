@@ -21,6 +21,7 @@ import { DivisionType } from "../../../../../data-core/model/enum";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
 import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 import { Language } from "../../../../../common/tool/language";
+import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
 
 export class GarbageStationTable extends BusinessTable implements IConverter {
   dataSource = new CustomTableArgs<any>({
@@ -140,7 +141,9 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
     camera.map((x) => {
       const find = resourceCameras.find((x1) => x1.Id == x.Id);
       if (find)
-        galleryTdAttr.imgSrc.push(AIOPMediumPictureUrl.getJPG(find.ImageUrl));
+        galleryTdAttr.imgSrc.push(
+          ResourceMediumRequestService.getJPG(find.ImageUrl)
+        );
     });
     galleryTdAttr.key = key;
     return galleryTdAttr;

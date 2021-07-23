@@ -1,8 +1,37 @@
 import { ClassConstructor, plainToClass } from "class-transformer";
+import { AppCaChe } from "../../../common/tool/app-cache/app-cache";
+import { DivisionUrl } from "../../url/waste-regulation/division";
 import { PagedList } from "../page";
 import { HowellResponse } from "../response";
 
-export class ServiceResponseProcessor {
+export class ServiceHelper {
+  static cache = new AppCaChe(1000 * 60 * 30);
+  static key = {
+    Division: DivisionUrl.basic(),
+  };
+
+  static cacheItemByPaged = {
+    get: <T>(key: string, predicate: (t: T) => boolean) => {
+      let paged = ServiceHelper.cache.get<PagedList<T>>(key);
+      return paged.Data.find((x) => predicate(x));
+    },
+    push: <T>(key: string, t: T) => {
+      let paged = ServiceHelper.cache.get<PagedList<T>>(key);
+      paged.Data.push(t);
+      paged.Page.RecordCount = paged.Data.length;
+      paged.Page.TotalRecordCount = paged.Data.length;
+      ServiceHelper.cache.set<PagedList<T>>(key, paged);
+    },
+  };
+
+  static getCacheItemByPaged<T>(
+    key: string,
+    predicate: (t: T) => boolean
+  ): T | undefined {
+    let paged = this.cache.get<PagedList<T>>(key);
+    return paged.Data.find((x) => predicate(x));
+  }
+
   static ResponseProcess<T>(
     response: HowellResponse<T>,
     t: ClassConstructor<T>

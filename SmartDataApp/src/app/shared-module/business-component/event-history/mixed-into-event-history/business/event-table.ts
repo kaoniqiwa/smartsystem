@@ -17,6 +17,7 @@ import { IBusinessData } from "../../../../../common/interface/IBusiness";
 import { BusinessTable } from "../../../../../aiop-system/common/business-table";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
 import { DivisionType } from "../../../../../data-core/model/enum";
+import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
 export class EventTable extends BusinessTable implements IConverter {
   findEventFn: (id: string) => MixedIntoEventRecord;
   initGalleryTargetFn: (event: MixedIntoEventRecord) => void;
@@ -139,7 +140,7 @@ export class EventTable extends BusinessTable implements IConverter {
       "yyyy-MM-dd HH:mm:ss"
     );
     tableField.resourceName = item.ResourceName;
-    tableField.imageUrl = AIOPMediumPictureUrl.getJPG(item.ImageUrl);
+    tableField.imageUrl = ResourceMediumRequestService.getJPG(item.ImageUrl);
     tableField.committees = "-";
     const division = this.findDivisionFn(item.Data.DivisionId);
     if (division) {

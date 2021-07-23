@@ -31,10 +31,7 @@ export class DataService {
   }
 
   async requestDivision() {
-    const param = new GetDivisionsParams();
-    param.PageIndex = 1;
-    param.PageSize = new ListAttribute().maxSize;
-    const response = await this.divisionService.list(param);
+    const response = await this.divisionService.list();
     return response.Data;
   }
 }

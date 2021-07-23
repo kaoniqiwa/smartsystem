@@ -1,4 +1,5 @@
 import { DatePipe } from "@angular/common";
+import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
 import {
   GarbageFullEventRecord,
   CameraImageUrl,
@@ -42,7 +43,7 @@ export class GalleryTargetView {
     const page = this.showImagePage(id, e);
 
     if (e == ImageEventEnum.next && page.next.item) {
-      const enlargeImage = AIOPMediumPictureUrl.getJPG(
+      const enlargeImage = ResourceMediumRequestService.getJPG(
         page.next.item.other.ImageUrl
       );
       this.galleryTarget = new GalleryTarget(
@@ -54,7 +55,7 @@ export class GalleryTargetView {
         this.toDownLoadImgName(page.next.item.event)
       );
     } else if (e == ImageEventEnum.prev && page.prev.item) {
-      const enlargeImage = AIOPMediumPictureUrl.getJPG(
+      const enlargeImage = ResourceMediumRequestService.getJPG(
         page.next.item.other.ImageUrl
       );
       this.galleryTarget = new GalleryTarget(
@@ -73,7 +74,7 @@ export class GalleryTargetView {
 
   initGalleryTarget(event: GarbageFullEventRecord, index: number) {
     if (event && event.Data && event.Data.CameraImageUrls) {
-      const enlargeImage = AIOPMediumPictureUrl.getJPG(
+      const enlargeImage = ResourceMediumRequestService.getJPG(
         event.Data.CameraImageUrls[index].ImageUrl
       );
       this.galleryTarget = new GalleryTarget(

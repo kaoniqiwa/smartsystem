@@ -16,6 +16,7 @@ import { BusinessTable } from "../../../../aiop-system/common/business-table";
 import { Camera } from "../../../../data-core/model/waste-regulation/camera";
 import { Division } from "../../../../data-core/model/waste-regulation/division";
 import { AIOPMediumPictureUrl } from "../../../../data-core/url/aiop/resources";
+import { ResourceMediumRequestService } from "../../../../data-core/repuest/resources.service";
 export class CameraTable extends BusinessTable implements IConverter {
   showImgFn: (id: string) => void;
   dataSource = new CustomTableArgs<any>({
@@ -118,7 +119,7 @@ export class CameraTable extends BusinessTable implements IConverter {
     tableField.divisionName = division ? division.Name : "-";
     tableField.committees = committees ? committees.Name : "-";
     tableField.imageUrl = resourceCamera
-      ? AIOPMediumPictureUrl.getJPG(resourceCamera.ImageUrl)
+      ? ResourceMediumRequestService.getJPG(resourceCamera.ImageUrl)
       : "";
     tableField.garbageStationName = statioin ? statioin.Name : "-";
     tableField.state = camera

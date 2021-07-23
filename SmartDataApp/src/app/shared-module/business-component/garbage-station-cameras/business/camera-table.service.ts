@@ -20,6 +20,7 @@ import { GarbageStation } from "../../../../data-core/model/waste-regulation/gar
 import { Division } from "../../../../data-core/model/waste-regulation/division";
 import { DivisionRequestService } from "../../../../data-core/repuest/division.service";
 import { AIOPMediumPictureUrl } from "../../../../data-core/url/aiop/resources";
+import { ResourceMediumRequestService } from "../../../../data-core/repuest/resources.service";
 @Injectable()
 export class CameraTableService {
   dataSource_ = new Array<Camera>();
@@ -57,7 +58,7 @@ export class CameraTableService {
 
     this.table.showImgFn = (id: string) => {
       const find = this.resourceCamera.find((x) => x.Id == id);
-      this.findImgSrc = AIOPMediumPictureUrl.getJPG(find.ImageUrl);
+      this.findImgSrc = ResourceMediumRequestService.getJPG(find.ImageUrl);
     };
   }
 

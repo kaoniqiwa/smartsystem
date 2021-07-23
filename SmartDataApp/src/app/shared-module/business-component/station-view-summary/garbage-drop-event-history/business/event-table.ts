@@ -20,6 +20,7 @@ import { Division } from "../../../../../data-core/model/waste-regulation/divisi
 import { DivisionType } from "../../../../../data-core/model/enum";
 import { DatePipe } from "@angular/common";
 import { ImgTypeEnum, TypeNameEnum, HWCameraImageUrl } from "./camera-img-url";
+import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
 
 export class EventTable extends BusinessTable implements IConverter {
   dataSource = new CustomTableArgs<any>({
@@ -187,15 +188,21 @@ export class EventTable extends BusinessTable implements IConverter {
     galleryTdAttr.imgSrc = new Array<string>();
     if (dropImageUrls)
       dropImageUrls.map((u) =>
-        galleryTdAttr.imgSrc.push(AIOPMediumPictureUrl.getJPG(u.ImageUrl))
+        galleryTdAttr.imgSrc.push(
+          ResourceMediumRequestService.getJPG(u.ImageUrl)
+        )
       );
     if (handleImageUrls)
       handleImageUrls.map((u) =>
-        galleryTdAttr.imgSrc.push(AIOPMediumPictureUrl.getJPG(u.ImageUrl))
+        galleryTdAttr.imgSrc.push(
+          ResourceMediumRequestService.getJPG(u.ImageUrl)
+        )
       );
     if (timeoutImageUrls)
       timeoutImageUrls.map((u) =>
-        galleryTdAttr.imgSrc.push(AIOPMediumPictureUrl.getJPG(u.ImageUrl))
+        galleryTdAttr.imgSrc.push(
+          ResourceMediumRequestService.getJPG(u.ImageUrl)
+        )
       );
     galleryTdAttr.key = key;
     return galleryTdAttr;

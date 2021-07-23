@@ -65,7 +65,6 @@ export class MapListPanelComponent implements OnInit {
   searched = false;
   beforSearchKey = "";
   search = (text: string) => {
-    debugger;
     if (this.beforSearchKey === text) {
       return;
     }

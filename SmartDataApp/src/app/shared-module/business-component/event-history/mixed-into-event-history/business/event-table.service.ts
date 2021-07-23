@@ -42,6 +42,7 @@ import { SessionUser } from "../../../../../common/tool/session-user";
 import { EnumHelper } from "../../../../../common/tool/enum-helper";
 import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 import { MessageBar } from "../../../../../common/tool/message-bar";
+import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
 @Injectable()
 export class EventTableService extends ListAttribute {
   dataSource_ = new Array<MixedIntoEventRecord>();
@@ -152,7 +153,7 @@ export class EventTableService extends ListAttribute {
       this.videoImgs = new Array();
       this.playVideoViewTitle = station.Name;
       this.videoImgs.push({
-        src: AIOPMediumPictureUrl.getJPG(event.ImageUrl),
+        src: ResourceMediumRequestService.getJPG(event.ImageUrl),
         id: event.ResourceId,
         name: event.ResourceName,
         time: event.EventTime,
@@ -161,7 +162,7 @@ export class EventTableService extends ListAttribute {
         station.Cameras.map((m) => {
           if (eh.cameraUsage.outside.indexOf(m.CameraUsage) > -1)
             this.videoImgs.push({
-              src: AIOPMediumPictureUrl.getJPG(m.ImageUrl),
+              src: ResourceMediumRequestService.getJPG(m.ImageUrl),
               id: m.Id,
               name: m.Name,
               time: event.EventTime,
@@ -265,10 +266,7 @@ export class EventTableService extends ListAttribute {
   }
 
   async requestDivisions() {
-    const param = new GetDivisionsParams();
-    param.PageIndex = 1;
-    param.PageSize = this.maxSize;
-    const result = await this.divisionService.list(param);
+    const result = await this.divisionService.list();
     return result.Data;
   }
 

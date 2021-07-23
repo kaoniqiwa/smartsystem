@@ -145,10 +145,7 @@ export class StatisticalDataBufferService
   async getDivisions() {
     var result = this.cache.get<Division[]>(this.division);
     if (!result) {
-      const param = new GetDivisionsParams();
-      param.PageIndex = 1;
-      param.PageSize = this.maxSize;
-      const response = await this.divisionService.list(param);
+      const response = await this.divisionService.list();
       result = response.Data;
       this.cache.set(this.division, result);
     }

@@ -23,7 +23,7 @@ import { PagedList } from "../model/page";
 import { BatchRequest, BatchResult } from "../model/batch";
 import { HowellResponse } from "../model/response";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
-import { ServiceResponseProcessor } from "../model/waste-regulation/request-service-processor";
+import { ServiceHelper } from "../model/waste-regulation/request-service-processor";
 import { DivisionUrl } from "../url/waste-regulation/division";
 @Injectable({
   providedIn: "root",
@@ -33,28 +33,45 @@ export class DivisionRequestService {
   async create(item: Division) {
     let response = await this.requestService
       .post<Division, HowellResponse<Division>>(
-        DivisionUrl.create(),
+        DivisionUrl.basic(),
         SaveModel.toModel(item, SaveModel.formMustField.division)
       )
       .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(response, Division);
+    return ServiceHelper.ResponseProcess(response, Division).then((x) => {
+      ServiceHelper.cacheItemByPaged.push(ServiceHelper.key.Division, x);
+      ServiceHelper.cache.reset();
+      return x;
+    });
   }
 
   async createMore(item: BatchRequest) {
     let response = await this.requestService
       .post<BatchRequest, HowellResponse<BatchResult>>(
-        DivisionUrl.create(),
+        DivisionUrl.basic(),
         item
       )
       .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(response, BatchResult);
+    return ServiceHelper.ResponseProcess(response, BatchResult);
   }
 
-  async get(id: string) {
-    let response = await this.requestService
-      .get<Division>(DivisionUrl.get(id))
-      .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(response, Division);
+  async get(id: string): Promise<Division> {
+    let url = DivisionUrl.get(id);
+    let result = ServiceHelper.getCacheItemByPaged<Division>(
+      ServiceHelper.key.Division,
+      (x) => {
+        return x.Id == id;
+      }
+    );
+    if (result) {
+      debugger;
+      return result;
+    }
+    let response = await this.requestService.get<Division>(url).toPromise();
+    return ServiceHelper.ResponseProcess(response, Division).then((x) => {
+      ServiceHelper.cacheItemByPaged.push(ServiceHelper.key.Division, x);
+
+      return x;
+    });
   }
 
   async set(item: Division) {
@@ -64,31 +81,48 @@ export class DivisionRequestService {
         SaveModel.toModel(item, SaveModel.formMustField.division)
       )
       .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(response, Division);
+    return ServiceHelper.ResponseProcess(response, Division).then((x) => {
+      return x;
+    });
   }
 
   async del(id: string) {
     let response = await this.requestService
       .delete<Division>(DivisionUrl.del(id))
       .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(response, Division);
+    return ServiceHelper.ResponseProcess(response, Division);
   }
 
-  async list(item: GetDivisionsParams) {
+  async list(item?: GetDivisionsParams) {
+    if (!item) {
+      let result = ServiceHelper.cache.get<PagedList<Division>>(
+        ServiceHelper.key.Division
+      );
+      if (result) {
+        return result;
+      }
+
+      item = {
+        PageSize: 99999,
+      };
+    }
     let response = await this.requestService
       .post<GetDivisionsParams, HowellResponse<PagedList<Division>>>(
         DivisionUrl.list(),
         item
       )
       .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(response, Division);
+    return ServiceHelper.ResponseProcess(response, Division).then((x) => {
+      ServiceHelper.cache.set(ServiceHelper.key.Division, x);
+      return x;
+    });
   }
 
   async tree() {
     let response = await this.requestService
       .get<DivisionTree>(DivisionUrl.tree())
       .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(response, DivisionTree);
+    return ServiceHelper.ResponseProcess(response, DivisionTree);
   }
 
   async volumesHistory(item: GetDivisionVolumesParams, divisionsId: string) {
@@ -98,7 +132,7 @@ export class DivisionRequestService {
         item
       )
       .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(response, GarbageVolume);
+    return ServiceHelper.ResponseProcess(response, GarbageVolume);
   }
 
   async eventNumbersHistory(
@@ -111,10 +145,7 @@ export class DivisionRequestService {
         HowellResponse<PagedList<EventNumberStatistic>>
       >(DivisionUrl.eventNumbersHistory(divisionsId), item)
       .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(
-      response,
-      EventNumberStatistic
-    );
+    return ServiceHelper.ResponseProcess(response, EventNumberStatistic);
   }
 
   async statisticNumber(divisionsId: string) {
@@ -122,10 +153,7 @@ export class DivisionRequestService {
       .get<DivisionNumberStatistic>(DivisionUrl.statisticNumber(divisionsId))
       .toPromise();
 
-    return ServiceResponseProcessor.ResponseProcess(
-      response,
-      DivisionNumberStatistic
-    );
+    return ServiceHelper.ResponseProcess(response, DivisionNumberStatistic);
   }
 
   async statisticNumberList(item: GetDivisionStatisticNumbersParams) {
@@ -135,10 +163,7 @@ export class DivisionRequestService {
         HowellResponse<PagedList<DivisionNumberStatistic>>
       >(DivisionUrl.statisticNumberList(), item)
       .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(
-      response,
-      DivisionNumberStatistic
-    );
+    return ServiceHelper.ResponseProcess(response, DivisionNumberStatistic);
   }
 
   async statisticNumberListV2(item: GetDivisionStatisticNumbersParamsV2) {
@@ -148,9 +173,6 @@ export class DivisionRequestService {
         HowellResponse<DivisionNumberStatisticV2[]>
       >(DivisionUrl.statisticNumberHistoryList(), item)
       .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(
-      response,
-      DivisionNumberStatisticV2
-    );
+    return ServiceHelper.ResponseProcess(response, DivisionNumberStatisticV2);
   }
 }

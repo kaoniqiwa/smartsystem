@@ -5,7 +5,7 @@ import { EventRecordUrl } from "../url/waste-regulation/event";
 import { GetEventRecordsParams } from "../model/waste-regulation/illegal-drop-event-record";
 import { GarbageFullEventRecord } from "../model/waste-regulation/garbage-full-event-record";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
-import { ServiceResponseProcessor } from "../model/waste-regulation/request-service-processor";
+import { ServiceHelper } from "../model/waste-regulation/request-service-processor";
 @Injectable({
   providedIn: "root",
 })
@@ -19,9 +19,6 @@ export class EventRequestService {
         HowellResponse<PagedList<GarbageFullEventRecord>>
       >(EventRecordUrl.garbageFullList(), item)
       .toPromise();
-    return ServiceResponseProcessor.ResponseProcess(
-      response,
-      GarbageFullEventRecord
-    );
+    return ServiceHelper.ResponseProcess(response, GarbageFullEventRecord);
   }
 }

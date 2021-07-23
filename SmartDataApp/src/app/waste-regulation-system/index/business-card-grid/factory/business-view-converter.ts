@@ -38,7 +38,7 @@ import {
   DateInterval,
   IntegerDecimalNum,
 } from "../../../../common/tool/tool.service";
-import { AIOPMediumPictureUrl } from "../../../../data-core/url/aiop/resources";
+
 import { EventNumber } from "../../../../data-core/model/waste-regulation/event-number";
 import { EventType } from "../../../../data-core/model/enum";
 import { ColorEnum } from "../../../../shared-module/card-component/card-content-factory";
@@ -46,6 +46,7 @@ import { CameraStateTableEnum } from "../../../../shared-module/business-compone
 import { isBoolean } from "util";
 import { SessionUser } from "../../../../common/tool/session-user";
 import { Language } from "../../../../common/tool/language";
+import { ResourceMediumRequestService } from "../../../../data-core/repuest/resources.service";
 export class IllegalDropHistoryCardConverter implements IConverter {
   Convert<DropEvent, ViewsModel>(
     input: DropEvent,
@@ -246,6 +247,8 @@ export class DivisionListConverter implements IConverter {
 }
 
 export class IllegalDropEventConverter implements IConverter {
+  constructor() {}
+
   Convert<IllegalDropEventInfos, ViewsModel>(
     input: IllegalDropEventInfos,
     output: ViewsModel
@@ -266,7 +269,7 @@ export class IllegalDropEventConverter implements IConverter {
 
         output.views[i].imgDesc1 = input.items[i].DivisionName;
         output.views[i].imgDesc2 = input.items[i].StationName;
-        output.views[i].imgSrc = AIOPMediumPictureUrl.getJPG(
+        output.views[i].imgSrc = ResourceMediumRequestService.getJPG(
           input.items[i].ImageUrl
         );
         output.views[i].title = "乱扔垃圾";
@@ -573,6 +576,8 @@ export class DivisionGarbageSpecificationConverter implements IConverter {
 }
 
 export class GarbageStationInspectionCardConverter implements IConverter {
+  constructor() {}
+
   Convert<GarbageStationInspection, ViewsModel>(
     input: GarbageStationInspection,
     output: ViewsModel
@@ -620,7 +625,7 @@ export class GarbageStationInspectionCardConverter implements IConverter {
           })
           .map((x) => {
             gallery.imgDesc.push({
-              src: AIOPMediumPictureUrl.getJPG(x.ImageUrl),
+              src: ResourceMediumRequestService.getJPG(x.ImageUrl),
               tag: {
                 id: x.Id,
               },

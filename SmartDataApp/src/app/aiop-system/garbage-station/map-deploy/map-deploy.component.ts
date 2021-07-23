@@ -111,7 +111,6 @@ export class MapDeployComponent implements OnInit {
     }
 
     console.log(item);
-    debugger;
 
     switch (item.rightClassBtn[0].tag) {
       case RightButtonTag.Link:

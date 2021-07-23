@@ -90,6 +90,16 @@ export class HowellAuthHttpService {
     return this.http.get<R>(url, httpOptions);
   }
 
+  public getCache<T = any, R = T>(url: string, params?: HttpParams) {
+    const myHeaders = this.getHttpHeaders("GET", url);
+    const httpOptions = {
+      "Cache-Control": "max-age=" + 60 * 30,
+      headers: myHeaders,
+      params: params,
+    };
+    return this.http.get<R>(url, httpOptions);
+  }
+
   public post<T = any, R = HowellResponse<T>>(
     url: string,
     model?: any,

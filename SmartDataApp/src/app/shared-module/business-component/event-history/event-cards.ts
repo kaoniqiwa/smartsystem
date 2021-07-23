@@ -6,6 +6,7 @@ import { AIOPMediumPictureUrl } from "../../../data-core/url/aiop/resources";
 import { ViewPagination } from "../../../shared-module/card-list-panel/card-list-panel";
 import { Page } from "../../../data-core/model/page";
 import { CardList } from "./illegal-drop-event-card-list/card-list";
+import { ResourceMediumRequestService } from "../../../data-core/repuest/resources.service";
 export class EventCards {
   dataSource = new Array<ImageDesc>();
   cardList_: CardList;
@@ -49,7 +50,9 @@ export class EventCards {
     if (item.Data.hasOwnProperty("CameraImageUrls")) {
       return new ImageDesc(
         item.EventId,
-        AIOPMediumPictureUrl.getJPG(item.Data["CameraImageUrls"][0].ImageUrl),
+        ResourceMediumRequestService.getJPG(
+          item.Data["CameraImageUrls"][0].ImageUrl
+        ),
         [item.ResourceName, item.Data.DivisionName],
         [
           this.datePipe.transform(item.EventTime, "HH:mm"),
@@ -64,7 +67,7 @@ export class EventCards {
     }
     return new ImageDesc(
       item.EventId,
-      AIOPMediumPictureUrl.getJPG(item.ImageUrl),
+      ResourceMediumRequestService.getJPG(item.ImageUrl),
       [item.ResourceName, item.Data.DivisionName],
       [this.datePipe.transform(item.EventTime, "HH:mm"), item.Data.StationName],
       item.ResourceName +
