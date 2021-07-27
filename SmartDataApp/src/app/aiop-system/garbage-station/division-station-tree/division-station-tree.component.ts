@@ -7,8 +7,12 @@ import {
   FlatNode,
   TreeListMode,
   RightBtn,
+  RightButton,
+  TreeNode,
 } from "../../../shared-module/custom-tree/custom-tree";
 import { Output, EventEmitter } from "@angular/core";
+import { Division } from "src/app/data-core/model/waste-regulation/division";
+import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
 @Component({
   selector: "hw-division-station-tree",
   templateUrl: "./division-station-tree.component.html",
@@ -25,38 +29,34 @@ export class DivisionStationTreeComponent implements OnInit {
   treeHeight = "calc(100% - 20px)";
 
   @Input()
-  selectedItemFn: (item: FlatNode, lastNode: boolean) => void;
+  selectedItemFn: (
+    item: FlatNode<Division | GarbageStation>,
+    lastNode: boolean
+  ) => void;
 
-  selectedItemClick = (item: FlatNode) => {
+  selectedItemClick = (item: FlatNode<Division | GarbageStation>) => {
     if (this.selectedItemFn) {
       this.selectedItemFn(item, this.stationTreeService.isLastNode(item.id));
     }
   };
 
   @Output()
-  itemExpandClickedEvent: EventEmitter<FlatNode> = new EventEmitter();
+  itemExpandClickedEvent: EventEmitter<FlatNode<Division | GarbageStation>> =
+    new EventEmitter();
 
-  itemExpandClicked(node: FlatNode) {
+  itemExpandClicked(node: FlatNode<Division | GarbageStation>) {
     if (this.itemExpandClickedEvent) {
-      console.log(this);
       this.itemExpandClickedEvent.emit(node);
     }
   }
 
+  @Output()
+  TreeNodeLoadedEvent: EventEmitter<TreeNode<GarbageStation>[]> =
+    new EventEmitter();
+
   @Input()
   treeListMode = TreeListMode.rightBtn;
 
-  @Input()
-  rightBtn: { iconClass: string; btns: RightBtn[] };
-
-  @Input()
-  rightBtnFn: (item: FlatNode, btn: RightBtn) => void;
-
-  rightBtnClick = (item: FlatNode, btn: RightBtn) => {
-    if (this.rightBtnFn) {
-      this.rightBtnFn(item, btn);
-    }
-  };
   searchTree = (text: string) => {
     debugger;
     const nodeType = this.onlyDivisionNode
@@ -77,13 +77,16 @@ export class DivisionStationTreeComponent implements OnInit {
     const ancestorDivision = this.dataService.divisions.filter(
       (x) => !x.ParentId
     );
+    debugger;
     this.stationTreeService.divisionModel = this.dataService.divisions;
     if (this.onlyDivisionNode) {
+      debugger;
       const nodes = this.stationTreeService.convertTreeNode(
-        this.stationTreeService.divisions
+        this.dataService.divisions
       );
       this.stationTreeService.dataSource = nodes;
     } else {
+      debugger;
       if (ancestorDivision) {
         for (let i = 0; i < ancestorDivision.length; i++) {
           const element = ancestorDivision[i];
@@ -91,19 +94,15 @@ export class DivisionStationTreeComponent implements OnInit {
             element.Id
           );
           this.stationTreeService.garbageStationModel = stations;
-          if (!this.dataService.garbageStations) {
-            this.dataService.garbageStations = [];
-          }
-          this.dataService.garbageStations =
-            this.dataService.garbageStations.concat(stations);
-          this.stationTreeService.convertStationTreeNode();
         }
       }
     }
+    debugger;
     this.stationTreeService.loadStationTree();
+    if (this.TreeNodeLoadedEvent) {
+      this.TreeNodeLoadedEvent.emit(this.stationTreeService.treeNode);
+    }
     this.garbageStationTree.dataSource.data = this.stationTreeService.treeNode;
-
-    this.addNodeRightBtn(this.rightBtn);
   }
 
   findNode(id: string) {
@@ -114,7 +113,7 @@ export class DivisionStationTreeComponent implements OnInit {
     }
   }
 
-  setNode(id: string, fn: (node: FlatNode) => void) {
+  setNode(id: string, fn: (node: FlatNode<Division | GarbageStation>) => void) {
     for (const key of this.garbageStationTree.flatNodeMap.keys()) {
       if (key.id === id) {
         fn(key);
@@ -124,7 +123,7 @@ export class DivisionStationTreeComponent implements OnInit {
   }
 
   findBindNode(iconClass: string) {
-    const nodes = new Array<FlatNode>();
+    const nodes = new Array<FlatNode<Division | GarbageStation>>();
     for (const key of this.garbageStationTree.flatNodeMap.keys()) {
       if (key.iconClass === iconClass && key.rightClassBtn.length === 0) {
         nodes.push(key);
@@ -133,7 +132,11 @@ export class DivisionStationTreeComponent implements OnInit {
     return nodes;
   }
 
-  addNodeRightBtn(item: { iconClass?: string; id?: string; btns: RightBtn[] }) {
+  addNodeRightBtn(item: {
+    iconClass?: string;
+    id?: string;
+    btns: RightButton<Division | GarbageStation>[];
+  }) {
     if (this.treeListMode === TreeListMode.rightBtn && item) {
       if (item.id) {
         let n = this.findNode(item.id);

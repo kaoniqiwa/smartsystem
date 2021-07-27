@@ -141,6 +141,18 @@
             </div>
           </div>
         </ng-container>
+        <ng-container *ngIf="listMode.rightBtn == mode">
+          <div class="pull-right right-btn-wrapper">
+            <ng-container *ngFor="let b of node.rightClassBtn; let i = index">
+              <a
+                href="javascript:void(0)"
+                [ngStyle]="{ 'padding-left': i > 0 ? '2px' : 'unset' }"
+                (click)="rightBtnClick(node, b)"
+                class="{{ b.cssClass }} "
+              ></a>
+            </ng-container>
+          </div>
+        </ng-container>
       </div>
     </mat-tree-node>
   </mat-tree>

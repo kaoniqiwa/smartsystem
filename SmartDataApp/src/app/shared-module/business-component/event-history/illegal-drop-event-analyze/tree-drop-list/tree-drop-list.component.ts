@@ -127,14 +127,13 @@ export class TreeDropListComponent implements OnInit {
   async reInit() {
     if (this.dataService.divisions.length == 0)
       this.dataService.divisions = await this.divisionDao.allDivisions();
-    this.stationTreeService.divisions.items = new Array();
     if (this.onlyCityNode) {
       this.stationTreeService.cityDivisionModel =
         this.dataService.divisions.filter(
           (x) => x.DivisionType < DivisionType.Committees
         );
       const nodes = this.stationTreeService.convertTreeNode(
-        this.stationTreeService.divisions
+        this.dataService.divisions
       );
       this.stationTreeService.dataSource = nodes;
     } else {
@@ -147,7 +146,7 @@ export class TreeDropListComponent implements OnInit {
       );
       if (this.onlyDivisionNode) {
         const nodes = this.stationTreeService.convertTreeNode(
-          this.stationTreeService.divisions
+          this.dataService.divisions
         );
         this.stationTreeService.dataSource = nodes;
       } else {
@@ -156,10 +155,8 @@ export class TreeDropListComponent implements OnInit {
             await this.garbageStationDao.requestGarbageStation(
               ancestorDivision.Id
             );
-        this.stationTreeService.garbageStations.items = new Array();
         this.stationTreeService.garbageStationModel =
           this.dataService.garbageStations;
-        this.stationTreeService.convertStationTreeNode();
       }
     }
 

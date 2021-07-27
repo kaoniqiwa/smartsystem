@@ -4,7 +4,7 @@ import { GarbageStation } from "../../../../data-core/model/waste-regulation/gar
 import {
   FlatNode,
   ColorEnum,
-  RightBtn,
+  RightButton,
 } from "../../../../shared-module/custom-tree/custom-tree";
 import { ConfirmDialog } from "../../../../shared-module/confirm-dialog/confirm-dialog.component";
 import { DataService as CameraDataService } from "../business/data.service";
@@ -14,12 +14,12 @@ import { House } from "../../station-chart/business/station-chart";
 import { CameraUsageData, CanType } from "../../../../data-core/model/enum";
 @Injectable()
 export class BusinessService {
-  bindItem: FlatNode;
+  bindItem: FlatNode<any>;
   bindingCamera: Camera;
   station: GarbageStation;
   confirmDialog_: ConfirmDialog;
-  readonly link = [new RightBtn("howell-icon-Link", "1")];
-  findNodeFn: (id: string) => FlatNode;
+  readonly link = [new RightButton("howell-icon-Link", "1")];
+  findNodeFn: (id: string) => FlatNode<any>;
   // cameraNodesFn: () => FlatNode[];
   cameraDataService: CameraDataService;
   msg = new MessageBar();

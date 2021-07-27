@@ -6,8 +6,8 @@ import { StationChartComponent } from "../station-chart/station-chart.component"
 import { HouseModeEnum } from "../station-chart/business/station-chart";
 import { GarbageStationType } from "../../../data-core/model/waste-regulation/garbage-station-type";
 import { MessageBar } from "../../../common/tool/message-bar";
-import { DivisionTreeNode } from "../../common/tree.service";
 import { ConfirmDialog } from "../../../shared-module/confirm-dialog/confirm-dialog.component";
+import { DataTreeNode } from "../../common/tree.service";
 @Component({
   selector: "app-garbage-station",
   templateUrl: "./garbage-station.component.html",
@@ -50,7 +50,7 @@ export class GarbageStationComponent implements OnInit {
     this.chartComponent.stationChart.changeTrashNum(num);
   }
 
-  treeNodeClick(node: DivisionTreeNode) {
+  treeNodeClick(node: DataTreeNode<any>) {
     const type = this.dataService.types.find((x) => x.Type + "" == node.id);
 
     this.stationList.selectNode(node);

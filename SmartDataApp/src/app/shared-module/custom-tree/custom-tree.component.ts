@@ -11,6 +11,7 @@ import {
   CheckBoxStateEnum,
   ColorEnum,
   RightBtn,
+  RightButton,
 } from "./custom-tree";
 import { Output } from "@angular/core";
 @Component({
@@ -21,35 +22,35 @@ import { Output } from "@angular/core";
 export class CustomTreeComponent implements OnInit {
   listMode = TreeListMode;
   checkBoxState = CheckBoxStateEnum;
-  flatNodeMap = new Map<FlatNode, TreeNode>();
-  nestedNodeMap = new Map<TreeNode, FlatNode>();
+  flatNodeMap = new Map<FlatNode<any>, TreeNode<any>>();
+  nestedNodeMap = new Map<TreeNode<any>, FlatNode<any>>();
 
-  selectedItems = new Array<FlatNode>();
-  @Input() selectedItemFn: (item: FlatNode, inputVal?: string) => void;
-  @Input() checkedItemFn: (item: FlatNode) => void;
-  @Input() rightBtnFn: (item: FlatNode, btn: RightBtn) => void;
+  selectedItems = new Array<FlatNode<any>>();
+  @Input() selectedItemFn: (item: FlatNode<any>, inputVal?: string) => void;
+  @Input() checkedItemFn: (item: FlatNode<any>) => void;
+  @Input() rightBtnFn: (item: FlatNode<any>, btn: RightBtn) => void;
 
   @Output()
-  itemExpandClickedEvent: EventEmitter<FlatNode> = new EventEmitter();
+  itemExpandClickedEvent: EventEmitter<FlatNode<any>> = new EventEmitter();
 
-  itemExpandClicked(node: FlatNode) {
+  itemExpandClicked(node: FlatNode<any>) {
     if (this.itemExpandClickedEvent) {
       this.itemExpandClickedEvent.emit(node);
     }
   }
 
-  @Input() treeData: TreeNode[];
+  @Input() treeData: TreeNode<any>[];
   @Input() mode = TreeListMode.nomal;
 
   ngOnInit() {
     this.dataSource.data = this.treeData;
   }
-  private transformer = (node: TreeNode, level: number) => {
+  private transformer = (node: TreeNode<any>, level: number) => {
     const existingNode = this.nestedNodeMap.get(node);
     var flatNode =
       existingNode && existingNode.name == node.name
         ? existingNode
-        : new FlatNode();
+        : new FlatNode<any>();
 
     flatNode.name = node.name;
     flatNode.level = level;
@@ -61,8 +62,9 @@ export class CustomTreeComponent implements OnInit {
     flatNode.label = node["label"] || "";
     flatNode.labelColor = node.color || ColorEnum.lightbBlue;
     flatNode.rightClassBtn = node.rightClassBtn;
+    flatNode.data = node.data;
     if (node.children) {
-      flatNode.children = new Array<FlatNode>();
+      flatNode.children = new Array<FlatNode<any>>();
       node.children.map((x) => {
         let item = this.transformer(x, level + 1);
         flatNode.children.push(item);
@@ -75,7 +77,7 @@ export class CustomTreeComponent implements OnInit {
     return flatNode;
   };
 
-  treeControl = new FlatTreeControl<FlatNode>(
+  treeControl = new FlatTreeControl<FlatNode<any>>(
     (node) => node.level,
     (node) => node.expandable
   );
@@ -89,7 +91,7 @@ export class CustomTreeComponent implements OnInit {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  hasChild = (_: number, node: FlatNode) => node.expandable;
+  hasChild = (_: number, node: FlatNode<any>) => node.expandable;
 
   touchSpinEvent = (val: string) => {
     setTimeout(() => {
@@ -99,9 +101,9 @@ export class CustomTreeComponent implements OnInit {
   };
   constructor() {}
 
-  getLevel = (node: FlatNode) => node.level;
+  getLevel = (node: FlatNode<any>) => node.level;
 
-  getParentNode(node: FlatNode): FlatNode | null {
+  getParentNode(node: FlatNode<any>): FlatNode<any> | null {
     if (node) {
       const currentLevel = this.getLevel(node);
       if (currentLevel < 1) {
@@ -119,7 +121,7 @@ export class CustomTreeComponent implements OnInit {
     return null;
   }
 
-  sumChildChecked(childNode: FlatNode, checked: boolean) {
+  sumChildChecked(childNode: FlatNode<any>, checked: boolean) {
     /**该节点下子元素 */
     //if (childNode.level == 0) return;
     const childs = this.treeControl.getDescendants(childNode);
@@ -165,12 +167,15 @@ export class CustomTreeComponent implements OnInit {
     return this.selectedItems.length ? this.selectedItems[0].id : null;
   }
 
-  rightBtnClick(item: FlatNode, btn: RightBtn) {
+  rightBtnClick(item: FlatNode<any>, btn: RightButton<any>) {
+    if (btn && btn.click) {
+      btn.click(btn);
+    }
     if (this.rightBtnFn && this.mode == TreeListMode.rightBtn)
       this.rightBtnFn(item, btn);
   }
 
-  itemClick(item: FlatNode) {
+  itemClick(item: FlatNode<any>) {
     var d = this.selectedItems.pop();
     this.selectedItems.push(item);
     if (this.mode == TreeListMode.checkedBox) {
@@ -187,19 +192,19 @@ export class CustomTreeComponent implements OnInit {
       this.selectedItemFn(item);
   }
 
-  getChildNodes(node: FlatNode) {
+  getChildNodes(node: FlatNode<any>) {
     return this.flatNodeMap.get(node);
   }
 
-  addNewItem(node: FlatNode, addNode: TreeNode) {
+  addNewItem(node: FlatNode<any>, addNode: TreeNode<any>) {
     const parentNode = this.flatNodeMap.get(node);
-    parentNode.children = parentNode.children || new Array<TreeNode>();
+    parentNode.children = parentNode.children || new Array<TreeNode<any>>();
     parentNode.children.push(addNode);
     this.dataSource.data = this.treeData;
   }
 
-  delItem(flatNode: FlatNode) {
-    const del = (nodes: TreeNode[], tag: string) => {
+  delItem(flatNode: FlatNode<any>) {
+    const del = (nodes: TreeNode<any>[], tag: string) => {
         for (var i = nodes.length; i > 0; i--) {
           if (nodes[i - 1].id == tag) nodes.splice(i - 1, 1);
           else {
@@ -207,7 +212,7 @@ export class CustomTreeComponent implements OnInit {
           }
         }
       },
-      findNode = (nodes: TreeNode[], tag: string) => {
+      findNode = (nodes: TreeNode<any>[], tag: string) => {
         if (nodes)
           for (const x of nodes) {
             if (x.children) {
@@ -218,7 +223,7 @@ export class CustomTreeComponent implements OnInit {
           }
       };
     /** 当根下无子元素 刷新 */
-    var parentNode: TreeNode;
+    var parentNode: TreeNode<any>;
     for (const x of this.treeData) {
       const has = findNode([x], flatNode.id);
       if (has) {
@@ -230,7 +235,7 @@ export class CustomTreeComponent implements OnInit {
     del(this.treeData, flatNode.id);
     /** 当根下无子元素 刷新 */
     if (parentNode && parentNode.children.length == 0)
-      this.nestedNodeMap = new Map<TreeNode, FlatNode>();
+      this.nestedNodeMap = new Map<TreeNode<any>, FlatNode<any>>();
     this.dataSource.data = this.treeData;
   }
 
@@ -248,14 +253,14 @@ export class CustomTreeComponent implements OnInit {
     }
   }
 
-  editNode(node: FlatNode, itemValue: string) {
+  editNode(node: FlatNode<any>, itemValue: string) {
     const nestedNode = this.flatNodeMap.get(node);
     nestedNode.name = itemValue;
     this.dataSource.data = this.treeData;
   }
 
   clearNestedNode() {
-    this.nestedNodeMap = new Map<TreeNode, FlatNode>();
-    this.flatNodeMap = new Map<FlatNode, TreeNode>();
+    this.nestedNodeMap = new Map<TreeNode<any>, FlatNode<any>>();
+    this.flatNodeMap = new Map<FlatNode<any>, TreeNode<any>>();
   }
 }
