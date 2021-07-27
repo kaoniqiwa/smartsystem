@@ -22,7 +22,6 @@ export class DivisionDao extends ListAttribute {
       this.cache.set(this.division, response.Data);
       result = response.Data;
     } else {
-      debugger;
     }
     return result;
   }

@@ -4,7 +4,7 @@ import { GarbageStationTypeMini } from "../../../common/tree.service";
 import { GarbageStationType } from "../../../../data-core/model/waste-regulation/garbage-station-type";
 import { MessageBar } from "../../../../common/tool/message-bar";
 export class GarbageStationList extends TreeService {
-  selectedNode: DataTreeNode<any>;
+  selectedNode: DataTreeNode;
   subTitle = "创建垃圾厢房";
   msg = new MessageBar();
   firstWindowNumText = 4;
@@ -37,7 +37,7 @@ export class GarbageStationList extends TreeService {
     }
   }
 
-  selectNode(node: DataTreeNode<any>) {
+  selectNode(node: DataTreeNode) {
     this.selectedNode = node;
     this.subTitle = node.name;
     this.firstNameText = node.name;

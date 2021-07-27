@@ -14,12 +14,12 @@ import { House } from "../../station-chart/business/station-chart";
 import { CameraUsageData, CanType } from "../../../../data-core/model/enum";
 @Injectable()
 export class BusinessService {
-  bindItem: FlatNode<any>;
+  bindItem: FlatNode;
   bindingCamera: Camera;
   station: GarbageStation;
   confirmDialog_: ConfirmDialog;
   readonly link = [new RightButton("howell-icon-Link", "1")];
-  findNodeFn: (id: string) => FlatNode<any>;
+  findNodeFn: (id: string) => FlatNode;
   // cameraNodesFn: () => FlatNode[];
   cameraDataService: CameraDataService;
   msg = new MessageBar();

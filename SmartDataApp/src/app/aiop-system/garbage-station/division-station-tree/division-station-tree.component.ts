@@ -9,6 +9,7 @@ import {
   RightBtn,
   RightButton,
   TreeNode,
+  RightButtonArgs,
 } from "../../../shared-module/custom-tree/custom-tree";
 import { Output, EventEmitter } from "@angular/core";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
@@ -41,6 +42,16 @@ export class DivisionStationTreeComponent implements OnInit {
   };
 
   @Output()
+  itemRightButtonClickedEvent: EventEmitter<RightButtonArgs> = new EventEmitter();
+
+  rightButtonClick(args: RightButtonArgs) {
+    debugger;
+    if (this.itemRightButtonClickedEvent) {
+      this.itemRightButtonClickedEvent.emit(args);
+    }
+  }
+
+  @Output()
   itemExpandClickedEvent: EventEmitter<FlatNode<Division | GarbageStation>> =
     new EventEmitter();
 
@@ -58,7 +69,6 @@ export class DivisionStationTreeComponent implements OnInit {
   treeListMode = TreeListMode.rightBtn;
 
   searchTree = (text: string) => {
-    debugger;
     const nodeType = this.onlyDivisionNode
       ? NodeTypeEnum.map
       : NodeTypeEnum.station;
@@ -77,16 +87,14 @@ export class DivisionStationTreeComponent implements OnInit {
     const ancestorDivision = this.dataService.divisions.filter(
       (x) => !x.ParentId
     );
-    debugger;
+
     this.stationTreeService.divisionModel = this.dataService.divisions;
     if (this.onlyDivisionNode) {
-      debugger;
       const nodes = this.stationTreeService.convertTreeNode(
         this.dataService.divisions
       );
       this.stationTreeService.dataSource = nodes;
     } else {
-      debugger;
       if (ancestorDivision) {
         for (let i = 0; i < ancestorDivision.length; i++) {
           const element = ancestorDivision[i];
@@ -97,7 +105,7 @@ export class DivisionStationTreeComponent implements OnInit {
         }
       }
     }
-    debugger;
+
     this.stationTreeService.loadStationTree();
     if (this.TreeNodeLoadedEvent) {
       this.TreeNodeLoadedEvent.emit(this.stationTreeService.treeNode);

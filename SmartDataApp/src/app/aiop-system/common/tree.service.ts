@@ -113,9 +113,9 @@ export class TreeService extends ListAttribute {
     return nodes;
   }
 
-  loadTree(items: DataTreeNode<any>[]) {
-    const dataSource = new Array<TreeNode<any>>();
-    const addItems = (node: TreeNode<any>, items: DataTreeNode<any>[]) => {
+  loadTree(items: DataTreeNode[]) {
+    const dataSource = new Array<TreeNode>();
+    const addItems = (node: TreeNode, items: DataTreeNode[]) => {
       for (const item of items) {
         if (node.id == item.parentId) {
           const node_ = new TreeNode();
@@ -128,7 +128,7 @@ export class TreeService extends ListAttribute {
             item.type == NodeTypeEnum.camera
               ? [new RightButton("howell-icon-Link", "1")]
               : [];
-          node.children = node.children || new Array<TreeNode<any>>();
+          node.children = node.children || new Array<TreeNode>();
           node.children.push(node_);
           addItems(node_, items);
         }
@@ -154,9 +154,9 @@ export class TreeService extends ListAttribute {
     return dataSource;
   }
 
-  allLastChilds(treeNode: TreeNode<any>[]) {
-    var lastchildren = new Array<TreeNode<any>>();
-    const forxh = (treeNodes: TreeNode<any>[]) => {
+  allLastChilds(treeNode: TreeNode[]) {
+    var lastchildren = new Array<TreeNode>();
+    const forxh = (treeNodes: TreeNode[]) => {
       for (var i = 0; i < treeNodes.length; i++) {
         var chlist = treeNodes[i];
         if (chlist.children && chlist.children.length > 0)
@@ -172,8 +172,8 @@ export class TreeService extends ListAttribute {
     const filterList = this.dataSource.filter(
         (x) => x.name.indexOf(text) > -1 && x.parentId && x.type == nodeType
       ),
-      list = new Array<DataTreeNode<any>>();
-    const findParent = (item: DataTreeNode<any>) => {
+      list = new Array<DataTreeNode>();
+    const findParent = (item: DataTreeNode) => {
       /**去除重复 */
       const find = this.dataSource.find((x) => x.id == item.parentId);
       if (find && find.parentId) {
@@ -204,7 +204,7 @@ export enum NodeTypeEnum {
   city = 5,
 }
 
-export class DataTreeNode<T> {
+export class DataTreeNode<T = any> {
   id: string;
   name: string;
   parentId: string;

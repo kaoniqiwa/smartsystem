@@ -50,7 +50,7 @@ export class GarbageStationComponent implements OnInit {
     this.chartComponent.stationChart.changeTrashNum(num);
   }
 
-  treeNodeClick(node: DataTreeNode<any>) {
+  treeNodeClick(node: DataTreeNode) {
     const type = this.dataService.types.find((x) => x.Type + "" == node.id);
 
     this.stationList.selectNode(node);

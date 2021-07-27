@@ -295,7 +295,6 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
       if (data.CurrentGarbageTime > 0) {
         if (notDropIds.includes(station.Id)) {
-          debugger;
         }
         let point = this.points[data.Id];
         if (!point) {
@@ -661,7 +660,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
           const camera = datas[i];
           if (camera) {
             if (camera.ImageUrl) {
-              camera.ImageUrl = await this.mediaService.getData(camera.ImageUrl);
+              camera.ImageUrl = await this.mediaService.getData(
+                camera.ImageUrl
+              );
             } else {
               camera.ImageUrl = "assets/img/timg.png";
             }

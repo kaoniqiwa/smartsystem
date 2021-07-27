@@ -67,6 +67,7 @@
           <div class="pull-right right-btn-wrapper">
             <ng-container *ngFor="let b of node.rightClassBtn; let i = index">
               <a
+                *ngIf="b.display"
                 href="javascript:void(0)"
                 [ngStyle]="{ 'padding-left': i > 0 ? '2px' : 'unset' }"
                 (click)="rightBtnClick(node, b)"
@@ -145,6 +146,7 @@
           <div class="pull-right right-btn-wrapper">
             <ng-container *ngFor="let b of node.rightClassBtn; let i = index">
               <a
+                *ngIf="b.display"
                 href="javascript:void(0)"
                 [ngStyle]="{ 'padding-left': i > 0 ? '2px' : 'unset' }"
                 (click)="rightBtnClick(node, b)"

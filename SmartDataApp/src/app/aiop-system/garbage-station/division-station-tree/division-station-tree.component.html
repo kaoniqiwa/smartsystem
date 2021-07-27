@@ -11,6 +11,7 @@
       [treeData]="stationTreeService.treeNode"
       [mode]="treeListMode"
       [selectedItemFn]="selectedItemClick"
+      (rightBtnFn)="rightButtonClick($event)"
       (itemExpandClickedEvent)="itemExpandClicked($event)"
     >
     </hw-custom-tree>

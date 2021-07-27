@@ -62,9 +62,10 @@ export class RightBtn {
     this.tag = tag;
   }
 }
-export class RightButton<T> extends RightBtn {
+export class RightButton<T = any> extends RightBtn {
   cssClass: string;
   tag: string;
+  display: boolean = true;
   click?: (t: RightButton<T>) => void;
   data?: T;
   constructor(cssClass: string, tag: string) {
@@ -72,4 +73,8 @@ export class RightButton<T> extends RightBtn {
     this.cssClass = cssClass;
     this.tag = tag;
   }
+}
+export interface RightButtonArgs<T = any> {
+  node: FlatNode<T>;
+  btn: RightButton<T>;
 }

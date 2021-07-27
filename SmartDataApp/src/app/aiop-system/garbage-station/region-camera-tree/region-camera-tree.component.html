@@ -1,7 +1,14 @@
 <div class="m-b-20">
-  <hw-input-search [placeholder]="'名称'" [searchEvent]="searchTree"></hw-input-search>
+  <hw-input-search
+    [placeholder]="'名称'"
+    [searchEvent]="searchTree"
+  ></hw-input-search>
 </div>
-<div class="fine" style="height: calc(100% - 90px);overflow: scroll;">
-  <hw-custom-tree [mode]="regionCameraTree.treeListMode" #cameraTree [treeData]="regionCameraTree.treeNode"
-  [rightBtnFn]="selectedItemClick"></hw-custom-tree>
+<div class="fine" style="height: calc(100% - 90px); overflow: scroll">
+  <hw-custom-tree
+    [mode]="regionCameraTree.treeListMode"
+    #cameraTree
+    [treeData]="regionCameraTree.treeNode"
+    (rightBtnFn)="selectedItemClick($event)"
+  ></hw-custom-tree>
 </div>

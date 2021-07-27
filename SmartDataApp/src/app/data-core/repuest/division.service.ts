@@ -63,7 +63,6 @@ export class DivisionRequestService {
       }
     );
     if (result) {
-      debugger;
       return result;
     }
     let response = await this.requestService.get<Division>(url).toPromise();
