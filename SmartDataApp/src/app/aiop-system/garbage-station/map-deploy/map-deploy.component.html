@@ -4,10 +4,9 @@
     <hw-division-station-tree
       #stationTree
       [treeHeight]="'calc(100% - 80px)'"
-      [rightBtn]="rightBtn"
-      [rightBtnFn]="rightBtnFn"
       [selectedItemFn]="selectDivisionClick"
       (itemExpandClickedEvent)="onItemExpandClicked($event)"
+      (TreeNodeLoadedEvent)="onTreeNodeLoaded($event)"
     ></hw-division-station-tree>
   </div>
 
