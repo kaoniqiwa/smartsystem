@@ -91,7 +91,7 @@ export class TreeService extends ListAttribute {
 
   convertTreeNode<
     T extends Division | Region | GarbageStation | GarbageStationType | Camera
-  >(array: Array<T>) {
+  >(array: Array<T>, btns?: RightButton<T>[]) {
     const nodes = new Array<DataTreeNode<T>>();
 
     for (const item of array) {
@@ -108,6 +108,7 @@ export class TreeService extends ListAttribute {
         node = this.converTreeNodeByCamera(item);
       } else {
       }
+      node.buttons = btns;
       nodes.push(node);
     }
     return nodes;

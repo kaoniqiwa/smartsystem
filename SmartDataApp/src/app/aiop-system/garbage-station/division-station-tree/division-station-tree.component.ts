@@ -69,6 +69,7 @@ export class DivisionStationTreeComponent implements OnInit {
   treeListMode = TreeListMode.rightBtn;
 
   searchTree = (text: string) => {
+    debugger;
     const nodeType = this.onlyDivisionNode
       ? NodeTypeEnum.map
       : NodeTypeEnum.station;
@@ -88,7 +89,7 @@ export class DivisionStationTreeComponent implements OnInit {
       (x) => !x.ParentId
     );
 
-    this.stationTreeService.divisionModel = this.dataService.divisions;
+    this.stationTreeService.appendDivisionModel(this.dataService.divisions);
     if (this.onlyDivisionNode) {
       const nodes = this.stationTreeService.convertTreeNode(
         this.dataService.divisions
@@ -101,7 +102,7 @@ export class DivisionStationTreeComponent implements OnInit {
           let stations = await this.dataService.requestGarbageStation(
             element.Id
           );
-          this.stationTreeService.garbageStationModel = stations;
+          this.stationTreeService.appendGarbageStationModel(stations);
         }
       }
     }
@@ -110,7 +111,6 @@ export class DivisionStationTreeComponent implements OnInit {
     if (this.TreeNodeLoadedEvent) {
       this.TreeNodeLoadedEvent.emit(this.stationTreeService.treeNode);
     }
-    this.garbageStationTree.dataSource.data = this.stationTreeService.treeNode;
   }
 
   findNode(id: string) {

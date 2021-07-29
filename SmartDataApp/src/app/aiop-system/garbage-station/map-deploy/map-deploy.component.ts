@@ -68,8 +68,8 @@ export class MapDeployComponent implements OnInit {
   });
   unbindDisplay = false;
 
-  wantUnbindNode: FlatNode;
-  wantBindNode: FlatNode;
+  wantUnbindNode: FlatNode<GarbageStation>;
+  wantBindNode: FlatNode<GarbageStation>;
 
   // 是否可拖拽
   draggable = false;
@@ -92,7 +92,7 @@ export class MapDeployComponent implements OnInit {
   client: CesiumMapClient;
 
   // 地图数据控制器
-  dataController: CesiumDataController.Controller;
+  dataController?: CesiumDataController.Controller;
 
   // 地图拖动点位
   DragendPoint?: CesiumDataController.Element;
@@ -155,10 +155,10 @@ export class MapDeployComponent implements OnInit {
     this.wantUnbindNode = args.node;
     this.pointSelected = this.getPoint(args.node.id);
   }
+
   rightButtonClick(args: RightButtonArgs<GarbageStation>) {
     console.log(args);
-    let point = this.getPoint(args.node.data.Id);
-    if (point) {
+    if (args.node.data.GisPoint) {
       this.onTreeNodeRightUnlinkClicked(args);
     } else {
       this.onTreeNodeRightLinkClicked(args);
@@ -173,16 +173,15 @@ export class MapDeployComponent implements OnInit {
           RightButtonTag.Unlink
         );
         unlink.data = node.data;
-        let point = this.getPoint(node.data.DivisionId, node.data.Id);
 
-        unlink.display = !!point;
+        unlink.display = !!node.data.GisPoint;
 
         let link = new RightButton<GarbageStation>(
           "howell-icon-Link",
           RightButtonTag.Link
         );
         link.data = node.data;
-        link.display = !point;
+        link.display = !node.data.GisPoint;
         node.rightClassBtn = [link, unlink];
       }
       if (node.children) {
@@ -351,12 +350,7 @@ export class MapDeployComponent implements OnInit {
 
     this.client = new CesiumMapClient(this.iframe.nativeElement);
     this.client.Events.OnLoading = () => {
-      this.dataController = this.client.DataController;
-      this.mapCoordinateWubdiwDataService.client = this.client;
-      this.mapCoordinateWubdiwDataService.dataController =
-        this.client.DataController;
       // const villages = this.dataController.Village.List();
-
       // for (const villageId in villages) {
       //   if (Object.prototype.hasOwnProperty.call(villages, villageId)) {
       //     const village = villages[villageId];
@@ -365,7 +359,6 @@ export class MapDeployComponent implements OnInit {
       //       if (Object.prototype.hasOwnProperty.call(points, pointId)) {
       //         const point = points[pointId];
       //         this.points[pointId] = point;
-
       //         const node = this.stationTree.findNode(point.id);
       //         node.rightClassBtn = [new RightBtn('howell-icon-Unlink', RightButtonTag.Unlink)];
       //       }
@@ -373,7 +366,12 @@ export class MapDeployComponent implements OnInit {
       //   }
       // }
     };
-    this.client.Events.OnLoaded = () => {};
+    this.client.Events.OnLoaded = () => {
+      this.dataController = this.client.DataController;
+      this.mapCoordinateWubdiwDataService.client = this.client;
+      this.mapCoordinateWubdiwDataService.dataController =
+        this.client.DataController;
+    };
     this.client.Events.OnElementsDoubleClicked = async (objs) => {};
 
     this.client.Events.OnElementsClicked = async (objs) => {
@@ -486,6 +484,12 @@ export class MapDeployComponent implements OnInit {
   }
   unbindYesClicked() {
     let result = false;
+
+    if (this.wantUnbindNode) {
+      let station = this.wantUnbindNode.data;
+      station.GisPoint = undefined;
+      this.garbageService.set(station);
+    }
 
     try {
       if (this.pointSelected) {

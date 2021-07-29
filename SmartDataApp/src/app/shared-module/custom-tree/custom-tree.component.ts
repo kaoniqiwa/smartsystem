@@ -39,7 +39,15 @@ export class CustomTreeComponent implements OnInit {
     }
   }
 
-  @Input() treeData: TreeNode[];
+  private _treeData: TreeNode[];
+  public get treeData(): TreeNode[] {
+    return this._treeData;
+  }
+  @Input()
+  public set treeData(v: TreeNode[]) {
+    this._treeData = v;
+    this.dataSource.data = this._treeData;
+  }
   @Input() mode = TreeListMode.nomal;
 
   ngOnInit() {

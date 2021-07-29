@@ -137,8 +137,10 @@ export class TreeDropListV2Component implements OnInit {
     if (this.dataService.divisions.length == 0)
       this.dataService.divisions = await this.divisionDao.allDivisions();
 
-    this.stationTreeService.divisionModel = this.dataService.divisions.filter(
-      (x) => x.DivisionType > DivisionType.City
+    this.stationTreeService.appendDivisionModel(
+      this.dataService.divisions.filter(
+        (x) => x.DivisionType > DivisionType.City
+      )
     );
     if (this.selectItemNodeMode == SelectItemNodeModeEnum.EndNode) {
       const nodes = this.stationTreeService.convertTreeNode(
@@ -148,8 +150,9 @@ export class TreeDropListV2Component implements OnInit {
       if (this.dataService.garbageStations.length == 0)
         this.dataService.garbageStations =
           await this.garbageStationDao.allGarbageStations();
-      this.stationTreeService.garbageStationModel =
-        this.dataService.garbageStations;
+      this.stationTreeService.appendGarbageStationModel(
+        this.dataService.garbageStations
+      );
     } else {
       //const ancestorDivision = this.dataService.divisions.find(x => x.DivisionType == DivisionType.County);
       if (this.onlyDivisionNode) {
@@ -162,8 +165,9 @@ export class TreeDropListV2Component implements OnInit {
         //   this.dataService.garbageStations = await this.garbageStationDao.requestGarbageStation(ancestorDivision.Id);
         this.dataService.garbageStations =
           await this.garbageStationDao.allGarbageStations();
-        this.stationTreeService.garbageStationModel =
-          this.dataService.garbageStations;
+        this.stationTreeService.appendGarbageStationModel(
+          this.dataService.garbageStations
+        );
       }
     }
     this.stationTreeService.loadStationTree();

@@ -16,15 +16,15 @@ export class StationTreeService extends TreeService {
     super();
   }
 
-  set garbageStationModel(models: GarbageStation[]) {
+  appendGarbageStationModel(models: GarbageStation[]) {
     this.dataSource = [...this.dataSource, ...this.convertTreeNode(models)];
   }
 
-  set divisionModel(models: Division[]) {
+  appendDivisionModel(models: Division[]) {
     this.dataSource = [...this.dataSource, ...this.convertTreeNode(models)];
   }
 
-  set cityDivisionModel(models: Division[]) {
+  appendCityDivisionModel(models: Division[]) {
     this.dataSource = [...this.dataSource, ...this.convertTreeNode(models)];
   }
 
