@@ -69,6 +69,9 @@ export class DivisionStationTreeComponent implements OnInit {
   TreeNodeLoadedEvent: EventEmitter<TreeNode<GarbageStation>[]> =
     new EventEmitter();
 
+  @Output()
+  PanelClickedEvent: EventEmitter<void> = new EventEmitter();
+
   @Input()
   treeListMode = TreeListMode.rightBtn;
 
@@ -165,6 +168,12 @@ export class DivisionStationTreeComponent implements OnInit {
           n.rightClassBtn = item.btns;
         }
       }
+    }
+  }
+
+  onPanelClicked() {
+    if (this.PanelClickedEvent) {
+      this.PanelClickedEvent.emit();
     }
   }
 }
