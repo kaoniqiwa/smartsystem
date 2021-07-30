@@ -271,4 +271,9 @@ export class CustomTreeComponent implements OnInit {
     this.nestedNodeMap = new Map<TreeNode, FlatNode>();
     this.flatNodeMap = new Map<FlatNode, TreeNode>();
   }
+
+  onTreeClicked(sender: any, args: any) {
+    console.log(sender);
+    console.log(args);
+  }
 }

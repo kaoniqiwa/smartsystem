@@ -44,6 +44,23 @@ export class MapDeployComponent implements OnInit {
   // @ViewChild('unbindConfirm')
   // unbindConfirm: ConfirmComponent;
 
+  GarbageStationRightButtons = [
+    new RightButton(
+      "howell-icon-Link",
+      RightButtonTag.Link,
+      (data: GarbageStation) => {
+        return !data.GisPoint;
+      }
+    ),
+    new RightButton(
+      "howell-icon-Unlink",
+      RightButtonTag.Unlink,
+      (data: GarbageStation) => {
+        return !!data.GisPoint;
+      }
+    ),
+  ];
+
   locationDialog = new ConfirmDialog({
     title: "提示",
     content: "是否保存当前位置？",
@@ -124,11 +141,6 @@ export class MapDeployComponent implements OnInit {
       if (Object.prototype.hasOwnProperty.call(points, pointId)) {
         let point = this.getPoint(pointId);
         let item = node.children.find((x) => x.id === pointId);
-        if (item) {
-          // item.rightClassBtn = [
-          //   new RightButton("howell-icon-Unlink", RightButtonTag.Unlink),
-          // ];
-        }
       }
     }
   }
@@ -157,37 +169,45 @@ export class MapDeployComponent implements OnInit {
   }
 
   rightButtonClick(args: RightButtonArgs<GarbageStation>) {
-    console.log(args);
-    if (args.node.data.GisPoint) {
-      this.onTreeNodeRightUnlinkClicked(args);
-    } else {
-      this.onTreeNodeRightLinkClicked(args);
+    switch (args.btn.tag) {
+      case RightButtonTag.Link:
+        this.onTreeNodeRightLinkClicked(args);
+        break;
+      case RightButtonTag.Unlink:
+        this.onTreeNodeRightUnlinkClicked(args);
+        break;
+
+      default:
+        break;
     }
+    console.log(args);
   }
   onTreeNodeLoaded(nodes: TreeNode<GarbageStation | Division>[]) {
-    for (let i = 0; i < nodes.length; i++) {
-      const node = nodes[i];
-      if (node.data instanceof GarbageStation) {
-        let unlink = new RightButton<GarbageStation>(
-          "howell-icon-Unlink",
-          RightButtonTag.Unlink
-        );
-        unlink.data = node.data;
-
-        unlink.display = !!node.data.GisPoint;
-
-        let link = new RightButton<GarbageStation>(
-          "howell-icon-Link",
-          RightButtonTag.Link
-        );
-        link.data = node.data;
-        link.display = !node.data.GisPoint;
-        node.rightClassBtn = [link, unlink];
-      }
-      if (node.children) {
-        this.onTreeNodeLoaded(node.children);
-      }
-    }
+    // for (let i = 0; i < nodes.length; i++) {
+    //   const node = nodes[i];
+    //   if (node.data instanceof GarbageStation) {
+    //
+    //     if (node.rightClassBtn) {
+    //       for (let i = 0; i < node.rightClassBtn.length; i++) {
+    //         switch (node.rightClassBtn[i].tag) {
+    //           case RightButtonTag.Unlink:
+    //
+    //             node.rightClassBtn[i].display = !!node.data.GisPoint;
+    //             break;
+    //           case RightButtonTag.Link:
+    //
+    //             node.rightClassBtn[i].display = !node.data.GisPoint;
+    //             break;
+    //           default:
+    //             break;
+    //         }
+    //       }
+    //     }
+    //   }
+    //   if (node.children) {
+    //     this.onTreeNodeLoaded(node.children);
+    //   }
+    // }
   }
 
   selectDivisionClick = async (item: FlatNode, lastNode: boolean) => {
@@ -299,6 +319,7 @@ export class MapDeployComponent implements OnInit {
   }
 
   onPointCreated(point: CesiumDataController.Point) {
+    if (!this.wantBindNode) return;
     this.points[point.id] = point;
     this.client.Point.Create(point);
     this.pointSelected = point;
@@ -309,9 +330,10 @@ export class MapDeployComponent implements OnInit {
     // ];
     this.wantUnbindNode = undefined;
 
-    let data = this.stationTree.dataService.garbageStations.find((x) => {
-      return x.Id === point.id;
-    });
+    let data = this.wantBindNode.data;
+    // let data = this.stationTree.dataService.garbageStations.find((x) => {
+    //   return x.Id === point.id;
+    // });
     if (data) {
       data.GisPoint = new GisPoint(
         [point.position.lon, point.position.lat],
@@ -320,6 +342,12 @@ export class MapDeployComponent implements OnInit {
       let promise = this.garbageService.set(data);
       promise
         .then((res) => {
+          if (this.wantBindNode.rightClassBtn) {
+            for (let i = 0; i < this.wantBindNode.rightClassBtn.length; i++) {
+              this.wantBindNode.rightClassBtn[i].display =
+                !this.wantBindNode.rightClassBtn[i].display;
+            }
+          }
           new MessageBar().response_success("点位坐标录入成功");
         })
         .catch((ex) => {
@@ -540,8 +568,9 @@ export class MapDeployComponent implements OnInit {
       if (!this.wantUnbindNode) {
         this.wantUnbindNode = this.stationTree.findNode(this.pointSelected.id);
       }
-      this.dataController.Village.Point.Remove(point.villageId, point.id);
       this.client.Point.Remove(point.id);
+      this.dataController.Village.Point.Remove(point.villageId, point.id);
+
       delete this.points[point.id];
       new MessageBar().response_success("地图数据删除成功");
       return true;

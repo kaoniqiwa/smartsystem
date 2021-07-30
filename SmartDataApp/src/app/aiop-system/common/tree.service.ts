@@ -108,7 +108,13 @@ export class TreeService extends ListAttribute {
         node = this.converTreeNodeByCamera(item);
       } else {
       }
+
       node.buttons = btns;
+      if (node.buttons) {
+        for (let i = 0; i < node.buttons.length; i++) {
+          node.buttons[i].data = node.data;
+        }
+      }
       nodes.push(node);
     }
     return nodes;
@@ -129,6 +135,9 @@ export class TreeService extends ListAttribute {
             item.type == NodeTypeEnum.camera
               ? [new RightButton("howell-icon-Link", "1")]
               : [];
+          if (item.buttons && item.buttons.length > 0) {
+            node_.rightClassBtn = item.buttons;
+          }
           node.children = node.children || new Array<TreeNode>();
           node.children.push(node_);
           addItems(node_, items);
@@ -145,6 +154,9 @@ export class TreeService extends ListAttribute {
           item.type == NodeTypeEnum.camera
             ? [new RightButton("howell-icon-Link", "1")]
             : [];
+        if (item.buttons && item.buttons.length > 0) {
+          node.rightClassBtn = item.buttons;
+        }
         node.id = item.id;
         node.iconClass = this.nodeIconType.get(item.type);
         dataSource.push(node);
@@ -216,33 +228,33 @@ export class DataTreeNode<T = any> {
   show? = true;
 }
 
-export class DivisionMini extends DataTreeNode<Division> {
-  divisionType: number;
-}
+// export class DivisionMini extends DataTreeNode<Division> {
+//   divisionType: number;
+// }
 
-export class GarbageStationTypeMini extends DataTreeNode<GarbageStationType> {}
+// export class GarbageStationTypeMini extends DataTreeNode<GarbageStationType> {}
 
-export class RegionMini extends DataTreeNode<Region> {
-  regionType: number;
-}
+// export class RegionMini extends DataTreeNode<Region> {
+//   regionType: number;
+// }
 
-export class GarbageStationMini {
-  id: string;
-  name: string;
-  /**
-   * 垃圾房类型(可选)，默认：0
-   * 暂时无效，之后会用于高度，形状，室内、室外等区分
-   */
-  stationType: number;
-  /**所属区划ID(可选) */
-  divisionId: string;
-}
+// export class GarbageStationMini {
+//   id: string;
+//   name: string;
+//   /**
+//    * 垃圾房类型(可选)，默认：0
+//    * 暂时无效，之后会用于高度，形状，室内、室外等区分
+//    */
+//   stationType: number;
+//   /**所属区划ID(可选) */
+//   divisionId: string;
+// }
 
-export class CameraMini {
-  id: string;
-  name: string;
-  regionId: string;
-}
+// export class CameraMini {
+//   id: string;
+//   name: string;
+//   regionId: string;
+// }
 
 export class TreeNodeDatas<T> {
   items: T[];

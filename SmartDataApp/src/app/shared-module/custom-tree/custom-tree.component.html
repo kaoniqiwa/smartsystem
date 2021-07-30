@@ -1,5 +1,8 @@
 <ng-container *ngIf="treeData">
-  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <mat-tree
+    [dataSource]="dataSource"
+    [treeControl]="treeControl"
+  >
     <!-- This is the tree node template for leaf nodes   bottom: 7px -->
     <mat-tree-node
       *matTreeNodeDef="let node"

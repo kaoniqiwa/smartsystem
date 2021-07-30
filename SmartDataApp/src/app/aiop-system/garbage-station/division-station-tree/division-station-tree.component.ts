@@ -35,6 +35,11 @@ export class DivisionStationTreeComponent implements OnInit {
     lastNode: boolean
   ) => void;
 
+  @Input()
+  GarbageStationRightButtons: RightButton[];
+  @Input()
+  DivisionRightButtons: RightButton[];
+
   selectedItemClick = (item: FlatNode<Division | GarbageStation>) => {
     if (this.selectedItemFn) {
       this.selectedItemFn(item, this.stationTreeService.isLastNode(item.id));
@@ -45,7 +50,6 @@ export class DivisionStationTreeComponent implements OnInit {
   itemRightButtonClickedEvent: EventEmitter<RightButtonArgs> = new EventEmitter();
 
   rightButtonClick(args: RightButtonArgs) {
-    debugger;
     if (this.itemRightButtonClickedEvent) {
       this.itemRightButtonClickedEvent.emit(args);
     }
@@ -69,7 +73,6 @@ export class DivisionStationTreeComponent implements OnInit {
   treeListMode = TreeListMode.rightBtn;
 
   searchTree = (text: string) => {
-    debugger;
     const nodeType = this.onlyDivisionNode
       ? NodeTypeEnum.map
       : NodeTypeEnum.station;
@@ -89,7 +92,10 @@ export class DivisionStationTreeComponent implements OnInit {
       (x) => !x.ParentId
     );
 
-    this.stationTreeService.appendDivisionModel(this.dataService.divisions);
+    this.stationTreeService.appendDivisionModel(
+      this.dataService.divisions,
+      this.DivisionRightButtons
+    );
     if (this.onlyDivisionNode) {
       const nodes = this.stationTreeService.convertTreeNode(
         this.dataService.divisions
@@ -102,7 +108,10 @@ export class DivisionStationTreeComponent implements OnInit {
           let stations = await this.dataService.requestGarbageStation(
             element.Id
           );
-          this.stationTreeService.appendGarbageStationModel(stations);
+          this.stationTreeService.appendGarbageStationModel(
+            stations,
+            this.GarbageStationRightButtons
+          );
         }
       }
     }

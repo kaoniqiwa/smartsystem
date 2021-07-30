@@ -1,6 +1,5 @@
 import { DataService } from "./data.service";
 import { DataTreeNode, TreeService } from "../../../common/tree.service";
-import { GarbageStationTypeMini } from "../../../common/tree.service";
 import { GarbageStationType } from "../../../../data-core/model/waste-regulation/garbage-station-type";
 import { MessageBar } from "../../../../common/tool/message-bar";
 export class GarbageStationList extends TreeService {

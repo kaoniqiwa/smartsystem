@@ -1,12 +1,11 @@
-import { TreeService, NodeTypeEnum } from "../../../common/tree.service";
+import { TreeService } from "../../../common/tree.service";
 import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
 import { Division } from "../../../../data-core/model/waste-regulation/division";
 import {
-  TreeListMode,
+  RightButton,
   TreeNode,
 } from "../../../../shared-module/custom-tree/custom-tree";
 import { Injectable } from "@angular/core";
-import { Region } from "src/app/data-core/model/aiop/region";
 
 @Injectable()
 export class StationTreeService extends TreeService {
@@ -16,16 +15,23 @@ export class StationTreeService extends TreeService {
     super();
   }
 
-  appendGarbageStationModel(models: GarbageStation[]) {
-    this.dataSource = [...this.dataSource, ...this.convertTreeNode(models)];
+  appendGarbageStationModel(models: GarbageStation[], btns?: RightButton[]) {
+    let result = this.convertTreeNode(models, btns);
+    this.dataSource = [...this.dataSource, ...result];
   }
 
-  appendDivisionModel(models: Division[]) {
-    this.dataSource = [...this.dataSource, ...this.convertTreeNode(models)];
+  appendDivisionModel(models: Division[], btns?: RightButton[]) {
+    this.dataSource = [
+      ...this.dataSource,
+      ...this.convertTreeNode(models, btns),
+    ];
   }
 
-  appendCityDivisionModel(models: Division[]) {
-    this.dataSource = [...this.dataSource, ...this.convertTreeNode(models)];
+  appendCityDivisionModel(models: Division[], btns?: RightButton[]) {
+    this.dataSource = [
+      ...this.dataSource,
+      ...this.convertTreeNode(models, btns),
+    ];
   }
 
   loadStationTree() {

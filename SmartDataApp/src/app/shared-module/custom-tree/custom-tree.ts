@@ -65,10 +65,26 @@ export class RightBtn {
 export class RightButton<T = any> extends RightBtn {
   cssClass: string;
   tag: string;
-  display: boolean = true;
+
+  private _display?: boolean;
+
+  get display(): boolean {
+    if (this._display === undefined) {
+      this._display = this.display_predicate(this.data);
+    }
+    return this._display;
+  }
+  set display(v: boolean) {
+    this._display = v;
+  }
+
   click?: (t: RightButton<T>) => void;
   data?: T;
-  constructor(cssClass: string, tag: string) {
+  constructor(
+    cssClass: string,
+    tag: string,
+    private display_predicate: (t?: T) => boolean = () => true
+  ) {
     super(cssClass, tag);
     this.cssClass = cssClass;
     this.tag = tag;
