@@ -1,0 +1,140 @@
+.card(@w:320px) {
+  box-sizing: border-box;
+  width: @w;
+  background: rgba(36, 72, 165, 0.05);
+  border: 2px rgba(117, 134, 224, 0.15) solid;
+  padding: 20px;
+}
+.normal-button(@src) {
+  width: 76px;
+  height: 34px;
+  cursor: pointer;
+  background-color: unset;
+  border: unset;
+  background-image: ~"url(/assets/img/@{src}-btn.png)";
+  &:hover {
+    background-image: ~"url(/assets/img/@{src}-btn-hover.png)";
+  }
+}
+.disabled-button(@c) {
+  color: gray;
+  cursor: no-drop;
+  background: @c;
+}
+.tree-node() {
+  position: relative;
+  top: 4px;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1.2;
+  color: white;
+  min-height: 35px;
+  cursor: pointer;
+}
+
+.division-manage {
+  display: flex;
+  flex-wrap: nowrap;
+  min-height: 550px;
+  button.add-btn {
+    .normal-button(green);
+    &.disabled {
+      .disabled-button(#0d5d15);
+    }
+  }
+  button.delete-btn {
+    .normal-button(red);
+    &.disabled {
+      .disabled-button(#570c0c);
+    }
+  }
+  button.edit-btn {
+    .normal-button(blue);
+
+    &.disabled {
+      .disabled-button(#194076);
+    }
+  }
+  .aside {
+    .card(325px);
+    flex-shrink: 0;
+
+    .division-tree-container {
+      height: calc(100% - 142px);
+      overflow: auto;
+      .division-tree.mat-tree {
+        font-family: "Source Han Sans CN Normal";
+        background: transparent;
+        padding-left: 10px;
+        cursor: pointer;
+
+        .mat-tree-node {
+          .tree-node();
+          .leaf-node {
+            padding: 5px 10px;
+            &:hover {
+              background-color: #2e3459;
+            }
+            &.selected {
+              background-color: #2d76ce;
+            }
+          }
+        }
+        .mat-nested-tree-node {
+          .tree-node();
+          .nested-node {
+            padding: 5px 0 5px 10px;
+            &:hover {
+              background-color: #2e3459;
+            }
+            &.selected {
+              background-color: #2d76ce;
+            }
+          }
+          .nested-tree-invisible {
+            display: none;
+          }
+        }
+
+        .mat-nested-tree-node div[role="group"] {
+          padding-left: 20px;
+        }
+        div[role="group"] > .mat-tree-node {
+          padding-left: 20px;
+        }
+      }
+    }
+  }
+  .content {
+    .card();
+    flex-grow: 1;
+    min-width: 500px;
+    .division-form {
+      width: 500px;
+      .form-label {
+        color: #eaedff;
+        font-size: 18px;
+      }
+      .btns {
+        display: none;
+      }
+    }
+  }
+}
+
+.btn.to-right {
+  border: 0;
+  padding: 0;
+  position: relative;
+  background: transparent;
+  i {
+    font-size: 20px;
+    color: #cfd7ff;
+  }
+  & + div.node-label {
+    position: relative;
+    top: 4px;
+    cursor: unset;
+    display: inline-block;
+  }
+}
