@@ -34,7 +34,12 @@ export class MapDeployCoordinateWindowService {
           this.standbyPoint.id,
           this.standbyPoint
         );
+
         new MessageBar().response_success("点位数据创建成功");
+        console.log(
+          "this.client.Point.Create",
+          "MapDeployCoordinateWindowService YesEvent"
+        );
         this.client.Point.Create(this.standbyPoint);
         if (this.OnPointCreated) {
           this.OnPointCreated(this.standbyPoint);

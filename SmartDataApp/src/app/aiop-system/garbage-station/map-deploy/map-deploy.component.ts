@@ -321,7 +321,7 @@ export class MapDeployComponent implements OnInit {
   onPointCreated(point: CesiumDataController.Point) {
     if (!this.wantBindNode) return;
     this.points[point.id] = point;
-    this.client.Point.Create(point);
+    console.log("this.client.Point.Create", "onPointCreated");
     this.pointSelected = point;
     const node = this.stationTree.findNode(point.id);
 
@@ -451,6 +451,7 @@ export class MapDeployComponent implements OnInit {
           new MessageBar().response_Error("点位数据创建失败");
         }
         this.points[point.id] = point;
+        console.log("this.client.Point.Create", "OnMouseDoubleClick");
         this.client.Point.Create(point);
         this.pointSelected = point;
         const node = this.stationTree.findNode(point.id);
@@ -493,6 +494,7 @@ export class MapDeployComponent implements OnInit {
           .DragendPoint as CesiumDataController.Point;
         this.client.Point.Remove(this.DragendPoint.id);
         const point = this.points[this.DragendPoint.id];
+        console.log("this.client.Point.Create", "locationYesClicked");
         this.client.Point.Create(point);
       }
     } finally {
@@ -504,6 +506,7 @@ export class MapDeployComponent implements OnInit {
       if (this.DragendPoint) {
         this.client.Point.Remove(this.DragendPoint.id);
         const point = this.getPoint(this.DragendPoint.id);
+        console.log("this.client.Point.Create", "locationCancelClicked");
         this.client.Point.Create(point);
       }
     } finally {
@@ -527,16 +530,15 @@ export class MapDeployComponent implements OnInit {
       if (this.wantUnbindNode) {
         this.pointSelected = this.getPoint(this.wantUnbindNode.id);
         result = this.RemovePoint(this.pointSelected);
-        if (result) {
-          for (let i = 0; i < this.wantUnbindNode.rightClassBtn.length; i++) {
-            this.wantUnbindNode.rightClassBtn[i].display =
-              !this.wantUnbindNode.rightClassBtn[i].display;
-          }
-        }
       }
     } finally {
       if (result) {
         this.pointSelected = undefined;
+
+        for (let i = 0; i < this.wantUnbindNode.rightClassBtn.length; i++) {
+          this.wantUnbindNode.rightClassBtn[i].display =
+            !this.wantUnbindNode.rightClassBtn[i].display;
+        }
       }
       this.unbindDisplay = false;
     }
