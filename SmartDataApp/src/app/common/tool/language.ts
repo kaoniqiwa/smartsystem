@@ -1,6 +1,7 @@
 import {
   CameraState,
   CameraType,
+  DivisionType,
   EventType,
   ResourceType,
   StationState,
@@ -102,6 +103,18 @@ export class Language {
 
       default:
         return "";
+    }
+  }
+  static DivisionType(type: DivisionType) {
+    switch (type) {
+      case DivisionType.Province:
+        return "省";
+      case DivisionType.City:
+        return "行政区划";
+      case DivisionType.County:
+        return "街道";
+      case DivisionType.Committees:
+        return "居委会";
     }
   }
 }

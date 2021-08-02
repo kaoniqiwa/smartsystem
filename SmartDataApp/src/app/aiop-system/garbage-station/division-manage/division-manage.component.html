@@ -2,63 +2,98 @@
   <div class="aside m-r-20">
     <h2 class="m-b-20">区划列表</h2>
     <div class="m-b-10">
-      <button
-        class="add-btn m-r-10"
-        (click)="addBtnClick()"
-        [class.disabled]="!canAdd"
-      >
+      <button class="add-btn m-r-10" (click)="addBtnClick()">
         <i class="howell-icon-plus"></i>
-        添加
-      </button>
-      <button
-        class="delete-btn m-r-10"
-        (click)="delBtnClick()"
-        [class.disabled]="!canDelete"
-      >
-        <i class="howell-icon-delete-bin"></i>
-        删除
-      </button>
-      <button
-        class="edit-btn m-r-10"
-        (click)="editBtnClick()"
-        [class.disabled]="!canEdit"
-      >
-        <i class="howell-icon-setting"></i>
-        编辑
+        添加行政区划
       </button>
     </div>
-    <div class="m-b-20">
+    <div class="m-b-10">
       <hw-input-search [placeholder]="'名称'"></hw-input-search>
     </div>
 
-    <div class="division-tree-container">
+    <div class="division-tree-container" (click)="divisionTreeContainerClick()">
       <mat-tree
         [dataSource]="dataSource"
         [treeControl]="treeControl"
         class="division-tree"
+        #matTree
       >
-        <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
-          <div class="tree-node leaf-node" (click)="clickTreeNode(node)">
-            <div class="light-blue-text node-label">
-              <i class="howell-icon-earth"></i>{{ node.name }}
+        <mat-tree-node *matTreeNodeDef="let node">
+          <div
+            class="tree-node leaf-node"
+            (click)="clickTreeNode(node, $event)"
+            [class.selected]="currentNode && node.id == currentNode.id"
+            [attr.id]="node.id"
+            [attr.division-type]="node.divisionType"
+            [title]="node.name"
+          >
+            <div class="node-content">
+              <button
+                class="btn to-right hidden"
+                matTreeNodeToggle
+                [attr.aria-label]="'Toggle ' + node.name"
+              >
+                <i
+                  class="mdi"
+                  [class.mdi-menu-right]="!treeControl.isExpanded(node)"
+                  [class.mdi-menu-down]="treeControl.isExpanded(node)"
+                ></i>
+              </button>
+              <div class="light-blue-text node-label">
+                <i class="howell-icon-earth"></i>{{ node.name }}
+              </div>
+            </div>
+            <div class="node-operate">
+              <div
+                class="add-btn"
+                (click)="addBtnClick(node, $event)"
+                [class.hide]="node.divisionType == 4"
+              >
+                <i class="howell-icon-pluscircleoutline"></i>
+              </div>
+              <div class="delete-btn" (click)="deleteBtnClick(node, $event)">
+                <i class="howell-icon-delete-bin"></i>
+              </div>
+              <div class="edit-btn" (click)="editBtnClick(node, $event)">
+                <i class="howell-icon-edit"></i>
+              </div>
             </div>
           </div>
         </mat-tree-node>
         <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
-          <div class="nested-node" (click)="clickTreeNode(node)">
-            <button
-              class="btn to-right"
-              matTreeNodeToggle
-              [attr.aria-label]="'Toggle ' + node.name"
-            >
-              <i
-                class="mdi"
-                [class.mdi-menu-right]="!treeControl.isExpanded(node)"
-                [class.mdi-menu-down]="treeControl.isExpanded(node)"
-              ></i>
-            </button>
-            <div class="light-blue-text node-label">
-              <i class="howell-icon-earth"></i>{{ node.name }}
+          <div
+            class="nested-node"
+            (click)="clickTreeNode(node, $event)"
+            [class.selected]="currentNode && node.id == currentNode.id"
+            [attr.id]="node.id"
+            [attr.division-type]="node.divisionType"
+          >
+            <div class="node-content">
+              <button
+                class="btn to-right"
+                matTreeNodeToggle
+                [attr.aria-label]="'Toggle ' + node.name"
+              >
+                <i
+                  class="mdi"
+                  [class.mdi-menu-right]="!treeControl.isExpanded(node)"
+                  [class.mdi-menu-down]="treeControl.isExpanded(node)"
+                ></i>
+              </button>
+              <div class="light-blue-text node-label">
+                <i class="howell-icon-earth"></i>{{ node.name }}
+              </div>
+            </div>
+            <div class="node-operate" [class.hide]="node.divisionType == 4">
+              <div class="add-btn" (click)="addBtnClick(node, $event)">
+                <i class="howell-icon-pluscircleoutline"></i>
+              </div>
+              <div class="delete-btn" (click)="deleteBtnClick(node, $event)">
+                <i class="howell-icon-delete-bin"></i>
+              </div>
+              <div class="edit-btn" (click)="editBtnClick(node, $event)">
+                <i class="howell-icon-edit"></i>
+              </div>
             </div>
           </div>
           <div
@@ -77,18 +112,20 @@
       <h2 class="m-b-20">{{ title }}</h2>
       <form [formGroup]="divisionForm">
         <div class="form-group">
-          <label class="form-label tran-input-label"> 当前区划 </label>
-
+          <label class="form-label tran-input-label"> 区划名称 </label>
           <input class="form-control custom" formControlName="Name" />
         </div>
-        <div class="form-group">
-          <label class="form-label tran-input-label"> 上级区划 </label>
+        <div class="form-group" [class.hide]="state != 1">
+          <label class="form-label tran-input-label">区划ID </label>
+          <input class="form-control custom" formControlName="Id" />
+        </div>
 
+        <div class="form-group" [class.hide]="state == 1">
+          <label class="form-label tran-input-label"> 上级区划名称 </label>
           <input class="form-control custom" formControlName="ParentName" />
         </div>
         <div class="form-group">
-          <label class="form-label tran-input-label">描述 </label>
-
+          <label class="form-label tran-input-label">区划描述 </label>
           <textarea
             formControlName="Description"
             cols="30"
@@ -96,7 +133,7 @@
             class="form-control custom"
           ></textarea>
         </div>
-        <div class="form-group btns">
+        <div class="form-group btns" [class.show]="state">
           <button class="hw-green-m-btn m-r-10" (click)="onSubmit()">
             <i class="howell-icon-Check"></i>
           </button>

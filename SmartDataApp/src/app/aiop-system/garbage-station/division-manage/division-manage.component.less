@@ -1,3 +1,4 @@
+/* less mixin*/
 .card(@w:320px) {
   box-sizing: border-box;
   width: @w;
@@ -6,7 +7,6 @@
   padding: 20px;
 }
 .normal-button(@src) {
-  width: 76px;
   height: 34px;
   cursor: pointer;
   background-color: unset;
@@ -22,8 +22,6 @@
   background: @c;
 }
 .tree-node() {
-  position: relative;
-  top: 4px;
   cursor: pointer;
   font-size: 18px;
   line-height: 1.2;
@@ -31,11 +29,48 @@
   min-height: 35px;
   cursor: pointer;
 }
+.node-content() {
+  padding: 3px 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  .node-content {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+  .node-operate {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    display: none;
+    div {
+      color: #cfd7ff;
+    }
+    .add-btn.hide {
+      display: none;
+    }
+  }
+  &:hover {
+    background-color: #2e3459;
+    .node-operate {
+      display: flex;
+    }
+  }
+  &.selected {
+    background-color: #2d76ce;
+    .node-operate {
+      display: flex;
+    }
+  }
+}
 
+/* 主要样式*/
 .division-manage {
   display: flex;
   flex-wrap: nowrap;
-  min-height: 550px;
+  overflow: hidden;
   button.add-btn {
     .normal-button(green);
     &.disabled {
@@ -56,7 +91,7 @@
     }
   }
   .aside {
-    .card(325px);
+    .card();
     flex-shrink: 0;
 
     .division-tree-container {
@@ -67,29 +102,18 @@
         background: transparent;
         padding-left: 10px;
         cursor: pointer;
+        user-select: none;
 
         .mat-tree-node {
           .tree-node();
           .leaf-node {
-            padding: 5px 10px;
-            &:hover {
-              background-color: #2e3459;
-            }
-            &.selected {
-              background-color: #2d76ce;
-            }
+            .node-content();
           }
         }
         .mat-nested-tree-node {
           .tree-node();
           .nested-node {
-            padding: 5px 0 5px 10px;
-            &:hover {
-              background-color: #2e3459;
-            }
-            &.selected {
-              background-color: #2d76ce;
-            }
+            .node-content();
           }
           .nested-tree-invisible {
             display: none;
@@ -100,7 +124,7 @@
           padding-left: 20px;
         }
         div[role="group"] > .mat-tree-node {
-          padding-left: 20px;
+          padding-left: 0px;
         }
       }
     }
@@ -109,19 +133,32 @@
     .card();
     flex-grow: 1;
     min-width: 500px;
+    overflow: auto;
     .division-form {
       width: 500px;
-      .form-label {
-        color: #eaedff;
-        font-size: 18px;
-      }
-      .btns {
-        display: none;
+      .form-group {
+        &.hide {
+          display: none;
+        }
+        .form-label {
+          color: #eaedff;
+          font-size: 18px;
+        }
+        &.btns {
+          display: none;
+          &.show {
+            display: block;
+          }
+        }
+        textarea {
+          padding-top: 4px;
+        }
       }
     }
   }
 }
 
+/* 例外情况*/
 .btn.to-right {
   border: 0;
   padding: 0;
@@ -131,10 +168,16 @@
     font-size: 20px;
     color: #cfd7ff;
   }
-  & + div.node-label {
-    position: relative;
-    top: 4px;
-    cursor: unset;
-    display: inline-block;
+  &.hidden {
+    visibility: hidden;
   }
+}
+div.node-label {
+  cursor: unset;
+  display: inline-block;
+  pointer-events: none;
+  max-width: 87%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
