@@ -13,7 +13,7 @@ import { Resource } from "../../data-core/model/aiop/resource";
 export class InputLabelService {
   tagSource_ = new Array<InputTagArea>();
   viewShow = false;
-  messageBar = new MessageBar();
+
   /**
    * 获取camera
    */
@@ -131,7 +131,7 @@ export class InputLabelService {
             }
           }
           if (use == false) {
-            this.messageBar.response_success();
+            MessageBar.response_success();
             this.viewShow = false;
             this.clearDataSource();
             use = true;

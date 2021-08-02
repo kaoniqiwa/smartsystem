@@ -1,19 +1,20 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { CameraTableService } from "./business/camera-table.service";
-import { CustomTableComponent } from '../../../../shared-module/custom-table/custom-table.component';
+import { CustomTableComponent } from "../../../../shared-module/custom-table/custom-table.component";
 import { CustomTreeComponent } from "../../../../shared-module/custom-tree/custom-tree.component";
 import { RegionTreeService } from "../../../common/region-tree.service";
+import { MessageBar } from "../../../../common/tool/message-bar";
 
 @Component({
-  selector: 'app-camera-mgr',
-  templateUrl: './camera-mgr.component.html',
-  styleUrls: ['./camera-mgr.component.styl'],
-  providers: [CameraTableService, RegionTreeService]
+  selector: "app-camera-mgr",
+  templateUrl: "./camera-mgr.component.html",
+  styleUrls: ["./camera-mgr.component.styl"],
+  providers: [CameraTableService, RegionTreeService],
 })
 export class CameraMgrComponent implements OnInit {
-  @ViewChild('tree')
+  @ViewChild("tree")
   tree: CustomTreeComponent;
-  @ViewChild('table')
+  @ViewChild("table")
   table: CustomTableComponent;
 
   searchTree = (text: string) => {
@@ -22,32 +23,35 @@ export class CameraMgrComponent implements OnInit {
     this.tree.dataSource.data = dataSource;
     this.tree.defaultItem();
     this.tree.treeControl.expandAll();
-  }
+  };
 
   cameraRegionMoveView = false;
   moreSearchInput = false;
-  cameraRegionMoveViewCancelFn = () => this.cameraRegionMoveView = false;
+  cameraRegionMoveViewCancelFn = () => (this.cameraRegionMoveView = false);
   cameraRegionMoveViewSaveFn = () => {
     const ids = Array.from(this.tableSelectIds);
 
-    for (const id of ids)
-      this.table.deleteListItem(id);
+    for (const id of ids) this.table.deleteListItem(id);
     this.tableService.cameraTable.delItems(ids);
-
-  }
-  constructor(private tableService: CameraTableService, private regionTreeService: RegionTreeService
-  ) { }
-
+  };
+  constructor(
+    private tableService: CameraTableService,
+    private regionTreeService: RegionTreeService
+  ) {}
 
   async ngOnInit() {
     this.tableService.clearTableSelectItemFn = () => {
       this.table.selectCancel();
-    }
+    };
     await this.regionTreeService.getRegionData();
     await this.tableService.requestEncodeDevices();
     this.tableService.regionTree.dataSource = this.regionTreeService.dataSource;
-    const dataSource = this.regionTreeService.loadTree(this.regionTreeService.dataSource); 
-    dataSource.push(this.regionTreeService.singleNode('未分配摄像机', 'howell-icon-video'));
+    const dataSource = this.regionTreeService.loadTree(
+      this.regionTreeService.dataSource
+    );
+    dataSource.push(
+      this.regionTreeService.singleNode("未分配摄像机", "howell-icon-video")
+    );
     dataSource.reverse();
     this.tree.dataSource.data = dataSource;
     this.tableService.regionTree.treeNodeSource = dataSource;
@@ -56,9 +60,8 @@ export class CameraMgrComponent implements OnInit {
     this.tableService.cameraTable.tableSelectIds = this.tableSelectIds;
     this.tableService.cameraTable.attrBtnFn = () => {
       this.showBindLabels();
-    }
+    };
     await this.tableService.requestResourceLabels((items) => {
-
       this.tableService.search.toInputTagSelect(items);
     });
   }
@@ -71,15 +74,15 @@ export class CameraMgrComponent implements OnInit {
     if (this.tableSelectIds.length) {
       this.tableService.viewShow = true;
       this.tableService.getSelectItemsLabels(this.tableSelectIds);
+    } else {
+      MessageBar.response_warning("请选择设备");
     }
-    else this.tableService.messageBar.response_warning('请选择设备');
   }
 
   hiddenBindLabels() {
     this.tableService.viewShow = false;
     this.tableService.clearDataSource();
   }
-
 
   get tableSelectIds() {
     return this.table.selectedId;
@@ -90,13 +93,15 @@ export class CameraMgrComponent implements OnInit {
   }
   async delBtnClick() {
     if (this.tableSelectIds.length)
-      this.tableService.cameraTable.setConfirmDialog(`删除${this.tableSelectIds.length}个选择项`, async () => {
-        await this.tableService.delCamerasData(this.tableSelectIds);
-        const ids = Array.from(this.tableSelectIds);
-        for (const id of ids)
-          this.table.deleteListItem(id);
-        this.tableService.cameraTable.confirmDialog_ = null;
-      });
+      this.tableService.cameraTable.setConfirmDialog(
+        `删除${this.tableSelectIds.length}个选择项`,
+        async () => {
+          await this.tableService.delCamerasData(this.tableSelectIds);
+          const ids = Array.from(this.tableSelectIds);
+          for (const id of ids) this.table.deleteListItem(id);
+          this.tableService.cameraTable.confirmDialog_ = null;
+        }
+      );
   }
 
   async search() {

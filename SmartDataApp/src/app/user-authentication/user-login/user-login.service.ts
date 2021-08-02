@@ -15,7 +15,7 @@ import { Base64 } from "../../common/tool/base64";
 export class UserLoginService {
   sessionUser: SessionUser;
   form: FormGroup;
-  msg: MessageBar;
+
   formVal: { name: string; pwd: string };
   autoLogin_ = false;
   jpwd_ = false;
@@ -28,7 +28,6 @@ export class UserLoginService {
       name: new FormControl(""),
       pwd: new FormControl(""),
     });
-    this.msg = new MessageBar();
   }
 
   onLoginSuccessed?: () => void;
@@ -36,8 +35,8 @@ export class UserLoginService {
 
   login() {
     const formVal: { name: string; pwd: string } = this.form.value;
-    if (!formVal.name) this.msg.response_warning("请输入账号");
-    else if (!formVal.pwd) this.msg.response_warning("请输入密码");
+    if (!formVal.name) MessageBar.response_warning("请输入账号");
+    else if (!formVal.pwd) MessageBar.response_warning("请输入密码");
     else {
       this.formVal = formVal;
       return this.auth(formVal.name);
@@ -80,7 +79,7 @@ export class UserLoginService {
   handleLoginError2<T>(operation = "operation", result?: T) {
     return (error: any): Observable<T> => {
       if (error.status == 403) {
-        this.msg.response_Error("账号或密码错误");
+        MessageBar.response_Error("账号或密码错误");
       }
       if (this.onLoginFaulted) {
         this.onLoginFaulted();

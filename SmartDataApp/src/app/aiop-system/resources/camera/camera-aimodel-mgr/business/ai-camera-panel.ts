@@ -15,7 +15,6 @@ import { MessageBar } from "../../../../../common/tool/message-bar";
 import { ListAttribute } from "../../../../../common/tool/table-form-helper";
 
 export class AICameraPanel extends ListAttribute {
-  messageBar = new MessageBar();
   cardListSelectedIdFn: () => Array<string>;
   underCamerasAIModels_: Map<string, string[]>;
   cardListPanelView_ = new PanelView();
@@ -44,7 +43,7 @@ export class AICameraPanel extends ListAttribute {
       if (event == EventType.ListItemDel) {
         this.delAIModelToCameraFn(listId, itemId, (ok) => {
           if (ok) {
-            this.messageBar.response_success();
+            MessageBar.response_success();
             this.delUnderCameraAIModel(listId, itemId);
             this.delCardListItem(listId, itemId);
           }
@@ -102,7 +101,7 @@ export class AICameraPanel extends ListAttribute {
         const index = list.findIndex((c) => c == copyItem.id);
         if (index == -1) {
           this.addAIModelToCameraFn(i, copyItem.id, (ok) => {
-            if (ok) this.messageBar.response_success();
+            if (ok) MessageBar.response_success();
           });
           this.addCards(i, copyItem);
           list.push(copyItem.id);

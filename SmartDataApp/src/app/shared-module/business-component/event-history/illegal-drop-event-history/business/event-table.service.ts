@@ -161,7 +161,7 @@ export class EventTableService extends ListAttribute {
           e
         );
       if (video) {
-        new MessageBar().response_success("正在下载中...");
+        MessageBar.response_success("正在下载中...");
         const a = document.createElement("a");
         a.href = video.Url;
         a.click();

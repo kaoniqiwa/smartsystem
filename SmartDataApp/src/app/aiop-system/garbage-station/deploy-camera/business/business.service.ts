@@ -22,7 +22,7 @@ export class BusinessService {
   findNodeFn: (id: string) => FlatNode;
   // cameraNodesFn: () => FlatNode[];
   cameraDataService: CameraDataService;
-  msg = new MessageBar();
+
   positionNoMap = new Map<CanType, number>();
   readonly multifacetedPostion = 15;
   constructor() {
@@ -102,7 +102,7 @@ export class BusinessService {
 
     if (edit) result = await this.cameraDataService.editStationCamera(camera);
     else result = await this.cameraDataService.addStationCamera(camera);
-    if (result) this.msg.response_success();
+    if (result) MessageBar.response_success();
   }
 
   async delCamera(cameraId: string) {
@@ -111,7 +111,7 @@ export class BusinessService {
       camera.GarbageStationId,
       camera.Id
     );
-    if (result) this.msg.response_success();
+    if (result) MessageBar.response_success();
   }
 
   // fillCameraTreeState(cameras: StationCamera[]) {
