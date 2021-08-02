@@ -103,7 +103,12 @@ export class MapDeployComponent implements OnInit {
   GarbageStation: GarbageStation;
 
   // 列表所选中的行政区ID
-  DivisionId: string;
+  DivisionSelectedId: string;
+  DivisionExpandId: string;
+
+  get DivisionId() {
+    return this.DivisionSelectedId || this.DivisionExpandId;
+  }
 
   // 地图客户端
   client: CesiumMapClient;
@@ -135,6 +140,8 @@ export class MapDeployComponent implements OnInit {
   pointSelected: CesiumDataController.Point;
 
   onItemExpandClicked(node: FlatNode) {
+    this.DivisionExpandId = node.id;
+    this.DivisionSelectedId = undefined;
     let village = this.dataController.Village.Get(node.id);
     let points = village.points;
     for (const pointId in points) {
@@ -221,7 +228,9 @@ export class MapDeployComponent implements OnInit {
     });
 
     if (data) {
-      this.DivisionId = data.Id;
+      this.DivisionSelectedId = data.Id;
+      this.DivisionExpandId = undefined;
+
       this.client.Village.Select(data.Id);
       const village = this.dataController.Village.Get(data.Id);
       try {
@@ -238,10 +247,10 @@ export class MapDeployComponent implements OnInit {
 
           let response = await this.divisionService.set(data);
           console.log(response);
-          new MessageBar().response_success("录入区划坐标成功");
+          MessageBar.response_success("录入区划坐标成功");
         }
       } catch (error) {
-        new MessageBar().response_Error("录入区划坐标失败");
+        MessageBar.response_Error("录入区划坐标失败");
       }
 
       this.client.Viewer.MoveTo(village.center);
@@ -254,7 +263,8 @@ export class MapDeployComponent implements OnInit {
       return x.Id === item.id;
     });
     if (data) {
-      this.DivisionId = data.DivisionId;
+      this.DivisionSelectedId = data.DivisionId;
+      this.DivisionExpandId = undefined;
       this.GarbageStation = data;
       this.client.Village.Select(data.DivisionId);
 
@@ -280,10 +290,10 @@ export class MapDeployComponent implements OnInit {
               );
               let response = await this.garbageService.set(data);
               console.log(response);
-              new MessageBar().response_success("录入点位坐标成功");
+              MessageBar.response_success("录入点位坐标成功");
             }
           } catch (error) {
-            new MessageBar().response_Error("录入点位坐标失败");
+            MessageBar.response_Error("录入点位坐标失败");
           }
 
           this.pointSelected = point;
@@ -320,15 +330,13 @@ export class MapDeployComponent implements OnInit {
 
   onPointCreated(point: CesiumDataController.Point) {
     if (!this.wantBindNode) return;
-    this.points[point.id] = point;
-    this.client.Point.Create(point);
-    this.pointSelected = point;
-    const node = this.stationTree.findNode(point.id);
 
-    // node.rightClassBtn = [
-    //   new RightBtn("howell-icon-Unlink", RightButtonTag.Unlink),
-    // ];
-    this.wantUnbindNode = undefined;
+    if (this.DivisionId) {
+      this.client.Point.Create(point);
+
+      this.points[point.id] = point;
+      this.pointSelected = point;
+    }
 
     let data = this.wantBindNode.data;
     // let data = this.stationTree.dataService.garbageStations.find((x) => {
@@ -348,10 +356,10 @@ export class MapDeployComponent implements OnInit {
                 !this.wantBindNode.rightClassBtn[i].display;
             }
           }
-          new MessageBar().response_success("点位坐标录入成功");
+          MessageBar.response_success("点位坐标录入成功");
         })
         .catch((ex) => {
-          new MessageBar().response_Error("点位坐标录入失败");
+          MessageBar.response_Error("点位坐标录入失败");
         });
     }
   }
@@ -378,6 +386,10 @@ export class MapDeployComponent implements OnInit {
 
     this.client = new CesiumMapClient(this.iframe.nativeElement);
     this.client.Events.OnLoading = () => {
+      this.dataController = this.client.DataController;
+      this.mapCoordinateWubdiwDataService.client = this.client;
+      this.mapCoordinateWubdiwDataService.dataController =
+        this.client.DataController;
       // const villages = this.dataController.Village.List();
       // for (const villageId in villages) {
       //   if (Object.prototype.hasOwnProperty.call(villages, villageId)) {
@@ -395,10 +407,7 @@ export class MapDeployComponent implements OnInit {
       // }
     };
     this.client.Events.OnLoaded = () => {
-      this.dataController = this.client.DataController;
-      this.mapCoordinateWubdiwDataService.client = this.client;
-      this.mapCoordinateWubdiwDataService.dataController =
-        this.client.DataController;
+      MessageBar.response_success("地图初始化完成");
     };
     this.client.Events.OnElementsDoubleClicked = async (objs) => {};
 
@@ -446,11 +455,12 @@ export class MapDeployComponent implements OnInit {
             point.id,
             point
           );
-          new MessageBar().response_success("点位数据创建成功");
+          MessageBar.response_success("点位数据创建成功");
         } catch (ex) {
-          new MessageBar().response_Error("点位数据创建失败");
+          MessageBar.response_Error("点位数据创建失败");
         }
         this.points[point.id] = point;
+        console.log("this.client.Point.Create", "OnMouseDoubleClick");
         this.client.Point.Create(point);
         this.pointSelected = point;
         const node = this.stationTree.findNode(point.id);
@@ -484,15 +494,16 @@ export class MapDeployComponent implements OnInit {
             this.DragendPoint.id,
             this.DragendPoint as CesiumDataController.Point
           );
-          new MessageBar().response_success("地图数据修改成功");
+          MessageBar.response_success("地图数据修改成功");
         } catch (error) {
-          new MessageBar().response_Error("地图数据修改失败");
+          MessageBar.response_Error("地图数据修改失败");
         }
 
         this.points[this.DragendPoint.id] = this
           .DragendPoint as CesiumDataController.Point;
         this.client.Point.Remove(this.DragendPoint.id);
         const point = this.points[this.DragendPoint.id];
+        console.log("this.client.Point.Create", "locationYesClicked");
         this.client.Point.Create(point);
       }
     } finally {
@@ -504,6 +515,7 @@ export class MapDeployComponent implements OnInit {
       if (this.DragendPoint) {
         this.client.Point.Remove(this.DragendPoint.id);
         const point = this.getPoint(this.DragendPoint.id);
+        console.log("this.client.Point.Create", "locationCancelClicked");
         this.client.Point.Create(point);
       }
     } finally {
@@ -517,28 +529,27 @@ export class MapDeployComponent implements OnInit {
       let station = this.wantUnbindNode.data;
       station.GisPoint = undefined;
       this.garbageService.set(station);
+      result = true;
+      for (let i = 0; i < this.wantUnbindNode.rightClassBtn.length; i++) {
+        this.wantUnbindNode.rightClassBtn[i].display =
+          !this.wantUnbindNode.rightClassBtn[i].display;
+      }
     }
 
     try {
-      if (this.pointSelected) {
-        result = this.RemovePoint(this.pointSelected);
-        return;
-      }
-      if (this.wantUnbindNode) {
-        this.pointSelected = this.getPoint(this.wantUnbindNode.id);
-        result = this.RemovePoint(this.pointSelected);
-        if (result) {
-          for (let i = 0; i < this.wantUnbindNode.rightClassBtn.length; i++) {
-            this.wantUnbindNode.rightClassBtn[i].display =
-              !this.wantUnbindNode.rightClassBtn[i].display;
-          }
-        }
-      }
-    } finally {
-      if (result) {
-        this.pointSelected = undefined;
-      }
+      this.client.Point.Remove(this.wantUnbindNode.data.Id);
+      this.dataController.Village.Point.Remove(
+        this.wantUnbindNode.data.DivisionId,
+        this.wantUnbindNode.data.Id
+      );
+
+      this.pointSelected = undefined;
       this.unbindDisplay = false;
+
+      MessageBar.response_success("地图数据删除成功");
+    } catch (ex) {
+      MessageBar.response_Error("地图数据删除失败");
+    } finally {
     }
   }
   unbindCancelClicked() {
@@ -549,9 +560,9 @@ export class MapDeployComponent implements OnInit {
     this.draggable = !this.draggable;
     this.client.Point.Draggable(this.draggable);
     if (this.draggable) {
-      new MessageBar().response_success("点位拖拽已开启");
+      MessageBar.response_success("点位拖拽已开启");
     } else {
-      new MessageBar().response_warning("点位拖拽已关闭");
+      MessageBar.response_warning("点位拖拽已关闭");
     }
   }
 
@@ -572,10 +583,10 @@ export class MapDeployComponent implements OnInit {
       this.dataController.Village.Point.Remove(point.villageId, point.id);
 
       delete this.points[point.id];
-      new MessageBar().response_success("地图数据删除成功");
+      MessageBar.response_success("地图数据删除成功");
       return true;
     } catch (ex) {
-      new MessageBar().response_Error("地图数据删除失败");
+      MessageBar.response_Error("地图数据删除失败");
       return false;
     }
   }
@@ -583,9 +594,9 @@ export class MapDeployComponent implements OnInit {
   GisPointClicked() {
     this.gisPointChanging = !this.gisPointChanging;
     if (this.gisPointChanging) {
-      new MessageBar().response_success("录入点位坐标已开启");
+      MessageBar.response_success("录入点位坐标已开启");
     } else {
-      new MessageBar().response_warning("录入点位坐标已关闭");
+      MessageBar.response_warning("录入点位坐标已关闭");
     }
   }
 }

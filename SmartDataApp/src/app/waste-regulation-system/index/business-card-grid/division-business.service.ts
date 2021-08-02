@@ -415,7 +415,7 @@ export class DivisionBusinessService {
                         }
                       });
                     }
-                    if (item.msg) new MessageBar().response_success();
+                    if (item.msg) MessageBar.response_success();
                   });
               }
             }

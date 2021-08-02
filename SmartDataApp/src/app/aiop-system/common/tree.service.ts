@@ -1,11 +1,11 @@
 import { Type } from "@angular/compiler";
 import { Injectable } from "@angular/core";
-import { Camera } from "src/app/data-core/model/aiop/camera";
-import { Region } from "src/app/data-core/model/aiop/region";
-import { DivisionType } from "src/app/data-core/model/enum";
-import { Division } from "src/app/data-core/model/waste-regulation/division";
-import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
-import { GarbageStationType } from "src/app/data-core/model/waste-regulation/garbage-station-type";
+import { Camera } from "../../data-core/model/aiop/camera";
+import { Region } from "../../data-core/model/aiop/region";
+import { DivisionType } from "../../data-core/model/enum";
+import { Division } from "../../data-core/model/waste-regulation/division";
+import { GarbageStation } from "../../data-core/model/waste-regulation/garbage-station";
+import { GarbageStationType } from "../../data-core/model/waste-regulation/garbage-station-type";
 import { ListAttribute } from "../../common/tool/table-form-helper";
 import {
   TreeNode,

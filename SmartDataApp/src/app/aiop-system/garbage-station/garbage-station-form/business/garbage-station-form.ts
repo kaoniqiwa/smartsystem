@@ -10,7 +10,7 @@ import { GarbageStationType } from "../../../../data-core/model/waste-regulation
 export class GarbageStationFormService {
   form: FormGroup;
   editItem: GarbageStation;
-  messageBar = new MessageBar();
+
   formState: FormStateEnum;
 
   constructor(private dataService: DataService) {
@@ -36,7 +36,7 @@ export class GarbageStationFormService {
   checkForm(item: FormField) {
     var check = true;
     if (item.Name == "") {
-      this.messageBar.response_warning("名称不能为空");
+      MessageBar.response_warning("名称不能为空");
       check = false;
     }
     return check;
@@ -67,13 +67,13 @@ export class GarbageStationFormService {
         model.Id = "";
         const response = await this.dataService.addGarbageStation(model);
         if (!!response) {
-          this.messageBar.response_success();
+          MessageBar.response_success();
           successFn(true, response, this.formState);
         }
       } else if (this.formState == FormStateEnum.edit) {
         const response = await this.dataService.editGarbageStation(model);
         if (!!response) {
-          this.messageBar.response_success();
+          MessageBar.response_success();
           successFn(true, response, this.formState);
         }
       }

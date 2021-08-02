@@ -12,8 +12,8 @@ import {
   RightButtonArgs,
 } from "../../../shared-module/custom-tree/custom-tree";
 import { Output, EventEmitter } from "@angular/core";
-import { Division } from "src/app/data-core/model/waste-regulation/division";
-import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
+import { Division } from "../../../data-core/model/waste-regulation/division";
+import { GarbageStation } from "../../../data-core/model/waste-regulation/garbage-station";
 @Component({
   selector: "hw-division-station-tree",
   templateUrl: "./division-station-tree.component.html",
@@ -68,6 +68,9 @@ export class DivisionStationTreeComponent implements OnInit {
   @Output()
   TreeNodeLoadedEvent: EventEmitter<TreeNode<GarbageStation>[]> =
     new EventEmitter();
+
+  @Output()
+  PanelClickedEvent: EventEmitter<void> = new EventEmitter();
 
   @Input()
   treeListMode = TreeListMode.rightBtn;
@@ -165,6 +168,12 @@ export class DivisionStationTreeComponent implements OnInit {
           n.rightClassBtn = item.btns;
         }
       }
+    }
+  }
+
+  onPanelClicked() {
+    if (this.PanelClickedEvent) {
+      this.PanelClickedEvent.emit();
     }
   }
 }

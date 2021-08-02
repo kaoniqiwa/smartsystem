@@ -91,7 +91,7 @@ export class GarbageStationComponent implements OnInit {
       model.Name = typeName;
       const result = await this.dataService.addGarbageStationType(model);
       if (!!result) {
-        new MessageBar().response_success();
+        MessageBar.response_success();
         this.dataService.types.push(result);
         this.stationList.addTreeNode(result);
       }

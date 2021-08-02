@@ -137,7 +137,7 @@ export class StationChart {
           )
             check = true;
           else {
-            new MessageBar().response_warning("输入数字1-9 或 11-19");
+            MessageBar.response_warning("输入数字1-9 或 11-19");
             check = false;
           }
         }

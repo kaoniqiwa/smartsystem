@@ -21,14 +21,13 @@ import { Base64 } from "../../common/tool/base64";
 })
 export class UrlAuthGuard implements CanActivate {
   sessionUser: SessionUser;
-  msg: MessageBar;
+
   formVal: { name: string; pwd: string };
   constructor(
     private router: Router,
     private httpService: HowellAuthHttpService
   ) {
     this.sessionUser = new SessionUser();
-    this.msg = new MessageBar();
   }
 
   canActivate(
@@ -130,7 +129,7 @@ export class UrlAuthGuard implements CanActivate {
   handleLoginError2<T>(operation = "operation", result?: T) {
     return (error: any): Observable<T> => {
       if (error.status == 403) {
-        this.msg.response_Error("账号或密码错误");
+        MessageBar.response_Error("账号或密码错误");
         this.router.navigateByUrl("/login");
       }
       return of(result as T);

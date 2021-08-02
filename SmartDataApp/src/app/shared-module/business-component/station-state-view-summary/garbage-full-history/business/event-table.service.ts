@@ -194,7 +194,7 @@ export class EventTableService extends ListAttribute {
           event.EventTime + "",
           user.video.afterInterval
         ).toISOString();
-      new MessageBar().response_success("正在下载中...");
+      MessageBar.response_success("正在下载中...");
       this.garbageStationService
         .cameraFileUrl(event.Data.StationId, idV[0], s, e)
         .then((video) => {
@@ -244,7 +244,7 @@ export class EventTableService extends ListAttribute {
             event.EventTime + "",
             user.video.afterInterval
           ).toISOString();
-        new MessageBar().response_success("正在下载中...");
+        MessageBar.response_success("正在下载中...");
         this.garbageStationService
           .cameraFileUrl(event.Data.StationId, v.cameraId, s, e)
           .then((video) => {

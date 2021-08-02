@@ -5,7 +5,7 @@ import { MessageBar } from "../../../../common/tool/message-bar";
 export class GarbageStationList extends TreeService {
   selectedNode: DataTreeNode;
   subTitle = "创建垃圾厢房";
-  msg = new MessageBar();
+
   firstWindowNumText = 4;
   firstNameText = "";
   constructor(private dataService: DataService) {
@@ -61,7 +61,7 @@ export class GarbageStationList extends TreeService {
   async delTreeNode(id: string) {
     const success = await this.dataService.delGarbageStationType(id);
     if (success) {
-      this.msg.response_success();
+      MessageBar.response_success();
       const index = this.dataSource.findIndex((x) => x.id == id);
       this.dataSource.splice(index, 1);
       if (this.dataSource.length) this.selectedNode = this.dataSource[0];

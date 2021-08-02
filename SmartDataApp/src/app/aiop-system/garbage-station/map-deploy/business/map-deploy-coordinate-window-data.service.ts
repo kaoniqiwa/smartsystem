@@ -34,13 +34,13 @@ export class MapDeployCoordinateWindowService {
           this.standbyPoint.id,
           this.standbyPoint
         );
-        new MessageBar().response_success("点位数据创建成功");
-        this.client.Point.Create(this.standbyPoint);
+
+        MessageBar.response_success("点位数据创建成功");
         if (this.OnPointCreated) {
           this.OnPointCreated(this.standbyPoint);
         }
       } catch (ex) {
-        new MessageBar().response_Error("点位数据创建失败");
+        MessageBar.response_Error("点位数据创建失败");
       }
     }
 
