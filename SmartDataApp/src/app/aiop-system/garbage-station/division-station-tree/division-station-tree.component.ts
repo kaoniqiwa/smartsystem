@@ -36,9 +36,9 @@ export class DivisionStationTreeComponent implements OnInit {
   ) => void;
 
   @Input()
-  GarbageStationRightButtons: RightButton[];
+  GarbageStationRightButtons: (data: GarbageStation) => RightButton[];
   @Input()
-  DivisionRightButtons: RightButton[];
+  DivisionRightButtons: (data: Division) => RightButton[];
 
   selectedItemClick = (item: FlatNode<Division | GarbageStation>) => {
     if (this.selectedItemFn) {

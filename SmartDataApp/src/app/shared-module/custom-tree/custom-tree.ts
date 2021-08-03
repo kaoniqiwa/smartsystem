@@ -80,14 +80,17 @@ export class RightButton<T = any> extends RightBtn {
 
   click?: (t: RightButton<T>) => void;
   data?: T;
+
   constructor(
     cssClass: string,
     tag: string,
-    private display_predicate: (t?: T) => boolean = () => true
+    private display_predicate: (t?: T) => boolean = () => true,
+    data?: T
   ) {
     super(cssClass, tag);
     this.cssClass = cssClass;
     this.tag = tag;
+    this.data = data;
   }
 }
 export interface RightButtonArgs<T = any> {

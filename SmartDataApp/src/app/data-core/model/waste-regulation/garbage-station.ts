@@ -3,6 +3,7 @@ import { Camera } from "./camera";
 import { Flags } from "../flags";
 import { Expose, Type } from "class-transformer";
 import { Gender, StationState } from "../enum";
+import { GisPoint } from "./division";
 /**投放点信息 */
 export class GarbageStation {
   /**垃圾房ID */
@@ -22,7 +23,7 @@ export class GarbageStation {
   /**更新事件 */
   UpdateTime: Date | string;
   /**GIS点位(可选) */
-  GisPoint: any;
+  GisPoint: GisPoint;
   /**所属区划ID(可选) */
   DivisionId: string;
   /**垃圾桶列表(可选) */
