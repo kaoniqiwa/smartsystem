@@ -28,23 +28,33 @@
   color: white;
   min-height: 35px;
   cursor: pointer;
+  &.hide {
+    display: none;
+  }
 }
 .node-content() {
   padding: 3px 0;
   width: 100%;
   display: flex;
   justify-content: space-between;
+
   .node-content {
     flex-grow: 1;
     display: flex;
     align-items: center;
     flex-wrap: nowrap;
+    max-width: 100%;
+    // &:hover {
+    //   max-width: 76%;
+    // }
   }
   .node-operate {
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
     display: none;
+    font-size: 16px;
+    padding-right: 2px;
     div {
       color: #cfd7ff;
     }
@@ -54,14 +64,14 @@
   }
   &:hover {
     background-color: #2e3459;
-    .node-operate {
-      display: flex;
-    }
   }
   &.selected {
     background-color: #2d76ce;
     .node-operate {
       display: flex;
+    }
+    .node-content {
+      max-width: 76%;
     }
   }
 }
@@ -93,6 +103,23 @@
   .aside {
     .card();
     flex-shrink: 0;
+    .search-wrap {
+      position: relative;
+      button {
+        position: absolute;
+        right: 0;
+        top: 0;
+        float: left;
+        border: 0;
+        background: transparent;
+        font-size: 20px;
+        cursor: pointer;
+        color: #7f94ff;
+        &:hover {
+          color: #3a93ff;
+        }
+      }
+    }
 
     .division-tree-container {
       height: calc(100% - 142px);
@@ -122,6 +149,7 @@
 
         .mat-nested-tree-node div[role="group"] {
           padding-left: 20px;
+          padding-top: 3px;
         }
         div[role="group"] > .mat-tree-node {
           padding-left: 0px;
@@ -176,7 +204,6 @@ div.node-label {
   cursor: unset;
   display: inline-block;
   pointer-events: none;
-  max-width: 87%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
