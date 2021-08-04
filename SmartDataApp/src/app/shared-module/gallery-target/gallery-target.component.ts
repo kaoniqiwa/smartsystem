@@ -1,31 +1,33 @@
-import { Component, Input, OnInit, OnChanges } from '@angular/core';
-import { domSize, drawRectangle, clearCanvas } from '../../common/tool/jquery-help/jquery-help';
+import { Component, Input, OnInit, OnChanges } from "@angular/core";
+import {
+  domSize,
+  drawRectangle,
+  clearCanvas,
+} from "../../common/tool/jquery-help/jquery-help";
 import { GalleryTarget, ImageEventEnum } from "./gallery-target";
 @Component({
-  selector: 'hw-gallery-target',
-  templateUrl: './gallery-target.component.html',
-  styleUrls: ['./gallery-target.component.styl']
+  selector: "hw-gallery-target",
+  templateUrl: "./gallery-target.component.html",
+  styleUrls: ["./gallery-target.component.styl"],
 })
 export class GalleryTargetComponent implements OnInit, OnChanges {
-
   @Input() model: GalleryTarget;
-
 
   @Input() closeViewFn: () => void;
 
   @Input() imgEventFn: (e: ImageEventEnum, id: string) => number;
 
-  @Input() videoFileFn:(id: string)=>void;
+  @Input() videoFileFn: (id: string) => void;
 
   @Input() videoFn: (id: string) => void;
 
   onDescFn = (on: boolean) => {
-    this.onDesc=on;
+    this.onDesc = on;
     this.imgCanvas = on;
-  }
+  };
 
   imgEvent = ImageEventEnum;
-  constructor() { }
+  constructor() {}
 
   closeViewClick() {
     if (this.closeViewFn) this.closeViewFn();
@@ -33,40 +35,37 @@ export class GalleryTargetComponent implements OnInit, OnChanges {
 
   enlargeImageSize = {
     width: 0,
-    height: 0
-  }
+    height: 0,
+  };
 
   onDesc = this.imgCanvas;
   ngOnChanges() {
-
     this.load();
   }
 
-
-  readonly sessionCanvas = 'session-event-canvas';
+  readonly sessionCanvas = "session-event-canvas";
 
   get imgCanvas() {
     const val = sessionStorage.getItem(this.sessionCanvas);
-    return val == '1';
+    return val == "1";
   }
 
   set imgCanvas(val: boolean) {
-    const v = val ? '1' : '0';
+    const v = val ? "1" : "0";
     sessionStorage.setItem(this.sessionCanvas, v);
   }
 
   imgPageClick(e: ImageEventEnum) {
-
     if (this.imgEventFn) this.imgEventFn(e, this.model.id);
   }
 
-  videoFileClick(){
+  videoFileClick() {
     if (this.videoFileFn) this.videoFileFn(this.model.id);
   }
 
   ngOnInit() {
-
     window.addEventListener("resize", () => this.load());
+    this.onDescFn(true);
   }
 
   videoClick() {
@@ -74,15 +73,15 @@ export class GalleryTargetComponent implements OnInit, OnChanges {
   }
 
   load() {
-    if (this.model&&this.model.polygon) {
+    if (this.model && this.model.polygon) {
       setTimeout(() => {
-        const size = domSize('enlargeImage');
+        const size = domSize("enlargeImage");
         this.enlargeImageSize.width = size.width;
         this.enlargeImageSize.height = size.height;
         setTimeout(() => {
-          clearCanvas('polygonCanvas');
+          clearCanvas("polygonCanvas");
 
-          drawRectangle('polygonCanvas', this.model.polygon, size);
+          drawRectangle("polygonCanvas", this.model.polygon, size);
         });
       });
     }

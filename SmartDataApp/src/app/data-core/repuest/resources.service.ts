@@ -280,8 +280,7 @@ export class ResourceMediumRequestService {
   }
 
   getData(id: string) {
-    let url = AIOPMediumPictureUrl.getData(id);
-    return this.requestService.getCache<string>(url).toPromise();
+    return AIOPMediumPictureUrl.getData(id);
   }
 }
 
