@@ -44,22 +44,29 @@ export class MapDeployComponent implements OnInit {
   // @ViewChild('unbindConfirm')
   // unbindConfirm: ConfirmComponent;
 
-  GarbageStationRightButtons = [
-    new RightButton(
+  GarbageStationRightButtons = (data: Division | GarbageStation) => {
+    if (data instanceof Division) return undefined;
+    let link = new RightButton(
       "howell-icon-Link",
       RightButtonTag.Link,
       (data: GarbageStation) => {
+        if (!data) return false;
         return !data.GisPoint;
-      }
-    ),
-    new RightButton(
+      },
+      data
+    );
+
+    let unlink = new RightButton(
       "howell-icon-Unlink",
       RightButtonTag.Unlink,
       (data: GarbageStation) => {
+        if (!data) return false;
         return !!data.GisPoint;
-      }
-    ),
-  ];
+      },
+      data
+    );
+    return [link, unlink];
+  };
 
   locationDialog = new ConfirmDialog({
     title: "提示",

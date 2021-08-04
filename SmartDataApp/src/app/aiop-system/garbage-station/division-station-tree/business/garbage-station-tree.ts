@@ -15,22 +15,28 @@ export class StationTreeService extends TreeService {
     super();
   }
 
-  appendGarbageStationModel(models: GarbageStation[], btns?: RightButton[]) {
-    let result = this.convertTreeNode(models, btns);
+  appendGarbageStationModel(
+    models: GarbageStation[],
+    getBtns?: (data) => RightButton[]
+  ) {
+    let result = this.convertTreeNode(models, getBtns);
     this.dataSource = [...this.dataSource, ...result];
   }
 
-  appendDivisionModel(models: Division[], btns?: RightButton[]) {
+  appendDivisionModel(models: Division[], getBtns?: (data) => RightButton[]) {
     this.dataSource = [
       ...this.dataSource,
-      ...this.convertTreeNode(models, btns),
+      ...this.convertTreeNode(models, getBtns),
     ];
   }
 
-  appendCityDivisionModel(models: Division[], btns?: RightButton[]) {
+  appendCityDivisionModel(
+    models: Division[],
+    getBtns?: (data) => RightButton[]
+  ) {
     this.dataSource = [
       ...this.dataSource,
-      ...this.convertTreeNode(models, btns),
+      ...this.convertTreeNode(models, getBtns),
     ];
   }
 
