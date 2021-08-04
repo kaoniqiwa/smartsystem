@@ -41,9 +41,9 @@ export class DivisionStationTreeComponent implements OnInit {
   DivisionRightButtons: RightButton[];
 
   selectedItemClick = (item: FlatNode<Division | GarbageStation>) => {
-    // if (this.selectedItemFn) {
-    //   this.selectedItemFn(item, this.stationTreeService.isLastNode(item.id));
-    // }
+    if (this.selectedItemFn) {
+      this.selectedItemFn(item, this.stationTreeService.isLastNode(item.id));
+    }
   };
 
   @Output()
