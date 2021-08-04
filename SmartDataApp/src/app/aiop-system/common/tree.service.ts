@@ -183,10 +183,16 @@ export class TreeService extends ListAttribute {
   }
 
   filterNodes(text: string, nodeType: NodeTypeEnum) {
-    const filterList = this.dataSource.filter(
-        (x) => x.name.indexOf(text) > -1 && x.parentId && x.type == nodeType
-      ),
-      list = new Array<DataTreeNode>();
+    let filterList = this.dataSource.filter(
+      (x) => x.name.indexOf(text) > -1 && x.parentId && x.type == nodeType
+    );
+
+    // filterList.forEach((x) => {
+    //   let children = this.dataSource.filter((y) => y.parentId == x.id);
+    //   filterList = [...filterList, ...children];
+    // });
+
+    let list = new Array<DataTreeNode>();
     const findParent = (item: DataTreeNode) => {
       /**去除重复 */
       const find = this.dataSource.find((x) => x.id == item.parentId);

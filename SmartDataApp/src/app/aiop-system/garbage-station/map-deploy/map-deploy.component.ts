@@ -8,7 +8,7 @@ import {
   TreeNode,
 } from "../../../shared-module/custom-tree/custom-tree";
 import { DataService as TypeDataService } from "../garbage-station/business/data.service";
-import { MapDeployCoordinateWindowService } from "./business/map-deploy-coordinate-window-data.service";
+import { MapDeployCoordinateWindowBusiness } from "./business/map-deploy-coordinate-window-data.business";
 import { DomSanitizer } from "@angular/platform-browser";
 import {
   Division,
@@ -26,7 +26,7 @@ import { GisType } from "../../../data-core/model/enum";
   selector: "app-map-deploy",
   templateUrl: "./map-deploy.component.html",
   styleUrls: ["./map-deploy.component.css"],
-  providers: [TypeDataService, MapDeployCoordinateWindowService],
+  providers: [TypeDataService, MapDeployCoordinateWindowBusiness],
 })
 export class MapDeployComponent implements OnInit {
   // 行政及垃圾厢房列表
@@ -162,8 +162,8 @@ export class MapDeployComponent implements OnInit {
   onTreeNodeRightLinkClicked(args: RightButtonArgs<GarbageStation>) {
     this.wantBindNode = args.node;
 
-    this.mapCoordinateWubdiwDataService.Display = true;
-    this.mapCoordinateWubdiwDataService.Title = args.node.name;
+    this.mapCoordinateWubdiwDataBusiness.Display = true;
+    this.mapCoordinateWubdiwDataBusiness.Title = args.node.name;
 
     if (this.wantBindNode) {
       const point = new CesiumDataController.Point();
@@ -173,7 +173,7 @@ export class MapDeployComponent implements OnInit {
       point.villageId = this.DivisionId;
       point.type = CesiumDataController.ElementType.Camera;
       point.position.height = 18;
-      this.mapCoordinateWubdiwDataService.standbyPoint = point;
+      this.mapCoordinateWubdiwDataBusiness.standbyPoint = point;
     }
   }
   onTreeNodeRightUnlinkClicked(args: RightButtonArgs<GarbageStation>) {
@@ -322,13 +322,13 @@ export class MapDeployComponent implements OnInit {
 
   constructor(
     private typeDataService: TypeDataService,
-    private mapCoordinateWubdiwDataService: MapDeployCoordinateWindowService,
+    private mapCoordinateWubdiwDataBusiness: MapDeployCoordinateWindowBusiness,
     private sanitizer: DomSanitizer,
     private divisionService: DivisionRequestService,
     private garbageService: GarbageStationRequestService
   ) {
     this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.getSrc());
-    mapCoordinateWubdiwDataService.OnPointCreated = (
+    mapCoordinateWubdiwDataBusiness.OnPointCreated = (
       point: CesiumDataController.Point
     ) => {
       this.onPointCreated(point);
@@ -394,8 +394,8 @@ export class MapDeployComponent implements OnInit {
     this.client = new CesiumMapClient(this.iframe.nativeElement);
     this.client.Events.OnLoading = () => {
       this.dataController = this.client.DataController;
-      this.mapCoordinateWubdiwDataService.client = this.client;
-      this.mapCoordinateWubdiwDataService.dataController =
+      this.mapCoordinateWubdiwDataBusiness.client = this.client;
+      this.mapCoordinateWubdiwDataBusiness.dataController =
         this.client.DataController;
       // const villages = this.dataController.Village.List();
       // for (const villageId in villages) {

@@ -45,10 +45,9 @@ export class StationTreeService extends TreeService {
   }
 
   isLastNode(nodeId: string) {
-    var is = false;
     const nodes = this.allLastChilds(this.treeNode);
-    for (const n of nodes) if (n.id == nodeId) is = true;
-    return is;
+    for (const n of nodes) if (n.id == nodeId) return true;
+    return false;
   }
 }
 

@@ -5,7 +5,7 @@ import { ICoordinate } from "../coordinate-manage/coordinate-manage.component";
 import { MessageBar } from "../../../../common/tool/message-bar";
 import { CoordinateTransform } from "./CoordinateTransform";
 @Injectable()
-export class MapDeployCoordinateWindowService {
+export class MapDeployCoordinateWindowBusiness {
   Title: string;
   Display: boolean = false;
 
