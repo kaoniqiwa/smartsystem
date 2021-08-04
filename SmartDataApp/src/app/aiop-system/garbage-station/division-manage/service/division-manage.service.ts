@@ -104,7 +104,6 @@ export class DivisionManageService {
       loadData()返回的是对象类型，可以在 deleteNode()中修改外部 treeData的值
   */
   private _deleteNode(node: NestedDivisionTreeNode) {
-    // 将node从当前层级中删除
     let divisionArr = this._divisionMap.get(node.divisionType);
     let index = divisionArr.findIndex((item) => item.id == node.id);
     if (index > -1) {
@@ -118,7 +117,6 @@ export class DivisionManageService {
         parentNode.children.splice(index, 1);
       }
     }
-    console.log(this._divisionMap);
   }
 
   private _editNode(division: Division) {
@@ -135,20 +133,17 @@ export class DivisionManageService {
   searchByText(val: string, depth: DivisionType) {
     this._filteredMap.clear();
     let level = depth;
-    // // 初步筛选出所有包含条件的节点
+    let n = depth;
+
+    // 初步筛选出所有包含条件的节点
     while (depth > DivisionType.Province) {
       this._searchInDeepth(val, depth--);
     }
-    // console.log(this._divisionMap);
-    // // 根据这些节点构造出树
+
+    // 根据这些节点构造出树
     while (level > DivisionType.Province) {
       this._buildTree(level--);
     }
-    // // this._buildTree(level);
-    console.log(this._divisionMap);
-    // return this._filteredMap.get(DivisionType.City);
-    // let committeeArr = this._divisionMap.get(DivisionType.Committees);
-    // console.log(committeeArr);
   }
   private _searchInDeepth(val: string, depth: DivisionType) {
     let allData = this._divisionMap.get(depth);
@@ -159,6 +154,32 @@ export class DivisionManageService {
     this._filteredMap.get(depth).push(...filteredData);
   }
   private _buildTree(depth: DivisionType) {
+    // 当前深度的所有数据
+    let currentData = this._filteredMap.get(depth);
+
+    // 上个深度的所有数据
+    let parentData = this._filteredMap.get(depth - 1);
+
+    if (parentData) {
+      currentData.forEach((item) => {
+        // 如果父数组没有当前节点的父节点，则需要添加到父数组中
+        let parentNode = parentData.find((node) => node.id == item.parentId);
+        if (!parentNode) {
+          parentNode = this._divisionMap
+            .get(depth - 1)
+            .find((m) => m.id == item.parentId);
+          if (parentNode) {
+            parentData.push(parentNode);
+          }
+        }
+      });
+    }
+
+    let allData = this._divisionMap.get(depth);
+    allData.forEach((item) => (item.hide = true));
+    currentData.forEach((item) => (item.hide = false));
+  }
+  private _buildTree2(depth: DivisionType) {
     // console.log(depth);
     // 当前深度的所有数据
     let currentData = this._filteredMap.get(depth);
@@ -168,10 +189,8 @@ export class DivisionManageService {
     // 区没有上级，在while()循环中已经有控制
     if (!parentData) return;
 
-    //
-    parentData.forEach((parentNode) =>
-      parentNode.children.forEach((child) => (child.hide = true))
-    );
+    // 先清空父节点的 children，后面再添加搜索到的子节点
+    parentData.forEach((parentNode) => (parentNode.children = []));
 
     currentData.forEach((item) => {
       // 如果父数组没有当前节点的父节点，则需要添加到父数组中
@@ -181,24 +200,24 @@ export class DivisionManageService {
           .get(depth - 1)
           .find((m) => m.id == item.parentId);
         if (parentNode) {
-          // 第一给添加进  parentData 中时，要先清空children
-          parentNode.children.forEach((child) => (child.hide = true));
+          parentNode.children = [];
+          parentData.push(parentNode);
         }
       }
-      item.hide = false;
+      parentNode.children.push(item);
     });
   }
   addDivision(divison: Division) {
     this._addNode(divison);
+    this._divisionRequestService.create(divison);
     return this.findNode(divison.Id, divison.DivisionType);
-    // return this._divisionRequestService.create(divison);
   }
   deleteDivision(node: NestedDivisionTreeNode) {
     this._deleteNode(node);
-    // return this._divisionRequestService.del(node.id);
+    return this._divisionRequestService.del(node.id);
   }
   editDivision(divison: Division) {
     this._editNode(divison);
-    // return this._divisionRequestService.set(divison)
+    return this._divisionRequestService.set(divison);
   }
 }

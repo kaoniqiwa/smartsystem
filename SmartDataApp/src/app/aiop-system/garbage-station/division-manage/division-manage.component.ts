@@ -221,7 +221,7 @@ export class DivisionManageComponent implements OnInit {
       division.CreateTime = new Date().toISOString();
       division.UpdateTime = new Date().toISOString();
 
-      let node = this._divisionManageService.addDivision(division);
+      let node = await this._divisionManageService.addDivision(division);
       console.log(node);
       this.currentNode = node;
       this.onCancel();
@@ -274,19 +274,10 @@ export class DivisionManageComponent implements OnInit {
 
   private _searchData(val: string) {
     //清空搜索条件，则展示所有数据
-    let data = this._divisionManageService.searchByText(
-      val,
-      DivisionType.Committees
-    );
-
-    // this._data的引用不能改变
-    this._data.length = 0;
-
-    // this._data.push(...data);
-    // this._updateTree();
-
-    // data.forEach((item) => {
-    //   this.treeControl.expandDescendants(item);
-    // });
+    this._divisionManageService.searchByText(val, DivisionType.Committees);
+    this._updateTree();
+    this._data.forEach((item) => {
+      this.treeControl.expandDescendants(item);
+    });
   }
 }
