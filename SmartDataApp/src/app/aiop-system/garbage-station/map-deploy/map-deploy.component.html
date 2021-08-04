@@ -78,8 +78,8 @@
 </div>
 
 <app-coordinate-manage
-  *ngIf="mapCoordinateWubdiwDataService.Display"
-  [title]="mapCoordinateWubdiwDataService.Title"
-  (YesClickedEvent)="mapCoordinateWubdiwDataService.YesEvent($event)"
-  (CancelClickedEvent)="mapCoordinateWubdiwDataService.NoEvent()"
+  *ngIf="mapCoordinateWubdiwDataBusiness.Display"
+  [title]="mapCoordinateWubdiwDataBusiness.Title"
+  (YesClickedEvent)="mapCoordinateWubdiwDataBusiness.YesEvent($event)"
+  (CancelClickedEvent)="mapCoordinateWubdiwDataBusiness.NoEvent()"
 ></app-coordinate-manage>
