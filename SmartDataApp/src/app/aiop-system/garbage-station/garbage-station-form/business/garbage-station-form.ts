@@ -63,6 +63,8 @@ export class GarbageStationFormService {
       model.DivisionId = divisionId;
       model.UpdateTime = new Date().toISOString();
       model.CreateTime = new Date().toISOString();
+      model.MaxDryVolume = 0;
+      model.MaxWetVolume = 0;
       if (this.formState == FormStateEnum.create) {
         model.Id = "";
         const response = await this.dataService.addGarbageStation(model);

@@ -26,6 +26,7 @@ export class GarbageStationMgrComponent implements OnInit {
 
   selectedDivisionId = "";
   selectDivisionClick = async (item: FlatNode, lastNode: boolean) => {
+    console.log("点击", item);
     if (lastNode) {
       this.selectedDivisionId = item.id;
       this.divisionStationDataService.garbageStations =
@@ -33,9 +34,11 @@ export class GarbageStationMgrComponent implements OnInit {
           null,
           this.selectedDivisionId
         );
+      console.log("厢房", this.divisionStationDataService.garbageStations);
       this.businessService.loadTableData(
         this.divisionStationDataService.garbageStations
       );
+      console.log("table datasource", this.businessService.table.dataSource);
     } else {
       this.selectedDivisionId = "";
       this.tableComponent.selectCancel();
@@ -52,7 +55,7 @@ export class GarbageStationMgrComponent implements OnInit {
   constructor(
     private divisionStationDataService: DivisionStationDataService,
     private dataService: DataService,
-    private stationTypeDataService: StationTypeDataService,
+    private stationTypeDataService: StationTypeDataService, //处理厢房类型
     private businessService: BusinessService
   ) {
     this.businessService.stationTypeDataService = stationTypeDataService;
@@ -63,6 +66,7 @@ export class GarbageStationMgrComponent implements OnInit {
   async ngOnInit() {
     this.stationTypeDataService.types =
       await this.stationTypeDataService.requestGarbageStationType();
+    console.log("厢房类型", this.stationTypeDataService.types);
   }
 
   get tableSelectIds() {

@@ -1,47 +1,72 @@
 <div class="fill-height">
-  <div *ngIf="businessService.table.form.show" class="fill-height fill-width hw-content-mask">
-    <div class="hw-form-wrap" style="height: 650px;">
-      <garbage-station-form [divisionId]="selectedDivisionId" [stationType]="stationTypeDataService.types"
-      [cancelFn]="businessService.table.form.cancelFn" [editItem]="businessService.table.form.editItem"
-      [saveFn]="businessService.table.form.successSaveFn"></garbage-station-form>
+  <div
+    *ngIf="businessService.table.form.show"
+    class="fill-height fill-width hw-content-mask"
+  >
+    <div class="hw-form-wrap" style="height: 650px">
+      <garbage-station-form
+        [divisionId]="selectedDivisionId"
+        [stationType]="stationTypeDataService.types"
+        [cancelFn]="businessService.table.form.cancelFn"
+        [editItem]="businessService.table.form.editItem"
+        [saveFn]="businessService.table.form.successSaveFn"
+      ></garbage-station-form>
     </div>
   </div>
   <ng-container *ngIf="businessService.table.confirmDialog_">
     <div class="fill-height fill-width hw-content-mask">
-      <hw-confirm-dialog [dialog]="businessService.table.confirmDialog_"></hw-confirm-dialog>
+      <hw-confirm-dialog
+        [dialog]="businessService.table.confirmDialog_"
+      ></hw-confirm-dialog>
     </div>
   </ng-container>
   <div fxLayout="row" class="fill-height">
     <div fxFlex="320px" class="card-wrap m-r-20">
-      <h2 class="m-b-20">区划列表</h2>        
-      <div   style="height: calc(100% - 60px)">
-         <hw-division-station-tree [onlyDivisionNode]='true'
-         [selectedItemFn]="selectDivisionClick"></hw-division-station-tree>
-      </div> 
+      <h2 class="m-b-20">区划列表</h2>
+      <div style="height: calc(100% - 60px)">
+        <hw-division-station-tree
+          [onlyDivisionNode]="true"
+          [selectedItemFn]="selectDivisionClick"
+        ></hw-division-station-tree>
+      </div>
     </div>
     <div fxFlex class="card-wrap">
       <h2>垃圾房</h2>
       <div fxLayout="row" fxLayoutAlign="space-between stretch" class="m-b-10">
         <div class="hw-btn-group">
-          <button class="hw-green-btn m-r-10"  [class.gray-text]="!selectedDivisionId" [class.black]="!selectedDivisionId" (click)="businessService.table.form.show=selectedDivisionId!=''">
+          <button
+            class="hw-green-btn m-r-10"
+            [class.gray-text]="!selectedDivisionId"
+            [class.black]="!selectedDivisionId"
+            (click)="businessService.table.form.show = selectedDivisionId != ''"
+          >
             <i class="howell-icon-plus"></i>
             添加
-          </button> 
-          <button class="hw-red-btn  m-r-10 " (click)="delBtnClick()" [class.gray-text]="!selectItems" [class.black]="!selectItems">
+          </button>
+          <button
+            class="hw-red-btn m-r-10"
+            (click)="delBtnClick()"
+            [class.gray-text]="!selectItems"
+            [class.black]="!selectItems"
+          >
             <i class="howell-icon-delete-bin"></i>
             删除
-          </button> 
+          </button>
         </div>
         <div>
-          <hw-input-search [placeholder]="'名称'"
-          [searchEvent]="searchList"></hw-input-search>
+          <hw-input-search
+            [placeholder]="'名称'"
+            [searchEvent]="searchList"
+          ></hw-input-search>
         </div>
       </div>
-      <div style="height: calc(100% - 68px);">      
+      <div style="height: calc(100% - 68px)">
         <!-- 68 116 -->
-        <hw-custom-table #table [model]="businessService.table.dataSource"></hw-custom-table>
+        <hw-custom-table
+          #table
+          [model]="businessService.table.dataSource"
+        ></hw-custom-table>
       </div>
-
     </div>
   </div>
 </div>

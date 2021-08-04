@@ -17,7 +17,6 @@ import {
 import { DivisionManageService } from "./service/division-manage.service";
 import { fromEvent } from "rxjs";
 import { throttleTime } from "rxjs/operators";
-import { mousewheel } from "src/app/common/tool/jquery-help/jquery-help";
 
 @Component({
   selector: "app-division-manage",
@@ -44,8 +43,6 @@ export class DivisionManageComponent implements OnInit {
 
   // 当前选中的区划
   currentNode: NestedDivisionTreeNode | null = null;
-
-  _currentElement: HTMLElement | null = null;
 
   state = FormState.none;
 
@@ -115,8 +112,8 @@ export class DivisionManageComponent implements OnInit {
   clickTreeNode(node: NestedDivisionTreeNode, e: Event) {
     /**
      *  如果当前节点是选中状态
-     *    1. 不在编辑，添加界面，点击则取消选中
-     *    2. 在编辑，添加界面，点击则保持编辑，添加界面
+     *    1. 不处于编辑/添加界面，点击则取消选中
+     *    2.  处于编辑/添加界面，点击则保持编辑，添加界面
      *
      */
     if (this.currentNode && this.currentNode.id == node.id) {
@@ -201,10 +198,6 @@ export class DivisionManageComponent implements OnInit {
     // console.log("division type", this._divisionType);
   }
   deleteBtnClick(node: NestedDivisionTreeNode, e: Event) {
-    // this._divisionManageService.deleteNode(node);
-    // console.log(this._data);
-    // this.dataSource.data = null;
-    // this.dataSource.data = this._data;
     let res = this._divisionManageService.deleteDivision(node);
     MessageBar.response_success();
     this._updateTree();
@@ -273,7 +266,6 @@ export class DivisionManageComponent implements OnInit {
   }
 
   private _searchData(val: string) {
-    //清空搜索条件，则展示所有数据
     this._divisionManageService.searchByText(val, DivisionType.Committees);
     this._updateTree();
     this._data.forEach((item) => {

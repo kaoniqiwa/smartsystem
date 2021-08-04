@@ -21,6 +21,7 @@ export class DivisionManageService {
   private _data: Division[] = [];
 
   constructor(private _divisionRequestService: DivisionRequestService) {}
+
   async loadData(params?: GetDivisionsParams) {
     this._divisionMap.clear();
 
@@ -87,7 +88,6 @@ export class DivisionManageService {
     // 返回最高层级
     return this._divisionMap.get(DivisionType.City);
   }
-  // 主要是根据parentId来找父节点
   findNode(id: string, type: DivisionType) {
     let divisionArr = this._divisionMap.get(type);
     // console.log(divisionArr);
