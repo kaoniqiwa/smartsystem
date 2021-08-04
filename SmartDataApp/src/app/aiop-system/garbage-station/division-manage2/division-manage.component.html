@@ -1,0 +1,71 @@
+<div class="fill-height division-manage">
+  <div class="aside m-r-20">
+    <h2 class="m-b-20">区划列表</h2>
+    <div class="m-b-10">
+      <button
+        class="add-btn m-r-10"
+        (click)="addBtnClick()"
+        [class.disabled]="!canAdd"
+      >
+        <i class="howell-icon-plus"></i>
+        添加
+      </button>
+      <button
+        class="delete-btn m-r-10"
+        (click)="delBtnClick()"
+        [class.disabled]="!canDelete"
+      >
+        <i class="howell-icon-delete-bin"></i>
+        删除
+      </button>
+      <button
+        class="edit-btn m-r-10"
+        (click)="editBtnClick()"
+        [class.disabled]="!canEdit"
+      >
+        <i class="howell-icon-setting"></i>
+        编辑
+      </button>
+    </div>
+    <hw-division-station-tree
+      #divisionStationTree
+      [treeHeight]="'calc(100% - 80px - 44px)'"
+      [selectedItemFn]="selectDivisionClick"
+    ></hw-division-station-tree>
+  </div>
+
+  <div class="content">
+    <div class="division-form">
+      <h2 class="m-b-20">{{ title }}</h2>
+      <form [formGroup]="divisionForm">
+        <div class="form-group">
+          <label class="form-label tran-input-label"> 当前区划 </label>
+          <input class="form-control custom" formControlName="Name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label tran-input-label"> 上级区划 </label>
+
+          <input class="form-control custom" formControlName="ParentName" />
+        </div>
+        <div class="form-group">
+          <label class="form-label tran-input-label">描述 </label>
+
+          <textarea
+            formControlName="Description"
+            cols="30"
+            rows="10"
+            class="form-control custom"
+          ></textarea>
+        </div>
+        <div class="form-group btns">
+          <button class="hw-green-m-btn m-r-10" (click)="onSubmit()">
+            <i class="howell-icon-Check"></i>
+          </button>
+          <button class="hw-gray-m-btn" (click)="onCancel()">
+            <i class="howell-icon-Close"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
