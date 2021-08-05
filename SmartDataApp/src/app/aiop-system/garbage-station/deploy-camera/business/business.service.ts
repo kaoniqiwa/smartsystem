@@ -83,10 +83,10 @@ export class BusinessService {
     if (cameras.length == 0) {
       camera = new StationCamera();
       camera.Id = cameraId;
-      camera.CreateTime = new Date().toISOString();
+      camera.CreateTime = new Date();
     } else camera = cameras[0];
     camera.Name = name;
-    camera.UpdateTime = new Date().toISOString();
+    camera.UpdateTime = new Date();
     camera.GarbageStationId = stationId;
     camera.PositionNo = no;
     if (

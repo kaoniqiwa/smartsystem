@@ -1,3 +1,6 @@
+import { Transform } from "class-transformer";
+import { transformDate } from "../transformer";
+
 /**摄像机信息 */
 export class Camera {
   /**摄像机ID */
@@ -7,9 +10,11 @@ export class Camera {
   /**摄像机用途 */
   CameraUsage: number;
   /**创建时间 */
-  CreateTime: Date | string;
+  @Transform(transformDate)
+  CreateTime: Date;
   /**更新事件 */
-  UpdateTime: Date | string;
+  @Transform(transformDate)
+  UpdateTime: Date;
   /**垃圾桶房ID */
   GarbageStationId: string;
   /**位置编号，
@@ -23,9 +28,10 @@ export class Camera {
 
   OnlineStatus: number;
   // 照片URL或ID	O
-  ImageUrl: string;
+  ImageUrl?: string;
   // 照片时间	O
-  ImageTime: Date;
+  @Transform(transformDate)
+  ImageTime?: Date;
 }
 
 /**获取摄像机列表参数 */

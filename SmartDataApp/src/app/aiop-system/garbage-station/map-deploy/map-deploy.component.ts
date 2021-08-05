@@ -225,34 +225,28 @@ export class MapDeployComponent implements OnInit {
   }
 
   selectDivisionClick = async (item: FlatNode, lastNode: boolean) => {
+    debugger;
     this.GarbageStation = null;
 
-    // this.stationTree.garbageStationTree.getParentNode(item);
-    let data: Division | GarbageStation;
-    // 如果选中的是区域项
-    data = this.stationTree.dataService.divisions.find((x) => {
-      return x.Id === item.id;
-    });
-
-    if (data) {
-      this.DivisionSelectedId = data.Id;
+    if (item.data instanceof Division) {
+      this.DivisionSelectedId = item.data.Id;
       this.DivisionExpandId = undefined;
 
-      this.client.Village.Select(data.Id);
-      const village = this.dataController.Village.Get(data.Id);
+      this.client.Village.Select(item.data.Id);
+      const village = this.dataController.Village.Get(item.data.Id);
       try {
         if (this.gisPointChanging) {
-          data.GisArea = new GisArea();
-          data.GisArea.GisType = GisType.GCJ02;
-          data.GisArea.GisPoint = village.areas.map((x) => {
-            return new GisPoint(x, GisType.GCJ02);
-          });
-          data.GisPoint = new GisPoint(
+          // item.data.GisArea = new GisArea();
+          // item.data.GisArea.GisType = GisType.GCJ02;
+          // item.data.GisArea.GisPoint = village.areas.map((x) => {
+          //   return new GisPoint(x, GisType.GCJ02);
+          // });
+          item.data.GisPoint = new GisPoint(
             [village.center.lon, village.center.lat],
             GisType.GCJ02
           );
 
-          let response = await this.divisionService.set(data);
+          let response = await this.divisionService.set(item.data);
           console.log(response);
           MessageBar.response_success("录入区划坐标成功");
         }
@@ -263,17 +257,11 @@ export class MapDeployComponent implements OnInit {
       this.client.Viewer.MoveTo(village.center);
       this.wantUnbindNode = undefined;
       this.pointSelected = undefined;
-      return;
-    }
-    // 如果选中的是垃圾厢房
-    data = this.stationTree.dataService.garbageStations.find((x) => {
-      return x.Id === item.id;
-    });
-    if (data) {
-      this.DivisionSelectedId = data.DivisionId;
+    } else {
+      this.DivisionSelectedId = item.data.DivisionId;
       this.DivisionExpandId = undefined;
-      this.GarbageStation = data;
-      this.client.Village.Select(data.DivisionId);
+      this.GarbageStation = item.data;
+      this.client.Village.Select(item.data.DivisionId);
 
       this.wantUnbindNode = item;
       if (!this.points[item.id]) {
@@ -282,8 +270,8 @@ export class MapDeployComponent implements OnInit {
 
       try {
         const point = this.dataController.Village.Point.Get(
-          data.DivisionId,
-          data.Id
+          item.data.DivisionId,
+          item.data.Id
         );
         if (point) {
           // item.rightClassBtn = [
@@ -291,11 +279,11 @@ export class MapDeployComponent implements OnInit {
           // ];
           try {
             if (this.gisPointChanging) {
-              data.GisPoint = new GisPoint(
+              item.data.GisPoint = new GisPoint(
                 [point.position.lon, point.position.lat],
                 GisType.GCJ02
               );
-              let response = await this.garbageService.set(data);
+              let response = await this.garbageService.set(item.data);
               console.log(response);
               MessageBar.response_success("录入点位坐标成功");
             }
@@ -316,7 +304,6 @@ export class MapDeployComponent implements OnInit {
         // const village = this.dataController.Village.Get(data[0].DivisionId);
         // this.client.Viewer.MoveTo(village.center);
       }
-      return;
     }
   };
 

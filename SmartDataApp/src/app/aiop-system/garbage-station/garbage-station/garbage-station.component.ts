@@ -85,8 +85,8 @@ export class GarbageStationComponent implements OnInit {
       const model = new GarbageStationType();
       model.Windows = this.chartComponent.stationChart.stationwindow;
       model.CameraSlots = this.chartComponent.stationChart.cameraSlot;
-      model.CreateTime = new Date().toISOString();
-      model.UpdateTime = new Date().toISOString();
+      model.CreateTime = new Date();
+      model.UpdateTime = new Date();
       model.Type = 0;
       model.Name = typeName;
       const result = await this.dataService.addGarbageStationType(model);
