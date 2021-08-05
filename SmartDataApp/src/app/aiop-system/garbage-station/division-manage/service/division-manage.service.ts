@@ -53,8 +53,8 @@ export class DivisionManageService {
         parentId: item.ParentId,
         divisionType: item.DivisionType,
         isLeaf: item.IsLeaf,
-        createTime: item.CreateTime,
-        UpdateTime: item.UpdateTime,
+        createTime: item.CreateTime.date,
+        UpdateTime: item.UpdateTime.date,
         hide: false,
         iconClass: item.DivisionType > 2 ? IconType.map : IconType.earth,
 

@@ -4,8 +4,13 @@ import { Flags } from "../flags";
 import { Exclude, Expose, Transform, Type } from "class-transformer";
 import { Gender, StationState } from "../enum";
 import { GisPoint } from "./division";
+<<<<<<< HEAD
 import "reflect-metadata";
 import { transformDate } from "../transformer";
+=======
+import { DateTime, transformDateTime } from "../date-time";
+import "reflect-metadata";
+>>>>>>> c569db68c90a18169ce619cfbceded4620335126
 /**投放点信息 */
 export class GarbageStation {
   /**垃圾房ID */
@@ -21,12 +26,21 @@ export class GarbageStation {
   /**描述信息(可选) */
   Description?: string;
   /**创建时间 */
+<<<<<<< HEAD
   @Transform(transformDate)
   CreateTime: Date;
 
   /**更新事件 */
   @Transform(transformDate)
   UpdateTime: Date;
+=======
+  @Transform(transformDateTime)
+  CreateTime: DateTime;
+
+  /**更新事件 */
+  @Transform(transformDateTime)
+  UpdateTime: DateTime;
+>>>>>>> c569db68c90a18169ce619cfbceded4620335126
   /**GIS点位(可选) */
   GisPoint?: GisPoint;
   /**所属区划ID(可选) */
@@ -41,8 +55,13 @@ export class GarbageStation {
   DryFull?: boolean;
   /**干垃圾满溢时间(可选) */
 
+<<<<<<< HEAD
   @Transform(transformDate)
   DryFullTime?: Date;
+=======
+  @Transform(transformDateTime)
+  DryFullTime?: DateTime;
+>>>>>>> c569db68c90a18169ce619cfbceded4620335126
 
   /**干垃圾容积(可选)，单位：L */
   DryVolume?: number;
@@ -52,8 +71,13 @@ export class GarbageStation {
   WetFull?: boolean;
   /**湿垃圾满溢时间(可选) */
 
+<<<<<<< HEAD
   @Transform(transformDate)
   WetFullTime?: Date;
+=======
+  @Transform(transformDateTime)
+  WetFullTime?: DateTime;
+>>>>>>> c569db68c90a18169ce619cfbceded4620335126
 
   /**湿垃圾容积(可选)，单位：L */
   WetVolume?: number;
@@ -218,8 +242,13 @@ export class GarbageParameters {
 }
 
 export interface TimeRange {
+<<<<<<< HEAD
   BeginTime: Date;
   EndTime: Date;
+=======
+  BeginTime: DateTime;
+  EndTime: DateTime;
+>>>>>>> c569db68c90a18169ce619cfbceded4620335126
 }
 
 export class RecordFileUrl {

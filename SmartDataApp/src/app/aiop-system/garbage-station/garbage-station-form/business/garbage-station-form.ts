@@ -5,7 +5,12 @@ import { FormStateEnum } from "../../../../common/tool/table-form-helper";
 import { MessageBar } from "../../../../common/tool/message-bar";
 import { DataService } from "../../garbage-station-mgr/business/data.service";
 import "../../../../common/string/hw-string";
+<<<<<<< HEAD
 
+=======
+import { GarbageStationType } from "../../../../data-core/model/waste-regulation/garbage-station-type";
+import { DateTime } from "src/app/data-core/model/date-time";
+>>>>>>> c569db68c90a18169ce619cfbceded4620335126
 @Injectable()
 export class GarbageStationFormService {
   form: FormGroup;
@@ -61,8 +66,13 @@ export class GarbageStationFormService {
       model.Name = item.Name;
       model.StationType = item.StationType;
       model.DivisionId = divisionId;
+<<<<<<< HEAD
       model.UpdateTime = new Date();
       model.CreateTime = new Date();
+=======
+      model.UpdateTime = new DateTime();
+      model.CreateTime = new DateTime();
+>>>>>>> c569db68c90a18169ce619cfbceded4620335126
       if (this.formState == FormStateEnum.create) {
         model.Id = "";
         const response = await this.dataService.addGarbageStation(model);

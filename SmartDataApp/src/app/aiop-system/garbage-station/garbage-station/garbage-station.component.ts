@@ -8,6 +8,7 @@ import { GarbageStationType } from "../../../data-core/model/waste-regulation/ga
 import { MessageBar } from "../../../common/tool/message-bar";
 import { ConfirmDialog } from "../../../shared-module/confirm-dialog/confirm-dialog.component";
 import { DataTreeNode } from "../../common/tree.service";
+import { DateTime } from "src/app/data-core/model/date-time";
 @Component({
   selector: "app-garbage-station",
   templateUrl: "./garbage-station.component.html",
@@ -85,8 +86,13 @@ export class GarbageStationComponent implements OnInit {
       const model = new GarbageStationType();
       model.Windows = this.chartComponent.stationChart.stationwindow;
       model.CameraSlots = this.chartComponent.stationChart.cameraSlot;
+<<<<<<< HEAD
       model.CreateTime = new Date();
       model.UpdateTime = new Date();
+=======
+      model.CreateTime = new DateTime();
+      model.UpdateTime = new DateTime();
+>>>>>>> c569db68c90a18169ce619cfbceded4620335126
       model.Type = 0;
       model.Name = typeName;
       const result = await this.dataService.addGarbageStationType(model);

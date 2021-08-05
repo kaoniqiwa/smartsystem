@@ -1,5 +1,9 @@
 import { Transform } from "class-transformer";
+<<<<<<< HEAD
 import { transformDate } from "../transformer";
+=======
+import { DateTime, transformDateTime } from "../date-time";
+>>>>>>> c569db68c90a18169ce619cfbceded4620335126
 
 /**摄像机信息 */
 export class Camera {
@@ -10,11 +14,19 @@ export class Camera {
   /**摄像机用途 */
   CameraUsage: number;
   /**创建时间 */
+<<<<<<< HEAD
   @Transform(transformDate)
   CreateTime: Date;
   /**更新事件 */
   @Transform(transformDate)
   UpdateTime: Date;
+=======
+  @Transform(transformDateTime)
+  CreateTime: DateTime;
+  /**更新事件 */
+  @Transform(transformDateTime)
+  UpdateTime: DateTime;
+>>>>>>> c569db68c90a18169ce619cfbceded4620335126
   /**垃圾桶房ID */
   GarbageStationId: string;
   /**位置编号，
@@ -30,8 +42,13 @@ export class Camera {
   // 照片URL或ID	O
   ImageUrl?: string;
   // 照片时间	O
+<<<<<<< HEAD
   @Transform(transformDate)
   ImageTime?: Date;
+=======
+  @Transform(transformDateTime)
+  ImageTime?: DateTime;
+>>>>>>> c569db68c90a18169ce619cfbceded4620335126
 }
 
 /**获取摄像机列表参数 */
