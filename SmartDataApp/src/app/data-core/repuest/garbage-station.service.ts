@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { SaveModel } from "../model/save-model";
 import {
   GarbageStation,
   GetGarbageStationsParams,
@@ -41,8 +40,7 @@ import {
 } from "../model/waste-regulation/garbage-station-number-statistic";
 import { GarbageStationType } from "../model/waste-regulation/garbage-station-type";
 import { CameraPictureUrl } from "../model/waste-regulation/camera-picture-url";
-import { Observable } from "rxjs";
-import { plainToClass } from "class-transformer";
+import { classToPlain } from "class-transformer";
 import { ServiceHelper } from "../model/waste-regulation/request-service-processor";
 @Injectable({
   providedIn: "root",
@@ -50,10 +48,12 @@ import { ServiceHelper } from "../model/waste-regulation/request-service-process
 export class GarbageStationRequestService {
   constructor(private requestService: HowellAuthHttpService) {}
   async create(item: GarbageStation) {
+    let data = classToPlain(item);
+    // SaveModel.toModel(item, SaveModel.formMustField.garbageStation)
     let response = await this.requestService
       .post<GarbageStation, HowellResponse<GarbageStation>>(
         GarbageStationsUrl.create(),
-        SaveModel.toModel(item, SaveModel.formMustField.garbageStation)
+        data
       )
       .toPromise();
     return ServiceHelper.ResponseProcess(response, GarbageStation);
@@ -68,10 +68,12 @@ export class GarbageStationRequestService {
   }
 
   async set(item: GarbageStation) {
+    let data = classToPlain<GarbageStation>(item) as GarbageStation;
+    // SaveModel.toModel(item, SaveModel.formMustField.garbageStation)
     let response = await this.requestService
       .put<GarbageStation, HowellResponse<GarbageStation>>(
         GarbageStationsUrl.edit(item.Id),
-        SaveModel.toModel(item, SaveModel.formMustField.garbageStation)
+        data
       )
       .toPromise();
     return ServiceHelper.ResponseProcess(response, GarbageStation);
@@ -91,7 +93,7 @@ export class GarbageStationRequestService {
         HowellResponse<PagedList<GarbageStation>>
       >(GarbageStationsUrl.list(), item)
       .toPromise();
-
+    debugger;
     return ServiceHelper.ResponseProcess(response, GarbageStation);
   }
 
@@ -400,10 +402,12 @@ export class GarbageStationTrashCanRequestService {
 export class GarbageStationTypeRequestService {
   constructor(private requestService: HowellAuthHttpService) {}
   async create(item: GarbageStationType) {
+    let data = classToPlain(item);
+    // SaveModel.toModel(item, SaveModel.formMustField.garbageStationType)
     let response = await this.requestService
       .post<GarbageStationType, HowellResponse<GarbageStationType>>(
         GarbageStationTypeUrl.create(),
-        SaveModel.toModel(item, SaveModel.formMustField.garbageStationType)
+        data
       )
       .toPromise();
 
@@ -417,10 +421,12 @@ export class GarbageStationTypeRequestService {
   }
 
   async set(item: GarbageStationType) {
+    let data = classToPlain(item) as GarbageStationType;
+    // SaveModel.toModel(item, SaveModel.formMustField.garbageStationType)
     let response = await this.requestService
       .put<GarbageStationType, HowellResponse<GarbageStationType>>(
         GarbageStationTypeUrl.edit(item.Type + ""),
-        SaveModel.toModel(item, SaveModel.formMustField.garbageStationType)
+        data
       )
       .toPromise();
 

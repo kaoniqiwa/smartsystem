@@ -1,15 +1,17 @@
+import { Transform, Type } from "class-transformer";
+import { DateTime, transformDateTime } from "../date-time";
 import { DivisionType, GisType } from "../enum";
 
 /**区划信息 */
 export class Division {
   /**区划ID */
-  Id: string;
+  Id!: string;
   /**区划名称 */
-  Name: string;
+  Name!: string;
   /**父区划ID(可选)，如果是根区域节点，则该ID为空 */
   ParentId: string;
   /**是否为叶节点的区域 */
-  IsLeaf: boolean;
+  IsLeaf!: boolean;
   /**外部扩展ID(可选)，用于国标区划编码 */
   ExternalId: string;
   /**区划完整路径(可选)，含本节点，@进行分割，上级节点在前 */
@@ -19,14 +21,18 @@ export class Division {
   /**人口(可选) */
   Population?: number;
   /**区划类型，用于图标区分 */
-  DivisionType: DivisionType;
+  DivisionType!: DivisionType;
   /**创建时间 */
-  CreateTime: Date | string;
+  @Transform(transformDateTime)
+  CreateTime: DateTime;
   /**更新事件 */
-  UpdateTime: Date | string;
+  @Transform(transformDateTime)
+  UpdateTime: DateTime;
   /**区划中心GIS点位(可选) */
+  @Type(() => GisPoint)
   GisPoint?: GisPoint;
   /**区划GIS点位区域(可选) */
+  @Type(() => GisArea)
   GisArea?: GisArea;
 }
 export class GisArea {

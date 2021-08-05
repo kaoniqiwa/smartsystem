@@ -1,9 +1,11 @@
 import { TrashCan } from "./trashCan";
 import { Camera } from "./camera";
 import { Flags } from "../flags";
-import { Expose, Type } from "class-transformer";
+import { Exclude, Expose, Transform, Type } from "class-transformer";
 import { Gender, StationState } from "../enum";
 import { GisPoint } from "./division";
+import { DateTime, transformDateTime } from "../date-time";
+import "reflect-metadata";
 /**投放点信息 */
 export class GarbageStation {
   /**垃圾房ID */
@@ -17,38 +19,48 @@ export class GarbageStation {
   StationType?: number;
 
   /**描述信息(可选) */
-  Description: string;
+  Description?: string;
   /**创建时间 */
-  CreateTime: Date | string;
+  @Transform(transformDateTime)
+  CreateTime: DateTime;
+
   /**更新事件 */
-  UpdateTime: Date | string;
+  @Transform(transformDateTime)
+  UpdateTime: DateTime;
   /**GIS点位(可选) */
-  GisPoint: GisPoint;
+  GisPoint?: GisPoint;
   /**所属区划ID(可选) */
-  DivisionId: string;
+  DivisionId?: string;
   /**垃圾桶列表(可选) */
   @Type(() => TrashCan)
-  TrashCans: TrashCan[];
+  TrashCans?: TrashCan[];
   /**摄像机列表(可选) */
   @Type(() => Camera)
-  Cameras: Camera[];
+  Cameras?: Camera[];
   /**干垃圾满溢(可选) */
   DryFull?: boolean;
   /**干垃圾满溢时间(可选) */
-  DryFullTime?: Date | string;
+
+  @Transform(transformDateTime)
+  DryFullTime?: DateTime;
+
   /**干垃圾容积(可选)，单位：L */
   DryVolume?: number;
   /**最大干垃圾容积，单位：L */
-  MaxDryVolume: number;
+  MaxDryVolume: number = 0;
   /**湿垃圾满溢(可选) */
   WetFull?: boolean;
   /**湿垃圾满溢时间(可选) */
-  WetFullTime?: Date | string;
+
+  @Transform(transformDateTime)
+  WetFullTime?: DateTime;
+
   /**湿垃圾容积(可选)，单位：L */
   WetVolume?: number;
   /**最大湿垃圾容积，单位：L */
-  MaxWetVolume: number;
+  MaxWetVolume: number = 0;
 
+  @Exclude()
   private stationState = 0;
   // 垃圾厢房状态
 
@@ -61,6 +73,7 @@ export class GarbageStation {
     this.StationStateFlags = new Flags<StationState>(val);
   }
 
+  @Exclude()
   private stationStateFlags?;
   get StationStateFlags(): Flags<StationState> {
     if (!this.stationStateFlags) {
@@ -205,8 +218,8 @@ export class GarbageParameters {
 }
 
 export interface TimeRange {
-  BeginTime: Date | string;
-  EndTime: Date | string;
+  BeginTime: DateTime;
+  EndTime: DateTime;
 }
 
 export class RecordFileUrl {

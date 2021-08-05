@@ -12,6 +12,7 @@ import { Camera as StationCamera } from "../../../../data-core/model/waste-regul
 import { MessageBar } from "../../../../common/tool/message-bar";
 import { House } from "../../station-chart/business/station-chart";
 import { CameraUsageData, CanType } from "../../../../data-core/model/enum";
+import { DateTime } from "src/app/data-core/model/date-time";
 @Injectable()
 export class BusinessService {
   bindItem: FlatNode;
@@ -83,10 +84,10 @@ export class BusinessService {
     if (cameras.length == 0) {
       camera = new StationCamera();
       camera.Id = cameraId;
-      camera.CreateTime = new Date().toISOString();
+      camera.CreateTime = new DateTime();
     } else camera = cameras[0];
     camera.Name = name;
-    camera.UpdateTime = new Date().toISOString();
+    camera.UpdateTime = new DateTime();
     camera.GarbageStationId = stationId;
     camera.PositionNo = no;
     if (

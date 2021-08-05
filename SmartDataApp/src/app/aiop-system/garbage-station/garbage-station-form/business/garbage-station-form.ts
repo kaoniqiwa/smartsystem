@@ -6,6 +6,7 @@ import { MessageBar } from "../../../../common/tool/message-bar";
 import { DataService } from "../../garbage-station-mgr/business/data.service";
 import "../../../../common/string/hw-string";
 import { GarbageStationType } from "../../../../data-core/model/waste-regulation/garbage-station-type";
+import { DateTime } from "src/app/data-core/model/date-time";
 @Injectable()
 export class GarbageStationFormService {
   form: FormGroup;
@@ -61,10 +62,8 @@ export class GarbageStationFormService {
       model.Name = item.Name;
       model.StationType = item.StationType;
       model.DivisionId = divisionId;
-      model.UpdateTime = new Date().toISOString();
-      model.CreateTime = new Date().toISOString();
-      model.MaxDryVolume = 0;
-      model.MaxWetVolume = 0;
+      model.UpdateTime = new DateTime();
+      model.CreateTime = new DateTime();
       if (this.formState == FormStateEnum.create) {
         model.Id = "";
         const response = await this.dataService.addGarbageStation(model);

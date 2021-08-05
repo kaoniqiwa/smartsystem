@@ -25,17 +25,17 @@ import { HowellResponse } from "../model/response";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
 import { ServiceHelper } from "../model/waste-regulation/request-service-processor";
 import { DivisionUrl } from "../url/waste-regulation/division";
+import { classToPlain } from "class-transformer";
 @Injectable({
   providedIn: "root",
 })
 export class DivisionRequestService {
   constructor(private requestService: HowellAuthHttpService) {}
   async create(item: Division) {
+    let data = classToPlain(item);
+    // SaveModel.toModel(item, SaveModel.formMustField.division)
     let response = await this.requestService
-      .post<Division, HowellResponse<Division>>(
-        DivisionUrl.basic(),
-        SaveModel.toModel(item, SaveModel.formMustField.division)
-      )
+      .post<Division, HowellResponse<Division>>(DivisionUrl.basic(), data)
       .toPromise();
     return ServiceHelper.ResponseProcess(response, Division).then((x) => {
       ServiceHelper.cacheItemByPaged.push(ServiceHelper.key.Division, x);
@@ -74,11 +74,10 @@ export class DivisionRequestService {
   }
 
   async set(item: Division) {
+    let data = classToPlain(item) as Division;
+    // SaveModel.toModel(item, SaveModel.formMustField.division)
     let response = await this.requestService
-      .put<Division, HowellResponse<Division>>(
-        DivisionUrl.edit(item.Id),
-        SaveModel.toModel(item, SaveModel.formMustField.division)
-      )
+      .put<Division, HowellResponse<Division>>(DivisionUrl.edit(item.Id), data)
       .toPromise();
     return ServiceHelper.ResponseProcess(response, Division).then((x) => {
       return x;

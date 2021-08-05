@@ -184,7 +184,7 @@ export class TreeService extends ListAttribute {
 
   filterNodes(text: string, nodeType: NodeTypeEnum) {
     let filterList = this.dataSource.filter(
-      (x) => x.name.indexOf(text) > -1 && x.parentId && x.type == nodeType
+      (x) => x.name.indexOf(text) > -1 && x.parentId //&& x.type == nodeType
     );
 
     // filterList.forEach((x) => {
