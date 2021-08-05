@@ -84,17 +84,10 @@ export class BusinessService {
     if (cameras.length == 0) {
       camera = new StationCamera();
       camera.Id = cameraId;
-<<<<<<< HEAD
       camera.CreateTime = new Date();
     } else camera = cameras[0];
     camera.Name = name;
     camera.UpdateTime = new Date();
-=======
-      camera.CreateTime = new DateTime();
-    } else camera = cameras[0];
-    camera.Name = name;
-    camera.UpdateTime = new DateTime();
->>>>>>> c569db68c90a18169ce619cfbceded4620335126
     camera.GarbageStationId = stationId;
     camera.PositionNo = no;
     if (

@@ -212,13 +212,8 @@ export class DivisionManageComponent implements OnInit {
       division.DivisionType = this._divisionType + 1; // 新节点是当前区划的下一子节点
       division.IsLeaf = true; // 新添加的节点一定是叶节点
       division.ParentId = this.currentNode ? this.currentNode.id : null;
-<<<<<<< HEAD
       division.CreateTime = new Date();
       division.UpdateTime = new Date();
-=======
-      division.CreateTime = new DateTime();
-      division.UpdateTime = new DateTime();
->>>>>>> c569db68c90a18169ce619cfbceded4620335126
 
       let node = await this._divisionManageService.addDivision(division);
       console.log(node);
@@ -233,13 +228,8 @@ export class DivisionManageComponent implements OnInit {
       division.ParentId = this.currentNode.parentId;
       division.DivisionType = this.currentNode.divisionType;
       division.IsLeaf = this.currentNode.isLeaf;
-<<<<<<< HEAD
       division.CreateTime = new Date(this.currentNode.createTime);
       division.UpdateTime = new Date();
-=======
-      division.CreateTime = new DateTime(this.currentNode.createTime);
-      division.UpdateTime = new DateTime();
->>>>>>> c569db68c90a18169ce619cfbceded4620335126
       this._divisionManageService.editDivision(division);
       this.onCancel();
       this._updateTree();
