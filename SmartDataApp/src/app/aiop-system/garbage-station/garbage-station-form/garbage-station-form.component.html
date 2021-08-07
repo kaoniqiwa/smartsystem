@@ -1,19 +1,28 @@
 <div class="custom-form-wrap" style="width: 800px">
-  <h2 class="m-b-20">{{ "添加垃圾房" | FormTitle: [editItem, "Name"] }}</h2>
+  <h2 class="m-b-20">
+    {{ title }}
+  </h2>
   <form
     class="form-content m-b-20"
-    [formGroup]="formService.form"
+    [formGroup]="garbageStationFormGroup"
     (ngSubmit)="onSubmit()"
   >
-    <div>
-      <input type="reset" #resetBtn class="collapse" value="" />
-      <div fxLayout="row" class="form-group">
-        <div fxFlex="50">
+    <div
+      class="form-group"
+      fxLayout="row"
+      fxLayoutAlign="space-between stretch"
+    >
+      <div
+        class="input-bar"
+        fxLayout="row"
+        fxLayoutAlign="space-between stretch"
+      >
+        <div>
           <label class="custom control-label tran-input-label">名称</label>
           <span class="text-danger p-t-10">*</span>
           <input class="form-control custom" #name_ formControlName="Name" />
         </div>
-        <div fxFlex fxFlexOffset="10px">
+        <div>
           <label class="custom control-label tran-input-label">类型</label>
           <select
             #stationType_
@@ -27,14 +36,31 @@
           </select>
         </div>
       </div>
-      <div
+      <!-- <div
+        class="search-bar"
         fxLayout="row"
-        class="form-group"
-        style="height: 400px; position: relative; transform: scale(0.6)"
-        fxLayoutAlign="center center"
+        fxLayoutAlign="space-between stretch"
       >
-        <div class="fill-width mask-chart"></div>
-      </div>
+        <input
+          type="text"
+          formControlName="SearchText"
+          placeholder="输入关键字"
+          class="custom form-control m-r-10"
+        />
+        <button type="button" class="hw-blue-btn m-r-10" (click)="search()">
+          <i class="mdi mdi-magnify"></i>
+          查询
+        </button>
+      </div> -->
+    </div>
+
+    <div class="form-group">
+      <!-- 68 116 -->
+      <hw-custom-table
+        #table
+        [model]="dataSource"
+        (selectedEvent)="selectTableItem($event)"
+      ></hw-custom-table>
     </div>
   </form>
 

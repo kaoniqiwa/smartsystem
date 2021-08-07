@@ -1,15 +1,8 @@
 <div class="fill-height">
-  <div
-    *ngIf="businessService.table.form.show"
-    class="fill-height fill-width hw-content-mask"
-  >
-    <div class="hw-form-wrap" style="height: 650px">
+  <div *ngIf="showForm" class="fill-height fill-width hw-content-mask">
+    <div class="hw-form-wrap" style="height: 700px">
       <garbage-station-form
-        [divisionId]="selectedDivisionId"
-        [stationType]="stationTypeDataService.types"
-        [cancelFn]="businessService.table.form.cancelFn"
-        [editItem]="businessService.table.form.editItem"
-        [saveFn]="businessService.table.form.successSaveFn"
+        (formOperateEvent)="formOperate($event)"
       ></garbage-station-form>
     </div>
   </div>
@@ -38,7 +31,7 @@
             class="hw-green-btn m-r-10"
             [class.gray-text]="!selectedDivisionId"
             [class.black]="!selectedDivisionId"
-            (click)="businessService.table.form.show = selectedDivisionId != ''"
+            (click)="openForm()"
           >
             <i class="howell-icon-plus"></i>
             添加
@@ -65,6 +58,7 @@
         <hw-custom-table
           #table
           [model]="businessService.table.dataSource"
+          (selectedEvent)="selectTableItem($event)"
         ></hw-custom-table>
       </div>
     </div>

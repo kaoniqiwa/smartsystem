@@ -111,6 +111,7 @@ export class CameraTableService extends InputLabelService {
       .list(param)
       .toPromise();
     this.encodeDevices = response.Data.Data;
+    console.log("编码设备", this.encodeDevices);
   }
 
   async requestCamerasData(pageIndex: number, callBack?: (page: Page) => void) {
@@ -127,6 +128,8 @@ export class CameraTableService extends InputLabelService {
       this.cameraTable.Convert(data, this.cameraTable.dataSource);
       this.cameraTable.totalCount = response.Data.Page.TotalRecordCount;
       this.dataSource = response.Data.Data;
+      console.log(this.cameraTable.dataSource);
+      console.log("摄像机", response.Data.Data);
       if (callBack) callBack(response.Data.Page);
     }
   }
@@ -190,11 +193,12 @@ export class CameraTableService extends InputLabelService {
   getRequsetParam(pageIndex: number, search: SearchControl) {
     let param = new GetCamerasParams();
     param.PageIndex = pageIndex;
-    param.PageSize = new TableAttribute().pageSize;
+    param.PageSize = 10; //new TableAttribute().pageSize;
 
     if (this.regionTree.selectedNodeId)
       param.RegionIds = [this.regionTree.selectedNodeId];
     else param.RegionIdNullable = true;
+
     const s = search.toSearchParam();
     if (s.SearchText && search.other == false) {
       param.Name = s.SearchText;
