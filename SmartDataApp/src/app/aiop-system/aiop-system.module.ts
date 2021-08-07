@@ -10,7 +10,7 @@ import { DivisionManageComponent } from "./garbage-station/division-manage/divis
 import { DivisionStationTreeComponent } from "./garbage-station/division-station-tree/division-station-tree.component";
 import { FullTrashCanComponent } from "./garbage-station/full-trash-can/full-trash-can.component";
 import { GarbageStationFormComponent } from "./garbage-station/garbage-station-form/garbage-station-form.component";
-import { GarbageStationMgrComponent } from "./garbage-station/garbage-station-mgr/garbage-station-mgr.component";
+import { GarbageStationManageComponent } from "./garbage-station/garbage-station-mgr/garbage-station-manage.component";
 import { GarbageStationComponent } from "./garbage-station/garbage-station/garbage-station.component";
 import { ConfirmComponent } from "./garbage-station/map-deploy/confirm/confirm.component";
 import { CoordinateManageComponent } from "./garbage-station/map-deploy/coordinate-manage/coordinate-manage.component";
@@ -61,7 +61,7 @@ import { SRServersMgrComponent } from "./sr-server/srservers-mgr/srservers-mgr.c
     TrashIconsListComponent,
     MapDeployComponent,
     CameraRegionMoveComponent,
-    GarbageStationMgrComponent,
+    GarbageStationManageComponent,
     StationChartComponent,
     DivisionStationTreeComponent,
     RegionCameraTreeComponent,
@@ -79,7 +79,7 @@ import { SRServersMgrComponent } from "./sr-server/srservers-mgr/srservers-mgr.c
     ConfirmComponent,
     MapDeployComponent,
     CameraRegionMoveComponent,
-    GarbageStationMgrComponent,
+    GarbageStationManageComponent,
     StationChartComponent,
     DivisionStationTreeComponent,
     RegionCameraTreeComponent,

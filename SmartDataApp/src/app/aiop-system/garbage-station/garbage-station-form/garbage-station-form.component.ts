@@ -20,6 +20,8 @@ import { EncodeDevice } from "../../../data-core/model/aiop/encoded-device.model
 import { CameraTable } from "./service/camera-table";
 import { CameraParams } from "src/app/data-core/params/camera.params";
 import { EncodedDeviceParams } from "src/app/data-core/params/encoded-device.params";
+import { GarbageStationCamera } from "src/app/data-core/model/aiop/garbage-station-camera.model";
+
 @Component({
   selector: "garbage-station-form",
   templateUrl: "./garbage-station-form.component.html",
@@ -80,7 +82,7 @@ export class GarbageStationFormComponent implements OnInit {
       await this.garbageStationFormService.listGarbageStationTypes();
     console.log("垃圾厢房类型", this.stationType);
 
-    // this._createCameraTable();
+    this._createCameraTable();
   }
   private async _createCameraTable() {
     // 先加载摄像机列表数据
@@ -177,7 +179,6 @@ export class GarbageStationFormComponent implements OnInit {
   search() {}
 
   selectTableItem(data: string[]) {
-    console.log("table item", data);
     this._selectedCameraIds = data;
   }
 }

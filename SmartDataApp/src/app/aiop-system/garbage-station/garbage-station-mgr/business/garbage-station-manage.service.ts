@@ -5,7 +5,7 @@ import {
   GetGarbageStationsParams,
 } from "../../../../data-core/model/waste-regulation/garbage-station";
 @Injectable()
-export class DataService {
+export class GarbageStationManageService {
   constructor(private garbageStationService: GarbageStationRequestService) {}
   async addGarbageStation(item: GarbageStation) {
     const result = await this.garbageStationService.create(item);

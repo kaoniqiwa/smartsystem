@@ -7,6 +7,7 @@ import { GetEncodeDevicesParams } from "src/app/data-core/model/aiop/encode-devi
 import { ResourceLabel } from "src/app/data-core/model/aiop/resource-label";
 import { Page } from "src/app/data-core/model/page";
 import {
+  CameraRequestService,
   EncodeDeviceRequestService,
   LabelRequestService,
   ResourceLabelRequestService,
@@ -15,7 +16,6 @@ import { CustomTableEvent } from "src/app/shared-module/custom-table/custom-tabl
 import { InputTagArea } from "src/app/shared-module/input-tag-area/input-tag-area";
 import { Camera } from "../../../../data-core/model/aiop/camera.model";
 import { CameraTable } from "./camera-table";
-import { CameraRequestService } from "./camera.service";
 import { SearchControl } from "./search";
 
 @Injectable()

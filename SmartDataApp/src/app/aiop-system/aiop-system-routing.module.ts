@@ -9,7 +9,7 @@ import { AIModelsMgrComponent } from "./ai-models/aimodels-mgr/aimodels-mgr.comp
 import { CameraAIModelMgrComponent } from "./resources/camera/camera-aimodel-mgr/camera-aimodel-mgr.component";
 import { SRServersMgrComponent } from "./sr-server/srservers-mgr/srservers-mgr.component";
 import { DeployCameraComponent } from "./garbage-station/deploy-camera/deploy-camera.component";
-import { GarbageStationMgrComponent } from "./garbage-station/garbage-station-mgr/garbage-station-mgr.component";
+import { GarbageStationManageComponent } from "./garbage-station/garbage-station-mgr/garbage-station-manage.component";
 import { GarbageStationComponent } from "./garbage-station/garbage-station/garbage-station.component";
 import { MapDeployComponent } from "./garbage-station/map-deploy/map-deploy.component";
 import { FullTrashCanComponent } from "./garbage-station/full-trash-can/full-trash-can.component";
@@ -79,8 +79,8 @@ const routes: Routes = [
           { path: "map-deploy", component: MapDeployComponent },
           { path: "deploy-camera", component: DeployCameraComponent },
           {
-            path: "garbage-station-mgr",
-            component: GarbageStationMgrComponent,
+            path: "garbage-station-manage",
+            component: GarbageStationManageComponent,
           },
           { path: "index", component: GarbageStationComponent },
           { path: "full-trashcan", component: FullTrashCanComponent },

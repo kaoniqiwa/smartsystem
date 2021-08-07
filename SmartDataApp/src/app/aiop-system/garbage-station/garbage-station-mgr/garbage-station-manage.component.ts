@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { CustomTableEvent } from "../../../shared-module/custom-table/custom-table-event";
 import { BusinessService } from "./business/garbage-station-table";
-import { GarbageStation } from "../../../data-core/model/waste-regulation/garbage-station";
 import { DataService as DivisionStationDataService } from "../division-station-tree/business/data-service";
-import { DataService } from "./business/data.service";
+import { GarbageStationManageService } from "./business/garbage-station-manage.service";
 import { FlatNode } from "../../../shared-module/custom-tree/custom-tree";
 import { DataService as StationTypeDataService } from "../garbage-station/business/data.service";
 import { GarbageStationFormComponent } from "../garbage-station-form/garbage-station-form.component";
@@ -20,18 +19,20 @@ import {
   CameraRequestService,
   GarbageStationRequestService,
 } from "src/app/data-core/repuest/garbage-station.service";
+import { GarbageStationCamera } from "src/app/data-core/model/aiop/garbage-station-camera.model";
+import { GarbageStation } from "src/app/data-core/model/aiop/garbage-station.model";
 @Component({
-  selector: "app-garbage-station-mgr",
-  templateUrl: "./garbage-station-mgr.component.html",
-  styleUrls: ["./garbage-station-mgr.component.styl"],
+  selector: "app-garbage-station-manage",
+  templateUrl: "./garbage-station-manage.component.html",
+  styleUrls: ["./garbage-station-manage.component.styl"],
   providers: [
     DivisionStationDataService,
     StationTypeDataService,
-    DataService,
+    GarbageStationManageService,
     BusinessService,
   ],
 })
-export class GarbageStationMgrComponent implements OnInit {
+export class GarbageStationManageComponent implements OnInit {
   @ViewChild("table")
   tableComponent: CustomTableComponent;
 
@@ -54,7 +55,7 @@ export class GarbageStationMgrComponent implements OnInit {
       this.businessService.loadTableData(
         this.divisionStationDataService.garbageStations
       );
-      console.log("table datasource", this.businessService.table.dataSource);
+      // console.log("table datasource", this.businessService.table.dataSource);
     } else {
       this.selectedDivisionId = "";
       this.tableComponent.selectCancel();
@@ -80,7 +81,7 @@ export class GarbageStationMgrComponent implements OnInit {
 
   constructor(
     private divisionStationDataService: DivisionStationDataService,
-    private dataService: DataService,
+    private dataService: GarbageStationManageService,
     private stationTypeDataService: StationTypeDataService, //处理厢房类型
     private businessService: BusinessService,
     private garbageStationRequestService: GarbageStationRequestService,
@@ -137,31 +138,39 @@ export class GarbageStationMgrComponent implements OnInit {
   async formOperate(result: FormResult) {
     console.log("form operate");
     if (result.data) {
-      let garbageStation = new GarbageStation();
-      garbageStation.Id = "";
-      garbageStation.Name = result.data.Name;
-      garbageStation.StationType = result.data.StationType;
-      garbageStation.DivisionId = this.selectedDivisionId;
-      garbageStation.UpdateTime = new Date().toISOString();
-      garbageStation.CreateTime = new Date().toISOString();
-      garbageStation.MaxDryVolume = 0;
-      garbageStation.MaxWetVolume = 0;
-      let res = await this.dataService.addGarbageStation(garbageStation);
-      if (res) {
-        console.log(res);
-        let camera = result.cameras[0];
-        camera.CameraUsage = 9;
-        camera.UpdateTime = new Date().toISOString();
-        camera.GarbageStationId = res.Id;
-        console.log(camera);
-        this._CameraRequestService
-          .create(camera as any)
-          .then((res) => console.log(res));
-      }
+      console.log(result);
+      let garbageStation: GarbageStation = {
+        Id: "",
+        Name: result.data.Name,
+        StationType: result.data.StationType,
+        DivisionId: this.selectedDivisionId,
+        UpdateTime: new Date().toISOString(),
+        CreateTime: new Date().toISOString(),
+        MaxDryVolume: 0,
+        MaxWetVolume: 0,
+        StationState: 0,
+      };
+      // console.log(garbageStation);
+      // let camera = result.cameras[0] as GarbageStationCamera;
+      // camera.GarbageStationId = "";
+      // garbageStation.Cameras = [camera];
+      // let res = await this.dataService.addGarbageStation(garbageStation);
+      // if (res) {
+      //   console.log(res);
+      //   let camera = result.cameras[0];
+      //   camera.CameraUsage = 9;
+      //   camera.UpdateTime = new Date().toISOString();
+      //   camera.GarbageStationId = res.Id;
+      //   console.log(camera);
+      //   this._CameraRequestService
+      //     .create(camera as any)
+      //     .then((res) => console.log(res));
+      // }
     } else {
     }
     this.closeForm();
   }
+  // 当前表格选中的选项
   selectTableItem(data) {
     console.log("selecte table", data);
   }

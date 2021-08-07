@@ -156,9 +156,6 @@ interface CameraAIModel {
 
 //监控点扩展信息
 interface Camera extends Resource {
-  /**垃圾桶房ID */
-  GarbageStationId: string;
-
   /**摄像机用途 */
   CameraUsage: number;
 
