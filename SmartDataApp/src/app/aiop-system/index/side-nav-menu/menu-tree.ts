@@ -70,7 +70,7 @@ export class MenuTreeMap {
     item.an = true;
     item.nodes.push({
       text: "垃圾厢房管理",
-      url: "/aiop/garbage-station/garbage-station-mgr",
+      url: "/aiop/garbage-station/garbage-station-manage",
     });
     item.nodes.push({
       text: "摄像机布控",

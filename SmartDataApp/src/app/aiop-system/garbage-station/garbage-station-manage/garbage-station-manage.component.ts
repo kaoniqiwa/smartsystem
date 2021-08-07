@@ -1,25 +1,16 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { CustomTableEvent } from "../../../shared-module/custom-table/custom-table-event";
-import { BusinessService } from "./business/garbage-station-table";
+import { BusinessService } from "./service/garbage-station-table";
 import { DataService as DivisionStationDataService } from "../division-station-tree/business/data-service";
-import { GarbageStationManageService } from "./business/garbage-station-manage.service";
+import { GarbageStationManageService } from "./service/garbage-station-manage.service";
 import { FlatNode } from "../../../shared-module/custom-tree/custom-tree";
 import { DataService as StationTypeDataService } from "../garbage-station/business/data.service";
-import { GarbageStationFormComponent } from "../garbage-station-form/garbage-station-form.component";
 import { CustomTableComponent } from "../../../shared-module/custom-table/custom-table.component";
 import { MessageBar } from "../../../common/tool/message-bar";
-import { Camera as CameraModel } from "src/app/data-core/model/aiop/camera";
 
 import {
-  FormField,
   FormResult,
   FormState,
 } from "../garbage-station-form/model/garbage-station-form.model";
-import {
-  CameraRequestService,
-  GarbageStationRequestService,
-} from "src/app/data-core/repuest/garbage-station.service";
-import { GarbageStationCamera } from "src/app/data-core/model/aiop/garbage-station-camera.model";
 import { GarbageStation } from "src/app/data-core/model/aiop/garbage-station.model";
 @Component({
   selector: "app-garbage-station-manage",
@@ -81,11 +72,9 @@ export class GarbageStationManageComponent implements OnInit {
 
   constructor(
     private divisionStationDataService: DivisionStationDataService,
-    private dataService: GarbageStationManageService,
+    private _garbageStationManageService: GarbageStationManageService,
     private stationTypeDataService: StationTypeDataService, //处理厢房类型
-    private businessService: BusinessService,
-    private garbageStationRequestService: GarbageStationRequestService,
-    private _CameraRequestService: CameraRequestService
+    private businessService: BusinessService
   ) {
     this.businessService.stationTypeDataService = stationTypeDataService;
     this.businessService.divisionStationDataService =
@@ -113,7 +102,7 @@ export class GarbageStationManageComponent implements OnInit {
         async () => {
           const ids = Array.from(this.tableSelectIds);
           for (const id of ids) {
-            await this.dataService.delGarbageStation(id);
+            await this._garbageStationManageService.delGarbageStation(id);
             this.delDataItem(id);
           }
           this.businessService.table.confirmDialog_ = null;
@@ -154,18 +143,20 @@ export class GarbageStationManageComponent implements OnInit {
       // let camera = result.cameras[0] as GarbageStationCamera;
       // camera.GarbageStationId = "";
       // garbageStation.Cameras = [camera];
-      // let res = await this.dataService.addGarbageStation(garbageStation);
-      // if (res) {
-      //   console.log(res);
-      //   let camera = result.cameras[0];
-      //   camera.CameraUsage = 9;
-      //   camera.UpdateTime = new Date().toISOString();
-      //   camera.GarbageStationId = res.Id;
-      //   console.log(camera);
-      //   this._CameraRequestService
-      //     .create(camera as any)
-      //     .then((res) => console.log(res));
-      // }
+      let res = await this._garbageStationManageService.createGarbageStation(
+        garbageStation
+      );
+      if (res) {
+        console.log(res);
+        // let camera = result.cameras[0];
+        // camera.CameraUsage = 9;
+        // camera.UpdateTime = new Date().toISOString();
+        // camera.GarbageStationId = res.Id;
+        // console.log(camera);
+        // this._CameraRequestService
+        //   .create(camera as any)
+        //   .then((res) => console.log(res));
+      }
     } else {
     }
     this.closeForm();
