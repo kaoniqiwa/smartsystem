@@ -1,98 +1,213 @@
-<div class="fill-height" *ngIf="model" [ngStyle]="{'width':model.tableWidth}">
+<div class="fill-height" *ngIf="model" [ngStyle]="{ width: model.tableWidth }">
   <div class="table-header-container" *ngIf="model.hasHead">
     <div class="table-responsive">
-      <table class="table  head custom stylish-table m-b-0">
+      <table class="table head custom stylish-table m-b-0">
         <thead>
-          <tr>            
-            <th class="title-name" *ngIf="model.galleryTd" [ngStyle]="{'width': model.galleryTdWidth}">图片</th> 
-            <th class="title-name" (click)="thOrderClick(th)" *ngFor="let th of model.tableAttrs" [ngStyle]="{'width':th.tdWidth}">
-              {{th.HeadTitleName}}
-              <ng-container *ngIf="th.orderBy">                
-                <i [class.howell-icon-arrow-down]="th.orderBy.asOrderBy==1"
-                [class.howell-icon-arrow-top]="th.orderBy.asOrderBy==0"></i>               
+          <tr>
+            <th
+              class="title-name"
+              *ngIf="model.galleryTd"
+              [ngStyle]="{ width: model.galleryTdWidth }"
+            >
+              图片
+            </th>
+            <th
+              class="title-name"
+              (click)="thOrderClick(th)"
+              *ngFor="let th of model.tableAttrs"
+              [ngStyle]="{ width: th.tdWidth }"
+            >
+              {{ th.HeadTitleName }}
+              <ng-container *ngIf="th.orderBy">
+                <i
+                  [class.howell-icon-arrow-down]="th.orderBy.asOrderBy == 1"
+                  [class.howell-icon-arrow-top]="th.orderBy.asOrderBy == 0"
+                ></i>
               </ng-container>
             </th>
-            <th class="ico-btn title-name" [ngStyle]="{'width':model.iconTextTh.width}" *ngIf="model.iconTextTh">
-              {{model.iconTextTh.name}}
+            <th
+              class="ico-btn title-name"
+              [ngStyle]="{ width: model.iconTextTh.width }"
+              *ngIf="model.iconTextTh"
+            >
+              {{ model.iconTextTh.name }}
             </th>
-            <th class="ico-btn title-name" [ngStyle]="{'width':model.tooltipTd.width}" *ngIf="model.tooltipTd">
-              {{model.tooltipTd.tdName}}
+            <th
+              class="ico-btn title-name"
+              [ngStyle]="{ width: model.tooltipTd.width }"
+              *ngIf="model.tooltipTd"
+            >
+              {{ model.tooltipTd.tdName }}
             </th>
             <th class="ico-btn title-name" *ngIf="model.hasTableOperationTd">
-              {{model.operationTdName}}
+              {{ model.operationTdName }}
             </th>
           </tr>
         </thead>
       </table>
     </div>
   </div>
-  <div #customTable class="table-body-container overflow-auto"
-    [ngStyle]="{'height':'calc(100% - '+minusTableHeightStr+')'}">
+  <div
+    #customTable
+    class="table-body-container overflow-auto"
+    [ngStyle]="{ height: 'calc(100% - ' + minusTableHeightStr + ')' }"
+  >
     <div class="table-responsive">
       <table class="table body stylish-table custom m-b-0">
         <tbody>
-          <tr *ngFor="let item of model.values" [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1"
-            (click)='itemClick(item)'>            
+          <tr
+            *ngFor="let item of model.values"
+            [class.selected]="selectedId.indexOf(item[model.primaryKey]) > -1"
+            (click)="itemClick(item)"
+          >
             <ng-container *ngIf="model.galleryTd">
-              <td [ngStyle]="{'width': model.galleryTdWidth}">
-                <div class="fill-width" style="overflow: hidden;position: relative;">
-                  <ul class="hw-ul hw-wheel fill-height"  [ngStyle]="{'width': galleryTdAttrMaxLen(item[model.primaryKey])+'px'}">
-                    <ng-container *ngFor="let i of galleryTdAttr(item[model.primaryKey]);let j=index">
-                      <li  (click)="galleryImgClick(item,j)"  style="width: 44px;height:36px;">
-                        <img src="{{i}}"  class="small"  onerror="this.src='../assets/img/timg-pic.jpg'">
-                      </li>    
-                    </ng-container> 
+              <td [ngStyle]="{ width: model.galleryTdWidth }">
+                <div
+                  class="fill-width"
+                  style="overflow: hidden; position: relative"
+                >
+                  <ul
+                    class="hw-ul hw-wheel fill-height"
+                    [ngStyle]="{
+                      width: galleryTdAttrMaxLen(item[model.primaryKey]) + 'px'
+                    }"
+                  >
+                    <ng-container
+                      *ngFor="
+                        let i of galleryTdAttr(item[model.primaryKey]);
+                        let j = index
+                      "
+                    >
+                      <li
+                        (click)="galleryImgClick(item, j)"
+                        style="width: 44px; height: 36px"
+                      >
+                        <img
+                          src="{{ i }}"
+                          class="small"
+                          onerror="this.src='../assets/img/timg-pic.jpg'"
+                        />
+                      </li>
+                    </ng-container>
                   </ul>
-                </div>           
+                </div>
               </td>
             </ng-container>
-            <td *ngFor="let attrs of model.tableAttrs" [ngStyle]="{'width':attrs.tdWidth}">       
+            <td
+              *ngFor="let attrs of model.tableAttrs"
+              [ngStyle]="{ width: attrs.tdWidth }"
+            >
               <ng-container *ngIf="!attrs.iocnClassLabel">
-                <span title="{{item[attrs.tdInnerAttrName]}}"
-                class="{{attrs.tdInnerAttrClassName&&item[attrs.tdInnerAttrClassName]?item[attrs.tdInnerAttrClassName]:''}}"
-                *ngIf="!attrs.isImg&&!attrs.isHTML"
-                class="{{fontColor(item[attrs.tdInnerAttrName])}}">{{item[attrs.tdInnerAttrName]}}</span>
+                <span
+                  title="{{ item[attrs.tdInnerAttrName] }}"
+                  class="{{
+                    attrs.tdInnerAttrClassName &&
+                    item[attrs.tdInnerAttrClassName]
+                      ? item[attrs.tdInnerAttrClassName]
+                      : ''
+                  }}"
+                  *ngIf="!attrs.isImg && !attrs.isHTML"
+                  class="{{ fontColor(item[attrs.tdInnerAttrName]) }}"
+                  >{{ item[attrs.tdInnerAttrName] }}</span
+                >
               </ng-container>
               <ng-container *ngIf="attrs.iocnClassLabel">
                 <span>
-                  <label class="m-0" style="width: 110px;">{{tdIconClassLabel(item[attrs.tdInnerAttrName]).tdVal}}</label>    
-                  <ng-container *ngIf="tdIconClassLabel(item[attrs.tdInnerAttrName]).tdVal!='0'">
-                    <label class="sky-blue-text2 m-0" style="text-align: right;font-size: 16px;width: 1px;">
-                      <i class="{{tdIconClassLabel(item[attrs.tdInnerAttrName]).iconClass}}"></i>{{tdIconClassLabel(item[attrs.tdInnerAttrName]).label}}
+                  <label class="m-0" style="width: 110px">{{
+                    tdIconClassLabel(item[attrs.tdInnerAttrName]).tdVal
+                  }}</label>
+                  <ng-container
+                    *ngIf="
+                      tdIconClassLabel(item[attrs.tdInnerAttrName]).tdVal != '0'
+                    "
+                  >
+                    <label
+                      class="sky-blue-text2 m-0"
+                      style="text-align: right; font-size: 16px; width: 1px"
+                    >
+                      <i
+                        class="{{
+                          tdIconClassLabel(item[attrs.tdInnerAttrName])
+                            .iconClass
+                        }}"
+                      ></i
+                      >{{ tdIconClassLabel(item[attrs.tdInnerAttrName]).label }}
                     </label>
-                  </ng-container>      
+                  </ng-container>
                 </span>
               </ng-container>
-              <img src="{{item[attrs.tdInnerAttrName]}}" onerror="this.src='../assets/img/timg-pic.jpg'"
-                (click)="imgClick(item)" *ngIf="attrs.isImg" [class.small]="attrs.isSmallImg"
-                [class.hover-big]="attrs.isHoverBig">
+              <img
+                src="{{ item[attrs.tdInnerAttrName] }}"
+                onerror="this.src='../assets/img/timg-pic.jpg'"
+                (click)="imgClick(item)"
+                *ngIf="attrs.isImg"
+                [class.small]="attrs.isSmallImg"
+                [class.hover-big]="attrs.isHoverBig"
+              />
             </td>
-            <td *ngIf="model.iconTextTagAttr&&model.iconTextTagAttr.length&&model.iconTextTh"
-              [ngStyle]="{'width':model.iconTextTh.width}">
+            <td
+              *ngIf="
+                model.iconTextTagAttr &&
+                model.iconTextTagAttr.length &&
+                model.iconTextTh
+              "
+              [ngStyle]="{ width: model.iconTextTh.width }"
+            >
               <div class="fill-width">
-                <a href="javascript:void(0)" class="tag-num  "
-                  [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1">【{{ iconTextTagAttrNum(item[model.primaryKey])}}】</a>
-                <a href="javascript:void(0)" *ngFor="let t of iconTextTagAttr(item[model.primaryKey])"
-                  class="tag-wrap m-r-10 " [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1">
-                  <i class="mdi mdi-tag "></i>
-                  <label>{{t.label}}</label>
+                <a
+                  href="javascript:void(0)"
+                  class="tag-num"
+                  [class.selected]="
+                    selectedId.indexOf(item[model.primaryKey]) > -1
+                  "
+                  >【{{ iconTextTagAttrNum(item[model.primaryKey]) }}】</a
+                >
+                <a
+                  href="javascript:void(0)"
+                  *ngFor="let t of iconTextTagAttr(item[model.primaryKey])"
+                  class="tag-wrap m-r-10"
+                  [class.selected]="
+                    selectedId.indexOf(item[model.primaryKey]) > -1
+                  "
+                >
+                  <i class="mdi mdi-tag"></i>
+                  <label>{{ t.label }}</label>
                 </a>
 
-                <a href="javascript:void(0)" class="tag-add"
-                  (click)="iconTextTagAttrClick(item);$event.stopPropagation();"
-                  [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1">
-                  <i class="mdi  mdi-plus-circle"></i>
+                <a
+                  href="javascript:void(0)"
+                  class="tag-add"
+                  (click)="iconTextTagAttrClick(item); $event.stopPropagation()"
+                  [class.selected]="
+                    selectedId.indexOf(item[model.primaryKey]) > -1
+                  "
+                >
+                  <i class="mdi mdi-plus-circle"></i>
                 </a>
               </div>
             </td>
             <ng-container *ngIf="model.iconTd">
               <td class="iconTd">
-                <ng-container *ngFor="let i of iconTdAttr(item[model.primaryKey])">
-                  <div [ngStyle]="{'width':i.width,'height':i.width}" style="position: relative;"
-                    [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1"
-                    class="{{i.bgColorClass}} td-wrapper text-center pull-left m-r-20">
-                    <i [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1"
-                      class="{{i.colorClass}} {{i.iconClass}}" style="font-size: 24px;position: relative;top: 2px;"></i>
+                <ng-container
+                  *ngFor="let i of iconTdAttr(item[model.primaryKey])"
+                >
+                  <div
+                    [ngStyle]="{ width: i.width, height: i.width }"
+                    style="position: relative"
+                    [class.selected]="
+                      selectedId.indexOf(item[model.primaryKey]) > -1
+                    "
+                    class="{{
+                      i.bgColorClass
+                    }} td-wrapper text-center pull-left m-r-20"
+                  >
+                    <i
+                      [class.selected]="
+                        selectedId.indexOf(item[model.primaryKey]) > -1
+                      "
+                      class="{{ i.colorClass }} {{ i.iconClass }}"
+                      style="font-size: 24px; position: relative; top: 2px"
+                    ></i>
                     <div class="card-angle td top-left"></div>
                     <div class="card-angle td top-right"></div>
                     <div class="card-angle td bottom-left"></div>
@@ -101,27 +216,58 @@
                 </ng-container>
               </td>
             </ng-container>
-            <ng-container *ngIf="model.tooltipTd&&model.tooltipTd.listMap">
-              <td [ngStyle]="{'width': model.tooltipTd.width}">
-                 <ng-container *ngFor="let item of model.tooltipTd.listMap.get(item[model.primaryKey])">
-                  <button type="button" class="btn btn-default {{item.icon}}"  data-toggle="tooltip"  data-placement="top" style="padding:0;background-color: transparent;" 
-                  [attr.data-original-title]="item.tip"></button>
-                 </ng-container>
-               
+            <ng-container *ngIf="model.tooltipTd && model.tooltipTd.listMap">
+              <td [ngStyle]="{ width: model.tooltipTd.width }">
+                <ng-container
+                  *ngFor="
+                    let item of model.tooltipTd.listMap.get(
+                      item[model.primaryKey]
+                    )
+                  "
+                >
+                  <button
+                    type="button"
+                    class="btn btn-default {{ item.icon }}"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    style="padding: 0; background-color: transparent"
+                    [attr.data-original-title]="item.tip"
+                  ></button>
+                </ng-container>
               </td>
             </ng-container>
             <td *ngIf="model.hasTableOperationTd">
-              <div [class.text-center]="model.tableOperationBtns&&model.tableOperationBtns.length==1"
-                *ngIf="model.tableOperationBtns&&model.tableOperationBtns.length>0">
+              <div
+                [class.text-center]="
+                  model.tableOperationBtns &&
+                  model.tableOperationBtns.length == 1
+                "
+                *ngIf="
+                  model.tableOperationBtns &&
+                  model.tableOperationBtns.length > 0
+                "
+              >
                 <!-- <i *ngFor="let btn of model.tableOperationBtns;let i = index" class="{{btn.css}}"
                   [class.m-r-10]="model.tableOperationBtns.length - 1 > i" title="{{btn.title}}"
                   (click)="btn.callback(item);$event.stopPropagation();">
                 </i> -->
-                <a href="javascript:void(0)" *ngFor="let btn of model.tableOperationBtns;let i = index"
-                  title="{{btn.title}}" (click)="btn.callback(item);$event.stopPropagation();"
-                  [class.selected]="selectedId.indexOf(item[model.primaryKey])>-1" class="td-icon p-t-10 p-b-10"
-                  style="padding-right: 5px;">
-                  <i class="{{btn.css}}" class="td-icon"></i></a>
+                <a
+                  href="javascript:void(0)"
+                  *ngFor="let btn of model.tableOperationBtns; let i = index"
+                  title="{{ btn.title }}"
+                  (click)="
+                    operate(btn, item);
+                    btn.callback(item);
+                    $event.stopPropagation()
+                  "
+                  [class.selected]="
+                    selectedId.indexOf(item[model.primaryKey]) > -1
+                  "
+                  class="td-icon p-t-10 p-b-10"
+                  style="padding-right: 5px"
+                >
+                  <i class="{{ btn.css }}" class="td-icon"></i
+                ></a>
               </div>
             </td>
           </tr>
@@ -130,40 +276,48 @@
     </div>
   </div>
   <div fxLayout="row" class="table-foot-wrap">
-    <div fxFlex="40">
+    <div fxFlex="15">
       <ng-container *ngIf="model.footArgs.hasSelectBtn">
         <div class="right-text">
-          <a href="javascript:void(0)" (click)="selectAll()" class="m-r-10">全选</a>
-          <a href="javascript:void(0)" (click)="selectInvert()" class="m-r-10">反选</a>
+          <a href="javascript:void(0)" (click)="selectAll()" class="m-r-10"
+            >全选</a
+          >
+          <a href="javascript:void(0)" (click)="selectInvert()" class="m-r-10"
+            >反选</a
+          >
           <a href="javascript:void(0)" (click)="selectCancel()">取消</a>
         </div>
       </ng-container>
     </div>
-    <div fxFlex="60" style="position: relative;">
+    <div fxFlex="85" style="position: relative">
       <ng-container *ngIf="model.paginationOptions">
-        <div style="position: absolute;top: 6px;" [ngStyle]="{'right': model.paginationOptions.viewWidth+30+'px'}">
+        <div
+          style="position: absolute; top: 6px"
+          [ngStyle]="{ right: model.paginationOptions.viewWidth + 30 + 'px' }"
+        >
           <ng-container *ngIf="model.footArgs.hasSelectCount">
             <div class="left-text pull-left m-r-30">
               <span class="m-r-10">已选择</span>
-              <span>{{selectedId.length}}</span>
+              <span>{{ selectedId.length }}</span>
             </div>
           </ng-container>
-          <div class="left-text m-r-10  pull-left">
+          <div class="left-text m-r-10 pull-left">
             <span class="m-r-10">当前数量</span>
-            <span> {{model.values.length}}</span>
+            <span> {{ model.values.length }}</span>
           </div>
-          <div class="left-text m-r-10  pull-left">
+          <div class="left-text m-r-10 pull-left">
             <span class="m-r-10">总数量</span>
-            <span> {{model.footArgs.totalRecordCount}}</span>
+            <span> {{ model.footArgs.totalRecordCount }}</span>
           </div>
-
         </div>
-        <div HWPagination [options]="model.paginationOptions" (changePageEvent)="changePage()" class="page fill-height">
-        </div>
+        <div
+          HWPagination
+          [options]="model.paginationOptions"
+          (changePageEvent)="changePage($event)"
+          class="page fill-height"
+        ></div>
       </ng-container>
-
     </div>
-
   </div>
   <!-- <div class="fill-width table-foot table-foot-height" *ngIf="model.hasFoot">
     <div class="bottom-line">

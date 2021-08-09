@@ -58,9 +58,9 @@ export class CameraTableService extends InputLabelService {
     private encodeDeviceRequestService: EncodeDeviceRequestService
   ) {
     super(labelRequestService, resourceLabelRequestService);
-    this.cameraTable.findDeviceFn = (id: string) => {
-      return this.findDevice(id);
-    };
+    // this.cameraTable.findDeviceFn = (id: string) => {
+    //   return this.findDevice(id);
+    // };
     this.cameraTable.findItemFn = (id: string) => {
       return this.findCamera(id);
     };

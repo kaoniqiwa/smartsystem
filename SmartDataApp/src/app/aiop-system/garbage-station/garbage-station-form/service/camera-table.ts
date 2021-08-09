@@ -6,7 +6,7 @@ import { IConverter } from "src/app/common/interface/IConverter";
 import { IPageTable } from "src/app/common/interface/IPageTable";
 import { Language } from "src/app/common/tool/language";
 import { TableFormControl } from "src/app/common/tool/table-form-helper";
-import { EncodeDevice } from "src/app/data-core/model/aiop/encode-device";
+import { EncodeDevice } from "src/app/data-core/model/aiop/encoded-device.model";
 import {
   CustomTableEvent,
   CustomTableEventEnum,
@@ -19,11 +19,9 @@ import {
   TableTh,
 } from "src/app/shared-module/custom-table/custom-table-model";
 import { Camera } from "../../../../data-core/model/aiop/camera.model";
+import { CameraTableField } from "../model/garbage-station-form.model";
 
-export class CameraTable
-  extends ResourcesTable
-  implements IConverter, IPageTable<Camera>
-{
+export class CameraTable extends ResourcesTable implements IPageTable<Camera> {
   dataSource = new CustomTableArgs<TableField>({
     hasTableOperationTd: false,
     hasHead: true,
@@ -64,6 +62,8 @@ export class CameraTable
       }),
     ],
   });
+  encodedDeviceArr: EncodeDevice[] = [];
+
   updateItemFn: (item: Camera) => void;
   addItemFn: (item: Camera) => void;
   findItemFn: (id: string) => Camera;
@@ -73,33 +73,46 @@ export class CameraTable
   form = new TableFormControl<Camera>(this);
   constructor() {
     super();
-    // this.searchform = new FormGroup({
-    //   Name: new FormControl(""),
-    //   EncodeDeviceId: new FormControl(""),
-    //   CameraType: new FormControl(""),
-    //   SearchText: new FormControl(""),
-    // });
   }
 
-  Convert<Cameras, CustomTableArgs>(input: Cameras, output: CustomTableArgs) {
-    const items = new Array<TableField>();
+  cameraToTableField(
+    cameras: Camera[],
+    output: CustomTableArgs<CameraTableField>
+  ) {
+    const tableFieldArr = new Array<CameraTableField>();
     const tagsAttr = new Array<TableIconTextTagAttr>();
-    if (input instanceof Cameras) {
-      for (const item of input.items) {
-        items.push(this.toTableModel(item));
-        const tagAttr = new TableIconTextTagAttr();
-        tagAttr.key = item.Id;
-        item.Labels.map((l) => {
-          tagAttr.texts.push({ id: l.Id, label: l.Name });
-        });
-        tagsAttr.push(tagAttr);
+    for (const camera of cameras) {
+      let cameraTableField: CameraTableField = {
+        id: camera.Id,
+        name: camera.Name,
+        channelNo: camera.ChannelNo + "",
+        cameraType: Language.CameraType(camera.CameraType),
+        encodeDevice: "",
+      };
+
+      let encodedDevice = this._findDeviceById(camera.EncodeDeviceId);
+      if (encodedDevice) {
+        cameraTableField.encodeDevice = encodedDevice.Name;
       }
+
+      tableFieldArr.push(cameraTableField);
+
+      const tagAttr = new TableIconTextTagAttr();
+      tagAttr.key = camera.Id;
+      camera.Labels.map((l) => {
+        tagAttr.texts.push({ id: l.Id, label: l.Name });
+      });
+      tagsAttr.push(tagAttr);
     }
     if (output instanceof CustomTableArgs) {
-      output.values = [...output.values, ...items];
+      output.values = [...output.values, ...tableFieldArr];
       output.iconTextTagAttr = [...output.iconTextTagAttr, ...tagsAttr];
     }
-    return output;
+  }
+  private _findDeviceById(id: string) {
+    return this.encodedDeviceArr.find(
+      (encodedDevice) => encodedDevice.Id == id
+    );
   }
 
   singleConvert(item: Camera) {

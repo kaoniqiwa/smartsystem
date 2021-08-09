@@ -21,11 +21,12 @@ import { CameraTable } from "./service/camera-table";
 import { CameraParams } from "src/app/data-core/params/camera.params";
 import { EncodedDeviceParams } from "src/app/data-core/params/encoded-device.params";
 import { GarbageStationCamera } from "src/app/data-core/model/aiop/garbage-station-camera.model";
+import { HWPaginationOptions } from "src/app/common/directive/pagination-directive";
 
 @Component({
   selector: "garbage-station-form",
   templateUrl: "./garbage-station-form.component.html",
-  styleUrls: ["./garbage-station-form.component.styl"],
+  styleUrls: ["./garbage-station-form.component.less"],
   providers: [GarbageStationFormService],
 })
 export class GarbageStationFormComponent implements OnInit {
@@ -38,13 +39,14 @@ export class GarbageStationFormComponent implements OnInit {
   // 摄像机列表请求参数
   private _cameraParams: CameraParams = {
     PageIndex: 1,
-    PageSize: 6,
+    PageSize: 10,
+    RegionIdNullable: true,
   };
 
   // 编码设备请求参数
   private _encodedDeviceParams: EncodedDeviceParams = {
     PageIndex: 1,
-    PageSize: 6,
+    PageSize: 10,
   };
 
   // 编码设备列表
@@ -78,18 +80,31 @@ export class GarbageStationFormComponent implements OnInit {
         this._encodedDeviceParams
       );
     console.log("编码设备", this._encodedDeviceArr);
+    this._cameraTable.encodedDeviceArr = this._encodedDeviceArr;
+
     this.stationType =
       await this.garbageStationFormService.listGarbageStationTypes();
     console.log("垃圾厢房类型", this.stationType);
 
-    this._createCameraTable();
+    let page = await this._createCameraTable();
+    this._cameraTable.dataSource.paginationOptions = new HWPaginationOptions(
+      page.PageCount,
+      (pageIndex) => {
+        console.log("回调", pageIndex);
+        // if (pageIndex == this._cameraParams.PageIndex) return;
+        // this._cameraParams.PageIndex = pageIndex;
+        // this._createCameraTable();
+      }
+    );
   }
   private async _createCameraTable() {
     // 先加载摄像机列表数据
+
     let res = await this.garbageStationFormService.listCamers(
       this._cameraParams
     );
     console.log("摄像机列表", res.Data);
+
     let data = res.Data.Data;
     let page = res.Data.Page;
     data.sort((a, b) => {
@@ -97,49 +112,21 @@ export class GarbageStationFormComponent implements OnInit {
     });
     this._cameras = [...data];
     this._cameraTable.clearItems();
-    this._cameraToTableField(this._cameras, this._cameraTable.dataSource);
-    this._cameraTable.totalCount = page.TotalRecordCount;
-  }
-
-  private _cameraToTableField(
-    cameras: Camera[],
-    output: CustomTableArgs<CameraTableField>
-  ) {
-    const tableFieldArr = new Array<CameraTableField>();
-    const tagsAttr = new Array<TableIconTextTagAttr>();
-    for (const camera of cameras) {
-      let cameraTableField: CameraTableField = {
-        id: camera.Id,
-        name: camera.Name,
-        channelNo: camera.ChannelNo + "",
-        cameraType: Language.CameraType(camera.CameraType),
-        encodeDevice: "",
-      };
-
-      let encodedDevice = this._findDeviceById(camera.EncodeDeviceId);
-      if (encodedDevice) {
-        cameraTableField.encodeDevice = encodedDevice.Name;
-      }
-
-      tableFieldArr.push(cameraTableField);
-
-      const tagAttr = new TableIconTextTagAttr();
-      tagAttr.key = camera.Id;
-      camera.Labels.map((l) => {
-        tagAttr.texts.push({ id: l.Id, label: l.Name });
-      });
-      tagsAttr.push(tagAttr);
-    }
-    if (output instanceof CustomTableArgs) {
-      output.values = [...output.values, ...tableFieldArr];
-      output.iconTextTagAttr = [...output.iconTextTagAttr, ...tagsAttr];
-    }
-  }
-  private _findDeviceById(id: string) {
-    return this._encodedDeviceArr.find(
-      (encodedDevice) => encodedDevice.Id == id
+    this._cameraTable.cameraToTableField(
+      this._cameras,
+      this._cameraTable.dataSource
     );
+    this._cameraTable.totalCount = page.TotalRecordCount;
+
+    return page;
   }
+  // 使用Output()将pageIndex抛给form,而不是使用回调函数
+  changePage(pageIndex: number) {
+    if (pageIndex == this._cameraParams.PageIndex) return;
+    this._cameraParams.PageIndex = pageIndex;
+    this._createCameraTable();
+  }
+
   onSubmit(e: Event) {
     if (this._checkForm()) {
       // 找到选中的 Item
@@ -162,12 +149,6 @@ export class GarbageStationFormComponent implements OnInit {
       return false;
     }
     return true;
-  }
-
-  changeStationType(typeVal: number) {
-    // const type = this.stationType.find((x) => x.Type == typeVal);
-    // this.chartComponent.stationChart.changeTrashNum(type.Windows.length + "");
-    // this.chartComponent.stationChart.changeHouseType = type;
   }
 
   onCancel() {

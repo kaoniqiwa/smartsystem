@@ -42,7 +42,6 @@ export class BusinessService {
       }
     };
     this.table.findStationTypeFn = (type) => {
-      debugger;
       var val = "";
       if (this.stationTypeDataService) {
         const find = this.stationTypeDataService.types.find(
@@ -98,6 +97,7 @@ export class GarbageStationTable
           this.form.show = true;
           this.form.editItem = this.findItemFn(item.id);
         },
+        identifier: "edit",
       }),
     ],
   });
@@ -138,7 +138,6 @@ export class GarbageStationTable
   }
 
   editItem(item: GarbageStation) {
-    debugger;
     const findVal = this.dataSource.values.find((x) => x.id == item.Id);
     findVal.name = item.Name;
     findVal.stationType = this.findStationTypeFn(item.StationType);

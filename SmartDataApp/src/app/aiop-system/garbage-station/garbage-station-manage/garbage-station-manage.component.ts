@@ -12,6 +12,10 @@ import {
   FormState,
 } from "../garbage-station-form/model/garbage-station-form.model";
 import { GarbageStation } from "src/app/data-core/model/aiop/garbage-station.model";
+import { CameraRequestService } from "src/app/data-core/repuest/garbage-station.service";
+import { GarbageStationCamera } from "src/app/data-core/model/aiop/garbage-station-camera.model";
+import { Camera } from "src/app/data-core/model/waste-regulation/camera";
+
 @Component({
   selector: "app-garbage-station-manage",
   templateUrl: "./garbage-station-manage.component.html",
@@ -73,8 +77,9 @@ export class GarbageStationManageComponent implements OnInit {
   constructor(
     private divisionStationDataService: DivisionStationDataService,
     private _garbageStationManageService: GarbageStationManageService,
-    private stationTypeDataService: StationTypeDataService, //处理厢房类型
-    private businessService: BusinessService
+    private stationTypeDataService: StationTypeDataService,
+    private businessService: BusinessService,
+    private _cc: CameraRequestService
   ) {
     this.businessService.stationTypeDataService = stationTypeDataService;
     this.businessService.divisionStationDataService =
@@ -125,7 +130,7 @@ export class GarbageStationManageComponent implements OnInit {
    *  pmx  2021-08-06
    */
   async formOperate(result: FormResult) {
-    console.log("form operate");
+    console.log("form operate", result);
     if (result.data) {
       console.log(result);
       let garbageStation: GarbageStation = {
@@ -139,23 +144,32 @@ export class GarbageStationManageComponent implements OnInit {
         MaxWetVolume: 0,
         StationState: 0,
       };
-      // console.log(garbageStation);
-      // let camera = result.cameras[0] as GarbageStationCamera;
-      // camera.GarbageStationId = "";
-      // garbageStation.Cameras = [camera];
       let res = await this._garbageStationManageService.createGarbageStation(
         garbageStation
       );
       if (res) {
         console.log(res);
-        // let camera = result.cameras[0];
-        // camera.CameraUsage = 9;
-        // camera.UpdateTime = new Date().toISOString();
-        // camera.GarbageStationId = res.Id;
-        // console.log(camera);
-        // this._CameraRequestService
-        //   .create(camera as any)
-        //   .then((res) => console.log(res));
+        this.businessService.table.addItem(res as any);
+
+        let c = result.cameras[0];
+        let camera = new Camera();
+        camera.Id = c.Id;
+        camera.Name = c.Name;
+        camera.CameraUsage = 9;
+        // camera.PositionNo = 6;
+
+        camera.GarbageStationId = res.Id;
+        camera.UpdateTime = new Date().toISOString();
+        camera.CreateTime = new Date().toISOString();
+
+        console.log(camera);
+
+        // let stationCamera: GarbageStationCamera = {
+        //   ...result.cameras[0],
+        //   GarbageStationId: res.Id,
+        // };
+        // console.log(stationCamera);
+        this._cc.create(camera);
       }
     } else {
     }

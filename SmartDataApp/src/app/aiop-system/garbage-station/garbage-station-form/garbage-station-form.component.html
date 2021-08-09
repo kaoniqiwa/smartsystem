@@ -1,4 +1,4 @@
-<div class="custom-form-wrap" style="width: 800px">
+<div class="custom-form-wrap garbage-station-form">
   <h2 class="m-b-20">
     {{ title }}
   </h2>
@@ -7,22 +7,18 @@
     [formGroup]="garbageStationFormGroup"
     (ngSubmit)="onSubmit()"
   >
-    <div
-      class="form-group"
-      fxLayout="row"
-      fxLayoutAlign="space-between stretch"
-    >
-      <div
-        class="input-bar"
-        fxLayout="row"
-        fxLayoutAlign="space-between stretch"
-      >
-        <div>
+    <div class="form-group" fxLayout="row" fxLayoutAlign="space-between center">
+      <div class="input-bar">
+        <div class="form-name">
           <label class="custom control-label tran-input-label">名称</label>
           <span class="text-danger p-t-10">*</span>
-          <input class="form-control custom" #name_ formControlName="Name" />
+          <input
+            class="form-control custom custom-input"
+            #name_
+            formControlName="Name"
+          />
         </div>
-        <div>
+        <div class="form-type">
           <label class="custom control-label tran-input-label">类型</label>
           <select
             #stationType_
@@ -36,30 +32,36 @@
           </select>
         </div>
       </div>
-      <!-- <div
+      <div
         class="search-bar"
         fxLayout="row"
         fxLayoutAlign="space-between stretch"
       >
+        <button
+          type="button"
+          class="hw-blue-btn m-r-10"
+          (click)="search()"
+          style="flex-shrink: 0"
+        >
+          <i class="mdi mdi-magnify"></i>
+          查询
+        </button>
         <input
           type="text"
           formControlName="SearchText"
           placeholder="输入关键字"
           class="custom form-control m-r-10"
         />
-        <button type="button" class="hw-blue-btn m-r-10" (click)="search()">
-          <i class="mdi mdi-magnify"></i>
-          查询
-        </button>
-      </div> -->
+      </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group custom-table-container">
       <!-- 68 116 -->
       <hw-custom-table
         #table
         [model]="dataSource"
         (selectedEvent)="selectTableItem($event)"
+        (changePageEvent)="changePage($event)"
       ></hw-custom-table>
     </div>
   </form>

@@ -6,7 +6,7 @@ import {
   Output,
   EventEmitter,
 } from "@angular/core";
-import { CustomTableArgs } from "./custom-table-model";
+import { CustomTableArgs, TableOperationBtn } from "./custom-table-model";
 import { CustomTableEvent, CustomTableEventEnum } from "./custom-table-event";
 import { IBusinessData } from "../../common/interface/IBusiness";
 import { ColorEnum } from "../card-component/card-content-factory";
@@ -15,6 +15,7 @@ import {
   mousewheel,
   scrollLeft,
 } from "../../common/tool/jquery-help/jquery-help";
+import { TextFieldModule } from "@angular/cdk/text-field";
 @Component({
   selector: "hw-custom-table",
   templateUrl: "./custom-table.component.html",
@@ -27,6 +28,8 @@ export class CustomTableComponent implements OnInit {
   @Input() model: CustomTableArgs<IBusinessData>;
 
   @Output() selectedEvent = new EventEmitter<string[]>();
+
+  @Output() changePageEvent = new EventEmitter<number>();
 
   //已选中id
   selectedId: string[] = [];
@@ -195,8 +198,10 @@ export class CustomTableComponent implements OnInit {
   // }
 
   //鼠标滚到底事件
-  changePage() {
+  changePage(pageIndex: number) {
     this.selectCancel();
+    console.log("页码", pageIndex);
+    this.changePageEvent.emit(pageIndex);
   }
 
   fontColor(text: string) {
@@ -254,5 +259,8 @@ export class CustomTableComponent implements OnInit {
         })
       );
     }
+  }
+  operate(btn: TableOperationBtn, item: IBusinessData) {
+    console.log(btn, item);
   }
 }
