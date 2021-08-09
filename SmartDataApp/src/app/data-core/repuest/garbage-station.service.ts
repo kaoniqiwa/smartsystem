@@ -253,10 +253,11 @@ export class CameraRequestService {
   }
 
   async set(item: Camera) {
+    let data = classToPlain(item) as Camera;
     let response = await this.requestService
       .put<Camera, HowellResponse<Camera>>(
         CameraUrl.edit(item.GarbageStationId, item.Id),
-        item
+        data
       )
       .toPromise();
 
