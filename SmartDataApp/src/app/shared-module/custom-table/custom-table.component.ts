@@ -27,9 +27,14 @@ export class CustomTableComponent implements OnInit {
   //注入表格的参数对象
   @Input() model: CustomTableArgs<IBusinessData>;
 
+  // 点击表格栏目
   @Output() selectedEvent = new EventEmitter<string[]>();
 
+  // 切换页码
   @Output() changePageEvent = new EventEmitter<number>();
+
+  // 点击操作栏按钮
+  @Output() operateEvent = new EventEmitter();
 
   //已选中id
   selectedId: string[] = [];

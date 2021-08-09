@@ -130,9 +130,8 @@ export class GarbageStationManageComponent implements OnInit {
    *  pmx  2021-08-06
    */
   async formOperate(result: FormResult) {
-    console.log("form operate", result);
+    console.log("表单数据", result);
     if (result.data) {
-      console.log(result);
       let garbageStation: GarbageStation = {
         Id: "",
         Name: result.data.Name,
@@ -148,7 +147,7 @@ export class GarbageStationManageComponent implements OnInit {
         garbageStation
       );
       if (res) {
-        console.log(res);
+        console.log("新建厢房", res);
         this.businessService.table.addItem(res as any);
 
         let c = result.cameras[0];
@@ -159,17 +158,17 @@ export class GarbageStationManageComponent implements OnInit {
         // camera.PositionNo = 6;
 
         camera.GarbageStationId = res.Id;
-        camera.UpdateTime = new Date().toISOString();
-        camera.CreateTime = new Date().toISOString();
+        // camera.UpdateTime = new Date().toISOString();
+        // camera.CreateTime = new Date().toISOString();
 
-        console.log(camera);
+        console.log("新建摄像机", camera);
 
         // let stationCamera: GarbageStationCamera = {
         //   ...result.cameras[0],
         //   GarbageStationId: res.Id,
         // };
         // console.log(stationCamera);
-        this._cc.create(camera);
+        // this._cc.create(camera);
       }
     } else {
     }
@@ -177,7 +176,7 @@ export class GarbageStationManageComponent implements OnInit {
   }
   // 当前表格选中的选项
   selectTableItem(data) {
-    console.log("selecte table", data);
+    // console.log("selecte table", data);
   }
   closeForm() {
     this.formState = FormState.none;
