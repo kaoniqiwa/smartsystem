@@ -11,10 +11,10 @@ export class Camera {
   CameraUsage: number;
   /**创建时间 */
   @Transform(transformDate)
-  CreateTime: Date;
+  CreateTime: Date = new Date();
   /**更新事件 */
   @Transform(transformDate)
-  UpdateTime: Date;
+  UpdateTime: Date = new Date();
   /**垃圾桶房ID */
   GarbageStationId: string;
   /**位置编号，

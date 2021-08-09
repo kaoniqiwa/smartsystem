@@ -93,7 +93,6 @@ export class GarbageStationRequestService {
         HowellResponse<PagedList<GarbageStation>>
       >(GarbageStationsUrl.list(), item)
       .toPromise();
-    debugger;
     return ServiceHelper.ResponseProcess(response, GarbageStation);
   }
 
@@ -226,10 +225,11 @@ export class GarbageStationRequestService {
 export class CameraRequestService {
   constructor(private requestService: HowellAuthHttpService) {}
   async create(item: Camera) {
+    let data = classToPlain(item);
     let response = await this.requestService
       .post<Camera, HowellResponse<Camera>>(
         CameraUrl.create(item.GarbageStationId),
-        item
+        data
       )
       .toPromise();
 

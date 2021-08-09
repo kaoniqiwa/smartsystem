@@ -148,7 +148,10 @@ export class GarbageStationManageComponent implements OnInit {
       );
       if (res) {
         console.log("新建厢房", res);
+
         this.businessService.table.addItem(res as any);
+
+        debugger;
 
         let c = result.cameras[0];
         let camera = new Camera();
@@ -158,8 +161,6 @@ export class GarbageStationManageComponent implements OnInit {
         // camera.PositionNo = 6;
 
         camera.GarbageStationId = res.Id;
-        // camera.UpdateTime = new Date().toISOString();
-        // camera.CreateTime = new Date().toISOString();
 
         console.log("新建摄像机", camera);
 
@@ -168,7 +169,7 @@ export class GarbageStationManageComponent implements OnInit {
         //   GarbageStationId: res.Id,
         // };
         // console.log(stationCamera);
-        // this._cc.create(camera);
+        this._cc.create(camera);
       }
     } else {
     }

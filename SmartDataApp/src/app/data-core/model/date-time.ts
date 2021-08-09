@@ -73,15 +73,12 @@ export class DateTime {
     return this.date.format(fmt);
   }
   toString(): string {
-    debugger;
     return this.date.toISOString();
   }
   toDateString(): string {
-    debugger;
     return this.date.toDateString();
   }
   toTimeString(): string {
-    debugger;
     return this.date.toTimeString();
   }
   toLocaleString(): string;
@@ -90,7 +87,6 @@ export class DateTime {
     options?: Intl.DateTimeFormatOptions
   ): string;
   toLocaleString(locales?: any, options?: any): string {
-    debugger;
     return this.date.toLocaleString(locales, options);
   }
   toLocaleDateString(): string;
@@ -99,7 +95,6 @@ export class DateTime {
     options?: Intl.DateTimeFormatOptions
   ): string;
   toLocaleDateString(locales?: any, options?: any): string {
-    debugger;
     return this.date.toLocaleDateString(locales, options);
   }
   toLocaleTimeString(): string;
@@ -108,7 +103,6 @@ export class DateTime {
     options?: Intl.DateTimeFormatOptions
   ): string;
   toLocaleTimeString(locales?: any, options?: any): string {
-    debugger;
     return this.date.toLocaleTimeString(locales, options);
   }
   valueOf(): number {

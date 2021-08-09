@@ -225,7 +225,6 @@ export class MapDeployComponent implements OnInit {
   }
 
   selectDivisionClick = async (item: FlatNode, lastNode: boolean) => {
-    debugger;
     this.GarbageStation = null;
 
     if (item.data instanceof Division) {
