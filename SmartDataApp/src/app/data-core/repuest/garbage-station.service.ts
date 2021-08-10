@@ -279,7 +279,6 @@ export class CameraRequestService {
         item
       )
       .toPromise();
-
     return ServiceHelper.ResponseProcess(response, Camera);
   }
 }

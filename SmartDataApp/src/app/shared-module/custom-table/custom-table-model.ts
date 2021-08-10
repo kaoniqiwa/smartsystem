@@ -194,19 +194,19 @@ export class TableOperationBtn implements IViewModel {
   title: string;
   //方法
   callback: Function;
-  identifier?: string;
+  operateType?: string;
   constructor(
     options: {
       css?: string;
       title?: string;
       callback?: Function;
-      identifier?: string;
+      operateType?: string;
     } = {}
   ) {
     this.css = options.css;
     this.title = options.title || "";
     this.callback = options.callback || function () {};
-    this.identifier = options.identifier || "";
+    this.operateType = options.operateType || "";
   }
 }
 

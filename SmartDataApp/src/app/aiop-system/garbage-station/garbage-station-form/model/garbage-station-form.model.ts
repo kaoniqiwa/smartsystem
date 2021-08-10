@@ -1,4 +1,6 @@
-import { Camera } from "src/app/data-core/model/aiop/camera.model";
+import { Camera } from "src/app/data-core/model/aiop/camera";
+import { CameraUsage, OnlineStatus } from "src/app/data-core/model/enum";
+import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
 
 enum FormState {
   none = 0,
@@ -10,23 +12,37 @@ enum FormOperate {
   cancel = 1,
 }
 interface FormField {
-  /**平台名称(可选) */
   Name: string;
-  /**类型 */
   StationType: number;
 }
-interface FormResult {
-  data?: FormField;
-  operate: FormOperate;
+interface FormDatas {
+  station?: GarbageStation;
+  state: FormState;
   cameras?: Camera[];
+}
+interface FormResult {
+  data?: FormDatas;
+  operate: FormOperate;
 }
 
 interface CameraTableField {
   id: string;
   name: string;
   cameraType: string;
-  cameraState?: string;
   encodeDevice: string;
-  channelNo: string;
 }
-export { FormField, FormResult, FormOperate, FormState, CameraTableField };
+interface CameraTableFiled2 {
+  id: string;
+  name?: string;
+  onlineStatus?: OnlineStatus;
+  cameraUsage?: CameraUsage;
+}
+export {
+  FormField,
+  FormResult,
+  FormOperate,
+  FormState,
+  CameraTableField,
+  FormDatas,
+  CameraTableFiled2,
+};

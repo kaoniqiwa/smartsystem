@@ -75,18 +75,18 @@ export class GarbageStation {
 
   @Exclude()
   private stationStateFlags?;
-  get StationStateFlags(): Flags<StationState> {
+  get StationStateFlags(): Flags<StationState> | undefined {
     if (!this.stationStateFlags) {
       this.stationStateFlags = new Flags<StationState>(this.StationState);
     }
     return this.stationStateFlags;
   }
-  set StationStateFlags(val: Flags<StationState>) {
+  set StationStateFlags(val: Flags<StationState> | undefined) {
     this.stationStateFlags = val;
   }
 
   Grade: number; //评级
-  CountSchedule: TimeRange[]; //	计数时间段
+  CountSchedule?: TimeRange[]; //	计数时间段
 
   /**
    *	地址	O
@@ -124,7 +124,7 @@ export class GarbageStation {
    */
   GarbageParameters?: GarbageParameters;
 
-  Members: Member[]; //人员
+  Members?: Member[]; //人员
 }
 
 export class Member {

@@ -1,20 +1,20 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { BusinessService } from "./service/garbage-station-table";
+import { BusinessService } from "./business/garbage-station-table";
 import { DataService as DivisionStationDataService } from "../division-station-tree/business/data-service";
-import { GarbageStationManageService } from "./service/garbage-station-manage.service";
+import { GarbageStationManageService } from "./business/garbage-station-manage.service";
 import { FlatNode } from "../../../shared-module/custom-tree/custom-tree";
 import { DataService as StationTypeDataService } from "../garbage-station/business/data.service";
 import { CustomTableComponent } from "../../../shared-module/custom-table/custom-table.component";
 import { MessageBar } from "../../../common/tool/message-bar";
 
+import { Camera as CameraModel } from "../../../data-core/model/waste-regulation/camera";
 import {
   FormResult,
   FormState,
 } from "../garbage-station-form/model/garbage-station-form.model";
-import { GarbageStation } from "src/app/data-core/model/aiop/garbage-station.model";
-import { CameraRequestService } from "src/app/data-core/repuest/garbage-station.service";
-import { GarbageStationCamera } from "src/app/data-core/model/aiop/garbage-station-camera.model";
-import { Camera } from "src/app/data-core/model/waste-regulation/camera";
+import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
+import { CameraUsage } from "src/app/data-core/model/enum";
+import { Camera } from "src/app/data-core/model/aiop/camera";
 
 @Component({
   selector: "app-garbage-station-manage",
@@ -73,13 +73,13 @@ export class GarbageStationManageComponent implements OnInit {
 
   showForm: boolean = false;
   formState: FormState = FormState.none;
+  garbageStationId: string = "";
 
   constructor(
     private divisionStationDataService: DivisionStationDataService,
     private _garbageStationManageService: GarbageStationManageService,
     private stationTypeDataService: StationTypeDataService,
-    private businessService: BusinessService,
-    private _cc: CameraRequestService
+    private businessService: BusinessService
   ) {
     this.businessService.stationTypeDataService = stationTypeDataService;
     this.businessService.divisionStationDataService =
@@ -132,61 +132,84 @@ export class GarbageStationManageComponent implements OnInit {
   async formOperate(result: FormResult) {
     console.log("表单数据", result);
     if (result.data) {
-      let garbageStation: GarbageStation = {
-        Id: "",
-        Name: result.data.Name,
-        StationType: result.data.StationType,
-        DivisionId: this.selectedDivisionId,
-        UpdateTime: new Date().toISOString(),
-        CreateTime: new Date().toISOString(),
-        MaxDryVolume: 0,
-        MaxWetVolume: 0,
-        StationState: 0,
-      };
-      let res = await this._garbageStationManageService.createGarbageStation(
-        garbageStation
-      );
-      if (res) {
-        console.log("新建厢房", res);
+      let data = result.data;
 
-        this.businessService.table.addItem(res as any);
+      if (data.state == FormState.create) {
+        let station = data.station;
+        if (station) {
+          let cameras = data.cameras;
+          let res =
+            await this._garbageStationManageService.createGarbageStation(
+              station
+            );
+          if (res) {
+            console.log("新建厢房成功", res);
+            this.businessService.table.addItem(res);
+            MessageBar.response_success();
 
-        debugger;
-
-        let c = result.cameras[0];
-        let camera = new Camera();
-        camera.Id = c.Id;
-        camera.Name = c.Name;
-        camera.CameraUsage = 9;
-        // camera.PositionNo = 6;
-
-        camera.GarbageStationId = res.Id;
-
-        console.log("新建摄像机", camera);
-
-        // let stationCamera: GarbageStationCamera = {
-        //   ...result.cameras[0],
-        //   GarbageStationId: res.Id,
-        // };
-        // console.log(stationCamera);
-        this._cc.create(camera);
+            cameras.forEach(async (item) => {
+              let aiopCamera: Camera = item;
+              let camera = new CameraModel();
+              camera.Id = aiopCamera.Id;
+              camera.Name = aiopCamera.Name;
+              camera.GarbageStationId = res.Id;
+              console.log("新建摄像机", camera);
+              let wasteCamera =
+                await this._garbageStationManageService.addCameraToGarbageStation(
+                  camera
+                );
+              console.log("添加摄像机成功", wasteCamera);
+            });
+          }
+        }
+      } else if (data.state == FormState.edit) {
+        let station = data.station;
+        if (station) {
+          let res = await this._garbageStationManageService.editGarbageStation(
+            station
+          );
+          if (res) {
+            console.log("修改摄像机成功");
+            this.businessService.table.editItem(res);
+            MessageBar.response_success();
+          }
+        }
       }
-    } else {
     }
     this.closeForm();
   }
   // 当前表格选中的选项
-  selectTableItem(data) {
-    // console.log("selecte table", data);
+  async selectTableItem(data) {
+    console.log("selecte table", data);
+    if (data && data.length > 0) {
+      let id = data[0];
+      let res = await this._garbageStationManageService.getGarbageStation(id);
+      console.log(res);
+
+      let cameras = await this._garbageStationManageService.listCameras(id);
+      console.log(cameras);
+    }
+  }
+  operateTableItem(data) {
+    console.log(data);
+    if (data.operateType == "edit") {
+      this.openForm(FormState.edit, data.id);
+
+      // let res = await this._garbageStationManageService.getGarbageStation(
+      //   data.id
+      // );
+      // console.log(res);
+    }
   }
   closeForm() {
     this.formState = FormState.none;
     this.showForm = false;
   }
-  openForm() {
+  openForm(state: FormState = FormState.create, id: string = "") {
     if (this.selectedDivisionId) {
       this.showForm = true;
-      this.formState = FormState.create;
+      this.formState = state;
+      this.garbageStationId = id;
     }
   }
 }

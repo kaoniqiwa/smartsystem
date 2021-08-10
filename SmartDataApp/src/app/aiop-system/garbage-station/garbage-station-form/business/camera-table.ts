@@ -6,7 +6,9 @@ import { IConverter } from "src/app/common/interface/IConverter";
 import { IPageTable } from "src/app/common/interface/IPageTable";
 import { Language } from "src/app/common/tool/language";
 import { TableFormControl } from "src/app/common/tool/table-form-helper";
-import { EncodeDevice } from "src/app/data-core/model/aiop/encoded-device.model";
+import { Camera as AiopCamera } from "src/app/data-core/model/aiop/camera";
+import { Camera as CameraModel } from "src/app/data-core/model/waste-regulation/camera";
+import { EncodeDevice } from "src/app/data-core/model/aiop/encode-device";
 import {
   CustomTableEvent,
   CustomTableEventEnum,
@@ -18,10 +20,15 @@ import {
   TableOperationBtn,
   TableTh,
 } from "src/app/shared-module/custom-table/custom-table-model";
-import { Camera } from "../../../../data-core/model/aiop/camera.model";
-import { CameraTableField } from "../model/garbage-station-form.model";
+import {
+  CameraTableField,
+  CameraTableFiled2,
+} from "../model/garbage-station-form.model";
 
-export class CameraTable extends ResourcesTable implements IPageTable<Camera> {
+export class CameraTable
+  extends ResourcesTable
+  implements IPageTable<AiopCamera>
+{
   dataSource = new CustomTableArgs<TableField>({
     hasTableOperationTd: false,
     hasHead: true,
@@ -64,19 +71,19 @@ export class CameraTable extends ResourcesTable implements IPageTable<Camera> {
   });
   encodedDeviceArr: EncodeDevice[] = [];
 
-  updateItemFn: (item: Camera) => void;
-  addItemFn: (item: Camera) => void;
-  findItemFn: (id: string) => Camera;
+  updateItemFn: (item: AiopCamera) => void;
+  addItemFn: (item: AiopCamera) => void;
+  findItemFn: (id: string) => AiopCamera;
   findDeviceFn: (id: string) => EncodeDevice;
   delItemFn: (id: string) => void;
   scrollPageFn: (event: CustomTableEvent) => void;
-  form = new TableFormControl<Camera>(this);
+  form = new TableFormControl<AiopCamera>(this);
   constructor() {
     super();
   }
 
   cameraToTableField(
-    cameras: Camera[],
+    cameras: AiopCamera[],
     output: CustomTableArgs<CameraTableField>
   ) {
     const tableFieldArr = new Array<CameraTableField>();
@@ -85,7 +92,6 @@ export class CameraTable extends ResourcesTable implements IPageTable<Camera> {
       let cameraTableField: CameraTableField = {
         id: camera.Id,
         name: camera.Name,
-        channelNo: camera.ChannelNo + "",
         cameraType: Language.CameraType(camera.CameraType),
         encodeDevice: "",
       };
@@ -109,13 +115,36 @@ export class CameraTable extends ResourcesTable implements IPageTable<Camera> {
       output.iconTextTagAttr = [...output.iconTextTagAttr, ...tagsAttr];
     }
   }
+
+  cameraToTableFieldLocal(
+    cameras: CameraModel[],
+    output: CustomTableArgs<CameraTableFiled2>
+  ) {
+    const tableFieldArr = new Array<CameraTableFiled2>();
+    const tagsAttr = new Array<TableIconTextTagAttr>();
+    for (const camera of cameras) {
+      let cameraTableField: CameraTableFiled2 = {
+        id: camera.Id,
+        name: camera.Name,
+        onlineStatus: camera.OnlineStatus,
+        cameraUsage: camera.CameraUsage,
+      };
+
+      tableFieldArr.push(cameraTableField);
+    }
+    if (output instanceof CustomTableArgs) {
+      output.values = [...output.values, ...tableFieldArr];
+      output.iconTextTagAttr = [...output.iconTextTagAttr, ...tagsAttr];
+    }
+  }
+
   private _findDeviceById(id: string) {
     return this.encodedDeviceArr.find(
       (encodedDevice) => encodedDevice.Id == id
     );
   }
 
-  singleConvert(item: Camera) {
+  singleConvert(item: AiopCamera) {
     this.dataSource.values.push(this.toTableModel(item));
     const tagAttr = new TableIconTextTagAttr();
     tagAttr.key = item.Id;
@@ -125,15 +154,17 @@ export class CameraTable extends ResourcesTable implements IPageTable<Camera> {
     this.dataSource.iconTextTagAttr.push(tagAttr);
   }
 
-  addItem(item: Camera) {
+  addItem(item: AiopCamera) {
     this.singleConvert(item);
     this.addItemFn(item);
     this.dataSource.footArgs.totalRecordCount += 1;
   }
 
-  editItem(item: Camera) {
+  editItem(item: AiopCamera) {
     this.updateItemFn(item);
-    const findVal = this.dataSource.values.find((x) => x.id == item.Id);
+    const findVal = this.dataSource.values.find(
+      (x) => x.id == item.Id
+    ) as TableField;
     findVal.name = item.Name;
     findVal.channelNo = item.ChannelNo + "";
     findVal.cameraType = Language.CameraType(item.CameraType);
@@ -148,7 +179,7 @@ export class CameraTable extends ResourcesTable implements IPageTable<Camera> {
     });
   }
 
-  toTableModel(item: Camera) {
+  toTableModel(item: AiopCamera) {
     let tableField = new TableField();
     tableField.id = item.Id;
     tableField.name = item.Name;
@@ -162,7 +193,7 @@ export class CameraTable extends ResourcesTable implements IPageTable<Camera> {
 }
 
 export class Cameras implements IBusinessData {
-  items: Camera[];
+  items: AiopCamera[];
 }
 
 export class TableField implements ITableField {

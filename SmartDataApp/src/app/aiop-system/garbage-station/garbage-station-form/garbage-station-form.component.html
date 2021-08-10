@@ -22,7 +22,6 @@
           <label class="custom control-label tran-input-label">类型</label>
           <select
             #stationType_
-            (change)="changeStationType(stationType_.value)"
             class="form-control custom custom-select"
             formControlName="StationType"
           >
@@ -40,7 +39,7 @@
         <button
           type="button"
           class="hw-blue-btn m-r-10"
-          (click)="search()"
+          (click)="searchHandler()"
           style="flex-shrink: 0"
         >
           <i class="mdi mdi-magnify"></i>

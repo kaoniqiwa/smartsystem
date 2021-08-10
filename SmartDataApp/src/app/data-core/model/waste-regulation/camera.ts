@@ -1,4 +1,5 @@
 import { Transform } from "class-transformer";
+import { CameraUsage } from "../enum";
 import { transformDate } from "../transformer";
 
 /**摄像机信息 */

@@ -3,6 +3,9 @@
     <div class="hw-form-wrap" style="height: 660px">
       <garbage-station-form
         (formOperateEvent)="formOperate($event)"
+        [formState]="formState"
+        [garbageStationId]="garbageStationId"
+        [divisionId]="selectedDivisionId"
       ></garbage-station-form>
     </div>
   </div>
@@ -59,6 +62,7 @@
           #table
           [model]="businessService.table.dataSource"
           (selectedEvent)="selectTableItem($event)"
+          (operateEvent)="operateTableItem($event)"
         ></hw-custom-table>
       </div>
     </div>

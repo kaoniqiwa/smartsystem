@@ -93,11 +93,10 @@ export class GarbageStationTable
         css: "howell-icon-modification td-icon",
         title: "编辑",
         callback: (item: TableField) => {
-          debugger;
-          this.form.show = true;
-          this.form.editItem = this.findItemFn(item.id);
+          // this.form.show = true;
+          // this.form.editItem = this.findItemFn(item.id);
         },
-        identifier: "edit",
+        operateType: "edit",
       }),
     ],
   });
