@@ -194,7 +194,7 @@ export class GarbageStationFormComponent implements OnInit {
     });
     this._aiopCameras = [...data];
     this._cameraTable.clearItems();
-    this.tableComponent.selectCancel(); // 拉取新数据时,要重置按钮的选中状态，直接调用内部方法?
+    this.tableComponent.selectCancel(); // 拉取新数据时,要重置按钮的选中状态
     this._cameraTable.aiopCameraToTableField(
       this._aiopCameras,
       this._cameraTable.dataSource
