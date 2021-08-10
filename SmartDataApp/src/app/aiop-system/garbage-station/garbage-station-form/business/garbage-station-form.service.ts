@@ -4,11 +4,11 @@ import {
   GarbageStationTypeRequestService,
 } from "src/app/data-core/repuest/garbage-station.service";
 import {
-  CameraRequestService,
+  AiopCameraRequestService,
   EncodeDeviceRequestService,
 } from "src/app/data-core/repuest/resources.service";
 
-import { CameraRequestService as GarbageStationCameraRequestService } from "src/app/data-core/repuest/garbage-station.service";
+import { GarbageStationCameraRequestService } from "src/app/data-core/repuest/garbage-station.service";
 import {
   GetCamerasParams,
   GetEncodeDevicesParams,
@@ -23,7 +23,7 @@ import { GetGarbageStationCamerasParams } from "src/app/data-core/model/waste-re
 export class GarbageStationFormService {
   constructor(
     private _garbageStationTypeService: GarbageStationTypeRequestService, // 厢房类型
-    private _aiopCameraService: CameraRequestService, // aiop摄像机
+    private _aiopCameraService: AiopCameraRequestService, // aiop摄像机
     private _stationCameraService: GarbageStationCameraRequestService, // 厢房摄像机
     private _garbageStationService: GarbageStationRequestService, // 垃圾厢房
     private _encodeDeviceService: EncodeDeviceRequestService // aiop编码设备

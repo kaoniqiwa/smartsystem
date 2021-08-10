@@ -7,7 +7,7 @@ import {
   GetCamerasParams,
 } from "../model/aiop/encode-devices-params";
 import { Protocol } from "../model/aiop/protocol";
-import { Camera as CameraModel } from "../model/aiop/camera";
+import { AiopCamera as CameraModel } from "../model/aiop/camera";
 import { CameraAIModel } from "../model/aiop/camera-ai-model";
 import { PagedList } from "../model/page";
 import { HowellResponse } from "../model/response";
@@ -126,7 +126,7 @@ export class EncodeDeviceRequestService {
 @Injectable({
   providedIn: "root",
 })
-export class CameraRequestService {
+export class AiopCameraRequestService {
   constructor(private requestService: HowellAuthHttpService) {}
   create(item: CameraModel) {
     return this.requestService.post<CameraModel, HowellResponse<CameraModel>>(

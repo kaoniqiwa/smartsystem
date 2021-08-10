@@ -1,6 +1,6 @@
 import { TreeService } from "../../../common/tree.service";
 import { Region } from "../../../../data-core/model/aiop/region";
-import { Camera } from "../../../../data-core/model/aiop/camera";
+import { AiopCamera } from "../../../../data-core/model/aiop/camera";
 import {
   TreeListMode,
   TreeNode,
@@ -9,7 +9,7 @@ export class RegionCameraTree extends TreeService {
   treeNode: TreeNode[] = new Array();
 
   regions = new Array<Region>();
-  cameras = new Array<Camera>();
+  cameras = new Array<AiopCamera>();
   treeListMode = TreeListMode.rightBtn;
   constructor() {
     super();
@@ -21,7 +21,7 @@ export class RegionCameraTree extends TreeService {
     this.convert(dao);
   }
 
-  set cameraModel(models: Camera[]) {
+  set cameraModel(models: AiopCamera[]) {
     const dao = new CameraDao();
     dao.items = models;
     this.convert(dao);
@@ -60,7 +60,7 @@ export class RegionCameraTree extends TreeService {
 }
 
 export class CameraDao {
-  items: Camera[];
+  items: AiopCamera[];
 }
 
 export class RegionDao {

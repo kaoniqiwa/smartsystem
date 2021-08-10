@@ -1,4 +1,4 @@
-import { Camera } from "../../../../../data-core/model/aiop/camera";
+import { AiopCamera } from "../../../../../data-core/model/aiop/camera";
 import {
   CardListPanel,
   AccessoryIcon,
@@ -51,7 +51,7 @@ export class AICameraPanel extends ListAttribute {
       }
     };
   }
-  set underCamerasAIModels(items: Camera[]) {
+  set underCamerasAIModels(items: AiopCamera[]) {
     items.map((x) => {
       this.underCamerasAIModels_.set(x.Id, new Array<string>());
     });
@@ -120,7 +120,7 @@ export class AICameraPanel extends ListAttribute {
     this.clearSelectedIds();
   }
 
-  set cardListPanelView(items: Camera[]) {
+  set cardListPanelView(items: AiopCamera[]) {
     items.map((x) => {
       const card = new CardListPanel();
       card.id = x.Id;

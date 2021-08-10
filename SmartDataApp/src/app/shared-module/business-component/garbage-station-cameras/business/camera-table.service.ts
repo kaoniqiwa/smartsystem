@@ -14,7 +14,7 @@ import { ResourceCameraDao } from "../../../../data-core/dao/resources-camera-da
 import { DivisionDao } from "../../../../data-core/dao/division-dao";
 import {
   GarbageStationRequestService,
-  CameraRequestService,
+  GarbageStationCameraRequestService,
 } from "../../../../data-core/repuest/garbage-station.service";
 import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
 import { Division } from "../../../../data-core/model/waste-regulation/division";
@@ -45,7 +45,7 @@ export class CameraTableService {
   divisionsId = "";
   constructor(
     garbageStationService: GarbageStationRequestService,
-    private cameraService: CameraRequestService,
+    private cameraService: GarbageStationCameraRequestService,
     divisionRequestService: DivisionRequestService,
     private datePipe: DatePipe
   ) {

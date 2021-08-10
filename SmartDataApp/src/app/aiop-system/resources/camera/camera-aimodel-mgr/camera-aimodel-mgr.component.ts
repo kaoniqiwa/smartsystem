@@ -1,60 +1,58 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { CameraAIModelMgrService } from "./business/camera-aimodel-mgr.service";
-import { CardListPanelComponent } from '../../../../shared-module/card-list-panel/card-list-panel.component'
-import { Page } from '../../../../data-core/model/page';
-import { Camera } from '../../../../data-core/model/aiop/camera';
+import { CardListPanelComponent } from "../../../../shared-module/card-list-panel/card-list-panel.component";
+import { Page } from "../../../../data-core/model/page";
+import { AiopCamera } from "../../../../data-core/model/aiop/camera";
 
 @Component({
-  selector: 'app-camera-aimodel-mgr',
-  templateUrl: './camera-aimodel-mgr.component.html',
-  styleUrls: ['./camera-aimodel-mgr.component.styl'],
-  providers: [CameraAIModelMgrService]
+  selector: "app-camera-aimodel-mgr",
+  templateUrl: "./camera-aimodel-mgr.component.html",
+  styleUrls: ["./camera-aimodel-mgr.component.styl"],
+  providers: [CameraAIModelMgrService],
 })
 export class CameraAIModelMgrComponent implements OnInit {
-
-  @ViewChild('cardListPanel')
+  @ViewChild("cardListPanel")
   cardListPanel: CardListPanelComponent;
-  close = ()=>{
-    this.mgrService.aiCameraPanel.copyCameraId='';
-  }
+  close = () => {
+    this.mgrService.aiCameraPanel.copyCameraId = "";
+  };
 
-  cameraMouseEnter =(id:string)=>{
-     return this.mgrService.aiCameraPanel.dropItemState;
-  }
-  constructor(private mgrService: CameraAIModelMgrService) { }
+  cameraMouseEnter = (id: string) => {
+    return this.mgrService.aiCameraPanel.dropItemState;
+  };
+  constructor(private mgrService: CameraAIModelMgrService) {}
 
-  init(data: Camera[], page: Page){
+  init(data: AiopCamera[], page: Page) {
     this.mgrService.aiCameraPanel.cardListPanelView = data;
-    this.mgrService.aiCameraPanel.underCamerasAIModels =data;
+    this.mgrService.aiCameraPanel.underCamerasAIModels = data;
     const viewPagination = this.mgrService.aiCameraPanel.viewPaginationFn(page);
     this.mgrService.aiCameraPanel.cardListPanelV.pagination = viewPagination;
-    this.mgrService.aiCameraPanel.cardListPanelV.pagination.totalRecordCount = page.TotalRecordCount;
+    this.mgrService.aiCameraPanel.cardListPanelV.pagination.totalRecordCount =
+      page.TotalRecordCount;
   }
   async ngOnInit() {
-     
     await this.mgrService.requestCamerasData(1, (data, page) => {
-       this.init(data, page);    
+      this.init(data, page);
     });
     await this.mgrService.requsetAIModelData(1);
     await this.mgrService.requestResourceLabels((data) => {
       this.mgrService.search.toInputTagSelect(data);
-    });   
+    });
     this.mgrService.aiModelsPanel.convertFromList(this.mgrService.aiModels);
-    this.mgrService.aiCameraPanel.cardListSelectedIdFn=()=>{
+    this.mgrService.aiCameraPanel.cardListSelectedIdFn = () => {
       return this.cardListPanel.selectedId_;
-    } ;
-    this.mgrService.aiCameraPanel.clearSelectedIds = ()=>{
-       this.cardListPanel.selectCancel();
-    } 
-    
+    };
+    this.mgrService.aiCameraPanel.clearSelectedIds = () => {
+      this.cardListPanel.selectCancel();
+    };
   }
 
   async search() {
     this.mgrService.search.state = true;
-    this.mgrService.pageIndex=1;
+    this.mgrService.pageIndex = 1;
     await this.mgrService.requestCamerasData(1, (data, page) => {
       this.mgrService.aiCameraPanel.clearPanelView();
-       this.init(data, page);     
-    }); 
+      this.init(data, page);
+    });
   }
 }

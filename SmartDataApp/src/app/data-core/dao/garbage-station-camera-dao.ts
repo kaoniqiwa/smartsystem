@@ -2,7 +2,7 @@ import {
   GetGarbageStationCamerasParams,
   Camera,
 } from "../model/waste-regulation/camera";
-import { CameraRequestService } from "../repuest/garbage-station.service";
+import { GarbageStationCameraRequestService } from "../repuest/garbage-station.service";
 import { ListAttribute } from "../../common/tool/table-form-helper";
 import { AppCaChe } from "../../common/tool/app-cache/app-cache";
 import { Injectable } from "@angular/core";
@@ -11,7 +11,7 @@ export class GarbageStationCameraDao extends ListAttribute {
   cache = new AppCaChe(60 * 30 * 1000);
   readonly camera = "Camera";
 
-  constructor(private requestService: CameraRequestService) {
+  constructor(private requestService: GarbageStationCameraRequestService) {
     super();
   }
 

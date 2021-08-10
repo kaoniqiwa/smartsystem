@@ -1,4 +1,4 @@
-import { Camera } from "src/app/data-core/model/aiop/camera";
+import { AiopCamera } from "src/app/data-core/model/aiop/camera";
 import { CameraUsage, OnlineStatus } from "src/app/data-core/model/enum";
 import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
 
@@ -18,7 +18,7 @@ interface FormField {
 interface FormDatas {
   station?: GarbageStation;
   state: FormState;
-  cameras?: Camera[];
+  cameras?: AiopCamera[];
 }
 interface FormResult {
   data?: FormDatas;

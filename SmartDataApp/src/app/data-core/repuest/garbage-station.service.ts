@@ -222,7 +222,7 @@ export class GarbageStationRequestService {
 @Injectable({
   providedIn: "root",
 })
-export class CameraRequestService {
+export class GarbageStationCameraRequestService {
   constructor(private requestService: HowellAuthHttpService) {}
   async create(item: Camera) {
     let data = classToPlain(item);

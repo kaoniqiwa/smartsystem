@@ -18,7 +18,7 @@ import { GarbageStationDao } from "../../../../../data-core/dao/garbage-station-
 import { GalleryTargetViewI } from "../../../station-state-view-summary/full-garbage-station/business/gallery-target";
 import { ResourceCameraDao } from "../../../../../data-core/dao/resources-camera-dao";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
-import { CameraRequestService } from "../../../../../data-core/repuest/garbage-station.service";
+import { GarbageStationCameraRequestService } from "../../../../../data-core/repuest/garbage-station.service";
 import { HWVideoService } from "../../../../../data-core/dao/video-dao";
 import { ImageEventEnum } from "../../../../gallery-target/gallery-target";
 import { SessionUser } from "../../../../../common/tool/session-user";
@@ -65,7 +65,7 @@ export class BusinessService {
     private datePipe: DatePipe,
     private garbageStationService: GarbageStationRequestService,
     divisionService: DivisionRequestService,
-    private cameraService: CameraRequestService,
+    private cameraService: GarbageStationCameraRequestService,
     garbageStationTypeService: GarbageStationTypeRequestService
   ) {
     this.divisionDao = new DivisionDao(divisionService);

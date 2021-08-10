@@ -5,7 +5,7 @@ import {
 } from "../../../../gallery-target/gallery-target";
 import { GalleryTargetView } from "../../../event-history/gallery-target";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
-import { Camera as SourceCamera } from "../../../../../data-core/model/aiop/camera";
+import { AiopCamera as SourceCamera } from "../../../../../data-core/model/aiop/camera";
 import { CameraPictureUrl } from "../../../../../data-core/model/waste-regulation/camera-picture-url";
 import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
 export class GalleryTargetViewI extends GalleryTargetView {

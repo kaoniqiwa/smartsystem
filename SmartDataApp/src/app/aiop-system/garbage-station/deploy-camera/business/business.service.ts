@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Camera } from "../../../../data-core/model/aiop/camera";
+import { AiopCamera } from "../../../../data-core/model/aiop/camera";
 import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
 import {
   FlatNode,
@@ -16,7 +16,7 @@ import { DateTime } from "src/app/data-core/model/date-time";
 @Injectable()
 export class BusinessService {
   bindItem: FlatNode;
-  bindingCamera: Camera;
+  bindingCamera: AiopCamera;
   station: GarbageStation;
   confirmDialog_: ConfirmDialog;
   readonly link = [new RightButton("howell-icon-Link", "1")];

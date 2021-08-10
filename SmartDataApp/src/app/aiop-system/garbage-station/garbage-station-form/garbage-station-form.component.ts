@@ -27,7 +27,7 @@ import { Camera as CameraModel } from "src/app/data-core/model/waste-regulation/
 import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
 import { Page, PagedList } from "src/app/data-core/model/page";
 import { HowellResponse } from "src/app/data-core/model/response";
-import { Camera } from "src/app/data-core/model/aiop/camera";
+import { AiopCamera } from "src/app/data-core/model/aiop/camera";
 
 @Component({
   selector: "garbage-station-form",
@@ -53,7 +53,7 @@ export class GarbageStationFormComponent implements OnInit {
   private _encodedDeviceArr: EncodeDevice[] = [];
 
   // 未绑定的摄像机
-  private _cameras: Camera[] = [];
+  private _cameras: AiopCamera[] = [];
 
   private _stationCameras: CameraModel[] = [];
 

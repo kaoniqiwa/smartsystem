@@ -6,7 +6,7 @@ import { IConverter } from "src/app/common/interface/IConverter";
 import { IPageTable } from "src/app/common/interface/IPageTable";
 import { Language } from "src/app/common/tool/language";
 import { TableFormControl } from "src/app/common/tool/table-form-helper";
-import { Camera as AiopCamera } from "src/app/data-core/model/aiop/camera";
+import { AiopCamera as AiopCamera } from "src/app/data-core/model/aiop/camera";
 import { Camera as CameraModel } from "src/app/data-core/model/waste-regulation/camera";
 import { EncodeDevice } from "src/app/data-core/model/aiop/encode-device";
 import {

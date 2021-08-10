@@ -18,7 +18,7 @@ import {
   GetGarbageStationsParams,
 } from "../../../data-core/model/waste-regulation/garbage-station";
 import {
-  CameraRequestService as GarbageStationCameraRequestService,
+  GarbageStationCameraRequestService as GarbageStationCameraRequestService,
   GarbageStationRequestService,
 } from "../../../data-core/repuest/garbage-station.service";
 import {

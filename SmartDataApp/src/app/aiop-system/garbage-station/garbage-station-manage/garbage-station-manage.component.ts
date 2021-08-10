@@ -14,7 +14,7 @@ import {
 } from "../garbage-station-form/model/garbage-station-form.model";
 import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
 import { CameraUsage } from "src/app/data-core/model/enum";
-import { Camera } from "src/app/data-core/model/aiop/camera";
+import { AiopCamera } from "src/app/data-core/model/aiop/camera";
 
 @Component({
   selector: "app-garbage-station-manage",
@@ -148,7 +148,7 @@ export class GarbageStationManageComponent implements OnInit {
             MessageBar.response_success();
 
             cameras.forEach(async (item) => {
-              let aiopCamera: Camera = item;
+              let aiopCamera: AiopCamera = item;
               let camera = new CameraModel();
               camera.Id = aiopCamera.Id;
               camera.Name = aiopCamera.Name;

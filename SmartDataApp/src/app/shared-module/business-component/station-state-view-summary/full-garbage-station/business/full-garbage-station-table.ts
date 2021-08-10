@@ -29,7 +29,7 @@ import { GarbageStationDao } from "../../../../../data-core/dao/garbage-station-
 import { ResourceCameraDao } from "../../../../../data-core/dao/resources-camera-dao";
 import { DivisionDao } from "../../../../../data-core/dao/division-dao";
 import { DivisionRequestService } from "../../../../../data-core/repuest/division.service";
-import { CameraRequestService } from "../../../../../data-core/repuest/garbage-station.service";
+import { GarbageStationCameraRequestService } from "../../../../../data-core/repuest/garbage-station.service";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
 import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 import { EnumHelper } from "../../../../../common/tool/enum-helper";
@@ -74,7 +74,7 @@ export class BusinessService extends EnumHelper {
   };
   constructor(
     private garbageStationService: GarbageStationRequestService,
-    private cameraService: CameraRequestService,
+    private cameraService: GarbageStationCameraRequestService,
     divisionService: DivisionRequestService,
     private datePipe: DatePipe
   ) {

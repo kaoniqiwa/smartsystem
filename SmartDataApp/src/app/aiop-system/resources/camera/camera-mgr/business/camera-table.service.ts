@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import {
-  CameraRequestService,
+  AiopCameraRequestService,
   EncodeDeviceRequestService,
   LabelRequestService,
   ResourceLabelRequestService,
@@ -11,7 +11,7 @@ import {
   ListAttribute,
 } from "../../../../../common/tool/table-form-helper";
 import { CameraTable, Cameras } from "./camera-table";
-import { Camera } from "../../../../../data-core/model/aiop/camera";
+import { AiopCamera } from "../../../../../data-core/model/aiop/camera";
 import {
   GetCamerasParams,
   GetEncodeDevicesParams,
@@ -28,9 +28,9 @@ import { Page } from "../../../../../data-core/model/page";
 import { MessageBar } from "../../../../../common/tool/message-bar";
 @Injectable()
 export class CameraTableService extends InputLabelService {
-  dataSource_ = new Array<Camera>();
+  dataSource_ = new Array<AiopCamera>();
 
-  set dataSource(items: Camera[]) {
+  set dataSource(items: AiopCamera[]) {
     for (const x of items) this.dataSource_.push(x);
   }
 
@@ -61,7 +61,7 @@ export class CameraTableService extends InputLabelService {
     );
   };
   constructor(
-    private cameraRequestService: CameraRequestService,
+    private cameraRequestService: AiopCameraRequestService,
     public labelRequestService: LabelRequestService,
     public resourceLabelRequestService: ResourceLabelRequestService,
     private encodeDeviceRequestService: EncodeDeviceRequestService
@@ -73,10 +73,10 @@ export class CameraTableService extends InputLabelService {
     this.cameraTable.findItemFn = (id: string) => {
       return this.findCamera(id);
     };
-    this.cameraTable.addItemFn = (item: Camera) => {
+    this.cameraTable.addItemFn = (item: AiopCamera) => {
       this.dataSource.push(item);
     };
-    this.cameraTable.updateItemFn = (item: Camera) => {
+    this.cameraTable.updateItemFn = (item: AiopCamera) => {
       const findItem = this.dataSource.find((x) => x.Id == item.Id);
       if (findItem) {
         for (var key in item) findItem[key] = item[key];
@@ -152,7 +152,7 @@ export class CameraTableService extends InputLabelService {
     }
   }
 
-  async editCamera(camera: Camera) {
+  async editCamera(camera: AiopCamera) {
     const response = await this.cameraRequestService.set(camera).toPromise();
     return response.FaultCode == 0;
   }

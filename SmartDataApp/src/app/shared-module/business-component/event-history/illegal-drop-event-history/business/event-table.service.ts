@@ -24,7 +24,7 @@ import {
 } from "../../../../../data-core/model/waste-regulation/division";
 import {
   GarbageStationRequestService,
-  CameraRequestService,
+  GarbageStationCameraRequestService,
 } from "../../../../../data-core/repuest/garbage-station.service";
 import {
   GetGarbageStationsParams,
@@ -72,7 +72,7 @@ export class EventTableService extends ListAttribute {
     private eventRequestService: EventRequestService,
     private divisionService: DivisionRequestService,
     private garbageStationService: GarbageStationRequestService,
-    private resourceService: CameraRequestService,
+    private resourceService: GarbageStationCameraRequestService,
     private srService: StationResourceSRServersRequestService,
     private navService: SideNavService,
     private datePipe: DatePipe

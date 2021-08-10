@@ -1,6 +1,6 @@
 import { IConverter } from "../../../../../common/interface/IConverter";
 import { IBusinessData } from "../../../../../common/interface/IBusiness";
-import { Camera } from "../../../../../data-core/model/aiop/camera";
+import { AiopCamera } from "../../../../../data-core/model/aiop/camera";
 import {
   CustomTableArgs,
   TableAttr,
@@ -21,7 +21,7 @@ import { FormGroup, FormControl } from "@angular/forms";
 import { Language } from "../../../../../common/tool/language";
 export class CameraTable
   extends ResourcesTable
-  implements IConverter, IPageTable<Camera>
+  implements IConverter, IPageTable<AiopCamera>
 {
   dataSource = new CustomTableArgs<TableField>({
     hasTableOperationTd: true,
@@ -70,13 +70,13 @@ export class CameraTable
       }),
     ],
   });
-  updateItemFn: (item: Camera) => void;
-  addItemFn: (item: Camera) => void;
-  findItemFn: (id: string) => Camera;
+  updateItemFn: (item: AiopCamera) => void;
+  addItemFn: (item: AiopCamera) => void;
+  findItemFn: (id: string) => AiopCamera;
   findDeviceFn: (id: string) => EncodeDevice;
   delItemFn: (id: string) => void;
   scrollPageFn: (event: CustomTableEvent) => void;
-  form = new TableFormControl<Camera>(this);
+  form = new TableFormControl<AiopCamera>(this);
   constructor() {
     super();
     this.searchform = new FormGroup({
@@ -108,7 +108,7 @@ export class CameraTable
     return output;
   }
 
-  singleConvert(item: Camera) {
+  singleConvert(item: AiopCamera) {
     this.dataSource.values.push(this.toTableModel(item));
     const tagAttr = new TableIconTextTagAttr();
     tagAttr.key = item.Id;
@@ -118,13 +118,13 @@ export class CameraTable
     this.dataSource.iconTextTagAttr.push(tagAttr);
   }
 
-  addItem(item: Camera) {
+  addItem(item: AiopCamera) {
     this.singleConvert(item);
     this.addItemFn(item);
     this.dataSource.footArgs.totalRecordCount += 1;
   }
 
-  editItem(item: Camera) {
+  editItem(item: AiopCamera) {
     this.updateItemFn(item);
     const findVal = this.dataSource.values.find((x) => x.id == item.Id);
     findVal.name = item.Name;
@@ -141,7 +141,7 @@ export class CameraTable
     });
   }
 
-  toTableModel(item: Camera) {
+  toTableModel(item: AiopCamera) {
     let tableField = new TableField();
     tableField.id = item.Id;
     tableField.name = item.Name;
@@ -155,7 +155,7 @@ export class CameraTable
 }
 
 export class Cameras implements IBusinessData {
-  items: Camera[];
+  items: AiopCamera[];
 }
 
 export class TableField implements ITableField {

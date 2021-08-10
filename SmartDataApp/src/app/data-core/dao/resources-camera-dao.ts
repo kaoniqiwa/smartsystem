@@ -1,4 +1,4 @@
-import { CameraRequestService } from "../../data-core/repuest/garbage-station.service";
+import { GarbageStationCameraRequestService } from "../../data-core/repuest/garbage-station.service";
 import { ListAttribute } from "../../common/tool/table-form-helper";
 import { AppCaChe } from "../../common/tool/app-cache/app-cache";
 import { GetGarbageStationCamerasParams } from "../model/waste-regulation/camera";
@@ -7,7 +7,7 @@ import { Camera } from "../model/waste-regulation/camera";
 export class ResourceCameraDao extends ListAttribute {
   cache = new AppCaChe(60 * 10 * 1000);
   readonly resourceCameras = "ResourceCameras";
-  constructor(private requestService: CameraRequestService) {
+  constructor(private requestService: GarbageStationCameraRequestService) {
     super();
   }
 

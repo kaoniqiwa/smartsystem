@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Camera } from "src/app/data-core/model/waste-regulation/camera";
 import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
 import {
-  CameraRequestService as GarbageStationCameraRequestService,
+  GarbageStationCameraRequestService as GarbageStationCameraRequestService,
   GarbageStationRequestService,
 } from "src/app/data-core/repuest/garbage-station.service";
 @Injectable()

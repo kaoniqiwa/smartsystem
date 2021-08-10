@@ -5,7 +5,7 @@ import { CameraState, CameraType, OnlineStatus } from "../enum";
 /**
  * 监控点信息
  */
-export class Camera extends Resource {
+export class AiopCamera extends Resource {
   /**
    * 摄像机类型
    */

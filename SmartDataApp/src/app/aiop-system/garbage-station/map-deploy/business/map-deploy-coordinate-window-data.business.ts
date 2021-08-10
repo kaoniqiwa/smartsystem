@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { CameraRequestService } from "../../../../data-core/repuest/garbage-station.service";
+import { GarbageStationCameraRequestService } from "../../../../data-core/repuest/garbage-station.service";
 import { Camera } from "../../../../data-core/model/waste-regulation/camera";
 import { ICoordinate } from "../coordinate-manage/coordinate-manage.component";
 import { MessageBar } from "../../../../common/tool/message-bar";

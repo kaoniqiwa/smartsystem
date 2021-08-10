@@ -1,6 +1,6 @@
 import { Type } from "@angular/compiler";
 import { Injectable } from "@angular/core";
-import { Camera } from "../../data-core/model/aiop/camera";
+import { AiopCamera } from "../../data-core/model/aiop/camera";
 import { Region } from "../../data-core/model/aiop/region";
 import { DivisionType } from "../../data-core/model/enum";
 import { Division } from "../../data-core/model/waste-regulation/division";
@@ -16,7 +16,7 @@ import {
 export class TreeService extends ListAttribute {
   public dataSource = new Array<
     DataTreeNode<
-      Division | Region | GarbageStation | GarbageStationType | Camera
+      Division | Region | GarbageStation | GarbageStationType | AiopCamera
     >
   >();
 
@@ -74,7 +74,7 @@ export class TreeService extends ListAttribute {
     node.data = item;
     return node;
   }
-  private converTreeNodeByCamera<T extends Camera>(item: T) {
+  private converTreeNodeByCamera<T extends AiopCamera>(item: T) {
     const node = new DataTreeNode<T>();
     node.id = item.Id;
     node.name = item.Name;
@@ -90,7 +90,12 @@ export class TreeService extends ListAttribute {
   }
 
   convertTreeNode<
-    T extends Division | Region | GarbageStation | GarbageStationType | Camera
+    T extends
+      | Division
+      | Region
+      | GarbageStation
+      | GarbageStationType
+      | AiopCamera
   >(array: Array<T>, getBtns?: (data: T) => RightButton<T>[]) {
     const nodes = new Array<DataTreeNode<T>>();
 
@@ -104,7 +109,7 @@ export class TreeService extends ListAttribute {
         node = this.convertTreeNodeByGarbageStation(item);
       } else if (item instanceof GarbageStationType) {
         node = this.convertTreeNodeByGarbageStationType(item);
-      } else if (item instanceof Camera) {
+      } else if (item instanceof AiopCamera) {
         node = this.converTreeNodeByCamera(item);
       } else {
       }

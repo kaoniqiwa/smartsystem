@@ -6,10 +6,10 @@ import {
   FormAttribute,
 } from "../../../../../common/tool/table-form-helper";
 import { MessageBar } from "../../../../../common/tool/message-bar";
-import { Camera } from "../../../../../data-core/model/aiop/camera";
+import { AiopCamera } from "../../../../../data-core/model/aiop/camera";
 import {
   EncodeDeviceRequestService,
-  CameraRequestService,
+  AiopCameraRequestService,
   LabelRequestService,
   ResourceLabelRequestService,
 } from "../../../../../data-core/repuest/resources.service";
@@ -25,7 +25,7 @@ export class CameraFormService
   implements FormAttribute
 {
   form: FormGroup;
-  editItem: Camera;
+  editItem: AiopCamera;
 
   formState: FormStateEnum;
   encodeDevices = new Array<EncodeDevice>();
@@ -37,7 +37,7 @@ export class CameraFormService
   };
   constructor(
     private encodeDeviceRequestService: EncodeDeviceRequestService,
-    private cameraRequestService: CameraRequestService,
+    private cameraRequestService: AiopCameraRequestService,
     private regionResourceRequestService: RegionResourceRequestService,
     public labelRequestService: LabelRequestService,
     public resourceLabelRequestService: ResourceLabelRequestService
@@ -67,7 +67,7 @@ export class CameraFormService
     }
   }
 
-  async defaultForm(editItem: Camera) {
+  async defaultForm(editItem: AiopCamera) {
     await this.loadEncodeDevices();
     this.loadEncodeDevicesDrop();
     if (editItem) {
@@ -109,17 +109,17 @@ export class CameraFormService
     item: FormField,
     successFn: (
       success: boolean,
-      item: Camera,
+      item: AiopCamera,
       formState: FormStateEnum
     ) => void,
     regionId?: string
   ) {
     const check = this.checkForm(item);
-    var camera: Camera;
+    var camera: AiopCamera;
     camera =
       this.editItem && this.formState == FormStateEnum.edit
         ? this.editItem
-        : new Camera();
+        : new AiopCamera();
     if (check) {
       camera.ResourceType = "Camera";
       camera.CameraType = Number.parseInt(item.CameraType);

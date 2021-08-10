@@ -9,7 +9,7 @@ import { HeaderSquareListComponent } from "../../../shared-module/header-square-
 import { BusinessViewComponetConstructor } from "./business-card-slot.service";
 import { AMapComponent } from "../amap/amap.component";
 import {
-  CameraRequestService,
+  AiopCameraRequestService,
   ResourceMediumRequestService,
 } from "../../../data-core/repuest/resources.service";
 import { OrderTableCardComponent } from "../../../shared-module/card-component/order-table-card/order-table-card.component";
@@ -92,7 +92,7 @@ export class DivisionBusinessService {
   selected: DivisionBusinessServiceSelected = {};
 
   constructor(
-    private cameraService: CameraRequestService,
+    private cameraService: AiopCameraRequestService,
     private componentService: ComponentService,
     private eventRequestService: EventRequestService,
     private stationService: GarbageStationRequestService

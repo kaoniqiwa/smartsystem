@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { CameraRequestService } from "../../../../data-core/repuest/garbage-station.service";
+import { GarbageStationCameraRequestService } from "../../../../data-core/repuest/garbage-station.service";
 import { ListAttribute } from "../../../../common/tool/table-form-helper";
 import {
   Camera,
@@ -8,7 +8,9 @@ import {
 @Injectable()
 export class DataService {
   cameras = new Array<Camera>();
-  constructor(private cameraRequestService: CameraRequestService) {}
+  constructor(
+    private cameraRequestService: GarbageStationCameraRequestService
+  ) {}
 
   async getStationCameras(stationId: string) {
     const result = await this.cameraRequestService.list(stationId);

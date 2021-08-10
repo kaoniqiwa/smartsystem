@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
 import {
-  CameraRequestService,
+  AiopCameraRequestService,
   AIModelRequestService as CameraAIModelRequestService,
   LabelRequestService,
 } from "../../../../../data-core/repuest/resources.service";
 import { AIModelRequestService } from "../../../../../data-core/repuest/ai-model.service";
 import { RegionRequestService } from "../../../../../data-core/repuest/region.service";
-import { Camera } from "../../../../../data-core/model/aiop/camera";
+import { AiopCamera } from "../../../../../data-core/model/aiop/camera";
 import { GetCamerasParams } from "../../../../../data-core/model/aiop/encode-devices-params";
 import {
   TableSearchEnum,
@@ -29,7 +29,7 @@ import { SearchControl } from "./ai-cameras-search";
 import { MessageBar } from "../../../../../common/tool/message-bar";
 @Injectable()
 export class CameraAIModelMgrService extends RegionTreeService {
-  public cameras = new Array<Camera>();
+  public cameras = new Array<AiopCamera>();
   public aiModels = new Array<CameraAIModel>();
   public regionCamera = new RegionCamera();
   search = new SearchControl();
@@ -37,7 +37,7 @@ export class CameraAIModelMgrService extends RegionTreeService {
   aiModelsPanel: AIModelsPanel;
   pageIndex = 1;
   constructor(
-    public cameraRequestService: CameraRequestService,
+    public cameraRequestService: AiopCameraRequestService,
     public aiModelRequestSerivce: AIModelRequestService,
     public cameraAIModelRequestService: CameraAIModelRequestService,
     public regionRequestService: RegionRequestService,
@@ -109,7 +109,7 @@ export class CameraAIModelMgrService extends RegionTreeService {
 
   async requestCamerasData(
     pageIndex: number,
-    callBack?: (items: Camera[], page: Page) => void
+    callBack?: (items: AiopCamera[], page: Page) => void
   ) {
     const response = await this.cameraRequestService
       .list(this.getCameraRequsetParam(pageIndex, this.search))
