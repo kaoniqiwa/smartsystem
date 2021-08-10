@@ -1,3 +1,4 @@
+import { ITableField } from "src/app/aiop-system/common/ITableField";
 import { AiopCamera } from "src/app/data-core/model/aiop/camera";
 import { CameraUsage, OnlineStatus } from "src/app/data-core/model/enum";
 import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
@@ -25,17 +26,15 @@ interface FormResult {
   operate: FormOperate;
 }
 
-interface CameraTableField {
-  id: string;
+interface CameraTableField extends ITableField {
   name: string;
   cameraType: string;
   encodeDevice: string;
 }
-interface CameraTableFiled2 {
-  id: string;
-  name?: string;
-  onlineStatus?: OnlineStatus;
-  cameraUsage?: CameraUsage;
+interface StationCameraTableFiled extends ITableField {
+  name: string;
+  onlineStatus: OnlineStatus;
+  cameraUsage: CameraUsage;
 }
 export {
   FormField,
@@ -44,5 +43,5 @@ export {
   FormState,
   CameraTableField,
   FormDatas,
-  CameraTableFiled2,
+  StationCameraTableFiled,
 };

@@ -143,7 +143,7 @@ export class GarbageStationManageComponent implements OnInit {
               station
             );
           if (res) {
-            console.log("新建厢房成功", res);
+            // console.log("新建厢房成功", res);
             this.businessService.table.addItem(res);
             MessageBar.response_success();
 
@@ -154,11 +154,11 @@ export class GarbageStationManageComponent implements OnInit {
               camera.Name = aiopCamera.Name;
               camera.GarbageStationId = res.Id;
               console.log("新建摄像机", camera);
-              let wasteCamera =
-                await this._garbageStationManageService.addCameraToGarbageStation(
-                  camera
-                );
-              console.log("添加摄像机成功", wasteCamera);
+
+              await this._garbageStationManageService.addCameraToGarbageStation(
+                camera
+              );
+              // console.log("添加摄像机成功", wasteCamera);
             });
           }
         }
@@ -180,25 +180,18 @@ export class GarbageStationManageComponent implements OnInit {
   }
   // 当前表格选中的选项
   async selectTableItem(data) {
-    console.log("selecte table", data);
-    if (data && data.length > 0) {
-      let id = data[0];
-      let res = await this._garbageStationManageService.getGarbageStation(id);
-      console.log(res);
-
-      let cameras = await this._garbageStationManageService.listCameras(id);
-      console.log(cameras);
-    }
+    // console.log("selecte table", data);
+    // if (data && data.length > 0) {
+    //   let id = data[0];
+    //   let res = await this._garbageStationManageService.getGarbageStation(id);
+    //   console.log(res);
+    //   let cameras = await this._garbageStationManageService.listCameras(id);
+    //   console.log(cameras);
+    // }
   }
-  operateTableItem(data) {
-    console.log(data);
-    if (data.operateType == "edit") {
-      this.openForm(FormState.edit, data.id);
-
-      // let res = await this._garbageStationManageService.getGarbageStation(
-      //   data.id
-      // );
-      // console.log(res);
+  operateTableItem({ operateType, item }) {
+    if (operateType == "edit") {
+      this.openForm(FormState.edit, item.id);
     }
   }
   closeForm() {

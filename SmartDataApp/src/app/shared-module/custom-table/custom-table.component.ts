@@ -15,7 +15,6 @@ import {
   mousewheel,
   scrollLeft,
 } from "../../common/tool/jquery-help/jquery-help";
-import { TextFieldModule } from "@angular/cdk/text-field";
 @Component({
   selector: "hw-custom-table",
   templateUrl: "./custom-table.component.html",
@@ -265,7 +264,15 @@ export class CustomTableComponent implements OnInit {
       );
     }
   }
+  /**
+   *  抛出 操作按钮类型和操作对象
+   * @param btn
+   * @param item
+   */
   operate(btn: TableOperationBtn, item: IBusinessData) {
-    console.log(btn, item);
+    this.operateEvent.emit({
+      operateType: btn.operateType,
+      item,
+    });
   }
 }

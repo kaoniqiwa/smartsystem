@@ -35,7 +35,15 @@
         class="search-bar"
         fxLayout="row"
         fxLayoutAlign="space-between stretch"
+        [style.color]="'white'"
       >
+        <input
+          #searchInput
+          type="text"
+          formControlName="SearchText"
+          placeholder="输入关键字"
+          class="custom form-control m-r-10"
+        />
         <button
           type="button"
           class="hw-blue-btn m-r-10"
@@ -45,12 +53,6 @@
           <i class="mdi mdi-magnify"></i>
           查询
         </button>
-        <input
-          type="text"
-          formControlName="SearchText"
-          placeholder="输入关键字"
-          class="custom form-control m-r-10"
-        />
       </div>
     </div>
 
