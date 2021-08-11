@@ -1,4 +1,5 @@
 <div class="custom-form-wrap garbage-station-form">
+  <!--删除功能对话框-->
   <ng-container *ngIf="showDialog">
     <div class="fill-height fill-width hw-content-mask">
       <hw-confirm-dialog
@@ -8,6 +9,7 @@
     </div>
   </ng-container>
 
+  <!--对话框标题-->
   <h2 class="m-b-20">
     {{ title }}
   </h2>
@@ -60,6 +62,7 @@
         </button>
       </div>
     </div>
+    <!--仅在编辑状态显示-->
     <div
       class="form-group m-b-10"
       fxLayout="row"
@@ -67,7 +70,11 @@
       *ngIf="formState == 2"
     >
       <div class="hw-btn-group">
-        <button class="hw-green-btn m-r-10" (click)="addBtnClick()">
+        <button
+          class="hw-green-btn m-r-10"
+          type="button"
+          (click)="addBtnClick()"
+        >
           <i class="howell-icon-plus"></i>
           添加
         </button>
@@ -84,7 +91,6 @@
       </div>
     </div>
     <div class="form-group custom-table-container">
-      <!-- 68 116 -->
       <hw-custom-table
         #table
         [model]="dataSource"
@@ -94,6 +100,53 @@
     </div>
   </form>
 
+  <ng-container *ngIf="showAddTable">
+    <div class="fill-height fill-width hw-content-mask">
+      <div class="custom-form-wrap add-table">
+        <div class="add-table-head">
+          <h2 class="m-b-20">可添加摄像机列表</h2>
+          <div
+            class="search-bar"
+            fxLayout="row"
+            fxLayoutAlign="space-between stretch"
+            [style.color]="'white'"
+          >
+            <input
+              #searchInput2
+              type="text"
+              placeholder="输入关键字"
+              class="custom form-control m-r-10"
+              [(ngModel)]="searchText"
+            />
+            <button
+              type="button"
+              class="hw-blue-btn m-r-10"
+              style="flex-shrink: 0"
+              (click)="searchHandler2()"
+            >
+              <i class="mdi mdi-magnify"></i>
+              查询
+            </button>
+          </div>
+        </div>
+        <div class="add-table-container">
+          <hw-custom-table
+            #table2
+            [model]="dataSource"
+            (selectedEvent)="selectTableItem($event)"
+          ></hw-custom-table>
+        </div>
+        <div class="text-center">
+          <button class="hw-green-m-btn m-r-10" (click)="addAiopCamera()">
+            <i class="howell-icon-Check"></i>
+          </button>
+          <button class="hw-gray-m-btn" (click)="cancelAiopCamera()">
+            <i class="howell-icon-Close"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
   <div class="text-center">
     <button class="hw-green-m-btn m-r-10" (click)="onSubmit()">
       <i class="howell-icon-Check"></i>

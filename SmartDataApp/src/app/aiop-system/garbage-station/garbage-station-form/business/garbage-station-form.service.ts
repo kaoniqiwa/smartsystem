@@ -17,7 +17,10 @@ import {
   ListAttribute,
   TableAttribute,
 } from "src/app/common/tool/table-form-helper";
-import { GetGarbageStationCamerasParams } from "src/app/data-core/model/waste-regulation/camera";
+import {
+  Camera,
+  GetGarbageStationCamerasParams,
+} from "src/app/data-core/model/waste-regulation/camera";
 
 @Injectable()
 export class GarbageStationFormService {
@@ -96,9 +99,24 @@ export class GarbageStationFormService {
     result = result.filter((camera) => camera.Name.includes(searchText));
     return result;
   }
+  /**
+   *  删除垃圾厢房下的摄像机
+   * @param garbageStationId
+   * @param cameraId
+   * @returns
+   */
   async deleteStationCamera(garbageStationId: string, cameraId: string) {
     let res = await this._stationCameraService.del(garbageStationId, cameraId);
     return res;
+  }
+  /**
+   * 给垃圾厢房添加摄像机
+   * @param camera
+   * @returns
+   */
+  async addCameraToGarbageStation(camera: Camera) {
+    const result = await this._stationCameraService.create(camera);
+    return result;
   }
 
   /**

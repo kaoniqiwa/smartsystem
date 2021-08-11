@@ -52,16 +52,54 @@ export class GarbageStationFormComponent implements OnInit {
 
   private _cameraTable = new CameraTable();
 
+  private _aiopTableAttrs = [
+    new TableAttr({
+      HeadTitleName: "名称",
+      tdWidth: "25%",
+      tdInnerAttrName: "name",
+    }),
+    new TableAttr({
+      HeadTitleName: "类型",
+      tdWidth: "25%",
+      tdInnerAttrName: "cameraType",
+    }),
+    new TableAttr({
+      HeadTitleName: "编码设备",
+      tdWidth: "25%",
+      tdInnerAttrName: "encodeDevice",
+    }),
+  ];
+  private _stationTableAttrs = [
+    new TableAttr({
+      HeadTitleName: "名称",
+      tdWidth: "25%",
+      tdInnerAttrName: "name",
+    }),
+    new TableAttr({
+      HeadTitleName: "在线状态",
+      tdWidth: "25%",
+      tdInnerAttrName: "onlineStatus",
+    }),
+    new TableAttr({
+      HeadTitleName: "用途",
+      tdWidth: "25%",
+      tdInnerAttrName: "cameraUsage",
+    }),
+  ];
+
+  // 分页
   private pageIndex: number = 1;
 
   // 编码设备列表
   private _encodedDeviceArr: EncodeDevice[] = [];
 
-  // 未绑定的摄像机
+  //aiop摄像机
   private _aiopCameras: AiopCamera[] = [];
 
+  // 垃圾厢房下的摄像机
   private _stationCameras: CameraModel[] = [];
 
+  // 选中的表格Item
   private _selectedCameraIds: string[] = [];
 
   /******** public ***********/
@@ -72,19 +110,31 @@ export class GarbageStationFormComponent implements OnInit {
   @ViewChild("searchInput")
   searchInput?: ElementRef;
 
+  @ViewChild("searchInput2")
+  searchInput2?: ElementRef;
+
   @Input() formState: FormState = FormState.none;
+
+  // 编辑状态使用
   @Input() garbageStationId: string = "";
+
+  // 创建状态使用
   @Input() divisionId: string = "";
 
+  // 表格关闭的原因
   @Output() formOperateEvent: EventEmitter<FormResult> = new EventEmitter();
 
   title: string = "";
 
+  // 点击删除按钮更改状态
   showDialog = false;
+
+  // 点击添加按钮更改状态
+  showAddTable = false;
 
   confirmDialog = new ConfirmDialog();
 
-  garbageStation: GarbageStation | null = null;
+  garbageStation!: GarbageStation;
 
   // 垃圾厢房类型
   stationType: GarbageStationType[];
@@ -102,14 +152,14 @@ export class GarbageStationFormComponent implements OnInit {
   constructor(private _garbageStationFormService: GarbageStationFormService) {}
 
   async ngOnInit() {
-    fromEvent(this.searchInput.nativeElement, "keyup")
-      .pipe(throttleTime(500))
-      .subscribe((e: KeyboardEvent) => {
-        if (e.key.toLocaleLowerCase() == "enter") {
-          console.log("enter");
-          this.searchHandler();
-        }
-      });
+    // fromEvent(this.searchInput.nativeElement, "keyup")
+    //   .pipe(throttleTime(500))
+    //   .subscribe((e: KeyboardEvent) => {
+    //     if (e.key.toLocaleLowerCase() == "enter") {
+    //       console.log("enter");
+    //       this.searchHandler();
+    //     }
+    //   });
 
     this._encodedDeviceArr =
       await this._garbageStationFormService.listEncodeDevices();
@@ -121,51 +171,19 @@ export class GarbageStationFormComponent implements OnInit {
 
     if (this.formState == FormState.create) {
       this.title = "添加垃圾厢房";
-      this._cameraTable.dataSource.tableAttrs = [
-        new TableAttr({
-          HeadTitleName: "名称",
-          tdWidth: "25%",
-          tdInnerAttrName: "name",
-        }),
-        new TableAttr({
-          HeadTitleName: "类型",
-          tdWidth: "25%",
-          tdInnerAttrName: "cameraType",
-        }),
-        new TableAttr({
-          HeadTitleName: "编码设备",
-          tdWidth: "25%",
-          tdInnerAttrName: "encodeDevice",
-        }),
-      ];
+      this._cameraTable.dataSource.tableAttrs = this._aiopTableAttrs;
 
       this._cameraTable.encodedDeviceArr = this._encodedDeviceArr;
       await this._createAiopCameraTable();
     } else if (this.formState == FormState.edit) {
       this.title = "编辑垃圾厢房";
       if (this.garbageStationId) {
-        this._cameraTable.dataSource.tableAttrs = [
-          new TableAttr({
-            HeadTitleName: "名称",
-            tdWidth: "25%",
-            tdInnerAttrName: "name",
-          }),
-          new TableAttr({
-            HeadTitleName: "在线状态",
-            tdWidth: "25%",
-            tdInnerAttrName: "onlineStatus",
-          }),
-          new TableAttr({
-            HeadTitleName: "用途",
-            tdWidth: "25%",
-            tdInnerAttrName: "cameraUsage",
-          }),
-        ];
-        this._cameraTable.dataSource.footArgs = new FootArgs({
-          hasSelectBtn: false,
-          hasCount: false,
-          hasSelectCount: false,
-        });
+        this._cameraTable.dataSource.tableAttrs = this._stationTableAttrs;
+        // this._cameraTable.dataSource.footArgs = new FootArgs({
+        //   hasSelectBtn: false,
+        //   hasCount: false,
+        //   hasSelectCount: false,
+        // });
 
         // 当前垃圾厢房信息
         this.garbageStation =
@@ -287,10 +305,15 @@ export class GarbageStationFormComponent implements OnInit {
       await this._createStationCameraTable();
     }
   }
+  async searchHandler2() {
+    this._createAiopCameraTable();
+    // console.log(this.searchInput2);
+    // console.log(this.searchText);
+  }
 
   selectTableItem(data: string[]) {
     this._selectedCameraIds = data;
-    // console.log("items", this._selectedCameraIds);
+    console.log("items", this._selectedCameraIds);
   }
   async delBtnClick() {
     this.showDialog = true;
@@ -314,25 +337,50 @@ export class GarbageStationFormComponent implements OnInit {
   }
   async addBtnClick() {
     console.log("add");
-    // this._cameraTable.dataSource.tableAttrs = [
-    //   new TableAttr({
-    //     HeadTitleName: "名称",
-    //     tdWidth: "25%",
-    //     tdInnerAttrName: "name",
-    //   }),
-    //   new TableAttr({
-    //     HeadTitleName: "类型",
-    //     tdWidth: "25%",
-    //     tdInnerAttrName: "cameraType",
-    //   }),
-    //   new TableAttr({
-    //     HeadTitleName: "编码设备",
-    //     tdWidth: "25%",
-    //     tdInnerAttrName: "encodeDevice",
-    //   }),
-    // ];
+    this.showAddTable = true;
+    this.searchText = "";
+    this.garbageStationFormGroup.patchValue({
+      SearchText: "",
+    });
+    this._cameraTable.dataSource.tableAttrs = this._aiopTableAttrs;
 
-    // this._cameraTable.encodedDeviceArr = this._encodedDeviceArr;
-    // await this._createAiopCameraTable();
+    await this._createAiopCameraTable();
+  }
+  async addAiopCamera() {
+    let selectedCameras = this._selectedCameraIds.map((cameraId) => {
+      return this._aiopCameras.find((camera) => camera.Id == cameraId);
+    });
+    console.log(selectedCameras);
+    let arr = selectedCameras.map((item) => {
+      let aiopCamera: AiopCamera = item;
+      let camera = new CameraModel();
+      camera.Id = aiopCamera.Id;
+      camera.Name = aiopCamera.Name;
+      camera.GarbageStationId = this.garbageStationId;
+      // console.log("新建摄像机", camera);
+
+      return this._garbageStationFormService.addCameraToGarbageStation(camera);
+    });
+    Promise.all(arr).then((res) => {
+      console.log(res);
+      console.log(this.searchText);
+      this.showAddTable = false;
+      this.searchText = "";
+      this.garbageStationFormGroup.patchValue({
+        SearchText: "",
+      });
+      this._cameraTable.dataSource.tableAttrs = this._stationTableAttrs;
+      this._createStationCameraTable();
+      MessageBar.response_success();
+    });
+  }
+  cancelAiopCamera() {
+    this.showAddTable = false;
+    this.searchText = "";
+    this.garbageStationFormGroup.patchValue({
+      SearchText: "",
+    });
+    this._cameraTable.dataSource.tableAttrs = this._stationTableAttrs;
+    this._createStationCameraTable();
   }
 }

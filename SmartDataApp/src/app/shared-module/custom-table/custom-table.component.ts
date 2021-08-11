@@ -204,7 +204,7 @@ export class CustomTableComponent implements OnInit {
   //鼠标滚到底事件
   changePage(pageIndex: number) {
     this.selectCancel();
-    console.log("页码", pageIndex);
+    // console.log("页码", pageIndex);
     this.changePageEvent.emit(pageIndex);
   }
 
