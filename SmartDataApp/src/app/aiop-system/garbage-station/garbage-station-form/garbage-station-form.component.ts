@@ -26,20 +26,16 @@ import {
   TableAttr,
 } from "src/app/shared-module/custom-table/custom-table-model";
 import { CameraTable } from "./business/camera-table";
-import { EncodedDeviceParams } from "src/app/data-core/params/encoded-device.params";
-import { HWPaginationOptions } from "src/app/common/directive/pagination-directive";
 import { EncodeDevice } from "src/app/data-core/model/aiop/encode-device";
-import { SearchControl } from "./business/search";
 
 import { Camera as CameraModel } from "src/app/data-core/model/waste-regulation/camera";
 import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
-import { Page, PagedList } from "src/app/data-core/model/page";
-import { HowellResponse } from "src/app/data-core/model/response";
 import { AiopCamera } from "src/app/data-core/model/aiop/camera";
 import { fromEvent } from "rxjs";
 import { throttleTime } from "rxjs/operators";
 import { ITableField } from "../../common/ITableField";
 import { CustomTableComponent } from "src/app/shared-module/custom-table/custom-table.component";
+import { ConfirmDialog } from "src/app/shared-module/confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: "garbage-station-form",
@@ -84,6 +80,10 @@ export class GarbageStationFormComponent implements OnInit {
 
   title: string = "";
 
+  showDialog = false;
+
+  confirmDialog = new ConfirmDialog();
+
   garbageStation: GarbageStation | null = null;
 
   // 垃圾厢房类型
@@ -113,11 +113,11 @@ export class GarbageStationFormComponent implements OnInit {
 
     this._encodedDeviceArr =
       await this._garbageStationFormService.listEncodeDevices();
-    console.log("编码设备", this._encodedDeviceArr);
+    // console.log("编码设备", this._encodedDeviceArr);
 
     this.stationType =
       await this._garbageStationFormService.listGarbageStationTypes();
-    console.log("垃圾厢房类型", this.stationType);
+    // console.log("垃圾厢房类型", this.stationType);
 
     if (this.formState == FormState.create) {
       this.title = "添加垃圾厢房";
@@ -167,7 +167,6 @@ export class GarbageStationFormComponent implements OnInit {
           hasSelectCount: false,
         });
 
-        this._cameraTable.dataSource.disableSelect = true;
         // 当前垃圾厢房信息
         this.garbageStation =
           await this._garbageStationFormService.getGarbageStation(
@@ -187,7 +186,7 @@ export class GarbageStationFormComponent implements OnInit {
       this.pageIndex,
       this.searchText
     );
-    console.log("摄像机列表", res);
+    // console.log("摄像机列表", res);
     let data = res.Data.Data;
     data.sort((a, b) => {
       return "".naturalCompare(a.Name, b.Name);
@@ -280,21 +279,60 @@ export class GarbageStationFormComponent implements OnInit {
   }
   async searchHandler() {
     this.searchText = this.garbageStationFormGroup.get("SearchText").value;
-    console.log("搜索内容", this.searchText);
+    // console.log("搜索内容", this.searchText);
 
     if (this.formState == FormState.create) {
       await this._createAiopCameraTable();
     } else if (this.formState == FormState.edit) {
-      // let stationCameras = this._stationCameras.filter((camera) =>
-      //   camera.Name.includes(this.searchText)
-      // );
-      // this._createLocalTable(stationCameras);
       await this._createStationCameraTable();
     }
   }
 
   selectTableItem(data: string[]) {
     this._selectedCameraIds = data;
-    // console.log(this._selectedCameraIds);
+    // console.log("items", this._selectedCameraIds);
+  }
+  async delBtnClick() {
+    this.showDialog = true;
+  }
+  async dialogMsg(msg: string) {
+    console.log(msg);
+    this.showDialog = false;
+    if (msg == "ok") {
+      let cameraIds = Array.from(this._selectedCameraIds);
+      for (let i = 0; i < cameraIds.length; i++) {
+        let id = cameraIds[i];
+        await this._garbageStationFormService.deleteStationCamera(
+          this.garbageStationId,
+          id
+        );
+        this.tableComponent.deleteListItem(id);
+      }
+      MessageBar.response_success();
+    } else if (msg == "cancel") {
+    }
+  }
+  async addBtnClick() {
+    console.log("add");
+    // this._cameraTable.dataSource.tableAttrs = [
+    //   new TableAttr({
+    //     HeadTitleName: "名称",
+    //     tdWidth: "25%",
+    //     tdInnerAttrName: "name",
+    //   }),
+    //   new TableAttr({
+    //     HeadTitleName: "类型",
+    //     tdWidth: "25%",
+    //     tdInnerAttrName: "cameraType",
+    //   }),
+    //   new TableAttr({
+    //     HeadTitleName: "编码设备",
+    //     tdWidth: "25%",
+    //     tdInnerAttrName: "encodeDevice",
+    //   }),
+    // ];
+
+    // this._cameraTable.encodedDeviceArr = this._encodedDeviceArr;
+    // await this._createAiopCameraTable();
   }
 }

@@ -35,7 +35,7 @@ export class GarbageStationManageComponent implements OnInit {
   selectedDivisionId = "";
 
   selectDivisionClick = async (item: FlatNode, lastNode: boolean) => {
-    console.log("点击", item);
+    // console.log("点击", item);
     if (lastNode) {
       this.selectedDivisionId = item.id;
 
@@ -45,7 +45,7 @@ export class GarbageStationManageComponent implements OnInit {
           null,
           this.selectedDivisionId
         );
-      console.log("厢房", this.divisionStationDataService.garbageStations);
+      // console.log("厢房", this.divisionStationDataService.garbageStations);
 
       this.businessService.loadTableData(
         this.divisionStationDataService.garbageStations
@@ -89,7 +89,7 @@ export class GarbageStationManageComponent implements OnInit {
   async ngOnInit() {
     this.stationTypeDataService.types =
       await this.stationTypeDataService.requestGarbageStationType();
-    console.log("厢房类型", this.stationTypeDataService.types);
+    // console.log("厢房类型", this.stationTypeDataService.types);
   }
 
   get tableSelectIds() {
@@ -130,7 +130,7 @@ export class GarbageStationManageComponent implements OnInit {
    *  pmx  2021-08-06
    */
   async formOperate(result: FormResult) {
-    console.log("表单数据", result);
+    // console.log("表单数据", result);
     if (result.data) {
       let data = result.data;
 
@@ -153,7 +153,7 @@ export class GarbageStationManageComponent implements OnInit {
               camera.Id = aiopCamera.Id;
               camera.Name = aiopCamera.Name;
               camera.GarbageStationId = res.Id;
-              console.log("新建摄像机", camera);
+              // console.log("新建摄像机", camera);
 
               await this._garbageStationManageService.addCameraToGarbageStation(
                 camera
@@ -169,7 +169,7 @@ export class GarbageStationManageComponent implements OnInit {
             station
           );
           if (res) {
-            console.log("修改摄像机成功");
+            // console.log("修改摄像机成功");
             this.businessService.table.editItem(res);
             MessageBar.response_success();
           }

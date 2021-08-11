@@ -96,6 +96,10 @@ export class GarbageStationFormService {
     result = result.filter((camera) => camera.Name.includes(searchText));
     return result;
   }
+  async deleteStationCamera(garbageStationId: string, cameraId: string) {
+    let res = await this._stationCameraService.del(garbageStationId, cameraId);
+    return res;
+  }
 
   /**
    * 获取所有aiop摄像机列表
