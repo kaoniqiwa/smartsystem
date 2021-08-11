@@ -39,7 +39,7 @@ export class UserLoginComponent implements OnInit {
       this.login();
     });
     this.userLoginService.fillUserForm();
-    createVideo("videoLogin", "assets/img/login.webm", "videoWrap");
+    //createVideo("videoLogin", "assets/img/login.mp4", "videoWrap");
     setTimeout(() => {
       this.showBg = false;
     }, 1000);
