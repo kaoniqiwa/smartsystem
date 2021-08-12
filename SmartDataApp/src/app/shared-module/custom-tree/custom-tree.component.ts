@@ -53,7 +53,7 @@ export class CustomTreeComponent implements OnInit {
   ngOnInit() {
     this.dataSource.data = this.treeData;
   }
-  private transformer = (node: TreeNode, level: number) => {
+  private transformer = (node: TreeNode, level: number, parent?: FlatNode) => {
     const existingNode = this.nestedNodeMap.get(node);
     var flatNode =
       existingNode && existingNode.name == node.name
@@ -71,10 +71,13 @@ export class CustomTreeComponent implements OnInit {
     flatNode.labelColor = node.color || ColorEnum.lightbBlue;
     flatNode.rightClassBtn = node.rightClassBtn;
     flatNode.data = node.data;
+    if (parent) {
+      flatNode.parent = parent;
+    }
     if (node.children) {
       flatNode.children = new Array<FlatNode>();
       node.children.map((x) => {
-        let item = this.transformer(x, level + 1);
+        let item = this.transformer(x, level + 1, flatNode);
         flatNode.children.push(item);
       });
     }

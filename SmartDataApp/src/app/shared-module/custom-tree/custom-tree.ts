@@ -9,6 +9,7 @@ export class TreeNode<T = any> {
   rightClassBtn: RightButton<T>[];
   children?: TreeNode<T>[];
   data: T;
+  parent: TreeNode<T>;
 }
 
 export class InputTreeNode<T = any> extends TreeNode<T> {
@@ -33,6 +34,7 @@ export class FlatNode<T = any> {
   checkedChilds: number = 0;
   children: FlatNode<T>[];
   data: T;
+  parent: FlatNode<T>;
 }
 
 export enum CheckBoxStateEnum {

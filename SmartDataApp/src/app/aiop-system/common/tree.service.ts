@@ -82,6 +82,7 @@ export class TreeService extends ListAttribute {
     node.type = NodeTypeEnum.camera;
     node.isLeaf = true;
     node.data = item;
+
     return node;
   }
 
@@ -144,6 +145,7 @@ export class TreeService extends ListAttribute {
           if (item.buttons && item.buttons.length > 0) {
             node_.rightClassBtn = item.buttons;
           }
+          node_.parent = node;
           node.children = node.children || new Array<TreeNode>();
           node.children.push(node_);
           addItems(node_, items);
@@ -238,6 +240,7 @@ export class DataTreeNode<T = any> {
   buttons: RightButton<T>[];
   data: T;
   show? = true;
+  parent?: DataTreeNode<T>;
 }
 
 // export class DivisionMini extends DataTreeNode<Division> {
