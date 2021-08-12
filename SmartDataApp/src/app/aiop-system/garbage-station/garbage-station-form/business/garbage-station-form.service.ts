@@ -17,7 +17,10 @@ import {
   ListAttribute,
   TableAttribute,
 } from "src/app/common/tool/table-form-helper";
-import { GetGarbageStationCamerasParams } from "src/app/data-core/model/waste-regulation/camera";
+import {
+  Camera,
+  GetGarbageStationCamerasParams,
+} from "src/app/data-core/model/waste-regulation/camera";
 
 @Injectable()
 export class GarbageStationFormService {
@@ -51,25 +54,29 @@ export class GarbageStationFormService {
   }
 
   /**
-   * 未绑定摄像机列表
    * @param pageIndex number
    * @param searchText string
    * @returns PagedList<AiopCamera>
    */
-  async listCamers(pageIndex: number, searchText: string) {
+  async listAiopCamers(pageIndex: number, searchText: string) {
     let stationCameras = await this._listStationCameras();
     let aiopData = await await this._listAiopCameras(pageIndex, searchText);
-    // let aiopCameras = aiopData.Data.Data;
+    let aiopCameras = aiopData.Data.Data;
 
-    // stationCameras.forEach((stationCamera) => {
-    //   let index = aiopCameras.findIndex(
-    //     (aiopCamera) => aiopCamera.Id == stationCamera.Id
-    //   );
-    //   if (index > -1) {
-    //     aiopCameras.splice(index, 1);
-    //   }
-    // });
-    console.log(stationCameras, aiopData);
+    console.log("垃圾厢房摄像机", stationCameras);
+    console.log("aiop摄像机", aiopCameras);
+
+    // 寻找不在 stationCameras 中元素
+    let arr = aiopCameras.filter((aiopCamera) => {
+      return !stationCameras.some((stationCamera) => {
+        return stationCamera.Id == aiopCamera.Id;
+      });
+    });
+
+    console.log("去重后的aiop摄像机", arr);
+
+    aiopData.Data.Data = arr;
+
     return aiopData;
   }
 
@@ -87,8 +94,28 @@ export class GarbageStationFormService {
    * @param garbageStationId
    * @returns
    */
-  async getGarbageStationCameras(garbageStationId: string) {
-    const result = await this._stationCameraService.list(garbageStationId);
+  async listStationCameras(garbageStationId: string, searchText: string) {
+    let result = await this._stationCameraService.list(garbageStationId);
+    result = result.filter((camera) => camera.Name.includes(searchText));
+    return result;
+  }
+  /**
+   *  删除垃圾厢房下的摄像机
+   * @param garbageStationId
+   * @param cameraId
+   * @returns
+   */
+  async deleteStationCamera(garbageStationId: string, cameraId: string) {
+    let res = await this._stationCameraService.del(garbageStationId, cameraId);
+    return res;
+  }
+  /**
+   * 给垃圾厢房添加摄像机
+   * @param camera
+   * @returns
+   */
+  async addCameraToGarbageStation(camera: Camera) {
+    const result = await this._stationCameraService.create(camera);
     return result;
   }
 
@@ -122,20 +149,9 @@ export class GarbageStationFormService {
   private _getRequsetParam(pageIndex: number, searchText: string) {
     let param = new GetCamerasParams();
     param.PageIndex = pageIndex;
-    param.PageSize = new TableAttribute().pageSize;
-
+    param.PageSize = 999;
     param.RegionIdNullable = true;
     param.Name = searchText;
-    // const s = search.toSearchParam();
-    // if (s.SearchText && search.other == false) {
-    //   param.Name = s.SearchText;
-    //   // param.Labels = [s.SearchText];
-    // } else {
-    //   if (s.Name) param.Name = s.Name;
-    //   if (s.EncodeDeviceId) param.EncodeDeviceIds = [s.EncodeDeviceId];
-    //   if (s.CameraType) param.CameraTypes = [Number.parseInt(s.CameraType)];
-    //   if (s.AndLabelIds.length) param.AndLabelIds = s.AndLabelIds;
-    // }
     return param;
   }
 }

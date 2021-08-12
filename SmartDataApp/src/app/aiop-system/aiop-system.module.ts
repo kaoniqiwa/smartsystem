@@ -35,9 +35,9 @@ import { EncodeDeviceFormComponent } from "./resources/encode-device/encode-devi
 import { EncodeDeviceMgrComponent } from "./resources/encode-device/encode-device-mgr/encode-device-mgr.component";
 import { SRServerFormComponent } from "./sr-server/sr-service-form/srserver-form.component";
 import { SRServersMgrComponent } from "./sr-server/srservers-mgr/srservers-mgr.component";
-
+import { FormsModule } from "@angular/forms";
 @NgModule({
-  imports: [CommonModule, AIOPSystemRoutingModule, SharedModule],
+  imports: [CommonModule, AIOPSystemRoutingModule, SharedModule, FormsModule],
   declarations: [
     IndexComponent,
     AlarmPointToolComponent,

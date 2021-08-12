@@ -15,6 +15,7 @@ import {
 } from "src/app/shared-module/custom-table/custom-table-event";
 import {
   CustomTableArgs,
+  FootArgs,
   TableAttr,
   TableIconTextTagAttr,
   TableOperationBtn,
@@ -22,42 +23,27 @@ import {
 } from "src/app/shared-module/custom-table/custom-table-model";
 import {
   CameraTableField,
-  CameraTableFiled2,
+  StationCameraTableFiled,
 } from "../model/garbage-station-form.model";
 
 export class CameraTable
   extends ResourcesTable
   implements IPageTable<AiopCamera>
 {
-  dataSource = new CustomTableArgs<TableField>({
+  dataSource = new CustomTableArgs<ITableField>({
     hasTableOperationTd: false,
     hasHead: true,
+    hasFoot: true,
     isSingleElection: false,
     values: [],
     primaryKey: "id",
+    tableAttrs: [],
     eventDelegate: (event: CustomTableEvent) => {
       if (event.eventType == CustomTableEventEnum.ScrollDown)
         this.scrollPageFn(event);
       else if (event.eventType == CustomTableEventEnum.TagBtn)
         if (this.attrBtnFn) this.attrBtnFn();
     },
-    tableAttrs: [
-      new TableAttr({
-        HeadTitleName: "名称",
-        tdWidth: "25%",
-        tdInnerAttrName: "name",
-      }),
-      new TableAttr({
-        HeadTitleName: "类型",
-        tdWidth: "25%",
-        tdInnerAttrName: "cameraType",
-      }),
-      new TableAttr({
-        HeadTitleName: "编码设备",
-        tdWidth: "25%",
-        tdInnerAttrName: "encodeDevice",
-      }),
-    ],
     tableOperationBtns: [
       new TableOperationBtn({
         css: "howell-icon-modification td-icon",
@@ -82,9 +68,9 @@ export class CameraTable
     super();
   }
 
-  cameraToTableField(
+  aiopCameraToTableField(
     cameras: AiopCamera[],
-    output: CustomTableArgs<CameraTableField>
+    output: CustomTableArgs<ITableField>
   ) {
     const tableFieldArr = new Array<CameraTableField>();
     const tagsAttr = new Array<TableIconTextTagAttr>();
@@ -116,14 +102,14 @@ export class CameraTable
     }
   }
 
-  cameraToTableFieldLocal(
+  stationCameraToTableField(
     cameras: CameraModel[],
-    output: CustomTableArgs<CameraTableFiled2>
+    output: CustomTableArgs<ITableField>
   ) {
-    const tableFieldArr = new Array<CameraTableFiled2>();
+    const tableFieldArr = new Array<StationCameraTableFiled>();
     const tagsAttr = new Array<TableIconTextTagAttr>();
     for (const camera of cameras) {
-      let cameraTableField: CameraTableFiled2 = {
+      let cameraTableField: StationCameraTableFiled = {
         id: camera.Id,
         name: camera.Name,
         onlineStatus: camera.OnlineStatus,
