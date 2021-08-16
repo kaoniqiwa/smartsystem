@@ -1,3 +1,4 @@
+/* less mixin*/
 .card(@w:320px) {
   box-sizing: border-box;
   width: @w;
@@ -6,7 +7,6 @@
   padding: 20px;
 }
 .normal-button(@src) {
-  width: 76px;
   height: 34px;
   cursor: pointer;
   background-color: unset;
@@ -21,11 +21,66 @@
   cursor: no-drop;
   background: @c;
 }
+.tree-node() {
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1.2;
+  color: white;
+  min-height: 35px;
+  cursor: pointer;
+  &.hide {
+    display: none;
+  }
+}
+.node-content() {
+  padding: 3px 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 
+  .node-content {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    max-width: 100%;
+    // &:hover {
+    //   max-width: 76%;
+    // }
+  }
+  .node-operate {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    display: none;
+    font-size: 16px;
+    padding-right: 2px;
+    div {
+      color: #cfd7ff;
+    }
+    .add-btn.hide {
+      display: none;
+    }
+  }
+  &:hover {
+    background-color: #2e3459;
+  }
+  &.selected {
+    background-color: #2d76ce;
+    .node-operate {
+      display: flex;
+    }
+    .node-content {
+      max-width: 76%;
+    }
+  }
+}
+
+/* 主要样式*/
 .division-manage {
   display: flex;
   flex-wrap: nowrap;
-  min-height: 550px;
+  overflow: hidden;
   button.add-btn {
     .normal-button(green);
     &.disabled {
@@ -48,24 +103,108 @@
   .aside {
     .card();
     flex-shrink: 0;
+    .search-wrap {
+      position: relative;
+      button {
+        position: absolute;
+        right: 0;
+        top: 0;
+        float: left;
+        border: 0;
+        background: transparent;
+        font-size: 20px;
+        cursor: pointer;
+        color: #7f94ff;
+        &:hover {
+          color: #3a93ff;
+        }
+      }
+    }
+
+    .division-tree-container {
+      height: calc(100% - 142px);
+      overflow: auto;
+      .division-tree.mat-tree {
+        font-family: "Source Han Sans CN Normal";
+        background: transparent;
+        padding-left: 10px;
+        cursor: pointer;
+        user-select: none;
+
+        .mat-tree-node {
+          .tree-node();
+          .leaf-node {
+            .node-content();
+          }
+        }
+        .mat-nested-tree-node {
+          .tree-node();
+          .nested-node {
+            .node-content();
+          }
+          .nested-tree-invisible {
+            display: none;
+          }
+        }
+
+        .mat-nested-tree-node div[role="group"] {
+          padding-left: 20px;
+          padding-top: 3px;
+        }
+        div[role="group"] > .mat-tree-node {
+          padding-left: 0px;
+        }
+      }
+    }
   }
   .content {
     .card();
     flex-grow: 1;
     min-width: 500px;
+    overflow: auto;
     .division-form {
       width: 500px;
-      .form-label {
-        color: #eaedff;
-        font-size: 18px;
-      }
-      .btns {
-        display: none;
+      .form-group {
+        &.hide {
+          display: none;
+        }
+        .form-label {
+          color: #eaedff;
+          font-size: 18px;
+        }
+        &.btns {
+          display: none;
+          &.show {
+            display: block;
+          }
+        }
+        textarea {
+          padding-top: 4px;
+        }
       }
     }
   }
 }
-// button.disabled {
-//   cursor: no-drop;
-//   color: gray;
-// }
+
+/* 例外情况*/
+.btn.to-right {
+  border: 0;
+  padding: 0;
+  position: relative;
+  background: transparent;
+  i {
+    font-size: 20px;
+    color: #cfd7ff;
+  }
+  &.hidden {
+    visibility: hidden;
+  }
+}
+div.node-label {
+  cursor: unset;
+  display: inline-block;
+  pointer-events: none;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

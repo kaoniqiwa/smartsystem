@@ -1,7 +1,7 @@
 import { DivisionType } from "src/app/data-core/model/enum";
 
 // 嵌套 division 树节点
-interface NestedDivisionTreeNode {
+export interface NestedDivisionTreeNode {
   id: string;
   name: string;
   divisionType: DivisionType;
@@ -16,19 +16,12 @@ interface NestedDivisionTreeNode {
   iconClass: "howell-icon-earth" | "howell-icon-map5";
 }
 
-enum IconType {
+export enum IconType {
   earth = "howell-icon-earth",
   map = "howell-icon-map5",
 }
-enum FormState {
+export enum FormState {
   none = 0,
   add = 1,
   edit = 2,
 }
-interface DivisionFormData {
-  Name: string;
-  Id: string;
-  ParentName: string;
-  Description: string;
-}
-export { FormState, DivisionFormData };

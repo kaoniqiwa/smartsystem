@@ -14,6 +14,7 @@ import {
   RightButtonArgs,
 } from "./custom-tree";
 import { Output } from "@angular/core";
+import { Division } from "src/app/data-core/model/waste-regulation/division";
 @Component({
   selector: "hw-custom-tree",
   templateUrl: "./custom-tree.component.html",
@@ -26,6 +27,7 @@ export class CustomTreeComponent implements OnInit {
   nestedNodeMap = new Map<TreeNode, FlatNode>();
 
   selectedItems = new Array<FlatNode>();
+
   @Input() selectedItemFn: (item: FlatNode, inputVal?: string) => void;
   @Input() checkedItemFn: (item: FlatNode) => void;
   @Output() rightBtnFn: EventEmitter<RightButtonArgs> = new EventEmitter();
@@ -50,9 +52,28 @@ export class CustomTreeComponent implements OnInit {
   }
   @Input() mode = TreeListMode.nomal;
 
+  /***pmx start***/
+
+  // 保持选中状态
+  @Input() holdStatus: boolean = true;
+
+  // 当前选中的 Item
+  private _currentItem?: FlatNode;
+
+  @Output() itemChange = new EventEmitter<FlatNode>();
+
+  /***pmx end***/
+
   ngOnInit() {
     this.dataSource.data = this.treeData;
   }
+  /**
+   *  将 T型 节点转换为 F型 节点
+   * @param node
+   * @param level
+   * @param parent
+   * @returns
+   */
   private transformer = (node: TreeNode, level: number, parent?: FlatNode) => {
     const existingNode = this.nestedNodeMap.get(node);
     var flatNode =
@@ -88,11 +109,22 @@ export class CustomTreeComponent implements OnInit {
     return flatNode;
   };
 
+  /**
+   *  new FlatTreeControl(getLevel: (dataNode: T) => number,isExpandable: (dataNode: T) => boolean)
+   */
   treeControl = new FlatTreeControl<FlatNode>(
     (node) => node.level,
     (node) => node.expandable
   );
 
+  /**
+   *  new MatTreeFlattener(
+   *                transformFunction: (node: T, level: number) => F,
+   *                getLevel: (node: F) => number),
+   *                isExpandable: (node: F) => boolean,
+   *                getChildren: (node: T) =>Observable<T[]> | T[] | undefined | null
+   *  )
+   */
   treeFlattener = new MatTreeFlattener(
     this.transformer,
     (node) => node.level,
@@ -187,30 +219,60 @@ export class CustomTreeComponent implements OnInit {
   }
 
   itemClick(item: FlatNode) {
-    var d = this.selectedItems.pop();
-    this.selectedItems.push(item);
     if (this.mode == TreeListMode.checkedBox) {
       item.checked = !item.checked;
       item.checkBoxState =
         item.checked == false ? null : this.checkBoxState.self;
       this.sumChildChecked(item, item.checked);
       if (this.checkedItemFn) this.checkedItemFn(item);
-    } else if (this.mode == TreeListMode.nomal && d) {
-      d.checked = false;
+    } else if (this.mode == TreeListMode.nomal && this._currentItem) {
+      this._currentItem.checked = false;
       item.checked = true;
     }
+
     if (this.selectedItemFn && this.mode != TreeListMode.checkedBox)
       this.selectedItemFn(item);
+
+    this.itemChange.emit(item);
+
+    if (this._currentItem) {
+      let index = this.selectedItems.findIndex(
+        (node) => node.id == this._currentItem.id
+      );
+      if (index > -1) this.selectedItems.splice(index, 1);
+
+      // 特殊操作
+      if (this._currentItem.id == item.id) {
+        if (!this.holdStatus) {
+          this._currentItem = void 0;
+          return;
+        }
+      }
+    }
+    this.selectedItems.push(item);
+    this._currentItem = item;
   }
 
+  /**
+   * 根据 FlatNode 获取它对应的 TreeNode
+   * 平级关系，不是子级关系
+   * @param node
+   * @returns
+   */
   getChildNodes(node: FlatNode) {
     return this.flatNodeMap.get(node);
   }
 
   addNewItem(node: FlatNode, addNode: TreeNode) {
     const parentNode = this.flatNodeMap.get(node);
-    parentNode.children = parentNode.children || new Array<TreeNode>();
-    parentNode.children.push(addNode);
+    if (parentNode) {
+      parentNode.children = parentNode.children || new Array<TreeNode>();
+      parentNode.children.push(addNode);
+      this.flatNodeMap.set(node, parentNode);
+    } else {
+      this.treeData.push(addNode);
+    }
+
     this.dataSource.data = this.treeData;
   }
 
@@ -264,9 +326,12 @@ export class CustomTreeComponent implements OnInit {
     }
   }
 
-  editNode(node: FlatNode, itemValue: string) {
+  editNode(node: FlatNode, itemValue: string, data?: Division) {
     const nestedNode = this.flatNodeMap.get(node);
     nestedNode.name = itemValue;
+    if (data) {
+      nestedNode.data = data;
+    }
     this.dataSource.data = this.treeData;
   }
 

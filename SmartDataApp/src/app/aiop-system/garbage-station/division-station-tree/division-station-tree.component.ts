@@ -40,6 +40,14 @@ export class DivisionStationTreeComponent implements OnInit {
   @Input()
   DivisionRightButtons: (data: Division) => RightButton[];
 
+  /***pmx start ***/
+  // 保持选中状态
+  @Input() holdStatus: boolean = true;
+
+  @Output() itemChange = new EventEmitter<FlatNode>();
+
+  /***pmx end ***/
+
   selectedItemClick = (item: FlatNode<Division | GarbageStation>) => {
     if (this.selectedItemFn) {
       this.selectedItemFn(item, this.stationTreeService.isLastNode(item.id));
@@ -170,10 +178,17 @@ export class DivisionStationTreeComponent implements OnInit {
       }
     }
   }
+  // addItems(divisions: Division[]) {
+  //   this.stationTreeService.appendDivisionModel(divisions);
+  //   this.stationTreeService.loadStationTree();
+  // }
 
   onPanelClicked() {
     if (this.PanelClickedEvent) {
       this.PanelClickedEvent.emit();
     }
+  }
+  itemChangeHandler(node: FlatNode) {
+    this.itemChange.emit(node);
   }
 }

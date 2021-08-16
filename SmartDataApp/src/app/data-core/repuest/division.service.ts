@@ -39,7 +39,7 @@ export class DivisionRequestService {
       .toPromise();
     return ServiceHelper.ResponseProcess(response, Division).then((x) => {
       ServiceHelper.cacheItemByPaged.push(ServiceHelper.key.Division, x);
-      ServiceHelper.cache.reset();
+      // ServiceHelper.cache.reset();
       return x;
     });
   }
@@ -88,7 +88,10 @@ export class DivisionRequestService {
     let response = await this.requestService
       .delete<Division>(DivisionUrl.del(id))
       .toPromise();
-    return ServiceHelper.ResponseProcess(response, Division);
+    return ServiceHelper.ResponseProcess(response, Division).then((x) => {
+      ServiceHelper.cache.set(ServiceHelper.key.Division, null);
+      return x;
+    });
   }
 
   async list(item?: GetDivisionsParams) {

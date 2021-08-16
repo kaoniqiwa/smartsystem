@@ -18,6 +18,8 @@
       [selectedItemFn]="selectedItemClick"
       (rightBtnFn)="rightButtonClick($event)"
       (itemExpandClickedEvent)="itemExpandClicked($event)"
+      [holdStatus]="holdStatus"
+      (itemChange)="itemChangeHandler($event)"
     >
     </hw-custom-tree>
   </ng-container>

@@ -1,23 +1,17 @@
-import { NestedTreeControl } from "@angular/cdk/tree";
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { FormControl, FormGroup, FormsModule } from "@angular/forms";
-import { MatTree, MatTreeNestedDataSource } from "@angular/material";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { FormControl, FormGroup } from "@angular/forms";
+import { AppCaChe } from "src/app/common/tool/app-cache/app-cache";
 import { Language } from "src/app/common/tool/language";
 import { MessageBar } from "src/app/common/tool/message-bar";
 import { DivisionType } from "src/app/data-core/model/enum";
+import { Division } from "src/app/data-core/model/waste-regulation/division";
 import {
-  Division,
-  GetDivisionsParams,
-} from "src/app/data-core/model/waste-regulation/division";
+  FlatNode,
+  TreeNode,
+} from "src/app/shared-module/custom-tree/custom-tree";
 import { DivisionStationTreeComponent } from "../division-station-tree/division-station-tree.component";
-import {
-  FormState,
-  NestedDivisionTreeNode,
-} from "./model/division-manage.model";
-import { DivisionManageService } from "./service/division-manage.service";
-import { fromEvent } from "rxjs";
-import { throttleTime } from "rxjs/operators";
-import { DateTime } from "src/app/data-core/model/date-time";
+import { DivisionManageService } from "./business/division-manage.service";
+import { DivisionFormData, FormState } from "./model/division-manage.model";
 
 @Component({
   selector: "app-division-manage",
@@ -26,26 +20,17 @@ import { DateTime } from "src/app/data-core/model/date-time";
   providers: [DivisionManageService],
 })
 export class DivisionManageComponent implements OnInit {
-  // 默认当前区划阶级别为省级,可添加子级 区级
-  private _divisionType: DivisionType = DivisionType.Province;
+  /*** private ***/
 
-  @ViewChild("matTree")
-  divisionStationTree: MatTree<NestedDivisionTreeNode>;
-
-  @ViewChild("searchBtn")
-  searchBtn: ElementRef;
-
-  @ViewChild("searchInput")
-  searchInput: ElementRef;
-
-  searchControl = new FormControl("");
+  /*** public ***/
 
   title = Language.DivisionType(DivisionType.City) + "详情";
 
-  // 当前选中的区划
-  currentNode: NestedDivisionTreeNode | null = null;
+  // 当前区划级别(居委会区划没有权限添加新区划)
+  divisionType: DivisionType = DivisionType.Province;
 
-  state = FormState.none;
+  // 当前表单状态
+  state: FormState = FormState.none;
 
   // 表单控件
   divisionForm = new FormGroup({
@@ -66,211 +51,206 @@ export class DivisionManageComponent implements OnInit {
       disabled: true,
     }),
   });
+  holdStatus = false;
 
-  _data: NestedDivisionTreeNode[] = [];
+  @ViewChild("stationTree")
+  stationTree: DivisionStationTreeComponent;
 
-  treeControl = new NestedTreeControl<NestedDivisionTreeNode>(
-    (node) => node.children
-  );
-  dataSource = new MatTreeNestedDataSource<NestedDivisionTreeNode>();
-  hasChild = (level: number, node: NestedDivisionTreeNode) =>
-    !!node.children && node.children.length > 0;
+  // 当前树节点
+  private currentNode?: FlatNode<Division>;
 
   constructor(private _divisionManageService: DivisionManageService) {}
 
-  async ngOnInit() {
-    fromEvent(this.searchBtn.nativeElement, "click")
-      .pipe(throttleTime(500))
-      .subscribe((e) => {
-        this._searchData(this.searchControl.value);
-      });
+  async ngOnInit() {}
 
-    fromEvent(this.searchInput.nativeElement, "keyup")
-      .pipe(throttleTime(500))
-      .subscribe((e: KeyboardEvent) => {
-        if (e.key.toLocaleLowerCase() == "enter") {
-          console.log("enter");
-          this._searchData(this.searchControl.value);
+  addBtnClick() {
+    if (this.state == FormState.add) {
+      return;
+    }
+    console.log("添加");
+    console.log("division type", this.divisionType);
+    this.state = FormState.add;
+    this._operateForm();
+    this.divisionForm.reset();
+
+    if (this.currentNode) this.holdStatus = true;
+    console.log(this.stationTree.garbageStationTree.dataSource);
+    console.log(this.stationTree.garbageStationTree.flatNodeMap);
+    console.log(this.currentNode);
+    console.log(
+      this.stationTree.garbageStationTree.getChildNodes(this.currentNode)
+    );
+  }
+  editBtnClick() {
+    if (this.state == FormState.edit) {
+      return;
+    }
+    console.log("编辑");
+    this.state = FormState.edit;
+    this._operateForm();
+
+    this.holdStatus = true;
+  }
+  async delBtnClick() {
+    console.log("删除");
+    let divisionId = this.currentNode && this.currentNode.id;
+    let res = await this._divisionManageService.deleteDivision(divisionId);
+    if (res) {
+      this.stationTree.garbageStationTree.delItem(this.currentNode);
+      this.currentNode = null;
+      this.divisionType = DivisionType.Province;
+      this._updateForm();
+      this.state = FormState.none;
+    }
+    let cache = new AppCaChe(1000 * 60 * 30);
+  }
+
+  /**
+   * 点击树节点
+   * @param item FlatNode
+   */
+  itemChangeHandler(item: FlatNode<Division>) {
+    console.log(item);
+    if (this.currentNode) {
+      if (this.currentNode.id == item.id) {
+        if (!this.holdStatus) {
+          this.currentNode = null;
+          this.divisionType = DivisionType.Province;
+          this._updateForm();
+          this.state = FormState.none;
+          return;
+        } else {
+          if (this.state == FormState.edit || this.state == FormState.add) {
+            return;
+          }
         }
-      });
-
-    this._data = await this._divisionManageService.loadData();
-    this.dataSource.data = this._data;
-  }
-  defaultNode(node: NestedDivisionTreeNode) {
-    this.currentNode = node;
-    this.update();
-    this.treeControl.expand(node);
-  }
-  /*
-    树节点的点击事件不会冒泡上来，则容器click事件触发时，一定不是点击 mat-tree
-  */
-  divisionTreeContainerClick() {
-    // this.currentNode = null;
-    // this.update();
-  }
-
-  clickTreeNode(node: NestedDivisionTreeNode, e: Event) {
-    /**
-     *  如果当前节点是选中状态
-     *    1. 不处于编辑/添加界面，点击则取消选中
-     *    2.  处于编辑/添加界面，点击则保持编辑，添加界面
-     *
-     */
-    if (this.currentNode && this.currentNode.id == node.id) {
-      if (this.state == FormState.edit || this.state == FormState.add) return;
-      else this.currentNode = null;
-    } else {
-      this.currentNode = node;
+      } else {
+        this.holdStatus = false;
+      }
     }
+    this.currentNode = item;
+    this.divisionType = this.currentNode.data.DivisionType;
+    this._updateForm();
     this.state = FormState.none;
+  }
+
+  /*** private ***/
+
+  /**
+   * 点击树节点后，更新表单字段信息(可读)
+   */
+  private _updateForm(disable = true) {
     if (this.currentNode) {
-      this.title =
-        Language.DivisionType(this.currentNode.divisionType) + "详情";
-    }
-    this.update();
+      let data = this.currentNode && this.currentNode.data;
 
-    e.stopPropagation();
+      let parent = this.currentNode && this.currentNode.parent;
+
+      this.title = Language.DivisionType(this.divisionType) + "详情";
+      let divisionFormData: DivisionFormData = {
+        Name: data.Name,
+        Id: data.Id,
+        ParentName: parent && parent.name,
+        Description: data.Description,
+      };
+      this.divisionForm.patchValue(divisionFormData);
+    } else {
+      this.divisionForm.reset();
+      this.title = Language.DivisionType(DivisionType.City) + "详情";
+    }
+
+    if (disable) {
+      this._disableForm();
+    } else {
+      this._enableForm();
+    }
   }
-
-  update(disabled: boolean = true) {
-    let parentNode = null;
-    if (this.currentNode) {
-      parentNode = this._divisionManageService.findNode(
-        this.currentNode.parentId,
-        this.currentNode.divisionType - 1
-      );
-    }
+  private _operateForm() {
     if (this.state == FormState.add) {
-      this.divisionForm.patchValue({
-        Name: "",
-        ParentName: "",
-        Description: "",
-        Id: "",
-      });
-    } else {
-      this.divisionForm.patchValue({
-        Name: this.currentNode ? this.currentNode.name : "",
-        Id: this.currentNode ? this.currentNode.id : "",
-        ParentName: parentNode ? parentNode.name : "",
-        Description: this.currentNode ? this.currentNode.description : "",
-      });
-    }
-
-    if (disabled) {
-      this.disableForm();
-    } else {
-      this.enableForm();
-    }
-  }
-
-  addBtnClick(node: NestedDivisionTreeNode, e: Event) {
-    this.operateForm(node, e, FormState.add);
-  }
-  editBtnClick(node: NestedDivisionTreeNode, e: Event) {
-    this.operateForm(node, e, FormState.edit);
-  }
-  operateForm(node: NestedDivisionTreeNode, e: Event, state: FormState) {
-    if (e) {
-      e.stopPropagation();
-    }
-    if (node) {
-      this._divisionType = node.divisionType;
-      this.treeControl.expand(node);
-    } else {
-      this._divisionType = DivisionType.Province;
-      this.treeControl.collapseAll();
-    }
-    if (state == FormState.add) {
-      if (this.state == FormState.add && this.currentNode == node) {
-        return;
-      }
-      this.title = "添加" + Language.DivisionType(this._divisionType + 1);
-      this.state = FormState.add;
-    } else if (state == FormState.edit) {
-      if (this.state == FormState.edit && this.currentNode == node) {
-        return;
-      }
-      this.title = "编辑" + Language.DivisionType(this._divisionType);
-      this.state = FormState.edit;
-    }
-    this.currentNode = node;
-    this.update(false);
-    // console.log("division type", this._divisionType);
-  }
-  deleteBtnClick(node: NestedDivisionTreeNode, e: Event) {
-    let res = this._divisionManageService.deleteDivision(node);
-    MessageBar.response_success();
-    this._updateTree();
-  }
-  async onSubmit() {
-    console.log(this.divisionForm.value);
-    let division = new Division();
-    if (this.state == FormState.add) {
-      division.Id = this.divisionForm.value.Id;
-      division.Name = this.divisionForm.value.Name;
-      division.DivisionType = this._divisionType + 1; // 新节点是当前区划的下一子节点
-      division.IsLeaf = true; // 新添加的节点一定是叶节点
-      division.ParentId = this.currentNode ? this.currentNode.id : null;
-      division.CreateTime = new Date();
-      division.UpdateTime = new Date();
-
-      let node = await this._divisionManageService.addDivision(division);
-      console.log(node);
-      this.currentNode = node;
-      this.onCancel();
-      this._updateTree();
-      MessageBar.response_success();
+      this.title = "添加" + Language.DivisionType(this.divisionType + 1);
     } else if (this.state == FormState.edit) {
-      division.Id = this.currentNode.id;
-      division.Name = this.divisionForm.value.Name;
-      division.Description = this.divisionForm.value.Description;
-      division.ParentId = this.currentNode.parentId;
-      division.DivisionType = this.currentNode.divisionType;
-      division.IsLeaf = this.currentNode.isLeaf;
-      division.CreateTime = new Date(this.currentNode.createTime);
-      division.UpdateTime = new Date();
-      this._divisionManageService.editDivision(division);
-      this.onCancel();
-      this._updateTree();
-      MessageBar.response_success();
+      this.title = "编辑" + Language.DivisionType(this.divisionType);
     }
-    console.log(division);
+    this._enableForm();
   }
-  onCancel() {
-    console.log("取消");
-    this.state = FormState.none;
-    if (this.currentNode) {
-      this.title =
-        Language.DivisionType(this.currentNode.divisionType) + "详情";
-    }
-    this.update();
-  }
-  disableForm() {
+  private _disableForm() {
     this.divisionForm.get("Name").disable();
     this.divisionForm.get("Id").enable();
     this.divisionForm.get("ParentName").disable();
     this.divisionForm.get("Description").disable();
   }
-  enableForm() {
+  private _enableForm() {
     this.divisionForm.get("Name").enable();
     this.divisionForm.get("Id").enable();
     this.divisionForm.get("Description").enable();
   }
-  /**
-   * 每次添加,编辑，删除节点后更新树状态
-   */
-  private _updateTree() {
-    console.log("update");
-    this.dataSource.data = null;
-    this.dataSource.data = this._data;
-  }
 
-  private _searchData(val: string) {
-    this._divisionManageService.searchByText(val, DivisionType.Committees);
-    this._updateTree();
-    this._data.forEach((item) => {
-      this.treeControl.expandDescendants(item);
-    });
+  async onSubmit() {
+    let division = new Division();
+
+    if (this.state == FormState.add) {
+      division.Id = this.divisionForm.value.Id;
+      division.Name = this.divisionForm.value.Name;
+      division.DivisionType = this.divisionType + 1; // 新节点是当前区划的下一子节点
+      division.IsLeaf = true; // 新添加的节点一定是叶节点
+      division.ParentId = this.currentNode ? this.currentNode.id : null;
+      division.CreateTime = new Date();
+      division.UpdateTime = new Date();
+      let res = await this._divisionManageService.addDivision(division);
+      if (res) {
+        console.log(res);
+        let parentTreeNode = this.stationTree.garbageStationTree.getChildNodes(
+          this.currentNode
+        );
+        let treeNode = new TreeNode();
+
+        treeNode.name = res.Name;
+        treeNode.checked = false;
+        treeNode.id = res.Id;
+        treeNode.data = res;
+        // treeNode.iconClass = this.nodeIconType.get(item.type);
+        treeNode.parent = parentTreeNode ? parentTreeNode : null;
+
+        this.stationTree.garbageStationTree.addNewItem(
+          this.currentNode,
+          treeNode
+        );
+        this.onCancel();
+        MessageBar.response_success();
+      }
+    } else if (this.state == FormState.edit) {
+      division.Id = this.currentNode.id;
+      division.Name = this.divisionForm.value.Name;
+      division.Description = this.divisionForm.value.Description;
+      division.ParentId = this.currentNode.data.ParentId;
+      division.DivisionType = this.currentNode.data.DivisionType;
+      division.IsLeaf = this.currentNode.data.IsLeaf;
+      division.CreateTime = new Date(this.currentNode.data.CreateTime);
+      division.UpdateTime = new Date();
+      let res = await this._divisionManageService.editDivision(division);
+      if (res) {
+        this.currentNode.name = res.Name;
+        this.stationTree.garbageStationTree.editNode(
+          this.currentNode,
+          res.Name,
+          res
+        );
+        this.onCancel();
+        MessageBar.response_success();
+      }
+    }
+  }
+  onCancel() {
+    this._updateForm();
+    this.state = FormState.none;
+    this.holdStatus = false;
   }
 }
+
+// 310113000000
+// 宝山区
+
+// 310113102000
+// 大场镇
+
+// 310113102002
+// 大华一村二居委会

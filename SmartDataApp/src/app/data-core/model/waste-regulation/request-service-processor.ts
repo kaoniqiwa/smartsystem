@@ -17,10 +17,12 @@ export class ServiceHelper {
     },
     push: <T>(key: string, t: T) => {
       let paged = ServiceHelper.cache.get<PagedList<T>>(key);
-      paged.Data.push(t);
-      paged.Page.RecordCount = paged.Data.length;
-      paged.Page.TotalRecordCount = paged.Data.length;
-      ServiceHelper.cache.set<PagedList<T>>(key, paged);
+      if (paged) {
+        paged.Data.push(t);
+        paged.Page.RecordCount = paged.Data.length;
+        paged.Page.TotalRecordCount = paged.Data.length;
+        ServiceHelper.cache.set<PagedList<T>>(key, paged);
+      }
     },
   };
 
