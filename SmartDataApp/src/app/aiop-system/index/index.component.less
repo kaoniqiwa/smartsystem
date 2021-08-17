@@ -1,0 +1,21 @@
+.hw-nav-wrapper {
+  height: 30px;
+  width: 106px;
+  background-color: #232b52;
+  border: 2px rgba(94, 110, 190, 1) solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* 解决边框堆叠问题*/
+  margin-right: -2px;
+
+  transform: skewX(-20deg);
+  .hw-nav {
+    /* skewX仅对 块元素有效，所以要在 <a>外面包裹一层div*/
+    transform: skewX(20deg);
+  }
+  a {
+    font-size: 14px;
+  }
+}

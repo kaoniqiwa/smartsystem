@@ -1,17 +1,12 @@
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { SharedModule } from "../shared-module/shared.module";
+import { SystemModeRoutingModule } from "./system-routing.module";
 
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common'; 
-import { SharedModule } from '../shared-module/shared.module'; 
-import { SystemModeRoutingModule } from "./system-routing.module"; 
-
-import {  SystemModeComponent } from "./system-mode/system-mode.component";
+import { SystemModeComponent } from "./system-mode/system-mode.component";
 @NgModule({
-  imports: [
-    CommonModule,SystemModeRoutingModule,
-    SharedModule,
-  ],
+  imports: [CommonModule, SystemModeRoutingModule, SharedModule],
   declarations: [SystemModeComponent],
-  exports:[
-  ]
+  exports: [],
 })
-export class SystemModule { }
+export class SystemModule {}
