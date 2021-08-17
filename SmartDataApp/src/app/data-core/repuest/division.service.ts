@@ -38,8 +38,8 @@ export class DivisionRequestService {
       .post<Division, HowellResponse<Division>>(DivisionUrl.basic(), data)
       .toPromise();
     return ServiceHelper.ResponseProcess(response, Division).then((x) => {
-      ServiceHelper.cacheItemByPaged.push(ServiceHelper.key.Division, x);
-      // ServiceHelper.cache.reset();
+      // ServiceHelper.cacheItemByPaged.push(ServiceHelper.key.Division, x);
+      ServiceHelper.cache.reset();
       return x;
     });
   }
@@ -80,6 +80,8 @@ export class DivisionRequestService {
       .put<Division, HowellResponse<Division>>(DivisionUrl.edit(item.Id), data)
       .toPromise();
     return ServiceHelper.ResponseProcess(response, Division).then((x) => {
+      // ServiceHelper.cache.set(ServiceHelper.key.Division, x);
+      ServiceHelper.cache.reset();
       return x;
     });
   }
@@ -89,7 +91,8 @@ export class DivisionRequestService {
       .delete<Division>(DivisionUrl.del(id))
       .toPromise();
     return ServiceHelper.ResponseProcess(response, Division).then((x) => {
-      ServiceHelper.cache.set(ServiceHelper.key.Division, null);
+      // ServiceHelper.cache.set(ServiceHelper.key.Division, null);
+      ServiceHelper.cache.reset();
       return x;
     });
   }
@@ -106,6 +109,7 @@ export class DivisionRequestService {
       item = {
         PageSize: 99999,
       };
+      console.log("使用缓存");
     }
     let response = await this.requestService
       .post<GetDivisionsParams, HowellResponse<PagedList<Division>>>(

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
+import { map } from "rxjs/operators";
 import { AppCaChe } from "src/app/common/tool/app-cache/app-cache";
 import { Language } from "src/app/common/tool/language";
 import { MessageBar } from "src/app/common/tool/message-bar";
@@ -20,7 +21,14 @@ import { DivisionFormData, FormState } from "./model/division-manage.model";
   providers: [DivisionManageService],
 })
 export class DivisionManageComponent implements OnInit {
-  /*** private ***/
+  private _nodeIconType = new Map([
+    [DivisionType.City, "howell-icon-earth"],
+    [DivisionType.County, "howell-icon-map5"],
+    [DivisionType.Committees, "howell-icon-map5"],
+  ]);
+
+  // 当前树节点
+  private currentNode?: FlatNode<Division>;
 
   /*** public ***/
 
@@ -56,9 +64,6 @@ export class DivisionManageComponent implements OnInit {
   @ViewChild("stationTree")
   stationTree: DivisionStationTreeComponent;
 
-  // 当前树节点
-  private currentNode?: FlatNode<Division>;
-
   constructor(private _divisionManageService: DivisionManageService) {}
 
   async ngOnInit() {}
@@ -74,14 +79,13 @@ export class DivisionManageComponent implements OnInit {
     this.divisionForm.reset();
 
     if (this.currentNode) this.holdStatus = true;
-    console.log(this.stationTree.garbageStationTree.dataSource);
-    console.log(this.stationTree.garbageStationTree.flatNodeMap);
-    console.log(this.currentNode);
-    console.log(
-      this.stationTree.garbageStationTree.getChildNodes(this.currentNode)
-    );
   }
   editBtnClick() {
+    // 如果当前是添加状态，则需要清空输入内容，填入编辑状态的内容
+    if (this.state == FormState.add) {
+      this._updateForm();
+    }
+
     if (this.state == FormState.edit) {
       return;
     }
@@ -102,7 +106,6 @@ export class DivisionManageComponent implements OnInit {
       this._updateForm();
       this.state = FormState.none;
     }
-    let cache = new AppCaChe(1000 * 60 * 30);
   }
 
   /**
@@ -110,7 +113,6 @@ export class DivisionManageComponent implements OnInit {
    * @param item FlatNode
    */
   itemChangeHandler(item: FlatNode<Division>) {
-    console.log(item);
     if (this.currentNode) {
       if (this.currentNode.id == item.id) {
         if (!this.holdStatus) {
@@ -198,7 +200,7 @@ export class DivisionManageComponent implements OnInit {
       let res = await this._divisionManageService.addDivision(division);
       if (res) {
         console.log(res);
-        let parentTreeNode = this.stationTree.garbageStationTree.getChildNodes(
+        let parentTreeNode = this.stationTree.garbageStationTree.flatToTree(
           this.currentNode
         );
         let treeNode = new TreeNode();
@@ -207,13 +209,14 @@ export class DivisionManageComponent implements OnInit {
         treeNode.checked = false;
         treeNode.id = res.Id;
         treeNode.data = res;
-        // treeNode.iconClass = this.nodeIconType.get(item.type);
+        treeNode.iconClass = this._nodeIconType.get(res.DivisionType);
         treeNode.parent = parentTreeNode ? parentTreeNode : null;
 
         this.stationTree.garbageStationTree.addNewItem(
           this.currentNode,
           treeNode
         );
+        console.log(this.stationTree.garbageStationTree.dataSource.data);
         this.onCancel();
         MessageBar.response_success();
       }

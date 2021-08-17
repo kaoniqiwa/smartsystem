@@ -219,6 +219,7 @@ export class CustomTreeComponent implements OnInit {
   }
 
   itemClick(item: FlatNode) {
+    // console.log(item);
     if (this.mode == TreeListMode.checkedBox) {
       item.checked = !item.checked;
       item.checkBoxState =
@@ -255,25 +256,26 @@ export class CustomTreeComponent implements OnInit {
 
   /**
    * 根据 FlatNode 获取它对应的 TreeNode
-   * 平级关系，不是子级关系
    * @param node
    * @returns
    */
-  getChildNodes(node: FlatNode) {
+  flatToTree(node: FlatNode) {
     return this.flatNodeMap.get(node);
   }
 
   addNewItem(node: FlatNode, addNode: TreeNode) {
+    let treeDdata = this.treeData;
     const parentNode = this.flatNodeMap.get(node);
     if (parentNode) {
       parentNode.children = parentNode.children || new Array<TreeNode>();
       parentNode.children.push(addNode);
       this.flatNodeMap.set(node, parentNode);
     } else {
-      this.treeData.push(addNode);
+      treeDdata.push(addNode);
     }
 
-    this.dataSource.data = this.treeData;
+    this.treeData = [];
+    this.treeData = treeDdata;
   }
 
   delItem(flatNode: FlatNode) {

@@ -16,10 +16,6 @@ interface NestedDivisionTreeNode {
   iconClass: "howell-icon-earth" | "howell-icon-map5";
 }
 
-enum IconType {
-  earth = "howell-icon-earth",
-  map = "howell-icon-map5",
-}
 enum FormState {
   none = 0,
   add = 1,
