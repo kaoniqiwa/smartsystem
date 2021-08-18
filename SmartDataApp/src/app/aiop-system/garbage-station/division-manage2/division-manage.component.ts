@@ -9,7 +9,7 @@ import {
   Division,
   GetDivisionsParams,
 } from "src/app/data-core/model/waste-regulation/division";
-import { DivisionStationTreeComponent } from "../division-station-tree/division-station-tree.component";
+import { DivisionTreeComponent } from "../division-tree/division-tree.component";
 import {
   FormState,
   NestedDivisionTreeNode,

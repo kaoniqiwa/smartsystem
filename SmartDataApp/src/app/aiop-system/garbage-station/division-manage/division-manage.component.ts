@@ -6,11 +6,12 @@ import { Language } from "src/app/common/tool/language";
 import { MessageBar } from "src/app/common/tool/message-bar";
 import { DivisionType } from "src/app/data-core/model/enum";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
+import { ConfirmDialog } from "src/app/shared-module/confirm-dialog/confirm-dialog.component";
 import {
   FlatNode,
   TreeNode,
 } from "src/app/shared-module/custom-tree/custom-tree";
-import { DivisionStationTreeComponent } from "../division-station-tree/division-station-tree.component";
+import { DivisionTreeComponent } from "../division-tree/division-tree.component";
 import { DivisionManageService } from "./business/division-manage.service";
 import { DivisionFormData, FormState } from "./model/division-manage.model";
 
@@ -31,6 +32,11 @@ export class DivisionManageComponent implements OnInit {
   private currentNode?: FlatNode<Division>;
 
   /*** public ***/
+
+  // 点击删除按钮更改状态
+  showDialog = false;
+
+  confirmDialog = new ConfirmDialog();
 
   title = Language.DivisionType(DivisionType.City) + "详情";
 
@@ -62,7 +68,7 @@ export class DivisionManageComponent implements OnInit {
   holdStatus = false;
 
   @ViewChild("stationTree")
-  stationTree: DivisionStationTreeComponent;
+  stationTree: DivisionTreeComponent;
 
   constructor(private _divisionManageService: DivisionManageService) {}
 
@@ -97,15 +103,7 @@ export class DivisionManageComponent implements OnInit {
   }
   async delBtnClick() {
     console.log("删除");
-    let divisionId = this.currentNode && this.currentNode.id;
-    let res = await this._divisionManageService.deleteDivision(divisionId);
-    if (res) {
-      this.stationTree.garbageStationTree.delItem(this.currentNode);
-      this.currentNode = null;
-      this.divisionType = DivisionType.Province;
-      this._updateForm();
-      this.state = FormState.none;
-    }
+    this.showDialog = true;
   }
 
   /**
@@ -176,14 +174,16 @@ export class DivisionManageComponent implements OnInit {
   }
   private _disableForm() {
     this.divisionForm.get("Name").disable();
-    this.divisionForm.get("Id").enable();
+    this.divisionForm.get("Id").disable();
     this.divisionForm.get("ParentName").disable();
     this.divisionForm.get("Description").disable();
   }
   private _enableForm() {
     this.divisionForm.get("Name").enable();
-    this.divisionForm.get("Id").enable();
+
     this.divisionForm.get("Description").enable();
+    if (this.state == FormState.edit) return;
+    this.divisionForm.get("Id").enable();
   }
 
   async onSubmit() {
@@ -200,23 +200,25 @@ export class DivisionManageComponent implements OnInit {
       let res = await this._divisionManageService.addDivision(division);
       if (res) {
         console.log(res);
-        let parentTreeNode = this.stationTree.garbageStationTree.flatToTree(
-          this.currentNode
-        );
-        let treeNode = new TreeNode();
+        // let parentTreeNode = this.stationTree.garbageStationTree.flatToTree(
+        //   this.currentNode
+        // );
+        // let treeNode = new TreeNode();
 
-        treeNode.name = res.Name;
-        treeNode.checked = false;
-        treeNode.id = res.Id;
-        treeNode.data = res;
-        treeNode.iconClass = this._nodeIconType.get(res.DivisionType);
-        treeNode.parent = parentTreeNode ? parentTreeNode : null;
+        // treeNode.name = res.Name;
+        // treeNode.checked = false;
+        // treeNode.id = res.Id;
+        // treeNode.data = res;
+        // treeNode.iconClass = this._nodeIconType.get(res.DivisionType);
+        // treeNode.parent = parentTreeNode ? parentTreeNode : null;
 
-        this.stationTree.garbageStationTree.addNewItem(
-          this.currentNode,
-          treeNode
-        );
-        console.log(this.stationTree.garbageStationTree.dataSource.data);
+        // this.stationTree.garbageStationTree.addNewItem(
+        //   this.currentNode,
+        //   treeNode
+        // );
+
+        this.stationTree.addItem(res);
+        // console.log(this.stationTree.garbageStationTree.dataSource.data);
         this.onCancel();
         MessageBar.response_success();
       }
@@ -246,6 +248,22 @@ export class DivisionManageComponent implements OnInit {
     this._updateForm();
     this.state = FormState.none;
     this.holdStatus = false;
+  }
+  async dialogMsg(msg: string) {
+    console.log(msg);
+    this.showDialog = false;
+
+    if (msg == "ok") {
+      let divisionId = this.currentNode && this.currentNode.id;
+      let res = await this._divisionManageService.deleteDivision(divisionId);
+      if (res) {
+        this.stationTree.garbageStationTree.delItem(this.currentNode);
+        this.currentNode = null;
+        this.divisionType = DivisionType.Province;
+        this._updateForm();
+        this.state = FormState.none;
+      }
+    }
   }
 }
 

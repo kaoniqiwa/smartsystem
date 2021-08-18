@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input } from "@angular/core";
 import { CustomTreeComponent } from "../../../custom-tree/custom-tree.component";
-import { DataService } from "../../../../aiop-system/garbage-station/division-station-tree/business/data-service";
-import { StationTreeService } from "../../../../aiop-system/garbage-station/division-station-tree/business/garbage-station-tree";
+import { DivisionTreeSerevice } from "../../../../aiop-system/garbage-station/division-tree/business/division-tree.service";
+import { StationTreeService } from "../../../../aiop-system/garbage-station/division-tree/business/garbage-station-tree";
 import { NodeTypeEnum } from "../../../../aiop-system/common/tree.service";
 import { FlatNode, TreeListMode } from "../../../custom-tree/custom-tree";
 import { domClickFn } from "../../../../common/tool/jquery-help/jquery-help";
@@ -13,7 +13,12 @@ import { DivisionType } from "../../../../data-core/model/enum";
   selector: "hw-tree-drop-list-v2",
   templateUrl: "./tree-drop-list-v2.component.html",
   styleUrls: ["./tree-drop-list-v2.component.styl"],
-  providers: [StationTreeService, DataService, GarbageStationDao, DivisionDao],
+  providers: [
+    StationTreeService,
+    DivisionTreeSerevice,
+    GarbageStationDao,
+    DivisionDao,
+  ],
 })
 export class TreeDropListV2Component implements OnInit {
   showBody = false;
@@ -90,7 +95,7 @@ export class TreeDropListV2Component implements OnInit {
     private stationTreeService: StationTreeService,
     private garbageStationDao: GarbageStationDao,
     private divisionDao: DivisionDao,
-    public dataService: DataService
+    public dataService: DivisionTreeSerevice
   ) {}
 
   findNode(id: string) {

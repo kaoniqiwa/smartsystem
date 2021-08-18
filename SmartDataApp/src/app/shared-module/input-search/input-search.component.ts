@@ -1,4 +1,12 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Input,
+  Output,
+  EventEmitter,
+} from "@angular/core";
 import { fromEvent } from "rxjs";
 import { throttleTime } from "rxjs/operators";
 import { FormControl } from "@angular/forms";
@@ -9,15 +17,27 @@ import { FormControl } from "@angular/forms";
 })
 export class InputSearchComponent implements OnInit {
   searchInput = new FormControl("");
+
   @ViewChild("searchBtn")
   searchBtn: ElementRef;
+
   @ViewChild("input")
   input: ElementRef;
+
   @Input() placeholder = "";
+
   @Input() searchEvent: (text: string) => void;
 
   @Input()
   focusToSelectContent = false;
+
+  /**
+   * pmx 20211-08-18
+   */
+  // 双向绑定抛出内容
+  searctText: string = "";
+
+  @Output() searchChange = new EventEmitter<string>();
 
   constructor() {}
 
@@ -38,6 +58,13 @@ export class InputSearchComponent implements OnInit {
     keyUpEvent.subscribe((x) => {
       if (x["key"] == "Enter" && this.searchEvent)
         this.searchEvent(this.searchInput.value);
+    });
+
+    result.subscribe((x) => this.searchChange.emit(this.searctText));
+    keyUpEvent.subscribe((x: KeyboardEvent) => {
+      if (x.key.toLocaleLowerCase() == "enter") {
+        this.searchChange.emit(this.searctText);
+      }
     });
   }
 }

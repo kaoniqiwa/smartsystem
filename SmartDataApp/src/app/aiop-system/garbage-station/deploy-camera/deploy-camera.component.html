@@ -1,28 +1,45 @@
 <div class="fill-height fill-width">
   <ng-container *ngIf="businessService.confirmDialog_">
-    <div  class="fill-height fill-width hw-content-mask" style="z-index: 50;" >
-      <hw-confirm-dialog [dialog]="businessService.confirmDialog_"></hw-confirm-dialog>
+    <div class="fill-height fill-width hw-content-mask" style="z-index: 50">
+      <hw-confirm-dialog
+        [dialog]="businessService.confirmDialog_"
+      ></hw-confirm-dialog>
     </div>
   </ng-container>
-  <div style="width:320px" class="card-wrap m-r-20 pull-left">
+  <div style="width: 320px" class="card-wrap m-r-20 pull-left">
     <h2 class="m-b-20">投放点列表</h2>
-    <hw-division-station-tree #stationTree   [treeHeight]="'calc(100% - 80px)'"
-    [selectedItemFn]="selectDivisionClick"></hw-division-station-tree>
+    <hw-division-tree
+      #stationTree
+      [treeHeight]="'calc(100% - 80px)'"
+      [selectedItemFn]="selectDivisionClick"
+    ></hw-division-tree>
   </div>
-  <div style="width: calc(100% - 680px);padding: 10px;" class="card-wrap   m-r-20 pull-left">
+  <div
+    style="width: calc(100% - 680px); padding: 10px"
+    class="card-wrap m-r-20 pull-left"
+  >
     <h2 class="m-b-20 p-l-10 p-t-10">摄像机绑定</h2>
-    <div fxLayout="row" style="height: calc(100% - 88px);position: relative;" fxLayoutAlign="center center">
-      <div  class="fill-width mask-chart ">
-
-      </div>
-      <hw-garbage-chart [plusSquareFn]="bindingItemClick" class="collapse" [class.in]="showHouse"
-      [maxWidth]="'850px'" #garbageChart ></hw-garbage-chart>
+    <div
+      fxLayout="row"
+      style="height: calc(100% - 88px); position: relative"
+      fxLayoutAlign="center center"
+    >
+      <div class="fill-width mask-chart"></div>
+      <hw-garbage-chart
+        [plusSquareFn]="bindingItemClick"
+        class="collapse"
+        [class.in]="showHouse"
+        [maxWidth]="'850px'"
+        #garbageChart
+      ></hw-garbage-chart>
     </div>
-
   </div>
-  <div style="width:320px" class="card-wrap pull-left">
+  <div style="width: 320px" class="card-wrap pull-left">
     <h2 class="m-b-20">摄像机列表</h2>
-    <hw-region-camera-tree #cameraTree [selectedItemFn]="selectCameraClick" [reloadStateFn]="reloadState"
+    <hw-region-camera-tree
+      #cameraTree
+      [selectedItemFn]="selectCameraClick"
+      [reloadStateFn]="reloadState"
     ></hw-region-camera-tree>
     <!-- <div class="m-b-20">
       <hw-input-search [placeholder]="'名称'" [searchEvent]="searchTree"></hw-input-search>

@@ -1,4 +1,14 @@
 <div class="fill-height division-manage">
+  <!--删除功能对话框-->
+  <ng-container *ngIf="showDialog">
+    <div class="fill-height fill-width hw-content-mask">
+      <hw-confirm-dialog
+        [dialog]="confirmDialog"
+        (dialogMsg)="dialogMsg($event)"
+      ></hw-confirm-dialog>
+    </div>
+  </ng-container>
+
   <div class="aside m-r-20">
     <h2 class="m-b-20">区划列表</h2>
     <div class="m-b-10">
@@ -33,13 +43,13 @@
       </button>
     </div>
     <div style="height: calc(100% - 60px)">
-      <hw-division-station-tree
+      <hw-division-tree
         #stationTree
         [onlyDivisionNode]="true"
         (itemChange)="itemChangeHandler($event)"
         [holdStatus]="holdStatus"
         [ngStyle]="{ 'user-select': 'none' }"
-      ></hw-division-station-tree>
+      ></hw-division-tree>
     </div>
   </div>
 
@@ -47,7 +57,7 @@
     <div class="division-form">
       <h2 class="m-b-20">{{ title }}</h2>
       <form [formGroup]="divisionForm">
-        <div class="form-group" [hidden]="state != 1">
+        <div class="form-group">
           <label class="form-label tran-input-label">区划ID </label>
           <input class="form-control custom" formControlName="Id" />
         </div>

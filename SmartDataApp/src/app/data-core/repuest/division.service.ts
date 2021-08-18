@@ -24,7 +24,7 @@ import { BatchRequest, BatchResult } from "../model/batch";
 import { HowellResponse } from "../model/response";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
 import { ServiceHelper } from "../model/waste-regulation/request-service-processor";
-import { DivisionUrl } from "../url/waste-regulation/division";
+import { DivisionUrl } from "../url/waste-regulation/division-url";
 import { classToPlain } from "class-transformer";
 @Injectable({
   providedIn: "root",

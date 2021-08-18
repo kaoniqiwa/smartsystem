@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { DivisionStationTreeComponent } from "../division-station-tree/division-station-tree.component";
+import { DivisionTreeComponent } from "../division-tree/division-tree.component";
 import {
   FlatNode,
   RightBtn,
@@ -31,7 +31,7 @@ import { GisType } from "../../../data-core/model/enum";
 export class MapDeployComponent implements OnInit {
   // 行政及垃圾厢房列表
   @ViewChild("stationTree")
-  stationTree: DivisionStationTreeComponent;
+  stationTree: DivisionTreeComponent;
 
   // 地图iframe
   @ViewChild("iframe")

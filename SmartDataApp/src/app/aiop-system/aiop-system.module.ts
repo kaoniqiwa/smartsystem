@@ -7,7 +7,7 @@ import { AIOPSystemRoutingModule } from "./aiop-system-routing.module";
 import { AIModelEventComponent } from "./event-history/aimodel-event/aimodel-event.component";
 import { DeployCameraComponent } from "./garbage-station/deploy-camera/deploy-camera.component";
 import { DivisionManageComponent } from "./garbage-station/division-manage/division-manage.component";
-import { DivisionStationTreeComponent } from "./garbage-station/division-station-tree/division-station-tree.component";
+import { DivisionTreeComponent } from "./garbage-station/division-tree/division-tree.component";
 import { FullTrashCanComponent } from "./garbage-station/full-trash-can/full-trash-can.component";
 import { GarbageStationFormComponent } from "./garbage-station/garbage-station-form/garbage-station-form.component";
 import { GarbageStationManageComponent } from "./garbage-station/garbage-station-manage/garbage-station-manage.component";
@@ -63,7 +63,7 @@ import { FormsModule } from "@angular/forms";
     CameraRegionMoveComponent,
     GarbageStationManageComponent,
     StationChartComponent,
-    DivisionStationTreeComponent,
+    DivisionTreeComponent,
     RegionCameraTreeComponent,
     GarbageStationComponent,
     GarbageStationFormComponent,
@@ -81,7 +81,7 @@ import { FormsModule } from "@angular/forms";
     CameraRegionMoveComponent,
     GarbageStationManageComponent,
     StationChartComponent,
-    DivisionStationTreeComponent,
+    DivisionTreeComponent,
     RegionCameraTreeComponent,
     GarbageStationComponent,
     GarbageStationFormComponent,

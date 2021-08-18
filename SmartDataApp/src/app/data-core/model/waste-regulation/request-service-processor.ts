@@ -1,6 +1,6 @@
 import { ClassConstructor, plainToClass } from "class-transformer";
 import { AppCaChe } from "../../../common/tool/app-cache/app-cache";
-import { DivisionUrl } from "../../url/waste-regulation/division";
+import { DivisionUrl } from "../../url/waste-regulation/division-url";
 import { PagedList } from "../page";
 import { HowellResponse } from "../response";
 

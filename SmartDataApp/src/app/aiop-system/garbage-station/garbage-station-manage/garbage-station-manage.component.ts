@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { BusinessService } from "./business/garbage-station-table";
-import { DataService as DivisionStationDataService } from "../division-station-tree/business/data-service";
+import { DivisionTreeSerevice as DivisionStationDataService } from "../division-tree/business/division-tree.service";
 import { GarbageStationManageService } from "./business/garbage-station-manage.service";
 import { FlatNode } from "../../../shared-module/custom-tree/custom-tree";
 import { DataService as StationTypeDataService } from "../garbage-station/business/data.service";

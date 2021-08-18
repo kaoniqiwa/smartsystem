@@ -1,7 +1,7 @@
 <div class="fill-height fill-width">
   <div style="width: 320px" class="card-wrap m-r-20 pull-left">
     <h2 class="m-b-20">投放点列表</h2>
-    <hw-division-station-tree
+    <hw-division-tree
       #stationTree
       [treeHeight]="'calc(100% - 80px)'"
       [selectedItemFn]="selectDivisionClick"
@@ -9,7 +9,7 @@
       (itemExpandClickedEvent)="onItemExpandClicked($event)"
       (TreeNodeLoadedEvent)="onTreeNodeLoaded($event)"
       (itemRightButtonClickedEvent)="rightButtonClick($event)"
-    ></hw-division-station-tree>
+    ></hw-division-tree>
   </div>
 
   <div

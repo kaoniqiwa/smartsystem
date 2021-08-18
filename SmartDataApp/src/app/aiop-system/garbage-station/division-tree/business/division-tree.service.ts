@@ -11,7 +11,7 @@ import {
   GetGarbageStationsParams,
 } from "../../../../data-core/model/waste-regulation/garbage-station";
 @Injectable()
-export class DataService {
+export class DivisionTreeSerevice {
   divisions = new Array<Division>();
   garbageStations = new Array<GarbageStation>();
 
@@ -30,8 +30,13 @@ export class DataService {
     return response.Data;
   }
 
+  /**
+   * 获取区划列表
+   * @returns
+   */
   async requestDivision() {
-    const response = await this.divisionService.list();
+    let divisionParams = new GetDivisionsParams();
+    const response = await this.divisionService.list(divisionParams);
     return response.Data;
   }
 }

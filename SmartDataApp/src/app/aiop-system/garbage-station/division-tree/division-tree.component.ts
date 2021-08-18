@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input } from "@angular/core";
 import { CustomTreeComponent } from "../../../shared-module/custom-tree/custom-tree.component";
 import { StationTreeService } from "./business/garbage-station-tree";
-import { DataService } from "./business/data-service";
+import { DivisionTreeSerevice } from "./business/division-tree.service";
 import { NodeTypeEnum } from "../../common/tree.service";
 import {
   FlatNode,
@@ -15,11 +15,11 @@ import { Output, EventEmitter } from "@angular/core";
 import { Division } from "../../../data-core/model/waste-regulation/division";
 import { GarbageStation } from "../../../data-core/model/waste-regulation/garbage-station";
 @Component({
-  selector: "hw-division-station-tree",
-  templateUrl: "./division-station-tree.component.html",
-  providers: [StationTreeService, DataService],
+  selector: "hw-division-tree",
+  templateUrl: "./division-tree.component.html",
+  providers: [StationTreeService, DivisionTreeSerevice],
 })
-export class DivisionStationTreeComponent implements OnInit {
+export class DivisionTreeComponent implements OnInit {
   @ViewChild("garbageStationTree")
   garbageStationTree: CustomTreeComponent;
 
@@ -39,14 +39,6 @@ export class DivisionStationTreeComponent implements OnInit {
   GarbageStationRightButtons: (data: GarbageStation) => RightButton[];
   @Input()
   DivisionRightButtons: (data: Division) => RightButton[];
-
-  /***pmx start ***/
-  // 保持选中状态
-  @Input() holdStatus: boolean = true;
-
-  @Output() itemChange = new EventEmitter<FlatNode>();
-
-  /***pmx end ***/
 
   selectedItemClick = (item: FlatNode<Division | GarbageStation>) => {
     if (this.selectedItemFn) {
@@ -92,9 +84,21 @@ export class DivisionStationTreeComponent implements OnInit {
     this.garbageStationTree.dataSource.data = dataSource;
     this.garbageStationTree.treeControl.expandAll();
   };
+
+  /**
+   * pmx 2021-08-18
+   */
+
+  // 保持选中状态
+  @Input() holdStatus: boolean = true;
+
+  @Output() itemChange = new EventEmitter<FlatNode>();
+
+  searctText: string = "";
+
   constructor(
     private stationTreeService: StationTreeService,
-    public dataService: DataService
+    public dataService: DivisionTreeSerevice
   ) {}
 
   async ngOnInit() {
@@ -178,10 +182,10 @@ export class DivisionStationTreeComponent implements OnInit {
       }
     }
   }
-  // addItems(divisions: Division[]) {
-  //   this.stationTreeService.appendDivisionModel(divisions);
-  //   this.stationTreeService.loadStationTree();
-  // }
+  addItem(division: Division) {
+    this.stationTreeService.appendDivisionModel([division]);
+    // this.stationTreeService.loadStationTree();
+  }
 
   onPanelClicked() {
     if (this.PanelClickedEvent) {
@@ -190,5 +194,13 @@ export class DivisionStationTreeComponent implements OnInit {
   }
   itemChangeHandler(node: FlatNode) {
     this.itemChange.emit(node);
+  }
+  /**
+   *  pmx 2021-08-18
+   * @param searctText
+   */
+  searchHandler(searctText: string) {
+    console.log(searctText);
+    if (this.searctText == searctText) return;
   }
 }

@@ -17,7 +17,7 @@ import { Injectable } from "@angular/core";
 import { BusinessTable } from "../../../common/business-table";
 import { Page } from "../../../../data-core/model/page";
 import { DataService as StationTypeDataService } from "../../garbage-station/business/data.service";
-import { DataService as DivisionStationDataService } from "../../division-station-tree/business/data-service";
+import { DivisionTreeSerevice as DivisionStationDataService } from "../../division-tree/business/division-tree.service";
 
 @Injectable()
 export class BusinessService {

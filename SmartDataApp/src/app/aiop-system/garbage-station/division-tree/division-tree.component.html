@@ -2,6 +2,7 @@
   <hw-input-search
     [placeholder]="'名称'"
     [searchEvent]="searchTree"
+    (searchChange)="searchHandler($event)"
   ></hw-input-search>
 </div>
 <div
