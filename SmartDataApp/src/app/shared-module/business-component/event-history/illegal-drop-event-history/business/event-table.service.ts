@@ -51,7 +51,7 @@ export class EventTableService extends ListAttribute {
 
   allDataSource = new Array<IllegalDropEventRecord>();
 
-  set dataSource(items: IllegalDropEventRecord[]) {
+  appendDataSource(items: IllegalDropEventRecord[]) {
     for (const x of items) this.dataSource_.push(x);
   }
 
@@ -223,7 +223,8 @@ export class EventTableService extends ListAttribute {
       this.dataSource_ = new Array();
       this.eventTable.Convert(data, this.eventTable.dataSource);
       this.eventTable.totalCount = response.Page.TotalRecordCount;
-      this.dataSource = response.Data;
+
+      this.appendDataSource(response.Data);
       if (callBack) callBack(response.Page);
     }
   }
@@ -240,7 +241,7 @@ export class EventTableService extends ListAttribute {
       this.eventCards.clearData();
       this.eventCards.Convert(data.items);
       this.eventCards.cardList = this.eventCards.dataSource;
-      this.dataSource = response.Data;
+      this.appendDataSource(response.Data);
       if (callBack) callBack(response.Page);
     }
   }
@@ -259,7 +260,7 @@ export class EventTableService extends ListAttribute {
       this.dataSource_ = new Array();
       this.eventTable.Convert(data, this.eventTable.dataSource);
       this.eventTable.totalCount = response.Page.TotalRecordCount;
-      this.dataSource = response.Data;
+      this.appendDataSource(response.Data);
       if (callBack) callBack(response.Page);
     }
   }
@@ -277,7 +278,7 @@ export class EventTableService extends ListAttribute {
       this.eventCards.clearData();
       this.eventCards.Convert(data.items);
       this.eventCards.cardList = this.eventCards.dataSource;
-      this.dataSource = response.Data;
+      this.appendDataSource(response.Data);
       if (callBack) callBack(response.Page);
     }
   }

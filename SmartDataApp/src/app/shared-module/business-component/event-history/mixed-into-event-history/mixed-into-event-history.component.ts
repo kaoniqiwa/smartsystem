@@ -57,7 +57,7 @@ export class MixedIntoEventHistoryComponent implements OnInit, OnDestroy {
       const garbageStations = this.tableService.garbageStations.filter(
         (x) => x.DivisionId == divisionId
       );
-      this.tableService.search.toStationsDropList = garbageStations;
+      this.tableService.search.appendStationsDropList(garbageStations);
       const resources = new Array<Camera>();
       garbageStations.map((x) => {
         this.tableService.resources
@@ -66,14 +66,16 @@ export class MixedIntoEventHistoryComponent implements OnInit, OnDestroy {
             resources.push(c);
           });
       });
-      this.tableService.search.toResourcesDropList = resources;
+      this.tableService.search.appendResourcesDropList(resources);
       this.tableService.search.divisionId = divisionId;
       this.tableService.search.stationId = "";
     } else {
-      this.tableService.search.toResourcesDropList =
-        this.tableService.resources;
-      this.tableService.search.toStationsDropList =
-        this.tableService.garbageStations;
+      this.tableService.search.appendResourcesDropList(
+        this.tableService.resources
+      );
+      this.tableService.search.appendStationsDropList(
+        this.tableService.garbageStations
+      );
     }
   };
 
@@ -141,9 +143,12 @@ export class MixedIntoEventHistoryComponent implements OnInit, OnDestroy {
     this.tableService.garbageStations =
       await this.tableService.requestGarbageStations();
     this.tableService.resources = await this.tableService.requestResource();
-    this.tableService.search.toResourcesDropList = this.tableService.resources;
-    this.tableService.search.toStationsDropList =
-      this.tableService.garbageStations;
+    this.tableService.search.appendResourcesDropList(
+      this.tableService.resources
+    );
+    this.tableService.search.appendStationsDropList(
+      this.tableService.garbageStations
+    );
     this.tableService.divisionListView.toLevelListPanel(
       this.tableService.divisions.filter((x) => x.ParentId != null)
     );

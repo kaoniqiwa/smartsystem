@@ -66,8 +66,9 @@ export class GarbageDropEventHistoryComponent implements OnInit {
   };
 
   changeStation(val: string) {
-    this.tableService.search.toResourcesDropList =
-      this.tableService.cameras.filter((r) => r.GarbageStationId == val);
+    this.tableService.search.appendResourcesDropList(
+      this.tableService.cameras.filter((r) => r.GarbageStationId == val)
+    );
   }
 
   changeDivisionFn = (divisionId: string) => {
@@ -75,7 +76,7 @@ export class GarbageDropEventHistoryComponent implements OnInit {
       const garbageStations = this.tableService.stations.filter(
         (x) => x.DivisionId == divisionId
       );
-      this.tableService.search.toStationsDropList = garbageStations;
+      this.tableService.search.appendStationsDropList(garbageStations);
       const resources = new Array<Camera>();
       garbageStations.map((x) => {
         this.tableService.cameras
@@ -84,12 +85,16 @@ export class GarbageDropEventHistoryComponent implements OnInit {
             resources.push(c);
           });
       });
-      this.tableService.search.toResourcesDropList = resources;
+      this.tableService.search.appendResourcesDropList(resources);
       this.tableService.search.divisionId = divisionId;
       this.tableService.search.stationId = "";
     } else {
-      this.tableService.search.toResourcesDropList = this.tableService.cameras;
-      this.tableService.search.toStationsDropList = this.tableService.stations;
+      this.tableService.search.appendResourcesDropList(
+        this.tableService.cameras
+      );
+      this.tableService.search.appendStationsDropList(
+        this.tableService.stations
+      );
     }
   };
   setSearchDivision() {
@@ -116,11 +121,11 @@ export class GarbageDropEventHistoryComponent implements OnInit {
     });
     this.garbageStationCameraDao.garbageStationCameras().then((t) => {
       this.tableService.cameras = t;
-      this.tableService.search.toResourcesDropList = t;
+      this.tableService.search.appendResourcesDropList(t);
     });
     this.garbageStationDao.allGarbageStations().then((t) => {
       this.tableService.stations = t;
-      this.tableService.search.toStationsDropList = t;
+      this.tableService.search.appendStationsDropList(t);
     });
     this.tableService.playVideoToUrlFn = async (id, time, cb) => {
       const param = new GetVodUrlParams();

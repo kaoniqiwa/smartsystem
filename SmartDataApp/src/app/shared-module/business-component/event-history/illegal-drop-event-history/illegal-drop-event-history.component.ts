@@ -82,7 +82,7 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
       const garbageStations = this.tableService.garbageStations.filter(
         (x) => x.DivisionId == divisionId
       );
-      this.tableService.search.toStationsDropList = garbageStations;
+      this.tableService.search.appendStationsDropList(garbageStations);
       const resources = new Array<Camera>();
       garbageStations.map((x) => {
         this.tableService.resources
@@ -91,14 +91,21 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
             resources.push(c);
           });
       });
-      this.tableService.search.toResourcesDropList = resources;
+      this.tableService.search.appendResourcesDropList(resources);
       this.tableService.search.divisionId = divisionId;
       this.tableService.search.stationId = "";
     } else {
-      this.tableService.search.toResourcesDropList =
-        this.tableService.resources;
-      this.tableService.search.toStationsDropList =
-        this.tableService.garbageStations;
+      let city = this.tableService.divisions.find((x) => !x.ParentId);
+      if (city) {
+        this.changeDivisionFn(city.Id);
+      }
+      return;
+      this.tableService.search.appendResourcesDropList(
+        this.tableService.resources
+      );
+      this.tableService.search.appendStationsDropList(
+        this.tableService.garbageStations
+      );
     }
   };
 
@@ -121,8 +128,9 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
   ) {}
 
   changeStation(val: string) {
-    this.tableService.search.toResourcesDropList =
-      this.tableService.resources.filter((r) => r.GarbageStationId == val);
+    this.tableService.search.appendResourcesDropList(
+      this.tableService.resources.filter((r) => r.GarbageStationId == val)
+    );
   }
 
   ngOnDestroy() {
@@ -138,7 +146,7 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
         const children = this.tableService.divisions.filter(
           (f) => f.ParentId == division.Id
         );
-        this.tableService.search.divisionId = children.pop().Id;
+        this.tableService.search.divisionId = division.Id; //children.pop().Id;
       } else if (
         this.businessManageService.viewDivisionType ==
           ViewDivisionTypeEnum.TableLinkChild &&
@@ -148,9 +156,15 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
         const station = this.tableService.garbageStations.find(
           (s) => s.Id == this.fillMode.divisionId
         );
-        if (station) this.tableService.search.divisionId = station.DivisionId;
-      } else this.tableService.search.divisionId = this.fillMode.divisionId;
-    } else this.tableService.search.divisionId = "";
+        if (station) {
+          this.tableService.search.divisionId = station.DivisionId;
+        }
+      } else {
+        this.tableService.search.divisionId = this.fillMode.divisionId;
+      }
+    } else {
+      this.tableService.search.divisionId = "";
+    }
   }
   async ngOnInit() {
     //this.tableService.search.divisionId = this.fillMode ? this.fillMode.divisionId : '';
@@ -188,13 +202,15 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
     this.tableService.garbageStations =
       await this.tableService.requestGarbageStations();
     this.tableService.resources = await this.tableService.requestResource();
-    this.tableService.search.toResourcesDropList = this.tableService.resources;
-    this.tableService.search.toStationsDropList =
-      this.tableService.garbageStations;
-
-    this.tableService.divisionListView.toLevelListPanel(
-      this.tableService.divisions.filter((x) => x.ParentId != null)
+    this.tableService.search.appendResourcesDropList(
+      this.tableService.resources
     );
+    this.tableService.search.appendStationsDropList(
+      this.tableService.garbageStations
+    );
+
+    let filter = this.tableService.divisions.filter((x) => x.ParentId != null);
+    this.tableService.divisionListView.toLevelListPanel(filter);
     await this.tableService.allEventsRecordData();
     //this.allEvallEventsRecord();
   }
@@ -260,7 +276,7 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
 
   async initTableList() {
     if (this.tableService.search.state == false) {
-      if (this.listMode == PageListMode.table)
+      if (this.listMode == PageListMode.table) {
         await this.tableService.requestData(1, (page) => {
           this.tableService.eventTable.initPagination(
             page,
@@ -270,7 +286,7 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
             !this.isPage
           );
         });
-      else if (this.listMode == PageListMode.list)
+      } else if (this.listMode == PageListMode.list) {
         await this.tableService.requestDataX(1, (page) => {
           this.tableService.eventCards.initPagination(
             page,
@@ -280,8 +296,10 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
             !this.isPage
           );
         });
+      } else {
+      }
     } else {
-      if (this.listMode == PageListMode.table)
+      if (this.listMode == PageListMode.table) {
         await this.tableService.searchData(1, (page) => {
           this.tableService.eventTable.initPagination(
             page,
@@ -291,7 +309,7 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
             !this.isPage
           );
         });
-      else if (this.listMode == PageListMode.list)
+      } else if (this.listMode == PageListMode.list) {
         await this.tableService.searchDataX(1, (page) => {
           this.tableService.eventCards.initPagination(
             page,
@@ -301,6 +319,8 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
             !this.isPage
           );
         });
+      } else {
+      }
     }
   }
 
@@ -320,6 +340,7 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
   }
 
   async search() {
+    debugger;
     this.tableService.search.state = true;
     if (this.listMode == PageListMode.table)
       await this.tableService.searchData(1, (page) => {
