@@ -29,6 +29,28 @@ export class StationTreeService extends TreeService {
       ...this.convertTreeNode(models, getBtns),
     ];
   }
+  deleteDivisionModel(models: Division[]) {
+    models.forEach((division) => {
+      let index = this.dataSource.findIndex((dataTree) => {
+        return dataTree.id == division.Id;
+      });
+      if (index > -1) {
+        this.dataSource.splice(index, 1);
+      }
+    });
+  }
+  editDivisionModel(models: Division[]) {
+    // console.log(this.dataSource);
+    models.forEach((division) => {
+      let dataTree = this.dataSource.find(
+        (dataTree) => dataTree.id == division.Id
+      );
+      if (dataTree) {
+        dataTree.name = division.Name;
+        dataTree.data = division;
+      }
+    });
+  }
 
   appendCityDivisionModel(
     models: Division[],

@@ -15,10 +15,10 @@
       <button
         class="hw-green-btn m-r-10"
         [ngClass]="{
-          ' gray-text': divisionType >= 4,
-          black: divisionType >= 4
+          ' gray-text': !enableAddBtn,
+          black: !enableAddBtn
         }"
-        [disabled]="divisionType >= 4"
+        [disabled]="!enableAddBtn"
         (click)="addBtnClick()"
       >
         <i class="howell-icon-plus"></i>
@@ -26,8 +26,8 @@
       </button>
       <button
         class="hw-red-btn m-r-10"
-        [ngClass]="{ ' gray-text': !currentNode, black: !currentNode }"
-        [disabled]="!currentNode"
+        [ngClass]="{ ' gray-text': !enableDelBtn, black: !enableDelBtn }"
+        [disabled]="!enableDelBtn"
         (click)="delBtnClick()"
       >
         <i class="howell-icon-delete-bin"></i> 删除
@@ -35,8 +35,8 @@
 
       <button
         class="hw-blue-btn"
-        [ngClass]="{ ' gray-text': !currentNode, black: !currentNode }"
-        [disabled]="!currentNode"
+        [ngClass]="{ ' gray-text': !enableEditBtn, black: !enableEditBtn }"
+        [disabled]="!enableEditBtn"
         (click)="editBtnClick()"
       >
         <i class="howell-icon-move2"></i> 编辑
@@ -47,6 +47,8 @@
         #stationTree
         [onlyDivisionNode]="true"
         (itemChange)="itemChangeHandler($event)"
+        (searchChange)="searchChangeHandler($event)"
+        (itemExpandClickedEvent)="itemExpandHandler($event)"
         [holdStatus]="holdStatus"
         [ngStyle]="{ 'user-select': 'none' }"
       ></hw-division-tree>

@@ -22,18 +22,12 @@ import { DivisionFormData, FormState } from "./model/division-manage.model";
   providers: [DivisionManageService],
 })
 export class DivisionManageComponent implements OnInit {
-  private _nodeIconType = new Map([
-    [DivisionType.City, "howell-icon-earth"],
-    [DivisionType.County, "howell-icon-map5"],
-    [DivisionType.Committees, "howell-icon-map5"],
-  ]);
-
   // 当前树节点
   private currentNode?: FlatNode<Division>;
 
   /*** public ***/
 
-  // 点击删除按钮更改状态
+  // 点击删除按钮弹窗
   showDialog = false;
 
   confirmDialog = new ConfirmDialog();
@@ -67,6 +61,16 @@ export class DivisionManageComponent implements OnInit {
   });
   holdStatus = false;
 
+  get enableAddBtn() {
+    return this.divisionType < 4 && this.divisionType > 0;
+  }
+  get enableDelBtn() {
+    return !!this.currentNode && this.divisionType;
+  }
+
+  get enableEditBtn() {
+    return !!this.currentNode && this.divisionType;
+  }
   @ViewChild("stationTree")
   stationTree: DivisionTreeComponent;
 
@@ -106,11 +110,24 @@ export class DivisionManageComponent implements OnInit {
     this.showDialog = true;
   }
 
+  searchChangeHandler(searchText: string) {
+    console.log("search", searchText);
+    this.currentNode = null;
+    this.divisionType = DivisionType.Province;
+    this._updateForm();
+    this.state = FormState.none;
+    this.holdStatus = false;
+  }
+  itemExpandHandler(node: FlatNode<any>) {
+    console.log("展开是", node);
+    console.log(this.currentNode);
+  }
   /**
    * 点击树节点
    * @param item FlatNode
    */
   itemChangeHandler(item: FlatNode<Division>) {
+    console.log("节点", item);
     if (this.currentNode) {
       if (this.currentNode.id == item.id) {
         if (!this.holdStatus) {
@@ -118,9 +135,11 @@ export class DivisionManageComponent implements OnInit {
           this.divisionType = DivisionType.Province;
           this._updateForm();
           this.state = FormState.none;
+          this.holdStatus = false;
           return;
         } else {
           if (this.state == FormState.edit || this.state == FormState.add) {
+            this.holdStatus = true;
             return;
           }
         }
@@ -134,6 +153,68 @@ export class DivisionManageComponent implements OnInit {
     this.state = FormState.none;
   }
 
+  async onSubmit() {
+    if (!this.divisionType) return;
+    let division = new Division();
+
+    if (this.state == FormState.add) {
+      division.Id = this.divisionForm.value.Id;
+      division.Name = this.divisionForm.value.Name;
+      division.DivisionType = this.divisionType + 1; // 新节点是当前区划的下一子节点
+      division.IsLeaf = true; // 新添加的节点一定是叶节点
+      division.ParentId = this.currentNode ? this.currentNode.id : null;
+      division.CreateTime = new Date();
+      division.UpdateTime = new Date();
+      let res = await this._divisionManageService.addDivision(division);
+      if (res) {
+        // console.log(res);
+
+        this.stationTree.addItem(this.currentNode, res);
+        this.onCancel();
+        MessageBar.response_success();
+      }
+    } else if (this.state == FormState.edit) {
+      division.Id = this.currentNode.id;
+      division.Name = this.divisionForm.value.Name;
+      division.Description = this.divisionForm.value.Description;
+      division.ParentId = this.currentNode.data.ParentId;
+      division.DivisionType = this.currentNode.data.DivisionType;
+      division.IsLeaf = this.currentNode.data.IsLeaf;
+      division.CreateTime = new Date(this.currentNode.data.CreateTime);
+      division.UpdateTime = new Date();
+      let res = await this._divisionManageService.editDivision(division);
+      if (res) {
+        this.currentNode.name = res.Name;
+        this.currentNode.data = res;
+
+        this.stationTree.editItem(this.currentNode, res);
+        this.onCancel();
+        MessageBar.response_success();
+      }
+    }
+  }
+  onCancel() {
+    this._updateForm();
+    this.state = FormState.none;
+    this.holdStatus = false;
+  }
+  async dialogMsg(msg: string) {
+    console.log(msg);
+    this.showDialog = false;
+
+    if (msg == "ok") {
+      let divisionId = this.currentNode && this.currentNode.id;
+      let res = await this._divisionManageService.deleteDivision(divisionId);
+      if (res) {
+        this.stationTree.deleteItem(this.currentNode, res);
+        this.currentNode = null;
+        this.divisionType = DivisionType.Province;
+        this._updateForm();
+        this.state = FormState.none;
+      }
+    }
+  }
+
   /*** private ***/
 
   /**
@@ -145,7 +226,12 @@ export class DivisionManageComponent implements OnInit {
 
       let parent = this.currentNode && this.currentNode.parent;
 
-      this.title = Language.DivisionType(this.divisionType) + "详情";
+      if ("DivisionType" in this.currentNode.data) {
+        this.title = Language.DivisionType(this.divisionType) + "详情";
+      } else if ("DivisionId" in this.currentNode.data) {
+        this.title = "垃圾厢房详情";
+      }
+
       let divisionFormData: DivisionFormData = {
         Name: data.Name,
         Id: data.Id,
@@ -184,86 +270,6 @@ export class DivisionManageComponent implements OnInit {
     this.divisionForm.get("Description").enable();
     if (this.state == FormState.edit) return;
     this.divisionForm.get("Id").enable();
-  }
-
-  async onSubmit() {
-    let division = new Division();
-
-    if (this.state == FormState.add) {
-      division.Id = this.divisionForm.value.Id;
-      division.Name = this.divisionForm.value.Name;
-      division.DivisionType = this.divisionType + 1; // 新节点是当前区划的下一子节点
-      division.IsLeaf = true; // 新添加的节点一定是叶节点
-      division.ParentId = this.currentNode ? this.currentNode.id : null;
-      division.CreateTime = new Date();
-      division.UpdateTime = new Date();
-      let res = await this._divisionManageService.addDivision(division);
-      if (res) {
-        console.log(res);
-        // let parentTreeNode = this.stationTree.garbageStationTree.flatToTree(
-        //   this.currentNode
-        // );
-        // let treeNode = new TreeNode();
-
-        // treeNode.name = res.Name;
-        // treeNode.checked = false;
-        // treeNode.id = res.Id;
-        // treeNode.data = res;
-        // treeNode.iconClass = this._nodeIconType.get(res.DivisionType);
-        // treeNode.parent = parentTreeNode ? parentTreeNode : null;
-
-        // this.stationTree.garbageStationTree.addNewItem(
-        //   this.currentNode,
-        //   treeNode
-        // );
-
-        this.stationTree.addItem(res);
-        // console.log(this.stationTree.garbageStationTree.dataSource.data);
-        this.onCancel();
-        MessageBar.response_success();
-      }
-    } else if (this.state == FormState.edit) {
-      division.Id = this.currentNode.id;
-      division.Name = this.divisionForm.value.Name;
-      division.Description = this.divisionForm.value.Description;
-      division.ParentId = this.currentNode.data.ParentId;
-      division.DivisionType = this.currentNode.data.DivisionType;
-      division.IsLeaf = this.currentNode.data.IsLeaf;
-      division.CreateTime = new Date(this.currentNode.data.CreateTime);
-      division.UpdateTime = new Date();
-      let res = await this._divisionManageService.editDivision(division);
-      if (res) {
-        this.currentNode.name = res.Name;
-        this.stationTree.garbageStationTree.editNode(
-          this.currentNode,
-          res.Name,
-          res
-        );
-        this.onCancel();
-        MessageBar.response_success();
-      }
-    }
-  }
-  onCancel() {
-    this._updateForm();
-    this.state = FormState.none;
-    this.holdStatus = false;
-  }
-  async dialogMsg(msg: string) {
-    console.log(msg);
-    this.showDialog = false;
-
-    if (msg == "ok") {
-      let divisionId = this.currentNode && this.currentNode.id;
-      let res = await this._divisionManageService.deleteDivision(divisionId);
-      if (res) {
-        this.stationTree.garbageStationTree.delItem(this.currentNode);
-        this.currentNode = null;
-        this.divisionType = DivisionType.Province;
-        this._updateForm();
-        this.state = FormState.none;
-      }
-    }
   }
 }
 

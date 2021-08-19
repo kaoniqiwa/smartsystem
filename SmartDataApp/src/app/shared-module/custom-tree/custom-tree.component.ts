@@ -35,12 +35,6 @@ export class CustomTreeComponent implements OnInit {
   @Output()
   itemExpandClickedEvent: EventEmitter<FlatNode> = new EventEmitter();
 
-  itemExpandClicked(node: FlatNode) {
-    if (this.itemExpandClickedEvent) {
-      this.itemExpandClickedEvent.emit(node);
-    }
-  }
-
   private _treeData: TreeNode[];
   public get treeData(): TreeNode[] {
     return this._treeData;
@@ -52,7 +46,9 @@ export class CustomTreeComponent implements OnInit {
   }
   @Input() mode = TreeListMode.nomal;
 
-  /***pmx start***/
+  /**
+   * pmx 2021-08-18
+   */
 
   // 保持选中状态
   @Input() holdStatus: boolean = true;
@@ -61,8 +57,6 @@ export class CustomTreeComponent implements OnInit {
   private _currentItem?: FlatNode;
 
   @Output() itemChange = new EventEmitter<FlatNode>();
-
-  /***pmx end***/
 
   ngOnInit() {
     this.dataSource.data = this.treeData;
@@ -81,6 +75,7 @@ export class CustomTreeComponent implements OnInit {
         ? existingNode
         : new FlatNode();
 
+    flatNode.expanded = false;
     flatNode.name = node.name;
     flatNode.level = level;
     flatNode.iconClass = node.iconClass;
@@ -205,6 +200,13 @@ export class CustomTreeComponent implements OnInit {
     };
     whileNode();
   }
+  itemExpandClicked(node: FlatNode) {
+    node.expanded = this.treeControl.isExpanded(node);
+    console.log(node, this.treeControl.isExpanded(node));
+    if (this.itemExpandClickedEvent) {
+    }
+    this.itemExpandClickedEvent.emit(node);
+  }
 
   get selectedItemClass() {
     return this.selectedItems.length ? this.selectedItems[0].id : null;
@@ -263,7 +265,12 @@ export class CustomTreeComponent implements OnInit {
     return this.flatNodeMap.get(node);
   }
 
-  addNewItem(node: FlatNode, addNode: TreeNode) {
+  /**
+   * 添加单个节点，而不是刷新整个树
+   * @param node
+   * @param addNode
+   */
+  addItem(node: FlatNode, addNode: TreeNode) {
     let treeDdata = this.treeData;
     const parentNode = this.flatNodeMap.get(node);
     if (parentNode) {
@@ -340,6 +347,7 @@ export class CustomTreeComponent implements OnInit {
   clearNestedNode() {
     this.nestedNodeMap = new Map<TreeNode, FlatNode>();
     this.flatNodeMap = new Map<FlatNode, TreeNode>();
+    this.selectedItems = [];
   }
 
   onTreeClicked(sender: any, args: any) {

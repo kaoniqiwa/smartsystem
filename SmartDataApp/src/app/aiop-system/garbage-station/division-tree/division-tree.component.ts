@@ -14,6 +14,7 @@ import {
 import { Output, EventEmitter } from "@angular/core";
 import { Division } from "../../../data-core/model/waste-regulation/division";
 import { GarbageStation } from "../../../data-core/model/waste-regulation/garbage-station";
+import { DivisionType } from "src/app/data-core/model/enum";
 @Component({
   selector: "hw-division-tree",
   templateUrl: "./division-tree.component.html",
@@ -24,10 +25,10 @@ export class DivisionTreeComponent implements OnInit {
   garbageStationTree: CustomTreeComponent;
 
   @Input()
-  onlyDivisionNode = false;
+  onlyDivisionNode = true;
 
   @Input()
-  treeHeight = "calc(100% - 20px)";
+  treeHeight = "calc(100% - 20px - 44px)";
 
   @Input()
   selectedItemFn: (
@@ -75,16 +76,6 @@ export class DivisionTreeComponent implements OnInit {
   @Input()
   treeListMode = TreeListMode.rightBtn;
 
-  searchTree = (text: string) => {
-    const nodeType = this.onlyDivisionNode
-      ? NodeTypeEnum.map
-      : NodeTypeEnum.station;
-    const dataSource = this.stationTreeService.filterNodes(text, nodeType);
-    this.garbageStationTree.clearNestedNode();
-    this.garbageStationTree.dataSource.data = dataSource;
-    this.garbageStationTree.treeControl.expandAll();
-  };
-
   /**
    * pmx 2021-08-18
    */
@@ -96,45 +87,55 @@ export class DivisionTreeComponent implements OnInit {
 
   searctText: string = "";
 
+  divisions: Division[] = [];
+
+  private _nodeIconType = new Map([
+    [DivisionType.City, "howell-icon-earth"],
+    [DivisionType.County, "howell-icon-map5"],
+    [DivisionType.Committees, "howell-icon-map5"],
+  ]);
+  // 抛给 division-manage-tree
+  @Output() searchChange = new EventEmitter<string>();
+
   constructor(
     private stationTreeService: StationTreeService,
-    public dataService: DivisionTreeSerevice
+    public dataService: DivisionTreeSerevice,
+    private _divisionTreeService: DivisionTreeSerevice
   ) {}
 
   async ngOnInit() {
-    this.dataService.divisions = await this.dataService.requestDivision();
-    const ancestorDivision = this.dataService.divisions.filter(
-      (x) => !x.ParentId
+    this.divisions = await this._divisionTreeService.requestDivision();
+    // console.log("区划信息", this.divisions);
+
+    this.dataService.divisions = this.divisions;
+
+    const ancestorDivision = this.divisions.filter(
+      (x) => x.DivisionType == DivisionType.City
     );
 
-    this.stationTreeService.appendDivisionModel(
-      this.dataService.divisions,
+    // 保存区划数据
+    const nodes = this.stationTreeService.convertTreeNode(
+      this.divisions,
       this.DivisionRightButtons
     );
-    if (this.onlyDivisionNode) {
-      const nodes = this.stationTreeService.convertTreeNode(
-        this.dataService.divisions
-      );
-      this.stationTreeService.dataSource = nodes;
-    } else {
-      if (ancestorDivision) {
-        for (let i = 0; i < ancestorDivision.length; i++) {
-          const element = ancestorDivision[i];
-          let stations = await this.dataService.requestGarbageStation(
-            element.Id
-          );
-          this.stationTreeService.appendGarbageStationModel(
-            stations,
-            this.GarbageStationRightButtons
-          );
-        }
+    this.stationTreeService.dataSource = nodes;
+
+    // 如果要显示厢房，append厢房数据
+    if (!this.onlyDivisionNode) {
+      for (let i = 0; i < ancestorDivision.length; i++) {
+        const element = ancestorDivision[i];
+        let stations = await this._divisionTreeService.requestGarbageStation(
+          element.Id
+        );
+        this.stationTreeService.appendGarbageStationModel(
+          stations,
+          this.GarbageStationRightButtons
+        );
       }
     }
 
     this.stationTreeService.loadStationTree();
-    if (this.TreeNodeLoadedEvent) {
-      this.TreeNodeLoadedEvent.emit(this.stationTreeService.treeNode);
-    }
+    this.TreeNodeLoadedEvent.emit(this.stationTreeService.treeNode);
   }
 
   findNode(id: string) {
@@ -182,10 +183,6 @@ export class DivisionTreeComponent implements OnInit {
       }
     }
   }
-  addItem(division: Division) {
-    this.stationTreeService.appendDivisionModel([division]);
-    // this.stationTreeService.loadStationTree();
-  }
 
   onPanelClicked() {
     if (this.PanelClickedEvent) {
@@ -197,10 +194,69 @@ export class DivisionTreeComponent implements OnInit {
   }
   /**
    *  pmx 2021-08-18
-   * @param searctText
    */
   searchHandler(searctText: string) {
     console.log(searctText);
-    if (this.searctText == searctText) return;
+    this.searctText = searctText;
+    const nodeType = this.onlyDivisionNode
+      ? NodeTypeEnum.map
+      : NodeTypeEnum.station;
+    const dataSource = this.stationTreeService.filterNodes(
+      this.searctText,
+      nodeType
+    );
+    this.stationTreeService.treeNode = dataSource;
+    this.garbageStationTree.clearNestedNode();
+    this.garbageStationTree.dataSource.data = dataSource;
+
+    if (searctText == "") this.garbageStationTree.treeControl.collapseAll();
+    else this.garbageStationTree.treeControl.expandAll();
+
+    this.searchChange.emit(searctText);
+  }
+
+  /**
+   * 添加新区划
+   * @param node
+   * @param division
+   */
+  addItem(node: FlatNode, division: Division) {
+    // 更新本地数据
+    this.stationTreeService.appendDivisionModel([division]);
+
+    // 修改树
+    let parentTreeNode = this.garbageStationTree.flatToTree(node);
+    let treeNode = new TreeNode();
+    treeNode.name = division.Name;
+    treeNode.checked = false;
+    treeNode.id = division.Id;
+    treeNode.data = division;
+    treeNode.iconClass = this._nodeIconType.get(division.DivisionType);
+    treeNode.parent = parentTreeNode ? parentTreeNode : null;
+
+    this.garbageStationTree.addItem(node, treeNode);
+  }
+  /**
+   *  删除区划
+   * @param node
+   * @param division
+   */
+  deleteItem(node: FlatNode, division: Division) {
+    this.stationTreeService.deleteDivisionModel([division]);
+
+    // 修改树
+    this.garbageStationTree.delItem(node);
+  }
+  /**
+   *  编辑区划
+   * @param node
+   * @param division
+   */
+  editItem(node: FlatNode, division: Division) {
+    console.log(node, division);
+
+    this.stationTreeService.editDivisionModel([division]);
+    // 修改树
+    this.garbageStationTree.editNode(node, division.Name, division);
   }
 }

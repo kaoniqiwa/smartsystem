@@ -36,6 +36,7 @@ export class DivisionTreeSerevice {
    */
   async requestDivision() {
     let divisionParams = new GetDivisionsParams();
+    divisionParams.PageSize = 9999;
     const response = await this.divisionService.list(divisionParams);
     return response.Data;
   }

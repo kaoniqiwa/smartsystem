@@ -3,6 +3,7 @@
     <h2 class="m-b-20">投放点列表</h2>
     <hw-division-tree
       #stationTree
+      [onlyDivisionNode]="false"
       [treeHeight]="'calc(100% - 80px)'"
       [selectedItemFn]="selectDivisionClick"
       [GarbageStationRightButtons]="GarbageStationRightButtons"

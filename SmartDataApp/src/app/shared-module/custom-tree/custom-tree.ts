@@ -21,6 +21,7 @@ export class InputTreeNode<T = any> extends TreeNode<T> {
 /** Flat node with expandable and level information */
 export class FlatNode<T = any> {
   expandable: boolean;
+  expanded: boolean;
   name: string;
   level: number;
   checked: boolean;
