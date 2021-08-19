@@ -60,6 +60,7 @@ export class DivisionManageComponent implements OnInit {
     }),
   });
   holdStatus = false;
+  cancleWhenClose = true;
 
   get enableAddBtn() {
     return this.divisionType < 4 && this.divisionType > 0;
@@ -119,8 +120,25 @@ export class DivisionManageComponent implements OnInit {
     this.holdStatus = false;
   }
   itemExpandHandler(node: FlatNode<any>) {
-    console.log("展开是", node);
-    console.log(this.currentNode);
+    if (this.cancleWhenClose) {
+      if (!node.expanded) {
+        console.log("当前节点", this.currentNode);
+        console.log("关闭的节点", node);
+        let parentNode = this.currentNode.parent;
+        while (parentNode) {
+          if (parentNode.id == node.id) break;
+          parentNode = parentNode.parent;
+        }
+        // console.log(parentNode);
+        if (parentNode) {
+          this.currentNode = null;
+          this.divisionType = DivisionType.Province;
+          this._updateForm();
+          this.state = FormState.none;
+          this.holdStatus = false;
+        }
+      }
+    }
   }
   /**
    * 点击树节点

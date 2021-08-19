@@ -61,9 +61,7 @@ export class DivisionTreeComponent implements OnInit {
     new EventEmitter();
 
   itemExpandClicked(node: FlatNode<Division | GarbageStation>) {
-    if (this.itemExpandClickedEvent) {
-      this.itemExpandClickedEvent.emit(node);
-    }
+    this.itemExpandClickedEvent.emit(node);
   }
 
   @Output()
@@ -82,6 +80,8 @@ export class DivisionTreeComponent implements OnInit {
 
   // 保持选中状态
   @Input() holdStatus: boolean = true;
+
+  @Input() cancleWhenClose: boolean = false;
 
   @Output() itemChange = new EventEmitter<FlatNode>();
 

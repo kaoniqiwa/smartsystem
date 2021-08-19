@@ -53,6 +53,9 @@ export class CustomTreeComponent implements OnInit {
   // 保持选中状态
   @Input() holdStatus: boolean = true;
 
+  // 当关闭的时候，取消当前节点树的选中
+  @Input() cancleWhenClose: boolean = false;
+
   // 当前选中的 Item
   private _currentItem?: FlatNode;
 
@@ -200,12 +203,31 @@ export class CustomTreeComponent implements OnInit {
     };
     whileNode();
   }
+
   itemExpandClicked(node: FlatNode) {
-    node.expanded = this.treeControl.isExpanded(node);
-    console.log(node, this.treeControl.isExpanded(node));
-    if (this.itemExpandClickedEvent) {
-    }
+    const expanded: boolean = this.treeControl.isExpanded(node);
+    node.expanded = expanded;
     this.itemExpandClickedEvent.emit(node);
+
+    if (this.cancleWhenClose) {
+      if (!expanded) {
+        console.log("当前节点", this._currentItem);
+        console.log("关闭的节点", node);
+        let parentNode = this._currentItem.parent;
+        while (parentNode) {
+          if (parentNode.id == node.id) break;
+          parentNode = parentNode.parent;
+        }
+        // console.log(parentNode);
+        if (parentNode) {
+          let index = this.selectedItems.findIndex(
+            (node) => node.id == this._currentItem.id
+          );
+          if (index > -1) this.selectedItems.splice(index, 1);
+          this._currentItem = void 0;
+        }
+      }
+    }
   }
 
   get selectedItemClass() {
