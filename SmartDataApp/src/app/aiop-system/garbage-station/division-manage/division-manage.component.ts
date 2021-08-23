@@ -1,5 +1,11 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidatorFn,
+  Validators,
+} from "@angular/forms";
 import { map } from "rxjs/operators";
 import { AppCaChe } from "src/app/common/tool/app-cache/app-cache";
 import { Language } from "src/app/common/tool/language";
@@ -46,10 +52,13 @@ export class DivisionManageComponent implements OnInit {
       value: "",
       disabled: true,
     }),
-    Id: new FormControl({
-      value: "",
-      disabled: true,
-    }),
+    Id: new FormControl(
+      {
+        value: "",
+        disabled: true,
+      },
+      Validators.required
+    ),
     ParentName: new FormControl({
       value: "",
       disabled: true,
@@ -59,7 +68,11 @@ export class DivisionManageComponent implements OnInit {
       disabled: true,
     }),
   });
+
   holdStatus = false;
+  cancleWhenCollapse = true;
+
+  addPlaceHolder = "";
 
   get enableAddBtn() {
     return this.divisionType < 4 && this.divisionType > 0;
@@ -85,24 +98,35 @@ export class DivisionManageComponent implements OnInit {
     console.log("添加");
     console.log("division type", this.divisionType);
     this.state = FormState.add;
+    this.addPlaceHolder = "请填写数字";
     this._operateForm();
-    this.divisionForm.reset();
 
+    // 填写上级区划内容
+    let parent = this.currentNode && this.currentNode.parent;
+    let divisionFormData: DivisionFormData = {
+      Name: "",
+      Id: "",
+      ParentName: parent && parent.name,
+      Description: "",
+    };
+    this.divisionForm.patchValue(divisionFormData);
+
+    // 添加区级，不需要选中节点
     if (this.currentNode) this.holdStatus = true;
   }
   editBtnClick() {
+    if (this.state == FormState.edit) {
+      return;
+    }
+
     // 如果当前是添加状态，则需要清空输入内容，填入编辑状态的内容
     if (this.state == FormState.add) {
       this._updateForm();
     }
 
-    if (this.state == FormState.edit) {
-      return;
-    }
     console.log("编辑");
     this.state = FormState.edit;
     this._operateForm();
-
     this.holdStatus = true;
   }
   async delBtnClick() {
@@ -117,49 +141,43 @@ export class DivisionManageComponent implements OnInit {
     this._updateForm();
     this.state = FormState.none;
     this.holdStatus = false;
+    this.addPlaceHolder = "";
   }
-  itemExpandHandler(node: FlatNode<any>) {
-    console.log("展开是", node);
-    console.log(this.currentNode);
+  itemExpandHandler(node: FlatNode<any> | null) {
+    console.log(`展开/折叠${node.name}节点`);
   }
-  /**
-   * 点击树节点
-   * @param item FlatNode
-   */
-  itemChangeHandler(item: FlatNode<Division>) {
-    console.log("节点", item);
-    if (this.currentNode) {
-      if (this.currentNode.id == item.id) {
-        if (!this.holdStatus) {
-          this.currentNode = null;
-          this.divisionType = DivisionType.Province;
-          this._updateForm();
-          this.state = FormState.none;
-          this.holdStatus = false;
+
+  itemChangeHandler(node: FlatNode<Division> | null) {
+    console.log("点击节点", node);
+
+    if (node == null) {
+      this.divisionType = DivisionType.Province;
+    } else {
+      this.divisionType = node.data.DivisionType;
+      if (this.currentNode && this.currentNode.id == node.id) {
+        if (this.state == FormState.edit || this.state == FormState.add) {
           return;
-        } else {
-          if (this.state == FormState.edit || this.state == FormState.add) {
-            this.holdStatus = true;
-            return;
-          }
         }
-      } else {
-        this.holdStatus = false;
       }
     }
-    this.currentNode = item;
-    this.divisionType = this.currentNode.data.DivisionType;
-    this._updateForm();
+
     this.state = FormState.none;
+    this.holdStatus = false;
+    this.currentNode = node;
+    this._updateForm();
   }
 
   async onSubmit() {
+    if (!this._checkForm()) return;
+
+    // 不能是垃圾厢房
     if (!this.divisionType) return;
     let division = new Division();
 
     if (this.state == FormState.add) {
-      division.Id = this.divisionForm.value.Id;
-      division.Name = this.divisionForm.value.Name;
+      division.Id = this.divisionForm.value.Id.trim();
+      division.Name = this.divisionForm.value.Name.trim();
+      division.Description = this.divisionForm.value.Description;
       division.DivisionType = this.divisionType + 1; // 新节点是当前区划的下一子节点
       division.IsLeaf = true; // 新添加的节点一定是叶节点
       division.ParentId = this.currentNode ? this.currentNode.id : null;
@@ -175,7 +193,7 @@ export class DivisionManageComponent implements OnInit {
       }
     } else if (this.state == FormState.edit) {
       division.Id = this.currentNode.id;
-      division.Name = this.divisionForm.value.Name;
+      division.Name = this.divisionForm.value.Name.trim();
       division.Description = this.divisionForm.value.Description;
       division.ParentId = this.currentNode.data.ParentId;
       division.DivisionType = this.currentNode.data.DivisionType;
@@ -197,6 +215,7 @@ export class DivisionManageComponent implements OnInit {
     this._updateForm();
     this.state = FormState.none;
     this.holdStatus = false;
+    this.addPlaceHolder = "";
   }
   async dialogMsg(msg: string) {
     console.log(msg);
@@ -216,6 +235,24 @@ export class DivisionManageComponent implements OnInit {
   }
 
   /*** private ***/
+
+  private _checkForm() {
+    if (!this.divisionForm.get("Id").value) {
+      MessageBar.response_warning("请填写区划ID");
+      return false;
+    }
+
+    if (this.divisionForm.get("Id").invalid) {
+      MessageBar.response_warning("请填写正确的区划ID");
+      return false;
+    }
+    if (!this.divisionForm.get("Name").value) {
+      MessageBar.response_warning("请填写区划名称");
+      return false;
+    }
+
+    return true;
+  }
 
   /**
    * 点击树节点后，更新表单字段信息(可读)

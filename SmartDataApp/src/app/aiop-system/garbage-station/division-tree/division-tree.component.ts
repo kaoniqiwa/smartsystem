@@ -57,14 +57,9 @@ export class DivisionTreeComponent implements OnInit {
   }
 
   @Output()
-  itemExpandClickedEvent: EventEmitter<FlatNode<Division | GarbageStation>> =
-    new EventEmitter();
-
-  itemExpandClicked(node: FlatNode<Division | GarbageStation>) {
-    if (this.itemExpandClickedEvent) {
-      this.itemExpandClickedEvent.emit(node);
-    }
-  }
+  itemExpandClickedEvent: EventEmitter<FlatNode<
+    Division | GarbageStation
+  > | null> = new EventEmitter();
 
   @Output()
   TreeNodeLoadedEvent: EventEmitter<TreeNode<GarbageStation>[]> =
@@ -83,7 +78,9 @@ export class DivisionTreeComponent implements OnInit {
   // 保持选中状态
   @Input() holdStatus: boolean = true;
 
-  @Output() itemChange = new EventEmitter<FlatNode>();
+  @Input() cancleWhenCollapse: boolean = false;
+
+  @Output() itemChange = new EventEmitter<FlatNode | null>();
 
   searctText: string = "";
 
@@ -105,7 +102,7 @@ export class DivisionTreeComponent implements OnInit {
 
   async ngOnInit() {
     this.divisions = await this._divisionTreeService.requestDivision();
-    // console.log("区划信息", this.divisions);
+    console.log("区划信息", this.divisions);
 
     this.dataService.divisions = this.divisions;
 
@@ -189,7 +186,12 @@ export class DivisionTreeComponent implements OnInit {
       this.PanelClickedEvent.emit();
     }
   }
-  itemChangeHandler(node: FlatNode) {
+
+  itemExpandClicked(node: FlatNode<Division | GarbageStation> | null) {
+    this.itemExpandClickedEvent.emit(node);
+  }
+
+  itemChangeHandler(node: FlatNode | null) {
     this.itemChange.emit(node);
   }
   /**

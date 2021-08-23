@@ -53,8 +53,11 @@ export class CustomTreeComponent implements OnInit {
   // 保持选中状态
   @Input() holdStatus: boolean = true;
 
+  // 当关闭的时候，取消当前节点树的选中
+  @Input() cancleWhenCollapse: boolean = false;
+
   // 当前选中的 Item
-  private _currentItem?: FlatNode;
+  private _currentItem: FlatNode | null = null;
 
   @Output() itemChange = new EventEmitter<FlatNode>();
 
@@ -200,12 +203,35 @@ export class CustomTreeComponent implements OnInit {
     };
     whileNode();
   }
+
   itemExpandClicked(node: FlatNode) {
-    node.expanded = this.treeControl.isExpanded(node);
-    console.log(node, this.treeControl.isExpanded(node));
-    if (this.itemExpandClickedEvent) {
-    }
+    const expanded: boolean = this.treeControl.isExpanded(node);
+    node.expanded = expanded;
+
+    // 抛出 toogle 的节点
     this.itemExpandClickedEvent.emit(node);
+
+    if (!this._currentItem) return;
+    if (this.cancleWhenCollapse) {
+      if (!expanded) {
+        console.log("当前节点", this._currentItem);
+        console.log("关闭的节点", node);
+        let parentNode = this._currentItem.parent;
+        while (parentNode) {
+          if (parentNode.id == node.id) break;
+          parentNode = parentNode.parent;
+        }
+        if (parentNode) {
+          let index = this.selectedItems.findIndex(
+            (node) => node.id == this._currentItem.id
+          );
+          if (index > -1) this.selectedItems.splice(index, 1);
+          this._currentItem = null;
+          // 取消选中
+          this.itemChange.emit(this._currentItem);
+        }
+      }
+    }
   }
 
   get selectedItemClass() {
@@ -236,8 +262,6 @@ export class CustomTreeComponent implements OnInit {
     if (this.selectedItemFn && this.mode != TreeListMode.checkedBox)
       this.selectedItemFn(item);
 
-    this.itemChange.emit(item);
-
     if (this._currentItem) {
       let index = this.selectedItems.findIndex(
         (node) => node.id == this._currentItem.id
@@ -247,11 +271,13 @@ export class CustomTreeComponent implements OnInit {
       // 特殊操作
       if (this._currentItem.id == item.id) {
         if (!this.holdStatus) {
-          this._currentItem = void 0;
+          this._currentItem = null;
+          this.itemChange.emit(this._currentItem);
           return;
         }
       }
     }
+    this.itemChange.emit(item);
     this.selectedItems.push(item);
     this._currentItem = item;
   }
@@ -348,6 +374,7 @@ export class CustomTreeComponent implements OnInit {
     this.nestedNodeMap = new Map<TreeNode, FlatNode>();
     this.flatNodeMap = new Map<FlatNode, TreeNode>();
     this.selectedItems = [];
+    this._currentItem = null;
   }
 
   onTreeClicked(sender: any, args: any) {

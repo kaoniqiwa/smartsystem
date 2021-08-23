@@ -50,6 +50,7 @@
         (searchChange)="searchChangeHandler($event)"
         (itemExpandClickedEvent)="itemExpandHandler($event)"
         [holdStatus]="holdStatus"
+        [cancleWhenCollapse]="cancleWhenCollapse"
         [ngStyle]="{ 'user-select': 'none' }"
       ></hw-division-tree>
     </div>
@@ -60,16 +61,33 @@
       <h2 class="m-b-20">{{ title }}</h2>
       <form [formGroup]="divisionForm">
         <div class="form-group">
-          <label class="form-label tran-input-label">区划ID </label>
-          <input class="form-control custom" formControlName="Id" />
+          <label class="form-label tran-input-label"> 区划ID </label>
+          <span
+            class="text-danger p-t-10"
+            style="vertical-align: sub"
+            *ngIf="state == 1"
+            >*</span
+          >
+          <input
+            class="form-control custom"
+            formControlName="Id"
+            [placeholder]="addPlaceHolder"
+            pattern="[0-9]+"
+          />
         </div>
 
         <div class="form-group">
           <label class="form-label tran-input-label"> 区划名称 </label>
+          <span
+            class="text-danger p-t-10"
+            style="vertical-align: sub"
+            *ngIf="state == 1"
+            >*</span
+          >
           <input class="form-control custom" formControlName="Name" />
         </div>
 
-        <div class="form-group" [hidden]="state == 1">
+        <div class="form-group">
           <label class="form-label tran-input-label"> 上级区划名称 </label>
           <input class="form-control custom" formControlName="ParentName" />
         </div>
