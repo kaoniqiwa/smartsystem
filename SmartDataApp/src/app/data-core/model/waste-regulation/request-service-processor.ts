@@ -5,6 +5,7 @@ import { PagedList } from "../page";
 import { HowellResponse } from "../response";
 
 export class ServiceHelper {
+  static pageMaxSize = 99999;
   static cache = new AppCaChe(1000 * 60 * 30);
   static key = {
     Division: DivisionUrl.basic(),

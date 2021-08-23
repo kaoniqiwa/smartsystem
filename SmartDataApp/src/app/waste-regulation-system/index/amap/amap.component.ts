@@ -42,6 +42,7 @@ import { Camera } from "../../../data-core/model/waste-regulation/camera";
 import { SessionUser } from "../../../common/tool/session-user";
 import { GetGarbageStationStatisticNumbersParams } from "../../../data-core/model/waste-regulation/garbage-station-number-statistic";
 import { StationState } from "../../../data-core/model/enum";
+import { EnumHelper } from "src/app/common/tool/enum-helper";
 
 declare var $: any;
 
@@ -382,7 +383,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
   async getBaseDivision() {
     const params = new GetDivisionsParams();
     params.PageSize = 9999;
-    params.DivisionType = this.Resource.ResourceType;
+    params.DivisionType = EnumHelper.Convert(this.Resource.ResourceType);
 
     const response = await this.divisionService.get(this.Resource.Id);
     if (response) {

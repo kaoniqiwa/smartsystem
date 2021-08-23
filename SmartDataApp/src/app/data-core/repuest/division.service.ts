@@ -26,11 +26,15 @@ import { HowellAuthHttpService } from "./howell-auth-http.service";
 import { ServiceHelper } from "../model/waste-regulation/request-service-processor";
 import { DivisionUrl } from "../url/waste-regulation/division-url";
 import { classToPlain } from "class-transformer";
+import { SessionUser } from "src/app/common/tool/session-user";
 @Injectable({
   providedIn: "root",
 })
 export class DivisionRequestService {
-  constructor(private requestService: HowellAuthHttpService) {}
+  user: SessionUser;
+  constructor(private requestService: HowellAuthHttpService) {
+    this.user = new SessionUser();
+  }
   async create(item: Division) {
     let data = classToPlain(item);
     // SaveModel.toModel(item, SaveModel.formMustField.division)
@@ -97,19 +101,32 @@ export class DivisionRequestService {
     });
   }
 
+  children(parentId?: string) {
+    if (!parentId) {
+      if (this.user.userDivision && this.user.userDivision.length > 0) {
+        parentId = this.user.userDivision[0].Id;
+      }
+    }
+
+    let params = new GetDivisionsParams();
+    params.ParentId = parentId;
+    return this.list(params);
+  }
+
   async list(item?: GetDivisionsParams) {
     if (!item) {
       let result = ServiceHelper.cache.get<PagedList<Division>>(
         ServiceHelper.key.Division
       );
       if (result) {
+        console.log("使用缓存");
         return result;
       }
 
-      item = {
-        PageSize: 99999,
-      };
-      console.log("使用缓存");
+      item = new GetDivisionsParams();
+    }
+    if (!item.PageSize) {
+      item.PageSize = ServiceHelper.pageMaxSize;
     }
     let response = await this.requestService
       .post<GetDivisionsParams, HowellResponse<PagedList<Division>>>(

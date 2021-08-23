@@ -11,6 +11,8 @@ import { BaseUrl } from "../../data-core/url/IUrl";
 import { SessionUser } from "../../common/tool/session-user";
 import { Router } from "@angular/router";
 import { Base64 } from "../../common/tool/base64";
+import { User, UserResourceRole } from "src/app/data-core/model/page";
+import { EnumHelper } from "src/app/common/tool/enum-helper";
 @Injectable()
 export class UserLoginService {
   sessionUser: SessionUser;
@@ -103,53 +105,54 @@ export class UserLoginService {
           "GET",
           userUrl
         );
+
+        // {
+        //   Id: string;
+        //   Role: {
+        //     PictureData: number;
+        //     PrivacyData: number;
+        //     StaticData: number;
+        //     UserData: number;
+        //   }[];
+        //   Resources: Array<{
+        //     Id: string;
+        //     Name: string;
+        //     ResourceType: number;
+        //   }>;
+        // }
+
         this.httpService
           .auth(userUrl, authHeader)
           .pipe(catchError(this.handleLoginError2<any>()))
-          .subscribe(
-            (result: {
-              Id: string;
-              Role: {
-                PictureData: number;
-                PrivacyData: number;
-                StaticData: number;
-                UserData: number;
-              }[];
-              Resources: Array<{
-                Id: string;
-                Name: string;
-                ResourceType: number;
-              }>;
-            }) => {
-              if (result) {
-                console.log(result);
-                // sessionStorage.setItem('userid', );
-                if (
-                  result.Role &&
-                  result.Role.length > 0 &&
-                  result.Role[0].PictureData === 1 &&
-                  result.Role[0].PrivacyData === 1 &&
-                  result.Role[0].StaticData === 1 &&
-                  result.Role[0].UserData === 1
-                ) {
-                  this.router.navigateByUrl("system-mode");
-                } else {
-                  this.router.navigateByUrl("waste-regulation");
-                }
-
-                if (this.onLoginSuccessed) {
-                  this.onLoginSuccessed();
-                }
-
-                this.memory(
-                  this.formVal.name,
-                  this.formVal.pwd,
-                  result.Id,
-                  result.Resources
-                );
+          .subscribe((result: User) => {
+            if (result) {
+              console.log(result);
+              // sessionStorage.setItem('userid', );
+              if (
+                result.Role &&
+                result.Role.length > 0 &&
+                result.Role[0].PictureData === 1 &&
+                result.Role[0].PrivacyData === 1 &&
+                result.Role[0].StaticData === 1 &&
+                result.Role[0].UserData === 1
+              ) {
+                this.router.navigateByUrl("system-mode");
+              } else {
+                this.router.navigateByUrl("waste-regulation");
               }
+
+              if (this.onLoginSuccessed) {
+                this.onLoginSuccessed();
+              }
+
+              this.memory(
+                this.formVal.name,
+                this.formVal.pwd,
+                result.Id,
+                result.Resources
+              );
             }
-          );
+          });
       }
       return of(result as T);
     };
@@ -159,7 +162,7 @@ export class UserLoginService {
     name: string,
     pwd: string,
     id: string,
-    userDivision: Array<{ Id: string; Name: string; ResourceType: number }>
+    userDivision: Array<UserResourceRole>
   ) {
     this.sessionUser.autoLogin = this.autoLogin_;
     this.sessionUser.memoryPwd = this.jpwd_;
@@ -167,6 +170,11 @@ export class UserLoginService {
     this.sessionUser.pwd = pwd;
     this.sessionUser.id = id;
     this.sessionUser.userDivision = userDivision;
+    if (userDivision.length > 0) {
+      this.sessionUser.userDivisionType = EnumHelper.Convert(
+        userDivision[0].ResourceType
+      );
+    }
   }
 
   async auth(name: string) {

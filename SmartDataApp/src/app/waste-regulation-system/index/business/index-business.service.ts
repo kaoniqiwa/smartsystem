@@ -3,24 +3,27 @@ import { StatisticalDataBufferService } from "../business-card-grid/buffer/stati
 import { SessionUser } from "../../../common/tool/session-user";
 import { DivisionBusinessService } from "../business-card-grid/division-business.service";
 import { DivisionType, EventType } from "../../../data-core/model/enum";
+import { IBusinessConfig } from "src/app/shared-module/card-component/business-card-factory";
 @Injectable()
-export class BusinessService {
+export class IndexBusinessService {
   user: SessionUser;
   logoTitle = "";
   divisionParam: {
     divisionType: number /**父 区划类别 */;
     divisionsIds: Array<string>;
   };
-  illegalDropTopCardConfig: Array<any>; /**乱扔垃圾排名table */
-  mixedIntoDropTopCardConfig: Array<any>; /**混合投放排名 table */
-  illegalDropHistoryCardConfig: Array<any>; /**乱扔垃圾记录 折线图 */
-  mixedIntoHistoryCardConfig: Array<any>; /**混合投放记录 折线图  */
-  divisionCardConfig: Array<any>; /**区 街道 居委 列表 */
-  stationDisposeScoreCardConfig: Array<any>; /**小包垃圾处置 table */
-  devCardConfig: Array<any>; /**设备状态 */
-  inspectionCardConfig: Array<any>; /**巡检 */
-  divisionGarbageSpCardConfig: Array<any>; /**区划 投放点 状态数据 */
-  illegalDropEventCardConfig: Array<any>; /**报警推送 */
+  illegalDropTopCardConfig: Array<IBusinessConfig>; /**乱扔垃圾排名table */
+  mixedIntoDropTopCardConfig: Array<IBusinessConfig>; /**混合投放排名 table */
+  illegalDropHistoryCardConfig: Array<IBusinessConfig>; /**乱扔垃圾记录 折线图 */
+  mixedIntoHistoryCardConfig: Array<IBusinessConfig>; /**混合投放记录 折线图  */
+  divisionCardConfig: Array<IBusinessConfig>; /**区 街道 居委 列表 */
+  stationDisposeScoreCardConfig: Array<IBusinessConfig>; /**小包垃圾处置 table */
+  devCardConfig: Array<IBusinessConfig>; /**设备状态 */
+  inspectionCardConfig: Array<IBusinessConfig>; /**巡检 */
+  divisionGarbageSpCardConfig: Array<IBusinessConfig>; /**区划 投放点 状态数据 */
+  illegalDropEventCardConfig: Array<IBusinessConfig>; /**报警推送 */
+  garbageNumberCompareCardConfig: Array<IBusinessConfig>;
+  processNumberCardConfig: Array<IBusinessConfig>;
   constructor(
     private bufferService: StatisticalDataBufferService,
     private divisionBusinessService: DivisionBusinessService
@@ -41,21 +44,38 @@ export class BusinessService {
     this.stationDisposeScoreCard();
     this.devCard();
     this.divisionGarbageSpCard();
-    this.illegalDropEventCard();
+    this.initProcessNumberCard();
+    // if (this.user.userDivisionType == DivisionType.County) {
+    //   this.illegalDropEventCard();
+    // } else {
+    //   this.garbageNumberCompareCard();
+    // }
   }
 
-  async illegalDropEventCard() {
-    const param = await this.eventDropTopCardParam();
-    if (param.divisionType == DivisionType.County) {
-      this.illegalDropEventCardConfig = new Array();
-      this.illegalDropEventCardConfig.push({
-        business: "IllegalDropEvent",
-        flipTime: 60,
-        cardType: "ImageThemeCardComponent",
-        state: false,
-      });
-    }
+  initProcessNumberCard() {
+    this.processNumberCardConfig = new Array();
+    // this.processNumberCardConfig.push({
+    //   business:"",
+    //   cardType: "GarbageProcessNumberCardComponent"
+    // })
   }
+
+  /** 垃圾数量对比 */
+  async garbageNumberCompareCard() {
+    this.garbageNumberCompareCardConfig = new Array();
+  }
+  /** 乱扔垃圾事件 */
+  async illegalDropEventCard() {
+    this.illegalDropEventCardConfig = new Array();
+    this.illegalDropEventCardConfig.push({
+      business: "IllegalDropEvent",
+      flipTime: 60,
+      cardType: "ImageThemeCardComponent",
+      state: false,
+    });
+  }
+
+  async EventProcessCard() {}
 
   divisionGarbageSpCard() {
     this.divisionGarbageSpCardConfig = new Array();
@@ -145,27 +165,24 @@ export class BusinessService {
   }
 
   async illegalDropTopCard() {
-    const param = await this.eventDropTopCardParam();
-    this.user.userDivisionType = param.divisionType + "";
     this.illegalDropTopCardConfig = new Array();
     this.illegalDropTopCardConfig.push({
       business: "DropOrder",
       cardType: "OrderTableCardComponent",
       //divisionsIds: param.divisionsIds,
-      divisionId: this.user.userDivision.pop().Id,
+      divisionId: this.user.userDivision[0].Id,
       dataTime: 60,
       eventType: EventType.IllegalDrop,
-      divisionType: param.divisionType,
+      divisionType: this.user.userDivisionType,
     });
     //默认行政区 用于事件卡片
     this.divisionBusinessService.eventDropCard.divisionType =
-      param.divisionType;
+      this.user.userDivisionType;
     this.divisionBusinessService.eventDropCard.dropDivisionType =
-      param.divisionType;
+      this.user.userDivisionType;
   }
 
   async mixedIntoDropTopCard() {
-    const param = await this.eventDropTopCardParam();
     this.mixedIntoDropTopCardConfig = new Array();
     this.mixedIntoDropTopCardConfig.push({
       business: "MixedIntoDropOrder",
@@ -174,42 +191,7 @@ export class BusinessService {
       divisionId: this.user.userDivision.pop().Id,
       dataTime: 60,
       eventType: EventType.MixedInto,
-      divisionType: param.divisionType,
+      divisionType: this.user.userDivisionType,
     });
-  }
-
-  async eventDropTopCardParam() {
-    if (this.divisionParam) return this.divisionParam;
-    else {
-      const parentDivision = await this.bufferService.ancestorDivisions(
-          null,
-          this.user.userDivision.pop().Id
-        ),
-        childrenDivision = await this.bufferService.ancestorDivisions(
-          this.user.userDivision.pop().Id
-        ),
-        divisionsIds = new Array<string>();
-      if (parentDivision[0].DivisionType == DivisionType.City)
-        childrenDivision
-          .filter(
-            (d) =>
-              d.DivisionType == DivisionType.County &&
-              d.ParentId == parentDivision[0].Id
-          )
-          .map((f) => divisionsIds.push(f.Id));
-      else if (parentDivision[0].DivisionType == DivisionType.County)
-        childrenDivision
-          .filter(
-            (d) =>
-              d.DivisionType == DivisionType.Committees &&
-              d.ParentId == parentDivision[0].Id
-          )
-          .map((f) => divisionsIds.push(f.Id));
-      this.divisionParam = {
-        divisionType: parentDivision[0].DivisionType,
-        divisionsIds: divisionsIds,
-      };
-      return this.divisionParam;
-    }
   }
 }

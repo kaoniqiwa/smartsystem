@@ -16,6 +16,8 @@ import { UserUrl } from "../../data-core/url/user-url";
 import { BaseUrl } from "../../data-core/url/IUrl";
 import { SessionUser } from "../../common/tool/session-user";
 import { Base64 } from "../../common/tool/base64";
+import { User, UserResourceRole } from "src/app/data-core/model/page";
+import { EnumHelper } from "./enum-helper";
 @Injectable({
   providedIn: "root",
 })
@@ -84,43 +86,28 @@ export class UrlAuthGuard implements CanActivate {
         this.httpService
           .auth(userUrl, authHeader)
           .pipe(catchError(this.handleLoginError2<any>()))
-          .subscribe(
-            (result: {
-              Id: string;
-              Role: {
-                PictureData: number;
-                PrivacyData: number;
-                StaticData: number;
-                UserData: number;
-              }[];
-              Resources: Array<{
-                Id: string;
-                Name: string;
-                ResourceType: number;
-              }>;
-            }) => {
-              if (result) {
-                if (
-                  result.Role &&
-                  result.Role.length > 0 &&
-                  result.Role[0].PictureData === 1 &&
-                  result.Role[0].PrivacyData === 1 &&
-                  result.Role[0].StaticData === 1 &&
-                  result.Role[0].UserData === 1
-                ) {
-                  this.router.navigateByUrl("system-mode");
-                } else {
-                  this.router.navigateByUrl("waste-regulation");
-                }
-                this.memory(
-                  this.formVal.name,
-                  this.formVal.pwd,
-                  result.Id,
-                  result.Resources
-                );
+          .subscribe((result: User) => {
+            if (result) {
+              if (
+                result.Role &&
+                result.Role.length > 0 &&
+                result.Role[0].PictureData === 1 &&
+                result.Role[0].PrivacyData === 1 &&
+                result.Role[0].StaticData === 1 &&
+                result.Role[0].UserData === 1
+              ) {
+                this.router.navigateByUrl("system-mode");
+              } else {
+                this.router.navigateByUrl("waste-regulation");
               }
+              this.memory(
+                this.formVal.name,
+                this.formVal.pwd,
+                result.Id,
+                result.Resources
+              );
             }
-          );
+          });
       }
       return of(result as T);
     };
@@ -140,7 +127,7 @@ export class UrlAuthGuard implements CanActivate {
     name: string,
     pwd: string,
     id: string,
-    userDivision: Array<{ Id: string; Name: string; ResourceType: number }>
+    userDivision: Array<UserResourceRole>
   ) {
     this.sessionUser.autoLogin = false;
     this.sessionUser.memoryPwd = false;
@@ -148,6 +135,11 @@ export class UrlAuthGuard implements CanActivate {
     this.sessionUser.pwd = pwd;
     this.sessionUser.id = id;
     this.sessionUser.userDivision = userDivision;
+    if (userDivision.length > 0) {
+      this.sessionUser.userDivisionType = EnumHelper.Convert(
+        userDivision[0].ResourceType
+      );
+    }
   }
 
   async auth(name: string) {

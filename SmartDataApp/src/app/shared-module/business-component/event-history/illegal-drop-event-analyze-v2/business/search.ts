@@ -17,7 +17,7 @@ export class SearchControl extends SearchHelper {
     const day = new Date(),
       su = new SessionUser(),
       classType =
-        su.userDivisionType == DivisionType.City + ""
+        su.userDivisionType == DivisionType.City
           ? ClassTypeEnum.County
           : ClassTypeEnum.Committees;
     this.beginDate = datePipe.transform(day, "yyyy年MM月dd日");

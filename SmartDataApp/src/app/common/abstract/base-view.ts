@@ -5,11 +5,7 @@
 import { TimeSpan } from "../tool/time-span";
 import { IViewEvent } from "../interface/IViewEvent";
 
- 
-
-export class PagedTimeSpan extends TimeSpan{
-
-}
+export class PagedTimeSpan extends TimeSpan {}
 
 export class BaseView<T extends IViewModel> implements IView<T> {
   datas: T;
@@ -18,11 +14,8 @@ export class BaseView<T extends IViewModel> implements IView<T> {
   }
   setDatas(datas: T) {
     this.datas = datas;
-
   }
-  set defaultViewData(val:T){
-     
-  }
+  set defaultViewData(val: T) {}
   timeSpan: PagedTimeSpan;
   loadDatas: (datas: IViewModel) => void;
   viewContrl: (isInit: boolean, isNext: boolean) => boolean;
@@ -35,11 +28,14 @@ export interface IView<T extends IViewModel> {
   setDatas(datas: T): void;
   loadDatas: (datas: IViewModel) => void;
   timeSpan: PagedTimeSpan;
-  viewContrl: (isInit: boolean, isNext: boolean) => boolean;/**翻页 */
+  viewContrl: (isInit: boolean, isNext: boolean) => boolean /**翻页 */;
   btnControl: (tag: IViewEvent) => void;
 }
 
-export class CardComponent<T extends ViewsModel<IViewModel>> extends BaseView<IViewModel> implements ICardView {
+export class CardComponent<T extends ViewsModel<IViewModel>>
+  extends BaseView<IViewModel>
+  implements ICardView
+{
   viewsModel: T;
   // show_=true;
   timeSpan: PagedTimeSpan;
@@ -61,32 +57,28 @@ export class CardComponent<T extends ViewsModel<IViewModel>> extends BaseView<IV
   dataChanged: () => void;
   viewContrl: (isInit: boolean, isNext: boolean) => boolean;
   btnControl: (tag: IViewEvent) => void;
-
 }
-export class InfoCardComponent extends CardComponent<ViewsModel<IViewModel>>{
+export class InfoCardComponent extends CardComponent<ViewsModel<IViewModel>> {
   model: IViewModel;
   constructor() {
     super();
     this.dataChanged = () => {
       let d = this.getDatas();
       this.model = d.views[d.pageIndex - 1];
-    }
+    };
   }
 }
 
-export class TableComponent extends CardComponent<ViewsModel<IViewModel>>{
+export class TableComponent extends CardComponent<ViewsModel<IViewModel>> {}
 
-}
-
-
-export class BasisCardComponent extends CardComponent<ViewsModel<IViewModel>>{
+export class BasisCardComponent extends CardComponent<ViewsModel<IViewModel>> {
   model: IViewModel;
   show_: boolean = true;
   initEchart: () => void;
   reSizeEchart: () => void;
-  set defaultViewData(d:ViewsModel<IViewModel>){ 
+  set defaultViewData(d: ViewsModel<IViewModel>) {
     this.model = d.views[d.pageIndex - 1];
-      }
+  }
   constructor() {
     super();
     this.viewContrl = (isInit: boolean, isNext_: boolean) => {
@@ -98,20 +90,17 @@ export class BasisCardComponent extends CardComponent<ViewsModel<IViewModel>>{
             this.show_ = true;
             d.pageIndex = 1;
             isNext = true;
-          }
-          else {
+          } else {
             d.pageIndex += 1;
             isNext = d.pageIndex > d.pageSize;
           }
           this.model = d.views[d.pageIndex - 1];
           // if (this.initEchart) this.initEchart();
         }
-      }
-      else
+      } else
         setTimeout(() => {
           this.show_ = false;
         });
-
 
       if (isInit == false && isNext_) {
         this.show_ = false;
@@ -122,19 +111,18 @@ export class BasisCardComponent extends CardComponent<ViewsModel<IViewModel>>{
           this.model = d.views[d.pageIndex - 1];
           // if (this.reSizeEchart) this.reSizeEchart();
         });
-      };
+      }
       return isNext;
-    }
+    };
     this.dataChanged = () => {
       let d = this.getDatas();
       this.model = d.views[d.pageIndex - 1];
       if (this.initEchart) this.initEchart();
-    }
+    };
   }
 }
 
-export class EChartCardComponent extends BasisCardComponent { }
-
+export class EChartCardComponent extends BasisCardComponent {}
 
 export class VideoCardComponent extends CardComponent<ViewsModel<IViewModel>> {
   model: IViewModel;
@@ -143,34 +131,37 @@ export class VideoCardComponent extends CardComponent<ViewsModel<IViewModel>> {
     super();
 
     this.dataChanged = () => {
-
       const d = this.getDatas();
       this.model = d.views[d.pageIndex - 1];
-      if (this.playVideo) { this.playVideo(); }
-    }
+      if (this.playVideo) {
+        this.playVideo();
+      }
+    };
   }
 }
-
 
 export interface ICardView {
   dataChanged: () => void;
 }
 export interface IViewSize {
   viewSize: {
-    width: string | number,
-    height: string | number
-  }
+    width: string | number;
+    height: string | number;
+  };
 }
-export class PackingBoxComponent extends BaseView<IViewModel> implements IViewSize {
-  viewSize: { width: string | number; height: string | number; };
+export class PackingBoxComponent
+  extends BaseView<IViewModel>
+  implements IViewSize
+{
+  viewSize: { width: string | number; height: string | number };
   selected = false;
   click: () => void;
 }
-export interface IViewModel {
+export interface IViewModel {}
 
-}
-
-export class ViewsModel<T extends IViewModel> implements IViewModel, IViewPage<T>{
+export class ViewsModel<T extends IViewModel>
+  implements IViewModel, IViewPage<T>
+{
   pageIndex: number = 1;
   pageSize: number = 1;
   views: T[];

@@ -12,7 +12,7 @@ export class CameraSlot {
    * 箱内：11-19
    * 11,15：干垃圾
    * 12：湿垃圾
-   * 13：可回收垃圾
+   * 13：可回收物
    * 14：有害垃圾
    */
   PositionNo?: number;

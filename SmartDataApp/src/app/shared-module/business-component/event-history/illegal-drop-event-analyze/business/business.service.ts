@@ -85,7 +85,7 @@ export class BusinessService extends ListAttribute {
   }
 
   get cityOption() {
-    return new SessionUser().userDivisionType == DivisionType.City + "";
+    return new SessionUser().userDivisionType == DivisionType.City;
   }
 
   exportExcel(

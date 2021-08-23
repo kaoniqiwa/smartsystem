@@ -1,3 +1,7 @@
+import { Transform } from "class-transformer";
+import { UserResourceType } from "./enum";
+import { transformDate } from "./transformer";
+
 export interface Page {
   PageIndex: number;
   PageSize: number;
@@ -31,22 +35,27 @@ export class User {
   /// <field name='State' type='Int32'>0-正常 M</field>
   /// <field name='Role' type='Role[]'>用户角色列表 M</field>
   /// </signature>
-  Id: string;
-  Username: string;
-  Password: string;
-  PasswordHash: string;
-  PasswordSalt: string;
-  FirstName: string;
-  LastName: string;
-  Gender: number;
-  MobileNo: string;
-  Email: string;
-  Note: string;
-  ExpiredTime: string;
-  CreateTime: string;
-  UpdateTime: string;
-  State: number;
-  Role: Role[];
+  Id!: string;
+  Username!: string;
+  Password?: string;
+  PasswordHash?: string;
+  PasswordSalt?: string;
+  FirstName?: string;
+  LastName?: string;
+  Gender?: number;
+  MobileNo?: string;
+  Email?: string;
+  Note?: string;
+  @Transform(transformDate)
+  ExpiredTime!: string;
+  @Transform(transformDate)
+  CreateTime!: string;
+  @Transform(transformDate)
+  UpdateTime!: Date;
+  State!: number;
+  Role!: Role[];
+  Resources?: UserResourceRole[];
+  OffEvents?: number[];
 }
 export class Role {
   /// <signature>
@@ -68,4 +77,19 @@ export class Role {
   UserData: number;
   StaticData: number;
   PictureData: number;
+}
+export class UserResourceRole {
+  /**	String	资源ID	M	R */
+  Id!: string;
+  /**	String	资源名称	O	R */
+  Name?: string;
+  /**	Int32	资源类型，1-街道，2-居委，3-厢房，4-行政区	M	R */
+  ResourceType!: UserResourceType;
+
+  /**	Int32	资源标签，权限级别	M	R */
+  RoleFlags!: number;
+  /**	Boolean	开放全部的子节点资源	M	R */
+  AllSubResources!: boolean;
+  /**	ResourceRole[]	子资源列表	O	R */
+  Resources?: UserResourceRole;
 }

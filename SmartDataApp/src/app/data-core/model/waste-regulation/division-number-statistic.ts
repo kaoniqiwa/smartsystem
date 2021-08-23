@@ -32,6 +32,14 @@ export class DivisionNumberStatistic {
   DayWetVolume!: number;
   /**	垃圾滞留点数量 */
   GarbageDropStationNumber?: number;
+  /**	Int32	总处理任务数量	O */
+  TotalTaskCount?: number;
+  /**	Int32	完成任务数量	O */
+  CompleteTaskCount?: number;
+  /**	Int32	未完成任务数量	O */
+  TimeoutTaskCount?: number;
+  /**	Double	当前垃圾堆滞留时间，单位：分钟，区划下当前最大时长	O */
+  CurrentGarbageTime?: number;
 }
 
 /// <summary>
@@ -67,6 +75,12 @@ export class DivisionNumberStatisticV2 {
   Volume: number; //总数量，单位：L
   DryVolume: number; //干垃圾容量，单位：L
   WetVolume: number; //湿垃圾容量，单位：L
+  /** 	Int32	总处理任务数量	O */
+  TotalTaskCount: number;
+  /**	Int32	完成任务数量	O */
+  CompleteTaskCount: number;
+  /**	Int32	未完成任务数量	O */
+  TimeoutTaskCount: number;
 }
 
 export class StatisticTime {
