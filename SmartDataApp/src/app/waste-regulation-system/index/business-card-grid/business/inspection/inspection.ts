@@ -11,8 +11,8 @@ export class GarbageInspection extends BaseBusinessRefresh {
   }
 
   async getData() {
-    const divisionsId = this.businessParameter.map.get("divisionId"),
-      stationId = this.businessParameter.map.get("stationId"), //第一个显示
+    const divisionsId = this.businessParameter.divisionId,
+      stationId = this.businessParameter.stationId, //第一个显示
       model = new GarbageStationInspection(),
       garbageStations = await (
         this.dataServe as StatisticalDataBufferService

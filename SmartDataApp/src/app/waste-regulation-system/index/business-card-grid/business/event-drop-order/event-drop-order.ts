@@ -43,12 +43,10 @@ export class EventDropOrder extends BaseBusinessRefresh {
       },
     ]);
     model.items = new Array();
-    const divisionId = this.businessParameter.map.get("divisionId") as string, //父区划
-      divisionType = this.businessParameter.map.get(
-        "divisionType"
-      ) as DivisionType,
-      eventType = this.businessParameter.map.get("eventType") as EventType,
-      dropList = this.businessParameter.map.get("dropList") as string,
+    const divisionId = this.businessParameter.divisionId as string, //父区划
+      divisionType = this.businessParameter.divisionType as DivisionType,
+      eventType = this.businessParameter.eventType as EventType,
+      dropList = this.businessParameter.dropList as string,
       division = await (
         this.dataServe as StatisticalDataBufferService
       ).ancestorDivisions(null, divisionId),

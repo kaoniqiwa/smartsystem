@@ -29,7 +29,7 @@ import {
   GalleryRollPage,
   Gallery,
 } from "../../../../shared-module/card-component/gallery-roll-page/gallery-roll-page";
-import { ViewsModel } from "../../../../common/abstract/base-view";
+import { IViewModel, ViewsModel } from "../../../../common/abstract/base-view";
 import { IConverter } from "../../../../common/interface/IConverter";
 import { Injector, Injectable } from "@angular/core";
 import { LineOption } from "../../../../common/directive/echarts/echart";
@@ -47,6 +47,16 @@ import { isBoolean } from "util";
 import { SessionUser } from "../../../../common/tool/session-user";
 import { Language } from "../../../../common/tool/language";
 import { ResourceMediumRequestService } from "../../../../data-core/repuest/resources.service";
+import {
+  GarbageTaskNumberCardData,
+  GarbageTaskNumberCardDatas,
+} from "src/app/shared-module/card-component/garbage-task-number-card/garbage-task-number-card-data";
+import { GarbageTaskNumberDatas } from "../business/garbage-task-number/garbage-task-number-data";
+import { GarbageRetentionNumberDatas } from "../business/garbage-retention-number/garbage-retention-number-data";
+import {
+  GarbageRetentionNumberCardData,
+  GarbageRetentionNumberCardDatas,
+} from "src/app/shared-module/card-component/garbage-retention-number-card/garbage-retention-number-card-data";
 export class IllegalDropHistoryCardConverter implements IConverter {
   Convert<DropEvent, ViewsModel>(
     input: DropEvent,
@@ -643,6 +653,57 @@ export class GarbageStationInspectionCardConverter implements IConverter {
   }
 }
 
+export class GarbageTaskNumberCardConverter implements IConverter {
+  Convert<GarbageTaskNumberDatas, ViewsModel>(
+    input: GarbageTaskNumberDatas,
+    output: ViewsModel
+  ): ViewsModel;
+  Convert(
+    input: GarbageTaskNumberDatas,
+    output: ViewsModel<GarbageTaskNumberCardDatas>
+  ): ViewsModel<GarbageTaskNumberCardDatas> {
+    if (!input) return;
+    output.views = [new GarbageTaskNumberCardDatas()];
+
+    output.views[0].datas = input.map((x) => {
+      let data = new GarbageTaskNumberCardData();
+      data.Id = x.Id;
+      data.Name = x.Name;
+      data.CompleteTaskCount = x.CompleteTaskCount;
+      data.TimeoutTaskCount = x.TimeoutTaskCount;
+      data.TotalTaskCount = x.TotalTaskCount;
+      return data;
+    });
+
+    return output;
+  }
+}
+
+export class GarbageRetentionNumberCardConverter implements IConverter {
+  Convert<GarbageRetentionNumberDatas, ViewsModel>(
+    input: GarbageRetentionNumberDatas,
+    output: ViewsModel
+  ): ViewsModel;
+  Convert(
+    input: GarbageRetentionNumberDatas,
+    output: ViewsModel<GarbageRetentionNumberCardDatas>
+  ): ViewsModel<GarbageRetentionNumberCardDatas> {
+    if (!input) return;
+    output.views = [new GarbageRetentionNumberCardDatas()];
+
+    output.views[0].datas = input.map((x) => {
+      let data = new GarbageRetentionNumberCardData();
+      data.Id = x.Id;
+      data.Name = x.Name;
+      data.Time = x.Time;
+      data.Count = x.Count;
+      return data;
+    });
+
+    return output;
+  }
+}
+
 @Injectable({ providedIn: "root" })
 export class ConverterFactory {
   convertInjector: Injector;
@@ -680,6 +741,15 @@ export class ConverterFactory {
         provide: StationDisposeScoreConverter,
         useValue: new StationDisposeScoreConverter(),
       },
+      {
+        provide: GarbageTaskNumberCardConverter,
+        useValue: new GarbageTaskNumberCardConverter(),
+      },
+
+      {
+        provide: GarbageRetentionNumberCardConverter,
+        useValue: new GarbageRetentionNumberCardConverter(),
+      },
     ]);
   }
 
@@ -705,4 +775,6 @@ export const CardBusinessCoverterEnum = {
   DivisionGarbageSpecification: DivisionGarbageSpecificationConverter,
   GarbageStationInspection: GarbageStationInspectionCardConverter,
   StationDisposeScore: StationDisposeScoreConverter,
+  GarbageTaskNumberBusiness: GarbageTaskNumberCardConverter,
+  GarbageRetentionNumberBusiness: GarbageRetentionNumberCardConverter,
 };

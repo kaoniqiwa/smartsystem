@@ -5,7 +5,7 @@ import {
   PieOption,
 } from "../../common/directive/echarts/echart";
 import { IndexService } from "./business/index.service";
-import { BusinessService } from "./business/business.service";
+import { IndexBusinessService } from "./business/index-business.service";
 import { DivisionBusinessService } from "./business-card-grid/division-business.service";
 import { MQTTEventService } from "../../common/tool/mqtt-event/mqtt-event.service";
 import { EventPushService } from "../../common/tool/mqtt-event/event-push.service";
@@ -28,7 +28,7 @@ import { EventType } from "../../data-core/model/enum";
   selector: "app-index",
   templateUrl: "./index.component.html",
   styleUrls: ["./index.component.styl"],
-  providers: [IndexService, BusinessService, GarbageStationDao],
+  providers: [IndexService, IndexBusinessService, GarbageStationDao],
 })
 export class IndexComponent implements OnInit {
   bar = new BarOption();
@@ -46,7 +46,7 @@ export class IndexComponent implements OnInit {
   constructor(
     private stationDao: GarbageStationDao,
     private indexService: IndexService,
-    private businessService: BusinessService,
+    private businessService: IndexBusinessService,
     private titleService: Title,
     private businessManageService: BusinessManageService,
     private configService: ConfigRequestService,
@@ -80,11 +80,11 @@ export class IndexComponent implements OnInit {
       "周日",
     ];
     this.line.seriesData = [820, 932, 901, 934, 1290, 1330, 1320];
-    this.pie.legendData = ["干垃圾", "湿垃圾", "可回收垃圾", "有害垃圾"];
+    this.pie.legendData = ["干垃圾", "湿垃圾", "可回收物", "有害垃圾"];
     this.pie.seriesData = [
       { value: 0, name: "干垃圾" },
       { value: 0, name: "湿垃圾" },
-      { value: 0, name: "可回收垃圾" },
+      { value: 0, name: "可回收物" },
       { value: 0, name: "有害垃圾" },
     ];
   }
@@ -104,6 +104,7 @@ export class IndexComponent implements OnInit {
       this.divisionBusinessService.divisionsId =
         this.businessService.user.userDivision.pop().Id;
       this.divisionBusinessService.bindingEvent();
+
       if (this.businessService.illegalDropEventCardConfig) {
         this.mqttSevice.listenerIllegalDrop(
           this.businessService.user.userDivision.pop().Id

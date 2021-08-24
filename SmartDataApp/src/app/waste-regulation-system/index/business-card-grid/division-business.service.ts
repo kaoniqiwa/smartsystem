@@ -150,8 +150,8 @@ export class DivisionBusinessService {
           }) => {
             const param = new BusinessParameter(),
               eventTypes = [EventType.IllegalDrop, EventType.MixedInto];
-            param.map.set("divisionId", val.id);
-            param.map.set("divisionType", val.type);
+            param.divisionId = val.id;
+            param.divisionType = val.type;
             this.eventDropCard.divisionType = val.type;
             resetDropDivisionType(val.type);
             // param.map.set('divisionsIds', [val.id]);
@@ -168,10 +168,10 @@ export class DivisionBusinessService {
                   //if(x.list[0].business instanceof StationDisposeScore)continue;
                   /**加上事件 类别 */
                   if (x.list[0].business instanceof EventDropHistory)
-                    param.map.set("eventType", eventTypes.shift());
+                    param.eventType = eventTypes.shift();
 
                   if (x.list[0].business instanceof EventDropOrder)
-                    param.map.set("eventType", this.eventDropCard.eventType);
+                    param.eventType = this.eventDropCard.eventType;
                   if (
                     x.list[0].business instanceof EventDropHistory ||
                     x.list[0].business instanceof EventDropOrder
@@ -240,16 +240,16 @@ export class DivisionBusinessService {
               if (tag == HintTag.IllegalDrop) {
                 this.illegalDropMode = new FillMode();
                 this.illegalDropMode.divisionId =
-                  x.list[0].business.businessParameter.map.get("divisionId");
+                  x.list[0].business.businessParameter.divisionId;
               } else if (tag == HintTag.MixedInto) {
                 this.mixedIntoMode = new FillMode();
                 this.mixedIntoMode.divisionId =
-                  x.list[0].business.businessParameter.map.get("divisionId");
+                  x.list[0].business.businessParameter.divisionId;
               } else if (tag == HintTag.FullStation) {
                 this.fullStationsView = true;
                 this.fullGarbageStationIntoMode = new FillMode();
                 this.fullGarbageStationIntoMode.divisionId =
-                  x.list[0].business.businessParameter.map.get("divisionId");
+                  x.list[0].business.businessParameter.divisionId;
               } else if (tag == HintTag.GarbageStation)
                 this.stationListView = true;
               else if (tag == HintTag.StationStranded)
@@ -279,33 +279,32 @@ export class DivisionBusinessService {
             } else {
               const param = new BusinessParameter(),
                 stationKey = "station";
-              param.map.set("divisionId", this.divisionsId);
+              param.divisionId = this.divisionsId;
               if (item.id == "IllegalDrop" || item.id == "MixedInto") {
                 this.eventDropCard.eventType =
                   item.id == "IllegalDrop"
                     ? EventType.IllegalDrop
                     : EventType.MixedInto;
 
-                param.map.set("eventType", this.eventDropCard.eventType);
-                param.map.set("dropList", this.eventDropCard.dropDivisionType);
+                param.eventType = this.eventDropCard.eventType;
+                param.dropList = this.eventDropCard.dropDivisionType;
               } else {
-                param.map.set("eventType", item.eventType);
+                param.eventType = item.eventType;
                 if (item.id == stationKey) {
-                  param.map.set("dropList", stationKey);
+                  param.dropList = stationKey;
                   this.eventDropCard.dropDivisionType = stationKey as any;
                 } else {
                   if (this.eventDropCard.divisionType == DivisionType.City) {
                     if (item.id == DivisionType.Committees + "")
-                      param.map.set("divisionType", DivisionType.County);
+                      param.divisionType = DivisionType.County;
                     else if (item.id == DivisionType.County + "")
-                      param.map.set("divisionType", DivisionType.City);
-                    param.map.set("dropList", item.id);
+                      param.divisionType = DivisionType.City;
+                    param.dropList = item.id;
                     this.eventDropCard.dropDivisionType = item.id as any;
                   } else {
                     if (item.id == DivisionType.Committees + "")
-                      param.map.set("divisionType", DivisionType.County);
-                    this.eventDropCard.dropDivisionType =
-                      param.map.get("divisionType");
+                      param.divisionType = DivisionType.County;
+                    this.eventDropCard.dropDivisionType = param.divisionType;
                   }
                 }
               }

@@ -121,27 +121,28 @@ export class StatisticalDataBufferService
     }
     return result;
   }
-
-  async postDivisionStatisticNumbers(divisionsIds: string[]) {
+  postDivisionStatisticNumbers(
+    divisionsIds: string[]
+  ): Promise<DivisionNumberStatistic[]>;
+  async postDivisionStatisticNumbers(args: string[]) {
     let result = this.cache.get<DivisionNumberStatistic[]>(
-      this.divisionStatisticNumberList + Md5.hashStr(divisionsIds.join("-"))
+      this.divisionStatisticNumberList + Md5.hashStr(args.join("-"))
     );
     if (!result) {
       const param = new GetDivisionStatisticNumbersParams();
       param.PageIndex = 1;
       param.PageSize = this.maxSize;
-      param.Ids = divisionsIds;
+      param.Ids = args;
       const response = await this.divisionService.statisticNumberList(param);
       result = response.Data;
 
       this.cache.set(
-        this.divisionStatisticNumberList + Md5.hashStr(divisionsIds.join("-")),
+        this.divisionStatisticNumberList + Md5.hashStr(args.join("-")),
         result
       );
     }
     return result;
   }
-
   async getDivisions() {
     var result = this.cache.get<Division[]>(this.division);
     if (!result) {
@@ -185,28 +186,45 @@ export class StatisticalDataBufferService
       return result;
     }
   }
+  postGarbageStationStatisticNumbers(
+    stationIds: string[]
+  ): Promise<GarbageStationNumberStatistic[]>;
+  postGarbageStationStatisticNumbers(
+    divisionId: string
+  ): Promise<GarbageStationNumberStatistic[]>;
 
-  async postGarbageStationStatisticNumbers(divisionsIds: string[]) {
-    var result = this.cache.get<GarbageStationNumberStatistic[]>(
-      this.garbageStationStatisticNumberList +
-        Md5.hashStr(divisionsIds.join("-"))
-    );
-    if (!result) {
+  async postGarbageStationStatisticNumbers(stationIds: string[] | string) {
+    if (Array.isArray(stationIds)) {
+      var result = this.cache.get<GarbageStationNumberStatistic[]>(
+        this.garbageStationStatisticNumberList +
+          Md5.hashStr(stationIds.join("-"))
+      );
+      if (!result) {
+        const param = new GetGarbageStationStatisticNumbersParams();
+
+        param.PageIndex = 1;
+        param.PageSize = this.maxSize;
+        param.Ids = stationIds;
+        const response = await this.garbageStationService.statisticNumberList(
+          param
+        );
+        result = response.Data;
+        this.cache.set(
+          this.garbageStationStatisticNumberList +
+            Md5.hashStr(stationIds.join("-")),
+          result
+        );
+      }
+      return result;
+    } else {
       const param = new GetGarbageStationStatisticNumbersParams();
-      param.PageIndex = 1;
       param.PageSize = this.maxSize;
-      param.Ids = divisionsIds;
+      param.DivisionId = stationIds;
       const response = await this.garbageStationService.statisticNumberList(
         param
       );
-      result = response.Data;
-      this.cache.set(
-        this.garbageStationStatisticNumberList +
-          Md5.hashStr(divisionsIds.join("-")),
-        result
-      );
+      return response.Data;
     }
-    return result;
   }
 
   /**

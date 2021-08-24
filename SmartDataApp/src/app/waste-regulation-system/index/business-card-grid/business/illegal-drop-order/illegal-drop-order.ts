@@ -16,13 +16,9 @@ export class IllegalDropOrder extends BaseBusinessRefresh {
   }
 
   async getData() {
-    var divisionsIds = this.businessParameter.map.get(
-      "divisionsIds"
-    ) as string[];
-    const divisionsId = this.businessParameter.map.get("divisionsId") as string,
-      divisionsType = this.businessParameter.map.get(
-        "divisionsType"
-      ) as DivisionType;
+    var divisionsIds = this.businessParameter.divisionsIds as string[];
+    const divisionsId = this.businessParameter.divisionsId as string;
+    const divisionsType = this.businessParameter.divisionsType as DivisionType;
 
     const model = new IllegalDropOrderInfo();
     model.items = new Array();

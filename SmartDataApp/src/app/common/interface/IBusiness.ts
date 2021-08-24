@@ -4,31 +4,23 @@
  */
 
 import { TimeSpan } from "../tool/time-span";
-export interface IBusinessData{
-    
-}
+export interface IBusinessData {}
 
- 
-
-export class AutoRefreshTimeSpan extends  TimeSpan{
-     
-}
+export class AutoRefreshTimeSpan extends TimeSpan {}
 
 export interface IBusiness<T extends IBusinessData> {
-    dataChanged:(data: T)=>void;/**数据改变 */
-    timeSpan: AutoRefreshTimeSpan;
-    disposing: (self:this) => void;
-    getData(): T;
+  dataChanged: (data: T) => void /**数据改变 */;
+  timeSpan: AutoRefreshTimeSpan;
+  disposing: (self: this) => void;
+  getData(): T;
 }
 
 export interface IEventBusiness<T extends IBusinessData> extends IBusiness<T> {
-    eventRules:(event:any)=>boolean;
+  eventRules: (event: any) => boolean;
 }
 
-export interface IBusinessRefresh extends IBusiness<IBusinessData> {
+export interface IBusinessRefresh extends IBusiness<IBusinessData> {}
 
+export class BusinessParameter {
+  [key: string]: any;
 }
-
-export class BusinessParameter{ 
-    map = new Map();
-} 

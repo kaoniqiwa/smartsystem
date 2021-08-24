@@ -21,6 +21,8 @@ import { BaseBusinessRefresh } from "../../../../common/tool/base-business-refre
 import { DatePipe } from "@angular/common";
 import { EventPushService } from "../../../../common/tool/mqtt-event/event-push.service";
 import { DivisionType, EventType } from "../../../../data-core/model/enum";
+import { GarbageTaskNumberBusiness } from "../business/garbage-task-number/garbage-task-number.business";
+import { GarbageRetentionNumberBusiness } from "../business/garbage-retention-number/garbage-retention-number.business";
 @Injectable({
   providedIn: "root",
 })
@@ -33,7 +35,7 @@ export class StatisticBusinessInjector {
     private statisticalDataBufferService: StatisticalDataBufferService
   ) {
     const businessParameter = new BusinessParameter();
-    businessParameter.map.set("datePipe", this.datePipe);
+    businessParameter.datePipe = this.datePipe;
     this.businessInjector = Injector.create([
       {
         provide: EventDropHistory,
@@ -87,6 +89,20 @@ export class StatisticBusinessInjector {
         useValue: new StationDisposeScore(this.statisticalDataBufferService),
         deps: [],
       },
+      {
+        provide: GarbageTaskNumberBusiness,
+        useValue: new GarbageTaskNumberBusiness(
+          this.statisticalDataBufferService
+        ),
+        deps: [],
+      },
+      {
+        provide: GarbageRetentionNumberBusiness,
+        useValue: new GarbageRetentionNumberBusiness(
+          this.statisticalDataBufferService
+        ),
+        deps: [],
+      },
     ]);
   }
 
@@ -107,23 +123,14 @@ export class StatisticBusinessInjector {
         CardBusinessEnum[businessConfig.business]
       );
       const businessParameter = new BusinessParameter();
-      businessParameter.map.set("datePipe", this.datePipe);
+      businessParameter.datePipe = this.datePipe;
       business.businessParameter = businessParameter;
-      business.businessParameter.map.set(
-        "divisionId",
-        businessConfig.divisionId
-      );
-      business.businessParameter.map.set(
-        "divisionsIds",
-        businessConfig.divisionsIds
-      );
-      business.businessParameter.map.set(
-        "divisionType",
-        businessConfig.divisionType
-      );
-      business.businessParameter.map.set("state", businessConfig.state);
-      business.businessParameter.map.set("stationId", businessConfig.stationId);
-      business.businessParameter.map.set("eventType", businessConfig.eventType);
+      business.businessParameter.divisionId = businessConfig.divisionId;
+      business.businessParameter.divisionsIds = businessConfig.divisionsIds;
+      business.businessParameter.divisionType = businessConfig.divisionType;
+      business.businessParameter.state = businessConfig.state;
+      business.businessParameter.stationId = businessConfig.stationId;
+      business.businessParameter.eventType = businessConfig.eventType;
 
       if (business.timeSpan)
         business.timeSpan.interval = businessConfig.dataTime;
@@ -143,4 +150,6 @@ export const CardBusinessEnum = {
   // "MixedIntoDropOrder":EventDropOrderB,
   GarbageStationInspection: GarbageInspection,
   StationDisposeScore: StationDisposeScore,
+  GarbageTaskNumberBusiness: GarbageTaskNumberBusiness,
+  GarbageRetentionNumberBusiness: GarbageRetentionNumberBusiness,
 };

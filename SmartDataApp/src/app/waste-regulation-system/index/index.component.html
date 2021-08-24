@@ -221,8 +221,11 @@
         <business-card-grid [cardConfig]="businessService.mixedIntoDropTopCardConfig">
         </business-card-grid>
       </ng-container> -->
-
-      <ng-container *ngIf="!businessService.illegalDropEventCardConfig">
+      <ng-container *ngIf="businessService.taskNumberCardConfig">
+        <business-card-grid [cardConfig]="businessService.taskNumberCardConfig">
+        </business-card-grid>
+      </ng-container>
+      <ng-container *ngIf="businessService.garbageNumberCompareCardConfig">
         <div
           class="card-wrapper p-l-20"
           style="padding-top: 15px; border: 1px #5c6ebf solid"
@@ -283,9 +286,15 @@
       </ng-container>
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
+      <ng-container *ngIf="businessService.garbageRententionCardConfig">
+        <business-card-grid
+          [cardConfig]="businessService.garbageRententionCardConfig"
+        >
+        </business-card-grid>
+      </ng-container>
       <div
         class="card-wrapper p-l-20"
-        style="padding-top: 15px; border: 1px #5c6ebf solid"
+        style="padding-top: 15px; border: 1px #5c6ebf solid; display: none"
       >
         <div class="fill-height pull-left" style="width: 50%">
           <h2>垃圾投放量分析</h2>

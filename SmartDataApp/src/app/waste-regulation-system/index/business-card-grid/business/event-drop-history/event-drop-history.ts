@@ -15,8 +15,8 @@ export class EventDropHistory extends BaseBusinessRefresh {
   }
 
   async getData() {
-    const divisionId = this.businessParameter.map.get("divisionId"),
-      eventType = this.businessParameter.map.get("eventType") as EventType;
+    const divisionId = this.businessParameter.divisionId,
+      eventType = this.businessParameter.eventType as EventType;
     let model = new DropEvent();
     model.datas = new Array();
 

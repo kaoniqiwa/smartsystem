@@ -23,7 +23,8 @@ export class IndexBusinessService {
   divisionGarbageSpCardConfig: Array<IBusinessConfig>; /**区划 投放点 状态数据 */
   illegalDropEventCardConfig: Array<IBusinessConfig>; /**报警推送 */
   garbageNumberCompareCardConfig: Array<IBusinessConfig>;
-  processNumberCardConfig: Array<IBusinessConfig>;
+  taskNumberCardConfig: Array<IBusinessConfig>;
+  garbageRententionCardConfig: Array<IBusinessConfig>;
   constructor(
     private bufferService: StatisticalDataBufferService,
     private divisionBusinessService: DivisionBusinessService
@@ -44,7 +45,8 @@ export class IndexBusinessService {
     this.stationDisposeScoreCard();
     this.devCard();
     this.divisionGarbageSpCard();
-    this.initProcessNumberCard();
+    this.initTaskNumberCard();
+    this.initGarbageRententionNumberCard();
     // if (this.user.userDivisionType == DivisionType.County) {
     //   this.illegalDropEventCard();
     // } else {
@@ -52,12 +54,22 @@ export class IndexBusinessService {
     // }
   }
 
-  initProcessNumberCard() {
-    this.processNumberCardConfig = new Array();
-    // this.processNumberCardConfig.push({
-    //   business:"",
-    //   cardType: "GarbageProcessNumberCardComponent"
-    // })
+  initGarbageRententionNumberCard() {
+    this.garbageRententionCardConfig = [
+      {
+        business: "GarbageRetentionNumberBusiness",
+        cardType: "GarbageRetentionNumberCardComponent",
+      },
+    ];
+  }
+
+  initTaskNumberCard() {
+    this.taskNumberCardConfig = [
+      {
+        business: "GarbageTaskNumberBusiness",
+        cardType: "GarbageTaskNumberCardComponent",
+      },
+    ];
   }
 
   /** 垃圾数量对比 */
