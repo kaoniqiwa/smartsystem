@@ -31,7 +31,6 @@ export class GarbageTaskNumberBusiness extends BaseBusinessRefresh {
 
   getData(): Promise<GarbageTaskNumberDatas> {
     let resources = this.user.userDivision;
-
     if (resources && resources.length > 0) {
       switch (this.user.userDivisionType) {
         case DivisionType.Committees:
@@ -61,10 +60,13 @@ export class GarbageTaskNumberBusiness extends BaseBusinessRefresh {
     return items;
   }
   /** 街道 */
-  async getDataOfCounty(divisionId: string) {
+  async getDataOfCounty(
+    divisionId: string,
+    type: DivisionType = DivisionType.Committees
+  ) {
     let children = await (
       this.dataServe as StatisticalDataBufferService
-    ).ancestorDivisions(divisionId);
+    ).ancestorDivisions(divisionId, undefined, type);
     const datas = await (
       this.dataServe as StatisticalDataBufferService
     ).postDivisionStatisticNumbers(children.map((x) => x.Id));
@@ -77,7 +79,7 @@ export class GarbageTaskNumberBusiness extends BaseBusinessRefresh {
   }
   /** 行政区 */
   getDataOfCity(divisionId: string) {
-    return this.getDataOfCounty(divisionId);
+    return this.getDataOfCounty(divisionId, DivisionType.County);
   }
 
   private convert(

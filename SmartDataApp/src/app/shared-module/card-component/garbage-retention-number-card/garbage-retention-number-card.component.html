@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="model">
   <h2>垃圾滞留未处置排名</h2>
   <ng-container *ngFor="let data of model.datas">
     <div class="task-item" (click)="itemClick(data)">

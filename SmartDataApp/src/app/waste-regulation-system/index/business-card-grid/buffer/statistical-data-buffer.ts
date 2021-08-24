@@ -30,6 +30,7 @@ import {
 } from "../../../../data-core/model/waste-regulation/garbage-station";
 import { EventRequestService } from "../../../../data-core/repuest/Illegal-drop-event-record";
 import { GetEventRecordsParams } from "../../../../data-core/model/waste-regulation/illegal-drop-event-record";
+import { DivisionType } from "src/app/data-core/model/enum";
 
 @Injectable({
   providedIn: "root",
@@ -154,7 +155,11 @@ export class StatisticalDataBufferService
   }
 
   /**根据ids 获取区划 */
-  async ancestorDivisions(ancestorId: string, divisionId?: string) {
+  async ancestorDivisions(
+    ancestorId: string,
+    divisionId?: string,
+    type?: DivisionType
+  ) {
     const param = new GetDivisionsParams();
     param.PageIndex = 1;
     if (divisionId) {
@@ -176,6 +181,9 @@ export class StatisticalDataBufferService
       if (!result) {
         param.PageSize = this.maxSize;
         param.AncestorId = ancestorId;
+        if (type) {
+          param.DivisionType = type;
+        }
         const response = await this.divisionService.list(param);
         result = response.Data;
         this.cache.set(

@@ -4,6 +4,7 @@ import {
   CardComponent,
   ViewsModel,
 } from "src/app/common/abstract/base-view";
+import { IViewEvent } from "src/app/common/interface/IViewEvent";
 import { GarbageTaskNumberCardDatas } from "./garbage-task-number-card-data";
 
 @Component({
@@ -21,6 +22,8 @@ export class GarbageTaskNumberCardComponent
   ngOnInit(): void {
     this.loadDatas(new ViewsModel<GarbageTaskNumberCardDatas>());
   }
+
+  btnControl: (tag: IViewEvent) => {};
 
   itemClick(id: string) {
     if (id) this.btnControl({ id: id });
