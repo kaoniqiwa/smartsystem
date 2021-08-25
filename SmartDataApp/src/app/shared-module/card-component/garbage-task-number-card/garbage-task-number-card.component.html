@@ -1,8 +1,31 @@
-<div *ngIf="model">
-  <h2>垃圾处置排名</h2>
-  <ng-container *ngFor="let data of model.datas">
+<div *ngIf="model" class="fill-height fill-width inner-card">
+  <div class="title">
+    <h2>垃圾处置排名</h2>
+    <div class="light-blue-text name">{{ data.Name }}</div>
+  </div>
+
+  <div class="content row">
+    <div #echarts class="task echarts col-md-6">
+      <!-- <div echarts [options]="chartOption" class="demo-chart"></div> -->
+    </div>
+    <div class="details">
+      <div>
+        <h4 class="title">发布任务数</h4>
+        <div class="value">{{ data.TotalCount }}</div>
+      </div>
+      <div>
+        <h4 class="title">未完成任务数</h4>
+        <div class="value">{{ data.UncompletedCount }}</div>
+      </div>
+      <div>
+        <h4 class="title">垃圾滞留</h4>
+        <div class="value">{{ data.GarbageRetentionCount }}</div>
+      </div>
+    </div>
+  </div>
+  <!-- <ng-container *ngFor="let data of model.datas">
     <div class="task-item" (click)="itemClick(data)">
       {{ data.Name }}
     </div>
-  </ng-container>
+  </ng-container> -->
 </div>

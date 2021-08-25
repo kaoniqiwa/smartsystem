@@ -1,0 +1,41 @@
+.inner-card {
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+}
+
+
+.inner-card .title {
+  display: flex;
+  justify-content: space-between
+}
+
+.inner-card .title .name {
+  font-size: 18px;
+}
+
+.inner-card .content {
+  display: flex;
+  height: calc(100% - 32px);
+  width: 100%;
+}
+
+.inner-card .content .task.echarts {
+  height: 100%;
+}
+
+.inner-card .content .details {
+  display: flex;
+  flex-direction: column;
+  align-content: space-around;
+  justify-content: space-around;
+  margin-left: 25px;
+}
+
+
+.inner-card .content .details .title {
+  color: #6997ff;
+}
+
+.inner-card .content .details .value {
+  color: white
+}

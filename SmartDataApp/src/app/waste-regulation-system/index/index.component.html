@@ -221,8 +221,10 @@
         <business-card-grid [cardConfig]="businessService.mixedIntoDropTopCardConfig">
         </business-card-grid>
       </ng-container> -->
-      <ng-container *ngIf="businessService.taskNumberCardConfig">
-        <business-card-grid [cardConfig]="businessService.taskNumberCardConfig">
+      <ng-container *ngIf="businessService.garbageRententionCardConfig">
+        <business-card-grid
+          [cardConfig]="businessService.garbageRententionCardConfig"
+        >
         </business-card-grid>
       </ng-container>
       <ng-container *ngIf="businessService.garbageNumberCompareCardConfig">
@@ -286,10 +288,8 @@
       </ng-container>
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <ng-container *ngIf="businessService.garbageRententionCardConfig">
-        <business-card-grid
-          [cardConfig]="businessService.garbageRententionCardConfig"
-        >
+      <ng-container *ngIf="businessService.taskNumberCardConfig">
+        <business-card-grid [cardConfig]="businessService.taskNumberCardConfig">
         </business-card-grid>
       </ng-container>
       <div

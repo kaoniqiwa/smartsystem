@@ -1,11 +1,18 @@
-<div   class="card-wrapper" [class.p-l-20]="border"
-[ngStyle]="{'padding-top': border ? '15px':'unset','border':border ? '1px #5c6ebf solid':'unset'
-,'background-color':border?'rgb(6,13,55,0.7)':'unset'}">
+<div
+  class="card-wrapper"
+  [class.p-l-20]="border"
+  [ngStyle]="{
+    'padding-top': border ? '15px' : 'unset',
+    border: border ? '1px #5c6ebf solid' : 'unset',
+    'background-color': border ? 'rgb(6,13,55,0.7)' : 'unset',
+    overflow: 'hidden'
+  }"
+>
   <ng-template card-host></ng-template>
   <ng-container *ngIf="border">
     <div class="card-angle top-left"></div>
     <div class="card-angle top-right"></div>
     <div class="card-angle bottom-left"></div>
     <div class="card-angle bottom-right"></div>
-  </ng-container> 
-</div> 
+  </ng-container>
+</div>

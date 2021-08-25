@@ -15,7 +15,7 @@ import {
 } from "src/app/data-core/model/waste-regulation/division-number-statistic";
 import { BaseBusinessRefresh } from "src/app/common/tool/base-business-refresh";
 import { StatisticalDataBufferService } from "../../buffer/statistical-data-buffer";
-import { DivisionType } from "src/app/data-core/model/enum";
+import { DivisionType, EventType } from "src/app/data-core/model/enum";
 import { SessionUser } from "src/app/common/tool/session-user";
 import { GarbageStationNumberStatistic } from "src/app/data-core/model/waste-regulation/garbage-station-number-statistic";
 
@@ -88,6 +88,27 @@ export class GarbageTaskNumberBusiness extends BaseBusinessRefresh {
     let item = new GarbageTaskNumberData();
     item.Id = data.Id;
     item.Name = data.Name;
+    if (data.TodayEventNumbers) {
+      let garbageDrop = data.TodayEventNumbers.find(
+        (x) => x.EventType == EventType.GarbageDrop
+      );
+      if (garbageDrop) {
+        item.GarbageDropCount = garbageDrop.DayNumber;
+      }
+      let garbageDropHandle = data.TodayEventNumbers.find(
+        (x) => x.EventType == EventType.GarbageDropHandle
+      );
+      if (garbageDropHandle) {
+        item.GarbageDropHandleCount = garbageDropHandle.DayNumber;
+      }
+      let garbageDropTimeout = data.TodayEventNumbers.find(
+        (x) => x.EventType == EventType.GarbageDropTimeout
+      );
+      if (garbageDropTimeout) {
+        item.GarbageDropTimeoutCount = garbageDropTimeout.DayNumber;
+      }
+    }
+
     item.TotalTaskCount = data.TotalTaskCount ? data.TotalTaskCount : 0;
     item.TimeoutTaskCount = data.TimeoutTaskCount ? data.TimeoutTaskCount : 0;
     item.CompleteTaskCount = data.CompleteTaskCount

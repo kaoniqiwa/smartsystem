@@ -68,6 +68,7 @@ export class IndexBusinessService {
       {
         business: "GarbageTaskNumberBusiness",
         cardType: "GarbageTaskNumberCardComponent",
+        flipTime: 5,
       },
     ];
   }

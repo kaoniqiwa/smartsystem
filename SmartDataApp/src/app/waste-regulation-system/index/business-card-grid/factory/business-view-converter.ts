@@ -57,6 +57,7 @@ import {
   GarbageRetentionNumberCardData,
   GarbageRetentionNumberCardDatas,
 } from "src/app/shared-module/card-component/garbage-retention-number-card/garbage-retention-number-card-data";
+import { GarbageTaskNumberCardConverter } from "src/app/waste-regulation-system/index/business-card-grid/business/garbage-task-number/garbage-task-number-card-converter";
 export class IllegalDropHistoryCardConverter implements IConverter {
   Convert<DropEvent, ViewsModel>(
     input: DropEvent,
@@ -648,32 +649,6 @@ export class GarbageStationInspectionCardConverter implements IConverter {
       }
       output.views = [model];
     }
-
-    return output;
-  }
-}
-
-export class GarbageTaskNumberCardConverter implements IConverter {
-  Convert<GarbageTaskNumberDatas, ViewsModel>(
-    input: GarbageTaskNumberDatas,
-    output: ViewsModel
-  ): ViewsModel;
-  Convert(
-    input: GarbageTaskNumberDatas,
-    output: ViewsModel<GarbageTaskNumberCardDatas>
-  ): ViewsModel<GarbageTaskNumberCardDatas> {
-    if (!input) return;
-    output.views = [new GarbageTaskNumberCardDatas()];
-
-    output.views[0].datas = input.map((x) => {
-      let data = new GarbageTaskNumberCardData();
-      data.Id = x.Id;
-      data.Name = x.Name;
-      data.CompleteTaskCount = x.CompleteTaskCount;
-      data.TimeoutTaskCount = x.TimeoutTaskCount;
-      data.TotalTaskCount = x.TotalTaskCount;
-      return data;
-    });
 
     return output;
   }
