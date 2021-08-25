@@ -1,4 +1,4 @@
-<mat-toolbar class="example-header">
+<mat-toolbar class="example-header" *ngIf="!HideTitlebar">
   <div class="app-header-wrapper">
     <div class="d3">
       <div fxLayout="row" class="fill-height p-l-30 p-r-10">
@@ -83,7 +83,7 @@
         </div>
         <div fxFlex="33" fxLayoutAlign="end center ">
           <app-time-tool> </app-time-tool>
-          <app-user-tool></app-user-tool>
+          <app-user-tool *ngIf="!HideButton"></app-user-tool>
         </div>
       </div>
     </div>
@@ -91,7 +91,11 @@
     <div class="d1"></div>
   </div>
 </mat-toolbar>
-<div class="platform-body" style="position: relative">
+<div
+  class="platform-body"
+  style="position: relative"
+  [ngClass]="HideTitlebar ? 'hide-titlebar' : ''"
+>
   <div
     class="fill-height fill-width hw-content-mask"
     *ngIf="divisionBusinessService.eventHistoryView"

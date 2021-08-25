@@ -23,6 +23,7 @@ import {
   ViewDivisionTypeEnum,
 } from "../../shared-module/business-component/business-manage-service";
 import { EventType } from "../../data-core/model/enum";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-index",
@@ -37,7 +38,8 @@ export class IndexComponent implements OnInit {
   cardSize: { width: number; height: number };
 
   moveMapSite: () => void;
-
+  HideButton: boolean = false;
+  HideTitlebar: boolean = false;
   user = new SessionUser();
   userDivisionName_ = "";
 
@@ -52,7 +54,8 @@ export class IndexComponent implements OnInit {
     private configService: ConfigRequestService,
     private eventPushService: EventPushService,
     private divisionBusinessService: DivisionBusinessService,
-    private mqttSevice: MQTTEventService
+    private mqttSevice: MQTTEventService,
+    private activatedRoute: ActivatedRoute
   ) {
     titleService.setTitle("生活垃圾分类全程监管平台");
     this.bar.seriesData = [
@@ -94,6 +97,18 @@ export class IndexComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.activatedRoute.queryParams.subscribe((param) => {
+      console.log("HideButton:", param);
+      for (const key in param) {
+        if (key.toLowerCase() == "hidebutton") {
+          this.HideButton = JSON.parse(param[key]);
+        }
+        if (key.toLowerCase() == "hidetitlebar") {
+          this.HideTitlebar = JSON.parse(param[key]);
+        }
+      }
+    });
+
     this.businessService.setLogoTitle();
     const videoConfig = await this.configService.getVideo().toPromise();
     this.user.video = videoConfig;

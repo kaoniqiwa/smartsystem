@@ -105,7 +105,7 @@ export class GarbageTaskNumberBusiness extends BaseBusinessRefresh {
         (x) => x.EventType == EventType.GarbageDropTimeout
       );
       if (garbageDropTimeout) {
-        item.GarbageDropTimeoutCount = garbageDropTimeout.DayNumber;
+        item.GarbageDropTimeoutCount = garbageDropTimeout.DeltaNumber;
       }
     }
 

@@ -7,6 +7,10 @@
   padding-right: 5px;
 }
 
+.platform-body.hide-titlebar {
+  height: 100%
+}
+
 .card-wrapper2 {
   background-color: rgb(6, 13, 55, 0.7);
   position: relative;
