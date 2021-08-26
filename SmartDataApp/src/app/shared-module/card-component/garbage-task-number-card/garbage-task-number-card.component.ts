@@ -59,6 +59,13 @@ export class GarbageTaskNumberCardComponent
 
   index: number = 0;
 
+  dataChanged() {
+    super.dataChanged();
+    this.timeSpan.stop();
+    this.index = 0;
+    this.timeSpan.run();
+  }
+
   ngOnInit(): void {
     this.loadDatas(new ViewsModel<GarbageTaskNumberCardDatas>());
 

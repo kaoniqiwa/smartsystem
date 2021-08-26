@@ -30,20 +30,25 @@ export class GarbageTaskNumberBusiness extends BaseBusinessRefresh {
   }
 
   getData(): Promise<GarbageTaskNumberDatas> {
-    let resources = this.user.userDivision;
-    if (resources && resources.length > 0) {
-      switch (this.user.userDivisionType) {
-        case DivisionType.Committees:
-          return this.getDataOfCommittees(resources[0].Id);
-        case DivisionType.County:
-          return this.getDataOfCounty(resources[0].Id);
-        case DivisionType.City:
-          return this.getDataOfCity(resources[0].Id);
-        default:
-          throw Error();
-      }
-    } else {
-      throw Error();
+    let divisionId = this.businessParameter.divisionId;
+    let divisionType = this.businessParameter.divisionType;
+
+    if (!divisionId) {
+      divisionId = this.user.userDivision[0].Id;
+    }
+    if (!divisionType) {
+      divisionType = this.user.userDivisionType;
+    }
+
+    switch (divisionType) {
+      case DivisionType.Committees:
+        return this.getDataOfCommittees(divisionId);
+      case DivisionType.County:
+        return this.getDataOfCounty(divisionId);
+      case DivisionType.City:
+        return this.getDataOfCity(divisionId);
+      default:
+        throw Error();
     }
   }
   /** 居委会 */

@@ -171,26 +171,19 @@ export class StatisticalDataBufferService
         param.Ids = [divisionId];
         const response = await this.divisionService.list(param);
         result1 = response.Data;
-        this.cache.set(this.divisionId + Md5.hashStr(divisionId), result);
+        this.cache.set(this.divisionId + Md5.hashStr(divisionId), result1);
       }
       return result1;
     } else {
-      var result = this.cache.get<Division[]>(
-        this.ancestorIdDivisions + Md5.hashStr(ancestorId)
-      );
-      if (!result) {
-        param.PageSize = this.maxSize;
-        param.AncestorId = ancestorId;
-        if (type) {
-          param.DivisionType = type;
-        }
-        const response = await this.divisionService.list(param);
-        result = response.Data;
-        this.cache.set(
-          this.ancestorIdDivisions + Md5.hashStr(ancestorId),
-          result
-        );
+      param.PageSize = this.maxSize;
+      param.AncestorId = ancestorId;
+      if (type) {
+        debugger;
+        param.DivisionType = type;
       }
+      const response = await this.divisionService.list(param);
+      let result = response.Data;
+
       return result;
     }
   }
