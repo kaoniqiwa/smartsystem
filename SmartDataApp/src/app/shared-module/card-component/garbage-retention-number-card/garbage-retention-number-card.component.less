@@ -1,0 +1,67 @@
+.garbage-retention-number {
+  //   width: 426px;
+  height: 100%;
+  @titleHeight: 24px;
+  padding-bottom: 15px;
+
+  .rank-title {
+    height: @titleHeight;
+    margin-bottom: 20px;
+  }
+  .rank-wrapper {
+    overflow: auto;
+    height: calc(100% - @titleHeight - 15px);
+    margin-bottom: 5px;
+    .rank-item {
+      &:last-child {
+        margin-bottom: 0;
+      }
+      display: flex;
+      margin-right: 30px;
+      margin-bottom: 10px;
+      justify-content: space-between;
+      .rank-item__group {
+        display: flex;
+        .rank-item__number {
+          width: 34px;
+          height: 22px;
+          border-radius: 4px;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #0b1c32;
+          font-weight: bold;
+          margin-right: 13px;
+        }
+        .rank-item__link {
+          color: #cfd7ff;
+          font-size: 18px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          a {
+            color: inherit;
+
+            &:hover {
+              color: #6997ff;
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+      .rank-item__count {
+        font-size: 18px;
+        color: #6997ff;
+
+        &--unit {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}

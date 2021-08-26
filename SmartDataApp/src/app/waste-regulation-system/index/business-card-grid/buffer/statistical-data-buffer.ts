@@ -178,7 +178,6 @@ export class StatisticalDataBufferService
       param.PageSize = this.maxSize;
       param.AncestorId = ancestorId;
       if (type) {
-        debugger;
         param.DivisionType = type;
       }
       const response = await this.divisionService.list(param);

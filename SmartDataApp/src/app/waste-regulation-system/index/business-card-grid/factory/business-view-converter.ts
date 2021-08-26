@@ -674,6 +674,15 @@ export class GarbageRetentionNumberCardConverter implements IConverter {
       data.Count = x.Count;
       return data;
     });
+    const len = output.views[0].datas.length;
+    if (len < 6)
+      for (let i = 0; i < 6 - len; i++)
+        output.views[0].datas.push({
+          Id: "",
+          Name: "-",
+          Time: 0,
+          Count: 0,
+        });
 
     return output;
   }

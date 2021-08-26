@@ -10,13 +10,15 @@ import { GarbageRetentionNumberCardDatas } from "./garbage-retention-number-card
 @Component({
   selector: "app-garbage-retention-number-card",
   templateUrl: "./garbage-retention-number-card.component.html",
-  styleUrls: ["./garbage-retention-number-card.component.css"],
+  styleUrls: ["./garbage-retention-number-card.component.less"],
 })
 export class GarbageRetentionNumberCardComponent
   extends BasisCardComponent
   implements OnInit
 {
   title: string = "垃圾滞留未处置排名";
+  unit: string = "起";
+
   constructor() {
     super();
   }

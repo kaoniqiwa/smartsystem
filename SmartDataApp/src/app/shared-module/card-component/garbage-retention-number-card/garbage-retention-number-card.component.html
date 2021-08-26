@@ -1,11 +1,23 @@
-<ng-container *ngIf="model">
-  <h2>{{ title }}</h2>
+<div *ngIf="model" class="garbage-retention-number">
+  <h2 class="rank-title">{{ title }}</h2>
 
-  <ng-container *ngFor="let item of model.datas; let i = index">
-    <div class="rank-item">
-      <div class="rank-item__number">{{ i + 1 }}</div>
-      <div class="rank-item__link">{{ item.Name }}</div>
-      <div class="rank-item__count">{{ item.Time }}</div>
+  <div class="rank-wrapper">
+    <div class="rank-item" *ngFor="let item of model.datas; let i = index">
+      <div class="rank-item__group">
+        <div
+          class="rank-item__number"
+          [ngStyle]="{ background: i < 3 ? '#ffba00' : '#7f94ff' }"
+        >
+          {{ i + 1 }}
+        </div>
+        <div class="rank-item__link">
+          <a href="javascript:">{{ item.Name }}</a>
+        </div>
+      </div>
+      <div class="rank-item__count">
+        {{ item.Time }}
+        <span class="rank-item__count--unit">{{ unit }}</span>
+      </div>
     </div>
-  </ng-container>
-</ng-container>
+  </div>
+</div>
