@@ -25,12 +25,12 @@ export class BusinessViewComponet {
   }
 
   businessDataChanged(data: IBusinessData) {
-    let viewModel = this.view.getDatas();
-    this.view.setDatas(this.converter.Convert(data, viewModel));
+    let viewModel = this.view.datas;
+    this.view.datas = this.converter.Convert(data, viewModel);
   }
 
   async loadDatas(data: IViewModel = new ViewsModel()) {
     let businessData = await this.business.getData();
-    this.view.setDatas(this.converter.Convert(businessData, data));
+    this.view.datas = this.converter.Convert(businessData, data);
   }
 }
