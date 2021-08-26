@@ -180,7 +180,7 @@ export class IndexBusinessService {
   async illegalDropTopCard() {
     this.illegalDropTopCardConfig = new Array();
     this.illegalDropTopCardConfig.push({
-      business: "DropOrder",
+      business: "EventDropOrder",
       cardType: "OrderTableCardComponent",
       //divisionsIds: param.divisionsIds,
       divisionId: this.user.userDivision[0].Id,

@@ -753,7 +753,7 @@ export const CardBusinessCoverterEnum = {
   DeviceStatusStatistic: DevStatusCardConverter,
   DivisionList: DivisionListConverter,
   IllegalDropEvent: IllegalDropEventConverter,
-  DropOrder: DropOrderConverter,
+  EventDropOrder: DropOrderConverter,
   // "IllegalDropOrder": IllegalDropOrderConverter,
   // "MixedIntoDropOrder": MixedIntoDropOrderConverter,
   DivisionGarbageSpecification: DivisionGarbageSpecificationConverter,

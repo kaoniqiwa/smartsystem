@@ -146,7 +146,7 @@ export const CardBusinessEnum = {
   DivisionList: DivisionList,
   IllegalDropEvent: IllegalDropEvent,
   DivisionGarbageSpecification: DivisionGarbageSpecification,
-  DropOrder: EventDropOrder,
+  EventDropOrder: EventDropOrder,
   // "MixedIntoDropOrder":EventDropOrderB,
   GarbageStationInspection: GarbageInspection,
   StationDisposeScore: StationDisposeScore,
