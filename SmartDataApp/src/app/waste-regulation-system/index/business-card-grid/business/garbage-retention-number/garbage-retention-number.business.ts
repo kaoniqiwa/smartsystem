@@ -22,10 +22,10 @@ import { GarbageStationNumberStatistic } from "src/app/data-core/model/waste-reg
 export class GarbageRetentionNumberBusiness extends BaseBusinessRefresh {
   user: SessionUser;
   constructor(
-    dataServe: StatisticalDataBufferService,
+    private _statisticalDataBufferService: StatisticalDataBufferService,
     businessParameter?: BusinessParameter
   ) {
-    super(dataServe, businessParameter);
+    super(_statisticalDataBufferService, businessParameter);
     this.user = new SessionUser();
   }
 

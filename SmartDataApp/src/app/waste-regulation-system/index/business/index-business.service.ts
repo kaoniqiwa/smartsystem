@@ -12,12 +12,12 @@ export class IndexBusinessService {
     divisionType: number /**父 区划类别 */;
     divisionsIds: Array<string>;
   };
-  illegalDropTopCardConfig: Array<IBusinessConfig>; /**乱扔垃圾排名table */
+  illegalDropRankConfig: Array<IBusinessConfig>; /**乱扔垃圾排名table */
   mixedIntoDropTopCardConfig: Array<IBusinessConfig>; /**混合投放排名 table */
   illegalDropHistoryCardConfig: Array<IBusinessConfig>; /**乱扔垃圾记录 折线图 */
   mixedIntoHistoryCardConfig: Array<IBusinessConfig>; /**混合投放记录 折线图  */
   divisionCardConfig: Array<IBusinessConfig>; /**区 街道 居委 列表 */
-  stationDisposeScoreCardConfig: Array<IBusinessConfig>; /**小包垃圾处置 table */
+  garbageDisposalRankConfig: Array<IBusinessConfig>; /**小包垃圾处置 table */
   devCardConfig: Array<IBusinessConfig>; /**设备状态 */
   inspectionCardConfig: Array<IBusinessConfig>; /**巡检 */
   divisionGarbageSpCardConfig: Array<IBusinessConfig>; /**区划 投放点 状态数据 */
@@ -38,11 +38,12 @@ export class IndexBusinessService {
 
   initCardConfig() {
     this.divisionCard();
-    this.illegalDropTopCard();
+    this.illegalDropRankCard();
     //this.mixedIntoDropTopCard();
+
     this.illegalDropHistoryCard();
     this.mixedIntoHistoryCard();
-    this.stationDisposeScoreCard();
+    this.garbageDisposalRankCard();
     this.devCard();
     this.divisionGarbageSpCard();
     this.initTaskNumberCard();
@@ -133,16 +134,6 @@ export class IndexBusinessService {
     });
   }
 
-  stationDisposeScoreCard() {
-    this.stationDisposeScoreCardConfig = new Array();
-    this.stationDisposeScoreCardConfig.push({
-      business: "StationDisposeScore",
-      cardType: "OrderTableCardComponent",
-      divisionId: this.user.userDivision.pop().Id,
-      dataTime: 60,
-    });
-  }
-
   divisionCard() {
     this.divisionCardConfig = new Array();
     this.divisionCardConfig.push({
@@ -177,9 +168,12 @@ export class IndexBusinessService {
     });
   }
 
-  async illegalDropTopCard() {
-    this.illegalDropTopCardConfig = new Array();
-    this.illegalDropTopCardConfig.push({
+  /**
+   *  乱扔垃圾排行榜
+   */
+  async illegalDropRankCard() {
+    this.illegalDropRankConfig = new Array();
+    this.illegalDropRankConfig.push({
       business: "EventDropOrder",
       cardType: "OrderTableCardComponent",
       //divisionsIds: param.divisionsIds,
@@ -193,6 +187,19 @@ export class IndexBusinessService {
       this.user.userDivisionType;
     this.divisionBusinessService.eventDropCard.dropDivisionType =
       this.user.userDivisionType;
+  }
+
+  /**
+   * 小包垃圾处置排行榜
+   */
+  garbageDisposalRankCard() {
+    this.garbageDisposalRankConfig = new Array();
+    this.garbageDisposalRankConfig.push({
+      business: "GarbageDisposalRank",
+      cardType: "OrderTableCardComponent",
+      divisionId: this.user.userDivision.pop().Id,
+      dataTime: 60,
+    });
   }
 
   async mixedIntoDropTopCard() {

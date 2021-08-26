@@ -3,7 +3,7 @@
  * LastUpdateTime  21.3.17
  */
 import { DropEvent } from "../business/event-drop-history/data";
-import { StationsScoreInfo } from "../business/station-dispose-score/data";
+import { StationsScoreInfo } from "../business/garbage-disposal-rank/data";
 import { DeviceStatus } from "../business/dev/data";
 import { IllegalDropEventInfos } from "../business/illegal-drop-event/data";
 import { Divisions } from "../business/division/data";
@@ -485,7 +485,7 @@ export class MixedIntoDropOrderConverter implements IConverter {
   }
 }
 
-export class StationDisposeScoreConverter implements IConverter {
+export class GarbageDisposalRankConverter implements IConverter {
   Convert<StationsScoreInfo, ViewsModel>(
     input: StationsScoreInfo,
     output: ViewsModel
@@ -722,8 +722,8 @@ export class ConverterFactory {
         useValue: new GarbageStationInspectionCardConverter(),
       },
       {
-        provide: StationDisposeScoreConverter,
-        useValue: new StationDisposeScoreConverter(),
+        provide: GarbageDisposalRankConverter,
+        useValue: new GarbageDisposalRankConverter(),
       },
       {
         provide: GarbageTaskNumberCardConverter,
@@ -758,7 +758,7 @@ export const CardBusinessCoverterEnum = {
   // "MixedIntoDropOrder": MixedIntoDropOrderConverter,
   DivisionGarbageSpecification: DivisionGarbageSpecificationConverter,
   GarbageStationInspection: GarbageStationInspectionCardConverter,
-  StationDisposeScore: StationDisposeScoreConverter,
+  GarbageDisposalRank: GarbageDisposalRankConverter,
   GarbageTaskNumberBusiness: GarbageTaskNumberCardConverter,
   GarbageRetentionNumberBusiness: GarbageRetentionNumberCardConverter,
 };

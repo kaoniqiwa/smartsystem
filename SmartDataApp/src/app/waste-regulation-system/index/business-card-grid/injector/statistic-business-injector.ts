@@ -14,7 +14,7 @@ import {
   EventDropOrderB,
 } from "../business/event-drop-order/event-drop-order";
 import { DivisionList } from "../business/division/division-list";
-import { StationDisposeScore } from "../business/station-dispose-score/station-dispose-score";
+import { GarbageDisposalRankService } from "../business/garbage-disposal-rank/garbage-disposal-rank.service";
 import { IllegalDropEvent } from "../business/illegal-drop-event/illegal-drop-event";
 import { StatisticalDataBufferService } from "../buffer/statistical-data-buffer";
 import { BaseBusinessRefresh } from "../../../../common/tool/base-business-refresh";
@@ -85,8 +85,10 @@ export class StatisticBusinessInjector {
         deps: [],
       },
       {
-        provide: StationDisposeScore,
-        useValue: new StationDisposeScore(this.statisticalDataBufferService),
+        provide: GarbageDisposalRankService,
+        useValue: new GarbageDisposalRankService(
+          this.statisticalDataBufferService
+        ),
         deps: [],
       },
       {
@@ -149,7 +151,7 @@ export const CardBusinessEnum = {
   EventDropOrder: EventDropOrder,
   // "MixedIntoDropOrder":EventDropOrderB,
   GarbageStationInspection: GarbageInspection,
-  StationDisposeScore: StationDisposeScore,
+  GarbageDisposalRank: GarbageDisposalRankService,
   GarbageTaskNumberBusiness: GarbageTaskNumberBusiness,
   GarbageRetentionNumberBusiness: GarbageRetentionNumberBusiness,
 };

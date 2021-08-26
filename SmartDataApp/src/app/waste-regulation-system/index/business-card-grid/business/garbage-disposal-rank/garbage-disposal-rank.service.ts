@@ -9,7 +9,7 @@ import { BaseBusinessRefresh } from "../../../../../common/tool/base-business-re
 /**
  * 投放点 处置排名
  */
-export class StationDisposeScore extends BaseBusinessRefresh {
+export class GarbageDisposalRankService extends BaseBusinessRefresh {
   constructor(
     dataServe: StatisticalDataBufferService,
     businessParameter?: BusinessParameter

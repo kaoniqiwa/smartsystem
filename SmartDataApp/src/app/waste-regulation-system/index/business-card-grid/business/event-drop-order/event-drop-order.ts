@@ -17,6 +17,7 @@ export class EventDropOrder extends BaseBusinessRefresh {
   }
 
   async getData() {
+    debugger;
     const model = new EventDropOrderInfo(),
       divisionDrop = new Map<
         DivisionType,
