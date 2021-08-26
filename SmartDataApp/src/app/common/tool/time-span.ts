@@ -16,6 +16,7 @@ export class TimeSpan {
   run() {
     if (this.onInterval) {
       this.handle = setInterval(this.onInterval, this.interval * 1000);
+      this.onInterval();
     }
   }
 }

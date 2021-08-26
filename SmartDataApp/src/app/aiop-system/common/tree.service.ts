@@ -30,12 +30,13 @@ export class TreeService extends ListAttribute {
   }
 
   private convertTreeNodeByGarbageStation<T extends GarbageStation>(
-    item: T
+    item: T,
+    isRoot: boolean
   ): DataTreeNode<T> {
     const node = new DataTreeNode<T>();
     node.id = item.Id;
     node.name = item.Name;
-    node.type = NodeTypeEnum.station;
+    node.type = isRoot ? NodeTypeEnum.root : NodeTypeEnum.station;
     node.parentId = item.DivisionId;
     node.isLeaf = true;
     node.data = item;
@@ -43,43 +44,58 @@ export class TreeService extends ListAttribute {
   }
 
   private convertTreeNodeByDivision<T extends Division>(
-    item: T
+    item: T,
+    isRoot: boolean
   ): DataTreeNode<T> {
     const node = new DataTreeNode<T>();
     node.id = item.Id;
     node.name = item.Name;
     node.parentId = item.ParentId;
-    node.type = this.convertToNodeType(item.DivisionType);
+
+    node.type = isRoot
+      ? NodeTypeEnum.root
+      : this.convertToNodeType(item.DivisionType);
     node.data = item;
     return node;
   }
-  private convertTreeNodeByRegion<T extends Region>(item: T): DataTreeNode<T> {
+  private convertTreeNodeByRegion<T extends Region>(
+    item: T,
+    isRoot: boolean
+  ): DataTreeNode<T> {
     const node = new DataTreeNode<T>();
     node.id = item.Id;
     node.name = item.Name;
     node.parentId = item.ParentId;
     node.isLeaf = item.IsLeaf;
-    node.type = item.IsLeaf ? NodeTypeEnum.map : NodeTypeEnum.root;
+    node.type = isRoot
+      ? NodeTypeEnum.root
+      : item.IsLeaf
+      ? NodeTypeEnum.map
+      : NodeTypeEnum.root;
     node.data = item;
     return node;
   }
   private convertTreeNodeByGarbageStationType<T extends GarbageStationType>(
-    item: T
+    item: T,
+    isRoot: boolean
   ) {
     const node = new DataTreeNode<T>();
     node.id = item.Name;
     node.name = item.Name;
     node.isLeaf = true;
-    node.type = NodeTypeEnum.map;
+    node.type = isRoot ? NodeTypeEnum.root : NodeTypeEnum.map;
     node.data = item;
     return node;
   }
-  private converTreeNodeByCamera<T extends AiopCamera>(item: T) {
+  private converTreeNodeByCamera<T extends AiopCamera>(
+    item: T,
+    isRoot: boolean
+  ) {
     const node = new DataTreeNode<T>();
     node.id = item.Id;
     node.name = item.Name;
     node.parentId = item.RegionId;
-    node.type = NodeTypeEnum.camera;
+    node.type = isRoot ? NodeTypeEnum.root : NodeTypeEnum.camera;
     node.isLeaf = true;
     node.data = item;
 
@@ -97,21 +113,25 @@ export class TreeService extends ListAttribute {
       | GarbageStation
       | GarbageStationType
       | AiopCamera
-  >(array: Array<T>, getBtns?: (data: T) => RightButton<T>[]) {
+  >(
+    array: Array<T>,
+    getBtns?: (data: T) => RightButton<T>[],
+    isRoot: boolean = false
+  ) {
     const nodes = new Array<DataTreeNode<T>>();
 
     for (const item of array) {
       let node: DataTreeNode<T>;
       if (item instanceof Division) {
-        node = this.convertTreeNodeByDivision(item);
+        node = this.convertTreeNodeByDivision(item, isRoot);
       } else if (item instanceof Region) {
-        node = this.convertTreeNodeByRegion(item);
+        node = this.convertTreeNodeByRegion(item, isRoot);
       } else if (item instanceof GarbageStation) {
-        node = this.convertTreeNodeByGarbageStation(item);
+        node = this.convertTreeNodeByGarbageStation(item, isRoot);
       } else if (item instanceof GarbageStationType) {
-        node = this.convertTreeNodeByGarbageStationType(item);
+        node = this.convertTreeNodeByGarbageStationType(item, isRoot);
       } else if (item instanceof AiopCamera) {
-        node = this.converTreeNodeByCamera(item);
+        node = this.converTreeNodeByCamera(item, isRoot);
       } else {
       }
       if (getBtns) {

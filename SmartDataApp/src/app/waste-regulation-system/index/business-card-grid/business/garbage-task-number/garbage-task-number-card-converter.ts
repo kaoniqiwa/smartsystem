@@ -25,7 +25,11 @@ export class GarbageTaskNumberCardConverter implements IConverter {
       data.TotalCount = x.GarbageDropCount;
       data.UncompletedCount = x.GarbageDropCount - x.GarbageDropHandleCount;
       data.GarbageRetentionCount = x.GarbageDropTimeoutCount;
-      data.ratio = (x.GarbageDropHandleCount / x.GarbageDropCount) * 100;
+      data.ratio = x.GarbageDropHandleCount / x.GarbageDropCount;
+      if (Number.isNaN(data.ratio)) {
+        data.ratio = 1;
+      }
+      data.ratio *= 100;
       return data;
     });
 

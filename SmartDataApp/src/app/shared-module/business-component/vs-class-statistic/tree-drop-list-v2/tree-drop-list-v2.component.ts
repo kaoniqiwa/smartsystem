@@ -141,7 +141,6 @@ export class TreeDropListV2Component implements OnInit {
   async reInit() {
     if (this.dataService.divisions.length == 0)
       this.dataService.divisions = await this.divisionDao.allDivisions();
-
     this.stationTreeService.appendDivisionModel(
       this.dataService.divisions.filter(
         (x) => x.DivisionType > DivisionType.City
@@ -149,7 +148,9 @@ export class TreeDropListV2Component implements OnInit {
     );
     if (this.selectItemNodeMode == SelectItemNodeModeEnum.EndNode) {
       const nodes = this.stationTreeService.convertTreeNode(
-        this.dataService.divisions
+        this.dataService.divisions,
+        undefined,
+        true
       );
       this.stationTreeService.dataSource = nodes;
       if (this.dataService.garbageStations.length == 0)

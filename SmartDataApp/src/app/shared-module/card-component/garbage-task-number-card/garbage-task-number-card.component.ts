@@ -28,8 +28,12 @@ export class GarbageTaskNumberCardComponent
   }
   public set data(v: GarbageTaskNumberCardData) {
     this._data = v;
-    this.option.series[0].data[0].value = parseInt(this._data.ratio.toString());
-    this.myChart.setOption(this.option, true);
+    if (this._data) {
+      this.option.series[0].data[0].value = parseInt(
+        this._data.ratio.toString()
+      );
+      this.myChart.setOption(this.option, true);
+    }
   }
 
   private _echarts?: ElementRef<HTMLDivElement>;
@@ -41,6 +45,7 @@ export class GarbageTaskNumberCardComponent
     this._echarts = v;
     if (this._echarts) {
       this.myChart = echarts.init(this.echarts.nativeElement, "dark");
+      this.myChart.setOption(this.option, true);
     }
   }
 
@@ -60,9 +65,9 @@ export class GarbageTaskNumberCardComponent
     this.timeSpan.onInterval = () => {
       let datas = (this.model as GarbageTaskNumberCardDatas).datas;
       datas = datas
-        .filter((x) => {
-          return !Number.isNaN(x.ratio);
-        })
+        // .filter((x) => {
+        //   return !Number.isNaN(x.ratio);
+        // })
         .sort((a, b) => {
           return a.Id.localeCompare(b.Id);
         });
@@ -73,6 +78,8 @@ export class GarbageTaskNumberCardComponent
     };
     this.timeSpan.run();
   }
+
+  onRunning() {}
 
   btnControl: (tag: IViewEvent) => {};
 
@@ -121,7 +128,7 @@ export class GarbageTaskNumberCardComponent
         },
         data: [
           {
-            value: 20,
+            value: 100,
             name: "处置率",
             title: {
               offsetCenter: ["0%", "30%"],

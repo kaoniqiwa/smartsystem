@@ -340,7 +340,6 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
   }
 
   async search() {
-    debugger;
     this.tableService.search.state = true;
     if (this.listMode == PageListMode.table)
       await this.tableService.searchData(1, (page) => {
