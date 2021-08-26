@@ -1,0 +1,6 @@
+{
+    "$schema": "./garbage-retention-rank.schema.json",
+    "business": "GarbageRetentionRankService",
+    "cardType": "GarbageRetentionRankComponent"
+
+}

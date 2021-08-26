@@ -16,6 +16,7 @@ export class GarbageRetentionNumberCardComponent
   extends BasisCardComponent
   implements OnInit
 {
+  title: string = "垃圾滞留未处置排名";
   constructor() {
     super();
   }
@@ -25,6 +26,6 @@ export class GarbageRetentionNumberCardComponent
   btnControl: (tag: IViewEvent) => {};
 
   itemClick(id: string) {
-    if (id) this.btnControl({ id: id });
+    // if (id) this.btnControl({ id: id });
   }
 }
