@@ -1,6 +1,10 @@
 import { Injectable, EventEmitter } from "@angular/core";
 import { ViewsModel } from "../../../common/abstract/base-view";
-import { BusinessParameter } from "../../../common/interface/IBusiness";
+import {
+  BusinessParameter,
+  IBusiness,
+  IBusinessData,
+} from "../../../common/interface/IBusiness";
 import { BaseBusinessRefresh } from "../../../common/tool/base-business-refresh";
 import { EventDropHistory } from "./business/event-drop-history/event-drop-history";
 import { EventDropOrder } from "./business/event-drop-order/event-drop-order";
@@ -46,6 +50,8 @@ import {
   StationState,
 } from "../../../data-core/model/enum";
 import { Language } from "../../../common/tool/language";
+import { GarbageTaskNumberCardComponent } from "src/app/shared-module/card-component/garbage-task-number-card/garbage-task-number-card.component";
+import { GarbageStationSummaryViewPage } from "src/app/shared-module/business-component/station-view-summary/view-helper";
 
 class DivisionBusinessServiceSelected {
   GarbageStation?: GarbageStation;
@@ -132,194 +138,226 @@ export class DivisionBusinessService {
     this.eventHistoryView = true;
   }
 
-  bindingEvent() {
-    const resetDropDivisionType = (val: DivisionType) => {
-      if (val == DivisionType.City)
-        this.eventDropCard.dropDivisionType = DivisionType.County;
-      else if (val == DivisionType.County)
-        this.eventDropCard.dropDivisionType = DivisionType.Committees;
-      else if (val == DivisionType.Committees)
-        this.eventDropCard.dropDivisionType = "station" as any;
+  private resetDropDivisionType(val: DivisionType) {
+    if (val == DivisionType.City)
+      this.eventDropCard.dropDivisionType = DivisionType.County;
+    else if (val == DivisionType.County)
+      this.eventDropCard.dropDivisionType = DivisionType.Committees;
+    else if (val == DivisionType.Committees)
+      this.eventDropCard.dropDivisionType = "station" as any;
+  }
+
+  bindingEventHeaderSquareListComponent(view: HeaderSquareListComponent) {
+    view.btnControl = (val: { id: string; type: DivisionType }) => {
+      const param = new BusinessParameter(),
+        eventTypes = [EventType.IllegalDrop, EventType.MixedInto];
+      param.divisionId = val.id;
+      param.divisionType = val.type;
+      this.eventDropCard.divisionType = val.type;
+      this.resetDropDivisionType(val.type);
+      // param.map.set('divisionsIds', [val.id]);
+      this.nspectionParam(val.id);
+      this.divisionsId = val.id;
+      if (this.aMap) {
+        this.aMap.VillageSelect(val.id, true);
+      }
+      for (const x of this.componets) {
+        if (x.list[0].view instanceof HeaderSquareListComponent) {
+        } else {
+          if (x.list[0].business instanceof BaseBusinessRefresh) {
+            /**小包处置跳过 */
+            //if(x.list[0].business instanceof StationDisposeScore)continue;
+            /**加上事件 类别 */
+            if (x.list[0].business instanceof EventDropHistory)
+              param.eventType = eventTypes.shift();
+
+            if (x.list[0].business instanceof EventDropOrder)
+              param.eventType = this.eventDropCard.eventType;
+            if (
+              x.list[0].business instanceof EventDropHistory ||
+              x.list[0].business instanceof EventDropOrder
+            ) {
+              setTimeout(() => {
+                const divisionDrop = new Map<
+                  DivisionType,
+                  Array<{ id: string; name: string }>
+                >();
+                divisionDrop.set(DivisionType.City, [
+                  {
+                    id: DivisionType.County + "",
+                    name: "街道",
+                  },
+                  {
+                    id: DivisionType.Committees + "",
+                    name: "居委",
+                  },
+                ]);
+                divisionDrop.set(DivisionType.County, [
+                  {
+                    id: DivisionType.Committees + "",
+                    name: "居委",
+                  },
+                  {
+                    id: "station",
+                    name: "投放点",
+                  },
+                ]);
+                this.componentService.selectOptionEventEmitter.emit(
+                  divisionDrop.get(val.type)
+                );
+              }, 100);
+            }
+
+            x.list[0].business.businessParameter = param;
+            x.list[0].view.loadDatas(new ViewsModel());
+          }
+          setTimeout(() => {
+            if (x.list[0].view instanceof GalleryRollPageComponent) {
+              x.list[0].view.tagClick(null, false);
+            }
+          }, 500);
+        }
+      }
     };
+  }
+
+  bindingEventImageThemeCardComponent(view: ImageThemeCardComponent) {
+    view.btnControl = async (val: {
+      timeInterval: { start: Date; end: Date };
+      cameraId: string;
+    }) => {
+      const respone = await this.cameraService.get(val.cameraId).toPromise();
+
+      this.aMap.Playback(
+        respone.Data as any,
+        val.timeInterval.start,
+        val.timeInterval.end
+      );
+    };
+  }
+
+  bindingEventHintCardComponent(
+    view: HintCardComponent,
+    business: IBusiness<IBusinessData>
+  ) {
+    view.btnControl = (tag) => {
+      this.selected.GarbageStation = undefined;
+      if (business instanceof BaseBusinessRefresh) {
+        if (tag == HintTag.IllegalDrop) {
+          this.illegalDropMode = new FillMode();
+          this.illegalDropMode.divisionId =
+            business.businessParameter.divisionId;
+        } else if (tag == HintTag.MixedInto) {
+          this.mixedIntoMode = new FillMode();
+          this.mixedIntoMode.divisionId = business.businessParameter.divisionId;
+        } else if (tag == HintTag.FullStation) {
+          this.fullStationsView = true;
+          this.fullGarbageStationIntoMode = new FillMode();
+          this.fullGarbageStationIntoMode.divisionId =
+            business.businessParameter.divisionId;
+        } else if (tag == HintTag.GarbageStation) {
+          this.stationListView = true;
+        } else if (tag == HintTag.StationStranded) {
+          this.stationStrandedView = true;
+        } else {
+        }
+
+        this.eventHistoryView = true;
+      }
+    };
+  }
+  bindingEventStateScaleCardComponent(view: StateScaleCardComponent) {
+    view.btnControl = (item: { tag: CameraStateTableEnum }) => {
+      this.stationCameraStateTable = item.tag;
+      this.stationCameraView = true;
+      this.eventHistoryView = true;
+    };
+  }
+  bindingEventOrderTableCardComponent(view: OrderTableCardComponent) {
+    view.btnControl = (item: {
+      id: string;
+      eventType: EventType;
+      drop2: any;
+    }) => {
+      if (item.eventType == null) {
+        this.linkChildView(item.id, this.eventDropCard.eventType, item.drop2);
+      } else {
+        const param = new BusinessParameter(),
+          stationKey = "station";
+        param.divisionId = this.divisionsId;
+        if (item.id == "IllegalDrop" || item.id == "MixedInto") {
+          this.eventDropCard.eventType =
+            item.id == "IllegalDrop"
+              ? EventType.IllegalDrop
+              : EventType.MixedInto;
+
+          param.eventType = this.eventDropCard.eventType;
+          param.dropList = this.eventDropCard.dropDivisionType;
+        } else {
+          param.eventType = item.eventType;
+          if (item.id == stationKey) {
+            param.dropList = stationKey;
+            this.eventDropCard.dropDivisionType = stationKey as any;
+          } else {
+            if (this.eventDropCard.divisionType == DivisionType.City) {
+              if (item.id == DivisionType.Committees + "")
+                param.divisionType = DivisionType.County;
+              else if (item.id == DivisionType.County + "")
+                param.divisionType = DivisionType.City;
+              param.dropList = item.id;
+              this.eventDropCard.dropDivisionType = item.id as any;
+            } else {
+              if (item.id == DivisionType.Committees + "")
+                param.divisionType = DivisionType.County;
+              this.eventDropCard.dropDivisionType = param.divisionType;
+            }
+          }
+        }
+        for (const x of this.componets) {
+          if (x.list[0].view instanceof OrderTableCardComponent) {
+            //    if(x.list[0].view.model.dropList
+            //     &&x.list[0].view.model.dropList.eventType==item.eventType)
+            if (x.list[0].business instanceof BaseBusinessRefresh) {
+              x.list[0].business.businessParameter = param;
+              x.list[0].view.loadDatas(new ViewsModel());
+            }
+          }
+        }
+      }
+    };
+  }
+  bindingEventGarbageTaskNumberCardComponent(
+    view: GarbageTaskNumberCardComponent
+  ) {
+    view.btnControl = (item: { id: string }) => {
+      this.divisionsId = item.id;
+      this.GarbageStationSummaryPageIndex =
+        GarbageStationSummaryViewPage.sumChart;
+      this.stationListView = true;
+      this.eventHistoryView = true;
+    };
+  }
+  GarbageStationSummaryPageIndex?: GarbageStationSummaryViewPage;
+  bindingEvent() {
     setTimeout(() => {
       for (const x of this.componets) {
         if (x.list[0].view instanceof HeaderSquareListComponent) {
-          x.list[0].view.btnControl = (val: {
-            id: string;
-            type: DivisionType;
-          }) => {
-            const param = new BusinessParameter(),
-              eventTypes = [EventType.IllegalDrop, EventType.MixedInto];
-            param.divisionId = val.id;
-            param.divisionType = val.type;
-            this.eventDropCard.divisionType = val.type;
-            resetDropDivisionType(val.type);
-            // param.map.set('divisionsIds', [val.id]);
-            this.nspectionParam(val.id);
-            this.divisionsId = val.id;
-            if (this.aMap) {
-              this.aMap.VillageSelect(val.id, true);
-            }
-            for (const x of this.componets) {
-              if (x.list[0].view instanceof HeaderSquareListComponent) {
-              } else {
-                if (x.list[0].business instanceof BaseBusinessRefresh) {
-                  /**小包处置跳过 */
-                  //if(x.list[0].business instanceof StationDisposeScore)continue;
-                  /**加上事件 类别 */
-                  if (x.list[0].business instanceof EventDropHistory)
-                    param.eventType = eventTypes.shift();
-
-                  if (x.list[0].business instanceof EventDropOrder)
-                    param.eventType = this.eventDropCard.eventType;
-                  if (
-                    x.list[0].business instanceof EventDropHistory ||
-                    x.list[0].business instanceof EventDropOrder
-                  ) {
-                    setTimeout(() => {
-                      const divisionDrop = new Map<
-                        DivisionType,
-                        Array<{ id: string; name: string }>
-                      >();
-                      divisionDrop.set(DivisionType.City, [
-                        {
-                          id: DivisionType.County + "",
-                          name: "街道",
-                        },
-                        {
-                          id: DivisionType.Committees + "",
-                          name: "居委",
-                        },
-                      ]);
-                      divisionDrop.set(DivisionType.County, [
-                        {
-                          id: DivisionType.Committees + "",
-                          name: "居委",
-                        },
-                        {
-                          id: "station",
-                          name: "投放点",
-                        },
-                      ]);
-                      this.componentService.selectOptionEventEmitter.emit(
-                        divisionDrop.get(val.type)
-                      );
-                    }, 100);
-                  }
-
-                  x.list[0].business.businessParameter = param;
-                  x.list[0].view.loadDatas(new ViewsModel());
-                }
-                setTimeout(() => {
-                  if (x.list[0].view instanceof GalleryRollPageComponent) {
-                    x.list[0].view.tagClick(null, false);
-                  }
-                }, 500);
-              }
-            }
-          };
+          this.bindingEventHeaderSquareListComponent(x.list[0].view);
         } else if (x.list[0].view instanceof ImageThemeCardComponent) {
-          x.list[0].view.btnControl = async (val: {
-            timeInterval: { start: Date; end: Date };
-            cameraId: string;
-          }) => {
-            const respone = await this.cameraService
-              .get(val.cameraId)
-              .toPromise();
-
-            this.aMap.Playback(
-              respone.Data as any,
-              val.timeInterval.start,
-              val.timeInterval.end
-            );
-          };
+          this.bindingEventImageThemeCardComponent(x.list[0].view);
         } else if (x.list[0].view instanceof HintCardComponent) {
-          x.list[0].view.btnControl = (tag) => {
-            this.selected.GarbageStation = undefined;
-            if (x.list[0].business instanceof BaseBusinessRefresh) {
-              if (tag == HintTag.IllegalDrop) {
-                this.illegalDropMode = new FillMode();
-                this.illegalDropMode.divisionId =
-                  x.list[0].business.businessParameter.divisionId;
-              } else if (tag == HintTag.MixedInto) {
-                this.mixedIntoMode = new FillMode();
-                this.mixedIntoMode.divisionId =
-                  x.list[0].business.businessParameter.divisionId;
-              } else if (tag == HintTag.FullStation) {
-                this.fullStationsView = true;
-                this.fullGarbageStationIntoMode = new FillMode();
-                this.fullGarbageStationIntoMode.divisionId =
-                  x.list[0].business.businessParameter.divisionId;
-              } else if (tag == HintTag.GarbageStation)
-                this.stationListView = true;
-              else if (tag == HintTag.StationStranded)
-                this.stationStrandedView = true;
-              this.eventHistoryView = true;
-            }
-          };
+          this.bindingEventHintCardComponent(
+            x.list[0].view,
+            x.list[0].business
+          );
         } else if (x.list[0].view instanceof StateScaleCardComponent) {
-          x.list[0].view.btnControl = (item: { tag: CameraStateTableEnum }) => {
-            this.stationCameraStateTable = item.tag;
-            this.stationCameraView = true;
-            this.eventHistoryView = true;
-          };
+          this.bindingEventStateScaleCardComponent(x.list[0].view);
         } else if (x.list[0].view instanceof OrderTableCardComponent) {
           /** 列表切换功能 */
-          x.list[0].view.btnControl = (item: {
-            id: string;
-            eventType: EventType;
-            drop2: any;
-          }) => {
-            if (item.eventType == null) {
-              this.linkChildView(
-                item.id,
-                this.eventDropCard.eventType,
-                item.drop2
-              );
-            } else {
-              const param = new BusinessParameter(),
-                stationKey = "station";
-              param.divisionId = this.divisionsId;
-              if (item.id == "IllegalDrop" || item.id == "MixedInto") {
-                this.eventDropCard.eventType =
-                  item.id == "IllegalDrop"
-                    ? EventType.IllegalDrop
-                    : EventType.MixedInto;
-
-                param.eventType = this.eventDropCard.eventType;
-                param.dropList = this.eventDropCard.dropDivisionType;
-              } else {
-                param.eventType = item.eventType;
-                if (item.id == stationKey) {
-                  param.dropList = stationKey;
-                  this.eventDropCard.dropDivisionType = stationKey as any;
-                } else {
-                  if (this.eventDropCard.divisionType == DivisionType.City) {
-                    if (item.id == DivisionType.Committees + "")
-                      param.divisionType = DivisionType.County;
-                    else if (item.id == DivisionType.County + "")
-                      param.divisionType = DivisionType.City;
-                    param.dropList = item.id;
-                    this.eventDropCard.dropDivisionType = item.id as any;
-                  } else {
-                    if (item.id == DivisionType.Committees + "")
-                      param.divisionType = DivisionType.County;
-                    this.eventDropCard.dropDivisionType = param.divisionType;
-                  }
-                }
-              }
-              for (const x of this.componets) {
-                if (x.list[0].view instanceof OrderTableCardComponent) {
-                  //    if(x.list[0].view.model.dropList
-                  //     &&x.list[0].view.model.dropList.eventType==item.eventType)
-                  if (x.list[0].business instanceof BaseBusinessRefresh) {
-                    x.list[0].business.businessParameter = param;
-                    x.list[0].view.loadDatas(new ViewsModel());
-                  }
-                }
-              }
-            }
-          };
+          this.bindingEventOrderTableCardComponent(x.list[0].view);
+        } else if (x.list[0].view instanceof GarbageTaskNumberCardComponent) {
+          this.bindingEventGarbageTaskNumberCardComponent(x.list[0].view);
+        } else {
         }
       }
     }, 1000);

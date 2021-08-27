@@ -14,7 +14,9 @@ export class ServiceHelper {
   static cacheItemByPaged = {
     get: <T>(key: string, predicate: (t: T) => boolean) => {
       let paged = ServiceHelper.cache.get<PagedList<T>>(key);
-      return paged.Data.find((x) => predicate(x));
+      if (paged) {
+        return paged.Data.find((x) => predicate(x));
+      }
     },
     push: <T>(key: string, t: T) => {
       let paged = ServiceHelper.cache.get<PagedList<T>>(key);

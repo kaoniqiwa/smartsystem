@@ -13,7 +13,7 @@ import {
   BusinessManageService,
   ViewDivisionTypeEnum,
 } from "../../business-manage-service";
-import { OtherViewEnum } from "../view-helper";
+import { GarbageStationSummaryViewPage } from "../view-helper";
 import {
   SelectItemNodeModeEnum,
   TreeDropListV2Component,
@@ -25,11 +25,11 @@ import {
   providers: [EventChartService, HWVideoService],
 })
 export class StatisticGarbageCountComponent implements OnInit, OnDestroy {
-  @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
+  @Output() OtherViewEvent = new EventEmitter<GarbageStationSummaryViewPage>();
 
   @ViewChild(TreeDropListV2Component)
   lp: TreeDropListV2Component;
-  otherView = OtherViewEnum;
+  otherView = GarbageStationSummaryViewPage;
 
   selectItemNodeMode = SelectItemNodeModeEnum.EndNode;
   constructor(
@@ -123,7 +123,7 @@ export class StatisticGarbageCountComponent implements OnInit, OnDestroy {
   // showIllegalDumpView(stationId:string){
   //    this.businessService.illegalDumpVideoImgsView(stationId);
   // }
-  changeOtherView(val: OtherViewEnum) {
+  changeOtherView(val: GarbageStationSummaryViewPage) {
     setTimeout(() => {
       this.OtherViewEvent.emit(val);
     }, 280);

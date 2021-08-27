@@ -32,7 +32,9 @@ export class GarbageTaskNumberCardComponent
       this.option.series[0].data[0].value = parseInt(
         this._data.ratio.toString()
       );
-      this.myChart.setOption(this.option, true);
+      if (this.myChart) {
+        this.myChart.setOption(this.option, true);
+      }
     }
   }
 
@@ -45,6 +47,11 @@ export class GarbageTaskNumberCardComponent
     this._echarts = v;
     if (this._echarts) {
       this.myChart = echarts.init(this.echarts.nativeElement, "dark");
+      if (this.data) {
+        this.option.series[0].data[0].value = parseInt(
+          this.data.ratio.toString()
+        );
+      }
       this.myChart.setOption(this.option, true);
     }
   }
@@ -70,6 +77,7 @@ export class GarbageTaskNumberCardComponent
     this.loadDatas(new ViewsModel<GarbageTaskNumberCardDatas>());
 
     this.timeSpan.onInterval = () => {
+      if (!this.model) return;
       let datas = (this.model as GarbageTaskNumberCardDatas).datas;
       datas = datas
         // .filter((x) => {
@@ -88,10 +96,11 @@ export class GarbageTaskNumberCardComponent
 
   onRunning() {}
 
-  btnControl: (tag: IViewEvent) => {};
-
-  itemClick(id: string) {
-    if (id) this.btnControl({ id: id });
+  itemClick() {
+    if (this.data)
+      this.btnControl({
+        id: this.data.Id,
+      });
   }
 
   option = {

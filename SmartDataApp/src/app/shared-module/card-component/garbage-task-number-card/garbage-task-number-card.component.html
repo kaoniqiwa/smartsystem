@@ -8,17 +8,17 @@
     <div #echarts class="task echarts col-md-6">
       <!-- <div echarts [options]="chartOption" class="demo-chart"></div> -->
     </div>
-    <div class="details">
+    <div class="details" (click)="itemClick()">
       <div>
-        <h4 class="title">发布任务数</h4>
+        <h4 class="title">全部任务</h4>
         <div class="value">{{ data.TotalCount }}</div>
       </div>
       <div>
-        <h4 class="title">未完成任务数</h4>
+        <h4 class="title">未完成任务</h4>
         <div class="value">{{ data.UncompletedCount }}</div>
       </div>
       <div>
-        <h4 class="title">垃圾滞留</h4>
+        <h4 class="title">超时处置</h4>
         <div class="value">{{ data.GarbageRetentionCount }}</div>
       </div>
     </div>

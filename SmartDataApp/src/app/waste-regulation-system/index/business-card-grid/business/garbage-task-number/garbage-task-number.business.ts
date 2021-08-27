@@ -53,10 +53,18 @@ export class GarbageTaskNumberBusiness extends BaseBusinessRefresh {
   }
   /** 居委会 */
   async getDataOfCommittees(divisionId: string) {
+    let self = await (
+      this.dataServe as StatisticalDataBufferService
+    ).postDivisionStatisticNumbers([divisionId]);
+
     let stations = await (
       this.dataServe as StatisticalDataBufferService
     ).postGarbageStationStatisticNumbers(divisionId);
     let items = new GarbageTaskNumberDatas();
+    if (self && self.length > 0) {
+      let selfItem = this.convert(self[0]);
+      items.push(selfItem);
+    }
     for (let i = 0; i < stations.length; i++) {
       const station = stations[i];
       let item = this.convert(station);
@@ -69,14 +77,24 @@ export class GarbageTaskNumberBusiness extends BaseBusinessRefresh {
     divisionId: string,
     type: DivisionType = DivisionType.Committees
   ) {
+    let self = await (
+      this.dataServe as StatisticalDataBufferService
+    ).postDivisionStatisticNumbers([divisionId]);
+
     let children = await (
       this.dataServe as StatisticalDataBufferService
-    ).ancestorDivisions(divisionId, undefined, type);
+    ).getAncestorDivisions(divisionId, type);
+
     const datas = await (
       this.dataServe as StatisticalDataBufferService
     ).postDivisionStatisticNumbers(children.map((x) => x.Id));
     let items = new GarbageTaskNumberDatas();
+    if (self && self.length > 0) {
+      let selfItem = this.convert(self[0]);
+      items.push(selfItem);
+    }
     for (const data of datas) {
+      if (data.StationNumber <= 0) continue;
       let item = this.convert(data);
       items.push(item);
     }

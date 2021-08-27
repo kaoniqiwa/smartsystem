@@ -71,7 +71,7 @@ export class GarbageRetentionNumberBusiness extends BaseBusinessRefresh {
   ) {
     let children = await (
       this.dataServe as StatisticalDataBufferService
-    ).ancestorDivisions(divisionId, undefined, type);
+    ).getAncestorDivisions(divisionId, type);
     const datas = await (
       this.dataServe as StatisticalDataBufferService
     ).postDivisionStatisticNumbers(children.map((x) => x.Id));

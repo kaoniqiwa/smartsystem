@@ -21,6 +21,7 @@ import { DivisionType } from "../../../../../data-core/model/enum";
 import { DatePipe } from "@angular/common";
 import { ImgTypeEnum, TypeNameEnum, HWCameraImageUrl } from "./camera-img-url";
 import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
+import { DivisionRequestService } from "src/app/data-core/repuest/division.service";
 
 export class EventTable extends BusinessTable implements IConverter {
   dataSource = new CustomTableArgs<any>({
@@ -150,8 +151,9 @@ export class EventTable extends BusinessTable implements IConverter {
   }
 
   toTableModel(event: GarbageDropEventRecord) {
-    const tableField = new TableField(),
-      division = this.findDivisionFn(event.Data.DivisionId);
+    const tableField = new TableField();
+    let division = this.findDivisionFn(event.Data.DivisionId);
+
     tableField.id = event.EventId;
     tableField.timeOut = event.Data.IsHandle
       ? event.Data.IsTimeout

@@ -19,10 +19,10 @@ export class DivisionList extends BaseBusinessRefresh {
     model.items = new Array();
     const ancestorDivisions = await (
         this.dataServe as StatisticalDataBufferService
-      ).ancestorDivisions(divisionId),
+      ).getAncestorDivisions(divisionId),
       divisions = await (
         this.dataServe as StatisticalDataBufferService
-      ).ancestorDivisions(null, divisionId);
+      ).getDivisions(divisionId);
 
     for (const d of ancestorDivisions) {
       const _ = new Division();

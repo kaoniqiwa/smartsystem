@@ -129,6 +129,7 @@
         <ng-container *ngIf="divisionBusinessService.stationListView">
           <hw-garbage-station-summary
             [divisionsId]="divisionBusinessService.divisionsId"
+            [PageIndex]="divisionBusinessService.GarbageStationSummaryPageIndex"
             (garbageStationMoveToPosition)="
               divisionBusinessService.moveToByGarbageStation($event)
             "
@@ -154,8 +155,8 @@
   <div
     class="fill-width fill-height"
     gdGap="10px"
-    gdColumns="repeat(4,448px)"
-    gdRows="repeat(3, 284px)"
+    gdColumns="repeat(4,1fr)"
+    gdRows="repeat(3, 32.2%)"
   >
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
       <ng-container *ngIf="businessService.divisionCardConfig">
@@ -181,7 +182,7 @@
           class="collapse fill-height fill-width"
           [class.in]="!divisionBusinessService.inspectionView"
         >
-          <!-- <app-amap
+          <app-amap
             #aMap
             (mapLoadedEvent)="mapLoaded($event)"
             (vsButtonClicked)="showVsView()"
@@ -198,7 +199,7 @@
             (StateClickedEvent)="
               divisionBusinessService.openFullStation($event)
             "
-          ></app-amap> -->
+          ></app-amap>
         </div>
         <div class="card-angle top-left"></div>
         <div class="card-angle top-right"></div>

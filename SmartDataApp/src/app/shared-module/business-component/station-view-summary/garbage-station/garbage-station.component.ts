@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { BusinessService } from "./business/garbage-station-list.service";
-import { OtherViewEnum } from "../view-helper";
+import { GarbageStationSummaryViewPage } from "../view-helper";
 import { HWVideoService } from "../../../../data-core/dao/video-dao";
 import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
 @Component({
@@ -9,11 +9,11 @@ import { GarbageStation } from "../../../../data-core/model/waste-regulation/gar
   providers: [BusinessService, HWVideoService],
 })
 export class GarbageStationComponent implements OnInit {
-  @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
+  @Output() OtherViewEvent = new EventEmitter<GarbageStationSummaryViewPage>();
   @Output()
   GarbageStationMoveToPosition = new EventEmitter<GarbageStation>();
   @Input() divisionsId = "";
-  otherView = OtherViewEnum;
+  otherView = GarbageStationSummaryViewPage;
   searchFn = async (val: string) => {
     this.businessService.search.searchText = val;
     this.businessService.search.state = true;
@@ -56,7 +56,7 @@ export class GarbageStationComponent implements OnInit {
       });
     });
   }
-  changeOtherView(val: OtherViewEnum) {
+  changeOtherView(val: GarbageStationSummaryViewPage) {
     setTimeout(() => {
       this.OtherViewEvent.emit(val);
     }, 240);

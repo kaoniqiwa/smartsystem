@@ -16,7 +16,7 @@ import { HowellExcelV1 } from "../../../../common/tool/hw-excel-js/hw-excel-v1";
 import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
 import { HowellCSV } from "../../../../common/tool/hw-excel-js/hw-csv";
 import { TITLEKEY, COLNAME } from "../../../../common/tool/hw-excel-js/data";
-import { OtherViewEnum } from "../view-helper";
+import { GarbageStationSummaryViewPage } from "../view-helper";
 @Component({
   selector: "hw-statistic-garbage-analyze",
   templateUrl: "./statistic-garbage-analyze.component.html",
@@ -24,14 +24,14 @@ import { OtherViewEnum } from "../view-helper";
   providers: [BusinessService, GarbageStationDao],
 })
 export class StatisticGarbageAnalyzeComponent implements OnInit {
-  @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
+  @Output() OtherViewEvent = new EventEmitter<GarbageStationSummaryViewPage>();
 
   @ViewChild(DateTimePickerDirective)
   timePicker: DateTimePickerDirective;
   @ViewChild(TreeDropListComponent)
   dropList: TreeDropListComponent;
 
-  otherView = OtherViewEnum;
+  otherView = GarbageStationSummaryViewPage;
 
   @ViewChild("dtp")
   dtp: ElementRef;
@@ -177,7 +177,7 @@ export class StatisticGarbageAnalyzeComponent implements OnInit {
     }
   }
 
-  changeOtherView(val: OtherViewEnum) {
+  changeOtherView(val: GarbageStationSummaryViewPage) {
     setTimeout(() => {
       this.OtherViewEvent.emit(val);
     }, 280);

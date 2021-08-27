@@ -13,7 +13,7 @@ import {
   ViewDivisionTypeEnum,
 } from "../../business-manage-service";
 import { GarbageFullHistorySumChartComponent } from "../garbage-full-history-sum-chart/garbage-full-history-sum-chart.component";
-import { OtherViewEnum } from "../view-helper";
+import { GarbageStationSummaryViewPage } from "../view-helper";
 import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
 @Component({
   selector: "hw-garbage-station-summary",
@@ -34,6 +34,16 @@ export class GarbageStationSummaryComponent implements OnInit {
   @Output()
   garbageStationMoveToPosition = new EventEmitter<GarbageStation>();
 
+  private _PageIndex: GarbageStationSummaryViewPage;
+  public get PageIndex(): GarbageStationSummaryViewPage {
+    return this._PageIndex;
+  }
+  @Input()
+  public set PageIndex(v: GarbageStationSummaryViewPage) {
+    this._PageIndex = v;
+    if (this._PageIndex) this.acceptOtherView(this._PageIndex);
+  }
+
   constructor(private businessManageService: BusinessManageService) {}
 
   ngOnInit() {
@@ -43,18 +53,19 @@ export class GarbageStationSummaryComponent implements OnInit {
       this.businessManageService.viewDivisionType ==
         ViewDivisionTypeEnum.TableLinkChild
     )
-      this.acceptOtherView(OtherViewEnum.chart);
+      this.acceptOtherView(GarbageStationSummaryViewPage.chart);
   }
-  acceptOtherView(val: OtherViewEnum) {
-    this.viewsShow[0] = val == OtherViewEnum.info;
-    this.viewsShow[1] = val == OtherViewEnum.chart;
-    this.viewsShow[2] = val == OtherViewEnum.sumChart;
-    this.viewsShow[3] = val == OtherViewEnum.analyzeChart;
-    this.viewsShow[4] = val == OtherViewEnum.event;
-    if (val == OtherViewEnum.chart) this.garbageCountComponent.defaultStation();
-    else if (val == OtherViewEnum.analyzeChart)
+  acceptOtherView(val: GarbageStationSummaryViewPage) {
+    this.viewsShow[0] = val == GarbageStationSummaryViewPage.info;
+    this.viewsShow[1] = val == GarbageStationSummaryViewPage.chart;
+    this.viewsShow[2] = val == GarbageStationSummaryViewPage.sumChart;
+    this.viewsShow[3] = val == GarbageStationSummaryViewPage.analyzeChart;
+    this.viewsShow[4] = val == GarbageStationSummaryViewPage.event;
+    if (val == GarbageStationSummaryViewPage.chart)
+      this.garbageCountComponent.defaultStation();
+    else if (val == GarbageStationSummaryViewPage.analyzeChart)
       this.analyzeComponent.initChart();
-    else if (val == OtherViewEnum.sumChart)
+    else if (val == GarbageStationSummaryViewPage.sumChart)
       this.garbageAnalyzeComponent.initView();
   }
 

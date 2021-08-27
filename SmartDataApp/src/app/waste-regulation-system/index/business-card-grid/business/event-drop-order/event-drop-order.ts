@@ -44,75 +44,75 @@ export class EventDropOrder extends BaseBusinessRefresh {
       },
     ]);
     model.items = new Array();
-    const divisionId = this.businessParameter.divisionId as string, //父区划
-      divisionType = this.businessParameter.divisionType as DivisionType,
-      eventType = this.businessParameter.eventType as EventType,
-      dropList = this.businessParameter.dropList as string,
-      division = await (
+    const divisionId = this.businessParameter.divisionId as string; //父区划
+    const divisionType = this.businessParameter.divisionType as DivisionType;
+    const eventType = this.businessParameter.eventType as EventType;
+    const dropList = this.businessParameter.dropList as string;
+    const division = await (
+      this.dataServe as StatisticalDataBufferService
+    ).getAncestorDivisions(divisionId);
+    const fillIllegalDropInfo = async () => {
+      const ancestorDivisions = await (
+          this.dataServe as StatisticalDataBufferService
+        ).getAncestorDivisions(divisionId),
+        ids = new Array<string>();
+
+      switch (dropList) {
+        case DivisionType.County + "":
+          ancestorDivisions
+            .filter((f) => f.DivisionType == DivisionType.County)
+            .map((d) => ids.push(d.Id));
+          break;
+
+        case DivisionType.Committees + "":
+          ancestorDivisions
+            .filter((f) => f.DivisionType == DivisionType.Committees)
+            .map((d) => ids.push(d.Id));
+          break;
+        default:
+          ancestorDivisions
+            .filter((f) => f.ParentId == divisionId)
+            .map((d) => ids.push(d.Id));
+          break;
+      }
+
+      const data = await (
         this.dataServe as StatisticalDataBufferService
-      ).ancestorDivisions(null, divisionId),
-      fillIllegalDropInfo = async () => {
-        const ancestorDivisions = await (
-            this.dataServe as StatisticalDataBufferService
-          ).ancestorDivisions(divisionId),
-          ids = new Array<string>();
+      ).postDivisionStatisticNumbers(ids);
+      for (const x of data) {
+        const info = new EventDropInfo();
+        model.items.push(info);
+        info.division = x.Name;
+        info.dropNum = 0;
+        info.id = x.Id;
+        for (const v of x.TodayEventNumbers)
+          if (v.EventType == eventType) info.dropNum += v.DayNumber;
+      }
+    };
+    const stationDropInfo = async () => {
+      const stations = await (
+          this.dataServe as StatisticalDataBufferService
+        ).getGarbageStations(divisionId),
+        stationIds = new Array<string>();
 
-        switch (dropList) {
-          case DivisionType.County + "":
-            ancestorDivisions
-              .filter((f) => f.DivisionType == DivisionType.County)
-              .map((d) => ids.push(d.Id));
-            break;
-
-          case DivisionType.Committees + "":
-            ancestorDivisions
-              .filter((f) => f.DivisionType == DivisionType.Committees)
-              .map((d) => ids.push(d.Id));
-            break;
-          default:
-            ancestorDivisions
-              .filter((f) => f.ParentId == divisionId)
-              .map((d) => ids.push(d.Id));
-            break;
-        }
-
+      for (const x of stations) stationIds.push(x.Id);
+      if (stationIds.length) {
         const data = await (
           this.dataServe as StatisticalDataBufferService
-        ).postDivisionStatisticNumbers(ids);
+        ).postGarbageStationStatisticNumbers(stationIds);
+        // console.log(data,stationIds);
         for (const x of data) {
           const info = new EventDropInfo();
           model.items.push(info);
           info.division = x.Name;
           info.dropNum = 0;
           info.id = x.Id;
-          for (const v of x.TodayEventNumbers)
-            if (v.EventType == eventType) info.dropNum += v.DayNumber;
+          if (x.TodayEventNumbers)
+            for (const v of x.TodayEventNumbers)
+              if (v.EventType == eventType) info.dropNum += v.DayNumber;
         }
-      },
-      stationDropInfo = async () => {
-        const stations = await (
-            this.dataServe as StatisticalDataBufferService
-          ).getGarbageStations(divisionId),
-          stationIds = new Array<string>();
-
-        for (const x of stations) stationIds.push(x.Id);
-        if (stationIds.length) {
-          const data = await (
-            this.dataServe as StatisticalDataBufferService
-          ).postGarbageStationStatisticNumbers(stationIds);
-          // console.log(data,stationIds);
-          for (const x of data) {
-            const info = new EventDropInfo();
-            model.items.push(info);
-            info.division = x.Name;
-            info.dropNum = 0;
-            info.id = x.Id;
-            if (x.TodayEventNumbers)
-              for (const v of x.TodayEventNumbers)
-                if (v.EventType == eventType) info.dropNum += v.DayNumber;
-          }
-        }
-      };
+      }
+    };
 
     model.eventType = eventType;
 

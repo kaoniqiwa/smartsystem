@@ -5,7 +5,7 @@ import {
   Output,
   EventEmitter,
 } from "@angular/core";
-import { OtherViewEnum } from "../view-helper";
+import { GarbageStationSummaryViewPage } from "../view-helper";
 import { BusinessService } from "./business/event-table.service";
 import { GarbageStationDao } from "../../../../data-core/dao/garbage-station-dao";
 import { DivisionDao } from "../../../../data-core/dao/division-dao";
@@ -39,8 +39,8 @@ export class GarbageDropEventHistoryComponent implements OnInit {
   @ViewChild(CustomTableComponent)
   table: CustomTableComponent;
 
-  otherView = OtherViewEnum;
-  @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
+  otherView = GarbageStationSummaryViewPage;
+  @Output() OtherViewEvent = new EventEmitter<GarbageStationSummaryViewPage>();
   constructor(
     private tableService: BusinessService,
     private divisionDao: DivisionDao,
@@ -171,7 +171,7 @@ export class GarbageDropEventHistoryComponent implements OnInit {
     });
   }
 
-  changeOtherView(val: OtherViewEnum) {
+  changeOtherView(val: GarbageStationSummaryViewPage) {
     setTimeout(() => {
       this.OtherViewEvent.emit(val);
     }, 240);

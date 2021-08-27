@@ -26,7 +26,6 @@ export class OrderTableCardComponent
   }
 
   ngOnInit() {
-    debugger;
     this.loadDatas(new ViewsModel());
   }
 

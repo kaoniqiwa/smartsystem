@@ -19,7 +19,7 @@ import {
   GarbageVolume,
   GetDivisionVolumesParams,
 } from "../model/waste-regulation/garbage-volume";
-import { PagedList } from "../model/page";
+import { Page, PagedList } from "../model/page";
 import { BatchRequest, BatchResult } from "../model/batch";
 import { HowellResponse } from "../model/response";
 import { HowellAuthHttpService } from "./howell-auth-http.service";
@@ -27,6 +27,15 @@ import { ServiceHelper } from "../model/waste-regulation/request-service-process
 import { DivisionUrl } from "../url/waste-regulation/division-url";
 import { classToPlain } from "class-transformer";
 import { SessionUser } from "src/app/common/tool/session-user";
+
+interface CacheConfig {
+  handle: NodeJS.Timer;
+  loading: boolean;
+}
+interface CacheConfigs {
+  [key: string]: CacheConfig;
+}
+
 @Injectable({
   providedIn: "root",
 })
@@ -114,16 +123,46 @@ export class DivisionRequestService {
   }
 
   async list(item?: GetDivisionsParams) {
-    if (!item) {
-      let result = ServiceHelper.cache.get<PagedList<Division>>(
-        ServiceHelper.key.Division
-      );
-      if (result) {
-        console.log("使用缓存");
-        return result;
-      }
+    // if (!item) {
+    //   let result = ServiceHelper.cache.get<PagedList<Division>>(
+    //     ServiceHelper.key.Division
+    //   );
+    //   if (result) {
+    //     console.log("使用缓存");
+    //     return result;
+    //   }
 
-      item = new GetDivisionsParams();
+    //   item = new GetDivisionsParams();
+    // } else if (item.Ids) {
+    //   let result = new Array<Division>();
+    //   let all = true;
+    //   for (const id of item.Ids) {
+    //     let item = ServiceHelper.cacheItemByPaged.get<Division>(
+    //       ServiceHelper.key.Division,
+    //       (x) => x.Id == id
+    //     );
+    //     if (!item) {
+    //       all = false;
+    //       break;
+    //     }
+    //     result.push(item);
+    //   }
+    //   if (all) {
+    //     let page: Page = {
+    //       PageIndex: 1,
+    //       PageSize: result.length,
+    //       TotalRecordCount: result.length,
+    //       PageCount: 1,
+    //       RecordCount: result.length,
+    //     };
+    //     return {
+    //       Page: page,
+    //       Data: result,
+    //     };
+    //   }
+    // }
+    if (!item) {
+      item = {};
     }
     if (!item.PageSize) {
       item.PageSize = ServiceHelper.pageMaxSize;
@@ -177,15 +216,51 @@ export class DivisionRequestService {
 
     return ServiceHelper.ResponseProcess(response, DivisionNumberStatistic);
   }
+  config: CacheConfigs = {
+    statisticNumberList: {
+      handle: undefined,
+      loading: false,
+    },
+  };
+
+  getCache<T>(key: string, config: CacheConfig) {
+    if (config.loading) {
+      let result = ServiceHelper.cache.get<T>(key);
+      if (result) {
+        return result;
+      }
+    }
+    config.loading = true;
+    config.handle = setTimeout(() => {
+      ServiceHelper.cache.set(key, undefined);
+      config.loading = false;
+      config.handle = undefined;
+    }, 1000);
+  }
 
   async statisticNumberList(item: GetDivisionStatisticNumbersParams) {
+    let result = this.getCache<PagedList<DivisionNumberStatistic>>(
+      DivisionUrl.statisticNumberList(),
+      this.config.statisticNumberList
+    );
+
+    if (result) {
+      return result;
+    }
+
     let response = await this.requestService
       .post<
         GetDivisionStatisticNumbersParams,
         HowellResponse<PagedList<DivisionNumberStatistic>>
       >(DivisionUrl.statisticNumberList(), item)
       .toPromise();
-    return ServiceHelper.ResponseProcess(response, DivisionNumberStatistic);
+    return ServiceHelper.ResponseProcess(
+      response,
+      DivisionNumberStatistic
+    ).then((x) => {
+      ServiceHelper.cache.set(DivisionUrl.statisticNumberList(), x);
+      return x;
+    });
   }
 
   async statisticNumberListV2(item: GetDivisionStatisticNumbersParamsV2) {

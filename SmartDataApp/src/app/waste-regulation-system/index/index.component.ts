@@ -179,6 +179,7 @@ export class IndexComponent implements OnInit {
       };
 
       this.stationDao.allGarbageStations().then((stations) => {
+        debugger;
         const station = stations.find((x) => x.Id == id);
         mapStation(station);
         if (station && drop2 == null) {

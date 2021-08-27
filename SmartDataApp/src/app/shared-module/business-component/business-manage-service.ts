@@ -31,14 +31,11 @@ export class BusinessManageService {
   }
 
   getParentDivision() {
-    return this.dataBufferService.ancestorDivisions(
-      null,
-      this.user.userDivision.pop().Id
-    );
+    return this.dataBufferService.getDivisions(this.user.userDivision.pop().Id);
   }
 
   getchildrenDivision() {
-    return this.dataBufferService.ancestorDivisions(
+    return this.dataBufferService.getAncestorDivisions(
       this.user.userDivision.pop().Id
     );
   }

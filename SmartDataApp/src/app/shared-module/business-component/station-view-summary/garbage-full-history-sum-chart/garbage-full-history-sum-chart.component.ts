@@ -15,7 +15,7 @@ import {
   BusinessManageService,
   ViewDivisionTypeEnum,
 } from "../../business-manage-service";
-import { OtherViewEnum } from "../view-helper";
+import { GarbageStationSummaryViewPage } from "../view-helper";
 import { HWCsvContext, StationSumHistoryCsv } from "../../export-csv-file";
 import { HWXlsxContext, StationSumHistoryXlsx } from "../../export-xlsx-file";
 import { DivisionType } from "../../../../data-core/model/enum";
@@ -26,7 +26,7 @@ import { DivisionType } from "../../../../data-core/model/enum";
   providers: [BusinessService, GarbageStationDao, DivisionDao],
 })
 export class GarbageFullHistorySumChartComponent implements OnInit {
-  @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
+  @Output() OtherViewEvent = new EventEmitter<GarbageStationSummaryViewPage>();
 
   @ViewChild(DateTimePickerDirective)
   timePicker: DateTimePickerDirective;
@@ -34,7 +34,7 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
   @ViewChild(LevelListPanelComponent)
   levelListPanel: LevelListPanelComponent;
 
-  otherView = OtherViewEnum;
+  otherView = GarbageStationSummaryViewPage;
 
   @ViewChild("dtp")
   dtp: ElementRef;
@@ -146,7 +146,7 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
     this.businessService.requestData();
   }
 
-  changeOtherView(val: OtherViewEnum) {
+  changeOtherView(val: GarbageStationSummaryViewPage) {
     setTimeout(() => {
       this.OtherViewEvent.emit(val);
     }, 280);
