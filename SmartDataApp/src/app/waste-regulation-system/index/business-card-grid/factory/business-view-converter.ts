@@ -52,11 +52,11 @@ import {
   GarbageTaskNumberCardDatas,
 } from "src/app/shared-module/card-component/garbage-task-number-card/garbage-task-number-card-data";
 import { GarbageTaskNumberDatas } from "../business/garbage-task-number/garbage-task-number-data";
-import { GarbageRetentionNumberDatas } from "../business/garbage-retention-number/garbage-retention-number-data";
+import { GarbageRetentionNumberDatas } from "../business/garbage-retention-rank/garbage-retention-rank-data";
 import {
   GarbageRetentionNumberCardData,
   GarbageRetentionNumberCardDatas,
-} from "src/app/shared-module/card-component/garbage-retention-number-card/garbage-retention-number-card-data";
+} from "src/app/shared-module/card-component/garbage-retention-rank/garbage-retention-rank-data";
 import { GarbageTaskNumberCardConverter } from "src/app/waste-regulation-system/index/business-card-grid/business/garbage-task-number/garbage-task-number-card-converter";
 export class IllegalDropHistoryCardConverter implements IConverter {
   Convert<DropEvent, ViewsModel>(
@@ -654,7 +654,7 @@ export class GarbageStationInspectionCardConverter implements IConverter {
   }
 }
 
-export class GarbageRetentionNumberCardConverter implements IConverter {
+export class GarbageRetentionRankcConverter implements IConverter {
   Convert<GarbageRetentionNumberDatas, ViewsModel>(
     input: GarbageRetentionNumberDatas,
     output: ViewsModel
@@ -731,8 +731,8 @@ export class ConverterFactory {
       },
 
       {
-        provide: GarbageRetentionNumberCardConverter,
-        useValue: new GarbageRetentionNumberCardConverter(),
+        provide: GarbageRetentionRankcConverter,
+        useValue: new GarbageRetentionRankcConverter(),
       },
     ]);
   }
@@ -760,5 +760,5 @@ export const CardBusinessCoverterEnum = {
   GarbageStationInspection: GarbageStationInspectionCardConverter,
   GarbageDisposalRank: GarbageDisposalRankConverter,
   GarbageTaskNumberBusiness: GarbageTaskNumberCardConverter,
-  GarbageRetentionNumberBusiness: GarbageRetentionNumberCardConverter,
+  GarbageRetentionRankService: GarbageRetentionRankcConverter,
 };

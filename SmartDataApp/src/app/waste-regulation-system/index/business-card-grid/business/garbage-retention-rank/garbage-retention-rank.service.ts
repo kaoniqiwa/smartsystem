@@ -2,12 +2,12 @@ import {
   AutoRefreshTimeSpan,
   BusinessParameter,
   IBusiness,
-} from "../../../../../common//interface/IBusiness";
+} from "../../../../../common/interface/IBusiness";
 
 import {
   GarbageRetentionNumberData,
   GarbageRetentionNumberDatas,
-} from "./garbage-retention-number-data";
+} from "./garbage-retention-rank-data";
 import { DivisionRequestService } from "src/app/data-core/repuest/division.service";
 import {
   DivisionNumberStatistic,
@@ -19,7 +19,7 @@ import { DivisionType } from "src/app/data-core/model/enum";
 import { SessionUser } from "src/app/common/tool/session-user";
 import { GarbageStationNumberStatistic } from "src/app/data-core/model/waste-regulation/garbage-station-number-statistic";
 
-export class GarbageRetentionNumberBusiness extends BaseBusinessRefresh {
+export class GarbageRetentionRankService extends BaseBusinessRefresh {
   user: SessionUser;
   constructor(
     private _statisticalDataBufferService: StatisticalDataBufferService,

@@ -4,6 +4,10 @@ import { SessionUser } from "../../../common/tool/session-user";
 import { DivisionBusinessService } from "../business-card-grid/division-business.service";
 import { DivisionType, EventType } from "../../../data-core/model/enum";
 import { IBusinessConfig } from "src/app/shared-module/card-component/business-card-factory";
+
+// 垃圾滞留配置信息
+import garbageRetentionRankConfig from "./config/garbage-retention-rank.json";
+
 @Injectable()
 export class IndexBusinessService {
   user: SessionUser;
@@ -12,7 +16,7 @@ export class IndexBusinessService {
     divisionType: number /**父 区划类别 */;
     divisionsIds: Array<string>;
   };
-  illegalDropRankConfig: Array<IBusinessConfig>; /**乱扔垃圾排名table */
+  illegalDropMixIntoRankConfig: Array<IBusinessConfig>; /**乱扔垃圾排名table */
   mixedIntoDropTopCardConfig: Array<IBusinessConfig>; /**混合投放排名 table */
   illegalDropHistoryCardConfig: Array<IBusinessConfig>; /**乱扔垃圾记录 折线图 */
   mixedIntoHistoryCardConfig: Array<IBusinessConfig>; /**混合投放记录 折线图  */
@@ -24,7 +28,9 @@ export class IndexBusinessService {
   illegalDropEventCardConfig: Array<IBusinessConfig>; /**报警推送 */
   garbageNumberCompareCardConfig: Array<IBusinessConfig>;
   taskNumberCardConfig: Array<IBusinessConfig>;
-  garbageRententionCardConfig: Array<IBusinessConfig>;
+
+  garbageRententionCardConfig?: Array<IBusinessConfig>;
+
   constructor(
     private bufferService: StatisticalDataBufferService,
     private divisionBusinessService: DivisionBusinessService
@@ -38,7 +44,7 @@ export class IndexBusinessService {
 
   initCardConfig() {
     this.divisionCard();
-    this.illegalDropRankCard();
+    this.illegalDropMixIntoRankCard();
     //this.mixedIntoDropTopCard();
 
     this.illegalDropHistoryCard();
@@ -47,7 +53,8 @@ export class IndexBusinessService {
     this.devCard();
     this.divisionGarbageSpCard();
     this.initTaskNumberCard();
-    this.initGarbageRententionNumberCard();
+
+    this.initGarbageRententionRankCard();
     // if (this.user.userDivisionType == DivisionType.County) {
     //   this.illegalDropEventCard();
     // } else {
@@ -55,11 +62,11 @@ export class IndexBusinessService {
     // }
   }
 
-  initGarbageRententionNumberCard() {
+  initGarbageRententionRankCard() {
     this.garbageRententionCardConfig = [
       {
-        business: "GarbageRetentionNumberBusiness",
-        cardType: "GarbageRetentionNumberCardComponent",
+        business: garbageRetentionRankConfig.business,
+        cardType: garbageRetentionRankConfig.cardType,
       },
     ];
   }
@@ -169,16 +176,16 @@ export class IndexBusinessService {
   }
 
   /**
-   *  乱扔垃圾排行榜
+   *  乱扔垃圾/混合投放排行榜
    */
-  async illegalDropRankCard() {
-    this.illegalDropRankConfig = new Array();
-    this.illegalDropRankConfig.push({
+  async illegalDropMixIntoRankCard() {
+    this.illegalDropMixIntoRankConfig = new Array();
+    this.illegalDropMixIntoRankConfig.push({
       business: "EventDropOrder",
       cardType: "OrderTableCardComponent",
       //divisionsIds: param.divisionsIds,
       divisionId: this.user.userDivision[0].Id,
-      dataTime: 60,
+      // dataTime: 60,
       eventType: EventType.IllegalDrop,
       divisionType: this.user.userDivisionType,
     });
