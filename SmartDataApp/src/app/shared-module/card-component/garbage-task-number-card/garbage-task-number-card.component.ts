@@ -67,23 +67,22 @@ export class GarbageTaskNumberCardComponent
   }
 
   ngOnInit(): void {
-    this.loadDatas(new ViewsModel<GarbageTaskNumberCardDatas>());
-
-    this.timeSpan.onInterval = () => {
-      let datas = (this.model as GarbageTaskNumberCardDatas).datas;
-      datas = datas
-        // .filter((x) => {
-        //   return !Number.isNaN(x.ratio);
-        // })
-        .sort((a, b) => {
-          return a.Id.localeCompare(b.Id);
-        });
-      this.data = datas[this.index++];
-      if (this.index >= datas.length) {
-        this.index = 0;
-      }
-    };
-    this.timeSpan.run();
+    // this.loadDatas(new ViewsModel<GarbageTaskNumberCardDatas>());
+    // this.timeSpan.onInterval = () => {
+    //   let datas = (this.model as GarbageTaskNumberCardDatas).datas;
+    //   datas = datas
+    //     // .filter((x) => {
+    //     //   return !Number.isNaN(x.ratio);
+    //     // })
+    //     .sort((a, b) => {
+    //       return a.Id.localeCompare(b.Id);
+    //     });
+    //   this.data = datas[this.index++];
+    //   if (this.index >= datas.length) {
+    //     this.index = 0;
+    //   }
+    // };
+    // this.timeSpan.run();
   }
 
   onRunning() {}
