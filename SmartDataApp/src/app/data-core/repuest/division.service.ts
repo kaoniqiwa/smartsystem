@@ -239,15 +239,6 @@ export class DivisionRequestService {
   }
 
   async statisticNumberList(item: GetDivisionStatisticNumbersParams) {
-    let result = this.getCache<PagedList<DivisionNumberStatistic>>(
-      DivisionUrl.statisticNumberList(),
-      this.config.statisticNumberList
-    );
-
-    if (result) {
-      return result;
-    }
-
     let response = await this.requestService
       .post<
         GetDivisionStatisticNumbersParams,
