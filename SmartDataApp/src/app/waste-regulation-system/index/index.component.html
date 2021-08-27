@@ -181,7 +181,7 @@
           class="collapse fill-height fill-width"
           [class.in]="!divisionBusinessService.inspectionView"
         >
-          <!-- <app-amap
+          <app-amap
             #aMap
             (mapLoadedEvent)="mapLoaded($event)"
             (vsButtonClicked)="showVsView()"
@@ -198,7 +198,7 @@
             (StateClickedEvent)="
               divisionBusinessService.openFullStation($event)
             "
-          ></app-amap> -->
+          ></app-amap>
         </div>
         <div class="card-angle top-left"></div>
         <div class="card-angle top-right"></div>
@@ -213,9 +213,9 @@
       </ng-container>
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1" id="san">
-      <ng-container *ngIf="businessService.illegalDropRankConfig">
+      <ng-container *ngIf="businessService.illegalDropMixIntoRankConfig">
         <business-card-grid
-          [cardConfig]="businessService.illegalDropRankConfig"
+          [cardConfig]="businessService.illegalDropMixIntoRankConfig"
         >
         </business-card-grid>
       </ng-container>

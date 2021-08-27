@@ -19,7 +19,7 @@ import { CardComponent } from "./card.component";
 import { isString } from "util";
 import { GalleryRollPageComponent } from "./gallery-roll-page/gallery-roll-page.component";
 import { GarbageTaskNumberCardComponent } from "./garbage-task-number-card/garbage-task-number-card.component";
-import { GarbageRetentionNumberCardComponent } from "./garbage-retention-number-card/garbage-retention-number-card.component";
+import { GarbageRetentionRankComponent } from "./garbage-retention-rank/garbage-retention-rank.component";
 
 @Injectable({
   providedIn: "root",
@@ -82,5 +82,5 @@ export const CardComponentEnum = {
   OrderTableCardComponent: OrderTableCardComponent,
   GalleryRollPageComponent: GalleryRollPageComponent,
   GarbageTaskNumberCardComponent: GarbageTaskNumberCardComponent,
-  GarbageRetentionNumberCardComponent: GarbageRetentionNumberCardComponent,
+  GarbageRetentionRankComponent: GarbageRetentionRankComponent,
 };

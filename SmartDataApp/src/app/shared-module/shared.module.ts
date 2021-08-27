@@ -81,7 +81,7 @@ import { StatisticGarbageAnalyzeComponent } from "./business-component/station-v
 import { GarbageDropEventHistoryComponent } from "./business-component/station-view-summary/garbage-drop-event-history/garbage-drop-event-history.component";
 import { StationStrandedComponent } from "./business-component/station-stranded-statistic/station-stranded/station-stranded.component";
 import { GarbageTaskNumberCardComponent } from "./card-component/garbage-task-number-card/garbage-task-number-card.component";
-import { GarbageRetentionNumberCardComponent } from "./card-component/garbage-retention-number-card/garbage-retention-number-card.component";
+import { GarbageRetentionRankComponent } from "./card-component/garbage-retention-rank/garbage-retention-rank.component";
 
 @NgModule({
   imports: [
@@ -166,7 +166,7 @@ import { GarbageRetentionNumberCardComponent } from "./card-component/garbage-re
     GarbageDropEventHistoryComponent,
     StationStrandedComponent,
     GarbageTaskNumberCardComponent,
-    GarbageRetentionNumberCardComponent,
+    GarbageRetentionRankComponent,
   ],
   exports: [
     MatTreeModule,
@@ -246,7 +246,7 @@ import { GarbageRetentionNumberCardComponent } from "./card-component/garbage-re
     GarbageDropEventHistoryComponent,
     StationStrandedComponent,
     GarbageTaskNumberCardComponent,
-    GarbageRetentionNumberCardComponent,
+    GarbageRetentionRankComponent,
   ],
   providers: [DatePipe],
   entryComponents: [
@@ -260,7 +260,7 @@ import { GarbageRetentionNumberCardComponent } from "./card-component/garbage-re
     LineEChartsCardComponent,
     GalleryRollPageComponent,
     GarbageTaskNumberCardComponent,
-    GarbageRetentionNumberCardComponent,
+    GarbageRetentionRankComponent,
   ],
 })
 export class SharedModule {}

@@ -5,18 +5,18 @@ import {
   ViewsModel,
 } from "src/app/common/abstract/base-view";
 import { IViewEvent } from "src/app/common/interface/IViewEvent";
-import { GarbageRetentionNumberCardDatas } from "./garbage-retention-number-card-data";
+import { GarbageRetentionNumberCardDatas } from "./garbage-retention-rank-data";
 
 @Component({
-  selector: "app-garbage-retention-number-card",
-  templateUrl: "./garbage-retention-number-card.component.html",
-  styleUrls: ["./garbage-retention-number-card.component.less"],
+  selector: "app-garbage-retention-rank",
+  templateUrl: "./garbage-retention-rank.component.html",
+  styleUrls: ["./garbage-retention-rank.component.less"],
 })
-export class GarbageRetentionNumberCardComponent
+export class GarbageRetentionRankComponent
   extends BasisCardComponent
   implements OnInit
 {
-  title: string = "垃圾滞留未处置排名";
+  title: string = "垃圾滞留排名";
   unit: string = "起";
 
   constructor() {
