@@ -1,7 +1,20 @@
 <div *ngIf="model" class="garbage-retention-number">
-  <h2 class="rank-title">{{ title }}</h2>
-
-  <div class="rank-wrapper">
+  <div class="rank-head">
+    <h2 class="rank-title">{{ title }}</h2>
+    <div class="rank-select">
+      <div class="rank-select__head">
+        <div class="rank-select__title">滞留时长</div>
+        <button class="rank-select__button" type="button">
+          <i class="rank-select__button--arrow"></i>
+        </button>
+      </div>
+      <div class="rank-select__body" hidden>
+        <div class="option">滞留时长</div>
+        <div class="option">滞留时长</div>
+      </div>
+    </div>
+  </div>
+  <div class="rank-body">
     <div class="rank-item" *ngFor="let item of model.datas; let i = index">
       <div class="rank-item__group">
         <div
@@ -11,11 +24,11 @@
           {{ i + 1 }}
         </div>
         <div class="rank-item__link">
-          <a href="javascript:">{{ item.Name }}</a>
+          <a href="javascript:">{{ item.name }}</a>
         </div>
       </div>
       <div class="rank-item__count">
-        {{ item.Time }}
+        {{ item.time }}
         <span class="rank-item__count--unit">{{ unit }}</span>
       </div>
     </div>

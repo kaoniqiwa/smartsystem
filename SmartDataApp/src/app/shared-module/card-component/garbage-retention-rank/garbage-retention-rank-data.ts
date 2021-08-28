@@ -1,12 +1,20 @@
 import { IViewModel } from "src/app/common/abstract/base-view";
+import { IBusinessData } from "src/app/common/interface/IBusiness";
+import { DivisionNumberStatistic } from "src/app/data-core/model/waste-regulation/division-number-statistic";
+import { GarbageStationNumberStatistic } from "src/app/data-core/model/waste-regulation/garbage-station-number-statistic";
 
-export class GarbageRetentionNumberCardData {
-  Id: string;
-  Name: string;
-  Time = 0;
-  Count = 0;
+// 视图需要的数据结构
+export interface GarbageRetentionRankData extends IBusinessData {
+  id: string;
+  name: string;
+  time: string;
+  count: number;
 }
 
 export class GarbageRetentionNumberCardDatas implements IViewModel {
-  datas: Array<GarbageRetentionNumberCardData>;
+  datas: Array<GarbageRetentionRankData>;
+}
+
+export interface GarbageRetentionRankDatas {
+  datas: GarbageRetentionRankData[];
 }

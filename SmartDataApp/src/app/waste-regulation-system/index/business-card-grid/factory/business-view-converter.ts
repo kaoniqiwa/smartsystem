@@ -29,7 +29,7 @@ import {
   GalleryRollPage,
   Gallery,
 } from "../../../../shared-module/card-component/gallery-roll-page/gallery-roll-page";
-import { IViewModel, ViewsModel } from "../../../../common/abstract/base-view";
+import { ViewsModel } from "../../../../common/abstract/base-view";
 import { IConverter } from "../../../../common/interface/IConverter";
 import { Injector, Injectable } from "@angular/core";
 import { LineOption } from "../../../../common/directive/echarts/echart";
@@ -48,14 +48,8 @@ import { SessionUser } from "../../../../common/tool/session-user";
 import { Language } from "../../../../common/tool/language";
 import { ResourceMediumRequestService } from "../../../../data-core/repuest/resources.service";
 import {
-  GarbageTaskNumberCardData,
-  GarbageTaskNumberCardDatas,
-} from "src/app/shared-module/card-component/garbage-task-number-card/garbage-task-number-card-data";
-import { GarbageTaskNumberDatas } from "../business/garbage-task-number/garbage-task-number-data";
-import { GarbageRetentionNumberDatas } from "../business/garbage-retention-rank/garbage-retention-rank-data";
-import {
-  GarbageRetentionNumberCardData,
-  GarbageRetentionNumberCardDatas,
+  GarbageRetentionRankData,
+  GarbageRetentionRankDatas,
 } from "src/app/shared-module/card-component/garbage-retention-rank/garbage-retention-rank-data";
 import { GarbageTaskNumberCardConverter } from "src/app/waste-regulation-system/index/business-card-grid/business/garbage-task-number/garbage-task-number-card-converter";
 export class IllegalDropHistoryCardConverter implements IConverter {
@@ -654,36 +648,50 @@ export class GarbageStationInspectionCardConverter implements IConverter {
   }
 }
 
-export class GarbageRetentionRankcConverter implements IConverter {
-  Convert<GarbageRetentionNumberDatas, ViewsModel>(
-    input: GarbageRetentionNumberDatas,
-    output: ViewsModel
-  ): ViewsModel;
+// export class GarbageRetentionRankcConverter implements IConverter {
+//   Convert<GarbageRetentionNumberDatas, ViewsModel>(
+//     input: GarbageRetentionNumberDatas,
+//     output: ViewsModel
+//   ): ViewsModel;
+//   Convert(
+//     input: GarbageRetentionNumberDatas,
+//     output: ViewsModel<GarbageRetentionNumberCardDatas>
+//   ): ViewsModel<GarbageRetentionNumberCardDatas> {
+//     if (!input) return;
+//     output.views = [new GarbageRetentionNumberCardDatas()];
+
+//     // output.views[0].datas = input.map((x) => {
+//     //   let data = new GarbageRetentionNumberCardData();
+//     //   data.Id = x.Id;
+//     //   data.Name = x.Name;
+//     //   data.Time = x.Time;
+//     //   data.Count = x.Count;
+//     //   return data;
+//     // });
+//     // const len = output.views[0].datas.length;
+//     // if (len < 6)
+//     //   for (let i = 0; i < 6 - len; i++)
+//     //     output.views[0].datas.push({
+//     //       Id: 12,
+//     //       Name: "-",
+//     //       Time: "sdf0",
+//     //       Count: 0,
+//     //     });
+
+//     return output;
+//   }
+// }
+export class GarbageRetentionRankcConverter {
   Convert(
-    input: GarbageRetentionNumberDatas,
-    output: ViewsModel<GarbageRetentionNumberCardDatas>
-  ): ViewsModel<GarbageRetentionNumberCardDatas> {
+    input: GarbageRetentionRankData[],
+    output: ViewsModel<GarbageRetentionRankDatas>
+  ) {
     if (!input) return;
-    output.views = [new GarbageRetentionNumberCardDatas()];
+    let view: GarbageRetentionRankDatas = {
+      datas: input,
+    };
 
-    output.views[0].datas = input.map((x) => {
-      let data = new GarbageRetentionNumberCardData();
-      data.Id = x.Id;
-      data.Name = x.Name;
-      data.Time = x.Time;
-      data.Count = x.Count;
-      return data;
-    });
-    const len = output.views[0].datas.length;
-    if (len < 6)
-      for (let i = 0; i < 6 - len; i++)
-        output.views[0].datas.push({
-          Id: "",
-          Name: "-",
-          Time: 0,
-          Count: 0,
-        });
-
+    output.views = [view];
     return output;
   }
 }
@@ -760,5 +768,5 @@ export const CardBusinessCoverterEnum = {
   GarbageStationInspection: GarbageStationInspectionCardConverter,
   GarbageDisposalRank: GarbageDisposalRankConverter,
   GarbageTaskNumberBusiness: GarbageTaskNumberCardConverter,
-  GarbageRetentionRankService: GarbageRetentionRankcConverter,
+  GarbageRetentionRankBusiness: GarbageRetentionRankcConverter,
 };

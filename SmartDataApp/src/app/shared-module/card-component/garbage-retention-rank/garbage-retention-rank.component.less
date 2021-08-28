@@ -3,12 +3,75 @@
   height: 100%;
   @titleHeight: 24px;
   padding-bottom: 15px;
+  .rank-head {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 30px;
 
-  .rank-title {
-    height: @titleHeight;
-    margin-bottom: 20px;
+    .rank-title {
+      height: @titleHeight;
+      margin-bottom: 20px;
+    }
+    .rank-select {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      position: relative;
+
+      .rank-select__head {
+        display: flex;
+        cursor: pointer;
+        align-content: flex-start;
+        .rank-select__title {
+          color: #cfd7ff;
+          font-size: 18px;
+        }
+        .rank-select__button {
+          border: none;
+          height: 30px;
+          width: 30px;
+          background: transparent;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          &--arrow {
+            font-family: "Material Design Icons";
+            font-size: 26px;
+            &::before {
+              content: "\F35D";
+              display: inline-block;
+              font-style: normal;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+      .rank-select__body {
+        position: absolute;
+        top: 30px;
+        border: 1px solid #5e6ebf;
+        background: #0c1127;
+        .option {
+          color: #cfd7ff;
+          height: 30px;
+          font-size: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          max-width: 150px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          box-sizing: content-box;
+          padding-left: 10px;
+          padding-right: 10px;
+          padding-top: 3px;
+        }
+      }
+    }
   }
-  .rank-wrapper {
+
+  .rank-body {
     overflow: auto;
     height: calc(100% - @titleHeight - 15px);
     margin-bottom: 5px;

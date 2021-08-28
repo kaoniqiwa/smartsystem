@@ -22,7 +22,7 @@ import { DatePipe } from "@angular/common";
 import { EventPushService } from "../../../../common/tool/mqtt-event/event-push.service";
 import { DivisionType, EventType } from "../../../../data-core/model/enum";
 import { GarbageTaskNumberBusiness } from "../business/garbage-task-number/garbage-task-number.business";
-import { GarbageRetentionRankService } from "../business/garbage-retention-rank/garbage-retention-rank.service";
+import { GarbageRetentionRankBusiness } from "../business/garbage-retention-rank/garbage-retention-rank.business";
 @Injectable({
   providedIn: "root",
 })
@@ -99,8 +99,8 @@ export class StatisticBusinessInjector {
         deps: [],
       },
       {
-        provide: GarbageRetentionRankService,
-        useValue: new GarbageRetentionRankService(
+        provide: GarbageRetentionRankBusiness,
+        useValue: new GarbageRetentionRankBusiness(
           this.statisticalDataBufferService
         ),
         deps: [],
@@ -153,5 +153,5 @@ export const CardBusinessEnum = {
   GarbageStationInspection: GarbageInspection,
   GarbageDisposalRank: GarbageDisposalRankService,
   GarbageTaskNumberBusiness: GarbageTaskNumberBusiness,
-  GarbageRetentionRankService: GarbageRetentionRankService,
+  GarbageRetentionRankBusiness: GarbageRetentionRankBusiness,
 };

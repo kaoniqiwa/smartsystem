@@ -5,7 +5,7 @@ import {
   ViewsModel,
 } from "src/app/common/abstract/base-view";
 import { IViewEvent } from "src/app/common/interface/IViewEvent";
-import { GarbageRetentionNumberCardDatas } from "./garbage-retention-rank-data";
+import { GarbageRetentionRankData } from "./garbage-retention-rank-data";
 
 @Component({
   selector: "app-garbage-retention-rank",
@@ -19,11 +19,15 @@ export class GarbageRetentionRankComponent
   title: string = "垃圾滞留排名";
   unit: string = "起";
 
+  rankData?: GarbageRetentionRankData[];
+
   constructor() {
     super();
   }
-  ngOnInit(): void {
-    this.loadDatas(new ViewsModel<GarbageRetentionNumberCardDatas>());
+  async ngOnInit() {
+    await this.loadDatas(new ViewsModel<GarbageRetentionRankData>());
+    console.log(this);
+    // this.rankData = (this.datas as ViewsModel<GarbageRetentionRankData>).views;
   }
   btnControl: (tag: IViewEvent) => {};
 
