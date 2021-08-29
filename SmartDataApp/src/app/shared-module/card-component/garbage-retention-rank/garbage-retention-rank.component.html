@@ -1,8 +1,12 @@
-<div *ngIf="rankData" class="garbage-retention-number">
+<div
+  *ngIf="rankData"
+  class="garbage-retention-number"
+  (click)="clickContainer()"
+>
   <div class="rank-head">
     <h2 class="rank-title">{{ title }}</h2>
     <div class="rank-select">
-      <div class="rank-select__head" (click)="toggleSelectBody()">
+      <div class="rank-select__head" (click)="toggleSelectBody($event)">
         <div class="rank-select__title">{{ rankSelectTile }}</div>
         <button class="rank-select__button" type="button">
           <i class="rank-select__button--arrow"></i>

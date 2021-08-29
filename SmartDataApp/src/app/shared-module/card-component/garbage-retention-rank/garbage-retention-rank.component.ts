@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { EventType } from "src/app/data-core/model/enum";
+import { DivisionBusinessService } from "src/app/waste-regulation-system/index/business-card-grid/division-business.service";
 import { GlobalStoreService } from "../../global-store.service";
 
 import {
@@ -76,7 +78,8 @@ export class GarbageRetentionRankComponent implements OnInit {
 
   constructor(
     private _garbageRetentionRankService: GarbageRetentionRankService,
-    private _globalStoreService: GlobalStoreService
+    private _globalStoreService: GlobalStoreService,
+    private _divisionBusinessService: DivisionBusinessService
   ) {
     this._globalStoreService.statusChange.subscribe(() => this._loadData());
   }
@@ -93,7 +96,8 @@ export class GarbageRetentionRankComponent implements OnInit {
     console.log(this.rankData);
   }
 
-  toggleSelectBody() {
+  toggleSelectBody(e: MouseEvent) {
+    e.stopPropagation();
     this.showSelectBody = !this.showSelectBody;
   }
   changeRetentionType(opt: OptionModel) {
@@ -111,5 +115,13 @@ export class GarbageRetentionRankComponent implements OnInit {
   }
   itemClickHandler(item: GarbageRetentionRankData) {
     console.log(item);
+    this._divisionBusinessService.linkChildView(
+      item.id,
+      EventType.IllegalDrop,
+      null
+    );
+  }
+  clickContainer() {
+    this.showSelectBody = false;
   }
 }
