@@ -50,7 +50,7 @@ import { ResourceMediumRequestService } from "../../../../data-core/repuest/reso
 import {
   GarbageRetentionRankData,
   GarbageRetentionRankDatas,
-} from "src/app/shared-module/card-component/garbage-retention-rank/garbage-retention-rank-data";
+} from "src/app/shared-module/card-component/garbage-retention-rank/garbage-retention-rank.model";
 import { GarbageTaskNumberCardConverter } from "src/app/waste-regulation-system/index/business-card-grid/business/garbage-task-number/garbage-task-number-card-converter";
 export class IllegalDropHistoryCardConverter implements IConverter {
   Convert<DropEvent, ViewsModel>(
@@ -374,6 +374,7 @@ export class DropOrderConverter implements IConverter {
           eventType: input.eventType,
         };
     }
+    // console.log(output);
     return output;
   }
 }
@@ -425,6 +426,7 @@ export class IllegalDropOrderConverter implements IConverter {
           eventType: EventType.IllegalDrop,
         };
     }
+    console.log(output);
     return output;
   }
 }

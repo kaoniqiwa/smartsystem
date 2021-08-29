@@ -1,21 +1,26 @@
-<div *ngIf="model" class="garbage-retention-number">
+<div *ngIf="rankData" class="garbage-retention-number">
   <div class="rank-head">
     <h2 class="rank-title">{{ title }}</h2>
     <div class="rank-select">
-      <div class="rank-select__head">
-        <div class="rank-select__title">滞留时长</div>
+      <div class="rank-select__head" (click)="toggleSelectBody()">
+        <div class="rank-select__title">{{ rankSelectTile }}</div>
         <button class="rank-select__button" type="button">
           <i class="rank-select__button--arrow"></i>
         </button>
       </div>
-      <div class="rank-select__body" hidden>
-        <div class="option">滞留时长</div>
-        <div class="option">滞留时长</div>
+      <div class="rank-select__body" *ngIf="showSelectBody">
+        <div
+          class="option"
+          *ngFor="let opt of rankSelectContent"
+          (click)="changeRetentionType(opt)"
+        >
+          {{ opt.content }}
+        </div>
       </div>
     </div>
   </div>
   <div class="rank-body">
-    <div class="rank-item" *ngFor="let item of model.datas; let i = index">
+    <div class="rank-item" *ngFor="let item of rankData; let i = index">
       <div class="rank-item__group">
         <div
           class="rank-item__number"
@@ -24,13 +29,27 @@
           {{ i + 1 }}
         </div>
         <div class="rank-item__link">
-          <a href="javascript:">{{ item.name }}</a>
+          <a href="javascript:" (click)="itemClickHandler(item)">{{
+            item.name
+          }}</a>
         </div>
       </div>
-      <div class="rank-item__count">
-        {{ item.time }}
-        <span class="rank-item__count--unit">{{ unit }}</span>
+      <div [ngSwitch]="retentionType">
+        <div *ngSwitchCase="0" class="rank-item__time">
+          {{ item.time | howelltime }}
+        </div>
+        <div *ngSwitchCase="1" class="rank-item__count">
+          {{ item.count }}
+          <span class="rank-item__count--unit" *ngIf="retentionType == 1">{{
+            unit
+          }}</span>
+        </div>
       </div>
     </div>
   </div>
+
+  <div class="ring top-left"></div>
+  <div class="ring top-right"></div>
+  <div class="ring bottom-right"></div>
+  <div class="ring bottom-left"></div>
 </div>

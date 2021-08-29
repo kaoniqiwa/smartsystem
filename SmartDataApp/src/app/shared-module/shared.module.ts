@@ -15,7 +15,11 @@ import {
   MatTabsModule,
 } from "@angular/material";
 import { DragDropModule } from "@angular/cdk/drag-drop";
-import { FormTitlePipe, TxtLenPipe } from "../common/tool/howell.pipe";
+import {
+  FormTitlePipe,
+  TimePipe,
+  TxtLenPipe,
+} from "../common/tool/howell.pipe";
 import {
   DateTimePickerDirective,
   DateTimePickerMirrorDirective,
@@ -119,6 +123,7 @@ import { GarbageRetentionRankComponent } from "./card-component/garbage-retentio
     EChartBar3dDirective,
     FormTitlePipe,
     TxtLenPipe,
+    TimePipe,
     InputSearchComponent,
     CustomTableComponent,
     ConfirmDialogComponent,

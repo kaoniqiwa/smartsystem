@@ -4,7 +4,7 @@ import { BaseBusinessRefresh } from "src/app/common/tool/base-business-refresh";
 import { StatisticalDataBufferService } from "../../buffer/statistical-data-buffer";
 import { DivisionType } from "src/app/data-core/model/enum";
 import { SessionUser } from "src/app/common/tool/session-user";
-import { GarbageRetentionRankData } from "src/app/shared-module/card-component/garbage-retention-rank/garbage-retention-rank-data";
+import { GarbageRetentionRankData } from "src/app/shared-module/card-component/garbage-retention-rank/garbage-retention-rank.model";
 
 export class GarbageRetentionRankBusiness extends BaseBusinessRefresh {
   user: SessionUser;
@@ -71,13 +71,13 @@ export class GarbageRetentionRankBusiness extends BaseBusinessRefresh {
         divisionId,
         type
       );
-    console.log("divisions", divisions);
+    // console.log("divisions", divisions);
     // 获取所有区划的统计信息
     const divisionStatistics =
       await this._statisticalDataBufferService.postDivisionStatisticNumbers(
         divisions.map((x) => x.Id)
       );
-    console.log("divisionStatistics", divisionStatistics);
+    // console.log("divisionStatistics", divisionStatistics);
 
     divisionStatistics.sort((a, b) => {
       return b.CurrentGarbageTime - a.CurrentGarbageTime;
@@ -88,11 +88,12 @@ export class GarbageRetentionRankBusiness extends BaseBusinessRefresh {
         let id = statistisc.Id;
         let name = statistisc.Name;
 
-        let currentGarbageTime = statistisc.CurrentGarbageTime >> 0;
-        let hour = Math.floor(currentGarbageTime / 60);
-        let minute = currentGarbageTime - hour * 60;
-        let time =
-          hour == 0 ? minute + "分钟" : hour + "小时" + minute + "分钟";
+        // let currentGarbageTime = statistisc.CurrentGarbageTime >> 0;
+        // let hour = Math.floor(currentGarbageTime / 60);
+        // let minute = currentGarbageTime - hour * 60;
+        // let time =
+        //   hour == 0 ? minute + "分钟" : hour + "小时" + minute + "分钟";
+        let time = statistisc.CurrentGarbageTime >> 0;
 
         let count = statistisc.GarbageDropStationNumber;
 
@@ -105,7 +106,7 @@ export class GarbageRetentionRankBusiness extends BaseBusinessRefresh {
       }
     );
     // businessData.length = 2;
-    console.log("businessData", businessData);
+    // console.log("businessData", businessData);
 
     let len = businessData.length;
     if (len < 6) {
@@ -113,7 +114,7 @@ export class GarbageRetentionRankBusiness extends BaseBusinessRefresh {
         businessData.push({
           id: "",
           name: "-",
-          time: "0",
+          time: 0,
           count: 0,
         } as GarbageRetentionRankData);
       }

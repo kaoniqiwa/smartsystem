@@ -1,12 +1,50 @@
 .garbage-retention-number {
-  //   width: 426px;
+  border: 1px solid rgb(92, 110, 191);
+  background-color: rgba(6, 13, 55, 0.7);
+  position: relative;
+  user-select: none;
+
+  width: 100%;
   height: 100%;
   @titleHeight: 24px;
-  padding-bottom: 15px;
+
+  padding: 15px 20px;
+
+  .ring {
+    width: 10px;
+    height: 10px;
+    border-color: #7a8de6;
+    border-width: 2px;
+    border-style: solid;
+    position: absolute;
+    border-right: none;
+    border-bottom: none;
+    &.top-left {
+      top: -1px;
+      left: -1px;
+      transform: rotate(0deg);
+    }
+    &.top-right {
+      top: -1px;
+      right: -1px;
+      transform: rotate(90deg);
+    }
+    &.bottom-right {
+      bottom: -1px;
+      right: -1px;
+      transform: rotate(180deg);
+    }
+    &.bottom-left {
+      bottom: -1px;
+      left: -1px;
+      transform: rotate(270deg);
+    }
+  }
+
   .rank-head {
     display: flex;
     justify-content: space-between;
-    margin-right: 30px;
+    margin-right: 10px;
 
     .rank-title {
       height: @titleHeight;
@@ -47,12 +85,13 @@
         }
       }
       .rank-select__body {
+        width: 108px;
         position: absolute;
         top: 30px;
         border: 1px solid #5e6ebf;
         background: #0c1127;
         .option {
-          color: #cfd7ff;
+          color: #fff;
           height: 30px;
           font-size: 16px;
           display: flex;
@@ -66,6 +105,10 @@
           padding-left: 10px;
           padding-right: 10px;
           padding-top: 3px;
+          cursor: pointer;
+          &:hover {
+            background-color: #1e90ff;
+          }
         }
       }
     }
@@ -73,6 +116,7 @@
 
   .rank-body {
     overflow: auto;
+
     height: calc(100% - @titleHeight - 15px);
     margin-bottom: 5px;
     .rank-item {
@@ -112,6 +156,10 @@
             }
           }
         }
+      }
+      .rank-item__time {
+        font-size: 18px;
+        color: #6997ff;
       }
       .rank-item__count {
         font-size: 18px;
