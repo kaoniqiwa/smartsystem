@@ -116,6 +116,7 @@ export class GarbageRetentionRankComponent implements OnInit {
   }
   itemClickHandler(item: GarbageRetentionRankData) {
     console.log(item);
+    if (!item.id) return;
 
     switch (this._globalStoreService.divisionType) {
       case DivisionType.City:

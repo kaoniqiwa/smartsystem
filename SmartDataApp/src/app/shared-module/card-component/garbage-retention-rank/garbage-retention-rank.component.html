@@ -37,7 +37,7 @@
           <a
             href="javascript:"
             (click)="itemClickHandler(item)"
-            [title]="'查看' + item.name + '垃圾滞留信息'"
+            [title]="item.id ? '查看' + item.name + '垃圾滞留信息' : ''"
             >{{ item.name }}</a
           >
         </div>
