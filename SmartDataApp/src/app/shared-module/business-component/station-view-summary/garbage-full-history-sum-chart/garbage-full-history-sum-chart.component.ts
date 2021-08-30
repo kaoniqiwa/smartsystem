@@ -5,6 +5,7 @@ import {
   Output,
   EventEmitter,
   ElementRef,
+  Input,
 } from "@angular/core";
 import { BusinessService } from "./business/business.service";
 import { DateTimePickerDirective } from "../../../../common/directive/date-time-picker.directive";
@@ -38,6 +39,40 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
 
   @ViewChild("dtp")
   dtp: ElementRef;
+
+  get dataSource() {
+    return this.businessService.divisionListView.dataSource;
+  }
+
+  private _divisionId: string;
+  public get divisionId(): string {
+    return this._divisionId;
+  }
+  @Input()
+  public set divisionId(v: string) {
+    this._divisionId = v;
+    if (this._divisionId) {
+      debugger;
+      this.delay(
+        () => {
+          return !!this.levelListPanel;
+        },
+        () => {
+          this.levelListPanel.defaultItem(this._divisionId);
+        }
+      );
+    }
+  }
+
+  delay(p: () => boolean, todo: () => void) {
+    setTimeout(() => {
+      if (!p()) {
+        this.delay(p, todo);
+        return;
+      }
+      todo();
+    }, 10);
+  }
 
   startDate = (b: Date) => {
     this.businessService.search.formBeginDate = b;
@@ -111,11 +146,27 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
         const county = divisions.find(
           (d) => d.DivisionType == DivisionType.County
         );
-        setTimeout(() => {
-          if (county) {
-            this.levelListPanel.defaultItem(county.Id);
+
+        this.delay(
+          () => {
+            return (
+              !!this.levelListPanel &&
+              !!this.businessService.garbageStations &&
+              // 此地可能产生异常，获取到的厢房如果真实为0，那程序会循环在这里
+              this.businessService.garbageStations.length > 0
+            );
+          },
+          () => {
+            debugger;
+            if (county) {
+              let id = county.Id;
+              if (this.divisionId) {
+                id = this.divisionId;
+              }
+              this.levelListPanel.defaultItem(id);
+            }
           }
-        }, 50);
+        );
       });
     }
   }

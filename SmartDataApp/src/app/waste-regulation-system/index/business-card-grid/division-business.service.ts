@@ -487,6 +487,8 @@ export class DivisionBusinessService {
   }
 
   clearEventView() {
+    this.GarbageStationSummaryPageIndex = undefined;
+    this.divisionsId = undefined;
     this.mixedIntoMode = null;
     this.illegalDropMode = null;
     this.fullStationsView = false;

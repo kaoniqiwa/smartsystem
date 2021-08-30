@@ -4,6 +4,7 @@ import { BusinessParameter } from "../../../../../common/interface/IBusiness";
 import { BaseBusinessRefresh } from "../../../../../common/tool/base-business-refresh";
 
 import { DivisionType, EventType } from "../../../../../data-core/model/enum";
+import { Division } from "src/app/data-core/model/waste-regulation/division";
 
 /**
  * 今日 事件排行
@@ -14,15 +15,11 @@ export class EventDropOrder extends BaseBusinessRefresh {
     businessParameter?: BusinessParameter
   ) {
     super(dataServe, businessParameter);
-  }
-
-  async getData() {
-    const model = new EventDropOrderInfo(),
-      divisionDrop = new Map<
-        DivisionType,
-        Array<{ id: string; name: string }>
-      >();
-    divisionDrop.set(DivisionType.City, [
+    this.divisionDrop = new Map<
+      DivisionType,
+      Array<{ id: string; name: string }>
+    >();
+    this.divisionDrop.set(DivisionType.City, [
       {
         id: DivisionType.County + "",
         name: "街道",
@@ -32,7 +29,7 @@ export class EventDropOrder extends BaseBusinessRefresh {
         name: "居委",
       },
     ]);
-    divisionDrop.set(DivisionType.County, [
+    this.divisionDrop.set(DivisionType.County, [
       {
         id: DivisionType.Committees + "",
         name: "居委",
@@ -42,14 +39,34 @@ export class EventDropOrder extends BaseBusinessRefresh {
         name: "投放点",
       },
     ]);
+  }
+
+  divisionDrop: Map<DivisionType, Array<{ id: string; name: string }>>;
+
+  async getData() {
+    const model = new EventDropOrderInfo();
+
     model.items = new Array();
     const divisionId = this.businessParameter.divisionId as string; //父区划
     const divisionType = this.businessParameter.divisionType as DivisionType;
     const eventType = this.businessParameter.eventType as EventType;
     const dropList = this.businessParameter.dropList as string;
-    const division = await (
-      this.dataServe as StatisticalDataBufferService
-    ).getAncestorDivisions(divisionId);
+    let division: Division[];
+    switch (divisionType) {
+      case DivisionType.City:
+      case DivisionType.County:
+        division = await (
+          this.dataServe as StatisticalDataBufferService
+        ).getAncestorDivisions(divisionId);
+        break;
+      case DivisionType.Committees:
+      default:
+        division = await (
+          this.dataServe as StatisticalDataBufferService
+        ).getDivisions(divisionId);
+        break;
+    }
+
     const fillIllegalDropInfo = async () => {
       const ancestorDivisions = await (
           this.dataServe as StatisticalDataBufferService
@@ -116,13 +133,13 @@ export class EventDropOrder extends BaseBusinessRefresh {
     model.eventType = eventType;
 
     if (dropList) {
-      model.dropList = divisionDrop.get(division[0].DivisionType);
+      model.dropList = this.divisionDrop.get(division[0].DivisionType);
       //统计街道 乱扔垃圾
       if (dropList == "station") await stationDropInfo();
       else await fillIllegalDropInfo();
       model.defaultId = dropList;
     } else {
-      model.dropList = divisionDrop.get(division[0].DivisionType);
+      model.dropList = this.divisionDrop.get(divisionType);
 
       if (divisionType == DivisionType.City) {
         model.defaultId = DivisionType.County + "";
