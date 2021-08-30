@@ -8,7 +8,11 @@
     <div #echarts class="task echarts col-md-6">
       <!-- <div echarts [options]="chartOption" class="demo-chart"></div> -->
     </div>
-    <div class="details" (click)="itemClick()">
+    <div
+      class="details"
+      (click)="itemClick()"
+      title="查看{{ data.Name }}垃圾处置排名"
+    >
       <div>
         <h4 class="title">全部任务</h4>
         <div class="value">{{ data.TotalCount }}</div>

@@ -55,10 +55,20 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
       debugger;
       this.delay(
         () => {
-          return !!this.levelListPanel;
+          return (
+            !!this.levelListPanel || this.businessService.divisions.length > 0
+          );
         },
         () => {
-          this.levelListPanel.defaultItem(this._divisionId);
+          if (this.levelListPanel)
+            this.levelListPanel.defaultItem(this._divisionId);
+          else if (this.businessService.divisions.length > 0) {
+            this.businessService.search.divisionId = this._divisionId;
+            this.changeDivision(this._divisionId).then((x) => {
+              this.search();
+            });
+          } else {
+          }
         }
       );
     }
@@ -114,6 +124,8 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
       this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.City
     ) {
       this.businessManageService.getchildrenDivision().then((c) => {
+        /** 查志磊 */
+        this.businessService.divisions = c;
         this.businessService.search.toDivisionsDropList = c.filter(
           (f) => f.DivisionType == DivisionType.County
         );
@@ -173,7 +185,7 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
 
   changeDivision(id: string) {
     const ids = new Array<string>();
-    this.businessManageService.getGarbageStations(id).then((items) => {
+    return this.businessManageService.getGarbageStations(id).then((items) => {
       console.log(items);
 
       items.map((i) => ids.push(i.Id));

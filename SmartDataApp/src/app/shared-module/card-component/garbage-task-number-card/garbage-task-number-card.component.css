@@ -29,11 +29,16 @@
   align-content: space-around;
   justify-content: space-around;
   margin-left: 25px;
+  cursor: pointer;
 }
 
 
 .inner-card .content .details .title {
   color: #6997ff;
+}
+
+.inner-card .content .details:hover .title {
+  /* text-decoration-line: underline; */
 }
 
 .inner-card .content .details .value {
