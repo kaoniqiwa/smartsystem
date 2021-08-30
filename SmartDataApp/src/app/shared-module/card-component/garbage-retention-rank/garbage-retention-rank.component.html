@@ -34,9 +34,12 @@
           {{ i + 1 }}
         </div>
         <div class="rank-item__link">
-          <a href="javascript:" (click)="itemClickHandler(item)">{{
-            item.name
-          }}</a>
+          <a
+            href="javascript:"
+            (click)="itemClickHandler(item)"
+            [title]="'查看' + item.name + '垃圾滞留信息'"
+            >{{ item.name }}</a
+          >
         </div>
       </div>
       <div [ngSwitch]="retentionType">

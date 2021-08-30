@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { EventType } from "src/app/data-core/model/enum";
+import { DivisionType, EventType } from "src/app/data-core/model/enum";
 import { DivisionBusinessService } from "src/app/waste-regulation-system/index/business-card-grid/division-business.service";
+import { GarbageStationSummaryViewPage } from "../../business-component/station-view-summary/view-helper";
 import { GlobalStoreService } from "../../global-store.service";
 
 import {
@@ -115,11 +116,26 @@ export class GarbageRetentionRankComponent implements OnInit {
   }
   itemClickHandler(item: GarbageRetentionRankData) {
     console.log(item);
-    this._divisionBusinessService.linkChildView(
-      item.id,
-      EventType.IllegalDrop,
-      null
-    );
+
+    switch (this._globalStoreService.divisionType) {
+      case DivisionType.City:
+      case DivisionType.County:
+        this._divisionBusinessService.divisionsId = item.id;
+        this._divisionBusinessService.GarbageStationSummaryPageIndex =
+          GarbageStationSummaryViewPage.sumChart;
+        this._divisionBusinessService.stationListView = true;
+        this._divisionBusinessService.eventHistoryView = true;
+        break;
+      case DivisionType.Committees:
+        this._divisionBusinessService.linkChildView(
+          item.id,
+          EventType.IllegalDrop,
+          null
+        );
+        break;
+      default:
+        break;
+    }
   }
   clickContainer() {
     this.showSelectBody = false;
