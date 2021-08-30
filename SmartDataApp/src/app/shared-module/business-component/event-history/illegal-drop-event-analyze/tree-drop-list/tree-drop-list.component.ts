@@ -139,7 +139,9 @@ export class TreeDropListComponent implements OnInit {
         )
       );
       const nodes = this.stationTreeService.convertTreeNode(
-        this.dataService.divisions
+        this.dataService.divisions,
+        undefined,
+        true
       );
       this.stationTreeService.dataSource = nodes;
     } else {
@@ -154,7 +156,9 @@ export class TreeDropListComponent implements OnInit {
       );
       if (this.onlyDivisionNode) {
         const nodes = this.stationTreeService.convertTreeNode(
-          this.dataService.divisions
+          this.dataService.divisions,
+          undefined,
+          true
         );
         this.stationTreeService.dataSource = nodes;
       } else {

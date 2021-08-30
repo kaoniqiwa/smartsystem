@@ -14,6 +14,7 @@
   </div>
   <div class="fill-height collapse" [class.in]="viewsShow[2]">
     <hw-garbage-full-history-sum-chart
+      [divisionId]="divisionsId"
       (OtherViewEvent)="acceptOtherView($event)"
     ></hw-garbage-full-history-sum-chart>
   </div>
