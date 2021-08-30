@@ -70,7 +70,7 @@ export class GarbageRetentionRankService {
         } as GarbageRetentionRankData;
       }
     );
-    businessData.length = 2;
+    // businessData.length = 2;
     console.log("businessData", businessData);
 
     let len = businessData.length;
