@@ -93,7 +93,7 @@ export class GarbageRetentionRankComponent implements OnInit {
       divisionId,
       divisionType
     );
-    console.log(this.rankData);
+    // console.log(this.rankData);
   }
 
   toggleSelectBody(e: MouseEvent) {

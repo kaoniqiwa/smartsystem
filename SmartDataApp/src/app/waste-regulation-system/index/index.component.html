@@ -222,13 +222,14 @@
       </ng-container>
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1" id="san2">
-      <ng-container *ngIf="businessService.garbageRententionCardConfig">
-        <app-garbage-retention-rank> </app-garbage-retention-rank>
-        <!-- <business-card-grid
+      <!-- <ng-container *ngIf="businessService.garbageRententionCardConfig">
+       
+        <business-card-grid
           [cardConfig]="businessService.garbageRententionCardConfig"
         >
-        </business-card-grid> -->
-      </ng-container>
+        </business-card-grid>
+      </ng-container> -->
+      <app-garbage-retention-rank> </app-garbage-retention-rank>
       <ng-container *ngIf="businessService.garbageNumberCompareCardConfig">
         <div
           class="card-wrapper p-l-20"

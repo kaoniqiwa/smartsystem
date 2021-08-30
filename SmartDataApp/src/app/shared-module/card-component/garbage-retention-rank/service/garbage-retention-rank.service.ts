@@ -71,7 +71,7 @@ export class GarbageRetentionRankService {
       }
     );
     // businessData.length = 2;
-    console.log("businessData", businessData);
+    // console.log("businessData", businessData);
 
     let len = businessData.length;
     if (len < 6) {
@@ -101,7 +101,7 @@ export class GarbageRetentionRankService {
       await this._statisticalDataBufferService.postGarbageStationStatisticNumbers(
         divisionId
       );
-    console.log("垃圾厢房", garbageStationsStatistics);
+    // console.log("垃圾厢房", garbageStationsStatistics);
 
     garbageStationsStatistics.sort((a, b) => {
       return b.CurrentGarbageTime - a.CurrentGarbageTime;

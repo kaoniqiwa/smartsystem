@@ -82,5 +82,4 @@ export const CardComponentEnum = {
   OrderTableCardComponent: OrderTableCardComponent,
   GalleryRollPageComponent: GalleryRollPageComponent,
   GarbageTaskNumberCardComponent: GarbageTaskNumberCardComponent,
-  GarbageRetentionRankComponent: GarbageRetentionRankComponent,
 };
