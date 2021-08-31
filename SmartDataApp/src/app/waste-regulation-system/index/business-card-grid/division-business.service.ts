@@ -509,6 +509,8 @@ export class DivisionBusinessService {
   }
 
   clearEventView() {
+    this.StationStrandedDivisionId = undefined;
+    this.StationStrandedGarbageStationId = undefined;
     this.GarbageDropEventHistoryHandle = undefined;
     this.GarbageDropEventHistoryTimeout = undefined;
     this.GarbageStationSummaryPageIndex = undefined;

@@ -107,14 +107,14 @@ export class StationStrandedComponent implements OnInit {
     this.businessService.stations =
       await this.garbageStationDao.allGarbageStations();
     this.businessService.divisions = await this.divisionDao.allDivisions();
-    let param;
-    param = {
+
+    let param = {
       divisionId: this.divisionId,
-      garbageStationId: this.garbageStationId,
+      stationId: this.garbageStationId,
     };
     await this.businessService.requestData(1, param, (page) => {
       this.businessService.table.initPagination(page, async (index) => {
-        await this.businessService.requestData(index);
+        await this.businessService.requestData(index, param);
       });
     });
     this.onLoaded.emit();

@@ -44,16 +44,26 @@
   margin-bottom: 0;
 }
 
-.inner-card .content .details:hover .title {
-  /* text-decoration-line: underline; */
-}
-
 .inner-card .content .details .value {
   color: white;
   font-size: 24px;
 
   cursor: pointer;
 }
+
+.inner-card .content .details .value.all {
+  color: #3a93ff;
+}
+
+.inner-card .content .details .value.handle {
+  color: #ef6464;
+}
+
+.inner-card .content .details .value.timeout {
+  color: #ffba00;
+}
+
+
 
 .inner-card .content .details .value:hover {
   color: #6997ff;

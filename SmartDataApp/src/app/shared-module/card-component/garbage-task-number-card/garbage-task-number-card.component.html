@@ -12,7 +12,7 @@
       <div>
         <h4 class="title">全部任务</h4>
         <div
-          class="value"
+          class="value all"
           title="查看{{ data.Name }}垃圾滞留处置"
           (click)="itemClick()"
         >
@@ -22,7 +22,7 @@
       <div>
         <h4 class="title">未完成任务</h4>
         <div
-          class="value"
+          class="value handle"
           title="查看{{ data.Name }}垃圾滞留未处置"
           (click)="itemClick({ handle: false })"
         >
@@ -32,7 +32,7 @@
       <div>
         <h4 class="title">超时处置</h4>
         <div
-          class="value"
+          class="value timeout"
           title="查看{{ data.Name }}垃圾滞留超时处置"
           (click)="itemClick({ timeout: true })"
         >
