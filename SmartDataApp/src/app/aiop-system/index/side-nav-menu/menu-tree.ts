@@ -68,7 +68,7 @@ export class MenuTreeMap {
 
     item.nodes.push({
       text: "区划管理",
-      url: "/aiop/garbage-station/division-manage",
+      url: "/aiop/garbage-station/index",
     });
 
     // item.nodes.push({
