@@ -4,9 +4,10 @@ import {
   ViewChild,
   Output,
   EventEmitter,
+  Input,
 } from "@angular/core";
 import { GarbageStationSummaryViewPage } from "../view-helper";
-import { BusinessService } from "./business/event-table.service";
+import { GarbageDropEventHistoryBusinessService } from "./business/event-table.service";
 import { GarbageStationDao } from "../../../../data-core/dao/garbage-station-dao";
 import { DivisionDao } from "../../../../data-core/dao/division-dao";
 import { GarbageStationCameraDao } from "../../../../data-core/dao/garbage-station-camera-dao";
@@ -23,7 +24,7 @@ import { DivisionType } from "../../../../data-core/model/enum";
   styleUrls: ["./garbage-drop-event-history.component.styl"],
   providers: [
     HWVideoService,
-    BusinessService,
+    GarbageDropEventHistoryBusinessService,
     DivisionDao,
     GarbageStationDao,
     GarbageStationCameraDao,
@@ -41,8 +42,29 @@ export class GarbageDropEventHistoryComponent implements OnInit {
 
   otherView = GarbageStationSummaryViewPage;
   @Output() OtherViewEvent = new EventEmitter<GarbageStationSummaryViewPage>();
+
+  private _handle?: boolean;
+  public get handle(): boolean | undefined {
+    return this._handle;
+  }
+  @Input()
+  public set handle(v: boolean | undefined) {
+    this._handle = v;
+    console.log("handle", v);
+  }
+
+  private _timeout?: boolean;
+  public get timeout(): boolean | undefined {
+    return this._timeout;
+  }
+  @Input()
+  public set timeout(v: boolean | undefined) {
+    this._timeout = v;
+    console.log("timeout", v);
+  }
+
   constructor(
-    private tableService: BusinessService,
+    private tableService: GarbageDropEventHistoryBusinessService,
     private divisionDao: DivisionDao,
     private videoService: HWVideoService,
     private divisionBusinessService: DivisionBusinessService,
@@ -159,16 +181,23 @@ export class GarbageDropEventHistoryComponent implements OnInit {
   }
 
   async initTableList() {
-    await this.tableService.requestData(1, (page) => {
-      this.tableService.table.initPagination(
-        page,
-        async (index) => {
-          await this.tableService.requestData(index);
-          this.table.tdImgListScoll();
-        },
-        true
-      );
-    });
+    await this.tableService.requestData(
+      1,
+      { handle: this.handle, timeout: this.timeout },
+      (page) => {
+        this.tableService.table.initPagination(
+          page,
+          async (index) => {
+            await this.tableService.requestData(index, {
+              handle: this.handle,
+              timeout: this.timeout,
+            });
+            this.table.tdImgListScoll();
+          },
+          true
+        );
+      }
+    );
   }
 
   changeOtherView(val: GarbageStationSummaryViewPage) {
@@ -179,7 +208,7 @@ export class GarbageDropEventHistoryComponent implements OnInit {
 
   async search() {
     this.tableService.search.state = true;
-    await this.tableService.requestData(1, (page) => {
+    await this.tableService.requestData(1, undefined, (page) => {
       this.tableService.table.initPagination(
         page,
         async (index) => {

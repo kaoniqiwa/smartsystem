@@ -133,6 +133,12 @@
             (garbageStationMoveToPosition)="
               divisionBusinessService.moveToByGarbageStation($event)
             "
+            [GarbageDropEventHistoryHandle]="
+              divisionBusinessService.GarbageDropEventHistoryHandle
+            "
+            [GarbageDropEventHistoryTimeout]="
+              divisionBusinessService.GarbageDropEventHistoryTimeout
+            "
           ></hw-garbage-station-summary>
         </ng-container>
         <ng-container *ngIf="divisionBusinessService.stationCameraView">
@@ -146,6 +152,10 @@
         </ng-container>
         <ng-container *ngIf="divisionBusinessService.stationStrandedView">
           <hw-station-stranded
+            [divisionId]="divisionBusinessService.StationStrandedDivisionId"
+            [garbageStationId]="
+              divisionBusinessService.StationStrandedGarbageStationId
+            "
             [GarbageStation]="divisionBusinessService.selected.GarbageStation"
           ></hw-station-stranded>
         </ng-container>

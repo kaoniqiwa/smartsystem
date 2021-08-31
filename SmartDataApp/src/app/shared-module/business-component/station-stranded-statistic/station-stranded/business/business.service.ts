@@ -117,11 +117,29 @@ export class BusinessService {
     return ids;
   }
 
-  async requestData(pageIndex: number, callBack?: (page: Page) => void) {
+  async requestData(
+    pageIndex: number,
+    param?: { name?: string; stationId?: string; divisionId?: string },
+    callBack?: (page: Page) => void
+  ) {
+    let params = this.getStationStatisticParam(
+      pageIndex,
+      this.search,
+      this.toStationIds
+    );
+    if (param) {
+      if (param.stationId) {
+        params.Ids = [param.stationId];
+      }
+      if (param.name) {
+        params.Name = param.name;
+      }
+      if (param.divisionId) {
+        params.DivisionId = param.divisionId;
+      }
+    }
     const response =
-      await this.garbageStationRequestService.statisticNumberList(
-        this.getStationStatisticParam(pageIndex, this.search, this.toStationIds)
-      );
+      await this.garbageStationRequestService.statisticNumberList(params);
     const data = new GarbageDropEventsRecord();
     data.items = response.Data;
     this.table.clearItems();

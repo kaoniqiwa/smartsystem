@@ -25,6 +25,8 @@
   </div>
   <div class="fill-height collapse" [class.in]="viewsShow[4]">
     <hw-garbage-drop-event-history
+      [handle]="GarbageDropEventHistoryHandle"
+      [timeout]="GarbageDropEventHistoryTimeout"
       (OtherViewEvent)="acceptOtherView($event)"
     ></hw-garbage-drop-event-history>
   </div>

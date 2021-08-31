@@ -22,7 +22,7 @@ import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resource
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
 import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
 @Injectable()
-export class BusinessService {
+export class GarbageDropEventHistoryBusinessService {
   playVideo: PlayVideo;
   galleryTargetView = new GalleryTargetViewI(this.datePipe);
   dataSource_ = new Array<GarbageDropEventRecord>();
@@ -150,10 +150,24 @@ export class BusinessService {
     };
   }
 
-  async requestData(pageIndex: number, callBack?: (page: Page) => void) {
-    const response = await this.eventRequestService.list(
-      this.getRequsetParam(pageIndex, this.search)
-    );
+  async requestData(
+    pageIndex: number,
+    param?: {
+      handle?: boolean;
+      timeout?: boolean;
+    },
+    callBack?: (page: Page) => void
+  ) {
+    let params = this.getRequsetParam(pageIndex, this.search);
+    if (param) {
+      if (param.handle !== undefined) {
+        params.IsHandle = param.handle;
+      }
+      if (param.timeout !== undefined) {
+        params.IsTimeout = param.timeout;
+      }
+    }
+    const response = await this.eventRequestService.list(params);
     const data = new GarbageDropEventsRecord();
 
     data.items = response.Data.sort((a, b) => {

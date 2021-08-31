@@ -17,7 +17,17 @@ import { GarbageStation } from "../../../../data-core/model/waste-regulation/gar
   ],
 })
 export class StationStrandedComponent implements OnInit {
-  @Input() divisionId = "";
+  private _divisionId: string;
+  public get divisionId(): string {
+    return this._divisionId;
+  }
+  @Input()
+  public set divisionId(v: string) {
+    this._divisionId = v;
+    if (this._divisionId) {
+      this.search({ divisionId: this._divisionId });
+    }
+  }
 
   private garbageStation: GarbageStation;
   @Input()
@@ -31,12 +41,39 @@ export class StationStrandedComponent implements OnInit {
     return this.garbageStation;
   }
 
+  private _garbageStationId?: string;
+  public get garbageStationId(): string | undefined {
+    return this._garbageStationId;
+  }
+
+  @Input()
+  public set garbageStationId(v: string | undefined) {
+    this._garbageStationId = v;
+    if (this._garbageStationId) {
+      this.search({ stationId: this._garbageStationId });
+    }
+  }
+
+  /** 原始方法 不知道还有哪里调用暂时保留 */
   searchFn = async (val: string) => {
     this.businessService.search.searchText = val;
     this.businessService.search.state = true;
-    await this.businessService.requestData(1, (page) => {
+    await this.businessService.requestData(1, undefined, (page) => {
       this.businessService.table.initPagination(page, async (index) => {
         await this.businessService.requestData(index);
+      });
+    });
+  };
+
+  search = async (val?: {
+    name?: string;
+    stationId?: string;
+    divisionId?: string;
+  }) => {
+    this.businessService.search.state = true;
+    await this.businessService.requestData(1, val, (page) => {
+      this.businessService.table.initPagination(page, async (index) => {
+        await this.businessService.requestData(index, val);
       });
     });
   };
@@ -64,7 +101,7 @@ export class StationStrandedComponent implements OnInit {
     this.businessService.stations =
       await this.garbageStationDao.allGarbageStations();
     this.businessService.divisions = await this.divisionDao.allDivisions();
-    await this.businessService.requestData(1, (page) => {
+    await this.businessService.requestData(1, undefined, (page) => {
       this.businessService.table.initPagination(page, async (index) => {
         await this.businessService.requestData(index);
       });

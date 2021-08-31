@@ -15,12 +15,17 @@
 
 .inner-card .content {
   display: flex;
-  height: calc(100% - 32px);
+  height: calc(100% - 20px);
   width: 100%;
 }
 
 .inner-card .content .task.echarts {
   height: 100%;
+}
+
+.inner-card .content .task.echarts>div,
+.inner-card .content .task.echarts>div>canvas {
+  height: 100% !important;
 }
 
 .inner-card .content .details {
@@ -29,12 +34,14 @@
   align-content: space-around;
   justify-content: space-around;
   margin-left: 25px;
-  cursor: pointer;
 }
 
 
 .inner-card .content .details .title {
-  color: #6997ff;
+  color: #99aaff;
+
+  font-size: 16px;
+  margin-bottom: 0;
 }
 
 .inner-card .content .details:hover .title {
@@ -42,5 +49,14 @@
 }
 
 .inner-card .content .details .value {
-  color: white
+  color: white;
+  font-size: 24px;
+
+  cursor: pointer;
+}
+
+.inner-card .content .details .value:hover {
+  color: #6997ff;
+  text-decoration-line: underline;
+
 }

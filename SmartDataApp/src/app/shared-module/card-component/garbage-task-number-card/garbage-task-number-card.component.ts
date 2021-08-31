@@ -96,10 +96,11 @@ export class GarbageTaskNumberCardComponent
 
   onRunning() {}
 
-  itemClick() {
+  itemClick(args?: { handle?: boolean; timeout?: boolean }) {
     if (this.data)
       this.btnControl({
         id: this.data.Id,
+        args: args,
       });
   }
 

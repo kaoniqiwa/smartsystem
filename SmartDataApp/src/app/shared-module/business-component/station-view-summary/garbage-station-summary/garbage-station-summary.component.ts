@@ -44,6 +44,11 @@ export class GarbageStationSummaryComponent implements OnInit {
     if (this._PageIndex) this.acceptOtherView(this._PageIndex);
   }
 
+  @Input()
+  GarbageDropEventHistoryHandle?: boolean;
+  @Input()
+  GarbageDropEventHistoryTimeout?: boolean;
+
   constructor(private businessManageService: BusinessManageService) {}
 
   ngOnInit() {

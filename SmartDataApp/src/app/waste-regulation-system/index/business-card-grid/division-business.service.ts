@@ -97,6 +97,12 @@ export class DivisionBusinessService {
 
   selected: DivisionBusinessServiceSelected = {};
 
+  GarbageStationSummaryPageIndex?: GarbageStationSummaryViewPage;
+  GarbageDropEventHistoryHandle?: boolean = undefined;
+  GarbageDropEventHistoryTimeout?: boolean = undefined;
+  StationStrandedDivisionId?: string;
+  StationStrandedGarbageStationId?: string;
+
   constructor(
     private cameraService: AiopCameraRequestService,
     private componentService: ComponentService,
@@ -329,15 +335,22 @@ export class DivisionBusinessService {
   bindingEventGarbageTaskNumberCardComponent(
     view: GarbageTaskNumberCardComponent
   ) {
-    view.btnControl = (item: { id: string }) => {
+    view.btnControl = (item: {
+      id: string;
+      args?: { handle?: boolean; timeout?: boolean };
+    }) => {
+      if (item.args) {
+        console.log(item.args);
+        this.GarbageDropEventHistoryTimeout = item.args.timeout;
+        this.GarbageDropEventHistoryHandle = item.args.handle;
+      }
       this.divisionsId = item.id;
-      this.GarbageStationSummaryPageIndex =
-        GarbageStationSummaryViewPage.sumChart;
+      this.GarbageStationSummaryPageIndex = GarbageStationSummaryViewPage.event;
       this.stationListView = true;
       this.eventHistoryView = true;
     };
   }
-  GarbageStationSummaryPageIndex?: GarbageStationSummaryViewPage;
+
   bindingEvent() {
     setTimeout(() => {
       for (const x of this.componets) {
@@ -487,6 +500,8 @@ export class DivisionBusinessService {
   }
 
   clearEventView() {
+    this.GarbageDropEventHistoryHandle = undefined;
+    this.GarbageDropEventHistoryTimeout = undefined;
     this.GarbageStationSummaryPageIndex = undefined;
     this.divisionsId = undefined;
     this.mixedIntoMode = null;

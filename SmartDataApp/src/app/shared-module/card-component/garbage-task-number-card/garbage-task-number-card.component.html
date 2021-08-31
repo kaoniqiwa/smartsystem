@@ -1,29 +1,43 @@
 <div *ngIf="model && data" class="fill-height fill-width inner-card">
   <div class="title">
-    <h2>垃圾处置排名</h2>
+    <h2>垃圾滞留任务处置</h2>
     <div class="light-blue-text name">{{ data.Name }}</div>
   </div>
 
   <div class="content row">
-    <div #echarts class="task echarts col-md-6">
+    <div #echarts class="task echarts col-md-7">
       <!-- <div echarts [options]="chartOption" class="demo-chart"></div> -->
     </div>
-    <div
-      class="details"
-      (click)="itemClick()"
-      title="查看{{ data.Name }}垃圾处置排名"
-    >
+    <div class="details">
       <div>
         <h4 class="title">全部任务</h4>
-        <div class="value">{{ data.TotalCount }}</div>
+        <div
+          class="value"
+          title="查看{{ data.Name }}垃圾滞留处置"
+          (click)="itemClick()"
+        >
+          {{ data.TotalCount }}
+        </div>
       </div>
       <div>
         <h4 class="title">未完成任务</h4>
-        <div class="value">{{ data.UncompletedCount }}</div>
+        <div
+          class="value"
+          title="查看{{ data.Name }}垃圾滞留未处置"
+          (click)="itemClick({ handle: false })"
+        >
+          {{ data.UncompletedCount }}
+        </div>
       </div>
       <div>
         <h4 class="title">超时处置</h4>
-        <div class="value">{{ data.GarbageRetentionCount }}</div>
+        <div
+          class="value"
+          title="查看{{ data.Name }}垃圾滞留超时处置"
+          (click)="itemClick({ timeout: true })"
+        >
+          {{ data.GarbageRetentionCount }}
+        </div>
       </div>
     </div>
   </div>
