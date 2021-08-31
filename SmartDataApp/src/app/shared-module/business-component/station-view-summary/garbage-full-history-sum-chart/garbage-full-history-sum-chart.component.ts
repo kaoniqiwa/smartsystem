@@ -20,6 +20,7 @@ import { GarbageStationSummaryViewPage } from "../view-helper";
 import { HWCsvContext, StationSumHistoryCsv } from "../../export-csv-file";
 import { HWXlsxContext, StationSumHistoryXlsx } from "../../export-xlsx-file";
 import { DivisionType } from "../../../../data-core/model/enum";
+import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 @Component({
   selector: "hw-garbage-full-history-sum-chart",
   templateUrl: "./garbage-full-history-sum-chart.component.html",
@@ -48,12 +49,45 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
   public get divisionId(): string {
     return this._divisionId;
   }
+
+  delayTimeout = 5 * 1000;
+
+  delayHandle?: NodeJS.Timer;
+  delay = {
+    timeout: {
+      handle: undefined,
+      interval: 5 * 1000,
+    },
+    handle: undefined,
+    stop: () => {
+      clearTimeout(this.delay.handle);
+      this.delay.handle = undefined;
+    },
+    run: (p: () => boolean, todo: () => void, firstRun = true) => {
+      if (firstRun) {
+        if (this.delay.handle) {
+          this.delay.stop();
+        }
+        this.delay.timeout.handle = setTimeout(() => {
+          this.delay.stop();
+        }, this.delay.timeout.interval);
+      }
+      this.delay.handle = setTimeout(() => {
+        if (!p()) {
+          this.delay.run(p, todo, false);
+          return;
+        }
+        todo();
+      }, 10);
+    },
+  };
+
   @Input()
   public set divisionId(v: string) {
     this._divisionId = v;
     if (this._divisionId) {
       debugger;
-      this.delay(
+      this.delay.run(
         () => {
           return (
             !!this.levelListPanel || this.businessService.divisions.length > 0
@@ -72,16 +106,6 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
         }
       );
     }
-  }
-
-  delay(p: () => boolean, todo: () => void) {
-    setTimeout(() => {
-      if (!p()) {
-        this.delay(p, todo);
-        return;
-      }
-      todo();
-    }, 10);
   }
 
   startDate = (b: Date) => {
@@ -111,14 +135,15 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
     private businessService: BusinessService,
     private divisionDao: DivisionDao,
     private businessManageService: BusinessManageService,
-    private garbageStationDao: GarbageStationDao
+    private garbageStationDao: GarbageStationDao,
+    private globalService: GlobalStoreService
   ) {}
 
   async ngOnInit() {}
 
   async initView() {
-    const divisions = await this.businessManageService.getParentDivision();
-    this.businessManageService.divisionType(divisions.pop());
+    // const divisions = await  this.businessManageService.getParentDivision();
+    this.businessManageService.divisionType(this.globalService.divisionType);
 
     if (
       this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.City
@@ -159,7 +184,7 @@ export class GarbageFullHistorySumChartComponent implements OnInit {
           (d) => d.DivisionType == DivisionType.County
         );
 
-        this.delay(
+        this.delay.run(
           () => {
             return (
               !!this.levelListPanel &&

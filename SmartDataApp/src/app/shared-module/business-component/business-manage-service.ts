@@ -40,12 +40,18 @@ export class BusinessManageService {
     );
   }
 
-  divisionType(division: Division) {
-    if (division)
-      this.viewDivisionType =
-        division.DivisionType == DivisionType.City
-          ? ViewDivisionTypeEnum.City
-          : ViewDivisionTypeEnum.None;
+  divisionType(division: Division | DivisionType) {
+    let type: DivisionType;
+    if (division instanceof Division) {
+      type = division.DivisionType;
+    } else {
+      type = division;
+    }
+
+    this.viewDivisionType =
+      type == DivisionType.City
+        ? ViewDivisionTypeEnum.City
+        : ViewDivisionTypeEnum.None;
   }
 }
 
