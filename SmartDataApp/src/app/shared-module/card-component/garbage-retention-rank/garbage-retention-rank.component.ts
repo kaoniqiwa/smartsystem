@@ -122,6 +122,8 @@ export class GarbageRetentionRankComponent implements OnInit {
   itemClickHandler(item: GarbageRetentionRankData) {
     console.log(item);
     if (!item.id) return;
+    this._divisionBusinessService.StationStrandedDivisionId = undefined;
+    this._divisionBusinessService.StationStrandedGarbageStationId = undefined;
 
     switch (this._globalStoreService.divisionType) {
       case DivisionType.City:
@@ -129,6 +131,7 @@ export class GarbageRetentionRankComponent implements OnInit {
         // this._divisionBusinessService.divisionsId = item.id;
         // this._divisionBusinessService.GarbageStationSummaryPageIndex =
         //   GarbageStationSummaryViewPage.sumChart;
+
         this._divisionBusinessService.stationStrandedView = true;
         this._divisionBusinessService.eventHistoryView = true;
         this._divisionBusinessService.StationStrandedDivisionId = item.id;
