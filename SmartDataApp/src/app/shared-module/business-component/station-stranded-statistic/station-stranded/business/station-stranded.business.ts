@@ -22,7 +22,7 @@ import {
   GetGarbageStationStatisticNumbersParams,
 } from "../../../../../data-core/model/waste-regulation/garbage-station-number-statistic";
 @Injectable()
-export class BusinessService {
+export class StationStrandedBusinessService {
   playVideo: PlayVideo;
   galleryTargetView = new GalleryTargetViewI(this.datePipe);
 

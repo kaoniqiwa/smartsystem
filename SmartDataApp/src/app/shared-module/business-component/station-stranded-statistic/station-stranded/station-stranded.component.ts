@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { BusinessService } from "./business/business.service";
+import { StationStrandedBusinessService } from "./business/station-stranded.business";
 import { DivisionDao } from "../../../../data-core/dao/division-dao";
 import { GarbageStationDao } from "../../../../data-core/dao/garbage-station-dao";
 import { GarbageStationCameraDao } from "../../../../data-core/dao/garbage-station-camera-dao";
 import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
+import { EventEmitter } from "@angular/core";
 // import { HWVideoService } from "../../../../data-core/dao/video-dao";
 @Component({
   selector: "hw-station-stranded",
@@ -12,20 +13,22 @@ import { GarbageStation } from "../../../../data-core/model/waste-regulation/gar
   providers: [
     DivisionDao,
     GarbageStationDao,
-    BusinessService,
+    StationStrandedBusinessService,
     GarbageStationCameraDao,
   ],
 })
 export class StationStrandedComponent implements OnInit {
-  private _divisionId: string;
-  public get divisionId(): string {
+  private _divisionId?: string;
+  public get divisionId(): string | undefined {
     return this._divisionId;
   }
   @Input()
-  public set divisionId(v: string) {
+  public set divisionId(v: string | undefined) {
     this._divisionId = v;
     if (this._divisionId) {
-      this.search({ divisionId: this._divisionId });
+      this.onLoaded.subscribe(() => {
+        this.search({ divisionId: this._divisionId });
+      });
     }
   }
 
@@ -34,6 +37,7 @@ export class StationStrandedComponent implements OnInit {
   set GarbageStation(station: GarbageStation) {
     this.garbageStation = station;
     if (this.garbageStation) {
+      this.onLoaded;
       this.searchFn(this.garbageStation.Name);
     }
   }
@@ -50,7 +54,9 @@ export class StationStrandedComponent implements OnInit {
   public set garbageStationId(v: string | undefined) {
     this._garbageStationId = v;
     if (this._garbageStationId) {
-      this.search({ stationId: this._garbageStationId });
+      this.onLoaded.subscribe(() => {
+        this.search({ stationId: this._garbageStationId });
+      });
     }
   }
 
@@ -65,18 +71,18 @@ export class StationStrandedComponent implements OnInit {
     });
   };
 
-  search = async (val?: {
+  async search(val?: {
     name?: string;
     stationId?: string;
     divisionId?: string;
-  }) => {
+  }) {
     this.businessService.search.state = true;
     await this.businessService.requestData(1, val, (page) => {
       this.businessService.table.initPagination(page, async (index) => {
         await this.businessService.requestData(index, val);
       });
     });
-  };
+  }
 
   galleryTargetFn = () => {
     this.businessService.galleryTargetView.galleryTarget = null;
@@ -86,7 +92,7 @@ export class StationStrandedComponent implements OnInit {
   // }
 
   constructor(
-    private businessService: BusinessService,
+    private businessService: StationStrandedBusinessService,
     // ,private  videoService:HWVideoService
     private garbageStationCameraDao: GarbageStationCameraDao,
     private divisionDao: DivisionDao,
@@ -101,10 +107,18 @@ export class StationStrandedComponent implements OnInit {
     this.businessService.stations =
       await this.garbageStationDao.allGarbageStations();
     this.businessService.divisions = await this.divisionDao.allDivisions();
-    await this.businessService.requestData(1, undefined, (page) => {
+    let param;
+    param = {
+      divisionId: this.divisionId,
+      garbageStationId: this.garbageStationId,
+    };
+    await this.businessService.requestData(1, param, (page) => {
       this.businessService.table.initPagination(page, async (index) => {
         await this.businessService.requestData(index);
       });
     });
+    this.onLoaded.emit();
   }
+
+  onLoaded: EventEmitter<void> = new EventEmitter();
 }
