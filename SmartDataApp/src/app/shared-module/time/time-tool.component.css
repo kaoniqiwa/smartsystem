@@ -1,0 +1,29 @@
+.time-wraper {
+  height: 46px;
+  border-radius: 100px;
+  padding: 0 20px;
+  background-color: #2d3559;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.left-wraper-label {
+  color: white;
+  font-size: 18px;
+  margin: 0;
+  padding-right: 10px;
+  border-right: 1px #3c4679 solid;
+}
+
+.right-wraper-label {
+  color: #d0d7ff;
+  font-size: 16px;
+  margin: 0;
+  margin-left: 10px;
+}
+
+.colon-font {
+  position: relative;
+  top: -1px;
+}
