@@ -101,14 +101,7 @@ export class DivisionBusinessService {
   GarbageDropEventHistoryHandle?: boolean = undefined;
   GarbageDropEventHistoryTimeout?: boolean = undefined;
 
-  private _StationStrandedDivisionId: string;
-  public get StationStrandedDivisionId(): string {
-    return this._StationStrandedDivisionId;
-  }
-  public set StationStrandedDivisionId(v: string) {
-    this._StationStrandedDivisionId = v;
-    console.log("StationStrandedDivisionId", v);
-  }
+  StationStrandedDivisionId?: string;
 
   StationStrandedGarbageStationId?: string;
 
