@@ -185,7 +185,7 @@ export class IndexBusinessService {
       cardType: "OrderTableCardComponent",
       //divisionsIds: param.divisionsIds,
       divisionId: this.user.userDivision[0].Id,
-      // dataTime: 60,
+      dataTime: 60,
       eventType: EventType.IllegalDrop,
       divisionType: this.user.userDivisionType,
     });

@@ -63,32 +63,36 @@ export class MenuTreeMap {
 
     menuTree = new Array<MenuTree>();
     item = new MenuTree("howell-icon-device2", "监管平台");
-    item.nodes.push({
-      text: "垃圾厢房",
-      url: "/aiop/garbage-station/index",
-    });
+
     item.an = true;
-    item.nodes.push({
-      text: "垃圾厢房管理",
-      url: "/aiop/garbage-station/garbage-station-manage",
-    });
-    item.nodes.push({
-      text: "摄像机布控",
-      url: "/aiop/garbage-station/deploy-camera",
-    });
-    item.nodes.push({
-      text: "垃圾厢房状态",
-      url: "/aiop/garbage-station/full-trashcan",
-    });
-    item.nodes.push({
-      text: "地图布控",
-      url: "/aiop/garbage-station/map-deploy",
-    });
 
     item.nodes.push({
       text: "区划管理",
       url: "/aiop/garbage-station/division-manage",
     });
+
+    // item.nodes.push({
+    //   text: "垃圾厢房",
+    //   url: "/aiop/garbage-station/index",
+    // });
+
+    item.nodes.push({
+      text: "垃圾厢房管理",
+      url: "/aiop/garbage-station/garbage-station-manage",
+    });
+    // item.nodes.push({
+    //   text: "摄像机布控",
+    //   url: "/aiop/garbage-station/deploy-camera",
+    // });
+    // item.nodes.push({
+    //   text: "垃圾厢房状态",
+    //   url: "/aiop/garbage-station/full-trashcan",
+    // });
+    item.nodes.push({
+      text: "地图布控",
+      url: "/aiop/garbage-station/map-deploy",
+    });
+
     menuTree.push(item);
 
     this.map.set(SystemModeEnum.supervision, menuTree);

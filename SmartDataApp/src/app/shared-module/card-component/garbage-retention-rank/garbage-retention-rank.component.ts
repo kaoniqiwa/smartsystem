@@ -28,11 +28,11 @@ export class GarbageRetentionRankComponent implements OnInit {
   }
 
   get title() {
-    return `垃圾${this.rankSelectMap.get(this.retentionType).content}排名`;
+    return this.rankSelectMap.get(this.retentionType).title;
   }
 
   // 滞留数量单位
-  unit: string = "起";
+  unit: string = "个";
 
   // 排行榜数据
   private _rankData: GarbageRetentionRankData[] = [];
@@ -56,6 +56,7 @@ export class GarbageRetentionRankComponent implements OnInit {
       {
         id: "retentionTime",
         content: "滞留时长",
+        title: "垃圾滞留时长排名",
       },
     ],
     [
@@ -63,6 +64,7 @@ export class GarbageRetentionRankComponent implements OnInit {
       {
         id: "retentionCount",
         content: "滞留数量",
+        title: "垃圾滞留投放点数量排名",
       },
     ],
   ]);

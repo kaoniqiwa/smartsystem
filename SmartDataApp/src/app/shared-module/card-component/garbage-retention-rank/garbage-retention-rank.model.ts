@@ -19,4 +19,5 @@ export enum RetentionType {
 export interface OptionModel {
   id: string;
   content: string;
+  title: string;
 }
