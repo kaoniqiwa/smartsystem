@@ -84,12 +84,15 @@ export class GarbageRetentionRankComponent implements OnInit {
     private _globalStoreService: GlobalStoreService,
     private _divisionBusinessService: DivisionBusinessService
   ) {
-    this._globalStoreService.statusChange.subscribe(() => this._loadData());
+    this._globalStoreService.statusChange.subscribe(() => {
+      this._loadData();
+    });
   }
   async ngOnInit() {
     await this._loadData();
   }
   private async _loadData() {
+    console.log(this._globalStoreService.divisionId);
     let divisionId = this._globalStoreService.divisionId;
     let divisionType = this._globalStoreService.divisionType;
     this.rankData = await this._garbageRetentionRankService.loadData(
@@ -123,18 +126,22 @@ export class GarbageRetentionRankComponent implements OnInit {
     switch (this._globalStoreService.divisionType) {
       case DivisionType.City:
       case DivisionType.County:
-        this._divisionBusinessService.divisionsId = item.id;
-        this._divisionBusinessService.GarbageStationSummaryPageIndex =
-          GarbageStationSummaryViewPage.sumChart;
-        this._divisionBusinessService.stationListView = true;
+        // this._divisionBusinessService.divisionsId = item.id;
+        // this._divisionBusinessService.GarbageStationSummaryPageIndex =
+        //   GarbageStationSummaryViewPage.sumChart;
+        this._divisionBusinessService.stationStrandedView = true;
         this._divisionBusinessService.eventHistoryView = true;
+        this._divisionBusinessService.StationStrandedDivisionId = item.id;
         break;
       case DivisionType.Committees:
-        this._divisionBusinessService.linkChildView(
-          item.id,
-          EventType.IllegalDrop,
-          null
-        );
+        // this._divisionBusinessService.linkChildView(
+        //   item.id,
+        //   EventType.IllegalDrop,
+        //   null
+        // );
+        this._divisionBusinessService.stationStrandedView = true;
+        this._divisionBusinessService.eventHistoryView = true;
+        this._divisionBusinessService.StationStrandedGarbageStationId = item.id;
         break;
       default:
         break;

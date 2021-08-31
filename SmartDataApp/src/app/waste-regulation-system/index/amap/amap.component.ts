@@ -376,7 +376,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         console.error(ex);
       }
     }
-    console.log(arrayStatus);
+    // console.log(arrayStatus);
     this.client.Point.Status(arrayStatus);
   }
 

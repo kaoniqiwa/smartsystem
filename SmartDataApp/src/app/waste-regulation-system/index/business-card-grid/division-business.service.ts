@@ -100,7 +100,16 @@ export class DivisionBusinessService {
   GarbageStationSummaryPageIndex?: GarbageStationSummaryViewPage;
   GarbageDropEventHistoryHandle?: boolean = undefined;
   GarbageDropEventHistoryTimeout?: boolean = undefined;
-  StationStrandedDivisionId?: string;
+
+  private _StationStrandedDivisionId: string;
+  public get StationStrandedDivisionId(): string {
+    return this._StationStrandedDivisionId;
+  }
+  public set StationStrandedDivisionId(v: string) {
+    this._StationStrandedDivisionId = v;
+    console.log("StationStrandedDivisionId", v);
+  }
+
   StationStrandedGarbageStationId?: string;
 
   constructor(
