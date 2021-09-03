@@ -20,7 +20,6 @@ export class Digest {
 
   // 将响应字符串转换为对象形式
   parseServerChallenge() {
-    debugger;
     if (!this.header) {
       return {};
     }

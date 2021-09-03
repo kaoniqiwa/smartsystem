@@ -17,6 +17,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "baseHref": ".",
+            "outputHashing": "bundles",
             "outputPath": "dist/SmartDataApp",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -35,6 +37,7 @@
           },
           "configurations": {
             "production": {
+            
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -42,7 +45,7 @@
                 }
               ],
               "optimization": true,
-              "outputHashing": "all",
+              "outputHashing": "bundles",
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,

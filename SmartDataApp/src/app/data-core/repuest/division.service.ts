@@ -123,6 +123,7 @@ export class DivisionRequestService {
   }
 
   async list(item?: GetDivisionsParams) {
+    debugger;
     // if (!item) {
     //   let result = ServiceHelper.cache.get<PagedList<Division>>(
     //     ServiceHelper.key.Division
