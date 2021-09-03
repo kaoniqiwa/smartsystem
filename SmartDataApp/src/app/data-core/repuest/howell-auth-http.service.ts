@@ -185,7 +185,7 @@ export class HowellAuthHttpService {
   getHttpHeaders(method: string, uri: string) {
     let digest = new Digest(),
       user = new SessionUser();
-    var challenge = digest.parseServerChallenge(null);
+    var challenge = digest.parseServerChallenge();
     this.nc += 1;
     return digest.generateRequestHeader(
       this.nc,

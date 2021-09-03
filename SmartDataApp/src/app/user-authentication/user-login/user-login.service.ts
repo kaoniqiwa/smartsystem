@@ -96,7 +96,7 @@ export class UserLoginService {
         let header = error.headers as Headers,
           userUrl = UserUrl.login(this.formVal.name);
         let digest = new Digest(header, BaseUrl.user);
-        var challenge = digest.parseServerChallenge(null);
+        var challenge = digest.parseServerChallenge();
         let authHeader = digest.generateRequestHeader(
           1,
           challenge,
