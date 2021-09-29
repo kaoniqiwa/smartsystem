@@ -3,7 +3,11 @@ import { EventDropInfo, EventDropOrderInfo } from "./data";
 import { BusinessParameter } from "../../../../../common/interface/IBusiness";
 import { BaseBusinessRefresh } from "../../../../../common/tool/base-business-refresh";
 
-import { DivisionType, EventType } from "../../../../../data-core/model/enum";
+import {
+  DivisionType,
+  EventType,
+  UserResourceType,
+} from "../../../../../data-core/model/enum";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 
@@ -20,6 +24,7 @@ export class EventDropOrder extends BaseBusinessRefresh {
       DivisionType,
       Array<{ id: string; name: string }>
     >();
+
     this.divisionDrop.set(DivisionType.City, [
       {
         id: DivisionType.County + "",
@@ -134,7 +139,7 @@ export class EventDropOrder extends BaseBusinessRefresh {
     model.eventType = eventType;
 
     if (dropList) {
-      model.dropList = this.divisionDrop.get(division[0].DivisionType);
+      model.dropList = this.divisionDrop.get(GlobalStoreService.divisionType);
       //统计街道 乱扔垃圾
       if (dropList == "station") await stationDropInfo();
       else await fillIllegalDropInfo();

@@ -21,7 +21,6 @@ export class EChartBar3dDirective implements OnChanges {
   }
 
   ngOnChanges() {
-    debugger;
     if (this.options) this.init();
   }
 
@@ -132,7 +131,7 @@ export class EChartBar3dDirective implements OnChanges {
     };
 
     this.zone.runOutsideAngular(() => {
-      this.echarts_ = echarts.init(this.e.nativeElement);
+      this.echarts_ = echarts.init(this.e.nativeElement, "dark");
       this.echarts_.setOption(option, true);
     });
   }
