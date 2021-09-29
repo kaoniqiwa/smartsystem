@@ -408,9 +408,13 @@ select.custom.form-control:not([size]):not([multiple]) {
   font-weight: normal;
   color: white;
   vertical-align: middle;
-  padding-left: 40px;
-
+  /* padding-left: 40px; */
 }
+
+.table.head.stylish-table thead th:first-child {
+  padding-left: 40px;
+}
+
 
 .table.head.stylish-table thead tr {
   height: 70px;
@@ -425,6 +429,11 @@ select.custom.form-control:not([size]):not([multiple]) {
 
 .table.body.stylish-table tbody td {
   color: #cfd7ff;
+  /* padding-left: 40px; */
+}
+
+.table.body.stylish-table tbody td:first-child {
+
   padding-left: 40px;
 }
 

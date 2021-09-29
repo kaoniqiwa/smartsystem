@@ -62,8 +62,8 @@ export class StationTreeService extends TreeService {
     ];
   }
 
-  loadStationTree() {
-    this.treeNode = this.loadTree(this.dataSource);
+  loadStationTree(root: boolean = false) {
+    this.treeNode = this.loadTree(this.dataSource, root);
   }
 
   isLastNode(nodeId: string) {

@@ -216,6 +216,7 @@ declare namespace CesiumMap {
     ): void;
     OnMouseClick(position: CesiumDataController.Position): void;
     OnMouseDoubleClick(position: CesiumDataController.Position): void;
+    OnPointVisibieChanged(pointId: string, value: boolean): void;
   }
 
   class Client {

@@ -77,6 +77,7 @@ export class BusinessService extends ListAttribute {
   }
 
   async requestData() {
+    debugger;
     const s = this.search.toSearchParam(),
       requsetParam = this.getRequsetParam(this.search),
       _3dRequsetParam = this.get3dRequsetParam(this.search),
@@ -103,11 +104,9 @@ export class BusinessService extends ListAttribute {
           );
         });
         forkJoin(o).subscribe((rs) => {
-          (rs as Array<HowellResponse<PagedList<EventNumberStatistic>>>).map(
-            (p) => {
-              p.Data.Data.map((m) => statistic.push(m));
-            }
-          );
+          (rs as Array<PagedList<EventNumberStatistic>>).map((p) => {
+            p.Data.map((m) => statistic.push(m));
+          });
           this.convertBar3dData(statistic, this.search);
         });
       }
@@ -131,11 +130,9 @@ export class BusinessService extends ListAttribute {
           );
         });
         forkJoin(o).subscribe((rs) => {
-          (rs as Array<HowellResponse<PagedList<EventNumberStatistic>>>).map(
-            (p) => {
-              p.Data.Data.map((m) => statistic.push(m));
-            }
-          );
+          (rs as Array<PagedList<EventNumberStatistic>>).map((p) => {
+            p.Data.map((m) => statistic.push(m));
+          });
           this.convertBar3dData(statistic, this.search);
         });
       }
@@ -521,6 +518,7 @@ export class BusinessService extends ListAttribute {
   }
 
   convertBar3dData(statistic: EventNumberStatistic[], search: SearchControl) {
+    debugger;
     const s = search.toSearchParam(),
       seriesData = new Array(),
       weekNumberMap = new Map<string, Array<Array<number | string>>>();

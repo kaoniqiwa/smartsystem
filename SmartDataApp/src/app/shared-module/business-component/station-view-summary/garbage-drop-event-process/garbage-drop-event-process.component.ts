@@ -22,12 +22,12 @@ import { HWXlsxContext, StationSumHistoryXlsx } from "../../export-xlsx-file";
 import { DivisionType } from "../../../../data-core/model/enum";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 @Component({
-  selector: "hw-garbage-full-history-sum-chart",
-  templateUrl: "./garbage-full-history-sum-chart.component.html",
-  styleUrls: ["./garbage-full-history-sum-chart.component.styl"],
+  selector: "hw-garbage-drop-event-process",
+  templateUrl: "./garbage-drop-event-process.component.html",
+  styleUrls: ["./garbage-drop-event-process.component.styl"],
   providers: [BusinessService, GarbageStationDao, DivisionDao],
 })
-export class GarbageFullHistorySumChartComponent implements OnInit {
+export class GarbageDropEventProcessComponent implements OnInit {
   @Output() OtherViewEvent = new EventEmitter<GarbageStationSummaryViewPage>();
 
   @ViewChild(DateTimePickerDirective)

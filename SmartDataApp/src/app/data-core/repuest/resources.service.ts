@@ -36,7 +36,7 @@ import {
   AIOPResourceLabelUrl,
   AIOPResourceUrl,
 } from "../url/aiop/resources";
-import { ServiceHelper } from "../model/waste-regulation/request-service-processor";
+
 @Injectable({
   providedIn: "root",
 })
@@ -273,13 +273,16 @@ export class ResourceMediumRequestService {
   }
 
   static getJPG(id: string) {
+    if (!id) return;
     return AIOPMediumPictureUrl.getJPG(id);
   }
   static getData(id: string) {
+    if (!id) return;
     return AIOPMediumPictureUrl.getData(id);
   }
 
   getData(id: string) {
+    if (!id) return;
     return AIOPMediumPictureUrl.getData(id);
   }
 }

@@ -54,7 +54,7 @@ export class StatisticTable extends BusinessTable implements IConverter {
     tableAttrs: [
       new TableAttr({
         HeadTitleName: "名称",
-        tdWidth: "17.8%",
+        tdWidth: "13.7%",
         tdInnerAttrName: "name",
         orderBy: {
           asOrderBy: 0,
@@ -63,8 +63,7 @@ export class StatisticTable extends BusinessTable implements IConverter {
       }),
       new TableAttr({
         HeadTitleName: "达标率",
-        tdWidth: "13.7%",
-        fixedWidth: "60px",
+        tdWidth: "10%",
         iocnClassLabel: true,
         orderBy: {
           asOrderBy: 1,
@@ -75,6 +74,7 @@ export class StatisticTable extends BusinessTable implements IConverter {
       new TableAttr({
         HeadTitleName: "平均落地时长",
         tdWidth: "13.7%",
+        fixedWidth: "110px",
         iocnClassLabel: true,
         orderBy: {
           asOrderBy: 0,
@@ -105,7 +105,6 @@ export class StatisticTable extends BusinessTable implements IConverter {
       new TableAttr({
         HeadTitleName: "乱丢垃圾",
         tdWidth: "13.7%",
-        fixedWidth: "50px",
         iocnClassLabel: true,
         orderBy: {
           asOrderBy: 0,
@@ -116,7 +115,6 @@ export class StatisticTable extends BusinessTable implements IConverter {
       new TableAttr({
         HeadTitleName: "混合投放",
         tdWidth: "13.7%",
-        fixedWidth: "50px",
         iocnClassLabel: true,
         orderBy: {
           asOrderBy: 0,
@@ -142,8 +140,11 @@ export class StatisticTable extends BusinessTable implements IConverter {
       findIllegalDrop = (e: Array<EventNumber>, type: EventType) => {
         return e.find((f) => f.EventType == type);
       },
-      upClass = "mdi mdi-arrow-up-bold red-text ",
-      downClass = "mdi mdi-arrow-down-bold green-text ",
+      classList = {
+        equal: "",
+        lt: "mdi mdi-arrow-up-bold red-text ",
+        gt: "mdi mdi-arrow-down-bold green-text ",
+      },
       toHour = (val: number) => {
         const hm = ToHoursMinutes(val);
         return val > 60
@@ -182,8 +183,13 @@ export class StatisticTable extends BusinessTable implements IConverter {
           );
           fd.tdVal = IntegerDecimalNum(item[1].GarbageRatio + "");
           fd.tdNumber = item[1].GarbageRatio;
-          fd.iconClass =
-            item[0].GarbageRatio < item[1].GarbageRatio ? upClass : downClass;
+          // fd.iconClass =
+          //   item[0].GarbageRatio < item[1].GarbageRatio ? upClass : downClass;
+          fd.setIconClass(
+            item[0].GarbageRatio,
+            item[1].GarbageRatio,
+            classList
+          );
           tf.garbageRatio = JSON.stringify(fd);
 
           fd = new FieldDesc();
@@ -196,10 +202,15 @@ export class StatisticTable extends BusinessTable implements IConverter {
           fd.tdVal =
             item[1].AvgGarbageTime == 0 ? "0" : toHour(item[1].AvgGarbageTime);
           fd.tdNumber = item[1].AvgGarbageTime;
-          fd.iconClass =
-            item[0].AvgGarbageTime < item[1].AvgGarbageTime
-              ? upClass
-              : downClass;
+          // fd.iconClass =
+          //   item[0].AvgGarbageTime < item[1].AvgGarbageTime
+          //     ? upClass
+          //     : downClass;
+          fd.setIconClass(
+            item[0].AvgGarbageTime,
+            item[1].AvgGarbageTime,
+            classList
+          );
           tf.avgGarbageTime = JSON.stringify(fd);
 
           fd = new FieldDesc();
@@ -212,10 +223,15 @@ export class StatisticTable extends BusinessTable implements IConverter {
           fd.tdVal =
             item[1].MaxGarbageTime == 0 ? "0" : toHour(item[1].MaxGarbageTime);
           fd.tdNumber = item[1].MaxGarbageTime;
-          fd.iconClass =
-            item[0].MaxGarbageTime < item[1].MaxGarbageTime
-              ? upClass
-              : downClass;
+          // fd.iconClass =
+          //   item[0].MaxGarbageTime < item[1].MaxGarbageTime
+          //     ? upClass
+          //     : downClass;
+          fd.setIconClass(
+            item[0].MaxGarbageTime,
+            item[1].MaxGarbageTime,
+            classList
+          );
           tf.maxGarbageTime = JSON.stringify(fd);
 
           fd = new FieldDesc();
@@ -230,10 +246,15 @@ export class StatisticTable extends BusinessTable implements IConverter {
               ? "0"
               : toHour(item[1].GarbageDuration);
           fd.tdNumber = item[1].GarbageDuration;
-          fd.iconClass =
-            item[0].GarbageDuration < item[1].GarbageDuration
-              ? upClass
-              : downClass;
+          // fd.iconClass =
+          //   item[0].GarbageDuration < item[1].GarbageDuration
+          //     ? upClass
+          //     : downClass;
+          fd.setIconClass(
+            item[0].GarbageDuration,
+            item[1].GarbageDuration,
+            classList
+          );
           tf.garbageDuration = JSON.stringify(fd);
 
           if (
@@ -262,13 +283,20 @@ export class StatisticTable extends BusinessTable implements IConverter {
               item[1].EventNumbers,
               EventType.IllegalDrop
             ).DayNumber;
-            fd.iconClass =
+            // fd.iconClass =
+            //   findIllegalDrop(item[0].EventNumbers, EventType.IllegalDrop)
+            //     .DayNumber <
+            //   findIllegalDrop(item[1].EventNumbers, EventType.IllegalDrop)
+            //     .DayNumber
+            //     ? upClass
+            //     : downClass;
+            fd.setIconClass(
               findIllegalDrop(item[0].EventNumbers, EventType.IllegalDrop)
-                .DayNumber <
+                .DayNumber,
               findIllegalDrop(item[1].EventNumbers, EventType.IllegalDrop)
-                .DayNumber
-                ? upClass
-                : downClass;
+                .DayNumber,
+              classList
+            );
             tf.illegalDrop = JSON.stringify(fd);
           }
           if (
@@ -297,13 +325,20 @@ export class StatisticTable extends BusinessTable implements IConverter {
               item[1].EventNumbers,
               EventType.MixedInto
             ).DayNumber;
-            fd.iconClass =
+            // fd.iconClass =
+            //   findIllegalDrop(item[0].EventNumbers, EventType.MixedInto)
+            //     .DayNumber <
+            //   findIllegalDrop(item[1].EventNumbers, EventType.MixedInto)
+            //     .DayNumber
+            //     ? upClass
+            //     : downClass;
+            fd.setIconClass(
               findIllegalDrop(item[0].EventNumbers, EventType.MixedInto)
-                .DayNumber <
+                .DayNumber,
               findIllegalDrop(item[1].EventNumbers, EventType.MixedInto)
-                .DayNumber
-                ? upClass
-                : downClass;
+                .DayNumber,
+              classList
+            );
             tf.mixedInto = JSON.stringify(fd);
           }
         }
@@ -340,6 +375,19 @@ export class TableField implements ITableField {
 export class FieldDesc {
   tdVal: string;
   iconClass: string;
+  setIconClass(
+    compareA: number,
+    compareB: number,
+    classList: { equal: string; lt: string; gt: string }
+  ) {
+    if (compareA === compareB) {
+      this.iconClass = classList.equal;
+    } else if (compareA < compareB) {
+      this.iconClass = classList.lt;
+    } else {
+      this.iconClass = classList.gt;
+    }
+  }
   label: string;
   tdNumber: number;
 }

@@ -5,6 +5,7 @@ import { BaseBusinessRefresh } from "../../../../../common/tool/base-business-re
 
 import { DivisionType, EventType } from "../../../../../data-core/model/enum";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
+import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 
 /**
  * 今日 事件排行
@@ -47,8 +48,8 @@ export class EventDropOrder extends BaseBusinessRefresh {
     const model = new EventDropOrderInfo();
 
     model.items = new Array();
-    const divisionId = this.businessParameter.divisionId as string; //父区划
-    const divisionType = this.businessParameter.divisionType as DivisionType;
+    const divisionId = GlobalStoreService.divisionId; //父区划
+    const divisionType = GlobalStoreService.divisionType as DivisionType;
     const eventType = this.businessParameter.eventType as EventType;
     const dropList = this.businessParameter.dropList as string;
     let division: Division[];

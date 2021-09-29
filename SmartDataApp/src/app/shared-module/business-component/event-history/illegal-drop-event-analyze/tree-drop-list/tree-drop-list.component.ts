@@ -115,6 +115,7 @@ export class TreeDropListComponent implements OnInit {
     domClickFn("body", () => {
       this.showBody = false;
     });
+
     this.reInit();
   }
 
@@ -138,6 +139,7 @@ export class TreeDropListComponent implements OnInit {
           (x) => x.DivisionType < DivisionType.Committees
         )
       );
+
       const nodes = this.stationTreeService.convertTreeNode(
         this.dataService.divisions,
         undefined,
@@ -173,7 +175,7 @@ export class TreeDropListComponent implements OnInit {
       }
     }
 
-    this.stationTreeService.loadStationTree();
+    this.stationTreeService.loadStationTree(true);
     this.garbageStationTree.dataSource.data = this.stationTreeService.treeNode;
     // for (let key of this.garbageStationTree.flatNodeMap.keys())
     //   key.checked=false;

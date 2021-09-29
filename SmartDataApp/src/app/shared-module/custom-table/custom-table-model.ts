@@ -112,6 +112,8 @@ export class TableAttr implements IViewModel {
     asOrderBy: OrderByEnum;
     id: string;
   };
+  fixedWidth: string;
+  align: boolean;
   constructor(
     options: {
       HeadTitleName?: string;
@@ -123,10 +125,12 @@ export class TableAttr implements IViewModel {
       isHoverBig?: boolean;
       isHTML?: boolean;
       iocnClassLabel?: boolean;
+      align?: boolean;
       orderBy?: {
         asOrderBy: OrderByEnum;
         id: string;
       };
+      fixedWidth?: string;
     } = {}
   ) {
     this.HeadTitleName = options.HeadTitleName || "";
@@ -139,6 +143,8 @@ export class TableAttr implements IViewModel {
     this.isHoverBig = options.isHoverBig || false;
     this.isHTML = options.isHTML || false;
     this.orderBy = options.orderBy || null;
+    this.fixedWidth = options.fixedWidth || "110px";
+    this.align = options.align || false;
   }
 }
 

@@ -21,6 +21,7 @@ import { DivisionListView } from "../../../event-history/division-list-view";
 import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
 import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
+import { EventType } from "src/app/data-core/model/enum";
 @Injectable()
 export class GarbageDropEventHistoryBusinessService {
   playVideo: PlayVideo;
@@ -198,6 +199,23 @@ export class GarbageDropEventHistoryBusinessService {
       if (s.DivisionId) param.DivisionIds = [s.DivisionId];
       if (s.StationId) param.StationIds = [s.StationId];
       if (s.ResourceId) param.ResourceIds = [s.ResourceId];
+      if (s.EventType) {
+        switch (parseInt(s.EventType)) {
+          case EventType.GarbageDrop:
+            param.IsHandle = false;
+            break;
+          case EventType.GarbageDropHandle:
+            param.IsHandle = true;
+            break;
+          case EventType.GarbageDropTimeout:
+            param.IsTimeout = true;
+            param.IsHandle = false;
+            break;
+
+          default:
+            break;
+        }
+      }
     }
     return param;
   }

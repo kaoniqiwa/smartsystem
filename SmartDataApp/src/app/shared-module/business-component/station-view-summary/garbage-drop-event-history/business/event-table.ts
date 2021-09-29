@@ -22,6 +22,7 @@ import { DatePipe } from "@angular/common";
 import { ImgTypeEnum, TypeNameEnum, HWCameraImageUrl } from "./camera-img-url";
 import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
 import { DivisionRequestService } from "src/app/data-core/repuest/division.service";
+import { Language } from "src/app/common/tool/language";
 
 export class EventTable extends BusinessTable implements IConverter {
   dataSource = new CustomTableArgs<any>({
@@ -67,7 +68,7 @@ export class EventTable extends BusinessTable implements IConverter {
       }),
       new TableAttr({
         HeadTitleName: "街道",
-        tdWidth: "13%",
+        tdWidth: "10%",
         tdInnerAttrName: "county",
       }),
       new TableAttr({
@@ -77,17 +78,22 @@ export class EventTable extends BusinessTable implements IConverter {
       }),
       new TableAttr({
         HeadTitleName: "落地时间",
-        tdWidth: "14%",
+        tdWidth: "13%",
         tdInnerAttrName: "dropTime",
       }),
       new TableAttr({
         HeadTitleName: "处置时间",
-        tdWidth: "14%",
+        tdWidth: "9%",
         tdInnerAttrName: "handleTime",
       }),
       new TableAttr({
+        HeadTitleName: "处置员",
+        tdWidth: "9%",
+        tdInnerAttrName: "processorName",
+      }),
+      new TableAttr({
         HeadTitleName: "状态",
-        tdWidth: "10%",
+        tdWidth: "9%",
         tdInnerAttrName: "timeOut",
       }),
     ],
@@ -155,21 +161,25 @@ export class EventTable extends BusinessTable implements IConverter {
     let division = this.findDivisionFn(event.Data.DivisionId);
 
     tableField.id = event.EventId;
-    tableField.timeOut = event.Data.IsHandle
-      ? event.Data.IsTimeout
-        ? "超时处置"
-        : "已处置"
-      : event.Data.IsTimeout
-      ? "超时待处置"
-      : "待处置";
+    // tableField.timeOut = event.Data.IsHandle
+    //   ? event.Data.IsTimeout
+    //     ? "超时处置"
+    //     : "已处置"
+    //   : event.Data.IsTimeout
+    //   ? "超时待处置"
+    //   : "待处置";
+    tableField.timeOut = Language.GarbageDropEventType(event.EventType);
     tableField.station = event.Data.StationName;
     tableField.dropTime = this.datePipe.transform(
       event.Data.DropTime,
       "yyyy-MM-dd HH:mm:ss"
     );
     tableField.handleTime = event.Data.IsHandle
-      ? this.datePipe.transform(event.Data.HandleTime, "yyyy-MM-dd HH:mm:ss")
+      ? this.datePipe.transform(event.Data.HandleTime, "HH:mm:ss")
       : "-";
+
+    tableField.processorName = event.Data.ProcessorName || "-";
+
     if (division.DivisionType == DivisionType.County)
       tableField.county = division.Name;
     else if (division.DivisionType == DivisionType.Committees) {
@@ -223,4 +233,5 @@ export class TableField implements ITableField {
   station: string;
   dropTime: string;
   handleTime: string;
+  processorName: string;
 }

@@ -225,7 +225,7 @@ export class IndexComponent implements OnInit {
           const s = domSize("map__view");
           this.divisionBusinessService.inspectionSize.width =
             s.width - g.left + 15;
-          this.divisionBusinessService.inspectionSize.height = san.top - 5;
+          this.divisionBusinessService.inspectionSize.height = san.top - 1;
         });
     };
     show();

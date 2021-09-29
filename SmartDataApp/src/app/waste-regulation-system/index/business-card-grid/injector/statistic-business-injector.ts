@@ -23,6 +23,7 @@ import { EventPushService } from "../../../../common/tool/mqtt-event/event-push.
 import { DivisionType, EventType } from "../../../../data-core/model/enum";
 import { GarbageTaskNumberBusiness } from "../business/garbage-task-number/garbage-task-number.business";
 import { GarbageRetentionRankBusiness } from "../business/garbage-retention-rank/garbage-retention-rank.business";
+import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 @Injectable({
   providedIn: "root",
 })

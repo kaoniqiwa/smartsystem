@@ -158,14 +158,6 @@ export class AMapComponent implements AfterViewInit, OnInit {
     this.garbages.forEach((x) => {
       this.client.Point.SetVisibility(x.Id, true);
     });
-
-    if (this.stationVisibilityByLabel === false) {
-      console.log(this.notDropGarbageStation);
-      for (let i = 0; i < this.notDropGarbageStation.length; i++) {
-        const station = this.notDropGarbageStation[i];
-        this.client.Point.SetVisibility(station.Id, false);
-      }
-    }
   }
 
   isShowVideoView = false;
@@ -639,6 +631,24 @@ export class AMapComponent implements AfterViewInit, OnInit {
         case MapListItemType.Parent:
         default:
           break;
+      }
+    };
+    this.client.Events.OnPointVisibieChanged = (
+      pointId: string,
+      value: boolean
+    ) => {
+      if (this.stationVisibilityByLabel === false) {
+        try {
+          let station = this.notDropGarbageStation.find(
+            (x) => x.Id === pointId
+          );
+          if (!station) return;
+        } catch (ex) {
+          return;
+        }
+        if (value === true) {
+          this.client.Point.SetVisibility(pointId, false);
+        }
       }
     };
   }

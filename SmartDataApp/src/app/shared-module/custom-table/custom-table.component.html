@@ -15,7 +15,7 @@
               class="title-name"
               (click)="thOrderClick(th)"
               *ngFor="let th of model.tableAttrs"
-              [ngStyle]="{ width: th.tdWidth }"
+              [ngStyle]="{ width: th.tdWidth, textAlign: th.align }"
             >
               {{ th.HeadTitleName }}
               <ng-container *ngIf="th.orderBy">
@@ -39,7 +39,11 @@
             >
               {{ model.tooltipTd.tdName }}
             </th>
-            <th class="ico-btn title-name" *ngIf="model.hasTableOperationTd">
+            <th
+              class="ico-btn title-name"
+              *ngIf="model.hasTableOperationTd"
+              style="text-align: center"
+            >
               {{ model.operationTdName }}
             </th>
           </tr>
@@ -113,7 +117,7 @@
               </ng-container>
               <ng-container *ngIf="attrs.iocnClassLabel">
                 <span>
-                  <label class="m-0" style="width: 110px">{{
+                  <label class="m-0" [ngStyle]="{ width: attrs.fixedWidth }">{{
                     tdIconClassLabel(item[attrs.tdInnerAttrName]).tdVal
                   }}</label>
                   <ng-container

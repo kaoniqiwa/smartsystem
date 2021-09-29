@@ -42,7 +42,6 @@ export class GarbageRetentionRankBusiness extends BaseBusinessRefresh {
    * 拉取居委会下的所有厢房统计信息
    */
   async getDataOfCommittees(divisionId: string) {
-    debugger;
     // 当前居委会下的所有厢房
     let garbageStations =
       await this._statisticalDataBufferService.postGarbageStationStatisticNumbers(

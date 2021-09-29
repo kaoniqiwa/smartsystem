@@ -52,6 +52,7 @@ import {
 import { Language } from "../../../common/tool/language";
 import { GarbageTaskNumberCardComponent } from "src/app/shared-module/card-component/garbage-task-number-card/garbage-task-number-card.component";
 import { GarbageStationSummaryViewPage } from "src/app/shared-module/business-component/station-view-summary/view-helper";
+import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 
 class DivisionBusinessServiceSelected {
   GarbageStation?: GarbageStation;
@@ -277,6 +278,9 @@ export class DivisionBusinessService {
   bindingEventStateScaleCardComponent(view: StateScaleCardComponent) {
     view.btnControl = (item: { tag: CameraStateTableEnum }) => {
       this.stationCameraStateTable = item.tag;
+      if (this.user.userDivision && this.user.userDivision.length > 0) {
+        this.divisionsId = GlobalStoreService.divisionId; // this.user.userDivision[0].Id;
+      }
       this.stationCameraView = true;
       this.eventHistoryView = true;
     };
@@ -292,7 +296,7 @@ export class DivisionBusinessService {
       } else {
         const param = new BusinessParameter(),
           stationKey = "station";
-        param.divisionId = this.divisionsId;
+        param.divisionId = GlobalStoreService.divisionId;
         if (item.id == "IllegalDrop" || item.id == "MixedInto") {
           this.eventDropCard.eventType =
             item.id == "IllegalDrop"
@@ -393,7 +397,7 @@ export class DivisionBusinessService {
             this.inspectionSize.top = 0;
             const s = domSize("map__view");
             this.inspectionSize.width = s.width - g.left + 17;
-            this.inspectionSize.height = san.top - 5;
+            this.inspectionSize.height = san.top - 1;
           };
           x.list[0].view.btnControl = async (i) => {
             if (i == null) {

@@ -29,14 +29,16 @@ export class HeaderSquareListComponent
   }
 
   itemClick(id: string, type: DivisionType.City) {
+    this._globalStoreService.divisionId = id;
+    this._globalStoreService.divisionType = type;
+    GlobalStoreService.divisionId = id;
+    GlobalStoreService.divisionType = type;
     this.selectedId = id;
     if (this.btnControl) {
       this.btnControl({
         id: id,
         type: type,
       });
-      this._globalStoreService.divisionId = id;
-      this._globalStoreService.divisionType = type;
       this._globalStoreService.statusChange.emit();
     }
   }

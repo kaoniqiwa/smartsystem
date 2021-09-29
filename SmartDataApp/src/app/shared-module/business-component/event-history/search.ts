@@ -1,5 +1,7 @@
 import { DatePipe } from "@angular/common";
 import { FormGroup, FormControl } from "@angular/forms";
+import { Language } from "src/app/common/tool/language";
+import { EventType } from "src/app/data-core/model/enum";
 import { SearchHelper } from "../../../common/tool/table-form-helper";
 import { Camera } from "../../../data-core/model/waste-regulation/camera";
 import { GarbageStation } from "../../../data-core/model/waste-regulation/garbage-station";
@@ -9,6 +11,7 @@ export class SearchControl extends SearchHelper {
 
   resourcesDropList = new Array<{ id: string; name: string }>();
   stationsDropList = new Array<{ id: string; name: string }>();
+  EventTypeList = new Array<{ id: number; name: string }>();
   constructor(private datePipe: DatePipe) {
     super();
     const day = new Date();
@@ -21,7 +24,22 @@ export class SearchControl extends SearchHelper {
       StationId: new FormControl(""),
       SearchText: new FormControl(""),
       ResourceId: new FormControl(""),
+      EventType: new FormControl(""),
     });
+    this.EventTypeList = [
+      {
+        id: EventType.GarbageDrop,
+        name: Language.GarbageDropEventType(EventType.GarbageDrop),
+      },
+      {
+        id: EventType.GarbageDropHandle,
+        name: Language.GarbageDropEventType(EventType.GarbageDropHandle),
+      },
+      {
+        id: EventType.GarbageDropTimeout,
+        name: Language.GarbageDropEventType(EventType.GarbageDropTimeout),
+      },
+    ];
   }
 
   set stationId(val: string) {
@@ -78,6 +96,7 @@ export class SearchControl extends SearchHelper {
       DivisionId: "",
       StationId: "",
       ResourceId: "",
+      EventType: "",
     });
   }
 
@@ -94,4 +113,5 @@ export class SearchParam {
   StationId: string;
   SearchText: string;
   ResourceId: string;
+  EventType: string;
 }

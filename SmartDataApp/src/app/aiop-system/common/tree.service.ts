@@ -147,7 +147,7 @@ export class TreeService extends ListAttribute {
     return nodes;
   }
 
-  loadTree(items: DataTreeNode[]) {
+  loadTree(items: DataTreeNode[], root: boolean = false) {
     const dataSource = new Array<TreeNode>();
     const addItems = (node: TreeNode, items: DataTreeNode[]) => {
       for (const item of items) {
@@ -173,7 +173,10 @@ export class TreeService extends ListAttribute {
       }
     };
     for (const item of items) {
-      if ((!item.parentId || item.type == NodeTypeEnum.root) && item.type) {
+      if (
+        root ||
+        ((!item.parentId || item.type == NodeTypeEnum.root) && item.type)
+      ) {
         const node = new TreeNode();
         node.data = item.data;
         node.name = item.name;
