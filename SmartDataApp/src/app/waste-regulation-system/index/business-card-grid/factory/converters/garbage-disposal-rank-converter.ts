@@ -43,7 +43,7 @@ export class GarbageDisposalRankConverter implements IConverter {
             id: "",
             name: "-",
             subName: "0",
-            subNameAfter: "起",
+            subNameAfter: "分",
             linkTipLabel: "查看小包垃圾处置记录",
           });
     }

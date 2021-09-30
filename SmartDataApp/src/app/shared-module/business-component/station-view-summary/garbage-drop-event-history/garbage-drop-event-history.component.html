@@ -79,9 +79,40 @@
         <i class="mdi mdi-magnify"></i>
         查询
       </button>
+
+      <!-- <button
+        type="button"
+        class="hw-blue-m-btn m-r-10"
+        (click)="contentTypeView = !contentTypeView"
+      >
+        <i
+          style="margin-left: 2px"
+          [class.howell-icon-ul]="contentType == TableContentType.event"
+          [class.howell-icon-task_misson]="contentType == TableContentType.task"
+        ></i>
+        <i class="mdi mdi-menu-down"></i>
+      </button> -->
+
       <button class="hw-cyan-m-btn" (click)="moreSearch()">
         <i class="mdi mdi-filter-outline"></i>
       </button>
+      <!-- <div
+        class="list-attr-wrap table-list collapse"
+        [class.in]="contentTypeView"
+      >
+        <ul class="p-l-0">
+          <li (click)="changeListMode(TableContentType.event)">
+            <a href="javascript:void(0)" class="list-li light-blue-text">
+              <i class="howell-icon-ul"></i>
+            </a>
+          </li>
+          <li (click)="changeListMode(TableContentType.task)">
+            <a href="javascript:void(0)" class="list-li light-blue-text">
+              <i class="howell-icon-task_misson"></i>
+            </a>
+          </li>
+        </ul>
+      </div> -->
     </div>
   </div>
   <ng-container *ngIf="tableService.search.other">

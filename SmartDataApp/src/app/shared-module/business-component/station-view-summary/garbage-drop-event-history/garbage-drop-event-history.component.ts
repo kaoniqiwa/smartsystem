@@ -18,6 +18,7 @@ import { HWVideoService } from "../../../../data-core/dao/video-dao";
 import { GetVodUrlParams } from "../../../../data-core/model/aiop/video-url";
 import { Camera } from "../../../../data-core/model/waste-regulation/camera";
 import { DivisionType } from "../../../../data-core/model/enum";
+
 @Component({
   selector: "hw-garbage-drop-event-history",
   templateUrl: "./garbage-drop-event-history.component.html",
@@ -43,7 +44,14 @@ export class GarbageDropEventHistoryComponent implements OnInit {
   otherView = GarbageStationSummaryViewPage;
   @Output() OtherViewEvent = new EventEmitter<GarbageStationSummaryViewPage>();
 
-  private _handle?: boolean;
+  contentType: TableContentType = TableContentType.event;
+  contentTypeView: boolean = false;
+  TableContentType = TableContentType;
+  changeListMode(type: TableContentType) {
+    this.contentTypeView = false;
+  }
+
+  _handle?: boolean;
   public get handle(): boolean | undefined {
     return this._handle;
   }
@@ -219,4 +227,9 @@ export class GarbageDropEventHistoryComponent implements OnInit {
       );
     });
   }
+}
+
+enum TableContentType {
+  event,
+  task,
 }
