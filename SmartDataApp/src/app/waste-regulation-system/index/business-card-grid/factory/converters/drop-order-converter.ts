@@ -19,8 +19,8 @@ export class DropOrderConverter implements IConverter {
     if (input instanceof EventDropOrderInfo) {
       output.views[0].title =
         input.eventType == EventType.IllegalDrop
-          ? "乱扔垃圾排名"
-          : "混合投放排名";
+          ? "今日乱扔垃圾排名"
+          : "今日混合投放排名";
       output.views[0].table = new Array();
 
       const sort = input.items.sort((a, b) => {

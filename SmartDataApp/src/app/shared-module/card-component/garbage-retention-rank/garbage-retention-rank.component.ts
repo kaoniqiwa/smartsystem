@@ -56,7 +56,7 @@ export class GarbageRetentionRankComponent implements OnInit {
       {
         id: "retentionTime",
         content: "滞留时长",
-        title: "垃圾滞留时长排名",
+        title: "今日垃圾滞留时长排名",
       },
     ],
     [
@@ -64,7 +64,7 @@ export class GarbageRetentionRankComponent implements OnInit {
       {
         id: "retentionCount",
         content: "滞留数量",
-        title: "垃圾滞留投放点数量排名",
+        title: "今日垃圾滞留投放点数量排名",
       },
     ],
   ]);
