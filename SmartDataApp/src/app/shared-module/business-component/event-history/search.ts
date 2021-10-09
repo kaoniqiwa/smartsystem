@@ -69,8 +69,12 @@ export class SearchControl extends SearchHelper {
         });
     }
   }
-
+  private _divisionId: string;
+  get divisionId() {
+    return this._divisionId;
+  }
   set divisionId(val: string) {
+    this._divisionId = val;
     this.searchform.patchValue({
       DivisionId: val,
     });

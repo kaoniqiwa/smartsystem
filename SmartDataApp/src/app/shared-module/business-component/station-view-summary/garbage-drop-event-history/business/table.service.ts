@@ -210,6 +210,8 @@ export class GarbageDropEventHistoryBusinessService {
     callBack?: (page: Page) => void
   ) {
     this.requestEventData(pageIndex, param, callBack);
+    debugger;
+    this.requestTaskData();
   }
 
   getRequsetParam(pageIndex: number, search: SearchControl) {
@@ -252,8 +254,17 @@ export class GarbageDropEventHistoryBusinessService {
 
   async requestTaskData() {
     debugger;
+
     let divisionId = this.taskDivisionId || GlobalStoreService.divisionId;
+
+    if (this.search.state === true) {
+      if (this.search.searchform.controls.DivisionId.value) {
+        divisionId = this.search.searchform.controls.DivisionId.value;
+      }
+    }
+
     let divisionType = GlobalStoreService.divisionType;
+
     try {
       divisionType = this.divisions.find(
         (x) => x.Id === divisionId
@@ -264,6 +275,23 @@ export class GarbageDropEventHistoryBusinessService {
       divisionType,
       false
     );
+
+    if (this.search.searchform.controls.StationId.value) {
+      if (divisionType == DivisionType.Committees) {
+        datas = datas.filter(
+          (x) => x.Id === this.search.searchform.controls.StationId.value
+        );
+      }
+    }
+
+    if (this.search.searchform.controls.SearchText.value) {
+      datas = datas.filter(
+        (x) =>
+          x.Name.toLocaleLowerCase().indexOf(
+            this.search.searchform.controls.SearchText.value.toLocaleLowerCase()
+          ) >= 0
+      );
+    }
 
     let source = new GarbageStationNumberStatisticBusinessData();
     source.items = datas;

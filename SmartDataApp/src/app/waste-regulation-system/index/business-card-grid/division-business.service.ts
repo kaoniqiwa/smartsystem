@@ -165,6 +165,8 @@ export class DivisionBusinessService {
         eventTypes = [EventType.IllegalDrop, EventType.MixedInto];
       param.divisionId = val.id;
       param.divisionType = val.type;
+      this.GarbageDropTaskDivisionId = GlobalStoreService.divisionId;
+      this.GarbageDropEventHistoryContentType = TableContentType.event;
       this.eventDropCard.divisionType = val.type;
       this.resetDropDivisionType(val.type);
       // param.map.set('divisionsIds', [val.id]);
@@ -353,7 +355,6 @@ export class DivisionBusinessService {
         this.GarbageDropEventHistoryTimeout = item.args.timeout;
         this.GarbageDropEventHistoryHandle = item.args.handle;
       }
-      debugger;
       this.GarbageDropTaskDivisionId = item.id;
       this.GarbageStationSummaryPageIndex = GarbageStationSummaryViewPage.event;
       this.GarbageDropEventHistoryContentType = TableContentType.task;
@@ -526,6 +527,7 @@ export class DivisionBusinessService {
     this.vsClassStatistic = false;
     this.stationStrandedView = false;
     this.GarbageDropEventHistoryContentType = TableContentType.event;
+    this.GarbageDropTaskDivisionId = GlobalStoreService.divisionId;
   }
 
   openStationStranded(station: GarbageStation) {

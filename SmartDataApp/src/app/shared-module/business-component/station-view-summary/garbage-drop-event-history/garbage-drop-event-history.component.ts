@@ -117,6 +117,7 @@ export class GarbageDropEventHistoryComponent implements OnInit {
   }
 
   changeDivisionFn = (divisionId: string) => {
+    debugger;
     if (divisionId) {
       const garbageStations = this.tableService.stations.filter(
         (x) => x.DivisionId == divisionId
@@ -185,6 +186,7 @@ export class GarbageDropEventHistoryComponent implements OnInit {
   }
 
   moreSearch() {
+    debugger;
     this.tableService.search.other = !this.tableService.search.other;
     setTimeout(() => {
       if (this.levelListPanel) {
