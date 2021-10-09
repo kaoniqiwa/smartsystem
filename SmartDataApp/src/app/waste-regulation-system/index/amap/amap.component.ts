@@ -154,10 +154,11 @@ export class AMapComponent implements AfterViewInit, OnInit {
   set StationVisibilityByLabel(val: boolean) {
     //if (this.stationVisibilityByLabel === val) return;
     this.stationVisibilityByLabel = val;
-
-    this.garbages.forEach((x) => {
-      this.client.Point.SetVisibility(x.Id, true);
-    });
+    if (this.garbages) {
+      this.garbages.forEach((x) => {
+        this.client.Point.SetVisibility(x.Id, true);
+      });
+    }
   }
 
   isShowVideoView = false;

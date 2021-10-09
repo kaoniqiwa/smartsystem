@@ -21,6 +21,7 @@ import { ClassTypeEnum } from "./business/search";
 import { DivisionDao } from "../../../../data-core/dao/division-dao";
 import { HowellCSV } from "../../../../common/tool/hw-excel-js/hw-csv";
 import { TITLEKEY, COLNAME } from "../../../../common/tool/hw-excel-js/data";
+import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 @Component({
   selector: "hw-illegal-drop-event-analyze",
   templateUrl: "./illegal-drop-event-analyze.component.html",
@@ -51,15 +52,14 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
   constructor(
     private businessService: BusinessService,
     private divisionDao: DivisionDao,
-    private configRequestService: ConfigRequestService,
-    private divisionBusinessService: DivisionBusinessService
+    private configRequestService: ConfigRequestService
   ) {}
 
   async ngOnInit() {
     this.businessService.businessEventType = this.businessEventType;
     setTimeout(() => {
-      if (this.isDefaultSearch && this.divisionBusinessService.divisionsId)
-        this.defaultSearch = this.divisionBusinessService.divisionsId;
+      if (this.isDefaultSearch)
+        this.defaultSearch = GlobalStoreService.divisionId;
     }, 1200);
     this.divisionDao
       .allDivisions()

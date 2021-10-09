@@ -24,6 +24,7 @@ import {
 } from "../../business-manage-service";
 import { DivisionType } from "../../../../data-core/model/enum";
 import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
+import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 @Component({
   selector: "hw-illegal-drop-event-history",
   templateUrl: "./illegal-drop-event-history.component.html",
@@ -123,7 +124,6 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
     private tableService: EventTableService,
     private navService: SideNavService,
     private businessManageService: BusinessManageService,
-    private divisionBusinessService: DivisionBusinessService,
     private router: Router
   ) {}
 
@@ -176,13 +176,9 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
       this.tableMinusHeight = "calc(100% - 20px)";
       this.tableSearchHeight = "calc(100% - 64px)";
       this.tableService.fillMode = new FillMode();
-      this.tableService.fillMode.divisionId =
-        this.divisionBusinessService.divisionsId;
+      this.tableService.fillMode.divisionId = GlobalStoreService.divisionId;
 
-      if (this.divisionBusinessService.divisionsId) {
-        this.tableService.search.divisionId =
-          this.divisionBusinessService.divisionsId;
-      }
+      this.tableService.search.divisionId = GlobalStoreService.divisionId;
     }
     if (
       (this.businessManageService.viewDivisionType ==
@@ -221,19 +217,18 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
       this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.None
     )
       setTimeout(() => {
-        if (this.levelListPanel && this.divisionBusinessService.divisionsId) {
+        if (this.levelListPanel) {
           const division = this.tableService.divisions.find(
-            (d) => d.Id == this.divisionBusinessService.divisionsId
+            (d) => d.Id == GlobalStoreService.divisionId
           );
-          if (division && division.DivisionType == DivisionType.City) {
-            const children = this.tableService.divisions.filter(
-              (f) => f.ParentId == division.Id
-            );
-            this.levelListPanel.defaultItem(children.pop().Id);
-          } else
-            this.levelListPanel.defaultItem(
-              this.divisionBusinessService.divisionsId
-            );
+          // if (division && division.DivisionType == DivisionType.City) {
+          //   const children = this.tableService.divisions.filter(
+          //     (f) => f.ParentId == division.Id
+          //   );
+          //   this.levelListPanel.defaultItem(children.pop().Id);
+          // } else {
+          this.levelListPanel.defaultItem(GlobalStoreService.divisionId);
+          // }
         }
       }, 500);
     else if (

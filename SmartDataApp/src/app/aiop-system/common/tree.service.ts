@@ -2,7 +2,7 @@ import { Type } from "@angular/compiler";
 import { Injectable } from "@angular/core";
 import { AiopCamera } from "../../data-core/model/aiop/camera";
 import { Region } from "../../data-core/model/aiop/region";
-import { DivisionType } from "../../data-core/model/enum";
+import { DivisionType, UserResourceType } from "../../data-core/model/enum";
 import { Division } from "../../data-core/model/waste-regulation/division";
 import { GarbageStation } from "../../data-core/model/waste-regulation/garbage-station";
 import { GarbageStationType } from "../../data-core/model/waste-regulation/garbage-station-type";
@@ -45,16 +45,26 @@ export class TreeService extends ListAttribute {
 
   private convertTreeNodeByDivision<T extends Division>(
     item: T,
-    isRoot: boolean
+    root?: IIsRoot
   ): DataTreeNode<T> {
     const node = new DataTreeNode<T>();
     node.id = item.Id;
     node.name = item.Name;
     node.parentId = item.ParentId;
 
-    node.type = isRoot
-      ? NodeTypeEnum.root
-      : this.convertToNodeType(item.DivisionType);
+    if (root) {
+      if (root.divisionType) {
+        node.type =
+          item.DivisionType == root.divisionType
+            ? NodeTypeEnum.root
+            : this.convertToNodeType(item.DivisionType);
+      } else {
+        node.type = root.is
+          ? NodeTypeEnum.root
+          : this.convertToNodeType(item.DivisionType);
+      }
+    }
+
     node.data = item;
     return node;
   }
@@ -116,22 +126,24 @@ export class TreeService extends ListAttribute {
   >(
     array: Array<T>,
     getBtns?: (data: T) => RightButton<T>[],
-    isRoot: boolean = false
+    root: IIsRoot = {
+      is: false,
+    }
   ) {
     const nodes = new Array<DataTreeNode<T>>();
 
     for (const item of array) {
       let node: DataTreeNode<T>;
       if (item instanceof Division) {
-        node = this.convertTreeNodeByDivision(item, isRoot);
+        node = this.convertTreeNodeByDivision(item, root);
       } else if (item instanceof Region) {
-        node = this.convertTreeNodeByRegion(item, isRoot);
+        node = this.convertTreeNodeByRegion(item, root.is);
       } else if (item instanceof GarbageStation) {
-        node = this.convertTreeNodeByGarbageStation(item, isRoot);
+        node = this.convertTreeNodeByGarbageStation(item, root.is);
       } else if (item instanceof GarbageStationType) {
-        node = this.convertTreeNodeByGarbageStationType(item, isRoot);
+        node = this.convertTreeNodeByGarbageStationType(item, root.is);
       } else if (item instanceof AiopCamera) {
-        node = this.converTreeNodeByCamera(item, isRoot);
+        node = this.converTreeNodeByCamera(item, root.is);
       } else {
       }
       if (getBtns) {
@@ -146,37 +158,43 @@ export class TreeService extends ListAttribute {
     }
     return nodes;
   }
-
+  private addItems(node: TreeNode, items: DataTreeNode[]) {
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (node.id == item.parentId) {
+        items.splice(i, 1);
+        i--;
+        const node_ = new TreeNode();
+        node_.name = item.name;
+        node_.checked = false;
+        node_.id = item.id;
+        node_.data = item.data;
+        node_.iconClass = this.nodeIconType.get(item.type);
+        node_.rightClassBtn =
+          item.type == NodeTypeEnum.camera
+            ? [new RightButton("howell-icon-Link", "1")]
+            : [];
+        if (item.buttons && item.buttons.length > 0) {
+          node_.rightClassBtn = item.buttons;
+        }
+        node_.parent = node;
+        node.children = node.children || new Array<TreeNode>();
+        node.children.push(node_);
+        this.addItems(node_, items);
+      }
+    }
+  }
   loadTree(items: DataTreeNode[], root: boolean = false) {
     const dataSource = new Array<TreeNode>();
-    const addItems = (node: TreeNode, items: DataTreeNode[]) => {
-      for (const item of items) {
-        if (node.id == item.parentId) {
-          const node_ = new TreeNode();
-          node_.name = item.name;
-          node_.checked = false;
-          node_.id = item.id;
-          node_.data = item.data;
-          node_.iconClass = this.nodeIconType.get(item.type);
-          node_.rightClassBtn =
-            item.type == NodeTypeEnum.camera
-              ? [new RightButton("howell-icon-Link", "1")]
-              : [];
-          if (item.buttons && item.buttons.length > 0) {
-            node_.rightClassBtn = item.buttons;
-          }
-          node_.parent = node;
-          node.children = node.children || new Array<TreeNode>();
-          node.children.push(node_);
-          addItems(node_, items);
-        }
-      }
-    };
-    for (const item of items) {
+
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
       if (
         root ||
         ((!item.parentId || item.type == NodeTypeEnum.root) && item.type)
       ) {
+        items.splice(i, 1);
+        i--;
         const node = new TreeNode();
         node.data = item.data;
         node.name = item.name;
@@ -191,7 +209,7 @@ export class TreeService extends ListAttribute {
         node.id = item.id;
         node.iconClass = this.nodeIconType.get(item.type);
         dataSource.push(node);
-        addItems(node, items);
+        this.addItems(node, items);
       }
     }
 
@@ -264,6 +282,11 @@ export class DataTreeNode<T = any> {
   data: T;
   show? = true;
   parent?: DataTreeNode<T>;
+}
+
+export interface IIsRoot {
+  is?: boolean;
+  divisionType?: DivisionType;
 }
 
 // export class DivisionMini extends DataTreeNode<Division> {

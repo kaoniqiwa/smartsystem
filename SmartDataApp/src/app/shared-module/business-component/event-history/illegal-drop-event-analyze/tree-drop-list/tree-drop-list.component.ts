@@ -131,19 +131,19 @@ export class TreeDropListComponent implements OnInit {
   }
 
   async reInit() {
+    this.stationTreeService.dataSource = [];
     if (this.dataService.divisions.length == 0)
       this.dataService.divisions = await this.divisionDao.allDivisions();
     if (this.onlyCityNode) {
-      this.stationTreeService.appendCityDivisionModel(
-        this.dataService.divisions.filter(
-          (x) => x.DivisionType < DivisionType.Committees
-        )
+      let divisions = this.dataService.divisions.filter(
+        (x) => x.DivisionType >= DivisionType.City
       );
+      this.stationTreeService.appendCityDivisionModel(divisions);
 
       const nodes = this.stationTreeService.convertTreeNode(
         this.dataService.divisions,
         undefined,
-        true
+        { divisionType: DivisionType.City }
       );
       this.stationTreeService.dataSource = nodes;
     } else {
@@ -153,14 +153,16 @@ export class TreeDropListComponent implements OnInit {
       // this.stationTreeService.divisions.items = new Array();
       this.stationTreeService.appendDivisionModel(
         this.dataService.divisions.filter(
-          (x) => x.DivisionType > DivisionType.City
-        )
+          (x) => x.DivisionType >= DivisionType.County
+        ),
+        undefined,
+        { divisionType: DivisionType.County }
       );
       if (this.onlyDivisionNode) {
         const nodes = this.stationTreeService.convertTreeNode(
           this.dataService.divisions,
           undefined,
-          true
+          { divisionType: DivisionType.County }
         );
         this.stationTreeService.dataSource = nodes;
       } else {
@@ -175,7 +177,7 @@ export class TreeDropListComponent implements OnInit {
       }
     }
 
-    this.stationTreeService.loadStationTree(true);
+    this.stationTreeService.loadStationTree();
     this.garbageStationTree.dataSource.data = this.stationTreeService.treeNode;
     // for (let key of this.garbageStationTree.flatNodeMap.keys())
     //   key.checked=false;

@@ -7,7 +7,7 @@ import {
   Input,
 } from "@angular/core";
 import { GarbageStationSummaryViewPage } from "../view-helper";
-import { GarbageDropEventHistoryBusinessService } from "./business/event-table.service";
+import { GarbageDropEventHistoryBusinessService } from "./business/table.service";
 import { GarbageStationDao } from "../../../../data-core/dao/garbage-station-dao";
 import { DivisionDao } from "../../../../data-core/dao/division-dao";
 import { GarbageStationCameraDao } from "../../../../data-core/dao/garbage-station-camera-dao";
@@ -18,11 +18,12 @@ import { HWVideoService } from "../../../../data-core/dao/video-dao";
 import { GetVodUrlParams } from "../../../../data-core/model/aiop/video-url";
 import { Camera } from "../../../../data-core/model/waste-regulation/camera";
 import { DivisionType } from "../../../../data-core/model/enum";
+import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 
 @Component({
   selector: "hw-garbage-drop-event-history",
   templateUrl: "./garbage-drop-event-history.component.html",
-  styleUrls: ["./garbage-drop-event-history.component.styl"],
+  styleUrls: ["./garbage-drop-event-history.component.css"],
   providers: [
     HWVideoService,
     GarbageDropEventHistoryBusinessService,
@@ -38,16 +39,31 @@ export class GarbageDropEventHistoryComponent implements OnInit {
   @ViewChild(LevelListPanelComponent)
   levelListPanel: LevelListPanelComponent;
 
-  @ViewChild(CustomTableComponent)
-  table: CustomTableComponent;
+  @ViewChild("eventTable")
+  eventTable: CustomTableComponent;
+
+  @ViewChild("taskTable")
+  taskTable: CustomTableComponent;
 
   otherView = GarbageStationSummaryViewPage;
   @Output() OtherViewEvent = new EventEmitter<GarbageStationSummaryViewPage>();
 
+  @Input()
   contentType: TableContentType = TableContentType.event;
+
+  public get taskDivisionId(): string {
+    return this.tableService.taskDivisionId;
+  }
+  @Input()
+  public set taskDivisionId(v: string) {
+    debugger;
+    this.tableService.taskDivisionId = v;
+  }
+
   contentTypeView: boolean = false;
   TableContentType = TableContentType;
   changeListMode(type: TableContentType) {
+    this.contentType = type;
     this.contentTypeView = false;
   }
 
@@ -75,7 +91,6 @@ export class GarbageDropEventHistoryComponent implements OnInit {
     private tableService: GarbageDropEventHistoryBusinessService,
     private divisionDao: DivisionDao,
     private videoService: HWVideoService,
-    private divisionBusinessService: DivisionBusinessService,
     private garbageStationCameraDao: GarbageStationCameraDao,
     private garbageStationDao: GarbageStationDao
   ) {}
@@ -129,22 +144,23 @@ export class GarbageDropEventHistoryComponent implements OnInit {
   };
   setSearchDivision() {
     const division = this.tableService.divisions.find(
-      (d) => d.Id == this.divisionBusinessService.divisionsId
+      (d) => d.Id == GlobalStoreService.divisionId
     );
     if (division && division.DivisionType == DivisionType.City) {
       const children = this.tableService.divisions.filter(
         (f) => f.ParentId == division.Id
       );
       this.tableService.search.divisionId = children.pop().Id;
-    } else
-      this.tableService.search.divisionId =
-        this.divisionBusinessService.divisionsId;
+    } else {
+      this.tableService.search.divisionId = GlobalStoreService.divisionId;
+    }
   }
   async ngOnInit() {
     this.divisionDao.allDivisions().then((t) => {
       this.tableService.divisions = t;
       this.setSearchDivision();
-      this.initTableList();
+      this.initEventTableList();
+      this.initTaskTableList();
       this.tableService.divisionListView.toLevelListPanel(
         t.filter((x) => x.ParentId != null)
       );
@@ -171,41 +187,42 @@ export class GarbageDropEventHistoryComponent implements OnInit {
   moreSearch() {
     this.tableService.search.other = !this.tableService.search.other;
     setTimeout(() => {
-      if (this.levelListPanel && this.divisionBusinessService.divisionsId) {
+      if (this.levelListPanel) {
         const division = this.tableService.divisions.find(
-          (d) => d.Id == this.divisionBusinessService.divisionsId
+          (d) => d.Id == GlobalStoreService.divisionId
         );
         if (division && division.DivisionType == DivisionType.City) {
           const children = this.tableService.divisions.filter(
             (f) => f.ParentId == division.Id
           );
           this.levelListPanel.defaultItem(children.pop().Id);
-        } else
-          this.levelListPanel.defaultItem(
-            this.divisionBusinessService.divisionsId
-          );
+        } else this.levelListPanel.defaultItem(GlobalStoreService.divisionId);
       }
     }, 500);
   }
 
-  async initTableList() {
+  async initEventTableList() {
     await this.tableService.requestData(
       1,
       { handle: this.handle, timeout: this.timeout },
       (page) => {
-        this.tableService.table.initPagination(
+        this.tableService.eventTable.initPagination(
           page,
           async (index) => {
             await this.tableService.requestData(index, {
               handle: this.handle,
               timeout: this.timeout,
             });
-            this.table.tdImgListScoll();
+            this.eventTable.tdImgListScoll();
           },
           true
         );
       }
     );
+  }
+
+  async initTaskTableList() {
+    this.tableService.requestTaskData();
   }
 
   changeOtherView(val: GarbageStationSummaryViewPage) {
@@ -217,11 +234,11 @@ export class GarbageDropEventHistoryComponent implements OnInit {
   async search() {
     this.tableService.search.state = true;
     await this.tableService.requestData(1, undefined, (page) => {
-      this.tableService.table.initPagination(
+      this.tableService.eventTable.initPagination(
         page,
         async (index) => {
           await this.tableService.requestData(index);
-          this.table.tdImgListScoll();
+          this.eventTable.tdImgListScoll();
         },
         true
       );
@@ -229,7 +246,7 @@ export class GarbageDropEventHistoryComponent implements OnInit {
   }
 }
 
-enum TableContentType {
+export enum TableContentType {
   event,
   task,
 }

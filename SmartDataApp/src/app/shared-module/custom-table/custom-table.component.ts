@@ -231,9 +231,11 @@ export class CustomTableComponent implements OnInit {
   imgClick(url: string) {
     if (this.model.isDisplayDetailImg) {
       event.stopPropagation();
-      this.model.eventDelegate(
-        new CustomTableEvent(CustomTableEventEnum.Img, url)
-      );
+      if (this.model) {
+        this.model.eventDelegate(
+          new CustomTableEvent(CustomTableEventEnum.Img, url)
+        );
+      }
     }
   }
 

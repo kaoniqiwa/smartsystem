@@ -112,6 +112,7 @@
                   }}"
                   *ngIf="!attrs.isImg && !attrs.isHTML"
                   class="{{ fontColor(item[attrs.tdInnerAttrName]) }}"
+                  [ngClass]="attrs.className"
                   >{{ item[attrs.tdInnerAttrName] }}</span
                 >
               </ng-container>

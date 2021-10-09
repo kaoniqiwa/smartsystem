@@ -150,7 +150,7 @@ export class TreeDropListV2Component implements OnInit {
       const nodes = this.stationTreeService.convertTreeNode(
         this.dataService.divisions,
         undefined,
-        true
+        { is: true }
       );
       this.stationTreeService.dataSource = nodes;
       if (this.dataService.garbageStations.length == 0)

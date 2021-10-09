@@ -61,6 +61,7 @@ export class CustomTableArgs<T extends IBusinessData> implements IViewModel {
       iconTd?: TdIconsAttr[];
       galleryTd?: GalleryTdAttr[];
       tooltipTd?: TooltipTd;
+      galleryTdWidth?: string;
     } = {}
   ) {
     this.values = options.values;
@@ -83,7 +84,7 @@ export class CustomTableArgs<T extends IBusinessData> implements IViewModel {
     this.iconTextTagAttr = options.iconTextTagAttr;
     this.iconTd = options.iconTd;
     this.galleryTd = options.galleryTd;
-    this.galleryTdWidth = "30%";
+    this.galleryTdWidth = options.galleryTdWidth || "30%";
     this.tooltipTd = options.tooltipTd;
   }
 }
@@ -112,8 +113,12 @@ export class TableAttr implements IViewModel {
     asOrderBy: OrderByEnum;
     id: string;
   };
+  /** 固定宽度 */
   fixedWidth: string;
+  /** 对齐方式 */
   align: boolean;
+  /** 样式名称 */
+  className?: string;
   constructor(
     options: {
       HeadTitleName?: string;
@@ -131,6 +136,7 @@ export class TableAttr implements IViewModel {
         id: string;
       };
       fixedWidth?: string;
+      className?: string;
     } = {}
   ) {
     this.HeadTitleName = options.HeadTitleName || "";
@@ -145,6 +151,7 @@ export class TableAttr implements IViewModel {
     this.orderBy = options.orderBy || null;
     this.fixedWidth = options.fixedWidth || "110px";
     this.align = options.align || false;
+    this.className = options.className;
   }
 }
 

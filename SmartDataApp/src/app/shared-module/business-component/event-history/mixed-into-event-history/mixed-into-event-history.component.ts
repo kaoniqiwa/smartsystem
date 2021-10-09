@@ -22,6 +22,7 @@ import { LevelListPanelComponent } from "../level-list-panel/level-list-panel.co
 import { HWVideoService } from "../../../../data-core/dao/video-dao";
 import { GetVodUrlParams } from "../../../../data-core/model/aiop/video-url";
 import { DivisionType } from "../../../../data-core/model/enum";
+import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 @Component({
   selector: "hw-mixed-into-event-history",
   templateUrl: "./mixed-into-event-history.component.html",
@@ -90,7 +91,6 @@ export class MixedIntoEventHistoryComponent implements OnInit, OnDestroy {
   constructor(
     private tableService: EventTableService,
     private videoService: HWVideoService,
-    private divisionBusinessService: DivisionBusinessService,
     private businessManageService: BusinessManageService
   ) {}
 
@@ -218,19 +218,16 @@ export class MixedIntoEventHistoryComponent implements OnInit, OnDestroy {
       this.businessManageService.viewDivisionType == ViewDivisionTypeEnum.None
     )
       setTimeout(() => {
-        if (this.levelListPanel && this.divisionBusinessService.divisionsId) {
+        if (this.levelListPanel) {
           const division = this.tableService.divisions.find(
-            (d) => d.Id == this.divisionBusinessService.divisionsId
+            (d) => d.Id == GlobalStoreService.divisionId
           );
           if (division && division.DivisionType == DivisionType.City) {
             const children = this.tableService.divisions.filter(
               (f) => f.ParentId == division.Id
             );
             this.levelListPanel.defaultItem(children.pop().Id);
-          } else
-            this.levelListPanel.defaultItem(
-              this.divisionBusinessService.divisionsId
-            );
+          } else this.levelListPanel.defaultItem(GlobalStoreService.divisionId);
         }
       }, 500);
     else if (

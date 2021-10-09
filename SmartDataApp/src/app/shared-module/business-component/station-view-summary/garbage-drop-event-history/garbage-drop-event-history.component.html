@@ -80,7 +80,7 @@
         查询
       </button>
 
-      <!-- <button
+      <button
         type="button"
         class="hw-blue-m-btn m-r-10"
         (click)="contentTypeView = !contentTypeView"
@@ -91,28 +91,36 @@
           [class.howell-icon-task_misson]="contentType == TableContentType.task"
         ></i>
         <i class="mdi mdi-menu-down"></i>
-      </button> -->
+      </button>
 
       <button class="hw-cyan-m-btn" (click)="moreSearch()">
         <i class="mdi mdi-filter-outline"></i>
       </button>
-      <!-- <div
+      <div
         class="list-attr-wrap table-list collapse"
         [class.in]="contentTypeView"
       >
         <ul class="p-l-0">
           <li (click)="changeListMode(TableContentType.event)">
-            <a href="javascript:void(0)" class="list-li light-blue-text">
+            <a
+              href="javascript:void(0)"
+              class="list-li light-blue-text"
+              title="事件列表"
+            >
               <i class="howell-icon-ul"></i>
             </a>
           </li>
           <li (click)="changeListMode(TableContentType.task)">
-            <a href="javascript:void(0)" class="list-li light-blue-text">
+            <a
+              href="javascript:void(0)"
+              class="list-li light-blue-text"
+              title="任务处置"
+            >
               <i class="howell-icon-task_misson"></i>
             </a>
           </li>
         </ul>
-      </div> -->
+      </div>
     </div>
   </div>
   <ng-container *ngIf="tableService.search.other">
@@ -205,12 +213,71 @@
 
   <div
     [ngStyle]="{
-      height: tableService.search.other ? tableSearchHeight : tableMinusHeight
+      height: tableService.search.other ? tableSearchHeight : tableMinusHeight,
+      display: contentType == TableContentType.event ? 'block' : 'none'
     }"
   >
     <hw-custom-table
-      #table
-      [model]="tableService.table.dataSource"
+      #eventTable
+      [model]="tableService.eventTable.dataSource"
     ></hw-custom-table>
+  </div>
+  <div
+    [ngStyle]="{
+      height: tableService.search.other ? tableSearchHeight : tableMinusHeight,
+      display: contentType == TableContentType.task ? 'block' : 'none'
+    }"
+  >
+    <div class="task-table">
+      <hw-custom-table
+        #taskTable
+        [model]="tableService.taskTable.dataSource"
+      ></hw-custom-table>
+    </div>
+    <div class="task-foot">
+      <table>
+        <tfoot>
+          <tr>
+            <td
+              [ngStyle]="{
+                width: tableService.taskTable.dataSource.tableAttrs[0].tdWidth
+              }"
+            >
+              {{ tableService.taskTable.dataCount.name }}
+            </td>
+            <td
+              [ngStyle]="{
+                width: tableService.taskTable.dataSource.tableAttrs[1].tdWidth
+              }"
+            >
+              {{ tableService.taskTable.dataCount.total }}
+            </td>
+            <td
+              [ngStyle]="{
+                width: tableService.taskTable.dataSource.tableAttrs[2].tdWidth
+              }"
+            >
+              {{ tableService.taskTable.dataCount.unhandle }}
+            </td>
+            <td
+              [ngStyle]="{
+                width: tableService.taskTable.dataSource.tableAttrs[3].tdWidth
+              }"
+            >
+              {{ tableService.taskTable.dataCount.timeout }}
+            </td>
+            <td
+              [ngStyle]="{
+                width: tableService.taskTable.dataSource.tableAttrs[4].tdWidth
+              }"
+            >
+              <span class="sky-blue-text2">
+                {{ tableService.taskTable.dataCount.ratio }}
+              </span>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
   </div>
 </div>

@@ -15,6 +15,7 @@ import {
 import { GarbageFullHistorySumChartComponent } from "../garbage-full-history-sum-chart/garbage-full-history-sum-chart.component";
 import { GarbageStationSummaryViewPage } from "../view-helper";
 import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
+import { TableContentType } from "../garbage-drop-event-history/garbage-drop-event-history.component";
 @Component({
   selector: "hw-garbage-station-summary",
   templateUrl: "./garbage-station-summary.component.html",
@@ -43,6 +44,11 @@ export class GarbageStationSummaryComponent implements OnInit {
     this._PageIndex = v;
     if (this._PageIndex) this.acceptOtherView(this._PageIndex);
   }
+
+  @Input()
+  GarbageDropEventHistoryContentType: TableContentType;
+  @Input()
+  GarbageDropTaskDivisionId: string;
 
   @Input()
   GarbageDropEventHistoryHandle?: boolean;

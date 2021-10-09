@@ -1,6 +1,5 @@
-
-import { IBusinessData} from './IBusiness';
-import { IViewModel } from '../abstract/base-view';
+import { IBusinessData } from "./IBusiness";
+import { IViewModel } from "../abstract/base-view";
 export interface IConverter {
-    Convert<T extends IBusinessData,R extends IViewModel>(input: T,output: R): R;
+  Convert(input: IBusinessData, output: IViewModel): IViewModel;
 }

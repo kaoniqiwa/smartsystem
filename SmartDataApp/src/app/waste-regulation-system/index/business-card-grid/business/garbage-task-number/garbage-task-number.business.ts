@@ -18,6 +18,7 @@ import { StatisticalDataBufferService } from "../../buffer/statistical-data-buff
 import { DivisionType, EventType } from "src/app/data-core/model/enum";
 import { SessionUser } from "src/app/common/tool/session-user";
 import { GarbageStationNumberStatistic } from "src/app/data-core/model/waste-regulation/garbage-station-number-statistic";
+import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 
 export class GarbageTaskNumberBusiness extends BaseBusinessRefresh {
   user: SessionUser;
@@ -29,42 +30,51 @@ export class GarbageTaskNumberBusiness extends BaseBusinessRefresh {
     this.user = new SessionUser();
   }
 
-  getData(): Promise<GarbageTaskNumberDatas> {
-    let divisionId = this.businessParameter.divisionId;
-    let divisionType = this.businessParameter.divisionType;
-
-    if (!divisionId) {
-      divisionId = this.user.userDivision[0].Id;
-    }
-    if (!divisionType) {
-      divisionType = this.user.userDivisionType;
-    }
-
+  getData(
+    divisionId: string = this.businessParameter.divisionId ||
+      GlobalStoreService.divisionId,
+    divisionType: DivisionType = this.businessParameter.divisionType ||
+      GlobalStoreService.divisionType,
+    hasSelf = true
+  ): Promise<GarbageTaskNumberDatas> {
     switch (divisionType) {
       case DivisionType.Committees:
-        return this.getDataOfCommittees(divisionId);
+        return this.getDataOfCommittees(divisionId, hasSelf);
       case DivisionType.County:
-        return this.getDataOfCounty(divisionId);
+        return this.getDataOfCounty(
+          divisionId,
+          DivisionType.Committees,
+          hasSelf
+        );
       case DivisionType.City:
-        return this.getDataOfCity(divisionId);
+        return this.getDataOfCity(divisionId, hasSelf);
       default:
         throw Error();
     }
   }
-  /** 居委会 */
-  async getDataOfCommittees(divisionId: string) {
+
+  async getDataOfDivision(divisionId: string) {
     let self = await (
       this.dataServe as StatisticalDataBufferService
     ).postDivisionStatisticNumbers([divisionId]);
+    if (self && self.length > 0) {
+      return this.convert(self[0]);
+    }
+  }
 
+  /** 居委会 */
+  async getDataOfCommittees(divisionId: string, hasSelf = true) {
+    let items = new GarbageTaskNumberDatas();
+    if (hasSelf) {
+      let self = await this.getDataOfDivision(divisionId);
+      if (self) {
+        items.push(self);
+      }
+    }
     let stations = await (
       this.dataServe as StatisticalDataBufferService
     ).postGarbageStationStatisticNumbers(divisionId);
-    let items = new GarbageTaskNumberDatas();
-    if (self && self.length > 0) {
-      let selfItem = this.convert(self[0]);
-      items.push(selfItem);
-    }
+
     for (let i = 0; i < stations.length; i++) {
       const station = stations[i];
       let item = this.convert(station);
@@ -72,15 +82,20 @@ export class GarbageTaskNumberBusiness extends BaseBusinessRefresh {
     }
     return items;
   }
+
   /** 街道 */
   async getDataOfCounty(
     divisionId: string,
-    type: DivisionType = DivisionType.Committees
+    type: DivisionType = DivisionType.Committees,
+    hasSelf = true
   ) {
-    let self = await (
-      this.dataServe as StatisticalDataBufferService
-    ).postDivisionStatisticNumbers([divisionId]);
-
+    let items = new GarbageTaskNumberDatas();
+    if (hasSelf) {
+      let self = await this.getDataOfDivision(divisionId);
+      if (self) {
+        items.push(self);
+      }
+    }
     let children = await (
       this.dataServe as StatisticalDataBufferService
     ).getAncestorDivisions(divisionId, type);
@@ -88,11 +103,7 @@ export class GarbageTaskNumberBusiness extends BaseBusinessRefresh {
     const datas = await (
       this.dataServe as StatisticalDataBufferService
     ).postDivisionStatisticNumbers(children.map((x) => x.Id));
-    let items = new GarbageTaskNumberDatas();
-    if (self && self.length > 0) {
-      let selfItem = this.convert(self[0]);
-      items.push(selfItem);
-    }
+
     for (const data of datas) {
       if (data.StationNumber <= 0) continue;
       let item = this.convert(data);
@@ -101,11 +112,11 @@ export class GarbageTaskNumberBusiness extends BaseBusinessRefresh {
     return items;
   }
   /** 行政区 */
-  getDataOfCity(divisionId: string) {
-    return this.getDataOfCounty(divisionId, DivisionType.County);
+  getDataOfCity(divisionId: string, hasSelf = true) {
+    return this.getDataOfCounty(divisionId, DivisionType.County, hasSelf);
   }
 
-  private convert(
+  convert(
     data: GarbageStationNumberStatistic | DivisionNumberStatistic
   ): GarbageTaskNumberData {
     let item = new GarbageTaskNumberData();

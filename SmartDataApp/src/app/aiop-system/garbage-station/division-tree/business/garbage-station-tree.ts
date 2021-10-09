@@ -1,4 +1,4 @@
-import { TreeService } from "../../../common/tree.service";
+import { IIsRoot, TreeService } from "../../../common/tree.service";
 import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
 import { Division } from "../../../../data-core/model/waste-regulation/division";
 import {
@@ -17,16 +17,21 @@ export class StationTreeService extends TreeService {
 
   appendGarbageStationModel(
     models: GarbageStation[],
-    getBtns?: (data) => RightButton[]
+    getBtns?: (data) => RightButton[],
+    isRoot?: IIsRoot
   ) {
-    let result = this.convertTreeNode(models, getBtns);
+    let result = this.convertTreeNode(models, getBtns, isRoot);
     this.dataSource = [...this.dataSource, ...result];
   }
 
-  appendDivisionModel(models: Division[], getBtns?: (data) => RightButton[]) {
+  appendDivisionModel(
+    models: Division[],
+    getBtns?: (data) => RightButton[],
+    isRoot?: IIsRoot
+  ) {
     this.dataSource = [
       ...this.dataSource,
-      ...this.convertTreeNode(models, getBtns),
+      ...this.convertTreeNode(models, getBtns, isRoot),
     ];
   }
   deleteDivisionModel(models: Division[]) {
@@ -54,11 +59,12 @@ export class StationTreeService extends TreeService {
 
   appendCityDivisionModel(
     models: Division[],
-    getBtns?: (data) => RightButton[]
+    getBtns?: (data) => RightButton[],
+    isRoot?: IIsRoot
   ) {
     this.dataSource = [
       ...this.dataSource,
-      ...this.convertTreeNode(models, getBtns),
+      ...this.convertTreeNode(models, getBtns, isRoot),
     ];
   }
 

@@ -268,21 +268,24 @@ export class ResourceLabelRequestService {
 export class ResourceMediumRequestService {
   constructor(private requestService: HowellAuthHttpService) {}
 
+  static default = "/assets/img/timg-pic.jpg";
+  default = "/assets/img/timg-pic.jpg";
+
   static binary() {
     return AIOPMediumPictureUrl.binary();
   }
 
   static getJPG(id: string) {
-    if (!id) return;
+    if (!id) return this.default;
     return AIOPMediumPictureUrl.getJPG(id);
   }
   static getData(id: string) {
-    if (!id) return;
+    if (!id) return this.default;
     return AIOPMediumPictureUrl.getData(id);
   }
 
   getData(id: string) {
-    if (!id) return;
+    if (!id) return this.default;
     return AIOPMediumPictureUrl.getData(id);
   }
 }

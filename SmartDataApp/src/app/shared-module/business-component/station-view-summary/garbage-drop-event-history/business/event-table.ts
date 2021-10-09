@@ -32,6 +32,7 @@ export class EventTable extends BusinessTable implements IConverter {
     values: [],
     primaryKey: "id",
     isDisplayDetailImg: true,
+    galleryTdWidth: "16%",
     eventDelegate: (event: CustomTableEvent) => {
       if (event.eventType == CustomTableEventEnum.Img) {
         const findEvent = this.findEventFn(event.data["item"].id);

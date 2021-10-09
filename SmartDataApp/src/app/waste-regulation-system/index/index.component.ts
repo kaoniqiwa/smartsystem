@@ -24,6 +24,7 @@ import {
 } from "../../shared-module/business-component/business-manage-service";
 import { EventType } from "../../data-core/model/enum";
 import { ActivatedRoute } from "@angular/router";
+import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 
 @Component({
   selector: "app-index",
@@ -42,7 +43,7 @@ export class IndexComponent implements OnInit {
   HideTitlebar: boolean = false;
   user = new SessionUser();
   userDivisionName_ = "";
-
+  GlobalStoreService = GlobalStoreService;
   @ViewChild("aMap")
   aMap: AMapComponent;
   constructor(
@@ -116,8 +117,6 @@ export class IndexComponent implements OnInit {
     this.businessService.initCardConfig();
 
     setTimeout(() => {
-      this.divisionBusinessService.divisionsId =
-        this.businessService.user.userDivision.pop().Id;
       this.divisionBusinessService.bindingEvent();
 
       if (this.businessService.illegalDropEventCardConfig) {
@@ -151,15 +150,11 @@ export class IndexComponent implements OnInit {
       );
       this.aMap.ContextMenuIllegalDropClickedEvent.subscribe((station) => {
         mapStation(station);
-        this.divisionBusinessService.illegalDrop(
-          this.divisionBusinessService.divisionsId
-        );
+        this.divisionBusinessService.illegalDrop(GlobalStoreService.divisionId);
       });
       this.aMap.ContextMenuMixedIntoClickedEvent.subscribe((station) => {
         mapStation(station);
-        this.divisionBusinessService.mixedInto(
-          this.divisionBusinessService.divisionsId
-        );
+        this.divisionBusinessService.mixedInto(GlobalStoreService.divisionId);
       });
       this.aMap.ContextMenuStationPatrolClickedEvent.subscribe((station) => {
         this.showInspectionView(station);
@@ -206,13 +201,10 @@ export class IndexComponent implements OnInit {
   showInspectionView(station?: any) {
     if (station)
       this.businessService.inspectionCard(
-        this.divisionBusinessService.divisionsId,
+        GlobalStoreService.divisionId,
         station.Id
       );
-    else
-      this.businessService.inspectionCard(
-        this.divisionBusinessService.divisionsId
-      );
+    else this.businessService.inspectionCard(GlobalStoreService.divisionId);
     this.divisionBusinessService.inspectionView = true;
     this.divisionBusinessService.bindingEvent2();
     const show = () => {

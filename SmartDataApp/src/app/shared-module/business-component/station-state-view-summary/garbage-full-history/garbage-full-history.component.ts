@@ -19,6 +19,7 @@ import { Camera } from "../../../../data-core/model/waste-regulation/camera";
 import { HWVideoService } from "../../../../data-core/dao/video-dao";
 import { GetVodUrlParams } from "../../../../data-core/model/aiop/video-url";
 import { PlayVideo } from "../../../../aiop-system/common/play-video";
+import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 @Component({
   selector: "hw-garbage-full-history",
   templateUrl: "./garbage-full-history.component.html",
@@ -100,7 +101,6 @@ export class GarbageFullHistoryComponent implements OnInit {
     private tableService: EventTableService,
     private navService: SideNavService,
     private videoService: HWVideoService,
-    private divisionBusinessService: DivisionBusinessService,
     private router: Router
   ) {}
 
@@ -122,13 +122,9 @@ export class GarbageFullHistoryComponent implements OnInit {
       this.tableMinusHeight = "calc(100% - 20px)";
       this.tableSearchHeight = "calc(100% - 64px)";
       this.tableService.fillMode = new FillMode();
-      this.tableService.fillMode.divisionId =
-        this.divisionBusinessService.divisionsId;
+      this.tableService.fillMode.divisionId = GlobalStoreService.divisionId;
 
-      if (this.divisionBusinessService.divisionsId) {
-        this.tableService.search.divisionId =
-          this.divisionBusinessService.divisionsId;
-      }
+      this.tableService.search.divisionId = GlobalStoreService.divisionId;
     }
 
     this.tableService.garbageStations =
@@ -175,10 +171,8 @@ export class GarbageFullHistoryComponent implements OnInit {
   moreSearch() {
     this.tableService.search.other = !this.tableService.search.other;
     setTimeout(() => {
-      if (this.levelListPanel && this.divisionBusinessService.divisionsId)
-        this.levelListPanel.defaultItem(
-          this.divisionBusinessService.divisionsId
-        );
+      if (this.levelListPanel)
+        this.levelListPanel.defaultItem(GlobalStoreService.divisionId);
     }, 500);
   }
 

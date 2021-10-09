@@ -53,6 +53,7 @@ import { Language } from "../../../common/tool/language";
 import { GarbageTaskNumberCardComponent } from "src/app/shared-module/card-component/garbage-task-number-card/garbage-task-number-card.component";
 import { GarbageStationSummaryViewPage } from "src/app/shared-module/business-component/station-view-summary/view-helper";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
+import { TableContentType } from "src/app/shared-module/business-component/station-view-summary/garbage-drop-event-history/garbage-drop-event-history.component";
 
 class DivisionBusinessServiceSelected {
   GarbageStation?: GarbageStation;
@@ -66,6 +67,8 @@ export class DivisionBusinessService {
   galleryRollPage: BusinessViewComponetConstructor;
   childrenDivisionIds: string[];
   aMap: AMapComponent;
+  GarbageDropEventHistoryContentType = TableContentType.event;
+  GarbageDropTaskDivisionId = "";
   /**区划 */
   illegalDropMode: FillMode;
   mixedIntoMode: FillMode;
@@ -84,7 +87,7 @@ export class DivisionBusinessService {
   /**更正区划id 视图显示当前 */
   nspectionParam: (val: string) => void;
   stationCameraStateTable: CameraStateTableEnum;
-  divisionsId = "";
+  //divisionsId = "";
   /** 统计页面默认搜索图表 */
   illegalDropChartDefault = new EventEmitter<any>();
   /**事件卡片 参数记录 */
@@ -166,7 +169,7 @@ export class DivisionBusinessService {
       this.resetDropDivisionType(val.type);
       // param.map.set('divisionsIds', [val.id]);
       this.nspectionParam(val.id);
-      this.divisionsId = val.id;
+      // this.divisionsId = val.id;
       if (this.aMap) {
         this.aMap.VillageSelect(val.id, true);
       }
@@ -278,9 +281,9 @@ export class DivisionBusinessService {
   bindingEventStateScaleCardComponent(view: StateScaleCardComponent) {
     view.btnControl = (item: { tag: CameraStateTableEnum }) => {
       this.stationCameraStateTable = item.tag;
-      if (this.user.userDivision && this.user.userDivision.length > 0) {
-        this.divisionsId = GlobalStoreService.divisionId; // this.user.userDivision[0].Id;
-      }
+      // if (this.user.userDivision && this.user.userDivision.length > 0) {
+      //   this.divisionsId = GlobalStoreService.divisionId; // this.user.userDivision[0].Id;
+      // }
       this.stationCameraView = true;
       this.eventHistoryView = true;
     };
@@ -350,8 +353,10 @@ export class DivisionBusinessService {
         this.GarbageDropEventHistoryTimeout = item.args.timeout;
         this.GarbageDropEventHistoryHandle = item.args.handle;
       }
-      this.divisionsId = item.id;
+      debugger;
+      this.GarbageDropTaskDivisionId = item.id;
       this.GarbageStationSummaryPageIndex = GarbageStationSummaryViewPage.event;
+      this.GarbageDropEventHistoryContentType = TableContentType.task;
       this.stationListView = true;
       this.eventHistoryView = true;
     };
@@ -511,7 +516,7 @@ export class DivisionBusinessService {
     this.GarbageDropEventHistoryHandle = undefined;
     this.GarbageDropEventHistoryTimeout = undefined;
     this.GarbageStationSummaryPageIndex = undefined;
-    this.divisionsId = undefined;
+    // this.divisionsId = undefined;
     this.mixedIntoMode = null;
     this.illegalDropMode = null;
     this.fullStationsView = false;
@@ -520,6 +525,7 @@ export class DivisionBusinessService {
     this.stationCameraView = false;
     this.vsClassStatistic = false;
     this.stationStrandedView = false;
+    this.GarbageDropEventHistoryContentType = TableContentType.event;
   }
 
   openStationStranded(station: GarbageStation) {

@@ -4,6 +4,7 @@ import { BusinessEventTypeEnum } from "../business-event-type";
 import { DivisionBusinessService } from "../../../../waste-regulation-system/index/business-card-grid/division-business.service";
 import { sanitizeScript } from "@angular/core/src/sanitization/sanitization";
 import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
+import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 @Component({
   selector: "hw-illegal-drop-event-summary",
   templateUrl: "./illegal-drop-event-summary.component.html",
@@ -72,7 +73,7 @@ export class IllegalDropEventSummaryComponent implements OnInit {
     if (val == OtherViewEnum.chart && this.defaultSearch == false)
       setTimeout(() => {
         this.divisionBusinessService.illegalDropChartDefault.emit(
-          this.divisionBusinessService.divisionsId
+          GlobalStoreService.divisionId
         );
 
         this.defaultSearch = true;

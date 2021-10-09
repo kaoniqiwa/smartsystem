@@ -12,7 +12,7 @@ import {
 } from "../../../../../data-core/model/waste-regulation/garbage-drop-event-record";
 import { SearchControl } from "../../../event-history/search";
 import { PlayVideo } from "../../../../../aiop-system/common/play-video";
-import { GalleryTargetViewI } from "../business/gallery-target";
+import { GalleryTargetViewI } from "./gallery-target";
 import { Page } from "../../../../../data-core/model/page";
 import { ImageEventEnum } from "../../../../gallery-target/gallery-target";
 import { EventTable, GarbageDropEventsRecord } from "./event-table";
@@ -21,7 +21,15 @@ import { DivisionListView } from "../../../event-history/division-list-view";
 import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
 import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
-import { EventType } from "src/app/data-core/model/enum";
+import { DivisionType, EventType } from "src/app/data-core/model/enum";
+import {
+  GarbageStationNumberStatisticBusinessData,
+  TaskStationTable,
+} from "./task-table";
+import { StatisticalDataBufferService } from "src/app/waste-regulation-system/index/business-card-grid/buffer/statistical-data-buffer";
+import { GarbageTaskNumberBusiness } from "src/app/waste-regulation-system/index/business-card-grid/business/garbage-task-number/garbage-task-number.business";
+import { GlobalStoreService } from "src/app/shared-module/global-store.service";
+import { GarbageTaskNumberDatas } from "src/app/waste-regulation-system/index/business-card-grid/business/garbage-task-number/garbage-task-number-data";
 @Injectable()
 export class GarbageDropEventHistoryBusinessService {
   playVideo: PlayVideo;
@@ -52,7 +60,10 @@ export class GarbageDropEventHistoryBusinessService {
   get dataSource() {
     return this.dataSource_;
   }
-  table = new EventTable(this.datePipe);
+  eventTable = new EventTable(this.datePipe);
+  taskTable = new TaskStationTable(this.datePipe);
+  taskDivisionId: string;
+  taskBusiness: GarbageTaskNumberBusiness;
 
   playVideoFn = async (id: string) => {
     // const idV = id.split('&');
@@ -65,9 +76,17 @@ export class GarbageDropEventHistoryBusinessService {
   divisionListView = new DivisionListView();
   constructor(
     private datePipe: DatePipe,
-    private eventRequestService: EventRequestService
+    private eventRequestService: EventRequestService,
+    private statisticalService: StatisticalDataBufferService
   ) {
-    this.table.findDivisionFn = (id) => {
+    this.taskBusiness = new GarbageTaskNumberBusiness(statisticalService);
+    this.taskTable.getGarbageStation = (stationId) => {
+      return this.stations.find((x) => x.Id == stationId);
+    };
+    this.taskTable.getDivision = (divisionId) => {
+      return this.divisions.find((x) => x.Id == divisionId);
+    };
+    this.eventTable.findDivisionFn = (id) => {
       return this.divisions.find((d) => d.Id == id);
     };
 
@@ -112,11 +131,11 @@ export class GarbageDropEventHistoryBusinessService {
         };
       }
     };
-    this.table.findEventFn = (id) => {
+    this.eventTable.findEventFn = (id) => {
       return this.dataSource.find((x) => x.EventId == id);
     };
 
-    this.table.initGalleryTargetFn = (eventId, cameras, index) => {
+    this.eventTable.initGalleryTargetFn = (eventId, cameras, index) => {
       this.galleryTargetView.initGalleryTargetI(
         eventId,
         cameras as Array<HWCameraImageUrl>,
@@ -124,8 +143,8 @@ export class GarbageDropEventHistoryBusinessService {
       );
     };
 
-    this.table.playVideoFn = (id) => {
-      const event = this.table.findEventFn(id);
+    this.eventTable.playVideoFn = (id) => {
+      const event = this.eventTable.findEventFn(id);
       this.videoImgs = new Array();
       this.playVideoViewTitle = event.Data.StationName;
       event.Data.DropImageUrls.map((m) => {
@@ -151,7 +170,7 @@ export class GarbageDropEventHistoryBusinessService {
     };
   }
 
-  async requestData(
+  async requestEventData(
     pageIndex: number,
     param?: {
       handle?: boolean;
@@ -174,12 +193,23 @@ export class GarbageDropEventHistoryBusinessService {
     data.items = response.Data.sort((a, b) => {
       return "".naturalCompare(a.EventTime, b.EventTime);
     });
-    this.table.clearItems();
+    this.eventTable.clearItems();
     this.dataSource = new Array();
-    this.table.Convert(data, this.table.dataSource);
-    this.table.totalCount = response.Page.TotalRecordCount;
+    this.eventTable.Convert(data, this.eventTable.dataSource);
+    this.eventTable.totalCount = response.Page.TotalRecordCount;
     this.dataSource = response.Data;
     if (callBack) callBack(response.Page);
+  }
+
+  async requestData(
+    pageIndex: number,
+    param?: {
+      handle?: boolean;
+      timeout?: boolean;
+    },
+    callBack?: (page: Page) => void
+  ) {
+    this.requestEventData(pageIndex, param, callBack);
   }
 
   getRequsetParam(pageIndex: number, search: SearchControl) {
@@ -218,5 +248,33 @@ export class GarbageDropEventHistoryBusinessService {
       }
     }
     return param;
+  }
+
+  async requestTaskData() {
+    debugger;
+    let divisionId = this.taskDivisionId || GlobalStoreService.divisionId;
+    let divisionType = GlobalStoreService.divisionType;
+    try {
+      divisionType = this.divisions.find(
+        (x) => x.Id === divisionId
+      ).DivisionType;
+    } catch {}
+    let datas = await this.taskBusiness.getData(
+      divisionId,
+      divisionType,
+      false
+    );
+
+    let source = new GarbageStationNumberStatisticBusinessData();
+    source.items = datas;
+    this.taskTable.Convert(source, this.taskTable.dataSource);
+
+    let data = await this.taskBusiness.getDataOfDivision(divisionId);
+    let field = this.taskTable.toTableModel(data);
+    this.taskTable.dataCount.total = field.total;
+    this.taskTable.dataCount.timeout = field.timeout;
+    this.taskTable.dataCount.unhandle = field.unhandle;
+    this.taskTable.dataCount.ratio = field.ratio;
+    this.taskTable.dataCount.name = data.Name;
   }
 }

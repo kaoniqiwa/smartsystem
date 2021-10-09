@@ -122,14 +122,20 @@
         </ng-container>
         <ng-container *ngIf="divisionBusinessService.fullStationsView">
           <hw-full-garbage-station-summary
-            [divisionsId]="divisionBusinessService.divisionsId"
+            [divisionsId]="GlobalStoreService.divisionId"
             [GarbageStation]="divisionBusinessService.selected.GarbageStation"
           ></hw-full-garbage-station-summary>
         </ng-container>
         <ng-container *ngIf="divisionBusinessService.stationListView">
           <hw-garbage-station-summary
-            [divisionsId]="divisionBusinessService.divisionsId"
+            [divisionsId]="GlobalStoreService.divisionId"
             [PageIndex]="divisionBusinessService.GarbageStationSummaryPageIndex"
+            [GarbageDropEventHistoryContentType]="
+              divisionBusinessService.GarbageDropEventHistoryContentType
+            "
+            [GarbageDropTaskDivisionId]="
+              divisionBusinessService.GarbageDropTaskDivisionId
+            "
             (garbageStationMoveToPosition)="
               divisionBusinessService.moveToByGarbageStation($event)
             "
@@ -143,7 +149,7 @@
         </ng-container>
         <ng-container *ngIf="divisionBusinessService.stationCameraView">
           <hw-garbage-station-cameras
-            [divisionsId]="divisionBusinessService.divisionsId"
+            [divisionsId]="GlobalStoreService.divisionId"
             [cameraStateTable]="divisionBusinessService.stationCameraStateTable"
           ></hw-garbage-station-cameras>
         </ng-container>
