@@ -162,8 +162,6 @@ export class TreeService extends ListAttribute {
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       if (node.id == item.parentId) {
-        items.splice(i, 1);
-        i--;
         const node_ = new TreeNode();
         node_.name = item.name;
         node_.checked = false;
@@ -193,8 +191,6 @@ export class TreeService extends ListAttribute {
         root ||
         ((!item.parentId || item.type == NodeTypeEnum.root) && item.type)
       ) {
-        items.splice(i, 1);
-        i--;
         const node = new TreeNode();
         node.data = item.data;
         node.name = item.name;

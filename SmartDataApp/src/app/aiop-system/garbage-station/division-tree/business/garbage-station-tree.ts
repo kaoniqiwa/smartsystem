@@ -1,4 +1,8 @@
-import { IIsRoot, TreeService } from "../../../common/tree.service";
+import {
+  IIsRoot,
+  NodeTypeEnum,
+  TreeService,
+} from "../../../common/tree.service";
 import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
 import { Division } from "../../../../data-core/model/waste-regulation/division";
 import {

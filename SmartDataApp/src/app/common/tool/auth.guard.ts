@@ -24,7 +24,6 @@ export class AuthGuard implements CanActivate {
   }
 
   checkLogin(url: string): true | UrlTree {
-    debugger;
     if (url.indexOf("Auth") > -1) return true;
     const user = new SessionUser(),
       digestAuth = sessionStorage.getItem("WWW-Authenticate");

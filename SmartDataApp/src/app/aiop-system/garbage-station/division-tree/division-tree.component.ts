@@ -101,6 +101,7 @@ export class DivisionTreeComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    debugger;
     this.divisions = await this._divisionTreeService.requestDivision();
     console.log("区划信息", this.divisions);
 
