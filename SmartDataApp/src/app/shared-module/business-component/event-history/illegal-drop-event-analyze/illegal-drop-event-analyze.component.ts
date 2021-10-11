@@ -91,6 +91,7 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
       station = "投放点",
     }
     this.businessService.changeClassType((ct: string) => {
+      debugger;
       //this.dropList.onlyDivisionNode = dn;
       if (ct == ClassTypeEnum.County) this.dropList.onlyCityNode = true;
       else if (ct == ClassTypeEnum.Committees) {
@@ -120,6 +121,7 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
   }
 
   search() {
+    debugger;
     const ids = new Array<string>();
     this.dropList.selectedTexts.map((x) => ids.push(x.id));
 

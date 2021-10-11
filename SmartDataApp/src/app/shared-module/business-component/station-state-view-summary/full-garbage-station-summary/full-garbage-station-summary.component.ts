@@ -9,7 +9,7 @@ export class FullGarbageStationSummaryComponent implements OnInit {
   viewsShow = [true, false];
   @Input() divisionsId = "";
   @Input() GarbageStation?: GarbageStation;
-  constructor() {}
+  constructor(private divisionBusinessService: DivisionBusinessService) {}
 
   ngOnInit() {}
   acceptOtherView(val: OtherViewEnum) {

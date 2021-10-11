@@ -210,7 +210,7 @@ export class GarbageDropEventHistoryBusinessService {
     callBack?: (page: Page) => void
   ) {
     this.requestEventData(pageIndex, param, callBack);
-    debugger;
+
     this.requestTaskData();
   }
 
@@ -253,8 +253,6 @@ export class GarbageDropEventHistoryBusinessService {
   }
 
   async requestTaskData() {
-    debugger;
-
     let divisionId = this.taskDivisionId || GlobalStoreService.divisionId;
 
     if (this.search.state === true) {

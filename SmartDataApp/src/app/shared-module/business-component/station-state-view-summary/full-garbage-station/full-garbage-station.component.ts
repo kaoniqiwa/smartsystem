@@ -43,6 +43,7 @@ export class FullGarbageStationComponent implements OnInit {
     videoService: HWVideoService,
     private businessService: BusinessService
   ) {
+    debugger;
     this.businessService.videoService = videoService;
   }
 

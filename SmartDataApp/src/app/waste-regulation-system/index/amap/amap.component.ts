@@ -156,7 +156,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     this.stationVisibilityByLabel = val;
     if (this.garbages) {
       this.garbages.forEach((x) => {
-        this.client.Point.SetVisibility(x.Id, true);
+        this.client.Point.SetVisibility(x.Id, val);
       });
     }
   }
@@ -166,7 +166,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
   maskLayerShow = false;
   selectedCameras: Camera[];
   garbages: GarbageStation[];
-  notDropGarbageStation: GarbageStation[] = [];
+  dropGarbageStation: GarbageStation[] = [];
   private selectedVillageId?: string;
   showVideoWindow = false;
   selectedGarbageStation?: GarbageStation;
@@ -272,15 +272,13 @@ export class AMapComponent implements AfterViewInit, OnInit {
       }
     }
 
-    let notDropIds = list.Data.filter((x) => {
-      return x.CurrentGarbageTime === 0;
+    let dropIds = list.Data.filter((x) => {
+      return x.CurrentGarbageTime > 0;
     }).map((x) => {
       return x.Id;
     });
 
-    this.notDropGarbageStation = stations.filter((x) =>
-      notDropIds.includes(x.Id)
-    );
+    this.dropGarbageStation = stations.filter((x) => dropIds.includes(x.Id));
 
     const opts = new Array();
     for (let i = 0; i < list.Data.length; i++) {
@@ -288,8 +286,6 @@ export class AMapComponent implements AfterViewInit, OnInit {
       const station = stations.find((x) => x.Id == data.Id);
 
       if (data.CurrentGarbageTime > 0) {
-        if (notDropIds.includes(station.Id)) {
-        }
         let point = this.points[data.Id];
         if (!point) {
           point = this.client.DataController.Village.Point.Get(
@@ -638,17 +634,15 @@ export class AMapComponent implements AfterViewInit, OnInit {
       pointId: string,
       value: boolean
     ) => {
-      if (this.stationVisibilityByLabel === false) {
+      if (this.stationVisibilityByLabel == false) {
         try {
-          let station = this.notDropGarbageStation.find(
-            (x) => x.Id === pointId
-          );
+          let station = this.dropGarbageStation.find((x) => x.Id === pointId);
           if (!station) return;
         } catch (ex) {
           return;
         }
-        if (value === true) {
-          this.client.Point.SetVisibility(pointId, false);
+        if (value === false) {
+          this.client.Point.SetVisibility(pointId, true);
         }
       }
     };
