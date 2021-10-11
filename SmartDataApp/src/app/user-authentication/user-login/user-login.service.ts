@@ -13,6 +13,7 @@ import { Router } from "@angular/router";
 import { Base64 } from "../../common/tool/base64";
 import { User, UserResourceRole } from "src/app/data-core/model/page";
 import { EnumHelper } from "src/app/common/tool/enum-helper";
+import { UserResourceType } from "src/app/data-core/model/enum";
 @Injectable()
 export class UserLoginService {
   sessionUser: SessionUser;
@@ -137,6 +138,12 @@ export class UserLoginService {
                 result.Role[0].UserData === 1
               ) {
                 this.router.navigateByUrl("system-mode");
+              } else if (
+                result.Resources &&
+                result.Resources.length > 0 &&
+                result.Resources[0].ResourceType === UserResourceType.Committees
+              ) {
+                this.router.navigateByUrl("waste-regulation-committees");
               } else {
                 this.router.navigateByUrl("waste-regulation");
               }

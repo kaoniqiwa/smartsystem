@@ -8,6 +8,7 @@ import { domClickFn } from "../../../../../common/tool/jquery-help/jquery-help";
 import { GarbageStationDao } from "../../../../../data-core/dao/garbage-station-dao";
 import { DivisionDao } from "../../../../../data-core/dao/division-dao";
 import { DivisionType } from "../../../../../data-core/model/enum";
+import { Division } from "src/app/data-core/model/waste-regulation/division";
 @Component({
   selector: "hw-tree-drop-list",
   templateUrl: "./tree-drop-list.component.html",
@@ -39,12 +40,17 @@ export class TreeDropListComponent implements OnInit {
   selectedItemClick = (item: FlatNode) => {
     this.selectedTexts = new Array();
     for (let key of this.garbageStationTree.flatNodeMap.keys()) {
+      let item = this.garbageStationTree.flatNodeMap.get(key);
       if (
         key.checked &&
         key.level != 0 &&
         this.stationTreeService.isLastNode(key.id)
       ) {
-        if (this.onlyCityNode) {
+        console.log(item);
+        if (
+          this.onlyCityNode &&
+          (item.data as Division).DivisionType === DivisionType.City
+        ) {
           this.selectedTexts.push({
             id: key.id,
             text: key.name,
@@ -124,7 +130,7 @@ export class TreeDropListComponent implements OnInit {
     this.garbageStationTree.itemClick(node);
   }
 
-  r() {
+  clear() {
     this.garbageStationTree.clearNestedNode();
     this.stationTreeService.treeNode = new Array();
     this.garbageStationTree.dataSource.data = new Array();
@@ -136,12 +142,14 @@ export class TreeDropListComponent implements OnInit {
       this.dataService.divisions = await this.divisionDao.allDivisions();
     if (this.onlyCityNode) {
       let divisions = this.dataService.divisions.filter(
-        (x) => x.DivisionType >= DivisionType.City
+        (x) =>
+          x.DivisionType >= DivisionType.City &&
+          x.DivisionType <= DivisionType.County
       );
       this.stationTreeService.appendCityDivisionModel(divisions);
 
       const nodes = this.stationTreeService.convertTreeNode(
-        this.dataService.divisions,
+        divisions,
         undefined,
         { divisionType: DivisionType.City }
       );

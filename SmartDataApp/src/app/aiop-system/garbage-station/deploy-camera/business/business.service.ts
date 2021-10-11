@@ -12,7 +12,6 @@ import { Camera as StationCamera } from "../../../../data-core/model/waste-regul
 import { MessageBar } from "../../../../common/tool/message-bar";
 import { House } from "../../station-chart/business/station-chart";
 import { CameraUsageData, CanType } from "../../../../data-core/model/enum";
-import { DateTime } from "src/app/data-core/model/date-time";
 @Injectable()
 export class BusinessService {
   bindItem: FlatNode;

@@ -22,6 +22,7 @@ import { DivisionDao } from "../../../../data-core/dao/division-dao";
 import { HowellCSV } from "../../../../common/tool/hw-excel-js/hw-csv";
 import { TITLEKEY, COLNAME } from "../../../../common/tool/hw-excel-js/data";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
+import { DivisionType } from "src/app/data-core/model/enum";
 @Component({
   selector: "hw-illegal-drop-event-analyze",
   templateUrl: "./illegal-drop-event-analyze.component.html",
@@ -91,10 +92,11 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
       station = "投放点",
     }
     this.businessService.changeClassType((ct: string) => {
-      debugger;
       //this.dropList.onlyDivisionNode = dn;
-      if (ct == ClassTypeEnum.County) this.dropList.onlyCityNode = true;
-      else if (ct == ClassTypeEnum.Committees) {
+      if (ct == ClassTypeEnum.County) {
+        this.dropList.onlyCityNode = true;
+        this.dropList.onlyDivisionNode = true;
+      } else if (ct == ClassTypeEnum.Committees) {
         this.dropList.onlyDivisionNode = true;
         this.dropList.onlyCityNode = false;
       } else if (ct == ClassTypeEnum.Station) {
@@ -102,7 +104,7 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
         this.dropList.onlyCityNode = false;
       }
       this.classText = ClassTextEnum[ct];
-      this.dropList.r();
+      this.dropList.clear();
       this.dropList.reInit();
     });
   }
@@ -121,10 +123,9 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
   }
 
   search() {
-    debugger;
-    const ids = new Array<string>();
-    this.dropList.selectedTexts.map((x) => ids.push(x.id));
-
+    //const ids = new Array<string>();
+    //this.dropList.selectedTexts.map((x) => ids.push(x.id));
+    const ids = this.dropList.selectedTexts.map((x) => x.id);
     if (ids.length <= this.businessService.maxObjects && ids.length > 0) {
       this.businessService.toDivisionIdsOrStationIds(ids);
       this.businessService.requestData(this.dropList.selectedTexts);

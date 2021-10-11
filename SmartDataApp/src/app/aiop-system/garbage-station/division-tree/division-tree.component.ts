@@ -198,6 +198,7 @@ export class DivisionTreeComponent implements OnInit {
    *  pmx 2021-08-18
    */
   searchHandler(searctText: string) {
+    debugger;
     console.log(searctText);
     this.searctText = searctText;
     const nodeType = this.onlyDivisionNode

@@ -67,7 +67,7 @@ export class BusinessService extends ListAttribute {
   ) {
     super();
     this.oneDivisionNode = this.cityOption;
-    this.divisionNode = !this.cityOption;
+    this.divisionNode = this.cityOption;
   }
 
   toDivisionIdsOrStationIds(ids: string[]) {
@@ -231,7 +231,7 @@ export class BusinessService extends ListAttribute {
         fillGroupEventData = (
           event: IllegalDropEventRecord | MixedIntoEventRecord
         ) => {
-          if (cityDivisionNode && onlyDivision == false) {
+          if (cityDivisionNode && onlyDivision) {
             const committees = this.divisions.find(
                 (d) => d.Id == event.Data.DivisionId
               ),
