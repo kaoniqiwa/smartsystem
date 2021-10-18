@@ -357,7 +357,7 @@ export class DivisionBusinessService {
       }
       this.GarbageDropTaskDivisionId = item.id;
       this.GarbageStationSummaryPageIndex = GarbageStationSummaryViewPage.event;
-      this.GarbageDropEventHistoryContentType = TableContentType.task;
+      this.GarbageDropEventHistoryContentType = TableContentType.event;
       this.stationListView = true;
       this.eventHistoryView = true;
     };
