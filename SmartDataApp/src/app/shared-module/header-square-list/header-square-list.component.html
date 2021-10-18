@@ -1,22 +1,24 @@
 <ng-container *ngIf="model">
   <div class="fill-width fill-height">
     <div class="edges2-wrapper m-b-5">
-      <div class="left-border"></div>
-      <div class="right-border"></div>
-      <a
-        class="hw-link-underline sky-blue-text2"
-        title="选择{{ model.headerView.label }}"
-        (click)="
-          itemClick(model.headerView.id, model.headerView.type);
-          $event.stopPropagation()
-        "
-        href="javascript:"
-      >
-        <h2 class="light-blue-text m-l-30 m-b-0" style="line-height: 2.5">
-          <i class="howell-icon-map5 m-r-10 sky-blue-text"></i>
-          {{ model.headerView.label }}
-        </h2>
-      </a>
+      <!-- <div class="left-border"></div>
+      <div class="right-border"></div> -->
+      <div class="inner">
+        <a
+          class="hw-link-underline sky-blue-text2"
+          title="选择{{ model.headerView.label }}"
+          (click)="
+            itemClick(model.headerView.id, model.headerView.type);
+            $event.stopPropagation()
+          "
+          href="javascript:"
+        >
+          <h2 class="light-blue-text m-l-30 m-b-0" style="line-height: 2.5">
+            <i class="howell-icon-map5 m-r-10 sky-blue-text"></i>
+            {{ model.headerView.label }}
+          </h2>
+        </a>
+      </div>
     </div>
     <div
       fxLayout="row wrap "
@@ -28,7 +30,7 @@
       "
     >
       <ng-container *ngFor="let item of model.bodyView">
-        <a
+        <div
           class="
             edges2-wrapper
             small-size
@@ -38,20 +40,21 @@
           "
           title="选择{{ item.label }}"
           (click)="itemClick(item.id, item.type); $event.stopPropagation()"
-          href="javascript:void(0)"
           [class.selected]="selectedId == item.id"
         >
-          <div class="left-border"></div>
-          <div class="right-border"></div>
-          <h4
-            class="m-b-0"
-            style="margin-top: 12px; cursor: pointer"
-            [class.text-white]="selectedId == item.id"
-            [class.light-blue-text]="selectedId != item.id"
-          >
-            {{ item.label | TxtLen: 6 }}
-          </h4>
-        </a>
+          <div class="inner">
+            <!-- <div class="left-border"></div>
+          <div class="right-border"></div> -->
+            <h4
+              class="m-b-0"
+              style="margin-top: 12px; cursor: pointer"
+              [class.text-white]="selectedId == item.id"
+              [class.light-blue-text]="selectedId != item.id"
+            >
+              {{ item.label | TxtLen: 6 }}
+            </h4>
+          </div>
+        </div>
       </ng-container>
     </div>
   </div>
