@@ -16,7 +16,8 @@
         >
           <i class="mdi mdi-menu-down"></i>
         </button>
-        <ng-container *ngIf="mode == listMode.checkedBox && node.level != 0">
+        <!-- <ng-container *ngIf="mode == listMode.checkedBox && node.level != 0"> -->
+        <ng-container *ngIf="mode == listMode.checkedBox">
           <div class="ckbox" style="margin-top: 6px">
             <i
               class="howell-icon-Check"

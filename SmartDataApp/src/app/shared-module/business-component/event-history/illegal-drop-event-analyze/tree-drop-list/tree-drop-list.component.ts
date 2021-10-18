@@ -28,8 +28,15 @@ export class TreeDropListComponent implements OnInit {
   @ViewChild("garbageStationTree")
   garbageStationTree: CustomTreeComponent;
 
+  private _onlyDivisionNode: boolean = false;
+  public get onlyDivisionNode(): boolean {
+    return this._onlyDivisionNode;
+  }
+
   @Input()
-  onlyDivisionNode = false;
+  public set onlyDivisionNode(v: boolean) {
+    this._onlyDivisionNode = v;
+  }
 
   @Input()
   onlyCityNode = false;
@@ -43,7 +50,7 @@ export class TreeDropListComponent implements OnInit {
       let item = this.garbageStationTree.flatNodeMap.get(key);
       if (
         key.checked &&
-        key.level != 0 &&
+        // key.level != 0 &&
         this.stationTreeService.isLastNode(key.id)
       ) {
         console.log(item);
@@ -56,7 +63,8 @@ export class TreeDropListComponent implements OnInit {
             text: key.name,
           });
         }
-        if (!this.onlyDivisionNode && key.iconClass == "howell-icon-garbage")
+        // if (!this.onlyDivisionNode && key.iconClass == "howell-icon-garbage")
+        if (!this.onlyDivisionNode)
           this.selectedTexts.push({
             id: key.id,
             text: key.name,
@@ -159,29 +167,36 @@ export class TreeDropListComponent implements OnInit {
         (x) => x.ParentId == void 0 || x.IsLeaf == false
       );
       // this.stationTreeService.divisions.items = new Array();
-      this.stationTreeService.appendDivisionModel(
-        this.dataService.divisions.filter(
-          (x) => x.DivisionType >= DivisionType.County
-        ),
-        undefined,
-        { divisionType: DivisionType.County }
-      );
+      // this.stationTreeService.appendDivisionModel(
+      //   this.dataService.divisions.filter(
+      //     (x) => x.DivisionType >= DivisionType.County
+      //   ),
+      //   undefined,
+      //   { divisionType: DivisionType.County }
+      // );
       if (this.onlyDivisionNode) {
         const nodes = this.stationTreeService.convertTreeNode(
           this.dataService.divisions,
           undefined,
-          { divisionType: DivisionType.County }
+          { divisionType: ancestorDivision.DivisionType }
         );
         this.stationTreeService.dataSource = nodes;
       } else {
-        if (ancestorDivision && this.dataService.garbageStations.length == 0)
+        if (ancestorDivision && this.dataService.garbageStations.length == 0) {
           this.dataService.garbageStations =
             await this.garbageStationDao.requestGarbageStation(
               ancestorDivision.Id
             );
+        }
         this.stationTreeService.appendGarbageStationModel(
           this.dataService.garbageStations
         );
+        const nodes = this.stationTreeService.convertTreeNode(
+          this.dataService.garbageStations,
+          undefined,
+          { is: true }
+        );
+        this.stationTreeService.dataSource = nodes;
       }
     }
 

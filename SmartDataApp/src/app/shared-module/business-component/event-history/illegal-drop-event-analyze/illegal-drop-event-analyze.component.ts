@@ -23,6 +23,7 @@ import { HowellCSV } from "../../../../common/tool/hw-excel-js/hw-csv";
 import { TITLEKEY, COLNAME } from "../../../../common/tool/hw-excel-js/data";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 import { DivisionType } from "src/app/data-core/model/enum";
+import { TreeListMode } from "src/app/shared-module/custom-tree/custom-tree";
 @Component({
   selector: "hw-illegal-drop-event-analyze",
   templateUrl: "./illegal-drop-event-analyze.component.html",
@@ -92,17 +93,39 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
       station = "投放点",
     }
     this.businessService.changeClassType((ct: string) => {
-      //this.dropList.onlyDivisionNode = dn;
-      if (ct == ClassTypeEnum.County) {
-        this.dropList.onlyCityNode = true;
-        this.dropList.onlyDivisionNode = true;
-      } else if (ct == ClassTypeEnum.Committees) {
-        this.dropList.onlyDivisionNode = true;
-        this.dropList.onlyCityNode = false;
-      } else if (ct == ClassTypeEnum.Station) {
-        this.dropList.onlyDivisionNode = false;
-        this.dropList.onlyCityNode = false;
+      ////this.dropList.onlyDivisionNode = dn;
+      // if (ct == ClassTypeEnum.County) {
+      //   this.dropList.onlyCityNode = true;
+      //   this.dropList.onlyDivisionNode = true;
+      //   this.dropList.treeListMode = TreeListMode.checkedBox;
+      // } else if (ct == ClassTypeEnum.Committees) {
+      //   this.dropList.onlyDivisionNode = true;
+      //   this.dropList.onlyCityNode = false;
+      //   this.dropList.treeListMode = TreeListMode.checkedBox;
+      // } else if (ct == ClassTypeEnum.Station) {
+      //   this.dropList.onlyDivisionNode = false;
+      //   this.dropList.onlyCityNode = false;
+      //   this.dropList.treeListMode = TreeListMode.nomal;
+      // }
+
+      switch (ct) {
+        case ClassTypeEnum.County:
+          this.dropList.onlyCityNode = true;
+          this.dropList.onlyDivisionNode = true;
+          break;
+        case ClassTypeEnum.Committees:
+          this.dropList.onlyDivisionNode = true;
+          this.dropList.onlyCityNode = false;
+          break;
+        case ClassTypeEnum.Station:
+          this.dropList.onlyDivisionNode = false;
+          this.dropList.onlyCityNode = false;
+          break;
+
+        default:
+          break;
       }
+
       this.classText = ClassTextEnum[ct];
       this.dropList.clear();
       this.dropList.reInit();

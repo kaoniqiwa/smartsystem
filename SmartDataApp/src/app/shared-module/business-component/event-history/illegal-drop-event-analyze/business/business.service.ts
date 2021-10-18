@@ -52,7 +52,7 @@ export class BusinessService extends ListAttribute {
     minView: 2,
     formate: "yyyy-mm-dd",
   };
-  divisionNode = false;
+  divisionNode = true;
   oneDivisionNode = false;
   reportType = "";
   dataSources: Map<string, EventNumberStatistic[]>;
@@ -67,7 +67,6 @@ export class BusinessService extends ListAttribute {
   ) {
     super();
     this.oneDivisionNode = this.cityOption;
-    this.divisionNode = this.cityOption;
   }
 
   toDivisionIdsOrStationIds(ids: string[]) {

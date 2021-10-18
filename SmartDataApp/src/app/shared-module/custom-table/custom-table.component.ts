@@ -18,7 +18,7 @@ import {
 @Component({
   selector: "hw-custom-table",
   templateUrl: "./custom-table.component.html",
-  styleUrls: ["./custom-table.component.styl"],
+  styleUrls: ["./custom-table.component.css"],
 })
 export class CustomTableComponent implements OnInit {
   // @ViewChild('customTable', { read: InfiniteScrollDirective })
