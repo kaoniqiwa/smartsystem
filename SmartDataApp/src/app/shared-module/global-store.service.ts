@@ -1,7 +1,8 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { EnumHelper } from "../common/tool/enum-helper";
 import { SessionUser } from "../common/tool/session-user";
-import { DivisionType } from "../data-core/model/enum";
+import { DivisionType, UserResourceType } from "../data-core/model/enum";
+import { User } from "../data-core/model/page";
 
 @Injectable({
   providedIn: "root",
@@ -26,6 +27,14 @@ export class GlobalStoreService {
   }
   get divisionType() {
     return this._divisionType;
+  }
+
+  private _resourceType: UserResourceType;
+  public get resourceType(): UserResourceType {
+    return this._resourceType;
+  }
+  public set resourceType(v: UserResourceType) {
+    this._resourceType = v;
   }
 
   constructor() {
@@ -58,5 +67,22 @@ export class GlobalStoreService {
   }
   public static set divisionType(val: DivisionType) {
     this._divisionType = val;
+  }
+
+  public static get user(): SessionUser {
+    return new SessionUser();
+  }
+
+  static interval = new EventEmitter();
+
+  private static intervalHandle: NodeJS.Timer;
+
+  static runInterval(interval: number = 1000 * 60 * 1) {
+    this.intervalHandle = setInterval(() => {
+      this.interval.emit();
+    }, interval);
+  }
+  static stopInterval() {
+    clearInterval(this.intervalHandle);
   }
 }

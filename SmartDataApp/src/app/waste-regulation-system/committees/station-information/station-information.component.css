@@ -1,0 +1,17 @@
+.information {
+  font-size: 24px;
+}
+
+.information .header {
+  font-size: 24px;
+  color: white
+}
+
+.information .content>div {
+  display: flex;
+}
+
+.information .content .title {
+  text-align: right;
+  width: 96px;
+}

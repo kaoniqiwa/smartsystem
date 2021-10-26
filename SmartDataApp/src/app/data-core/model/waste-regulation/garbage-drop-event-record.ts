@@ -1,26 +1,29 @@
 import { Transform } from "class-transformer";
 import { transformDate } from "../transformer";
 import { EventRecord, CameraImageUrl } from "./event-record";
+import "reflect-metadata";
 export class GarbageDropEventRecord extends EventRecord {
   /**事件数据 */
-  Data: GarbageDropEventData;
+  Data!: GarbageDropEventData;
 }
 
 // export class GarbageFullEventData {
 export class GarbageDropEventData {
-  StationId: string; //	垃圾房ID
-  StationName: string; //	垃圾房名称
-  DivisionId: string; //区划ID
-  DivisionName: string; //区划名称
-  GridCellId: string; //	网格单元ID
-  GridCellName: string; //	网格单元名称
-  DropTime: Date | string; //落地时间
-  HandleTime: Date | string; //处置时间
-  IsHandle: boolean; //小包垃圾落地是否已处置
-  IsTimeout: boolean; //是否超时
-  DropImageUrls: CameraImageUrl[]; //	垃圾落地的图片ID、图片地址列表
-  HandleImageUrls: CameraImageUrl[]; //	垃圾处置的图片ID、图片地址列表
-  TimeoutImageUrls: CameraImageUrl[]; //超时未处置的图片ID、图片地址列表
+  StationId!: string; //	垃圾房ID
+  StationName!: string; //	垃圾房名称
+  DivisionId?: string; //区划ID
+  DivisionName?: string; //区划名称
+  GridCellId?: string; //	网格单元ID
+  GridCellName?: string; //	网格单元名称
+  @Transform(transformDate)
+  DropTime!: Date; //落地时间
+  @Transform(transformDate)
+  HandleTime?: Date; //处置时间
+  IsHandle!: boolean; //小包垃圾落地是否已处置
+  IsTimeout!: boolean; //是否超时
+  DropImageUrls?: CameraImageUrl[]; //	垃圾落地的图片ID、图片地址列表
+  HandleImageUrls?: CameraImageUrl[]; //	垃圾处置的图片ID、图片地址列表
+  TimeoutImageUrls?: CameraImageUrl[]; //超时未处置的图片ID、图片地址列表
   /**	Boolean	处置人员是否已处置	O */
   Processed?: boolean;
   /**	String	处置人员名称	O */

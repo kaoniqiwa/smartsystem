@@ -84,13 +84,7 @@ export class EventTableService extends ListAttribute {
     time: Date | string;
   }>;
   /**视频下载列表 */
-  videoDownLoad: {
-    name: string;
-    stationId: string;
-    cameraId: string;
-    state: boolean;
-    eventId: string;
-  }[];
+  videoDownLoad: VideoDownLoadInfo[];
   playVideoFn: (id: string) => void;
   constructor(
     private eventRequestService: EventRequestService,
@@ -224,11 +218,18 @@ export class EventTableService extends ListAttribute {
           stationId: station.Id,
           cameraId: u.CameraId,
           name: u.CameraName,
-          state: true,
+          state: this.videoDownLoad.length === 0,
           eventId: event.EventId,
         });
       });
     }
+  }
+
+  videoItemClicked(item: VideoDownLoadInfo) {
+    this.videoDownLoad.forEach((x) => {
+      x.state = false;
+    });
+    item.state = true;
   }
 
   videoListDownload() {
@@ -467,4 +468,12 @@ export class FillMode {
   set pageListMode(val: any) {
     sessionStorage.setItem(this.sessionTag, val + "");
   }
+}
+
+interface VideoDownLoadInfo {
+  name: string;
+  stationId: string;
+  cameraId: string;
+  state: boolean;
+  eventId: string;
 }

@@ -1,0 +1,57 @@
+.navication {
+  height: 100%;
+}
+
+.navication-item {
+  background-color: #5E6EBE;
+  background-repeat: no-repeat;
+  position: relative;
+  clip-path: polygon(15px 0%, 100% 0%, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0% 100%, 0% 15px);
+  cursor: pointer;
+  height: 47px;
+  margin-bottom: 5px;
+  font-size: 18px;
+  line-height: 47px;
+}
+
+.navication-item .inner {
+  height: 100%;
+  background-color: #060D37;
+  clip-path: polygon(16px 1.5px, calc(100% - 1.5px) 1.5px, calc(100% - 1.5px) calc(100% - 16px), calc(100% - 16px) calc(100% - 1.5px), 1.5px calc(100% - 1.5px), 1.5px 16px);
+  display: flow-root;
+  padding-left: 30px;
+}
+
+.navication-item.main {
+  height: 60px;
+  line-height: 60px;
+  font-size: 30px;
+}
+
+.navication-item.selected .inner .text,
+.navication-item.selected:hover .inner .text {
+  color: white;
+}
+
+.navication-item:hover .text {
+  color: #6997ff;
+  text-decoration: #6997ff underline;
+}
+
+.navication-item.selected {
+  background-color: #69aefe;
+}
+
+
+.navication-item.selected .inner {
+  background-color: #235fa4b2;
+}
+
+.navication-item.small-size.selected .inner {
+  background-color: #235fa4;
+}
+
+.stations {
+  height: calc(100% - 60px);
+  overflow-y: auto;
+}

@@ -9,7 +9,7 @@ import { PlayVideo } from "../../../../../aiop-system/common/play-video";
 import { GalleryTargetViewI } from "../../../station-state-view-summary/full-garbage-station/business/gallery-target";
 import { TheDayTime } from "../../../../../common/tool/tool.service";
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
-import { EventRequestService } from "../../../../../data-core/repuest/garbage-drop-event-record";
+import { GarbageDropEventRequestService } from "../../../../../data-core/repuest/garbage-drop-event-record";
 import { GarbageDropEventRecord } from "../../../../../data-core/model/waste-regulation/garbage-drop-event-record";
 import { ImageEventEnum } from "../../../../gallery-target/gallery-target";
 import { ListAttribute } from "../../../../../common/tool/table-form-helper";

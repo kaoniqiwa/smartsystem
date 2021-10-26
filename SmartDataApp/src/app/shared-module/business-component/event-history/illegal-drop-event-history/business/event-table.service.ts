@@ -17,7 +17,7 @@ import {
 } from "../../../../../common/tool/table-form-helper";
 import { DatePipe } from "@angular/common";
 import { DivisionRequestService } from "../../../../../data-core/repuest/division.service";
-import { EventRequestService } from "../../../../../data-core/repuest/Illegal-drop-event-record";
+import { IllegalDropEventRequestService } from "../../../../../data-core/repuest/Illegal-drop-event-record";
 import {
   GetDivisionsParams,
   Division,
@@ -69,7 +69,7 @@ export class EventTableService extends ListAttribute {
   playVideo: PlayVideo;
   fillMode: FillMode;
   constructor(
-    private eventRequestService: EventRequestService,
+    private eventRequestService: IllegalDropEventRequestService,
     private divisionService: DivisionRequestService,
     private garbageStationService: GarbageStationRequestService,
     private resourceService: GarbageStationCameraRequestService,

@@ -1,0 +1,36 @@
+<div class="rank">
+  <div class="header">
+    <div>
+      {{ view.Title }}
+    </div>
+    <div class="light-blue-text dropdown" (click)="doTypeChange()">
+      <div>
+        {{ view.EventTypeName }}
+        <i class="mdi mdi-menu-down light-blue-text"></i>
+      </div>
+      <div class="dropdown control" *ngIf="type_display">
+        <ng-container *ngFor="let type of types; let i = index">
+          <div class="item" (click)="typeClick($event, type)">
+            {{ type.value }}
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="light-blue-text content">
+    <ng-container *ngFor="let item of view.items; let i = index">
+      <div class="rank-item">
+        <div class="left">
+          <div class="index" [ngClass]="{ top3: item.Index <= 3 }">
+            {{ item.Index }}
+          </div>
+          <div>{{ item.Name }}</div>
+        </div>
+        <div class="right sky-blue-text2">
+          <div>{{ item.value_html }}</div>
+          <div>{{ item.unit }}</div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

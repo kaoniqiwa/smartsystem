@@ -4,7 +4,7 @@ import { GarbageStation } from "../../../../../data-core/model/waste-regulation/
 import { Injectable } from "@angular/core";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
 import { TableAttribute } from "../../../../../common/tool/table-form-helper";
-import { EventRequestService } from "../../../../../data-core/repuest/garbage-drop-event-record";
+import { GarbageDropEventRequestService } from "../../../../../data-core/repuest/garbage-drop-event-record";
 import { TheDayTime } from "../../../../../common/tool/tool.service";
 import {
   GetGarbageDropEventRecordsParams,
@@ -76,7 +76,7 @@ export class GarbageDropEventHistoryBusinessService {
   divisionListView = new DivisionListView();
   constructor(
     private datePipe: DatePipe,
-    private eventRequestService: EventRequestService,
+    private eventRequestService: GarbageDropEventRequestService,
     private statisticalService: StatisticalDataBufferService
   ) {
     this.taskBusiness = new GarbageTaskNumberBusiness(statisticalService);

@@ -208,3 +208,8 @@ export enum UserResourceType {
   /** 4-行政区 */
   City = 4,
 }
+/** 统计时间单位：1-Hour，2-Day */
+export enum TimeUnit {
+  Hour = 1,
+  Day = 2,
+}

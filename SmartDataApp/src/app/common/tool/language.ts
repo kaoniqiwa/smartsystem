@@ -65,6 +65,7 @@ export class Language {
         return "";
     }
   }
+
   static GarbageDropEventType(type: EventType) {
     switch (type) {
       case EventType.GarbageDrop:
@@ -116,5 +117,27 @@ export class Language {
       case DivisionType.Committees:
         return "居委会";
     }
+  }
+
+  static Time(time: Date | number) {
+    let result = "";
+    if (typeof time === "number") {
+      const hours = parseInt((time / 60).toString());
+      const minutes = parseInt((Math.ceil(time) % 60).toString());
+
+      result = hours ? hours + "小时" : "";
+      result += minutes ? minutes + "分钟" : "";
+    } else {
+      if (time.getHours() > 0) {
+        result = `${time.getHours()}小时${result}`;
+      }
+      let minutes = time.getMinutes();
+      if (time.getSeconds() > 0) {
+        minutes++;
+      }
+      result = `${result}${minutes}分钟`;
+    }
+
+    return result;
   }
 }

@@ -11,7 +11,7 @@ import { EventRecordUrl } from "../url/waste-regulation/event";
 @Injectable({
   providedIn: "root",
 })
-export class EventRequestService {
+export class GarbageDropEventRequestService {
   constructor(private requestService: HowellAuthHttpService) {}
 
   async list(item: GetGarbageDropEventRecordsParams) {

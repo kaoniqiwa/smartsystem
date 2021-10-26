@@ -9,7 +9,7 @@ import { ServiceHelper } from "../model/waste-regulation/request-service-process
 @Injectable({
   providedIn: "root",
 })
-export class EventRequestService {
+export class MixedIntoEventRequestService {
   constructor(private requestService: HowellAuthHttpService) {}
 
   async list(item: GetEventRecordsParams) {

@@ -1,0 +1,29 @@
+.task-table {
+  height: 100%;
+
+}
+
+.task-table,
+.task-table table {
+  width: 100%
+}
+
+.task-table .content table:last-child {
+  width: calc(100% + 8px);
+  margin-right: -8px;
+}
+
+.task-table table>thead {
+  background-color: #1D275F;
+  color: white
+}
+
+.task-table table tr>td:first-child {
+  padding-left: 20px;
+}
+
+.task-table .content {
+  height: calc(100% - 26px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+}

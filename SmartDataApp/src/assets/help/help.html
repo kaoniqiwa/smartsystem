@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>生活垃圾分类监管平台用户手册</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<p><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></p>
+<div style="text-align:center;font-size:50px;">
+生活垃圾分类监管平台用户手册
+</div>
+<p><br />
+<br />
+<br />
+<br /></p>
+<p><br />
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></p>
+<div style="text-align:center;font-size:40px">Ver 2.0</div>
+<div style="text-align:center;font-size:30px">2021-10-01</div>
+<div style="text-align:center;font-size:30px">上海皓维电子股份有限公司</div>
+<p><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></p>
+<hr />
+<p><br /></p>
+<div style="font-size:35px;font-weight:bold">
+目录
+</div>
+<ul>
+<li>
+<a href="#preface">前言</a>
+<ul>
+<li><a href="#preface-1">版本需求</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#1">一、 登录平台</a></p>
+</li>
+<li>
+<p><a href="#2">二、生活垃圾分类监管平台</a></p>
+<ul>
+<li><a href="#2-1">2.1 行政区划列表</a></li>
+<li>
+<a href="#2-2">2.2 乱扔垃圾/混合投放排名</a>	
+<ul>
+<li><a href="#2-2-1">2.2.1 乱丢垃圾</a>	</li>
+<li><a href="#2-2-2">2.2.2 混合投放</a></li>
+<li><a href="#2-2-3">2.2.3 查询扩展栏</a></li>
+<li><a href="#2-2-4">2.2.4 导出功能</a></li>
+</ul>
+</li>
+<li><a href="#2-3">2.3 小包垃圾处置达标率排名</a>	</li>
+<li>
+<a href="#2-4">2.4 地图</a>	
+<ul>
+<li><a href="#2-4-1">2.4.1 垃圾投放点数量</a></li>
+<li><a href="#2-4-2">2.4.2 已满溢投放点数量</a></li>
+<li><a href="#2-4-3">2.4.3 乱丢垃圾</a></li>
+<li><a href="#2-4-4">2.4.4 混合投放垃圾</a></li>
+<li><a href="#2-4-5">2.4.5 投放点图标状态</a></li>
+<li><a href="#2-4-6">2.4.6 视频操作</a></li>
+<li><a href="#2-4-7">2.4.7 功能区</a></li>
+</ul>
+</li>
+<li><a href="#2-5">2.5 今日乱丢垃圾</a>	</li>
+<li><a href="#2-6">2.6 今日混合投放图表</a>	</li>
+<li>
+<a href="#2-7">2.7 设备运行状态图表</a>
+<ul>
+<li><a href="#2-7-1">2.7.1 全部设备数量</a></li>
+<li><a href="#2-7-2">2.7.2 在线设备数量</a></li>
+<li><a href="#2-7-3">2.7.3 离线设备数量</a></li>
+</ul>
+</li>
+<li><a href="#2-8">2.8 垃圾滞留时长排名</a>	</li>
+<li><a href="#2-9">2.9 垃圾滞留任务处置</a>			</li>
+</ul>
+</li>
+</ul>
+<hr />
+<p><br /></p>
+<div class="title level1" id="preface">前言</div><p><br /></p>
+<div class="title level2" id="preface-1">版本需求</div><p><br /></p>
+<div style="font-weight:bold">Chrome 版本：</div>
+<p>支持 5.0 及以上<br /></p>
+<div class="title level1" id="1">
+<b>一、登录平台</b>
+</div>
+<p>平台访问地址: <br/>
+<b>默认地址：http://garbage01.51hws.com/</b><br/><br/>
+<img src="img/Homepage.jpg"><br/><br/></p>
+<p><b>输入用户名和密码，登陆系统。</b>
+<br />
+<br /></p>
+<div class="title level1" id="2">
+<b>二、生活垃圾分类监管平台</b>
+</div>
+<p><b>点击进入生活垃圾分类监管平台主页；</b>
+<br/>
+<br/>
+<img src="img/StreetList.jpg" >
+ <b><strong>1.行政区划列表</strong></b><br/>
+ <b><strong>2.乱扔垃圾/混合投放排名<strong></b><br/>
+ <b></strong>3.小包垃圾处置排名</strong></b><br/>
+ <b><strong>4.地图</strong></b><br/>
+ <b><strong>5.今日乱扔垃圾图表<strong></b><br/>
+ <b></strong>6.今日混合投放图表<strong></b><br/>
+ <b><strong>7.设备运行状态图表</strong></b><br/>
+ <b></strong>8.垃圾滞留时长排名<strong></b><br/>
+ <b></strong>9.垃圾滞留任务处置</strong></b><br/></p>
+<p><br/><br/></p>
+<div class="title level2" id="2-1">
+<b>2.1 行政区划列表</b>
+</div>
+<p>用来选择行政级别，在区级行政下选择街道，在街道行政下选择居委，以五角场街道为例，下属32个居委会，通过下拉或滑动查看 <br/>
+<img src="img/StreetList1.jpg" ><br/></p>
+<p>点击国顺居委会，会显示该居委信息，地图也会自动定位到此居委相应的区域<br/>
+<img src="img/guoshun.jpg" ><br/></p>
+<p>如果行政区划为区级，显示效果如下<br/>
+<img src="img/dinghai.jpg" ><br/></p>
+<p><br/><br/></p>
+<div class="title level2" id="2-2">
+<b>2.2 乱扔垃圾/混合投放排名</b>
+</div>
+<p><img src="img/luanrenhunhe.jpg" ><br/></p>
+<div class="title level3" id="2-2-1">
+<b>2.2.1 乱丢垃圾</b>
+记录行政区划下乱扔垃圾的数量及排名，可以通过更改行政区划或者垃圾告警类型 <br/>
+在街道下查看居委会和投放点<br/>
+<img src="img/garbageranking.jpg" ><br/>
+
+在区下查看居委会和街道<br/>
+<img src="img/jiedaolaji.jpg" ><br/>
+
+在居委下只能切换乱扔和混投排名<br/>
+<img src="img/jueweiluanreng.jpg" ><br/>
+
+<div class="title level3" id="2-2-1">
+<b>2.2.2 混合投放</b>
+混合投放的示例图<br/>
+<img src="img/hunhetoufang01.jpg" ><br/><br/><br/>
+
+
+查看区划下的该类型的报警记录，包括事件，总图表，细分图表和数据比较<br/><br/>
+
+<img src="img/serchWarning.jpg" ><br/>
+<br/>
+
+
+<b>显示如下</b><br/><br/>
+
+<img src="img/Garbangeinformation.jpg" ><br/><br/>
+
+可以查看乱丢垃圾事件，总图表，细分图表和进行数据比较。
+</div>
+
+乱扔垃圾事件，可以播放视频，下载图片和下载视频，参考视频操作：[2.4.6](#2-4-6)</div>
+<p>总图表--通过选择具体时间和行政区查询日报表/周报表或月报表，并导出列表。<br/>
+<img src="img/luandiuzongtu.jpg" ><br/></p>
+<p>细分图表--以折线图或柱状图的方式展示区划内投放点的乱扔垃圾。<br/>
+<img src="img/xifentubiao.jpg" ><br/></p>
+<p>数据比较--以图表形式比对多个行政区划的乱丢垃圾数量。<br/>
+<img src="img/shujubijiao.jpg" ><br/></p>
+<div class="title level3" id="2-2-2">
+<b>2.2.2 混合投放--可以查看混合投放事件，总图表，细分图表和数据比较。</b>
+</div>
+<p><img src="img/hunhejilu.jpg" ><br/>
+<br/></p>
+<div class="title level3" id="2-2-3">
+<b>2.2.3 查询扩展栏</b>
+</div>
+<p>右上方功能栏，可以精确查询，切换信息的列表和图标，打开查询条件扩展栏<br/>
+<img src="img/rightFounction.jpg" ><br/></p>
+<p>扩展插件的条件有开始时间，结束时间，行政区，投放点和摄像机，以便更快速的查询。<br/>
+<img src="img/chuanxunkuozhan.jpg" ><br/></p>
+<p>选择开始时间和结束时间<br/>
+<img src="img/chooseshijian.jpg" ><br/></p>
+<p>选择行政区<br/>
+<img src="img/xingzhengqu.jpg" ><br/></p>
+<p>选择投放点<br/>
+<img src="img/toufangdian.jpg" ><br/></p>
+<p>选择摄像机<br/>
+<img src="img/shexiangji.jpg" ><br/></p>
+<p>切换成总图表的实图<br/>
+<img src="img/Garbagezongtu.jpg" ><br/></p>
+<p>其中功能栏可以选择日期，行政区进行精确查询，并导出数据<br/>
+<img src="img/GarbagegongNeng.jpg" ><br/></p>
+<div class="title level3" id="2-2-4">
+<b>2.2.4 导出功能</b>
+</div>
+<p>导出内容<br/>
+<img src="img/daochu.jpg" ><br/></p>
+<p>导出CSV<br/>
+<img src="img/daochuCSV.jpg" ><br/></p>
+<p><br/><br/><br/></p>
+<div class="title level2" id="2-3">
+<b>2.3 小包垃圾处置达标率排名</b>
+</div> 
+<p>图表展示该街道下处理小包垃圾处置达标率排名： <br/>
+<img src="img/Analysislitter.jpg" ><br/></p>
+<p>点击行政区以查看达标处置率事件记录，可以查看小包垃圾处置的达标率，平均落地时长，最大落地时长，总落地时长，乱丢垃圾<br/>
+下方的时间轴图表可以查看落地时间，无落地时间，投放时间段以及落地时间段的视频<br/>
+<img src="img/xiaobaoxiangxixinxi.jpg" ><br/></p>
+<p><br/><br/><br/></p>
+<div class="title level2" id="2-4">
+<b>2.4 地图</b>
+</div> 
+<p>地图上显示相应行政区划的位置信息及范围，地图上方显示垃圾投放点的数量，垃圾滞留投放点的数量，乱丢垃圾的数量和混合投放垃圾的数量。<br/></p>
+<p>左下方功能区从左至右依次为区域菜单栏，投放点巡检，小包垃圾滞留时长<br/></p>
+<p>右下方为投放点状态示例，分别是正常状态，满溢状态和异常状态。<br/></p>
+<p><img src="img/map.jpg" ><br/></p>
+<div class="title level3" id="2-4-1">
+<b>2.4.1 垃圾投放点数量</b>
+</div><p><br/>
+点击垃圾投放点数量的图标<br/>
+<img src="img/litterbox.jpg" ><br/><br/><br/></p>
+<p>显示投放点的图片，名称，街道，居委会，状态和定位<br/>
+<img src="img/litterhouse.jpg" ><br/><br/><br/></p>
+<p>点击图片，显示图片详情，点击红色框内的图标，可以下载图片和预览视频<br/><br/>
+<img src="img/litterpicture.jpg" ><br/><br/><br/></p>
+<p>预览视频页<br/><br/>
+<img src="img/videoyulan.jpg" ><br/><br/><br/></p>
+<p>投放点定位，点击后自动在地图上显示对应的投放点<br/></p>
+<p><img src="img/dingwei.jpg" ><br/></p>
+<p>定位图<br/></p>
+<p><img src="img/dingweitu.jpg" ><br/></p>
+<p>小包垃圾处置信息页，显示小包垃圾的点位名称，居委会，日期<br/>
+包括处置的达标率，平均落地时长，最大落地时长，总落地时长，以及乱丢垃圾的数量<br/>
+<img src="img/xiaobaochuzhi.jpg" ><br/></p>
+<p>小包垃圾处置点位选择<br/>
+<img src="img/xiaobaodianwei.jpg" ><br/></p>
+<p>小包垃圾处置日期选择<br/>
+<img src="img/xiaobaoshijian.jpg" ><br/></p>
+<p>小包垃圾处置图表</p>
+<div class="title level3" id="2-4-2">
+<b>2.4.2 已满溢投放点数量</b>
+</div>
+<p><img src="img/litterfull.jpg" ><br/><br/><br/></p>
+<p>单击进入垃圾房状态页<br/></p>
+<p><img src="img/litterhousestate.jpg" ><br/><br/><br/></p>
+<div class="title level3" id="2-4-3">
+<b>2.4.3 乱丢垃圾</b>
+</div>
+<p><img src="img/droplitter1.jpg" ><br/><br/><br/></p>
+<p>点击图标显示乱扔垃圾事件，乱扔垃圾图表和乱扔垃圾分析<br/></p>
+<p><img src="img/droplitterevent.jpg" ><br/><br/><br/></p>
+<p>右侧的功能栏可以实现查询，记录的平铺显示或图标显示以及添加查询条件。<br/></p>
+<p><img src="img/functionbar.jpg" ><br/><br/><br/></p>
+<p>事件以图标显示的状态<br/></p>
+<p><img src="img/iconevent.jpg" ><br/><br/><br/></p>
+<p>添加查询条件，可参考查询扩展栏：<a href="#2-2-3">2.2.3</a><br/></p>
+<p><img src="img/searchevent.jpg" ><br/><br/><br/></p>
+<div class="title level3" id="2-4-4">
+<b>2.4.4 混合投放垃圾</b>
+</div>
+<p><img src="img/blenddrop.jpg" ><br/><br/><br/></p>
+<p>单机图标后，显示混合投放事件<br/></p>
+<p><img src="img/blendevent.jpg" ><br/><br/><br/></p>
+<div class="title level3" id="2-4-5">
+<b>2.4.5 投放点图标</b>
+</div>
+<p>红色图标为 异常状态；<br/><img src="img/redpoint.png"><br/><br/>
+橙色图标为 满溢状态；<br/><img src="img/yellowpoint.png"><br/><br/>
+绿色图标为 正常状态；<br/><img src="img/greenpoint.png"><br/><br/></p>
+<p><img src="img/mappoint.jpg" ><br/>
+<br/>
+<br/></p>
+<p>右键点击图表，弹出乱扔垃圾记录，混乱投放记录，小包垃圾落地，投放点信息，投放点视频的操作<br/>
+<img src="img/tubiaocaozuo.jpg" ><br/>
+<br/></p>
+<p>乱扔垃圾记录截图，参考乱丢垃圾：<a href="#2-4-3">2.4.3</a><br/>
+<img src="img/luanrengjilu2.jpg" ><br/></p>
+<p>混合投放记录截图，参考混合投放：<a href="#2-4-4">2.4.4</a><br/>
+<img src="img/luanrengjilu2.jpg" ><br/></p>
+<p>小包垃圾垃圾落地截图：<a href="#2-3">2.3</a><br/>
+<img src="img/xiaobaolaji2.jpg" ><br/></p>
+<p>投放点信息显示投放点名称，街道名称，居委会名称，投放点地址，投放点评分并可以查看垃圾滞留投放点信息，乱丢垃圾事件记录，混合投放事件记录。<br/>
+<img src="img/toufangdian2.jpg" ><br/></p>
+<p>投放点视频，参考视频操作：<a href="#2-4-6">2.4.6</a><br/>
+<img src="img/toufangdianshipin2.jpg" ><br/>
+<br/>
+<br/></p>
+<div class="title level3" id="2-4-6">
+<b>2.4.6 视频操作</b>
+</div>
+<p>双击图标，显示厢房下的摄像机<br/></p>
+<p><img src="img/litterhousecamera.jpg" ><br/>
+<br/>
+<br/></p>
+<p>放大看视频<br/></p>
+<p><img src="img/housecameravideo.jpg" ><br/>
+<br/></p>
+<p>摄像机名称<br/>
+<img src="img/mapcameraname.jpg" ><br/></p>
+<p>预览和回放按钮<br/>
+<img src="img/previewAndback.jpg" ><br/></p>
+<p>点击切换成回放模式<br/>
+<img src="img/revirew.jpg" ><br/></p>
+<p>日期选项<br/>
+<img src="img/mapCameradate.jpg" ><br/></p>
+<p>选择开始时间<br/>
+<img src="img/mapCamerastartTime.jpg" ><br/></p>
+<p>选择结束时间<br/>
+<img src="img/mapCameraendTime.jpg" ><br/></p>
+<p>点击开始回放<br/>
+<img src="img/reviewVideo.jpg" ><br/></p>
+<p>下载视频<br/>
+<img src="img/downvideo.jpg" ><br/>
+<br/></p>
+<p>视频下方进度条<br/>
+从左至右依次为，开始暂停键，慢放，快进，单帧进，退30秒，进30秒，时间进度条，音量，目标，截图，全频。<br/>
+<img src="img/shijianjindu.jpg" ><br/></p>
+<div class="title level3" id="2-4-7">
+<b>2.4.7 功能区</b>
+</div>
+<p>地图上行政区划区域菜单栏/投放点巡检/小包垃圾滞留时长<br/>
+<img src="img/choosehouse.jpg" ><br/>
+<br/>
+<br/></p>
+<p>点开区域菜单栏，查看垃圾厢房，尾部有搜索功能<br/>
+<img src="img/quyumaue.jpg" ><br/></p>
+<p>投放巡检点<br/>
+<img src="img/toufangxunjian.jpg" ><br/></p>
+<p>单击投放巡检点，出现视频框<br/>
+<img src="img/toufangmap.jpg" ><br/></p>
+<p>投放点名称<br/>
+<img src="img/xunjianmingcheng.jpg" ><br/></p>
+<p>点击30S按钮，出现下拉菜单，切换60S/90S，可以让投放点每隔30S/60S/90S自动翻页，<br/>
+<img src="img/ShuaxinTime.jpg" ><br/></p>
+<p>此三个功能键分别是刷新页面/全频/关闭<br/>
+<img src="img/mapGongneng.jpg" ><br/></p>
+<p>分页视频的暂停/全屏按钮<br/>
+<img src="img/Quatervideo.jpg" ><br/></p>
+<p>分页视频的全频状态，可暂停/取消全屏<br/>
+<img src="img/VideoquanPin.jpg" ><br/></p>
+<p>查看乱扔垃圾/混合投放/垃圾桶状态<br/>
+<img src="img/toufangdianxinxi.jpg" ><br/></p>
+<p>垃圾桶异常状态<br/>
+<img src="img/yichang.jpg" ><br/></p>
+<p>后退/播放（暂停）/前进按钮<br/>
+<img src="img/houtuiqianjin.jpg" ><br/></p>
+<p>当前页/总页数<br/>
+<img src="img/dangqian.jpg" ><br/></p>
+<p>单击小包垃圾滞留时长，会显示小包垃圾滞留的点位和时长，如下图：<br/>
+<img src="img/xiaobaozhiliu.jpg" ><br/></p>
+<p>切换只显示小包滞留点位<br/>
+<img src="img/onlyxiaobao.jpg" ><br/></p>
+<p><br/>
+<br/></p>
+<div class="title level2" id="2-5">
+<b>2.5 今日乱丢垃圾</b>
+</div> 
+<p>图表显示当日时间段内乱丢垃圾的数量<br/>
+<br/><br/>
+<img src="img/litterbidui.jpg" ><br/></p>
+<p><br/><br/></p>
+<div class="title level2" id="2-6">
+<b>2.6 今日混合投放图表</b>
+</div> 
+<p>图表显示当日各个时间段内混合投放的垃圾数量<br/><br/>
+<img src="img/dailylitter.jpg" ><br/>
+<br/><br/></p>
+<div class="title level2" id="2-7">
+<b>2.7 设备运行状态图表</b>
+</div> 
+<p>此图显示对应行政区划内系统设备在线比，全部设备数量，在线设备数量和离线设备数量，并且可以点击查看详细信息<br/><br/>
+<img src="img/device.jpg" ><br/>
+<br/><br/></p>
+<div class="title level3" id="2-7-1">
+<b>2.7.1 全部设备数量</b>
+</div>
+<p>单击全部设备数量图标<br/>
+<img src="img/totaldevice.jpg" ><br/><br/><br/></p>
+<p>显示设备列表<br/>
+<img src="img/totalcamera.jpg" >
+<br/>
+<br/></p>
+<div class="title level3" id="2-7-2">
+<b>2.7.2 在线设备数量</b>
+</div>
+<p>单击在线设备数量图标<br/>
+<img src="img/online.jpg" ><br/><br/></p>
+<p>显示设备列表<br/>
+<img src="img/onlinecamera.jpg" >
+<br/>
+<br/></p>
+<div class="title level3" id="2-7-3">
+<b>2.7.3 离线设备数量</b>
+</div>
+<p>单击离线设备数量图标<br/>
+<img src="img/offline.jpg" ><br/><br/><br/></p>
+<p>显示设备列表<br/>
+<img src="img/offlinecamera.jpg" >
+<br/>
+<br/></p>
+<div class="title level2" id="2-8">
+<b>2.8 垃圾滞留时长排名</b>
+</div> 
+<p>查看对应区划内的垃圾滞留时长排名或垃圾滞留数量排名，并且可以查看行政区划下滞留垃圾的详细信息<br/>
+<img src="img/Droplitterevent2.jpg" ><br/></p>
+<p>点击四平居委会，进入详情页，查看四平居委会下滞留垃圾的图片，投放点名称，街道名称，居委会名称，垃圾堆数，滞留事件，总滞留时长和人员信息。<br/>
+<img src="img/paimingxiangqing.jpg" ><br/></p>
+<p>垃圾滞留数量排名<br/></p>
+<p><img src="img/leavecount.jpg" ><br/><br/><br/></p>
+<p>点击区划查看垃圾滞留投放点的图片，投放点名称，街道名称，居委会名称，垃圾堆数，滞留时间，总滞留时长和人员信息。<br/></p>
+<p><img src="img/zhiliutoufangdian.jpg" ><br/></p>
+<p>点击图片查看大图，并可下载图片<br/>
+<img src="img/zhiliudiandatu.jpg" ><br/><br/></p>
+<div class="title level2" id="2-9">
+<b>2.9 垃圾滞留任务处置</b>
+</div> 
+<p>下图显示对应区划的垃圾处置情况，处置率的百分比，全部任务，未完成任务，超时处置的数量，并会自动刷新下属区划的数据信息<br/><br/>
+<img src="img/proportionlitter.jpg" ><br/><br/><br/></p>
+<p>点击全部任务，显示该行政区划下的垃圾滞留的事件<br/>
+图片显示事件的图片，投放点名称，街道名称，居委会名称，落地时间，处置时间，处置员信息，状态以及操作。<br/>
+右上角的功能区可输入关键字进行精确查询，详细操作可参照右下角功能区可以翻页和跳转至所需事件页。
+具体操作参考：<a href="#2-2-3">2.2.3</a>
+<img src="img/quanburenwu.jpg" ><br/></p>
+<p>点击未完成任务，查看相应的视频<br/>
+<img src="img/shijianshipin.jpg" ><br/></p>
+<p>点击视频按钮，播放视频，可查看30s的对应视频<br/>
+<img src="img/shipinye.jpg" ><br/></p>
+<p>点击超时处置，查看对应信息<br/>
+<img src="img/chaoshishijian.jpg" ><br/></p>
+<hr />
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

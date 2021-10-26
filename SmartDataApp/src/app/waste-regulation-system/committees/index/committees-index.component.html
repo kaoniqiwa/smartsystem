@@ -1,0 +1,67 @@
+<div class="waste-container">
+  <div class="waste-header">
+    <app-toolbar [Committees]="Committees"></app-toolbar>
+  </div>
+  <div class="waste-body">
+    <div class="waste-body__item waste-body__item--none">
+      <div class="waste-body__wrapper">
+        <app-committees-navication
+          [Committees]="Committees"
+          [Stations]="GarbageStations"
+          (OnStationClicked)="OnStationClicked($event)"
+          OnCommitteesClicked=""
+        ></app-committees-navication>
+      </div>
+    </div>
+    <div class="waste-body__item waste-body__item--video">
+      <div class="waste-body__wrapper"></div>
+    </div>
+    <div class="waste-body__item">
+      <div class="waste-body__wrapper padding">
+        <app-record-rank
+          [Committees]="Committees"
+          [Types]="RecordRankEventBussiness.Types"
+          [Type]="RecordRankEventBussiness.Type"
+          [Converter]="RecordRankEventBussiness.Converter"
+        ></app-record-rank>
+      </div>
+    </div>
+    <div class="waste-body__item">
+      <div class="waste-body__wrapper padding">
+        <app-station-information
+          [Station]="GarbageStationSelected"
+        ></app-station-information>
+      </div>
+    </div>
+    <div class="waste-body__item">
+      <div class="waste-body__wrapper padding">
+        <app-record-rank
+          [Committees]="Committees"
+          [Types]="RecordRankDropBussiness.Types"
+          [Type]="RecordRankDropBussiness.Type"
+          [Converter]="RecordRankDropBussiness.Converter"
+        ></app-record-rank>
+      </div>
+    </div>
+    <div class="waste-body__item">
+      <div class="waste-body__wrapper padding">
+        <app-committees-statistic
+          [Committees]="Committees"
+        ></app-committees-statistic>
+      </div>
+    </div>
+    <div class="waste-body__item">
+      <div class="waste-body__wrapper padding">
+        <app-task-table [Committees]="Committees"></app-task-table>
+      </div>
+    </div>
+    <div class="waste-body__item">
+      <div class="waste-body__wrapper padding">
+        <app-histroy-table
+          [Committees]="Committees"
+          [Type]="CommitteesHistroyTableBussiness.Type"
+        ></app-histroy-table>
+      </div>
+    </div>
+  </div>
+</div>

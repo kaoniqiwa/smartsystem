@@ -16,7 +16,7 @@ import {
 } from "../../../../../common/tool/table-form-helper";
 import { DatePipe } from "@angular/common";
 import { DivisionRequestService } from "../../../../../data-core/repuest/division.service";
-import { EventRequestService } from "../../../../../data-core/repuest/mixed-into-event-record";
+import { MixedIntoEventRequestService } from "../../../../../data-core/repuest/mixed-into-event-record";
 import {
   GetDivisionsParams,
   Division,
@@ -73,13 +73,7 @@ export class EventTableService extends ListAttribute {
   }>;
   fillMode: FillMode;
   /**视频下载列表 */
-  videoDownLoad: {
-    name: string;
-    stationId: string;
-    cameraId: string;
-    state: boolean;
-    eventId: string;
-  }[];
+  videoDownLoad: VideoDownLoadInfo[];
   playVideoToUrlFn: (
     id: string,
     time: Date | string,
@@ -87,7 +81,7 @@ export class EventTableService extends ListAttribute {
   ) => void;
   videoFilesFn: (id: string) => void;
   constructor(
-    private eventRequestService: EventRequestService,
+    private eventRequestService: MixedIntoEventRequestService,
     private divisionService: DivisionRequestService,
     private garbageStationService: GarbageStationRequestService,
     private resourceService: GarbageStationCameraRequestService,
@@ -203,7 +197,7 @@ export class EventTableService extends ListAttribute {
       stationId: station.Id,
       cameraId: event.ResourceId,
       name: event.ResourceName,
-      state: true,
+      state: this.videoDownLoad.length === 0,
       eventId: id,
     });
     station.Cameras.map((m) => {
@@ -212,29 +206,37 @@ export class EventTableService extends ListAttribute {
           stationId: station.Id,
           cameraId: m.Id,
           name: m.Name,
-          state: true,
+          state: this.videoDownLoad.length === 0,
           eventId: id,
         });
       }
     });
   }
 
+  videoItemClicked(item: VideoDownLoadInfo) {
+    this.videoDownLoad.forEach((x) => {
+      x.state = false;
+    });
+    item.state = true;
+  }
+
   videoListDownload() {
     const user = new SessionUser();
-    this.videoDownLoad.map((v) => {
+    this.videoDownLoad.forEach((v) => {
       if (v.state) {
-        const event = this.eventTable.findEventFn(v.eventId),
-          s = DateInterval(
-            event.EventTime + "",
-            user.video.beforeInterval
-          ).toISOString(),
-          e = DateInterval(
-            event.EventTime + "",
-            user.video.afterInterval
-          ).toISOString();
+        const event = this.eventTable.findEventFn(v.eventId);
+        const start = DateInterval(
+          event.EventTime + "",
+          user.video.beforeInterval
+        ).toISOString();
+        const end = DateInterval(
+          event.EventTime + "",
+          user.video.afterInterval
+        ).toISOString();
         MessageBar.response_success("正在下载中...");
         this.garbageStationService
-          .cameraFileUrl(event.Data.StationId, event.ResourceId, s, e)
+          // .cameraFileUrl(event.Data.StationId, event.ResourceId, s, e)
+          .cameraFileUrl(v.stationId, v.cameraId, start, end)
           .then((video) => {
             const a = document.createElement("a");
             a.href = video.Url;
@@ -408,4 +410,12 @@ export class FillMode {
   set pageListMode(val: any) {
     sessionStorage.setItem(this.sessionTag, val + "");
   }
+}
+
+interface VideoDownLoadInfo {
+  name: string;
+  stationId: string;
+  cameraId: string;
+  state: boolean;
+  eventId: string;
 }

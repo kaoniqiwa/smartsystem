@@ -10,7 +10,7 @@ import { EventRecordUrl } from "../url/waste-regulation/event";
 @Injectable({
   providedIn: "root",
 })
-export class EventRequestService {
+export class IllegalDropEventRequestService {
   constructor(private requestService: HowellAuthHttpService) {}
 
   async list(item: GetEventRecordsParams) {

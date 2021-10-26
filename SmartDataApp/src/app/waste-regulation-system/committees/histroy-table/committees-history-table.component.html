@@ -1,0 +1,52 @@
+<div class="history-table">
+  <div class="table">
+    <div class="header">
+      <table>
+        <thead>
+          <tr>
+            <td [ngStyle]="{ width: headWidths[0] }">#</td>
+            <td [ngStyle]="{ width: headWidths[1] }">投放点</td>
+            <td [ngStyle]="{ width: headWidths[2] }">时间</td>
+            <td [ngStyle]="{ width: headWidths[3] }">操作</td>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="content">
+      <table>
+        <tbody class="light-blue-text">
+          <ng-container *ngFor="let item of views; let i = index">
+            <tr>
+              <td [ngStyle]="{ width: bodyWidths[0] }">{{ item.Index }}</td>
+              <td [ngStyle]="{ width: bodyWidths[1] }">
+                {{ item.StationName }}
+              </td>
+              <td [ngStyle]="{ width: bodyWidths[2] }">{{ item.Time }}</td>
+              <td
+                class="operate sky-blue-text2"
+                [ngStyle]="{ width: bodyWidths[3] }"
+              >
+                <div><i class="mdi mdi-image-area"></i></div>
+                <div><i class="howell-icon-video"></i></div>
+              </td>
+              <td></td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="filter">
+    <div class="button selected">
+      <div class="background _1"></div>
+      <div class="background _2"></div>
+      <div class="text">乱丢垃圾</div>
+    </div>
+    <div class="button">
+      <div class="background _1"></div>
+      <div class="background _2"></div>
+
+      <div class="text">混合投放</div>
+    </div>
+  </div>
+</div>

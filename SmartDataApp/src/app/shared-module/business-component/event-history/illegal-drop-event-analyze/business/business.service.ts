@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { DivisionRequestService } from "../../../../../data-core/repuest/division.service";
 import { GarbageStationRequestService } from "../../../../../data-core/repuest/garbage-station.service";
-import { EventRequestService as IllegalDropEventService } from "../../../../../data-core/repuest/Illegal-drop-event-record";
-import { EventRequestService as MixedIntoEventService } from "../../../../../data-core/repuest/mixed-into-event-record";
+import { IllegalDropEventRequestService as IllegalDropEventService } from "../../../../../data-core/repuest/Illegal-drop-event-record";
+import { MixedIntoEventRequestService as MixedIntoEventService } from "../../../../../data-core/repuest/mixed-into-event-record";
 import {
   EventNumberStatistic,
   GetDivisionEventNumbersParams,

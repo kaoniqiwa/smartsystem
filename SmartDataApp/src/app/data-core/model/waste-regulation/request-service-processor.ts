@@ -34,7 +34,9 @@ export class ServiceHelper {
     predicate: (t: T) => boolean
   ): T | undefined {
     let paged = this.cache.get<PagedList<T>>(key);
-    return paged.Data.find((x) => predicate(x));
+    if (paged) {
+      return paged.Data.find((x) => predicate(x));
+    }
   }
 
   static ResponseProcess<T>(

@@ -2363,3 +2363,19 @@ a .howell-icon-flip-vertical:before {
 .howell-icon-phone:before {
     content: "\f346";
 }
+
+.howell-icon-garbage-target-on:before {
+    content: "\f347";
+}
+
+.howell-icon-garbage-target-off:before {
+    content: "\f348";
+}
+
+.howell-icon-telephone:before {
+    content: "\f349";
+}
+
+.howell-icon-point:before {
+    content: "\f350";
+}

@@ -28,7 +28,7 @@ import {
   GarbageStation,
   GetGarbageStationsParams,
 } from "../../../../data-core/model/waste-regulation/garbage-station";
-import { EventRequestService } from "../../../../data-core/repuest/Illegal-drop-event-record";
+import { IllegalDropEventRequestService } from "../../../../data-core/repuest/Illegal-drop-event-record";
 import { GetEventRecordsParams } from "../../../../data-core/model/waste-regulation/illegal-drop-event-record";
 import { DivisionType } from "src/app/data-core/model/enum";
 
@@ -52,7 +52,7 @@ export class StatisticalDataBufferService
   constructor(
     private divisionService: DivisionRequestService,
     private garbageStationService: GarbageStationRequestService,
-    private eventRequestService: EventRequestService
+    private eventRequestService: IllegalDropEventRequestService
   ) {
     super();
   }

@@ -21,7 +21,7 @@ export class UserToolComponent implements AfterViewInit {
   }
 
   logOut() {
-    this.sessionUser.clear = true;
+    this.sessionUser.clear();
     window.location.href = "/login";
   }
 }

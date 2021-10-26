@@ -1,7 +1,7 @@
 import { DatePipe } from "@angular/common";
 import { Injectable } from "@angular/core";
 import { GarbageStationRequestService } from "../../../../../data-core/repuest/garbage-station.service";
-import { EventRequestService } from "../../../../../data-core/repuest/Illegal-drop-event-record";
+import { IllegalDropEventRequestService } from "../../../../../data-core/repuest/Illegal-drop-event-record";
 import {
   TheDayTime,
   Decimal,
@@ -152,7 +152,7 @@ export class EventChartService extends ListAttribute {
   };
   constructor(
     private datePipe: DatePipe,
-    private eventRequestService: EventRequestService,
+    private eventRequestService: IllegalDropEventRequestService,
     private stationRequestService: GarbageStationRequestService
   ) {
     super();

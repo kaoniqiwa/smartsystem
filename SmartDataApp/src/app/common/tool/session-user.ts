@@ -118,7 +118,7 @@ export class SessionUser {
     return n ? n.split(",") : new Array();
   }
 
-  set clear(yes: boolean) {
+  clear() {
     localStorage.removeItem("memoryPwd");
     localStorage.removeItem("autoLogin");
     localStorage.removeItem("name");

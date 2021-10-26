@@ -1,0 +1,81 @@
+.rank {
+  width: 100%;
+  height: 100%;
+}
+
+.rank .header {
+  font-size: 24px;
+  color: white;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rank .header .dropdown {
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.rank .content {
+  overflow-y: auto;
+  font-size: 18px;
+  width: calc(100% + 20px);
+  padding-right: 20px;
+  height: calc(100% - 44px);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+.rank .content .rank-item {
+  display: flex;
+  justify-content: space-between;
+  height: 32px;
+}
+
+.rank .content .rank-item>div {
+  display: flex;
+}
+
+.rank .content .rank-item>div .index {
+  width: 34px;
+  height: 22px;
+  background-color: rgb(127, 148, 255);
+  border-radius: 4px;
+  align-items: center;
+
+  text-align: center;
+  line-height: 24px;
+  color: #0b1c32;
+  font-weight: bold;
+  margin-right: 16px;
+}
+
+.rank .content .rank-item>div .index.top3 {
+  background: rgb(243, 141, 31);
+}
+
+.rank .header .dropdown.control {
+  border: 1px solid #5e6ebf;
+  background: #0c1127;
+  position: absolute;
+  z-index: 30;
+  width: calc(100% + 10px);
+
+  margin-left: -10px;
+}
+
+.rank .header .dropdown.control .item {
+  font-size: 16px;
+  height: 30px;
+  cursor: pointer;
+  line-height: 26px;
+  padding: 2px 10px;
+}
+
+.rank .header .dropdown.control .item:hover {
+  background-color: #1e90ff;
+  color: white;
+}

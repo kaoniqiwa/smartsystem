@@ -35,7 +35,7 @@ import { GarbageStation } from "../../../data-core/model/waste-regulation/garbag
 import { GetEventRecordsParams } from "../../../data-core/model/waste-regulation/illegal-drop-event-record";
 import { TheDayTime } from "../../../common/tool/tool.service";
 import { ListAttribute } from "../../../common/tool/table-form-helper";
-import { EventRequestService } from "../../../data-core/repuest/Illegal-drop-event-record";
+import { IllegalDropEventRequestService } from "../../../data-core/repuest/Illegal-drop-event-record";
 import {
   targetPosition,
   domSize,
@@ -112,7 +112,7 @@ export class DivisionBusinessService {
   constructor(
     private cameraService: AiopCameraRequestService,
     private componentService: ComponentService,
-    private eventRequestService: EventRequestService,
+    private eventRequestService: IllegalDropEventRequestService,
     private stationService: GarbageStationRequestService
   ) {
     this.eventDropCard = {

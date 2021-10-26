@@ -1,0 +1,44 @@
+.statistic {
+  height: 100%;
+  width: 100%;
+}
+
+.statistic .header {
+  font-size: 24px;
+  color: white
+}
+
+.statistic-item {
+  width: 152px;
+  height: 80px;
+  background-color: #1D275F;
+}
+
+.statistic-item>.background {
+  background: linear-gradient(to left, #7a8de6, #7a8de6) left top no-repeat, linear-gradient(to bottom, #7a8de6, #7a8de6) left top no-repeat, linear-gradient(to left, #7a8de6, #7a8de6) right top no-repeat, linear-gradient(to bottom, #7a8de6, #7a8de6) right top no-repeat, linear-gradient(to left, #7a8de6, #7a8de6) left bottom no-repeat, linear-gradient(to bottom, #7a8de6, #7a8de6) left bottom no-repeat, linear-gradient(to left, #7a8de6, #7a8de6) right bottom no-repeat, linear-gradient(to left, #7a8de6, #7a8de6) right bottom no-repeat;
+  background-size: 1px 8px, 8px 1px, 1px 8px, 8px 1px !important;
+  margin: -1px;
+
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+}
+
+
+.statistic-item>.background>.inner {
+  padding: 10px 5px 10px 5px;
+}
+
+.statistic-item>.inner>.title {}
+
+.statistic-item>.inner>.value {}
+
+.statistic .content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: calc(100% - 36px);
+}
+
+.statistic .content .row {
+  justify-content: space-around;
+}

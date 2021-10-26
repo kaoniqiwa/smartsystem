@@ -1,0 +1,43 @@
+<div class="task-table">
+  <div class="header">
+    <table>
+      <thead>
+        <tr>
+          <td [ngStyle]="{ width: headWidths[0] }">#</td>
+          <td [ngStyle]="{ width: headWidths[1] }">投放点</td>
+          <td [ngStyle]="{ width: headWidths[2] }">处置人员</td>
+          <td [ngStyle]="{ width: headWidths[3] }">时长</td>
+          <td [ngStyle]="{ width: headWidths[4] }">时间</td>
+          <td [ngStyle]="{ width: headWidths[5] }">状态</td>
+        </tr>
+      </thead>
+    </table>
+  </div>
+  <div class="content">
+    <table>
+      <tbody class="light-blue-text">
+        <ng-container *ngFor="let item of views; let i = index">
+          <tr>
+            <td [ngStyle]="{ width: bodyWidths[0] }">{{ item.Id }}</td>
+            <td [ngStyle]="{ width: bodyWidths[1] }">{{ item.StationName }}</td>
+            <td [ngStyle]="{ width: bodyWidths[2] }">{{ item.Processor }}</td>
+            <td [ngStyle]="{ width: bodyWidths[3] }">{{ item.Interval }}</td>
+            <td [ngStyle]="{ width: bodyWidths[4] }">{{ item.Time }}</td>
+            <td
+              [ngClass]="{
+                'powder-red-text': item.State == EventType.GarbageDropTimeout,
+                'green-text': item.State == EventType.GarbageDropHandle,
+                'orange-text': item.State == EventType.GarbageDrop
+              }"
+              [ngStyle]="{ width: bodyWidths[5] }"
+            >
+              <i class="howell-icon-point"></i>
+              {{ item.StateLanguage }}
+            </td>
+            <td></td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>
