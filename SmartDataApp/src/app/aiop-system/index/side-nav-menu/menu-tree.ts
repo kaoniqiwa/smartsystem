@@ -67,6 +67,10 @@ export class MenuTreeMap {
     item.an = true;
 
     item.nodes.push({
+      text: "地图布控",
+      url: "/aiop/garbage-station/map-deploy",
+    });
+    item.nodes.push({
       text: "区划管理",
       url: "/aiop/garbage-station/index",
     });
@@ -88,10 +92,6 @@ export class MenuTreeMap {
     //   text: "垃圾厢房状态",
     //   url: "/aiop/garbage-station/full-trashcan",
     // });
-    item.nodes.push({
-      text: "地图布控",
-      url: "/aiop/garbage-station/map-deploy",
-    });
 
     menuTree.push(item);
 

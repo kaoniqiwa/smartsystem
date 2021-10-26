@@ -20,12 +20,18 @@ export class GlobalStoreService {
     this._divisionId = id;
   }
   get divisionId(): string {
+    if (!this._divisionId) {
+      this._divisionId = this.user.userDivision[0].Id;
+    }
     return this._divisionId;
   }
   set divisionType(type: DivisionType) {
     this._divisionType = type;
   }
   get divisionType() {
+    if (!this._divisionType) {
+      this._divisionType = this.user.userDivisionType;
+    }
     return this._divisionType;
   }
 
@@ -39,8 +45,6 @@ export class GlobalStoreService {
 
   constructor() {
     this.user = new SessionUser();
-    this.divisionId = this.user.userDivision[0].Id;
-    this.divisionType = this.user.userDivisionType;
   }
 
   private static _divisionId?: string;

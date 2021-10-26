@@ -160,6 +160,7 @@ export class MapDeployComponent implements OnInit {
   }
 
   onTreeNodeRightLinkClicked(args: RightButtonArgs<GarbageStation>) {
+    debugger;
     this.wantBindNode = args.node;
 
     this.mapCoordinateWubdiwDataBusiness.Display = true;
@@ -167,10 +168,18 @@ export class MapDeployComponent implements OnInit {
 
     if (this.wantBindNode) {
       const point = new CesiumDataController.Point();
-      point.id = this.wantBindNode.id;
-      point.name = this.wantBindNode.name;
-      point.parentId = this.DivisionId;
-      point.villageId = this.DivisionId;
+      point.id = this.wantBindNode.data
+        ? this.wantBindNode.data.Id
+        : this.wantBindNode.id;
+      point.name = this.wantBindNode.data
+        ? this.wantBindNode.data.Name
+        : this.wantBindNode.name;
+      point.parentId = this.wantBindNode.data
+        ? this.wantBindNode.data.DivisionId
+        : this.DivisionId;
+      point.villageId = this.wantBindNode.data
+        ? this.wantBindNode.data.DivisionId
+        : this.DivisionId;
       point.type = CesiumDataController.ElementType.Camera;
       point.position.height = 18;
       this.mapCoordinateWubdiwDataBusiness.standbyPoint = point;
