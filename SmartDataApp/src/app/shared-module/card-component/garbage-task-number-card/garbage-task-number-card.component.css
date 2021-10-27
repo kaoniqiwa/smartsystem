@@ -9,8 +9,17 @@
   justify-content: space-between
 }
 
+.inner-card .title h2 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .inner-card .title .name {
   font-size: 18px;
+  max-width: 250px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
 }
 
 .inner-card .content {
