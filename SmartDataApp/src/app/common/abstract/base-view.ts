@@ -75,7 +75,14 @@ export abstract class TableComponent extends CardComponent<
 > {}
 
 export class BasisCardComponent extends CardComponent<ViewsModel<IViewModel>> {
-  model: IViewModel;
+  protected _model: IViewModel;
+  public get model(): IViewModel {
+    return this._model;
+  }
+  public set model(v: IViewModel) {
+    this._model = v;
+  }
+
   show_: boolean = true;
   initEchart: () => void;
   reSizeEchart: () => void;

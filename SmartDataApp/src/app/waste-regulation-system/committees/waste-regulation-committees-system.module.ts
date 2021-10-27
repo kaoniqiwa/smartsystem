@@ -16,6 +16,7 @@ import { CommitteesStatisticComponent } from "./statistic/committees-statistic.c
 import { TaskTableComponent } from "./task-table/task-table.component";
 import { RecordRankComponent } from "./record-rank/record-rank.component";
 import { CommitteesHistroyTableComponent } from "./histroy-table/committees-history-table.component";
+import { WindowComponent } from './window/window.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,8 @@ import { CommitteesHistroyTableComponent } from "./histroy-table/committees-hist
     RecordRankComponent,
 
     CommitteesHistroyTableComponent,
+
+    WindowComponent,
   ],
   imports: [
     CommonModule,

@@ -56,7 +56,7 @@
             </svg>
           </div>
           <h3 class="header-title m-l-20">
-            {{ businessService.logoTitle }}
+            {{ indexBusinessService.logoTitle }}
             <label class="m-b-0" style="font-size: 24px"
               >生活垃圾分类全程监管平台</label
             >
@@ -175,8 +175,10 @@
     gdRows="repeat(3, 32.2%)"
   >
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <ng-container *ngIf="businessService.divisionCardConfig">
-        <business-card-grid [cardConfig]="businessService.divisionCardConfig">
+      <ng-container *ngIf="indexBusinessService.divisionCardConfig">
+        <business-card-grid
+          [cardConfig]="indexBusinessService.divisionCardConfig"
+        >
         </business-card-grid>
       </ng-container>
     </div>
@@ -187,9 +189,11 @@
           [class.in]="!divisionBusinessService.inspectionView"
           style="height: 76px; position: absolute"
         >
-          <ng-container *ngIf="businessService.divisionGarbageSpCardConfig">
+          <ng-container
+            *ngIf="indexBusinessService.divisionGarbageSpCardConfig"
+          >
             <business-card-grid
-              [cardConfig]="businessService.divisionGarbageSpCardConfig"
+              [cardConfig]="indexBusinessService.divisionGarbageSpCardConfig"
             >
             </business-card-grid>
           </ng-container>
@@ -224,29 +228,29 @@
       </div>
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <ng-container *ngIf="businessService.devCardConfig">
-        <business-card-grid [cardConfig]="businessService.devCardConfig">
+      <ng-container *ngIf="indexBusinessService.devCardConfig">
+        <business-card-grid [cardConfig]="indexBusinessService.devCardConfig">
         </business-card-grid>
       </ng-container>
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1" id="san">
-      <ng-container *ngIf="businessService.illegalDropMixIntoRankConfig">
+      <ng-container *ngIf="indexBusinessService.illegalDropMixIntoRankConfig">
         <business-card-grid
-          [cardConfig]="businessService.illegalDropMixIntoRankConfig"
+          [cardConfig]="indexBusinessService.illegalDropMixIntoRankConfig"
         >
         </business-card-grid>
       </ng-container>
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1" id="san2">
-      <!-- <ng-container *ngIf="businessService.garbageRententionCardConfig">
+      <!-- <ng-container *ngIf="indexBusinessService.garbageRententionCardConfig">
        
         <business-card-grid
-          [cardConfig]="businessService.garbageRententionCardConfig"
+          [cardConfig]="indexBusinessService.garbageRententionCardConfig"
         >
         </business-card-grid>
       </ng-container> -->
       <app-garbage-retention-rank> </app-garbage-retention-rank>
-      <ng-container *ngIf="businessService.garbageNumberCompareCardConfig">
+      <ng-container *ngIf="indexBusinessService.garbageNumberCompareCardConfig">
         <div
           class="card-wrapper p-l-20"
           style="padding-top: 15px; border: 1px #5c6ebf solid"
@@ -265,25 +269,25 @@
           <div class="card-angle bottom-right"></div>
         </div>
       </ng-container>
-      <ng-container *ngIf="businessService.illegalDropEventCardConfig">
+      <ng-container *ngIf="indexBusinessService.illegalDropEventCardConfig">
         <business-card-grid
-          [cardConfig]="businessService.illegalDropEventCardConfig"
+          [cardConfig]="indexBusinessService.illegalDropEventCardConfig"
         >
         </business-card-grid>
       </ng-container>
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <ng-container *ngIf="businessService.garbageDisposalRankConfig">
+      <ng-container *ngIf="indexBusinessService.garbageDisposalRankConfig">
         <business-card-grid
-          [cardConfig]="businessService.garbageDisposalRankConfig"
+          [cardConfig]="indexBusinessService.garbageDisposalRankConfig"
         >
         </business-card-grid>
       </ng-container>
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <ng-container *ngIf="businessService.illegalDropHistoryCardConfig">
+      <ng-container *ngIf="indexBusinessService.illegalDropHistoryCardConfig">
         <business-card-grid
-          [cardConfig]="businessService.illegalDropHistoryCardConfig"
+          [cardConfig]="indexBusinessService.illegalDropHistoryCardConfig"
         >
         </business-card-grid>
       </ng-container>
@@ -299,16 +303,18 @@
       </div> -->
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <ng-container *ngIf="businessService.mixedIntoHistoryCardConfig">
+      <ng-container *ngIf="indexBusinessService.mixedIntoHistoryCardConfig">
         <business-card-grid
-          [cardConfig]="businessService.mixedIntoHistoryCardConfig"
+          [cardConfig]="indexBusinessService.mixedIntoHistoryCardConfig"
         >
         </business-card-grid>
       </ng-container>
     </div>
     <div gdColumn="auto / span 1" gdRow="auto / span 1">
-      <ng-container *ngIf="businessService.taskNumberCardConfig">
-        <business-card-grid [cardConfig]="businessService.taskNumberCardConfig">
+      <ng-container *ngIf="indexBusinessService.taskNumberCardConfig">
+        <business-card-grid
+          [cardConfig]="indexBusinessService.taskNumberCardConfig"
+        >
         </business-card-grid>
       </ng-container>
       <div
@@ -438,13 +444,15 @@
       left: divisionBusinessService.inspectionSize.left + 'px'
     }"
     *ngIf="
-      businessService.inspectionCardConfig &&
+      indexBusinessService.inspectionCardConfig &&
       divisionBusinessService.inspectionView
     "
   >
     <div class="platform-body" style="height: 100%">
       <div class="card-wrapper2">
-        <business-card-grid [cardConfig]="businessService.inspectionCardConfig">
+        <business-card-grid
+          [cardConfig]="indexBusinessService.inspectionCardConfig"
+        >
         </business-card-grid>
         <div class="card-angle top-left"></div>
         <div class="card-angle top-right"></div>

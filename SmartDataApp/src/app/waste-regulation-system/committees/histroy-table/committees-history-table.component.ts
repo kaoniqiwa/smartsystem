@@ -85,4 +85,9 @@ export class CommitteesHistroyTableComponent
       });
     }
   }
+
+  filterClick(type: EventType) {
+    this.Type = type;
+    this.show();
+  }
 }

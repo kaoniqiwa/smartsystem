@@ -9,12 +9,18 @@
           [Committees]="Committees"
           [Stations]="GarbageStations"
           (OnStationClicked)="OnStationClicked($event)"
+          (OnCommitteesInfoClicked)="OnCommitteesInfoClicked($event)"
           OnCommitteesClicked=""
         ></app-committees-navication>
       </div>
     </div>
     <div class="waste-body__item waste-body__item--video">
-      <div class="waste-body__wrapper"></div>
+      <div class="waste-body__wrapper">
+        <hw-gallery-roll-page
+          [model]="GalleryRollPageBusiness.Model"
+          [config]="GalleryRollPageBusiness.Config"
+        ></hw-gallery-roll-page>
+      </div>
     </div>
     <div class="waste-body__item">
       <div class="waste-body__wrapper padding">
@@ -65,3 +71,4 @@
     </div>
   </div>
 </div>
+<app-window [Model]="windowModel"> 测试 </app-window>

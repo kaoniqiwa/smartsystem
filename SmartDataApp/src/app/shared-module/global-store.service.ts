@@ -78,6 +78,7 @@ export class GlobalStoreService {
   }
 
   static interval = new EventEmitter();
+  static change = new EventEmitter();
 
   private static intervalHandle: NodeJS.Timer;
 

@@ -14,6 +14,8 @@ import { EventType } from "src/app/data-core/model/enum";
 import { RecordRankEventBussiness } from "../record-rank/event/record-rank-event.bussiness";
 import { RecordRankDropBussiness } from "../record-rank/drop/record-rank-drop.bussiness";
 import { CommitteesHistroyTableBussiness } from "../histroy-table/committees-history-table.business";
+import { GalleryRollPageBusiness } from "./business/gallery-roll-page.business";
+import { WindowViewModel } from "../window/window.model";
 
 @Component({
   selector: "app-committees-index",
@@ -22,14 +24,14 @@ import { CommitteesHistroyTableBussiness } from "../histroy-table/committees-his
     "./committees-index.component.less",
     "./committees-index-toolbar.css",
   ],
-  providers: [CommitteesIndexService],
+  providers: [CommitteesIndexService, GalleryRollPageBusiness],
 })
 export class IndexCommitteesComponent implements OnInit {
   Committees?: Division;
   GarbageStations?: GarbageStation[];
   GarbageStationSelected?: GarbageStation;
   cardSize: { width: number; height: number };
-
+  windowModel = new WindowViewModel();
   userDivisionName_ = "";
   GlobalStoreService = GlobalStoreService;
   constructor(
@@ -37,7 +39,8 @@ export class IndexCommitteesComponent implements OnInit {
 
     private configService: ConfigRequestService,
     private eventPushService: EventPushService,
-    private mqttSevice: MQTTEventService
+    private mqttSevice: MQTTEventService,
+    private GalleryRollPageBusiness: GalleryRollPageBusiness
   ) {}
 
   RecordRankEventBussiness = new RecordRankEventBussiness();
@@ -53,11 +56,20 @@ export class IndexCommitteesComponent implements OnInit {
     ).Data;
     if (this.GarbageStations && this.GarbageStations.length > 0) {
       this.GarbageStationSelected = this.GarbageStations[0];
+
+      this.GalleryRollPageBusiness.Model =
+        this.GalleryRollPageBusiness.Converter.Convert(this.GarbageStations);
     }
     GlobalStoreService.runInterval();
   }
 
   OnStationClicked(station: GarbageStation) {
     this.GarbageStationSelected = station;
+    GlobalStoreService.change.emit(this.GarbageStationSelected);
+  }
+
+  OnCommitteesInfoClicked(division: Division) {
+    debugger;
+    this.windowModel.show = true;
   }
 }

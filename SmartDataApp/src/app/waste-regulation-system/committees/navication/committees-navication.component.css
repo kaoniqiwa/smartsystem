@@ -20,6 +20,18 @@
   clip-path: polygon(16px 1.5px, calc(100% - 1.5px) 1.5px, calc(100% - 1.5px) calc(100% - 16px), calc(100% - 16px) calc(100% - 1.5px), 1.5px calc(100% - 1.5px), 1.5px 16px);
   display: flow-root;
   padding-left: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.navication-item .inner .title {
+  justify-content: flex-start;
+}
+
+.navication-item .inner .btn {
+  width: 55px;
+  font-size: 26px;
+  line-height: 46px;
 }
 
 .navication-item.main {

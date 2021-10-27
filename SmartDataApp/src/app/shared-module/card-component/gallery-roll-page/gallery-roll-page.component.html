@@ -1,135 +1,294 @@
 <ng-container *ngIf="model">
-  <div class="fill-width fill-height p-20" >
-
+  <div class="fill-width fill-height p-20">
     <div fxLayout="row" fxLayoutAlign="space-between center">
-      <div  style="width: 200px;">
-        <h2>投放点巡检 
-          <div class="spinner-border spinner-border-sm green-text" *ngIf="!catchState.o" style="position: relative;bottom: 4px;" role="status">
-          </div>
-          <label class="m-b-0 green-text" style="font-size:xx-small;position: relative;bottom: 4px;"  *ngIf="catchState.o">
-            ●</label></h2>
+      <div style="width: 200px">
+        <div *ngIf="config.titleVisibility">
+          <h2>
+            投放点巡检
+            <div
+              class="spinner-border spinner-border-sm green-text"
+              *ngIf="!catchState.o"
+              style="position: relative; bottom: 4px"
+              role="status"
+            ></div>
+            <label
+              class="m-b-0 green-text"
+              style="font-size: xx-small; position: relative; bottom: 4px"
+              *ngIf="catchState.o"
+            >
+              ●</label
+            >
+          </h2>
+        </div>
       </div>
-      <div class="text-center" style="position: fixed;left: 46.4%;">
-        <h2 class="{{titleColor}}">
-          {{title}}
+      <div class="text-center" style="position: fixed; left: 46.4%">
+        <h2 class="{{ titleColor }}">
+          {{ title }}
         </h2>
       </div>
-      <div class="text-right right-btn-group" style="width: calc(44% - 200px);font-size: 18px;">   
-        <a class="nav-link waves-effect waves-dark p-t-0 p-r-10 p-b-0 text-white"  href="javascript:" data-toggle="dropdown"
-         aria-haspopup="true" aria-expanded="false">
-          {{carousel.time}}s
+      <div
+        class="text-right right-btn-group"
+        style="width: 170px; font-size: 18px"
+      >
+        <a
+          class="nav-link waves-effect waves-dark p-t-0 p-r-10 p-b-0 text-white"
+          href="javascript:"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          {{ carousel.time }}s
           <i class="mdi mdi-menu-down"></i>
-        </a> 
-        <div class="dropdown-menu p-b-0 p-t-0  m-t-10 view-ul-drop" x-placement="bottom-start">
-          <ul class="view-ul seconds"> 
-            <li *ngIf="carousel.time!=30" (click)="resetCarousel(30,true)"><a  href="javascript:">30s</a></li> 
-            <li *ngIf="carousel.time!=60" (click)="resetCarousel(60,true)"><a  href="javascript:">60s</a></li> 
-            <li *ngIf="carousel.time!=90" (click)="resetCarousel(90,true)"><a  href="javascript:">90s</a></li>  
-            <li *ngIf="carousel.time!=120" (click)="resetCarousel(120,true)"><a  href="javascript:">120s</a></li>  
-          </ul> 
+        </a>
+        <div
+          class="dropdown-menu p-b-0 p-t-0 m-t-10 view-ul-drop"
+          x-placement="bottom-start"
+        >
+          <ul class="view-ul seconds">
+            <li *ngIf="carousel.time != 30" (click)="resetCarousel(30, true)">
+              <a href="javascript:">30s</a>
+            </li>
+            <li *ngIf="carousel.time != 60" (click)="resetCarousel(60, true)">
+              <a href="javascript:">60s</a>
+            </li>
+            <li *ngIf="carousel.time != 90" (click)="resetCarousel(90, true)">
+              <a href="javascript:">90s</a>
+            </li>
+            <li *ngIf="carousel.time != 120" (click)="resetCarousel(120, true)">
+              <a href="javascript:">120s</a>
+            </li>
+          </ul>
         </div>
-        <a href="javascript:" (click)="tagClick(null,true)" title="刷新" class="m-r-10 capture">
+        <a
+          *ngIf="config.refreshButtonVisibility"
+          href="javascript:"
+          (click)="tagClick(null, true)"
+          title="刷新"
+          class="m-r-10 capture"
+        >
           <i class="howell-icon-restore text-white"></i>
         </a>
-        <a href="javascript:" (click)="changeWindow('window-app')" title="全屏" class="m-r-10 capture">
+        <a
+          *ngIf="config.fullscreenButtonVisibility"
+          href="javascript:"
+          (click)="changeWindow('window-app')"
+          title="全屏"
+          class="m-r-10 capture"
+        >
           <i class="mdi mdi-fullscreen text-white"></i>
         </a>
-        <a href="javascript:" class="close-winow close-winow-wrap" (click)="tagClick('close')">
+        <a
+          *ngIf="config.closeButtonVisibility"
+          href="javascript:"
+          class="close-winow close-winow-wrap"
+          (click)="tagClick('close')"
+        >
           <i class="howell-icon-Close alert-window-close-btn text-white"></i>
         </a>
       </div>
     </div>
 
-    <div fxLayout="row" [ngStyle]="{'height': galleryHeight}" >
+    <div fxLayout="row" [ngStyle]="{ height: galleryHeight }">
       <ul class="view-ul fill-height fill-width">
         <ng-container *ngFor="let item of imgs">
-          <li  [ngStyle]="{'display': bigViewId&&item.tag.id!=bigViewId ? 'none':'block'}"  class="pull-left" 
-          [class.view-size-9]="!bigViewId&&imgs.length>4" [class.fill-height]="bigViewId"  [class.fill-width]="bigViewId"  [class.view-size-4]="!bigViewId&&imgs.length<=4">
-            <div style="position: relative;" id="item__{{item.tag.id}}"
-              [ngStyle]="{'visibility': playState(item.tag.id)?'hidden':'visible'}"
-              class="fill-width fill-height img-wrapper">
-              <img height="100%" width="100%"   src="{{item.src}}" alt=""
-                onerror="this.src='/assets/img/black-bg.png'" style="background-color: black;">
+          <li
+            [ngStyle]="{
+              display: bigViewId && item.tag.id != bigViewId ? 'none' : 'block'
+            }"
+            class="pull-left"
+            [class.view-size-9]="!bigViewId && imgs.length > 4"
+            [class.fill-height]="bigViewId"
+            [class.fill-width]="bigViewId"
+            [class.view-size-4]="!bigViewId && imgs.length <= 4"
+          >
+            <div
+              style="position: relative"
+              id="item__{{ item.tag.id }}"
+              [ngStyle]="{
+                visibility: playState(item.tag.id) ? 'hidden' : 'visible'
+              }"
+              class="fill-width fill-height img-wrapper"
+            >
+              <img
+                height="100%"
+                width="100%"
+                src="{{ item.src }}"
+                alt=""
+                onerror="this.src='/assets/img/black-bg.png'"
+                style="background-color: black"
+              />
               <!-- <div *ngIf="item.state" class="fill-height fill-width" style="background-color: black;"></div> -->
               <div class="desc-label-wrapper">
-                <label class="m-0 text-white" style="line-height: 30px;padding: 0 10px;">{{item.desc}}</label>
+                <label
+                  class="m-0 text-white"
+                  style="line-height: 30px; padding: 0 10px"
+                  >{{ item.desc }}</label
+                >
               </div>
-              <div class="fill-width fill-height text-center text-white" *ngIf="item.state" fxLayoutAlign="center center"
-              style="position: absolute;top: 0;">NO SIGNAL</div>
-              <div class="fill-width fill-height text-center mask"  fxLayoutAlign="center center"
-                style="position: absolute;top: 0;">
-                <a href="javascript:" (click)="playVideo(item.tag.id);model.autoChangePage=false;">
-                  <div class="howell-icon-play" style="color: rgba(255,255,255,0.7);font-size: 70px;"></div>
+              <div
+                class="fill-width fill-height text-center text-white"
+                *ngIf="item.state"
+                fxLayoutAlign="center center"
+                style="position: absolute; top: 0"
+              >
+                NO SIGNAL
+              </div>
+              <div
+                class="fill-width fill-height text-center mask"
+                fxLayoutAlign="center center"
+                style="position: absolute; top: 0"
+              >
+                <a
+                  *ngIf="config.videoControlPlayVisibility"
+                  href="javascript:"
+                  (click)="playVideo(item.tag.id); model.autoChangePage = false"
+                >
+                  <div
+                    class="howell-icon-play"
+                    style="color: rgba(255, 255, 255, 0.7); font-size: 70px"
+                  ></div>
                 </a>
-                <a href="javascript:" (click)="bigView(item.tag.id);model.autoChangePage=false;">
-                  <div [class.mdi-fullscreen]="!bigViewId" [class.mdi-fullscreen-exit]="bigViewId" class="mdi "
-                  style="color: rgba(255,255,255,0.7);font-size: 70px;"></div>
+                <a
+                  *ngIf="config.videoControlFullscreenVisibility"
+                  href="javascript:"
+                  (click)="bigView(item.tag.id); model.autoChangePage = false"
+                >
+                  <div
+                    [class.mdi-fullscreen]="!bigViewId"
+                    [class.mdi-fullscreen-exit]="bigViewId"
+                    class="mdi"
+                    style="color: rgba(255, 255, 255, 0.7); font-size: 70px"
+                  ></div>
                 </a>
               </div>
             </div>
           </li>
         </ng-container>
         <ng-container *ngFor="let item of fillBlank(imgs.length)">
-          <li  class="pull-left" [ngStyle]="{'display': bigViewId ? 'none':'block'}"  
-          [class.view-size-9]="!bigViewId&&imgs.length>4"  [class.view-size-4]="!bigViewId&&imgs.length<=4">
-            <img height="100%" width="100%"  src="assets/img/black-bg.png" style="border: 2px solid transparent;" alt="">
-          </li> 
+          <li
+            class="pull-left"
+            [ngStyle]="{ display: bigViewId ? 'none' : 'block' }"
+            [class.view-size-9]="!bigViewId && imgs.length > 4"
+            [class.view-size-4]="!bigViewId && imgs.length <= 4"
+          >
+            <img
+              height="100%"
+              width="100%"
+              src="assets/img/black-bg.png"
+              style="border: 2px solid transparent"
+              alt=""
+            />
+          </li>
         </ng-container>
-      </ul> 
-    </div>    
+      </ul>
+    </div>
 
-    <div fxLayout="row" style="height: 60px;" fxLayoutAlign="space-between center">
-      <div style="width: 226px;">
-          <ul class="view-ul">
-            <li class="pull-left m-r-20" style="font-size: 18px;">
-              <i class="howell-icon-nolittering sky-blue-text2 " style="margin-right: 5px;"></i>
-              <label class="m-b-0   light-blue-text" style="width: 30px;">{{eventNum}}</label>
-            </li>
-            <li class="pull-left m-r-20" style="font-size: 18px;">
-              <i class="howell-icon-mixlittering sky-blue-text2 " style="margin-right: 5px;"></i>
-              <label class="m-b-0   light-blue-text" style="width: 30px;">0</label>
-            </li>
-            <li class="pull-left m-r-20" style="font-size: 18px;">
-              <i class="howell-icon-fullgarbage sky-blue-text2 " style="margin-right: 5px;"></i>
-              <label class="m-b-0   {{titleColor}}" style="width: auto;">{{stateText}}</label>
-            </li>
-          </ul>
+    <div
+      fxLayout="row"
+      style="height: 60px"
+      fxLayoutAlign="space-between center"
+    >
+      <div style="width: 226px">
+        <ul class="view-ul" *ngIf="config.statusBarVisibility">
+          <li class="pull-left m-r-20" style="font-size: 18px">
+            <i
+              class="howell-icon-nolittering sky-blue-text2"
+              style="margin-right: 5px"
+            ></i>
+            <label class="m-b-0 light-blue-text" style="width: 30px">{{
+              eventNum
+            }}</label>
+          </li>
+          <li class="pull-left m-r-20" style="font-size: 18px">
+            <i
+              class="howell-icon-mixlittering sky-blue-text2"
+              style="margin-right: 5px"
+            ></i>
+            <label class="m-b-0 light-blue-text" style="width: 30px">0</label>
+          </li>
+          <li class="pull-left m-r-20" style="font-size: 18px">
+            <i
+              class="howell-icon-fullgarbage sky-blue-text2"
+              style="margin-right: 5px"
+            ></i>
+            <label class="m-b-0   {{ titleColor }}" style="width: auto">{{
+              stateText
+            }}</label>
+          </li>
+        </ul>
       </div>
-      <div class="text-left" style="line-height: 50px;position: fixed;left: 44%;">
+      <div
+        class="text-left"
+        style="line-height: 50px; position: fixed; left: 44%"
+      >
         <a href="javascript:" (click)="prevImgGroup()">
           <div class="howell-icon-arrowleftbold arrow-wrap"></div>
         </a>
         <span style="margin: 0 50px">
-          <a href="javascript:" (click)="model.autoChangePage=!model.autoChangePage" style="position: relative;top: 2px;">
-            <div title="{{!model.autoChangePage?'播放':'停止'}}" [class.howell-icon-play]="!model.autoChangePage" [class.mdi]="model.autoChangePage" [class.mdi-stop]="model.autoChangePage"
-              class="play-stop-wrap" style="display: inline;"></div>
+          <a
+            href="javascript:"
+            (click)="model.autoChangePage = !model.autoChangePage"
+            style="position: relative; top: 2px"
+          >
+            <div
+              title="{{ !model.autoChangePage ? '播放' : '停止' }}"
+              [class.howell-icon-play]="!model.autoChangePage"
+              [class.mdi]="model.autoChangePage"
+              [class.mdi-stop]="model.autoChangePage"
+              class="play-stop-wrap"
+              style="display: inline"
+            ></div>
           </a>
         </span>
-       
+
         <a href="javascript:" (click)="nextImgGroup()">
           <div class="howell-icon-arrowrightbold arrow-wrap"></div>
         </a>
       </div>
-      <div style="line-height: 50px;"> 
-        <label class="m-b-0 text-white m-l-20"
-          style="font-size: 18px;position: relative;top: 2px;width: 50px;text-align: right;">
-          {{model.items.size== 0 ? 0: model.index}}/{{model.items.size}}</label>
-
+      <div style="line-height: 50px">
+        <label
+          class="m-b-0 text-white m-l-20"
+          style="
+            font-size: 18px;
+            position: relative;
+            top: 2px;
+            width: 50px;
+            text-align: right;
+          "
+        >
+          {{ model.items.size == 0 ? 0 : model.index }}/{{
+            model.items.size
+          }}</label
+        >
       </div>
-    </div>  
+    </div>
 
     <ng-container>
-      <div class="collapse" id="video__view_wrap" [class.in]="playing"
-        [ngStyle]="{'width': playViewSize.width+'px','height': playViewSize.height+'px'}"
-        style="position: absolute;z-index: 1;">
-        <div id="video__view" [class.absolute]="imgs.length == 4"  [class.table-cell]="!bigViewId&&imgs.length > 4"
-        class="fill-width fill-height player ">
-          <ng-container *ngIf="p&&p.safeResourceUrl&&p.playing">
-              <iframe #iframe [src]="p.safeResourceUrl" class="video-control selected fill-height fill-width"></iframe>
+      <div
+        class="collapse"
+        id="video__view_wrap"
+        [class.in]="playing"
+        [ngStyle]="{
+          width: playViewSize.width + 'px',
+          height: playViewSize.height + 'px'
+        }"
+        style="position: absolute; z-index: 1"
+      >
+        <div
+          id="video__view"
+          [class.absolute]="imgs.length == 4"
+          [class.table-cell]="!bigViewId && imgs.length > 4"
+          class="fill-width fill-height player"
+        >
+          <ng-container *ngIf="p && p.safeResourceUrl && p.playing">
+            <iframe
+              #iframe
+              [src]="p.safeResourceUrl"
+              class="video-control selected fill-height fill-width"
+            ></iframe>
           </ng-container>
+        </div>
       </div>
-      </div>
-
     </ng-container>
   </div>
 </ng-container>

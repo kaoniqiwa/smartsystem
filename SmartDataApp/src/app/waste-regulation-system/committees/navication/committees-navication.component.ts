@@ -20,6 +20,9 @@ export class CommitteesNavicationComponent implements OnInit {
   @Output()
   OnStationClicked: EventEmitter<GarbageStation> = new EventEmitter();
 
+  @Output()
+  OnCommitteesInfoClicked: EventEmitter<Division> = new EventEmitter();
+
   constructor() {}
 
   ngOnInit() {}
@@ -32,5 +35,10 @@ export class CommitteesNavicationComponent implements OnInit {
   StationClicked(station: GarbageStation) {
     this.StationSelected = station;
     this.OnStationClicked.emit(station);
+  }
+
+  divisionInfoClick(event: Event) {
+    this.OnCommitteesInfoClicked.emit(this.Committees);
+    event.stopPropagation();
   }
 }

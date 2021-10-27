@@ -49,7 +49,7 @@ export class IndexComponent implements OnInit {
   constructor(
     private stationDao: GarbageStationDao,
     private indexService: IndexService,
-    private businessService: IndexBusinessService,
+    private indexBusinessService: IndexBusinessService,
     private titleService: Title,
     private businessManageService: BusinessManageService,
     private configService: ConfigRequestService,
@@ -110,18 +110,18 @@ export class IndexComponent implements OnInit {
       }
     });
 
-    this.businessService.setLogoTitle();
+    this.indexBusinessService.setLogoTitle();
     const videoConfig = await this.configService.getVideo().toPromise();
     this.user.video = videoConfig;
 
-    this.businessService.initCardConfig();
+    this.indexBusinessService.initCardConfig();
 
     setTimeout(() => {
       this.divisionBusinessService.bindingEvent();
 
-      if (this.businessService.illegalDropEventCardConfig) {
+      if (this.indexBusinessService.illegalDropEventCardConfig) {
         this.mqttSevice.listenerIllegalDrop(
-          this.businessService.user.userDivision.pop().Id
+          this.indexBusinessService.user.userDivision.pop().Id
         );
         this.eventPushService.connectionState.subscribe((b: any) => {
           this.divisionBusinessService.changeMqttState(b);
@@ -130,7 +130,7 @@ export class IndexComponent implements OnInit {
     }, 500);
 
     this.divisionBusinessService.nspectionParam = (val) => {
-      this.businessService.inspectionCard(val);
+      this.indexBusinessService.inspectionCard(val);
       // this.inspectionConfig = [{
       //   business: 'GarbageStationInspection',
       //   cardType: 'GalleryRollPageComponent',
@@ -145,7 +145,7 @@ export class IndexComponent implements OnInit {
         this.businessManageService.station = station;
       };
       this.divisionBusinessService.aMap.VillageSelect(
-        this.businessService.user.userDivision.pop().Id,
+        this.indexBusinessService.user.userDivision.pop().Id,
         false
       );
       this.aMap.ContextMenuIllegalDropClickedEvent.subscribe((station) => {
@@ -200,11 +200,12 @@ export class IndexComponent implements OnInit {
 
   showInspectionView(station?: any) {
     if (station)
-      this.businessService.inspectionCard(
+      this.indexBusinessService.inspectionCard(
         GlobalStoreService.divisionId,
         station.Id
       );
-    else this.businessService.inspectionCard(GlobalStoreService.divisionId);
+    else
+      this.indexBusinessService.inspectionCard(GlobalStoreService.divisionId);
     this.divisionBusinessService.inspectionView = true;
     this.divisionBusinessService.bindingEvent2();
     const show = () => {

@@ -12,7 +12,7 @@ export class CommitteesHistoryTableConverter
     >
 {
   Convert(
-    input: IllegalDropEventRecord[] | MixedIntoEventRecord[],
+    input: Array<IllegalDropEventRecord | MixedIntoEventRecord>,
     datePipe: DatePipe
   ): CommitteesHistoryTableViewModel[] {
     return input.map((x) => {

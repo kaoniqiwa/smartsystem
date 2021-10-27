@@ -183,6 +183,8 @@ export class AMapComponent implements AfterViewInit, OnInit {
   private baseDivisionId: string;
   private points: Global.Dictionary<CesiumDataController.Point> = {};
 
+  pointCount = 0;
+
   panelEventType?: PanelEventType;
   srcUrl: any;
   dataController: CesiumDataController.Controller;
@@ -1000,6 +1002,9 @@ export class AMapComponent implements AfterViewInit, OnInit {
     if (move) {
       const village = this.dataController.Village.Get(villageId);
       this.client.Viewer.Focus(villageId);
+      debugger;
+      let ids = this.dataController.Village.Point.GetIds(villageId);
+      this.pointCount = ids.current.length;
       // this.client.Viewer.MoveTo(village.center);
     }
   }

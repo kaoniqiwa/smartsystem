@@ -1,12 +1,13 @@
 .rank {
   width: 100%;
   height: 100%;
+
 }
 
 .rank .header {
   font-size: 24px;
   color: white;
-  margin-bottom: 8px;
+  margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,6 +16,7 @@
 .rank .header .dropdown {
   font-size: 18px;
   cursor: pointer;
+  margin-right: -10px;
 }
 
 .rank .content {
@@ -22,7 +24,7 @@
   font-size: 18px;
   width: calc(100% + 20px);
   padding-right: 20px;
-  height: calc(100% - 44px);
+  height: calc(100% - 56px);
 }
 
 ::-webkit-scrollbar {

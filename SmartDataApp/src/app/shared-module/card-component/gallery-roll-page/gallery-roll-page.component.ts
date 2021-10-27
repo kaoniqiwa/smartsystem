@@ -26,6 +26,10 @@ import { ArrayPagination } from "../../../common/tool/tool.service";
 import { UserDalService } from "../../../dal/user/user-dal.service";
 import { SessionUser } from "../../../common/tool/session-user";
 import { WHSPlayer } from "../../../common/hws-player";
+import {
+  GalleryRollPageConfig,
+  IGalleryRollPageConfig,
+} from "./gallery-roll-page.config";
 @Component({
   selector: "hw-gallery-roll-page",
   templateUrl: "./gallery-roll-page.component.html",
@@ -36,7 +40,27 @@ export class GalleryRollPageComponent
   extends BasisCardComponent
   implements OnInit, OnDestroy
 {
-  @Input() model: GalleryRollPage;
+  public get model(): GalleryRollPage {
+    return this._model as GalleryRollPage;
+  }
+  @Input()
+  public set model(v: GalleryRollPage) {
+    this._model = v;
+    if (this._model) {
+      (this._model as GalleryRollPage).indexChanged = (index) => {
+        this.onIndexChanged(index);
+      };
+    }
+  }
+
+  private _config: IGalleryRollPageConfig = new GalleryRollPageConfig();
+  public get config(): IGalleryRollPageConfig {
+    return this._config;
+  }
+  @Input()
+  public set config(v: IGalleryRollPageConfig) {
+    this._config = Object.assign(this._config, v);
+  }
 
   // @ViewChild(HWSPlayerDirective)
   // player: HWSPlayerDirective;
@@ -310,6 +334,15 @@ export class GalleryRollPageComponent
           catchState: this.catchState,
         });
       }
+    }
+  }
+
+  onIndexChanged(index: number) {
+    this.bigViewId = "";
+    this.resetCarousel(this.carousel.time);
+    this.tagClick(null, false);
+    if (this.p && this.p.playing) {
+      this.p.stopVideo();
     }
   }
 }

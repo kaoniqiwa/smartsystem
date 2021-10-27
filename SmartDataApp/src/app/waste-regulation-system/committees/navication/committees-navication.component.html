@@ -1,10 +1,15 @@
 <div class="navication">
   <div class="navication-item main" (click)="CommitteesClicked()">
     <div class="inner">
-      <i class="howell-icon-map5 m-r-10 sky-blue-text"></i>
-      <span class="text light-blue-text">
-        {{ Committees ? Committees.Name : "" }}
-      </span>
+      <div class="title">
+        <i class="howell-icon-map5 m-r-10 sky-blue-text"></i>
+        <span class="text light-blue-text">
+          {{ Committees ? Committees.Name : "" }}
+        </span>
+      </div>
+      <div class="btn" (click)="divisionInfoClick($event)">
+        <div><i class="blue-text howell-icon-task_misson"></i></div>
+      </div>
     </div>
   </div>
   <div class="stations">
@@ -17,10 +22,12 @@
         (click)="StationClicked(item)"
       >
         <div class="inner">
-          <i class="howell-icon-garbage m-r-15 sky-blue-text"></i>
-          <span class="light-blue-text text">
-            {{ item ? item.Name : "" }}
-          </span>
+          <div class="title">
+            <i class="howell-icon-garbage m-r-15 sky-blue-text"></i>
+            <span class="light-blue-text text">
+              {{ item ? item.Name : "" }}
+            </span>
+          </div>
         </div>
       </div>
     </ng-container>

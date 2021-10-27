@@ -4,6 +4,10 @@
   justify-content: space-between;
 }
 
+.history-table .data {
+  width: calc(100% - 40px)
+}
+
 .history-table,
 .history-table table {
   width: 100%
@@ -19,6 +23,8 @@
   color: white
 }
 
+
+
 .history-table table tr>td:first-child {
   padding-left: 20px;
 }
@@ -29,6 +35,10 @@
   overflow-x: hidden;
 }
 
+.history-table .content table tr {
+  height: 30px;
+}
+
 .history-table table tr>td.operate {
   display: flex;
 }
@@ -37,17 +47,15 @@
   cursor: pointer;
 }
 
-.history-table .table {
-  width: calc(100% - 50px)
-}
 
 
 .history-table .filter {
   width: 33px;
+  margin-right: -10px;
 }
 
 .history-table .filter .button {
-  height: 100px;
+  height: 90px;
   line-height: 18px;
   margin-bottom: 10px;
   cursor: pointer;
@@ -61,20 +69,23 @@
       1px calc(100% - 1px),
       1px 5px);
   width: 30px;
-  height: 97px;
+  height: 90px;
   position: absolute;
-  background-color: rgba(58, 147, 255, 0.2);
+  background-color: rgba(58, 147, 255, 0.1);
 }
 
 .history-table .filter .button>.background._1 {}
 
 .history-table .filter .button>.background._2 {
-  transform: translate(-5px, -5px);
+  transform: translate(-3px, -3px);
+}
+
+.history-table .filter .button:hover>.background {
+  background-color: rgba(58, 147, 255, 0.2);
 }
 
 .history-table .filter .button.selected>.background {
   background-color: rgba(58, 147, 255, 0.4);
-
 }
 
 .history-table .filter .button.selected>.text {
@@ -82,8 +93,8 @@
 }
 
 .history-table .filter .button>.text {
-  padding: 7px;
-
+  padding: 6px;
+  width: 30px;
   writing-mode: horizontal-tb;
   position: absolute;
 }
