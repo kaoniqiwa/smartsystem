@@ -16,6 +16,7 @@ import { RecordRankDropBussiness } from "../record-rank/drop/record-rank-drop.bu
 import { CommitteesHistroyTableBussiness } from "../histroy-table/committees-history-table.business";
 import { GalleryRollPageBusiness } from "./business/gallery-roll-page.business";
 import { WindowViewModel } from "../window/window.model";
+import { HistoryImageWindowBussiness } from "./business/history-image-window.bussiness";
 
 @Component({
   selector: "app-committees-index",
@@ -24,7 +25,11 @@ import { WindowViewModel } from "../window/window.model";
     "./committees-index.component.less",
     "./committees-index-toolbar.css",
   ],
-  providers: [CommitteesIndexService, GalleryRollPageBusiness],
+  providers: [
+    CommitteesIndexService,
+    GalleryRollPageBusiness,
+    HistoryImageWindowBussiness,
+  ],
 })
 export class IndexCommitteesComponent implements OnInit {
   Committees?: Division;
@@ -40,7 +45,8 @@ export class IndexCommitteesComponent implements OnInit {
     private configService: ConfigRequestService,
     private eventPushService: EventPushService,
     private mqttSevice: MQTTEventService,
-    private GalleryRollPageBusiness: GalleryRollPageBusiness
+    private GalleryRollPageBusiness: GalleryRollPageBusiness,
+    private HistoryImageWindowBussiness: HistoryImageWindowBussiness
   ) {}
 
   RecordRankEventBussiness = new RecordRankEventBussiness();
@@ -57,8 +63,7 @@ export class IndexCommitteesComponent implements OnInit {
     if (this.GarbageStations && this.GarbageStations.length > 0) {
       this.GarbageStationSelected = this.GarbageStations[0];
 
-      this.GalleryRollPageBusiness.Model =
-        this.GalleryRollPageBusiness.Converter.Convert(this.GarbageStations);
+      this.GalleryRollPageBusiness.load(this.GarbageStations);
     }
     GlobalStoreService.runInterval();
   }
@@ -69,7 +74,6 @@ export class IndexCommitteesComponent implements OnInit {
   }
 
   OnCommitteesInfoClicked(division: Division) {
-    debugger;
     this.windowModel.show = true;
   }
 }

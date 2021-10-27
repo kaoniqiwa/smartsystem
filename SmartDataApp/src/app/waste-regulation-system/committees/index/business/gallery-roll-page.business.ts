@@ -1,5 +1,7 @@
 import { Injectable } from "@angular/core";
+import { HWSPlayerOptions } from "src/app/common/directive/wsplayer-directive";
 import { Language } from "src/app/common/tool/language";
+import { GetPreviewUrlParams } from "src/app/data-core/model/aiop/video-url";
 import { Camera } from "src/app/data-core/model/waste-regulation/camera";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
 import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
@@ -7,6 +9,7 @@ import {
   ResourceMediumRequestService,
   ResourceSRServersRequestService,
 } from "src/app/data-core/repuest/resources.service";
+import { SRServiceRequestSerivce } from "src/app/data-core/repuest/sr-service.service";
 import {
   Gallery,
   GalleryRollPage,
@@ -20,7 +23,7 @@ import { ICommitteesConverter } from "../../interface/committees-converter.inter
 
 @Injectable()
 export class GalleryRollPageBusiness {
-  constructor(private media: ResourceMediumRequestService) {
+  constructor() {
     GlobalStoreService.change.subscribe((station: GarbageStation) => {
       debugger;
       this.Model.items.forEach((x) => {
@@ -41,12 +44,23 @@ export class GalleryRollPageBusiness {
   };
   Model: GalleryRollPage;
   Converter = new GalleryRollPageConverter();
+
+  async load(stations: GarbageStation[]) {
+    // let params = new GetPreviewUrlParams()
+    // params.CameraId =
+    // let preview = await this.sr.preview(params)
+
+    this.Model = this.Converter.Convert(stations);
+  }
 }
 
 class GalleryRollPageConverter
   implements ICommitteesConverter<GarbageStation[], GalleryRollPage>
 {
-  Convert(input: GarbageStation[], ...args: any[]): GalleryRollPage {
+  Convert(
+    input: GarbageStation[],
+    playerOptions?: HWSPlayerOptions
+  ): GalleryRollPage {
     let page = new GalleryRollPage();
     page.autoChangePage = false;
     page.index = 1;
@@ -59,6 +73,7 @@ class GalleryRollPageConverter
       page.items.set(i + 1, this.ConvertItem(station));
     }
 
+    page.videoOptions = playerOptions;
     return page;
   }
 
@@ -75,7 +90,7 @@ class GalleryRollPageConverter
       return {
         src: ResourceMediumRequestService.getJPG(camera.ImageUrl),
         desc: "",
-        tag: camera,
+        tag: { id: camera.Id },
         state: !!camera.OnlineStatus,
       };
     });

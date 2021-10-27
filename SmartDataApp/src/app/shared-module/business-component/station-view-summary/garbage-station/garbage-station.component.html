@@ -1,61 +1,79 @@
-<div class="fill-height"> 
-  <div class="fill-height fill-width hw-content-mask collapse"
-    [class.in]="businessService.galleryTargetView.galleryTarget">
-    <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
-      <hw-gallery-target [model]="businessService.galleryTargetView.galleryTarget"
-      [imgEventFn]="businessService.galleryTargetView.galleryTargetPageFn"
-      [videoFn]="businessService.playVideoFn"
-      [closeViewFn]="galleryTargetFn">
+<div class="fill-height">
+  <div
+    class="fill-height fill-width hw-content-mask collapse"
+    [class.in]="businessService.galleryTargetView.galleryTarget"
+  >
+    <div style="width: 80%; height: 80%; margin-left: 10%; margin-top: 6%">
+      <hw-gallery-target
+        [model]="businessService.galleryTargetView.galleryTarget"
+        [imgEventFn]="businessService.galleryTargetView.galleryTargetPageFn"
+        [videoFn]="businessService.playVideoFn"
+        [closeViewFn]="galleryTargetFn"
+      >
       </hw-gallery-target>
     </div>
   </div>
-  <div class="fill-height fill-width hw-content-mask collapse" [class.in]="businessService.playVideo">
-    <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
+  <div
+    class="fill-height fill-width hw-content-mask collapse"
+    [class.in]="businessService.playVideo"
+  >
+    <div style="width: 80%; height: 80%; margin-left: 10%; margin-top: 6%">
       <ng-container *ngIf="businessService.playVideo">
-        <hw-video-simple-card [closeFn]="videoClose" [url]="businessService.playVideo.url"
-         [WebUrl]="businessService.playVideo.WebUrl" [autostart]="true"
-          [cameraName]="businessService.playVideo.name"></hw-video-simple-card>
+        <hw-video-simple-card
+          [closeFn]="videoClose"
+          [url]="businessService.playVideo.url"
+          [WebUrl]="businessService.playVideo.WebUrl"
+          [autostart]="true"
+          [cameraName]="businessService.playVideo.name"
+        ></hw-video-simple-card>
       </ng-container>
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
     <div class="fill-height">
-      <div class="second-title-bg pull-left text">
-        投放点
-      </div>
+      <div class="second-title-bg pull-left text">投放点</div>
       <ul class="hw-ul pull-left m-t-10">
-        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.info)">
-            <div class="second-menu-btn selected text">
-              &nbsp;&nbsp;列表
-            </div>
-          </a></li>
-        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.chart)">
-            <div class="second-menu-btn  text">
-              &nbsp; &nbsp;小包垃圾处置
-            </div>
-          </a></li>
-          <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.sumChart)">
-            <div class="second-menu-btn  text">
-              &nbsp;总图表
-            </div>
-          </a></li>
-          <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.analyzeChart)">
-            <div class="second-menu-btn  text">
-              &nbsp;细分图表
-            </div>
-          </a></li>
-          <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.event)">
-            <div class="second-menu-btn  text">
-              &nbsp;&nbsp;事件
-            </div>
-          </a></li>
+        <li class="pull-left">
+          <a href="javascript:" (click)="changeOtherView(otherView.info)">
+            <div class="second-menu-btn selected text">&nbsp;&nbsp;列表</div>
+          </a>
+        </li>
+        <li class="pull-left">
+          <a href="javascript:" (click)="changeOtherView(otherView.chart)">
+            <div class="second-menu-btn text">&nbsp; &nbsp;小包垃圾滞留</div>
+          </a>
+        </li>
+        <li class="pull-left">
+          <a href="javascript:" (click)="changeOtherView(otherView.sumChart)">
+            <div class="second-menu-btn text">&nbsp;总图表</div>
+          </a>
+        </li>
+        <li class="pull-left">
+          <a
+            href="javascript:"
+            (click)="changeOtherView(otherView.analyzeChart)"
+          >
+            <div class="second-menu-btn text">&nbsp;细分图表</div>
+          </a>
+        </li>
+        <li class="pull-left">
+          <a href="javascript:" (click)="changeOtherView(otherView.event)">
+            <div class="second-menu-btn text">&nbsp;&nbsp;报警事件处置</div>
+          </a>
+        </li>
       </ul>
     </div>
     <div fxLayoutAlign="center center">
-      <hw-input-search [searchEvent]="searchFn" [placeholder]="'名称'"></hw-input-search>     
+      <hw-input-search
+        [searchEvent]="searchFn"
+        [placeholder]="'名称'"
+      ></hw-input-search>
     </div>
-  </div> 
-  <div style="height: calc(100% - 70px);">
-    <hw-custom-table #table [model]="businessService.table.dataSource"></hw-custom-table>
+  </div>
+  <div style="height: calc(100% - 70px)">
+    <hw-custom-table
+      #table
+      [model]="businessService.table.dataSource"
+    ></hw-custom-table>
   </div>
 </div>

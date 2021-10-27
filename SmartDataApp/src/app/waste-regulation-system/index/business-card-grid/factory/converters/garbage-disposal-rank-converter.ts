@@ -17,7 +17,7 @@ export class GarbageDisposalRankConverter implements IConverter {
     output.pageSize = 1;
     output.pageIndex = 1;
     if (input instanceof StationsScoreInfo) {
-      output.views[0].title = "今日小包垃圾处置达标率排名";
+      output.views[0].title = "今日小包垃圾滞留达标率排名";
       output.views[0].table = new Array();
       var i = 0;
       const sort = input.items.sort((a, b) => {

@@ -73,7 +73,7 @@ export class StatisticTable extends BusinessTable implements IConverter {
         tdInnerAttrName: "garbageRatio",
       }),
       new TableAttr({
-        HeadTitleName: "平均落地时长",
+        HeadTitleName: "平均滞留时长",
         tdWidth: "13.7%",
         iocnClassLabel: true,
         orderBy: {
@@ -83,7 +83,7 @@ export class StatisticTable extends BusinessTable implements IConverter {
         tdInnerAttrName: "avgGarbageTime",
       }),
       new TableAttr({
-        HeadTitleName: "最大落地时长",
+        HeadTitleName: "最大滞留时长",
         tdWidth: "13.7%",
         iocnClassLabel: true,
         orderBy: {
@@ -93,7 +93,7 @@ export class StatisticTable extends BusinessTable implements IConverter {
         tdInnerAttrName: "maxGarbageTime",
       }),
       new TableAttr({
-        HeadTitleName: "总落地时长",
+        HeadTitleName: "总滞留时长",
         tdWidth: "13.7%",
         iocnClassLabel: true,
         orderBy: {

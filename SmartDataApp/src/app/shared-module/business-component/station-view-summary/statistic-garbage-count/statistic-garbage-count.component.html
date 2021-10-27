@@ -1,112 +1,193 @@
-<div style="height: calc(100% - 64px);position: relative;"  >
+<div style="height: calc(100% - 64px); position: relative">
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
     <div class="fill-height">
-      <div class="second-title-bg pull-left text">
-        投放点
-      </div>
+      <div class="second-title-bg pull-left text">投放点</div>
       <ul class="hw-ul pull-left m-t-10">
-        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.info)">
-            <div class="second-menu-btn  text">
-              &nbsp;列表
-            </div>
-          </a></li>
-        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.chart)">
+        <li class="pull-left">
+          <a href="javascript:" (click)="changeOtherView(otherView.info)">
+            <div class="second-menu-btn text">&nbsp;列表</div>
+          </a>
+        </li>
+        <li class="pull-left">
+          <a href="javascript:" (click)="changeOtherView(otherView.chart)">
             <div class="second-menu-btn selected text">
-              &nbsp; &nbsp;小包垃圾处置
+              &nbsp; &nbsp;小包垃圾滞留
             </div>
-          </a></li>
-          <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.sumChart)">
-            <div class="second-menu-btn  text">
-              &nbsp;总图表
-            </div>
-          </a></li>
-          <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.analyzeChart)">
-            <div class="second-menu-btn  text">
-              &nbsp;细分图表
-            </div>
-          </a></li>
-          <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.event)">
-            <div class="second-menu-btn text">
-              &nbsp;&nbsp;事件
-            </div>
-          </a></li>
+          </a>
+        </li>
+        <li class="pull-left">
+          <a href="javascript:" (click)="changeOtherView(otherView.sumChart)">
+            <div class="second-menu-btn text">&nbsp;总图表</div>
+          </a>
+        </li>
+        <li class="pull-left">
+          <a
+            href="javascript:"
+            (click)="changeOtherView(otherView.analyzeChart)"
+          >
+            <div class="second-menu-btn text">&nbsp;细分图表</div>
+          </a>
+        </li>
+        <li class="pull-left">
+          <a href="javascript:" (click)="changeOtherView(otherView.event)">
+            <div class="second-menu-btn text">&nbsp;&nbsp;事件</div>
+          </a>
+        </li>
       </ul>
     </div>
   </div>
-  <div style="height:100% ;position: relative;background-color: rgb(16,22,48);padding: 20px;">
-    <div fxLayout="row" style="margin-bottom: 2.6%;" fxLayoutAlign="space-between stretch">
-      <div style="width: 300px;padding-top: 4px;">
-        <h2>小包垃圾处置</h2>
+  <div
+    style="
+      height: 100%;
+      position: relative;
+      background-color: rgb(16, 22, 48);
+      padding: 20px;
+    "
+  >
+    <div
+      fxLayout="row"
+      style="margin-bottom: 2.6%"
+      fxLayoutAlign="space-between stretch"
+    >
+      <div style="width: 300px; padding-top: 4px">
+        <h2>小包垃圾滞留</h2>
       </div>
-      <div style="width: 800px;">
-
-        <div class="pull-right" style="width: 190px;height: 34px;position: relative;">
-
-          <input type="text" id="dtp1"  #dtp1 readonly DateTimePicker [format]="'yyyy年mm月dd日'"
-            [startView]="businessService.datePicker.startView" [minView]="businessService.datePicker.minView"
-            [defaultVal]="businessService.datePicker.default" [changeDate]="businessService.startDate"
-            class="hw-form-control form-control  p-r-0" style="padding:0;width: 190px;">
+      <div style="width: 800px">
+        <div
+          class="pull-right"
+          style="width: 190px; height: 34px; position: relative"
+        >
+          <input
+            type="text"
+            id="dtp1"
+            #dtp1
+            readonly
+            DateTimePicker
+            [format]="'yyyy年mm月dd日'"
+            [startView]="businessService.datePicker.startView"
+            [minView]="businessService.datePicker.minView"
+            [defaultVal]="businessService.datePicker.default"
+            [changeDate]="businessService.startDate"
+            class="hw-form-control form-control p-r-0"
+            style="padding: 0; width: 190px"
+          />
           <i class="mdi mdi-menu-down arrow-time light-blue-text"></i>
         </div>
-        <div class="pull-right" style="width: 600px;height: 34px;">
-          <hw-tree-drop-list-v2 [rightArrow]="true" [textColor]="'light-blue-text'" [textLeft]="false" [onlyDivisionNode]="divisionMode" 
-          [selectedItemFn]="businessService.changeDivisionFn" [selectItemNodeMode]="selectItemNodeMode" [firstTitle]="businessService.stationDivision">
-        </hw-tree-drop-list-v2>
-        </div> 
+        <div class="pull-right" style="width: 600px; height: 34px">
+          <hw-tree-drop-list-v2
+            [rightArrow]="true"
+            [textColor]="'light-blue-text'"
+            [textLeft]="false"
+            [onlyDivisionNode]="divisionMode"
+            [selectedItemFn]="businessService.changeDivisionFn"
+            [selectItemNodeMode]="selectItemNodeMode"
+            [firstTitle]="businessService.stationDivision"
+          >
+          </hw-tree-drop-list-v2>
+        </div>
       </div>
     </div>
-    <div class="fill-width" style="height: 80px;padding: 0 30px;">
+    <div class="fill-width" style="height: 80px; padding: 0 30px">
       <ul class="hw-ul fill-height">
         <ng-container *ngFor="let item of businessService.statistical">
           <li class="pull-left fill-height" style="width: calc(100% / 5)">
-            <h4 class="light-blue-text">{{item.key}}</h4>
+            <h4 class="light-blue-text">{{ item.key }}</h4>
             <ng-container *ngFor="let v of item.vals">
-                <ng-container *ngIf="v.val!=0&&v.val!=undefined">
-                  <label style="font-size: 40px;" class="m-b-0 text-white">{{v.val}}</label>
-                  <label class="m-b-0 blue-text m-l-10 m-r-10" style="font-size: 18px;">{{v.unit}}</label>
-                </ng-container>  
+              <ng-container *ngIf="v.val != 0 && v.val != undefined">
+                <label style="font-size: 40px" class="m-b-0 text-white">{{
+                  v.val
+                }}</label>
+                <label
+                  class="m-b-0 blue-text m-l-10 m-r-10"
+                  style="font-size: 18px"
+                  >{{ v.unit }}</label
+                >
+              </ng-container>
             </ng-container>
-            <ng-container *ngIf="item.vals.length==0">
-              <label style="font-size: 40px;" class="m-b-0 text-white">0</label>
-              <label class="m-b-0 blue-text m-l-10 m-r-10" style="font-size: 18px;">{{item.key=='乱丢垃圾'?'起':'分钟'}}</label>
+            <ng-container *ngIf="item.vals.length == 0">
+              <label style="font-size: 40px" class="m-b-0 text-white">0</label>
+              <label
+                class="m-b-0 blue-text m-l-10 m-r-10"
+                style="font-size: 18px"
+                >{{ item.key == "乱丢垃圾" ? "起" : "分钟" }}</label
+              >
             </ng-container>
           </li>
         </ng-container>
       </ul>
     </div>
-    <div class="fill-width" style="height: calc(100% - 140px);position: relative;overflow: hidden;">
-      <div style="height: 140px;position: relative;">
-        <img src="/assets/img/tooltip-luodi.png" alt="" style="right: 54px;position: absolute;bottom: 50px;">
+    <div
+      class="fill-width"
+      style="height: calc(100% - 140px); position: relative; overflow: hidden"
+    >
+      <div style="height: 140px; position: relative">
+        <img
+          src="/assets/img/tooltip-luodi.png"
+          alt=""
+          style="right: 54px; position: absolute; bottom: 50px"
+        />
       </div>
-      <div class="fill-width" style="height:calc(100% - 180px) ;" id="chartView" EChartCandlestick   (click)="clearView()"
-        [options]="businessService.candlestickOption"></div>
-        <!--  -->
-      
-      <div class="collapse info-wrap" [class.in]="businessService.illegalDumpView" id="illegalDumpView">
+      <div
+        class="fill-width"
+        style="height: calc(100% - 180px)"
+        id="chartView"
+        EChartCandlestick
+        (click)="clearView()"
+        [options]="businessService.candlestickOption"
+      ></div>
+      <!--  -->
+
+      <div
+        class="collapse info-wrap"
+        [class.in]="businessService.illegalDumpView"
+        id="illegalDumpView"
+      >
         <ng-container *ngIf="businessService.illegalDumpData">
           <ul class="hw-ul">
             <li class="text-white">
-              <label class="m-b-0 " style="width: 50%;">{{businessService.illegalDumpData.date}}</label>
-              <label class="m-b-0 text-right" style="width: 50%;">{{businessService.illegalDumpData.time}}</label>
+              <label class="m-b-0" style="width: 50%">{{
+                businessService.illegalDumpData.date
+              }}</label>
+              <label class="m-b-0 text-right" style="width: 50%">{{
+                businessService.illegalDumpData.time
+              }}</label>
             </li>
             <li class="text-white">
-              <label class="m-b-0" style="width: 50%;">垃圾堆数</label>
-              <label class="m-b-0 text-right" style="width: 50%;">{{businessService.illegalDumpData.heapNum}}</label>
+              <label class="m-b-0" style="width: 50%">垃圾堆数</label>
+              <label class="m-b-0 text-right" style="width: 50%">{{
+                businessService.illegalDumpData.heapNum
+              }}</label>
             </li>
             <li class="text-white">
-              <label class="m-b-0" style="width: 50%;">已满溢时长</label>
-              <label class="m-b-0 text-right" style="width: 50%;">{{businessService.illegalDumpData.fullTime}}</label>
+              <label class="m-b-0" style="width: 50%">已满溢时长</label>
+              <label class="m-b-0 text-right" style="width: 50%">{{
+                businessService.illegalDumpData.fullTime
+              }}</label>
             </li>
             <!-- <li><a class="sky-blue-text2" href="javascript:"
                 (click)="showIllegalDumpView(businessService.illegalDumpData.stationId)">查看详情</a></li> -->
           </ul>
         </ng-container>
-       
       </div>
-      <div class="collapse detail-wrap" style="background-color: rgb(60,66,101);padding: 10px;border-radius: 6px;"
-        [class.in]="businessService.illegalDropView" id="illegalDropView">
-        <img class="fill-height fill-width " src="{{businessService.illegalDropImg}}" alt="">
-        <div style="position: absolute;top: 0;width: 90%;" class=" fill-height text-center mask">
+      <div
+        class="collapse detail-wrap"
+        style="
+          background-color: rgb(60, 66, 101);
+          padding: 10px;
+          border-radius: 6px;
+        "
+        [class.in]="businessService.illegalDropView"
+        id="illegalDropView"
+      >
+        <img
+          class="fill-height fill-width"
+          src="{{ businessService.illegalDropImg }}"
+          alt=""
+        />
+        <div
+          style="position: absolute; top: 0; width: 90%"
+          class="fill-height text-center mask"
+        >
           <a href="javascript:" (click)="videoClick()">
             <div class="howell-icon-play play-btn"></div>
           </a>
@@ -114,25 +195,55 @@
       </div>
     </div>
     <ng-container *ngIf="businessService.illegalDropPlayVideo">
-      <div class="fill-width fill-height" style="background-color: rgb(0, 0, 0,0.4);position: absolute;top: 0;">
-        <div style="width: 60%;height: 70%;position: absolute;z-index: 21;left: 20%;top: 12%;">
-          <hw-video-simple-card [closeFn]="businessService.videoClose" [url]="businessService.illegalDropPlayVideo.url"
-          [WebUrl]="businessService.illegalDropPlayVideo.webUrl"
-            [autostart]="true" [cameraName]="businessService.illegalDropPlayVideo.name"></hw-video-simple-card>
+      <div
+        class="fill-width fill-height"
+        style="background-color: rgb(0, 0, 0, 0.4); position: absolute; top: 0"
+      >
+        <div
+          style="
+            width: 60%;
+            height: 70%;
+            position: absolute;
+            z-index: 21;
+            left: 20%;
+            top: 12%;
+          "
+        >
+          <hw-video-simple-card
+            [closeFn]="businessService.videoClose"
+            [url]="businessService.illegalDropPlayVideo.url"
+            [WebUrl]="businessService.illegalDropPlayVideo.webUrl"
+            [autostart]="true"
+            [cameraName]="businessService.illegalDropPlayVideo.name"
+          ></hw-video-simple-card>
         </div>
       </div>
-
     </ng-container>
     <ng-container *ngIf="businessService.illegalDumpVideoImgs">
-      <div class="fill-width fill-height" style="background-color: rgb(0, 0, 0,0.4);position: absolute;top: 0;">
-        <div style="width: 60%;height: 70%;position: absolute;z-index: 21;left: 20%;top: 12%;">
-          <hw-video-simple-card [closeFn]="businessService.videoClose" [playVideoToUrlFn]="businessService.playVideoToUrlFn"
+      <div
+        class="fill-width fill-height"
+        style="background-color: rgb(0, 0, 0, 0.4); position: absolute; top: 0"
+      >
+        <div
+          style="
+            width: 60%;
+            height: 70%;
+            position: absolute;
+            z-index: 21;
+            left: 20%;
+            top: 12%;
+          "
+        >
+          <hw-video-simple-card
+            [closeFn]="businessService.videoClose"
+            [playVideoToUrlFn]="businessService.playVideoToUrlFn"
             [bottomTool]="businessService.videoViewBottomTool"
-            [videoImgs]="businessService.illegalDumpVideoImgs" [cameraName]="businessService.playIllegalDumpVideoTitle">
+            [videoImgs]="businessService.illegalDumpVideoImgs"
+            [cameraName]="businessService.playIllegalDumpVideoTitle"
+          >
           </hw-video-simple-card>
         </div>
       </div>
-
     </ng-container>
   </div>
 </div>

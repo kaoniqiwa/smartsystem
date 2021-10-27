@@ -71,9 +71,22 @@ export class Language {
       case EventType.GarbageDrop:
         return "待处置";
       case EventType.GarbageDropTimeout:
-        return "超时待处置";
+        return "超时处置";
       case EventType.GarbageDropHandle:
         return "已处置";
+      default:
+        return "";
+    }
+  }
+
+  static GarbageDropEventTypeClassName(type: EventType) {
+    switch (type) {
+      case EventType.GarbageDrop:
+        return "orange-text";
+      case EventType.GarbageDropTimeout:
+        return "powder-red-text";
+      case EventType.GarbageDropHandle:
+        return "green-text";
       default:
         return "";
     }

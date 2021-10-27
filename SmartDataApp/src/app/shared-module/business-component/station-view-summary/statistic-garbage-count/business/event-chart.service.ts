@@ -187,21 +187,21 @@ export class EventChartService extends ListAttribute {
     this.statistical = [
       { key: "达标率", vals: [{ val: 0, unit: "分" }] },
       {
-        key: "平均落地时长",
+        key: "平均滞留时长",
         vals: [
           { val: 0, unit: "小时" },
           { val: 0, unit: "分钟" },
         ],
       },
       {
-        key: "最大落地时长",
+        key: "最大滞留时长",
         vals: [
           { val: 0, unit: "小时" },
           { val: 0, unit: "分钟" },
         ],
       },
       {
-        key: "总落地时长",
+        key: "总滞留时长",
         vals: [
           { val: 0, unit: "小时" },
           { val: 0, unit: "分钟" },

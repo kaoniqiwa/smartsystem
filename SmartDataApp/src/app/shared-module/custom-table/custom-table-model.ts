@@ -119,6 +119,9 @@ export class TableAttr implements IViewModel {
   align: boolean;
   /** 样式名称 */
   className?: string;
+
+  itemClassName?: string[];
+
   constructor(
     options: {
       HeadTitleName?: string;
@@ -137,6 +140,7 @@ export class TableAttr implements IViewModel {
       };
       fixedWidth?: string;
       className?: string;
+      itemClassName?: string[];
     } = {}
   ) {
     this.HeadTitleName = options.HeadTitleName || "";
@@ -152,6 +156,7 @@ export class TableAttr implements IViewModel {
     this.fixedWidth = options.fixedWidth || "110px";
     this.align = options.align || false;
     this.className = options.className;
+    this.itemClassName = options.itemClassName;
   }
 }
 

@@ -53,9 +53,9 @@ export class StationSumHistoryCsv extends HWExportCsvStrategy {
       "序号",
       "名称",
       "达标率",
-      "平均落地时长",
-      "最大落地时长",
-      "总落地时长",
+      "平均滞留时长",
+      "最大滞留时长",
+      "总滞留时长",
       "乱丢垃圾",
       "混合投放",
     ]);

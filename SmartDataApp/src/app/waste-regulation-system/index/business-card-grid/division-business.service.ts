@@ -355,7 +355,7 @@ export class DivisionBusinessService {
         this.GarbageDropEventHistoryTimeout = item.args.timeout;
         this.GarbageDropEventHistoryHandle = item.args.handle;
       }
-      this.GarbageDropTaskDivisionId = item.id;
+      //this.GarbageDropTaskDivisionId = item.id;
       this.GarbageStationSummaryPageIndex = GarbageStationSummaryViewPage.event;
       this.GarbageDropEventHistoryContentType = TableContentType.event;
       this.stationListView = true;

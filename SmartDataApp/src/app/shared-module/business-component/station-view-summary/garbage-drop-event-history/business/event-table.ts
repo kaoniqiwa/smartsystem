@@ -78,8 +78,8 @@ export class EventTable extends BusinessTable implements IConverter {
         tdInnerAttrName: "committees",
       }),
       new TableAttr({
-        HeadTitleName: "落地时间",
-        tdWidth: "13%",
+        HeadTitleName: "发送时间",
+        tdWidth: "12%",
         tdInnerAttrName: "dropTime",
       }),
       new TableAttr({
@@ -89,12 +89,18 @@ export class EventTable extends BusinessTable implements IConverter {
       }),
       new TableAttr({
         HeadTitleName: "处置员",
-        tdWidth: "9%",
+        tdWidth: "7%",
         tdInnerAttrName: "processorName",
       }),
       new TableAttr({
+        HeadTitleName: "已发送",
+        tdWidth: "7%",
+        tdInnerAttrName: "isSend",
+        align: true,
+      }),
+      new TableAttr({
         HeadTitleName: "状态",
-        tdWidth: "9%",
+        tdWidth: "6%",
         tdInnerAttrName: "timeOut",
       }),
     ],
@@ -169,7 +175,11 @@ export class EventTable extends BusinessTable implements IConverter {
     //   : event.Data.IsTimeout
     //   ? "超时待处置"
     //   : "待处置";
-    tableField.timeOut = Language.GarbageDropEventType(event.EventType);
+    let inner = Language.GarbageDropEventType(event.EventType);
+    let className = Language.GarbageDropEventTypeClassName(event.EventType);
+    tableField.timeOut = new ClassNameString(className, inner);
+
+    //`<span class="${className}">${inner}</span>`;
     tableField.station = event.Data.StationName;
     tableField.dropTime = this.datePipe.transform(
       event.Data.DropTime,
@@ -180,7 +190,7 @@ export class EventTable extends BusinessTable implements IConverter {
       : "-";
 
     tableField.processorName = event.Data.ProcessorName || "-";
-
+    tableField.isSend = "是";
     if (division.DivisionType == DivisionType.County)
       tableField.county = division.Name;
     else if (division.DivisionType == DivisionType.Committees) {
@@ -229,10 +239,31 @@ export class GarbageDropEventsRecord implements IBusinessData {
 export class TableField implements ITableField {
   id: string;
   county: string;
-  timeOut: string;
+  timeOut: ClassNameString;
   committees: string;
   station: string;
   dropTime: string;
   handleTime: string;
   processorName: string;
+  isSend: string;
+}
+
+class ClassNameString {
+  constructor(className: string, value?: any) {
+    this.className = className;
+    this.value = value;
+  }
+  value: string;
+  private _className: string;
+  public get className(): string {
+    debugger;
+    return this._className;
+  }
+  public set className(v: string) {
+    this._className = v;
+  }
+
+  toString() {
+    return this.value;
+  }
 }
