@@ -119,11 +119,13 @@ export class SessionUser {
   }
 
   clear() {
-    localStorage.removeItem("memoryPwd");
-    localStorage.removeItem("autoLogin");
-    localStorage.removeItem("name");
-    localStorage.removeItem("pwd");
-    localStorage.removeItem(this.divisionsKey);
-    localStorage.removeItem(this.stationsKey);
+    localStorage.clear();
+
+    // localStorage.removeItem("memoryPwd");
+    // localStorage.removeItem("autoLogin");
+    // localStorage.removeItem("name");
+    // localStorage.removeItem("pwd");
+    // localStorage.removeItem(this.divisionsKey);
+    // localStorage.removeItem(this.stationsKey);
   }
 }

@@ -66,7 +66,9 @@ export abstract class InfoCardComponent extends CardComponent<
     super();
   }
   dataChanged() {
-    this.model = this.datas.views[this.datas.pageIndex - 1];
+    if (this.datas && this.datas.views && this.datas.views.length > 0) {
+      this.model = this.datas.views[this.datas.pageIndex - 1];
+    }
   }
 }
 
@@ -124,7 +126,8 @@ export class BasisCardComponent extends CardComponent<ViewsModel<IViewModel>> {
     return isNext;
   }
   dataChanged() {
-    this.model = this.datas.views[this.datas.pageIndex - 1];
+    if (this.datas && this.datas.views && this.datas.views.length > 0)
+      this.model = this.datas.views[this.datas.pageIndex - 1];
     if (this.initEchart) this.initEchart();
   }
 }
@@ -140,7 +143,8 @@ export abstract class VideoCardComponent extends CardComponent<
     super();
   }
   dataChanged() {
-    this.model = this.datas.views[this.datas.pageIndex - 1];
+    if (this.datas && this.datas.views && this.datas.views.length > 0)
+      this.model = this.datas.views[this.datas.pageIndex - 1];
     if (this.playVideo) {
       this.playVideo();
     }

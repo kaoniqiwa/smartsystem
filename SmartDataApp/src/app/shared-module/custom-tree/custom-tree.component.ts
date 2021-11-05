@@ -29,7 +29,10 @@ export class CustomTreeComponent implements OnInit {
   selectedItems = new Array<FlatNode>();
 
   @Input() selectedItemFn: (item: FlatNode, inputVal?: string) => void;
-  @Input() checkedItemFn: (item: FlatNode) => void;
+
+  @Output()
+  checkedItemFn: EventEmitter<CustomTreeSelection> = new EventEmitter();
+
   @Output() rightBtnFn: EventEmitter<RightButtonArgs> = new EventEmitter();
 
   @Output()
@@ -253,7 +256,7 @@ export class CustomTreeComponent implements OnInit {
       item.checkBoxState =
         item.checked == false ? null : this.checkBoxState.self;
       this.sumChildChecked(item, item.checked);
-      if (this.checkedItemFn) this.checkedItemFn(item);
+      this.checkedItemFn.emit({ current: item, selected: this.selectedItems });
     } else if (this.mode == TreeListMode.nomal && this._currentItem) {
       this._currentItem.checked = false;
       item.checked = true;
@@ -381,4 +384,9 @@ export class CustomTreeComponent implements OnInit {
     console.log(sender);
     console.log(args);
   }
+}
+
+export class CustomTreeSelection {
+  current: FlatNode;
+  selected: Array<FlatNode>;
 }

@@ -25,6 +25,7 @@ import {
 import { EventType } from "../../data-core/model/enum";
 import { ActivatedRoute } from "@angular/router";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
+import { UserLoginService } from "src/app/user-authentication/user-login/user-login.service";
 
 @Component({
   selector: "app-index",
@@ -39,8 +40,12 @@ export class IndexComponent implements OnInit {
   cardSize: { width: number; height: number };
 
   moveMapSite: () => void;
-  HideButton: boolean = false;
-  HideTitlebar: boolean = false;
+  get HideButton() {
+    return GlobalStoreService.HideButton;
+  }
+  get HideTitlebar() {
+    return GlobalStoreService.HideTitlebar;
+  }
   user = new SessionUser();
   userDivisionName_ = "";
   GlobalStoreService = GlobalStoreService;
@@ -98,14 +103,16 @@ export class IndexComponent implements OnInit {
   }
 
   async ngOnInit() {
+    console.log("ngOnInit");
+
     this.activatedRoute.queryParams.subscribe((param) => {
       // console.log("HideButton:", param);
       for (const key in param) {
         if (key.toLowerCase() == "hidebutton") {
-          this.HideButton = JSON.parse(param[key]);
+          GlobalStoreService.HideButton = JSON.parse(param[key]);
         }
         if (key.toLowerCase() == "hidetitlebar") {
-          this.HideTitlebar = JSON.parse(param[key]);
+          GlobalStoreService.HideTitlebar = JSON.parse(param[key]);
         }
       }
     });

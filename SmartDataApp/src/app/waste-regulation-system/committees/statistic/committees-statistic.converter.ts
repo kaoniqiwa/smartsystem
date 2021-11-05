@@ -1,3 +1,4 @@
+import { EventType } from "src/app/data-core/model/enum";
 import { DivisionNumberStatistic } from "src/app/data-core/model/waste-regulation/division-number-statistic";
 import { ICommitteesConverter } from "../interface/committees-converter.interface";
 import { CommitteesStatisticViewModel } from "./committees-statistic.model";
@@ -17,6 +18,20 @@ export class CommitteesStatisticConverter
     vm.StationFullCount =
       statistic.WetFullStationNumber + statistic.DryFullStationNumber;
 
+    if (statistic.TodayEventNumbers) {
+      statistic.TodayEventNumbers.forEach((x) => {
+        switch (x.EventType) {
+          case EventType.IllegalDrop:
+            vm.IllegalDropCount = x.DayNumber;
+            break;
+          case EventType.MixedInto:
+            vm.MixedIntoCount = x.DayNumber;
+            break;
+          default:
+            break;
+        }
+      });
+    }
     return vm;
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Language } from "src/app/common/tool/language";
 import { EventType } from "src/app/data-core/model/enum";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
@@ -11,6 +11,9 @@ import {
   RecordRankViewModel,
 } from "./record-rank.model";
 import { ICommitteesComponent } from "../interface/committees-component.interface";
+import { IllegalDropEventRecord } from "src/app/data-core/model/waste-regulation/illegal-drop-event-record";
+import { MixedIntoEventRecord } from "src/app/data-core/model/waste-regulation/mixed-into-event-record";
+import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
 
 @Component({
   selector: "app-record-rank",
@@ -73,11 +76,14 @@ export class RecordRankComponent
     RecordRankItemViewModel
   >;
 
+  @Output()
+  OnItemClicked: EventEmitter<GarbageStation> = new EventEmitter();
+
   view: RecordRankViewModel = new RecordRankViewModel();
 
   type_display = false;
 
-  constructor(private business: RecordRankService) {}
+  constructor(private service: RecordRankService) {}
 
   onLoaded() {
     this.show();
@@ -102,7 +108,7 @@ export class RecordRankComponent
 
   show() {
     if (this.Committees && this.Type) {
-      this.business.load(this.Committees.Id).then((datas) => {
+      this.service.load(this.Committees.Id).then((datas) => {
         this.view.items = datas
           .map((data) => {
             return this.Converter.Convert(data, this.Type.key);
@@ -125,5 +131,11 @@ export class RecordRankComponent
   }
   doTypeChange() {
     this.type_display = true;
+  }
+
+  async itemClicked(event: Event, item: RecordRankItemViewModel) {
+    let station = await this.service.getItem(item.Id);
+    this.OnItemClicked.emit(station);
+    event.stopPropagation();
   }
 }

@@ -24,10 +24,7 @@ import {
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
 import { GarbageStation } from "../../../../../data-core/model/waste-regulation/garbage-station";
 import "../../../../../common/string/hw-string";
-import {
-  BusinessEventTypeEnum,
-  convertEventData,
-} from "../../business-event-type";
+import { convertEventData } from "../../business-event-type";
 import { ExcelData } from "../../../../../common/tool/hw-excel-js/data";
 import { EventAnalyzeTable, EventsAnalyzeRecord } from "./event-analyze-table";
 import { SessionUser } from "../../../../../common/tool/session-user";
@@ -46,7 +43,7 @@ export class BusinessService extends ListAttribute {
   dataSources:
     | Array<DivisionNumberStatisticV2>
     | Array<GarbageStationNumberStatisticV2>;
-  businessEventType = BusinessEventTypeEnum.IllegalDrop;
+  businessEventType = EventType.IllegalDrop;
   table: EventAnalyzeTable;
   constructor(
     private divisionService: DivisionRequestService,
@@ -227,9 +224,9 @@ export class BusinessService extends ListAttribute {
             DeltaNumber: 0,
             EventType: EventType.MixedInto,
           });
-        if (this.businessEventType == BusinessEventTypeEnum.IllegalDrop)
+        if (this.businessEventType == EventType.IllegalDrop)
           return b.EventNumbers[0].DayNumber - a.EventNumbers[0].DayNumber;
-        else if (this.businessEventType == BusinessEventTypeEnum.MixedInfo)
+        else if (this.businessEventType == EventType.MixedInto)
           return b.EventNumbers[1].DayNumber - a.EventNumbers[1].DayNumber;
       });
 
@@ -256,9 +253,9 @@ export class BusinessService extends ListAttribute {
       var statistic_a = statistic as Array<GarbageStationNumberStatisticV2>;
 
       statistic_a = statistic_a.sort((a, b) => {
-        if (this.businessEventType == BusinessEventTypeEnum.IllegalDrop)
+        if (this.businessEventType == EventType.IllegalDrop)
           return b.EventNumbers[0].DayNumber - a.EventNumbers[0].DayNumber;
-        else if (this.businessEventType == BusinessEventTypeEnum.MixedInfo)
+        else if (this.businessEventType == EventType.MixedInto)
           return b.EventNumbers[1].DayNumber - a.EventNumbers[1].DayNumber;
       });
       statistic_a.map((m) => {

@@ -9,9 +9,10 @@
 }
 
 .statistic-item {
-  width: 152px;
+  width: 107px;
   height: 80px;
   background-color: #1D275F;
+  cursor: pointer;
 }
 
 .statistic-item>.background {
@@ -30,7 +31,9 @@
 
 .statistic-item>.inner>.title {}
 
-.statistic-item>.inner>.value {}
+.statistic-item:hover>.inner>.text-center {
+  text-decoration: underline;
+}
 
 .statistic .content {
   display: flex;

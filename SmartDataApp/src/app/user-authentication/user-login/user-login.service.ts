@@ -14,6 +14,7 @@ import { Base64 } from "../../common/tool/base64";
 import { User, UserResourceRole } from "src/app/data-core/model/page";
 import { EnumHelper } from "src/app/common/tool/enum-helper";
 import { UserResourceType } from "src/app/data-core/model/enum";
+import { ConfigRequestService } from "src/app/data-core/repuest/config.service";
 @Injectable()
 export class UserLoginService {
   sessionUser: SessionUser;
@@ -24,6 +25,7 @@ export class UserLoginService {
   jpwd_ = false;
   constructor(
     private httpService: HowellAuthHttpService,
+    private configService: ConfigRequestService,
     private router: Router
   ) {
     this.sessionUser = new SessionUser();
@@ -57,6 +59,26 @@ export class UserLoginService {
           pwd: paramSplit[1],
         });
         this.login();
+      } catch {}
+    }
+  }
+
+  urlAuthLogin1(param: { Auto: string }) {
+    if (param && param.Auto) {
+      let base64 = new Base64(),
+        urlParam = base64.decode(param.Auto),
+        paramSplit = urlParam.split("&");
+      try {
+        this.formVal = {
+          name: paramSplit[0],
+          pwd: paramSplit[1],
+        };
+
+        // this.form.patchValue({
+        //   name: paramSplit[0],
+        //   pwd: paramSplit[1],
+        // });
+        return this.auth(this.formVal.name);
       } catch {}
     }
   }
@@ -182,6 +204,12 @@ export class UserLoginService {
         userDivision[0].ResourceType
       );
     }
+    this.configService
+      .getVideo()
+      .toPromise()
+      .then((config) => {
+        this.sessionUser.video = config;
+      });
   }
 
   async auth(name: string) {

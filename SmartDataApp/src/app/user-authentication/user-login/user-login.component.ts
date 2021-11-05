@@ -6,6 +6,7 @@ import {
 import { UserLoginService } from "./user-login.service";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
+import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 @Component({
   selector: "app-user-login",
   templateUrl: "./user-login.component.html",
@@ -23,6 +24,27 @@ export class UserLoginComponent implements OnInit {
     titleService: Title,
     private route: ActivatedRoute
   ) {
+    this.route.queryParams.subscribe((params) => {
+      for (const key in params) {
+        if (key.toLowerCase() == "hidebutton") {
+          GlobalStoreService.HideButton = JSON.parse(params[key]);
+        }
+        if (key.toLowerCase() == "hidetitlebar") {
+          GlobalStoreService.HideTitlebar = JSON.parse(params[key]);
+        }
+      }
+
+      this.userLoginService.urlAuthLogin1({
+        Auto: params.Auth,
+      });
+
+      // setTimeout(() => {
+      //   /**url 授权登录 */
+      //
+
+      // }, 1200);
+    });
+
     titleService.setTitle("用户登录");
     this.userLoginService.onLoginSuccessed = () => {
       this.onLoginSuccessed();
@@ -43,14 +65,6 @@ export class UserLoginComponent implements OnInit {
     setTimeout(() => {
       this.showBg = false;
     }, 1000);
-    this.route.queryParams.subscribe((params) => {
-      setTimeout(() => {
-        /**url 授权登录 */
-        this.userLoginService.urlAuthLogin({
-          Auto: params.Auth,
-        });
-      }, 1200);
-    });
   }
 
   autoLoginCheck() {

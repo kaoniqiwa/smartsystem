@@ -80,10 +80,16 @@ export class SearchControl extends SearchHelper {
     });
   }
 
+  private _formBeginDate: Date;
   set formBeginDate(v: Date) {
+    this._formBeginDate = v;
+
     this.searchform.patchValue({
       BeginTime: this.datePipe.transform(v, "yyyy-MM-dd HH:mm"),
     });
+  }
+  get formBeginDate() {
+    return this._formBeginDate;
   }
 
   set formEndDate(v: Date) {

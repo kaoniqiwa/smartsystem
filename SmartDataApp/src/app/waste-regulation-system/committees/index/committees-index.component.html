@@ -29,6 +29,9 @@
           [Types]="RecordRankEventBussiness.Types"
           [Type]="RecordRankEventBussiness.Type"
           [Converter]="RecordRankEventBussiness.Converter"
+          (OnItemClicked)="
+            RecordRankEventBussiness.OnGarbageStationSelected($event)
+          "
         ></app-record-rank>
       </div>
     </div>
@@ -46,6 +49,9 @@
           [Types]="RecordRankDropBussiness.Types"
           [Type]="RecordRankDropBussiness.Type"
           [Converter]="RecordRankDropBussiness.Converter"
+          (OnItemClicked)="
+            RecordRankDropBussiness.OnGarbageStationSelected($event)
+          "
         ></app-record-rank>
       </div>
     </div>
@@ -53,6 +59,30 @@
       <div class="waste-body__wrapper padding">
         <app-committees-statistic
           [Committees]="Committees"
+          (OnAllDeviceCountClicked)="
+            CommitteesStatisticBussiness.OnAllDeviceCountClicked($event)
+          "
+          (OnOnlineDeviceCountClicked)="
+            CommitteesStatisticBussiness.OnOnlineDeviceCountClicked($event)
+          "
+          (OnOfflineDeviceCountClicked)="
+            CommitteesStatisticBussiness.OnOfflineDeviceCountClicked($event)
+          "
+          (OnGarbageStationCountClicked)="
+            CommitteesStatisticBussiness.OnGarbageStationCountClicked($event)
+          "
+          (OnGarbageDropEventCountClicked)="
+            CommitteesStatisticBussiness.OnGarbageDropEventCountClicked($event)
+          "
+          (OnGarbageFullEventCountClicked)="
+            CommitteesStatisticBussiness.OnGarbageFullEventCountClicked($event)
+          "
+          (OnIllegalDropEventCountClicked)="
+            CommitteesStatisticBussiness.OnIllegalDropEventCountClicked($event)
+          "
+          (OnMixedIntoEventCountClicked)="
+            CommitteesStatisticBussiness.OnMixedIntoEventCountClicked($event)
+          "
         ></app-committees-statistic>
       </div>
     </div>
@@ -71,7 +101,7 @@
     </div>
   </div>
 </div>
-<!-- <app-window [Model]="windowModel"> 测试 </app-window>
+<!-- 
 <hw-gallery-target
   [closeViewFn]="galleryTargetFn"
   [model]="tableService.galleryTargetView.galleryTarget"
@@ -80,3 +110,57 @@
   [imgEventFn]="tableService.galleryTargetView.galleryTargetPageFn"
 >
 </hw-gallery-target> -->
+<app-window [Model]="Window.device">
+  <ng-container>
+    <hw-garbage-station-cameras
+      [divisionsId]="GlobalStoreService.divisionId"
+      [cameraStateTable]="Window.device.onlineStatus"
+    ></hw-garbage-station-cameras>
+  </ng-container>
+</app-window>
+<app-window [Model]="Window.record">
+  <ng-container>
+    <hw-illegal-drop-event-summary
+      [businessEventType]="Window.record.eventType"
+      [GarbageStation]="Window.garbageStation"
+    ></hw-illegal-drop-event-summary>
+  </ng-container>
+</app-window>
+
+<app-window [Model]="Window.station">
+  <ng-container>
+    <hw-garbage-station-summary
+      [divisionsId]="GlobalStoreService.divisionId"
+      [PageIndex]="Window.station.index"
+      [GarbageDropEventHistoryContentType]="Window.station.contentType"
+      [GarbageDropTaskDivisionId]="GlobalStoreService.divisionId"
+      [GarbageDropEventHistoryHandle]="Window.station.garbageDropHandle"
+      [GarbageDropEventHistoryTimeout]="Window.station.garbageDropTimeout"
+      [garbageStationTableOperation]="false"
+    ></hw-garbage-station-summary>
+  </ng-container>
+</app-window>
+<app-window [Model]="Window.fullStation">
+  <ng-container>
+    <hw-full-garbage-station-summary
+      [divisionsId]="GlobalStoreService.divisionId"
+    >
+    </hw-full-garbage-station-summary>
+  </ng-container>
+</app-window>
+<app-window [Model]="Window.stranded">
+  <ng-container>
+    <hw-station-stranded
+      [divisionId]="GlobalStoreService.divisionId"
+      [GarbageStation]="Window.garbageStation"
+    ></hw-station-stranded>
+  </ng-container>
+</app-window>
+<app-window [Model]="Window.summary">
+  <ng-container>
+    <app-statistic-summary
+      [Committees]="Committees"
+      [Stations]="GarbageStations"
+    ></app-statistic-summary>
+  </ng-container>
+</app-window>

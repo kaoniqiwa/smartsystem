@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewChild, Input } from "@angular/core";
-import { CustomTreeComponent } from "../../../custom-tree/custom-tree.component";
+import {
+  CustomTreeComponent,
+  CustomTreeSelection,
+} from "../../../custom-tree/custom-tree.component";
 import { DivisionTreeSerevice } from "../../../../aiop-system/garbage-station/division-tree/business/division-tree.service";
 import { StationTreeService } from "../../../../aiop-system/garbage-station/division-tree/business/garbage-station-tree";
 import { NodeTypeEnum } from "../../../../aiop-system/common/tree.service";
@@ -40,7 +43,8 @@ export class TreeDropListV2Component implements OnInit {
   @Input()
   selectedItemFn: (item: { id: string; text: string }) => void;
 
-  selectedItemClick = (item: FlatNode) => {
+  selectedItemClick(selection: CustomTreeSelection) {
+    let item = selection.current;
     const setText = (n: FlatNode) => {
       if (this.selectedText) {
         const d = this.findNode(this.selectedText.id),
@@ -52,6 +56,12 @@ export class TreeDropListV2Component implements OnInit {
         if (p) {
           p.checked = false;
           p.checkBoxState = null;
+        }
+
+        for (let i = 0; i < selection.selected.length; i++) {
+          const selected = selection.selected[i];
+          selected.checked = false;
+          selected.checkBoxState = null;
         }
       }
       if (item.checked)
@@ -76,7 +86,7 @@ export class TreeDropListV2Component implements OnInit {
       item.checkBoxState = null;
       this.garbageStationTree.sumChildChecked(item, item.checked);
     }
-  };
+  }
 
   treeListMode = TreeListMode.checkedBox;
 
@@ -139,6 +149,7 @@ export class TreeDropListV2Component implements OnInit {
   }
 
   async reInit() {
+    debugger;
     if (this.dataService.divisions.length == 0)
       this.dataService.divisions = await this.divisionDao.allDivisions();
     this.stationTreeService.appendDivisionModel(

@@ -59,6 +59,15 @@
   background: rgb(243, 141, 31);
 }
 
+.rank .content .rank-item>div .name {
+  cursor: pointer;
+}
+
+.rank .content .rank-item>div .name:hover {
+  color: #6997ff;
+  text-decoration: underline;
+}
+
 .rank .header .dropdown.control {
   border: 1px solid #5e6ebf;
   background: #0c1127;

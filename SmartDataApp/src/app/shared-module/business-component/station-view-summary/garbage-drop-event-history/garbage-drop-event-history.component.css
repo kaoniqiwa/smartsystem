@@ -64,3 +64,18 @@
 .task-foot table td:first-child {
   padding-left: 40px;
 }
+
+.output {
+  position: absolute;
+  right: 10px;
+  top: 88px;
+}
+
+.output button {
+  background-image: none;
+}
+
+.output button:hover {
+  background-image: none;
+  color: #cfd7ff;
+}

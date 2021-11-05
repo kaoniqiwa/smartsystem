@@ -1,0 +1,49 @@
+<div class="number-list">
+  <div class="">
+    <div class="title">垃圾处置达标率</div>
+    <div>
+      <span class="text-white value">{{ view.Garde }}</span
+      ><span class="blue-text unit">分</span>
+    </div>
+  </div>
+  <div class="">
+    <div class="title">垃圾滞留任务处置率</div>
+    <div>
+      <span class="text-white value">{{
+        view ? view.GarbageHandleRatio : 0
+      }}</span>
+      <span class="blue-text unit">%</span>
+    </div>
+  </div>
+  <div class="">
+    <div class="title">垃圾滞留时长</div>
+    <div>
+      <span *ngIf="!!view && view.GarbageTimeHour > 0">
+        <span class="text-white value">{{
+          view ? view.GarbageTimeHour : 0
+        }}</span>
+        <span class="blue-text unit">小时</span>
+      </span>
+      <span *ngIf="view.GarbageTimeHour == 0 || view.GarbageTimeMinute > 0">
+        <span class="text-white value">{{
+          view ? view.GarbageTimeMinute : 0
+        }}</span>
+        <span class="blue-text unit">分钟</span>
+      </span>
+    </div>
+  </div>
+  <div class="">
+    <div class="title">乱丢垃圾总数量</div>
+    <div>
+      <span class="text-white value">{{ view ? view.IllegalDrop : 0 }}</span
+      ><span class="blue-text unit">起</span>
+    </div>
+  </div>
+  <div class="">
+    <div class="title">混合投放总数量</div>
+    <div>
+      <span class="text-white value">{{ view ? view.MixedInto : 0 }}</span
+      ><span class="blue-text unit">起</span>
+    </div>
+  </div>
+</div>

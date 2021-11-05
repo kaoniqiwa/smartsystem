@@ -32,14 +32,15 @@ export class StationStrandedComponent implements OnInit {
     }
   }
 
-  private garbageStation: GarbageStation;
+  private garbageStation?: GarbageStation;
   @Input()
-  set GarbageStation(station: GarbageStation) {
+  set GarbageStation(station: GarbageStation | undefined) {
+    console.log(station);
     this.garbageStation = station;
-    if (this.garbageStation) {
-      this.onLoaded;
-      this.searchFn(this.garbageStation.Name);
-    }
+
+    this.search({
+      stationId: this.garbageStation ? this.garbageStation.Id : undefined,
+    });
   }
   get GarbageStation() {
     return this.garbageStation;

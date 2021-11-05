@@ -6,7 +6,7 @@ export class GarbageTaskNumberCardData {
   Name: string = "";
   /**	Int32	总处理任务数量	O */
   TotalCount = 0;
-  /**	Int32	完成任务数量	O */
+  /**	Int32	未处理任务数量	O */
   UncompletedCount = 0;
   /** 垃圾滞留数量 */
   GarbageRetentionCount = 0;

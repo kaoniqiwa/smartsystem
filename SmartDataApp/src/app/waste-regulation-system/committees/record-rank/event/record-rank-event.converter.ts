@@ -36,12 +36,12 @@ export class RecordRankEventConverter
   }
 }
 export class RecordRankEventTypes implements IBussinessEnum {
-  [key: string]: { key: string | number; value: string };
-  IllegalDrop = {
+  [key: string]: BussinessEnumItem;
+  IllegalDrop: BussinessEnumItem = {
     key: EventType.IllegalDrop,
     value: Language.EventType(EventType.IllegalDrop),
   };
-  MixedInto = {
+  MixedInto: BussinessEnumItem = {
     key: EventType.MixedInto,
     value: Language.EventType(EventType.MixedInto),
   };

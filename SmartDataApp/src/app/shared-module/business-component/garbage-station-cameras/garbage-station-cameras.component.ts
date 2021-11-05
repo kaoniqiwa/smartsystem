@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
-import {
-  CameraTableService,
-  CameraStateTableEnum,
-} from "./business/camera-table.service";
+import { OnlineStatus } from "src/app/data-core/model/enum";
+import { CameraTableService } from "./business/camera-table.service";
 
 @Component({
   selector: "hw-garbage-station-cameras",
@@ -11,7 +9,18 @@ import {
   styleUrls: ["./garbage-station-cameras.component.styl"],
 })
 export class GarbageStationCamerasComponent implements OnInit {
-  @Input() cameraStateTable = CameraStateTableEnum.none;
+  private _cameraStateTable?: OnlineStatus = undefined;
+  public get cameraStateTable(): OnlineStatus | undefined {
+    return this._cameraStateTable;
+  }
+  @Input()
+  public set cameraStateTable(v: OnlineStatus | undefined) {
+    console.log(v);
+
+    this._cameraStateTable = v;
+    this.load();
+  }
+
   @Input() divisionsId = "";
   searchFn = async (text: string) => {
     this.tableService.search.state = true;
@@ -24,7 +33,11 @@ export class GarbageStationCamerasComponent implements OnInit {
   };
   constructor(private tableService: CameraTableService) {}
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.load();
+  }
+
+  async load() {
     this.tableService.divisionsId = this.divisionsId;
     this.tableService.cameraStateTable = this.cameraStateTable;
     await this.tableService.getGarbageStations();

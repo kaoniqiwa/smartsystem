@@ -160,7 +160,6 @@ export class MapDeployComponent implements OnInit {
   }
 
   onTreeNodeRightLinkClicked(args: RightButtonArgs<GarbageStation>) {
-    debugger;
     this.wantBindNode = args.node;
 
     this.mapCoordinateWubdiwDataBusiness.Display = true;

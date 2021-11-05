@@ -90,4 +90,7 @@ export class GlobalStoreService {
   static stopInterval() {
     clearInterval(this.intervalHandle);
   }
+
+  static HideTitlebar?: boolean;
+  static HideButton?: boolean;
 }

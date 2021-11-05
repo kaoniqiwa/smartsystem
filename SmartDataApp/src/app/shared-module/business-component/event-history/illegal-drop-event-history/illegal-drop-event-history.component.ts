@@ -8,7 +8,10 @@ import {
   OnDestroy,
 } from "@angular/core";
 import { CustomTableComponent } from "../../../../shared-module/custom-table/custom-table.component";
-import { EventTableService, FillMode } from "./business/event-table.service";
+import {
+  EventTableService,
+  FillMode,
+} from "./business/illegal-drop-event-table.service";
 import { PageListMode } from "../../../../common/tool/enum-helper";
 import { ImageDesc } from "../../../image-desc-card/image-desc";
 import { Router } from "@angular/router";
@@ -54,17 +57,16 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
   @Input() isPage: boolean;
   @Input() changeViewFn: (index: number) => void;
 
-  private _GarbageStation: GarbageStation;
-  public get GarbageStation(): GarbageStation {
+  private _GarbageStation?: GarbageStation;
+  public get GarbageStation(): GarbageStation | undefined {
     return this._GarbageStation;
   }
   @Input()
-  public set GarbageStation(v: GarbageStation) {
+  public set GarbageStation(v: GarbageStation | undefined) {
     this._GarbageStation = v;
-    if (this._GarbageStation) {
-      this.tableService.search.stationId = v.Id;
-      this.search();
-    }
+
+    this.tableService.search.stationId = v ? v.Id : undefined;
+    this.search();
   }
 
   startDate = (b: Date) => {

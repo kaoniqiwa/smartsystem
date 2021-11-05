@@ -11,12 +11,14 @@ import { CommitteesIndexService } from "./committees-index.service";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
 import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
 import { EventType } from "src/app/data-core/model/enum";
-import { RecordRankEventBussiness } from "../record-rank/event/record-rank-event.bussiness";
-import { RecordRankDropBussiness } from "../record-rank/drop/record-rank-drop.bussiness";
+import { RecordRankEventBussiness } from "./business/record-rank-event.business";
+import { RecordRankDropBussiness } from "./business/record-rank-drop.business";
 import { CommitteesHistroyTableBussiness } from "../histroy-table/committees-history-table.business";
 import { GalleryRollPageBusiness } from "./business/gallery-roll-page.business";
 import { WindowViewModel } from "../window/window.model";
-import { HistoryImageWindowBussiness } from "./business/history-image-window.bussiness";
+import { HistoryImageWindowBussiness } from "./business/history-image-window.business";
+import { CommitteesStatisticBussiness } from "./business/committees-statistic.business";
+import { WindowOperationBussiness } from "./business/window-operation.business";
 
 @Component({
   selector: "app-committees-index",
@@ -27,8 +29,10 @@ import { HistoryImageWindowBussiness } from "./business/history-image-window.bus
   ],
   providers: [
     CommitteesIndexService,
+    WindowOperationBussiness,
     GalleryRollPageBusiness,
     HistoryImageWindowBussiness,
+    CommitteesStatisticBussiness,
   ],
 })
 export class IndexCommitteesComponent implements OnInit {
@@ -36,7 +40,7 @@ export class IndexCommitteesComponent implements OnInit {
   GarbageStations?: GarbageStation[];
   GarbageStationSelected?: GarbageStation;
   cardSize: { width: number; height: number };
-  windowModel = new WindowViewModel();
+
   userDivisionName_ = "";
   GlobalStoreService = GlobalStoreService;
   constructor(
@@ -45,9 +49,28 @@ export class IndexCommitteesComponent implements OnInit {
     private configService: ConfigRequestService,
     private eventPushService: EventPushService,
     private mqttSevice: MQTTEventService,
+    private Window: WindowOperationBussiness,
     private GalleryRollPageBusiness: GalleryRollPageBusiness,
-    private HistoryImageWindowBussiness: HistoryImageWindowBussiness
-  ) {}
+    private HistoryImageWindowBussiness: HistoryImageWindowBussiness,
+    private CommitteesStatisticBussiness: CommitteesStatisticBussiness
+  ) {
+    this.RecordRankEventBussiness.onGarbageStationSelected = (
+      business,
+      station
+    ) => {
+      this.Window.garbageStation = station;
+      this.Window.record.eventType = business.Type.key as EventType;
+      this.Window.record.show = true;
+    };
+    this.RecordRankDropBussiness.onGarbageStationSelected = (
+      business,
+      station
+    ) => {
+      this.Window.garbageStation = station;
+
+      this.Window.stranded.show = true;
+    };
+  }
 
   RecordRankEventBussiness = new RecordRankEventBussiness();
   RecordRankDropBussiness = new RecordRankDropBussiness();
@@ -74,6 +97,6 @@ export class IndexCommitteesComponent implements OnInit {
   }
 
   OnCommitteesInfoClicked(division: Division) {
-    this.windowModel.show = true;
+    this.Window.summary.show = true;
   }
 }

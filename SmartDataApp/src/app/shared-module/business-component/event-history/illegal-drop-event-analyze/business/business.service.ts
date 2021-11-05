@@ -23,13 +23,10 @@ import {
 } from "../../../../../common/directive/echarts/echart";
 import "../../../../../common/string/hw-string";
 import { ExcelData } from "../../../../../common/tool/hw-excel-js/data";
-import {
-  BusinessEventTypeEnum,
-  convertEventData,
-} from "../../business-event-type";
+import { convertEventData } from "../../business-event-type";
 import { MixedIntoEventRecord } from "../../../../../data-core/model/waste-regulation/mixed-into-event-record";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
-import { DivisionType } from "../../../../../data-core/model/enum";
+import { DivisionType, EventType } from "../../../../../data-core/model/enum";
 import {
   GetEventRecordsParams,
   IllegalDropEventRecord,
@@ -56,7 +53,7 @@ export class BusinessService extends ListAttribute {
   oneDivisionNode = false;
   reportType = "";
   dataSources: Map<string, EventNumberStatistic[]>;
-  businessEventType = BusinessEventTypeEnum.IllegalDrop;
+  businessEventType = EventType.IllegalDrop;
   loadViewFn: () => void;
   constructor(
     private divisionService: DivisionRequestService,
@@ -289,19 +286,13 @@ export class BusinessService extends ListAttribute {
           }
         };
 
-      if (
-        this.businessEventType == BusinessEventTypeEnum.IllegalDrop &&
-        requsetParam
-      ) {
+      if (this.businessEventType == EventType.IllegalDrop && requsetParam) {
         const response = await this.illegalDropEventService.list(requsetParam);
         if (response.Data && response.Data)
           response.Data.map((m) => fillGroupEventData(m));
         this.todayEventGroupData(groupEventData, tempEventDataName);
       }
-      if (
-        this.businessEventType == BusinessEventTypeEnum.MixedInfo &&
-        requsetParam
-      ) {
+      if (this.businessEventType == EventType.MixedInto && requsetParam) {
         const response = await this.mixedIntoEventService.list(requsetParam);
         if (response.Data && response.Data)
           response.Data.map((m) => fillGroupEventData(m));

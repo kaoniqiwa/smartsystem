@@ -21,6 +21,7 @@ import { Division } from "../../../../data-core/model/waste-regulation/division"
 import { DivisionRequestService } from "../../../../data-core/repuest/division.service";
 import { AIOPMediumPictureUrl } from "../../../../data-core/url/aiop/resources";
 import { ResourceMediumRequestService } from "../../../../data-core/repuest/resources.service";
+import { OnlineStatus } from "src/app/data-core/model/enum";
 @Injectable()
 export class CameraTableService {
   dataSource_ = new Array<Camera>();
@@ -40,7 +41,7 @@ export class CameraTableService {
   garbageStations = new Array<GarbageStation>();
   resourceCamera = new Array<Camera>();
   divisions = new Array<Division>();
-  cameraStateTable: CameraStateTableEnum;
+  cameraStateTable?: OnlineStatus = undefined;
   findImgSrc = "";
   divisionsId = "";
   constructor(
@@ -104,20 +105,10 @@ export class CameraTableService {
     param.PageIndex = pageIndex;
     param.PageSize = 10;
     if (search.state) param.Name = search.searchText;
-    if (
-      this.cameraStateTable == CameraStateTableEnum.online ||
-      this.cameraStateTable == CameraStateTableEnum.offline
-    )
-      param.OnlineStatus = this.cameraStateTable;
+    param.OnlineStatus = this.cameraStateTable;
     param.DivisionIds = [this.divisionsId];
     console.log(param);
 
     return param;
   }
-}
-
-export enum CameraStateTableEnum {
-  online,
-  offline,
-  none,
 }

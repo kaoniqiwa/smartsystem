@@ -16,13 +16,13 @@ import { ConfigRequestService } from "../../../../data-core/repuest/config.servi
 import { DivisionBusinessService } from "../../../../waste-regulation-system/index/business-card-grid/division-business.service";
 import { HowellExcelV1 } from "../../../../common/tool/hw-excel-js/hw-excel-v1";
 import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
-import { BusinessEventTypeEnum } from "../business-event-type";
+
 import { ClassTypeEnum } from "./business/search";
 import { DivisionDao } from "../../../../data-core/dao/division-dao";
 import { HowellCSV } from "../../../../common/tool/hw-excel-js/hw-csv";
 import { TITLEKEY, COLNAME } from "../../../../common/tool/hw-excel-js/data";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
-import { DivisionType } from "src/app/data-core/model/enum";
+import { DivisionType, EventType } from "src/app/data-core/model/enum";
 import { TreeListMode } from "src/app/shared-module/custom-tree/custom-tree";
 @Component({
   selector: "hw-illegal-drop-event-analyze",
@@ -31,7 +31,7 @@ import { TreeListMode } from "src/app/shared-module/custom-tree/custom-tree";
   providers: [BusinessService, DivisionDao],
 })
 export class IllegalDropEventAnalyzeComponent implements OnInit {
-  @Input() businessEventType = BusinessEventTypeEnum.IllegalDrop;
+  @Input() businessEventType = EventType.IllegalDrop;
   @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
   @Input() changeViewFn: (index: number) => void;
   @ViewChild(DateTimePickerDirective)
@@ -80,7 +80,7 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
   }
 
   get pageTitle() {
-    return this.businessEventType == BusinessEventTypeEnum.IllegalDrop
+    return this.businessEventType == EventType.IllegalDrop
       ? "乱丢垃圾"
       : "混合投放";
   }

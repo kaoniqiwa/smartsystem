@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
 import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
@@ -56,5 +56,47 @@ export class CommitteesStatisticComponent
     GlobalStoreService.interval.subscribe(() => {
       this.show();
     });
+  }
+
+  @Output()
+  OnAllDeviceCountClicked: EventEmitter<void> = new EventEmitter();
+  @Output()
+  OnOnlineDeviceCountClicked: EventEmitter<void> = new EventEmitter();
+  @Output()
+  OnOfflineDeviceCountClicked: EventEmitter<void> = new EventEmitter();
+  @Output()
+  OnGarbageStationCountClicked: EventEmitter<void> = new EventEmitter();
+  @Output()
+  OnGarbageDropEventCountClicked: EventEmitter<void> = new EventEmitter();
+  @Output()
+  OnGarbageFullEventCountClicked: EventEmitter<void> = new EventEmitter();
+  @Output()
+  OnIllegalDropEventCountClicked: EventEmitter<void> = new EventEmitter();
+  @Output()
+  OnMixedIntoEventCountClicked: EventEmitter<void> = new EventEmitter();
+
+  AllDeviceCountClicked(event: Event) {
+    this.OnAllDeviceCountClicked.emit();
+  }
+  OnlineDeviceCountClicked(event: Event) {
+    this.OnOnlineDeviceCountClicked.emit();
+  }
+  OfflineDeviceCountClicked(event: Event) {
+    this.OnOfflineDeviceCountClicked.emit();
+  }
+  GarbageStationCountClicked(event: Event) {
+    this.OnGarbageStationCountClicked.emit();
+  }
+  GarbageDropEventCountClicked(event: Event) {
+    this.OnGarbageDropEventCountClicked.emit();
+  }
+  GarbageFullEventCountClicked(event: Event) {
+    this.OnGarbageFullEventCountClicked.emit();
+  }
+  IllegalDropEventCountClicked(event: Event) {
+    this.OnIllegalDropEventCountClicked.emit();
+  }
+  MixedIntoEventCountClicked(event: Event) {
+    this.OnMixedIntoEventCountClicked.emit();
   }
 }

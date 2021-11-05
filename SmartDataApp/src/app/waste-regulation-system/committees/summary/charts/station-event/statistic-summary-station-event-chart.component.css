@@ -1,0 +1,24 @@
+.station-event-chart {
+  height: 100%;
+}
+
+.station-event-chart .station-event-chart-header {
+  font-size: 24px;
+  color: white;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.station-event-chart-content {
+  display: flex;
+  height: calc(100%);
+  margin-top: -36px;
+}
+
+.station-event-chart-content .echarts {
+  height: 100%;
+  width: 100%;
+}

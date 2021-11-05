@@ -1,6 +1,9 @@
 import { Injectable } from "@angular/core";
-import { CustomTableEvent } from "../../../../../shared-module/custom-table/custom-table-event";
-import { EventTable, IllegalDropEventsRecord } from "./event-table";
+import { CustomTableEvent } from "../../../../custom-table/custom-table-event";
+import {
+  EventTable,
+  IllegalDropEventsRecord,
+} from "./illegal-drop-event-table";
 import { SearchControl } from "../../search";
 import "../../../../../common/string/hw-string";
 import {
@@ -130,12 +133,12 @@ export class EventTableService extends ListAttribute {
       var event = this.eventTable.findEventFn(id);
       if (event == null)
         event = this.allDataSource.find((x) => x.EventId == id);
-      const user = new SessionUser(),
-        video = await this.requestVideoUrl(
-          DateInterval(event.EventTime + "", user.video.beforeInterval),
-          DateInterval(event.EventTime + "", user.video.afterInterval),
-          event.ResourceId
-        );
+      const user = new SessionUser();
+      const video = await this.requestVideoUrl(
+        DateInterval(event.EventTime.toString(), user.video.beforeInterval),
+        DateInterval(event.EventTime.toString(), user.video.afterInterval),
+        event.ResourceId
+      );
       this.playVideo = new PlayVideo(video.WebUrl, null, event.ResourceName);
       this.playVideo.url = video.Url;
       this.navService.playVideoBug.emit(true);
@@ -147,11 +150,11 @@ export class EventTableService extends ListAttribute {
         event = this.allDataSource.find((x) => x.EventId == id);
       const user = new SessionUser(),
         s = DateInterval(
-          event.EventTime + "",
+          event.EventTime.toString(),
           user.video.beforeInterval
         ).toISOString(),
         e = DateInterval(
-          event.EventTime + "",
+          event.EventTime.toString(),
           user.video.afterInterval
         ).toISOString(),
         video = await this.garbageStationService.cameraFileUrl(
@@ -336,6 +339,6 @@ export class FillMode {
   }
 
   set pageListMode(val: any) {
-    sessionStorage.setItem(this.sessionTag, val + "");
+    sessionStorage.setItem(this.sessionTag, val.toString());
   }
 }

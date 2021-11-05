@@ -114,6 +114,7 @@
                   class="{{ fontColor(item[attrs.tdInnerAttrName]) }}"
                   [ngClass]="[
                     attrs.className ? attrs.className : '',
+                    item[attrs.tdInnerAttrName] &&
                     item[attrs.tdInnerAttrName].className
                       ? item[attrs.tdInnerAttrName].className
                       : ''

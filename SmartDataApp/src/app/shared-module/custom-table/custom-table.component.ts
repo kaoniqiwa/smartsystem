@@ -24,7 +24,15 @@ export class CustomTableComponent implements OnInit {
   // @ViewChild('customTable', { read: InfiniteScrollDirective })
   // scrollBar: InfiniteScrollDirective;
   //注入表格的参数对象
-  @Input() model: CustomTableArgs<IBusinessData>;
+
+  private _model: CustomTableArgs<IBusinessData>;
+  public get model(): CustomTableArgs<IBusinessData> {
+    return this._model;
+  }
+  @Input()
+  public set model(v: CustomTableArgs<IBusinessData>) {
+    this._model = v;
+  }
 
   // 点击表格栏目
   @Output() selectedEvent = new EventEmitter<string[]>();

@@ -1,0 +1,19 @@
+.number-list {
+  font-size: 18px;
+  display: flex;
+  background-color: rgba(117, 134, 224, 0.05);
+  margin: 10px 0px;
+  padding: 20px;
+}
+
+.number-list>div {
+  width: 20%;
+}
+
+.number-list .title {
+  margin-bottom: 8px;
+}
+
+.number-list .value {
+  font-size: 40px;
+}

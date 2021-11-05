@@ -104,10 +104,13 @@ export class EventTable extends BusinessTable implements IConverter {
     tooltipTd.listMap = new Map<string, Array<{ icon: string; tip: string }>>();
     if (input instanceof GarbageDropEventsRecord)
       for (const item of input.items) {
-        items.push(this.toTableModel(item));
-        const mb = this.toMenber(item);
-        if (mb) tooltipTd.listMap.set(item.Id, this.toMenber(item));
-        tds.push(this.toGalleryModel(this.findStationFn(item.Id)));
+        let station = this.findStationFn(item.Id);
+        if (station) {
+          items.push(this.toTableModel(item));
+          const mb = this.toMenber(item);
+          if (mb) tooltipTd.listMap.set(item.Id, this.toMenber(item));
+          tds.push(this.toGalleryModel(this.findStationFn(item.Id)));
+        }
       }
     if (output instanceof CustomTableArgs) {
       output.values = items;

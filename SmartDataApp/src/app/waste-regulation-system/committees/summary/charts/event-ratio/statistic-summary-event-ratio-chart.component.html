@@ -1,0 +1,35 @@
+<div class="event-ratio-chart">
+  <div class="event-ratio-chart-header">滞留任务处置</div>
+  <div class="event-ratio-chart-content">
+    <div class="event-ratio-chart-content-chart">
+      <div #echarts class="echarts"></div>
+    </div>
+    <div class="number-list">
+      <div>
+        <div>混合投放</div>
+        <div>
+          <span class="blue-text value">{{ data ? data.MixedInto : 0 }}</span
+          ><span class="blue-text">起</span>
+        </div>
+      </div>
+      <div>
+        <div>垃圾满溢</div>
+        <div>
+          <span class="orange-text value">{{
+            data ? data.GarbageFull : 0
+          }}</span
+          ><span class="blue-text">起</span>
+        </div>
+      </div>
+      <div>
+        <div>乱丢垃圾</div>
+        <div>
+          <span class="powder-red-text value">{{
+            data ? data.IllegalDrop : 0
+          }}</span
+          ><span class="blue-text">起</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

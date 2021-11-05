@@ -19,4 +19,8 @@ export class RecordRankService
     let list = await this.stationService.statisticNumberList(params);
     return list.Data;
   }
+
+  getItem(stationId: string) {
+    return this.stationService.get(stationId);
+  }
 }

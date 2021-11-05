@@ -25,7 +25,6 @@ import { ICommitteesConverter } from "../../interface/committees-converter.inter
 export class GalleryRollPageBusiness {
   constructor() {
     GlobalStoreService.change.subscribe((station: GarbageStation) => {
-      debugger;
       this.Model.items.forEach((x) => {
         if (x.title.id === station.Id) {
           this.Model.index = x.index;

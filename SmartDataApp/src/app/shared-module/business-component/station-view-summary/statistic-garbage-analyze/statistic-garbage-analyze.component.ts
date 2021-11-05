@@ -68,6 +68,7 @@ export class StatisticGarbageAnalyzeComponent implements OnInit {
 
   search() {
     const ids = new Array<string>();
+
     this.dropList.selectedTexts.map((x) => ids.push(x.id));
     if (ids.length < 6 && ids.length > 0) {
       this.businessService.search.stationId = ids;

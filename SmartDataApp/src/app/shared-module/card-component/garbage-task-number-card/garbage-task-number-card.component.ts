@@ -68,30 +68,33 @@ export class GarbageTaskNumberCardComponent
 
   dataChanged() {
     super.dataChanged();
-    this.timeSpan.stop();
-    this.index = 0;
-    this.timeSpan.run();
+
+    // 隔一段时间切换
+    // this.timeSpan.stop();
+    // this.index = 0;
+    // this.timeSpan.run();
+
+    if (!this.model) return;
+    let datas = (this.model as GarbageTaskNumberCardDatas).datas;
+    datas = datas
+      // .filter((x) => {
+      //   return !Number.isNaN(x.ratio);
+      // })
+      .sort((a, b) => {
+        return a.Id.localeCompare(b.Id);
+      });
+    this.data = datas[0];
+    if (this.index >= datas.length) {
+      this.index = 0;
+    }
   }
 
   ngOnInit(): void {
     this.loadDatas(new ViewsModel<GarbageTaskNumberCardDatas>());
-
-    this.timeSpan.onInterval = () => {
-      if (!this.model) return;
-      let datas = (this.model as GarbageTaskNumberCardDatas).datas;
-      datas = datas
-        // .filter((x) => {
-        //   return !Number.isNaN(x.ratio);
-        // })
-        .sort((a, b) => {
-          return a.Id.localeCompare(b.Id);
-        });
-      this.data = datas[this.index++];
-      if (this.index >= datas.length) {
-        this.index = 0;
-      }
-    };
-    this.timeSpan.run();
+    this.dataChanged();
+    // this.timeSpan.onInterval = () => {};
+    // 隔一段时间切换
+    // this.timeSpan.run();
   }
 
   onRunning() {}

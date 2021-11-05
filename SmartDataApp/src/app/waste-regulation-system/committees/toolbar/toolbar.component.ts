@@ -31,7 +31,6 @@ export class ToolbarComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((param) => {
-      // console.log("HideButton:", param);
       for (const key in param) {
         if (key.toLowerCase() == "hidebutton") {
           this.HideButton = JSON.parse(param[key]);

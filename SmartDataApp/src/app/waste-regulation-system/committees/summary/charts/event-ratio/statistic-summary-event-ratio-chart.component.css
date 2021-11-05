@@ -1,0 +1,38 @@
+.event-ratio-chart {
+  height: 100%;
+}
+
+.event-ratio-chart .event-ratio-chart-header {
+  font-size: 24px;
+  color: white;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.event-ratio-chart-content {
+  display: flex;
+  height: calc(100% - 56px);
+}
+
+
+.event-ratio-chart-content .event-ratio-chart-content-chart {
+  width: 40%;
+  height: 100%;
+}
+
+.event-ratio-chart-content .event-ratio-chart-content-chart .echarts {
+  height: 100%;
+}
+
+.event-ratio-chart-content .number-list {
+  display: flex;
+  justify-content: space-around;
+  width: 60%;
+  align-items: center;
+}
+
+.event-ratio-chart-content .number-list .value {
+  font-size: 30px;
+}

@@ -27,13 +27,11 @@ import {
 import "../../../../../common/string/hw-string";
 import { XlsxData } from "../../illegal-drop-event-analyze/business/business.service";
 import { ExcelData } from "../../../../../common/tool/hw-excel-js/data";
-import {
-  BusinessEventTypeEnum,
-  convertEventData,
-} from "../../business-event-type";
+import { convertEventData } from "../../business-event-type";
 import { forkJoin } from "rxjs";
 import { PagedList } from "../../../../../data-core/model/page";
 import { HowellResponse } from "../../../../../data-core/model/response";
+import { EventType } from "src/app/data-core/model/enum";
 @Injectable()
 export class BusinessService extends ListAttribute {
   divisionListView: DivisionListView;
@@ -58,7 +56,7 @@ export class BusinessService extends ListAttribute {
   dataSources: Map<string, EventNumberStatistic[]>;
   divisionName = "";
   stationName = "";
-  businessEventType = BusinessEventTypeEnum.IllegalDrop;
+  businessEventType = EventType.IllegalDrop;
   constructor(
     private divisionService: DivisionRequestService,
     private datePipe: DatePipe,

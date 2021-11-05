@@ -16,7 +16,15 @@ import { CommitteesStatisticComponent } from "./statistic/committees-statistic.c
 import { TaskTableComponent } from "./task-table/task-table.component";
 import { RecordRankComponent } from "./record-rank/record-rank.component";
 import { CommitteesHistroyTableComponent } from "./histroy-table/committees-history-table.component";
-import { WindowComponent } from './window/window.component';
+import { WindowComponent } from "./window/window.component";
+import { StatisticSummaryComponent } from "./summary/statistic-summary.component";
+import { StatisticSummaryHeaderComponent } from "./summary/header/statistic-summary-header.component";
+import { StatisticSummaryChartsComponent } from "./summary/charts/statistic-summary-charts.component";
+import { StatisticSummaryEventRatioChartComponent } from './summary/charts/event-ratio/statistic-summary-event-ratio-chart.component';
+import { StatisticSummaryIllegalDropChartComponent } from './summary/charts/illegal-drop/statistic-summary-illegal-drop-chart.component';
+import { StatisticSummaryMixedIntoChartComponent } from './summary/charts/mixed-into/statistic-summary-mixed-into-chart.component';
+import { StatisticSummaryStationEventChartComponent } from './summary/charts/station-event/statistic-summary-station-event-chart.component';
+import { StatisticSummaryTaskChartComponent } from './summary/charts/task-statistic/statistic-summary-task-chart.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +49,22 @@ import { WindowComponent } from './window/window.component';
     CommitteesHistroyTableComponent,
 
     WindowComponent,
+
+    StatisticSummaryComponent,
+
+    StatisticSummaryHeaderComponent,
+
+    StatisticSummaryChartsComponent,
+
+    StatisticSummaryEventRatioChartComponent,
+
+    StatisticSummaryIllegalDropChartComponent,
+
+    StatisticSummaryMixedIntoChartComponent,
+
+    StatisticSummaryStationEventChartComponent,
+
+    StatisticSummaryTaskChartComponent,
   ],
   imports: [
     CommonModule,

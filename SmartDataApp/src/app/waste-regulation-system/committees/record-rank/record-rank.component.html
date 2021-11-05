@@ -19,12 +19,12 @@
   </div>
   <div class="light-blue-text content">
     <ng-container *ngFor="let item of view.items; let i = index">
-      <div class="rank-item">
+      <div class="rank-item" (click)="itemClicked($event, item)">
         <div class="left">
           <div class="index" [ngClass]="{ top3: item.Index <= 3 }">
             {{ item.Index }}
           </div>
-          <div>{{ item.Name }}</div>
+          <div class="name">{{ item.Name }}</div>
         </div>
         <div class="right sky-blue-text2">
           <div>{{ item.value_html }}</div>

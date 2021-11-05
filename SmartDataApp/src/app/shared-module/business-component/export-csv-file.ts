@@ -4,6 +4,7 @@ import {
   FieldDesc,
   TableField,
 } from "./station-view-summary/garbage-full-history-sum-chart/business/statistic-table";
+import { TaskTableField } from "./station-view-summary/garbage-drop-event-history/business/task-table";
 
 export interface ICsvFieldVal {}
 
@@ -70,6 +71,39 @@ export class StationSumHistoryCsv extends HWExportCsvStrategy {
         toFieldVal(v.garbageRatio),
         toFieldVal(v.illegalDrop),
         toFieldVal(v.mixedInto),
+      ]);
+      no += 1;
+    });
+
+    new HowellCSV(csvDataMap).writeCsvFile(title);
+  }
+}
+
+export class TaskCsv extends HWExportCsvStrategy {
+  export(
+    title: string,
+    fieldName: Array<string>,
+    fieldVal: Array<TaskTableField>
+  ) {
+    const csvDataMap = new Map<string, Array<string>>();
+    var no = 1;
+    csvDataMap.set(COLNAME, [
+      "序号",
+      "名称",
+      "全部任务",
+      "未完成任务",
+      "超时处置",
+      "处置率",
+    ]);
+    csvDataMap.set(TITLEKEY, [title]);
+    fieldVal.forEach((v: TaskTableField) => {
+      csvDataMap.set(no.toString(), [
+        v.id ? no.toString() : "总计",
+        v.name,
+        v.total.toString(),
+        v.unhandle.toString(),
+        v.timeout.toString(),
+        v.ratio,
       ]);
       no += 1;
     });

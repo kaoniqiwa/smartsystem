@@ -1,5 +1,11 @@
 .close-winow {
   position: absolute;
   right: 20px;
+  top: 10px;
   cursor: pointer;
+  z-index: 9;
+}
+
+.custom-form-wrap {
+  background-image: url("/assets/img/window-background.png");
 }

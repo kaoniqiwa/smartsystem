@@ -9,6 +9,21 @@ import { GarbageStation } from "../../../../data-core/model/waste-regulation/gar
   providers: [BusinessService, HWVideoService],
 })
 export class GarbageStationComponent implements OnInit {
+  private _operation: boolean;
+  public get operation(): boolean {
+    return this._operation;
+  }
+  @Input()
+  public set operation(v: boolean) {
+    this._operation = v;
+    if (
+      this.businessService &&
+      this.businessService.table &&
+      this.businessService.table.dataSource
+    )
+      this.businessService.table.dataSource.hasTableOperationTd = v;
+  }
+
   @Output() OtherViewEvent = new EventEmitter<GarbageStationSummaryViewPage>();
   @Output()
   GarbageStationMoveToPosition = new EventEmitter<GarbageStation>();

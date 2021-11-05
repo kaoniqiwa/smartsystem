@@ -1,0 +1,38 @@
+.task-chart {
+  height: 100%;
+}
+
+.task-chart .task-chart-header {
+  font-size: 24px;
+  color: white;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-chart-content {
+  display: flex;
+  height: calc(100% - 56px);
+}
+
+
+.task-chart-content .task-chart-content-chart {
+  width: 40%;
+  height: 100%;
+}
+
+.task-chart-content .task-chart-content-chart .task.echarts {
+  height: 100%;
+}
+
+.task-chart-content .number-list {
+  display: flex;
+  justify-content: space-around;
+  width: 60%;
+  align-items: center;
+}
+
+.task-chart-content .number-list .value {
+  font-size: 30px;
+}

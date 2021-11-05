@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import {
   HttpClient,
+  HttpErrorResponse,
   HttpEventType,
   HttpHeaders,
   HttpParams,
@@ -150,11 +151,13 @@ export class HowellAuthHttpService {
   public auth(
     url: string,
     httpHeaders: HttpHeaders
-  ): Observable<HowellResponse<any>> {
+  ): Observable<HttpErrorResponse> {
     const httpOptions = {
       headers: httpHeaders,
     };
-    return this.http.get<any>(url, httpOptions);
+    let result = this.http.get<HttpErrorResponse>(url, httpOptions);
+
+    return result;
   }
 
   downloadFile(

@@ -1,0 +1,17 @@
+.chart-list {
+  overflow-y: auto;
+  height: 100%
+}
+
+.chart-list>div {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.chart-list>div>div {
+  height: 266px;
+  margin: 10px 0px;
+  border: 1px solid rgba(94, 110, 191, 0.2);
+  padding: 20px;
+}

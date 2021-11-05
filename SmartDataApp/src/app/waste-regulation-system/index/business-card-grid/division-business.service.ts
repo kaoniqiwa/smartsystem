@@ -26,9 +26,8 @@ import {
   Hint,
   HintTag,
 } from "../../../shared-module/card-component/hint-card/hint";
-import { FillMode } from "../../../shared-module/business-component/event-history/illegal-drop-event-history/business/event-table.service";
+import { FillMode } from "../../../shared-module/business-component/event-history/illegal-drop-event-history/business/illegal-drop-event-table.service";
 import { ColorEnum } from "../../../shared-module/card-component/card-content-factory";
-import { CameraStateTableEnum } from "../../../shared-module/business-component/garbage-station-cameras/business/camera-table.service";
 import { GarbageStationRequestService } from "../../../data-core/repuest/garbage-station.service";
 import { AIOPMediumPictureUrl } from "../../../data-core/url/aiop/resources";
 import { GarbageStation } from "../../../data-core/model/waste-regulation/garbage-station";
@@ -41,12 +40,12 @@ import {
   domSize,
 } from "../../../common/tool/jquery-help/jquery-help";
 import { isBoolean, isString } from "util";
-import { BusinessEventTypeEnum } from "../../../shared-module/business-component/event-history/business-event-type";
 import { ComponentService } from "../../../shared-module/component-service";
 import { SessionUser } from "../../../common/tool/session-user";
 import {
   DivisionType,
   EventType,
+  OnlineStatus,
   StationState,
 } from "../../../data-core/model/enum";
 import { Language } from "../../../common/tool/language";
@@ -86,7 +85,7 @@ export class DivisionBusinessService {
   inspectionSize = { width: 0, height: 0, left: 0, top: 0 };
   /**更正区划id 视图显示当前 */
   nspectionParam: (val: string) => void;
-  stationCameraStateTable: CameraStateTableEnum;
+  stationCameraStateTable?: OnlineStatus;
   //divisionsId = "";
   /** 统计页面默认搜索图表 */
   illegalDropChartDefault = new EventEmitter<any>();
@@ -124,8 +123,8 @@ export class DivisionBusinessService {
   }
 
   get businessEventType() {
-    if (this.mixedIntoMode) return BusinessEventTypeEnum.MixedInfo;
-    else if (this.illegalDropMode) return BusinessEventTypeEnum.IllegalDrop;
+    if (this.mixedIntoMode) return EventType.MixedInto;
+    else if (this.illegalDropMode) return EventType.IllegalDrop;
   }
 
   moveToByGarbageStation(station: GarbageStation) {
@@ -281,7 +280,7 @@ export class DivisionBusinessService {
     };
   }
   bindingEventStateScaleCardComponent(view: StateScaleCardComponent) {
-    view.btnControl = (item: { tag: CameraStateTableEnum }) => {
+    view.btnControl = (item: { tag?: OnlineStatus }) => {
       this.stationCameraStateTable = item.tag;
       // if (this.user.userDivision && this.user.userDivision.length > 0) {
       //   this.divisionsId = GlobalStoreService.divisionId; // this.user.userDivision[0].Id;

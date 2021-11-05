@@ -256,7 +256,6 @@ class ClassNameString {
   value: string;
   private _className: string;
   public get className(): string {
-    debugger;
     return this._className;
   }
   public set className(v: string) {

@@ -31,6 +31,8 @@ export class StatisticGarbageCountComponent implements OnInit, OnDestroy {
   lp: TreeDropListV2Component;
   otherView = GarbageStationSummaryViewPage;
 
+  divisionNode = false;
+
   selectItemNodeMode = SelectItemNodeModeEnum.EndNode;
   constructor(
     private businessService: EventChartService,

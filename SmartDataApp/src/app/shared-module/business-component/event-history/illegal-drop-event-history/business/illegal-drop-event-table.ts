@@ -4,13 +4,13 @@ import { IllegalDropEventRecord } from "../../../../../data-core/model/waste-reg
 import {
   CustomTableEvent,
   CustomTableEventEnum,
-} from "../../../../../shared-module/custom-table/custom-table-event";
+} from "../../../../custom-table/custom-table-event";
 import {
   CustomTableArgs,
   FootArgs,
   TableAttr,
   TableOperationBtn,
-} from "../../../../../shared-module/custom-table/custom-table-model";
+} from "../../../../custom-table/custom-table-model";
 import { ITableField } from "../../../../../aiop-system/common/ITableField";
 import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 import { IBusinessData } from "../../../../../common/interface/IBusiness";

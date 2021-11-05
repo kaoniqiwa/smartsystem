@@ -230,6 +230,16 @@
       display: contentType == TableContentType.task ? 'block' : 'none'
     }"
   >
+    <div class="output">
+      <button
+        class="hw-blue-btn m-r-10"
+        (click)="exportCsv($event)"
+        type="button"
+      >
+        <i class="howell-icon-export"></i> 导出
+      </button>
+    </div>
+
     <div class="task-table">
       <hw-custom-table
         #taskTable

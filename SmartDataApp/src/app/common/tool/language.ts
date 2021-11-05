@@ -5,6 +5,7 @@ import {
   EventType,
   ResourceType,
   StationState,
+  TimeUnit,
 } from "../../data-core/model/enum";
 import { Flags } from "../../data-core/model/flags";
 
@@ -17,6 +18,17 @@ export class Language {
         return "异常";
       default:
         return "正常";
+    }
+  }
+
+  static TimeUnit(unit: TimeUnit) {
+    switch (unit) {
+      case TimeUnit.Hour:
+        return "日报表";
+      case TimeUnit.Day:
+        return "月报表";
+      default:
+        return "";
     }
   }
 

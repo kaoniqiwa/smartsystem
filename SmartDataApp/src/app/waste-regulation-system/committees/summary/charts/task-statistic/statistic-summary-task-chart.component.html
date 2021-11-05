@@ -1,0 +1,31 @@
+<div class="task-chart">
+  <div class="task-chart-header">滞留任务处置</div>
+  <div class="task-chart-content">
+    <div class="task-chart-content-chart">
+      <div #echarts class="task echarts"></div>
+    </div>
+    <div class="number-list">
+      <div>
+        <div>发布任务数</div>
+        <div>
+          <span class="text-white value">{{ data.TotalCount }}</span
+          ><span class="blue-text">起</span>
+        </div>
+      </div>
+      <div>
+        <div>超时任务数</div>
+        <div>
+          <span class="text-white value">{{ data.GarbageRetentionCount }}</span
+          ><span class="blue-text">起</span>
+        </div>
+      </div>
+      <div>
+        <div>未完成任务数</div>
+        <div>
+          <span class="text-white value">{{ data.UncompletedCount }}</span
+          ><span class="blue-text">起</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

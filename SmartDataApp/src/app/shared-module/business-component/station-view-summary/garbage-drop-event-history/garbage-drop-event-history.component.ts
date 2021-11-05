@@ -19,6 +19,14 @@ import { GetVodUrlParams } from "../../../../data-core/model/aiop/video-url";
 import { Camera } from "../../../../data-core/model/waste-regulation/camera";
 import { DivisionType } from "../../../../data-core/model/enum";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
+import {
+  HWCsvContext,
+  StationSumHistoryCsv,
+  TaskCsv,
+} from "../../export-csv-file";
+import { DatePipe } from "@angular/common";
+import { classToPlain } from "class-transformer";
+import { TaskTableField } from "./business/task-table";
 
 @Component({
   selector: "hw-garbage-drop-event-history",
@@ -91,7 +99,8 @@ export class GarbageDropEventHistoryComponent implements OnInit {
     private divisionDao: DivisionDao,
     private videoService: HWVideoService,
     private garbageStationCameraDao: GarbageStationCameraDao,
-    private garbageStationDao: GarbageStationDao
+    private garbageStationDao: GarbageStationDao,
+    private datePipe: DatePipe
   ) {}
   galleryTargetFn = () => {
     this.tableService.galleryTargetView.galleryTarget = null;
@@ -242,6 +251,30 @@ export class GarbageDropEventHistoryComponent implements OnInit {
         true
       );
     });
+  }
+
+  exportCsv(event: Event) {
+    let date = this.tableService.search.formBeginDate;
+    if (!date) {
+      date = new Date();
+    }
+    let day = this.datePipe.transform(date, "yyyy年MM月dd日");
+    let name = this.tableService.taskTable.dataCount.name;
+
+    if (this.tableService.taskTable.dataSource.values.length) {
+      let csv = new TaskCsv();
+
+      let title = `${day} ${name} 任务处置`;
+      let fieldVal = classToPlain(
+        this.tableService.taskTable.dataSource.values
+      ) as Array<TaskTableField>;
+      fieldVal.push({
+        ...this.tableService.taskTable.dataCount,
+        id: "",
+        handle: 0,
+      });
+      csv.export(title, undefined, fieldVal);
+    }
   }
 }
 

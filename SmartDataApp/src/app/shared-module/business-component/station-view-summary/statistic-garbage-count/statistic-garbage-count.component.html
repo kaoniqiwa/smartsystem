@@ -30,7 +30,7 @@
         </li>
         <li class="pull-left">
           <a href="javascript:" (click)="changeOtherView(otherView.event)">
-            <div class="second-menu-btn text">&nbsp;&nbsp;事件</div>
+            <div class="second-menu-btn text">&nbsp;&nbsp;报警事件处置</div>
           </a>
         </li>
       </ul>
@@ -78,7 +78,7 @@
             [rightArrow]="true"
             [textColor]="'light-blue-text'"
             [textLeft]="false"
-            [onlyDivisionNode]="divisionMode"
+            [onlyDivisionNode]="divisionNode"
             [selectedItemFn]="businessService.changeDivisionFn"
             [selectItemNodeMode]="selectItemNodeMode"
             [firstTitle]="businessService.stationDivision"

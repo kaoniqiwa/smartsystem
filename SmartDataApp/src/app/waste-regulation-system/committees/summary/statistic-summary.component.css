@@ -1,0 +1,84 @@
+.statistic-summary {
+  height: 100%;
+  overflow: hidden;
+}
+
+.statistic-summary .header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.statistic-summary .content {
+  height: calc(100% - 72px);
+}
+
+.statistic-summary .content>div {
+  margin-bottom: 20px;
+}
+
+.statistic-summary .content .number-list {
+  display: flex;
+  justify-content: space-around;
+  background-color: rgb(16, 22, 48);
+}
+
+.statistic-summary .content .chart {
+  display: flex;
+  background-color: rgb(16, 22, 48);
+}
+
+.statistic-summary .content .statistic-summary-charts {
+  height: calc(100% - 165px);
+}
+
+
+.statistic-summary .header .operation {
+  display: flex;
+  font-size: 25px;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+
+.hw-form-control {
+  padding-top: 0;
+  padding-bottom: 0;
+  min-height: 34px;
+  color: #cfd7ff;
+  border: 1px solid transparent;
+  font-size: 24px;
+  text-align: right;
+  border-radius: unset;
+  background-color: transparent;
+  width: 208px;
+  opacity: 1;
+  cursor: pointer;
+}
+
+
+.statistic-summary .header .dropdown {
+  cursor: pointer;
+}
+
+.statistic-summary .header .dropdown.control {
+  border: 1px solid #5e6ebf;
+  background: #0c1127;
+  position: absolute;
+  z-index: 30;
+  width: calc(100% + 10px);
+
+  margin-left: -10px;
+}
+
+.statistic-summary .header .dropdown.control .item {
+  font-size: 16px;
+  height: 30px;
+  cursor: pointer;
+  line-height: 26px;
+  padding: 2px 10px;
+}
+
+.statistic-summary .header .dropdown.control .item:hover {
+  background-color: #1e90ff;
+  color: white;
+}

@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewChild, Input } from "@angular/core";
-import { CustomTreeComponent } from "../../../../custom-tree/custom-tree.component";
+import {
+  CustomTreeComponent,
+  CustomTreeSelection,
+} from "../../../../custom-tree/custom-tree.component";
 import { DivisionTreeSerevice } from "../../../../../aiop-system/garbage-station/division-tree/business/division-tree.service";
 import { StationTreeService } from "../../../../../aiop-system/garbage-station/division-tree/business/garbage-station-tree";
 import { NodeTypeEnum } from "../../../../../aiop-system/common/tree.service";
@@ -44,39 +47,37 @@ export class TreeDropListComponent implements OnInit {
   @Input()
   selectedItemFn: (item: FlatNode, lastNode: boolean) => void;
 
-  selectedItemClick = (item: FlatNode) => {
+  selectedItemClick(selection: CustomTreeSelection) {
     this.selectedTexts = new Array();
-    for (let key of this.garbageStationTree.flatNodeMap.keys()) {
-      let item = this.garbageStationTree.flatNodeMap.get(key);
+    let item = selection.current;
+    if (
+      item.checked &&
+      // key.level != 0 &&
+      this.stationTreeService.isLastNode(item.id)
+    ) {
+      console.log(item);
       if (
-        key.checked &&
-        // key.level != 0 &&
-        this.stationTreeService.isLastNode(key.id)
+        this.onlyCityNode &&
+        (item.data as Division).DivisionType === DivisionType.City
       ) {
-        console.log(item);
-        if (
-          this.onlyCityNode &&
-          (item.data as Division).DivisionType === DivisionType.City
-        ) {
-          this.selectedTexts.push({
-            id: key.id,
-            text: key.name,
-          });
-        }
-        // if (!this.onlyDivisionNode && key.iconClass == "howell-icon-garbage")
-        if (!this.onlyDivisionNode)
-          this.selectedTexts.push({
-            id: key.id,
-            text: key.name,
-          });
-        else if (this.onlyDivisionNode && key.iconClass == "howell-icon-map5")
-          this.selectedTexts.push({
-            id: key.id,
-            text: key.name,
-          });
+        this.selectedTexts.push({
+          id: item.id,
+          text: item.name,
+        });
       }
+      // if (!this.onlyDivisionNode && key.iconClass == "howell-icon-garbage")
+      if (!this.onlyDivisionNode)
+        this.selectedTexts.push({
+          id: item.id,
+          text: item.name,
+        });
+      else if (this.onlyDivisionNode && item.iconClass == "howell-icon-map5")
+        this.selectedTexts.push({
+          id: item.id,
+          text: item.name,
+        });
     }
-  };
+  }
 
   clearSelectedTexts() {
     this.selectedTexts = new Array();
@@ -178,7 +179,9 @@ export class TreeDropListComponent implements OnInit {
         const nodes = this.stationTreeService.convertTreeNode(
           this.dataService.divisions,
           undefined,
-          { divisionType: ancestorDivision.DivisionType }
+          ancestorDivision
+            ? { divisionType: ancestorDivision.DivisionType }
+            : undefined
         );
         this.stationTreeService.dataSource = nodes;
       } else {

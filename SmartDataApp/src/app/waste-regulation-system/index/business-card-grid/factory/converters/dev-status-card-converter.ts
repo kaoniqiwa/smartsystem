@@ -1,7 +1,7 @@
 import { ViewsModel } from "src/app/common/abstract/base-view";
 import { IConverter } from "src/app/common/interface/IConverter";
 import { Percentage } from "src/app/common/tool/tool.service";
-import { CameraStateTableEnum } from "src/app/shared-module/business-component/garbage-station-cameras/business/camera-table.service";
+import { OnlineStatus } from "src/app/data-core/model/enum";
 import { ColorEnum } from "src/app/shared-module/card-component/card-content-factory";
 import {
   Arc,
@@ -55,21 +55,21 @@ export class DevStatusCardConverter implements IConverter {
         label: "全部设备数量",
         number: input.cameraNumber + "",
         color: ColorEnum["sky-blue-text2"],
-        tag: CameraStateTableEnum.none,
+        tag: undefined,
         linkTipLabel: "查看全部设备信息",
       });
       output.views[0].detail.push({
         label: "在线设备数量",
         number: input.cameraNumber - input.offlineCameraNumber + "",
         color: ColorEnum["green-text"],
-        tag: CameraStateTableEnum.online,
+        tag: OnlineStatus.Online,
         linkTipLabel: "查看在线设备信息",
       });
       output.views[0].detail.push({
         label: "离线设备数量",
         number: input.offlineCameraNumber + "",
         color: ColorEnum["powder-red-text"],
-        tag: CameraStateTableEnum.offline,
+        tag: OnlineStatus.Offline,
         linkTipLabel: "查看离线设备信息",
       });
     }

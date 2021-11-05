@@ -23,6 +23,10 @@ import { TableContentType } from "../garbage-drop-event-history/garbage-drop-eve
 export class GarbageStationSummaryComponent implements OnInit {
   viewsShow = [true, false, false, false, false];
   @Input() divisionsId = "";
+
+  @Input()
+  garbageStationTableOperation: boolean = true;
+
   @ViewChild(StatisticGarbageCountComponent)
   garbageCountComponent: StatisticGarbageCountComponent;
 

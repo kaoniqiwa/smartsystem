@@ -137,9 +137,9 @@ export class TaskStationTable extends BusinessTable implements IConverter {
 
   Convert(
     input: GarbageStationNumberStatisticBusinessData,
-    output: CustomTableArgs<TableField>
+    output: CustomTableArgs<TaskTableField>
   ) {
-    const items = new Array<TableField>();
+    const items = new Array<TaskTableField>();
     for (const item of input.items) {
       let field = this.toTableModel(item);
       items.push(field);
@@ -149,7 +149,7 @@ export class TaskStationTable extends BusinessTable implements IConverter {
   }
 
   toTableModel(data: GarbageTaskNumberData) {
-    const tableField = new TableField();
+    const tableField = new TaskTableField();
     tableField.id = data.Id;
     tableField.name = data.Name;
 
@@ -184,7 +184,7 @@ export class GarbageStationNumberStatisticBusinessData
   items: Array<GarbageTaskNumberData>;
 }
 
-export class TableField implements ITableField {
+export class TaskTableField implements ITableField {
   id: string;
   name: string;
   total: number;
