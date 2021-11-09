@@ -1,7 +1,7 @@
 <mat-toolbar class="example-header" *ngIf="!HideTitlebar">
   <div class="app-header-wrapper">
     <div class="d3">
-      <div fxLayout="row" class="fill-height p-l-30 p-r-10">
+      <div fxLayout="row" class="fill-height p-l-30 p-r-10 committees-toolbar">
         <div fxFlex="33" class="fill-height" fxLayoutAlign=" center">
           <div style="position: relative; top: 4px">
             <svg
@@ -63,21 +63,10 @@
           </h3>
         </div>
         <div fxFlex fxLayoutAlign="center center">
-          <div
-            class="small-card-wrapper title-number-suffix"
-            style="margin-right: 60px"
-          >
-            <div class="title-label">今日收湿垃圾总量</div>
-            <div>
-              <label class="number-label">0</label>
-              <label class="suffix-label">(吨/日)</label>
-            </div>
-          </div>
-          <div class="small-card-wrapper title-number-suffix">
-            <div class="title-label">今日收干垃圾总量</div>
-            <div>
-              <label class="number-label">0</label>
-              <label class="suffix-label">(吨/日)</label>
+          <div *ngIf="Notify" class="committees-toolbar-notify">
+            <div class="notify-header"></div>
+            <div class="notify-content-background">
+              <div class="notify-content">通知：{{ Notify }}</div>
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-<div class="statistic-summary light-blue-text">
+<div class="statistic-summary light-blue-text" (click)="windowClick()">
   <div class="header">
     <div class="second-title-bg text title">每日汇总</div>
     <div class="operation">
@@ -10,21 +10,21 @@
             #dtp1
             readonly
             DateTimePicker
-            [format]="'yyyy年mm月dd日'"
-            [startView]="2"
-            [minView]="2"
-            [defaultVal]="day"
-            [changeDate]="changeDate"
+            [format]="language.format"
+            [startView]="dateView"
+            [minView]="dateView"
+            [defaultVal]="Date"
+            (changeDate)="changeDate($event)"
             class="hw-form-control form-control p-r-0"
-            style="padding: 0; width: 190px"
+            style="padding: 0; width: 200px"
           /><i class="mdi mdi-menu-down light-blue-text"></i>
         </div>
       </div>
       <div class="unit dropdown">
         <div (click)="timeUnitChanging($event)">
-          日报表<i class="mdi mdi-menu-down light-blue-text"></i>
+          {{ language.unit() }}<i class="mdi mdi-menu-down light-blue-text"></i>
         </div>
-        <div class="dropdown control" *ngIf="display_timeunit">
+        <div class="dropdown control" *ngIf="display.timeunit">
           <ng-container *ngFor="let item of TimeUnits">
             <div class="item" (click)="unitChanged($event, item.value)">
               {{ item.language }}
@@ -37,13 +37,15 @@
   <div class="content">
     <div class="statistic-summary-header">
       <app-statistic-summary-header
-        [DivisonStatistic]="divisionHistory"
+        [DivisonStatistic]="divisionStatistic"
       ></app-statistic-summary-header>
     </div>
     <div class="statistic-summary-charts">
       <app-statistic-summary-charts
-        [DivisonStatistic]="divisionHistory"
+        [DivisonStatistic]="divisionStatistic"
         [StationStatistic]="stationStatistic"
+        [DivisionHistory]="divisionHistory"
+        [TimeUnit]="unit"
       ></app-statistic-summary-charts>
     </div>
   </div>

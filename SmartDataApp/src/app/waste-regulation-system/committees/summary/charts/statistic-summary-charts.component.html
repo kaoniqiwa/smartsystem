@@ -11,17 +11,26 @@
       ></app-statistic-summary-event-ratio-chart>
     </div>
 
+    <div class="illegal-drop" style="width: calc(100% / 2 - 10px)">
+      <app-statistic-summary-line-chart
+        [Data]="DivisionHistory"
+        [Type]="EventType.IllegalDrop"
+        [TimeUnit]="TimeUnit"
+      ></app-statistic-summary-line-chart>
+      <!-- <hw-line-echarts-card></hw-line-echarts-card> -->
+    </div>
+    <div class="mixed-into" style="width: calc(100% / 2 - 10px)">
+      <app-statistic-summary-line-chart
+        [Data]="DivisionHistory"
+        [Type]="EventType.MixedInto"
+        [TimeUnit]="TimeUnit"
+      ></app-statistic-summary-line-chart>
+    </div>
+
     <div class="station-event" style="width: calc(100%)">
       <app-statistic-summary-station-event-chart
         [Data]="StationStatistic"
       ></app-statistic-summary-station-event-chart>
-    </div>
-    <div class="illegal-drop" style="width: calc(100% / 2 - 10px)">
-      <!-- <app-statistic-summary-illegal-drop-chart></app-statistic-summary-illegal-drop-chart> -->
-      <hw-line-echarts-card></hw-line-echarts-card>
-    </div>
-    <div class="mixed-into" style="width: calc(100% / 2 - 10px)">
-      <app-statistic-summary-mixed-into-chart></app-statistic-summary-mixed-into-chart>
     </div>
   </div>
 </div>

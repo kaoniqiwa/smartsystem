@@ -11,7 +11,7 @@ import { PointInfoPanelComponent } from "../index/amap/point-info-panel/point-in
 import { IndexCommitteesComponent } from "./index/committees-index.component";
 import { CommitteesNavicationComponent } from "./navication/committees-navication.component";
 import { DivisionInformationComponent } from "./station-information/station-information.component";
-import { ToolbarComponent } from "./toolbar/toolbar.component";
+import { ToolbarComponent } from "./toolbar/committees-toolbar.component";
 import { CommitteesStatisticComponent } from "./statistic/committees-statistic.component";
 import { TaskTableComponent } from "./task-table/task-table.component";
 import { RecordRankComponent } from "./record-rank/record-rank.component";
@@ -20,11 +20,10 @@ import { WindowComponent } from "./window/window.component";
 import { StatisticSummaryComponent } from "./summary/statistic-summary.component";
 import { StatisticSummaryHeaderComponent } from "./summary/header/statistic-summary-header.component";
 import { StatisticSummaryChartsComponent } from "./summary/charts/statistic-summary-charts.component";
-import { StatisticSummaryEventRatioChartComponent } from './summary/charts/event-ratio/statistic-summary-event-ratio-chart.component';
-import { StatisticSummaryIllegalDropChartComponent } from './summary/charts/illegal-drop/statistic-summary-illegal-drop-chart.component';
-import { StatisticSummaryMixedIntoChartComponent } from './summary/charts/mixed-into/statistic-summary-mixed-into-chart.component';
-import { StatisticSummaryStationEventChartComponent } from './summary/charts/station-event/statistic-summary-station-event-chart.component';
-import { StatisticSummaryTaskChartComponent } from './summary/charts/task-statistic/statistic-summary-task-chart.component';
+import { StatisticSummaryEventRatioChartComponent } from "./summary/charts/event-ratio/statistic-summary-event-ratio-chart.component";
+import { StatisticSummaryIllegalDropChartComponent } from "./summary/charts/line-chart/statistic-summary-line-chart.component";
+import { StatisticSummaryStationEventChartComponent } from "./summary/charts/station-event/statistic-summary-station-event-chart.component";
+import { StatisticSummaryTaskChartComponent } from "./summary/charts/task-statistic/statistic-summary-task-chart.component";
 
 @NgModule({
   declarations: [
@@ -59,8 +58,6 @@ import { StatisticSummaryTaskChartComponent } from './summary/charts/task-statis
     StatisticSummaryEventRatioChartComponent,
 
     StatisticSummaryIllegalDropChartComponent,
-
-    StatisticSummaryMixedIntoChartComponent,
 
     StatisticSummaryStationEventChartComponent,
 

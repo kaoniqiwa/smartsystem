@@ -13,7 +13,6 @@ export class RecordRankDropConverter
 {
   Convert(statistic: GarbageStationNumberStatistic, type: EventType | string) {
     let vm = new RecordRankItemViewModel();
-
     vm.Id = statistic.Id;
     vm.Name = statistic.Name;
     if (typeof type === "string") {

@@ -5,6 +5,18 @@ declare var echarts: any;
 
 export var EchartBarOption = {
   backgroundColor: "transparent",
+  title: {
+    text: "投放点事件",
+    textStyle: {
+      color: "#fff",
+      fontSize: "24px",
+      fontFamily: "Source Han Sans CN Normal",
+      fontWeight: 400,
+      overflow: "truncate",
+      width: 428,
+    },
+    top: 0,
+  },
   legend: {
     right: "0%",
     orient: "vertical",
@@ -16,7 +28,7 @@ export var EchartBarOption = {
 
   grid: {
     right: "0px",
-    left: "30px",
+    left: "40px",
     bottom: "20px",
     border: "rgba(94, 110, 191, 0.2)",
   },

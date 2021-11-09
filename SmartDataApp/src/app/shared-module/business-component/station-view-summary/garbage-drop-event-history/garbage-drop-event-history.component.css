@@ -66,9 +66,9 @@
 }
 
 .output {
-  position: absolute;
-  right: 10px;
-  top: 88px;
+  float: right;
+  margin-bottom: -50px;
+  margin-top: 16px;
 }
 
 .output button {

@@ -1,4 +1,12 @@
-import { Component, Input, OnInit, OnChanges } from "@angular/core";
+import {
+  Component,
+  Input,
+  OnInit,
+  OnChanges,
+  Output,
+  EventEmitter,
+} from "@angular/core";
+import { EventRecord } from "src/app/data-core/model/waste-regulation/event-record";
 import {
   domSize,
   drawRectangle,

@@ -52,7 +52,7 @@ export var EChartPieOption = {
       labelLine: {
         show: false,
       },
-      data: [],
+      data: new Array(),
       itemStyle: {
         opacity: 0.6,
       },

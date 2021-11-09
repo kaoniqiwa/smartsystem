@@ -67,7 +67,7 @@
             [startView]="businessService.datePicker.startView"
             [minView]="businessService.datePicker.minView"
             [defaultVal]="businessService.datePicker.default"
-            [changeDate]="businessService.startDate"
+            (changeDate)="businessService.startDate($event)"
             class="hw-form-control form-control p-r-0"
             style="padding: 0; width: 190px"
           />

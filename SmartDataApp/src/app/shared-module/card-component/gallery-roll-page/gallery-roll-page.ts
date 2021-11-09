@@ -25,6 +25,8 @@ export class GalleryRollPage implements IViewModel {
 }
 
 export class Gallery {
+  /** 由于index关联了其他方法，于是用i作为序列 */
+  i = 1;
   title: {
     state: string;
     text: string;

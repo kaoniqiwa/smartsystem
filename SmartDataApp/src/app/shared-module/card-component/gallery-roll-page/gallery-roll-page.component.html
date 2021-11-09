@@ -1,5 +1,5 @@
 <ng-container *ngIf="model">
-  <div class="fill-width fill-height p-20">
+  <div class="fill-width fill-height player-20">
     <div fxLayout="row" fxLayoutAlign="space-between center">
       <div style="width: 200px">
         <div *ngIf="config.titleVisibility">
@@ -31,7 +31,12 @@
         style="width: 170px; font-size: 18px"
       >
         <a
-          class="nav-link waves-effect waves-dark p-t-0 p-r-10 p-b-0 text-white"
+          class="
+            nav-link
+            waves-effect waves-dark
+            player-t-0 player-r-10 player-b-0
+            text-white
+          "
           href="javascript:"
           data-toggle="dropdown"
           aria-haspopup="true"
@@ -41,7 +46,7 @@
           <i class="mdi mdi-menu-down"></i>
         </a>
         <div
-          class="dropdown-menu p-b-0 p-t-0 m-t-10 view-ul-drop"
+          class="dropdown-menu player-b-0 player-t-0 m-t-10 view-ul-drop"
           x-placement="bottom-start"
         >
           <ul class="view-ul seconds">
@@ -88,10 +93,11 @@
       </div>
     </div>
 
-    <div fxLayout="row" [ngStyle]="{ height: galleryHeight }">
+    <div fxLayout="row" [ngStyle]="{ height: galleryHeight }" id="bigger">
       <ul class="view-ul fill-height fill-width">
         <ng-container *ngFor="let item of imgs">
           <li
+            [id]="'big_' + item.tag.id"
             [ngStyle]="{
               display: bigViewId && item.tag.id != bigViewId ? 'none' : 'block'
             }"
@@ -280,10 +286,12 @@
           [class.table-cell]="!bigViewId && imgs.length > 4"
           class="fill-width fill-height player"
         >
-          <ng-container *ngIf="p && p.safeResourceUrl && p.playing">
+          <ng-container
+            *ngIf="player && player.safeResourceUrl && player.playing"
+          >
             <iframe
               #iframe
-              [src]="p.safeResourceUrl"
+              [src]="player.safeResourceUrl"
               class="video-control selected fill-height fill-width"
             ></iframe>
           </ng-container>

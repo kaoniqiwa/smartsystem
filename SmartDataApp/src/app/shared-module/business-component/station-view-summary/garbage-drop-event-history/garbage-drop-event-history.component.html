@@ -138,7 +138,7 @@
           type="text"
           DateTimePicker
           [defaultVal]="tableService.search.beginDate"
-          [changeDate]="startDate"
+          (changeDate)="startDate($event)"
           [startView]="1"
           [minView]="1"
           style="width: calc(100% - 82px)"
@@ -152,7 +152,7 @@
           type="text"
           DateTimePicker
           [defaultVal]="tableService.search.endDate"
-          [changeDate]="endDate"
+          (changeDate)="endDate($event)"
           [startView]="1"
           [minView]="1"
           style="width: calc(100% - 82px)"
@@ -230,17 +230,16 @@
       display: contentType == TableContentType.task ? 'block' : 'none'
     }"
   >
-    <div class="output">
-      <button
-        class="hw-blue-btn m-r-10"
-        (click)="exportCsv($event)"
-        type="button"
-      >
-        <i class="howell-icon-export"></i> 导出
-      </button>
-    </div>
-
     <div class="task-table">
+      <div class="output">
+        <button
+          class="hw-blue-btn m-r-10"
+          (click)="exportCsv($event)"
+          type="button"
+        >
+          <i class="howell-icon-export"></i> 导出
+        </button>
+      </div>
       <hw-custom-table
         #taskTable
         [model]="tableService.taskTable.dataSource"

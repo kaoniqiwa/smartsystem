@@ -149,7 +149,6 @@ export class TreeDropListV2Component implements OnInit {
   }
 
   async reInit() {
-    debugger;
     if (this.dataService.divisions.length == 0)
       this.dataService.divisions = await this.divisionDao.allDivisions();
     this.stationTreeService.appendDivisionModel(

@@ -1,6 +1,9 @@
 <div class="waste-container">
   <div class="waste-header">
-    <app-toolbar [Committees]="Committees"></app-toolbar>
+    <app-committees-toolbar
+      [Committees]="Committees"
+      [Notify]="bussiness.toolbar.notify"
+    ></app-committees-toolbar>
   </div>
   <div class="waste-body">
     <div class="waste-body__item waste-body__item--none">
@@ -17,8 +20,8 @@
     <div class="waste-body__item waste-body__item--video">
       <div class="waste-body__wrapper">
         <hw-gallery-roll-page
-          [model]="GalleryRollPageBusiness.Model"
-          [config]="GalleryRollPageBusiness.Config"
+          [model]="bussiness.gallery.rollPage.Model"
+          [config]="bussiness.gallery.rollPage.Config"
         ></hw-gallery-roll-page>
       </div>
     </div>
@@ -26,11 +29,11 @@
       <div class="waste-body__wrapper padding">
         <app-record-rank
           [Committees]="Committees"
-          [Types]="RecordRankEventBussiness.Types"
-          [Type]="RecordRankEventBussiness.Type"
-          [Converter]="RecordRankEventBussiness.Converter"
+          [Types]="bussiness.rank.event.Types"
+          [Type]="bussiness.rank.event.Type"
+          [Converter]="bussiness.rank.event.Converter"
           (OnItemClicked)="
-            RecordRankEventBussiness.OnGarbageStationSelected($event)
+            bussiness.rank.event.OnGarbageStationSelected($event)
           "
         ></app-record-rank>
       </div>
@@ -46,12 +49,9 @@
       <div class="waste-body__wrapper padding">
         <app-record-rank
           [Committees]="Committees"
-          [Types]="RecordRankDropBussiness.Types"
-          [Type]="RecordRankDropBussiness.Type"
-          [Converter]="RecordRankDropBussiness.Converter"
-          (OnItemClicked)="
-            RecordRankDropBussiness.OnGarbageStationSelected($event)
-          "
+          [Type]="bussiness.rank.drop.Type"
+          [Converter]="bussiness.rank.drop.Converter"
+          (OnItemClicked)="bussiness.rank.drop.OnGarbageStationSelected($event)"
         ></app-record-rank>
       </div>
     </div>
@@ -60,28 +60,28 @@
         <app-committees-statistic
           [Committees]="Committees"
           (OnAllDeviceCountClicked)="
-            CommitteesStatisticBussiness.OnAllDeviceCountClicked($event)
+            bussiness.statistic.OnAllDeviceCountClicked($event)
           "
           (OnOnlineDeviceCountClicked)="
-            CommitteesStatisticBussiness.OnOnlineDeviceCountClicked($event)
+            bussiness.statistic.OnOnlineDeviceCountClicked($event)
           "
           (OnOfflineDeviceCountClicked)="
-            CommitteesStatisticBussiness.OnOfflineDeviceCountClicked($event)
+            bussiness.statistic.OnOfflineDeviceCountClicked($event)
           "
           (OnGarbageStationCountClicked)="
-            CommitteesStatisticBussiness.OnGarbageStationCountClicked($event)
+            bussiness.statistic.OnGarbageStationCountClicked($event)
           "
           (OnGarbageDropEventCountClicked)="
-            CommitteesStatisticBussiness.OnGarbageDropEventCountClicked($event)
+            bussiness.statistic.OnGarbageDropEventCountClicked($event)
           "
           (OnGarbageFullEventCountClicked)="
-            CommitteesStatisticBussiness.OnGarbageFullEventCountClicked($event)
+            bussiness.statistic.OnGarbageFullEventCountClicked($event)
           "
           (OnIllegalDropEventCountClicked)="
-            CommitteesStatisticBussiness.OnIllegalDropEventCountClicked($event)
+            bussiness.statistic.OnIllegalDropEventCountClicked($event)
           "
           (OnMixedIntoEventCountClicked)="
-            CommitteesStatisticBussiness.OnMixedIntoEventCountClicked($event)
+            bussiness.statistic.OnMixedIntoEventCountClicked($event)
           "
         ></app-committees-statistic>
       </div>
@@ -95,72 +95,95 @@
       <div class="waste-body__wrapper padding">
         <app-histroy-table
           [Committees]="Committees"
-          [Type]="CommitteesHistroyTableBussiness.Type"
+          [Type]="bussiness.historyTable.Type"
+          (OnPictureClicked)="bussiness.historyTable.OnPictureClicked($event)"
+          (OnVideoClicked)="bussiness.historyTable.OnVideoClicked($event)"
         ></app-histroy-table>
       </div>
     </div>
   </div>
 </div>
-<!-- 
-<hw-gallery-target
-  [closeViewFn]="galleryTargetFn"
-  [model]="tableService.galleryTargetView.galleryTarget"
-  [videoFn]="tableService.eventTable.playVideoFn"
-  [videoFileFn]="tableService.eventTable.videoFileFn"
-  [imgEventFn]="tableService.galleryTargetView.galleryTargetPageFn"
->
-</hw-gallery-target> -->
-<app-window [Model]="Window.device">
-  <ng-container>
+
+<app-window [Model]="window.device">
+  <ng-container *ngIf="window.device.show">
     <hw-garbage-station-cameras
       [divisionsId]="GlobalStoreService.divisionId"
-      [cameraStateTable]="Window.device.onlineStatus"
+      [cameraStateTable]="window.device.onlineStatus"
     ></hw-garbage-station-cameras>
   </ng-container>
 </app-window>
-<app-window [Model]="Window.record">
-  <ng-container>
+<app-window [Model]="window.record">
+  <ng-container *ngIf="window.record.show">
     <hw-illegal-drop-event-summary
-      [businessEventType]="Window.record.eventType"
-      [GarbageStation]="Window.garbageStation"
+      [businessEventType]="window.record.eventType"
+      [GarbageStation]="window.garbageStation"
     ></hw-illegal-drop-event-summary>
   </ng-container>
 </app-window>
 
-<app-window [Model]="Window.station">
-  <ng-container>
+<app-window [Model]="window.station">
+  <ng-container *ngIf="window.station.show">
     <hw-garbage-station-summary
       [divisionsId]="GlobalStoreService.divisionId"
-      [PageIndex]="Window.station.index"
-      [GarbageDropEventHistoryContentType]="Window.station.contentType"
+      [PageIndex]="window.station.index"
+      [GarbageDropEventHistoryContentType]="window.station.contentType"
       [GarbageDropTaskDivisionId]="GlobalStoreService.divisionId"
-      [GarbageDropEventHistoryHandle]="Window.station.garbageDropHandle"
-      [GarbageDropEventHistoryTimeout]="Window.station.garbageDropTimeout"
+      [GarbageDropEventHistoryHandle]="window.station.garbageDropHandle"
+      [GarbageDropEventHistoryTimeout]="window.station.garbageDropTimeout"
       [garbageStationTableOperation]="false"
     ></hw-garbage-station-summary>
   </ng-container>
 </app-window>
-<app-window [Model]="Window.fullStation">
-  <ng-container>
+<app-window [Model]="window.fullStation">
+  <ng-container *ngIf="window.fullStation.show">
     <hw-full-garbage-station-summary
       [divisionsId]="GlobalStoreService.divisionId"
     >
     </hw-full-garbage-station-summary>
   </ng-container>
 </app-window>
-<app-window [Model]="Window.stranded">
-  <ng-container>
+<app-window [Model]="window.stranded">
+  <ng-container *ngIf="window.stranded.show">
     <hw-station-stranded
       [divisionId]="GlobalStoreService.divisionId"
-      [GarbageStation]="Window.garbageStation"
+      [GarbageStation]="window.garbageStation"
     ></hw-station-stranded>
   </ng-container>
 </app-window>
-<app-window [Model]="Window.summary">
-  <ng-container>
+<app-window [Model]="window.summary">
+  <ng-container *ngIf="window.summary.show">
     <app-statistic-summary
       [Committees]="Committees"
       [Stations]="GarbageStations"
     ></app-statistic-summary>
   </ng-container>
 </app-window>
+
+<app-window [Model]="window.picture" [Background]="false" [CloseButton]="false">
+  <hw-gallery-target
+    *ngIf="window.picture.show"
+    [closeViewFn]="window.picture.close"
+    [model]="window.picture.target"
+    [videoFn]="window.picture.playVideo"
+  >
+  </hw-gallery-target>
+  <div
+    class="fill-height fill-width hw-content-mask collapse"
+    [class.in]="window.picture.player"
+  ></div>
+</app-window>
+<app-window [Model]="window.video" [Background]="false" [CloseButton]="false">
+  <ng-container *ngIf="window.video.player">
+    <hw-video-simple-card
+      [closeFn]="window.video.close"
+      [url]="window.video.player.url"
+      [WebUrl]="window.video.player.WebUrl"
+      [autostart]="true"
+      [cameraName]="window.video.player.name"
+    ></hw-video-simple-card>
+  </ng-container>
+</app-window>
+
+<!-- 
+    [videoFileFn]="tableService.eventTable.videoFileFn"
+    [imgEventFn]="tableService.galleryTargetView.galleryTargetPageFn" -->

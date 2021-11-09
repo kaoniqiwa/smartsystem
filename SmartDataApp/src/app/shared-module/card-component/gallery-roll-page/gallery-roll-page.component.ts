@@ -25,7 +25,7 @@ import {
 import { ArrayPagination } from "../../../common/tool/tool.service";
 import { UserDalService } from "../../../dal/user/user-dal.service";
 import { SessionUser } from "../../../common/tool/session-user";
-import { WHSPlayer } from "../../../common/hws-player";
+import { HWSPlayer } from "../../../common/hws-player";
 import {
   GalleryRollPageConfig,
   IGalleryRollPageConfig,
@@ -64,7 +64,7 @@ export class GalleryRollPageComponent
 
   // @ViewChild(HWSPlayerDirective)
   // player: HWSPlayerDirective;
-  p: WHSPlayer;
+  player: HWSPlayer;
   playing = false;
   maxWindow = false;
   currentPlayId = "";
@@ -80,7 +80,7 @@ export class GalleryRollPageComponent
     interval: -1,
     fn: null,
   };
-  galleryHeight = "86%";
+  galleryHeight = "calc(100% - 43px - 60px)";
   readonly interval_inspection_key = "99";
   user = new SessionUser();
   bigViewId = "";
@@ -94,7 +94,7 @@ export class GalleryRollPageComponent
   }
   ngOnDestroy() {
     this.maxWindow = false;
-    if (this.p) this.p.stopVideo();
+    if (this.player) this.player.stopVideo();
   }
 
   async ngOnInit() {
@@ -110,7 +110,7 @@ export class GalleryRollPageComponent
           clearVideo = () => {
             this.playing = false;
             this.currentPlayId = "";
-            if (this.p) this.p.stopVideo();
+            if (this.player) this.player.stopVideo();
           };
         if (val && val.imgDesc) {
           const id = val.imgDesc.find((x) => x.tag.id == this.currentPlayId);
@@ -133,17 +133,18 @@ export class GalleryRollPageComponent
     }, 500);
   }
 
-  bigView(id: string) {
+  async bigView(id?: string) {
     this.bigViewId = this.bigViewId ? "" : id;
     if (this.playing) {
       this.playing = false;
       this.currentPlayId = "";
-      if (this.p) this.p.stopVideo();
+      if (this.player) this.player.stopVideo();
     }
   }
 
   autoVideoWindowSize() {
     setTimeout(() => {
+      debugger;
       const size = domSize("video__view_wrap");
       if (this.playing && window.screen.width != size.width) {
         const vSize = domSize("item__" + this.currentPlayId);
@@ -151,8 +152,11 @@ export class GalleryRollPageComponent
 
         this.playViewSize.width = vSize.width;
         this.playViewSize.height = vSize.height;
-        if (this.p)
-          this.p.reSizeView(this.playViewSize.width, this.playViewSize.height);
+        if (this.player)
+          this.player.reSizeView(
+            this.playViewSize.width,
+            this.playViewSize.height
+          );
         moveView2("item__" + this.currentPlayId, "video__view_wrap", 0, 0);
       }
     }, 20);
@@ -186,15 +190,29 @@ export class GalleryRollPageComponent
 
   fiveTimeVideo() {
     setTimeout(() => {
-      if (this.p) this.p.stopVideo();
+      if (this.player) this.player.stopVideo();
       this.playing = false;
     }, 300 * 1000); /**播放5 */
   }
 
   async playVideo(cameraId: string) {
-    this.playViewSize = domSize("item__" + cameraId);
+    if (this.config.playVideoToBig && !this.bigViewId) {
+      this.bigView(cameraId).then(() => {
+        this.playVideo(cameraId);
+      });
+      return;
+    }
+    let id = "";
+    if (this.config.playVideoToBig) {
+      id = "bigger";
+    } else {
+      id = "item__" + cameraId;
+    }
+    this.playViewSize = domSize(id);
+    console.log(id, this.playViewSize);
     // const videoLive = 4;
-    moveView2("item__" + cameraId, "video__view_wrap", 0, 0);
+
+    moveView2(id, "video__view_wrap", 0, 0);
     // const config = await this.userDalService.getUserConfig(this.user.id, videoLive + '');
     const params = new GetPreviewUrlParams();
     params.CameraId = cameraId;
@@ -213,15 +231,21 @@ export class GalleryRollPageComponent
         response.Url,
         ""
       );
-      this.p = new WHSPlayer(this.sanitizer);
-      this.p.playVideo(videoOptions.webUrl, videoOptions.url);
+      this.player = new HWSPlayer(this.sanitizer);
+      this.player.playVideo(videoOptions.webUrl, videoOptions.url);
       setTimeout(() => {
-        this.p.iframe = this.iframe;
-        this.p.reSizeView(this.playViewSize.width, this.playViewSize.height);
-        this.p.stopFn(() => {
+        this.player.iframe = this.iframe;
+        this.player.reSizeView(
+          this.playViewSize.width,
+          this.playViewSize.height
+        );
+        this.player.stopFn(() => {
           this.playing = false;
           // this.player.playViewSize=this.playViewSize;
           this.btnControl("stop");
+          if (this.config.playVideoToBig) {
+            this.bigView();
+          }
         });
         this.fiveTimeVideo();
         this.btnControl("play");
@@ -233,14 +257,22 @@ export class GalleryRollPageComponent
     return this.model.items.get(this.model.index);
   }
 
+  private _imgs: Array<any>;
+  set imgs(v: Array<any>) {
+    this._imgs = v;
+  }
   get imgs() {
     const val = this.model.items.get(this.model.index);
     if (val && val.imgDesc) {
-      if (val.imgDesc.length > 4)
-        return ArrayPagination<any>(1, 9, val.imgDesc);
-      else return ArrayPagination<any>(val.index, 4, val.imgDesc);
+      if (val.imgDesc.length > 4) {
+        this._imgs = ArrayPagination<any>(1, 9, val.imgDesc);
+      } else {
+        this._imgs = ArrayPagination<any>(val.index, 4, val.imgDesc);
+      }
+    } else {
+      this._imgs = new Array();
     }
-    return new Array();
+    return this._imgs;
   }
 
   setviewSize(num: number) {
@@ -301,8 +333,8 @@ export class GalleryRollPageComponent
     if (this.model.index > this.model.items.size) this.model.index = 1;
     this.resetCarousel(this.carousel.time);
     this.tagClick(null, false);
-    if (this.p && this.p.playing) {
-      this.p.stopVideo();
+    if (this.player && this.player.playing) {
+      this.player.stopVideo();
     }
   }
 
@@ -313,7 +345,7 @@ export class GalleryRollPageComponent
     if (this.model.index <= 0) this.model.index = this.model.items.size;
     this.resetCarousel(this.carousel.time);
     this.tagClick(null, false);
-    this.p.stopVideo();
+    this.player.stopVideo();
   }
 
   /**
@@ -341,8 +373,8 @@ export class GalleryRollPageComponent
     this.bigViewId = "";
     this.resetCarousel(this.carousel.time);
     this.tagClick(null, false);
-    if (this.p && this.p.playing) {
-      this.p.stopVideo();
+    if (this.player && this.player.playing) {
+      this.player.stopVideo();
     }
   }
 }

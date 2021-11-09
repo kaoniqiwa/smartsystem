@@ -15,7 +15,7 @@ export enum ImgTypeEnum {
 export enum TypeNameEnum {
   drop = "垃圾滞留",
   handle = "已处置",
-  timeOut = "超时处置",
+  timeOut = "超时未处置",
 }
 
 export enum TypeNameColorEnum {

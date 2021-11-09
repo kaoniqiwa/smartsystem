@@ -3,12 +3,16 @@
     <div>
       {{ view.Title }}
     </div>
-    <div class="light-blue-text dropdown" (click)="doTypeChange()">
+    <div
+      *ngIf="Types"
+      class="light-blue-text dropdown"
+      (click)="doTypeChange()"
+    >
       <div>
         {{ view.EventTypeName }}
         <i class="mdi mdi-menu-down light-blue-text"></i>
       </div>
-      <div class="dropdown control" *ngIf="type_display">
+      <div class="dropdown control" *ngIf="display.type">
         <ng-container *ngFor="let type of types; let i = index">
           <div class="item" (click)="typeClick($event, type)">
             {{ type.value }}

@@ -15,7 +15,6 @@
 .station-event-chart-content {
   display: flex;
   height: calc(100%);
-  margin-top: -36px;
 }
 
 .station-event-chart-content .echarts {

@@ -15,7 +15,9 @@
       <div>
         <div>超时任务数</div>
         <div>
-          <span class="text-white value">{{ data.GarbageRetentionCount }}</span
+          <span class="text-white value">{{
+            data.TotalCount - data.GarbageRetentionCount
+          }}</span
           ><span class="blue-text">起</span>
         </div>
       </div>

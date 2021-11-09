@@ -1,12 +1,11 @@
 import { EventType } from "src/app/data-core/model/enum";
 
-export class CommitteesHistoryTableViewModel {
+export class CommitteesHistoryTableViewModel<T> {
   Id: string;
   Index: number;
   StationName: string;
   Time: string;
-  PlayVideo: () => void;
-  ShowPicture: () => void;
+  Data: T;
 }
 
 export class CommitteesHistoryTableTypes {

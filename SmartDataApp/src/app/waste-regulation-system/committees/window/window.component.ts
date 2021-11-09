@@ -13,6 +13,12 @@ export class WindowComponent implements OnInit {
     show: false,
   };
 
+  @Input()
+  Background = true;
+
+  @Input()
+  CloseButton = true;
+
   @Output()
   OnClosing: EventEmitter<boolean> = new EventEmitter();
 

@@ -21,28 +21,21 @@ export class StatisticSummaryHeaderComponent
     OnInit,
     OnChanges,
     ICommitteesComponent<
-      StatisticSummaryViewModel,
+      StatisticSummaryViewModel[],
       StatisticSummaryHeaderViewModel
     >
 {
   view: StatisticSummaryHeaderViewModel = new StatisticSummaryHeaderViewModel();
 
-  private _DivisonStatistic: StatisticSummaryViewModel;
-  public get DivisonStatistic(): StatisticSummaryViewModel {
-    return this._DivisonStatistic;
-  }
   @Input()
-  public set DivisonStatistic(v: StatisticSummaryViewModel) {
-    this._DivisonStatistic = v;
-    this.onLoaded();
-  }
+  DivisonStatistic: StatisticSummaryViewModel[];
 
   constructor() {}
   ngOnChanges(changes: SimpleChanges): void {
     this.onLoaded();
   }
   Converter: ICommitteesConverter<
-    StatisticSummaryViewModel,
+    StatisticSummaryViewModel[],
     StatisticSummaryHeaderViewModel
   > = new StatisticSummaryHeaderConverter();
 

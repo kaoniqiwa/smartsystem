@@ -1,77 +1,124 @@
-<div style="height: calc(100% - 64px);position: relative;"> 
-  <div class="fill-height fill-width hw-content-mask collapse"
-    [class.in]="tableService.galleryTargetView.galleryTarget">
-    <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
-      <hw-gallery-target [closeViewFn]="galleryTargetFn" [model]="tableService.galleryTargetView.galleryTarget"
+<div style="height: calc(100% - 64px); position: relative">
+  <div
+    class="fill-height fill-width hw-content-mask collapse"
+    [class.in]="tableService.galleryTargetView.galleryTarget"
+  >
+    <div style="width: 80%; height: 80%; margin-left: 10%; margin-top: 6%">
+      <hw-gallery-target
+        [closeViewFn]="galleryTargetFn"
+        [model]="tableService.galleryTargetView.galleryTarget"
         [videoFn]="tableService.eventTable.playVideoFn"
-        [imgEventFn]="tableService.galleryTargetView.galleryTargetPageFn">
+        [imgEventFn]="tableService.galleryTargetView.galleryTargetPageFn"
+      >
       </hw-gallery-target>
     </div>
   </div>
-  <div class="fill-height fill-width hw-content-mask collapse" [class.in]="tableService.playVideo">
-
-    <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
+  <div
+    class="fill-height fill-width hw-content-mask collapse"
+    [class.in]="tableService.playVideo"
+  >
+    <div style="width: 80%; height: 80%; margin-left: 10%; margin-top: 6%">
       <ng-container *ngIf="tableService.playVideo">
-        <hw-video-simple-card [closeFn]="videoClose" [url]="tableService.playVideo.url" [WebUrl]="tableService.playVideo.WebUrl" [autostart]="true"
-          [cameraName]="tableService.playVideo.name"></hw-video-simple-card>
+        <hw-video-simple-card
+          [closeFn]="videoClose"
+          [url]="tableService.playVideo.url"
+          [WebUrl]="tableService.playVideo.WebUrl"
+          [autostart]="true"
+          [cameraName]="tableService.playVideo.name"
+        ></hw-video-simple-card>
       </ng-container>
-
     </div>
-
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
-    <div class="second-title-bg text">
-      AI事件
-    </div>
-    <div [formGroup]="tableService.search.searchform" fxLayoutAlign="center center">
-      <input type="text" style="width: 300px;" [readonly]="tableService.search.other" formControlName="SearchText"
-        placeholder="输入关键字" class="custom form-control m-r-10">
-      <button type="button" class="hw-blue-btn m-r-10 " (click)="search()">
+    <div class="second-title-bg text">AI事件</div>
+    <div
+      [formGroup]="tableService.search.searchform"
+      fxLayoutAlign="center center"
+    >
+      <input
+        type="text"
+        style="width: 300px"
+        [readonly]="tableService.search.other"
+        formControlName="SearchText"
+        placeholder="输入关键字"
+        class="custom form-control m-r-10"
+      />
+      <button type="button" class="hw-blue-btn m-r-10" (click)="search()">
         <i class="mdi mdi-magnify"></i>
         查询
       </button>
-      <button type="button" class="hw-blue-m-btn m-r-10 " (click)="listTypeView=!listTypeView">
-        <i style="margin-left: 2px;" [class.howell-icon-ul]="listMode==pageListMode.table"
-          [class.howell-icon-cam-all1]="listMode==pageListMode.list"></i>
+      <button
+        type="button"
+        class="hw-blue-m-btn m-r-10"
+        (click)="listTypeView = !listTypeView"
+      >
+        <i
+          style="margin-left: 2px"
+          [class.howell-icon-ul]="listMode == pageListMode.table"
+          [class.howell-icon-cam-all1]="listMode == pageListMode.list"
+        ></i>
         <i class="mdi mdi-menu-down"></i>
       </button>
-      <button class="hw-cyan-m-btn" (click)="tableService.search.other=!tableService.search.other">
+      <button
+        class="hw-cyan-m-btn"
+        (click)="tableService.search.other = !tableService.search.other"
+      >
         <i class="mdi mdi-filter-outline"></i>
       </button>
       <div class="list-attr-wrap collapse" [class.in]="listTypeView">
         <ul class="p-l-0">
-          <li  (click)="changeListMode(pageListMode.table)" >
-            <a href="javascript:void(0)"class="list-li light-blue-text">
+          <li (click)="changeListMode(pageListMode.table)">
+            <a href="javascript:void(0)" class="list-li light-blue-text">
               <i class="howell-icon-ul"></i>
-             
             </a>
           </li>
-          <li  (click)="changeListMode(pageListMode.list)">
+          <li (click)="changeListMode(pageListMode.list)">
             <a href="javascript:void(0)" class="list-li light-blue-text">
               <i class="howell-icon-cam-all1"></i>
-                </a>
+            </a>
           </li>
         </ul>
       </div>
     </div>
   </div>
   <ng-container *ngIf="tableService.search.other">
-    <div fxLayout="row" [formGroup]="tableService.search.searchform" fxLayoutGap="20px"
-      class="filter-wrap m-b-10 collapse">
+    <div
+      fxLayout="row"
+      [formGroup]="tableService.search.searchform"
+      fxLayoutGap="20px"
+      class="filter-wrap m-b-10 collapse"
+    >
       <div fxFlex="25">
         <span>开始时间</span>
-        <input type="text" DateTimePicker [defaultVal]="tableService.search.beginDate" [changeDate]="startDate"
-          style="width: calc(100% - 82px);" class="custom form-control m-l-10" formControlName="BeginTime">
+        <input
+          type="text"
+          DateTimePicker
+          [defaultVal]="tableService.search.beginDate"
+          (changeDate)="startDate($event)"
+          style="width: calc(100% - 82px)"
+          class="custom form-control m-l-10"
+          formControlName="BeginTime"
+        />
       </div>
       <div fxFlex="25">
         <span>结束时间</span>
-        <input type="text" DateTimePicker [defaultVal]="tableService.search.endDate" [changeDate]="endDate"
-          style="width: calc(100% - 82px);" class="custom form-control m-l-10" formControlName="EndTime">
+        <input
+          type="text"
+          DateTimePicker
+          [defaultVal]="tableService.search.endDate"
+          (changeDate)="endDate($event)"
+          style="width: calc(100% - 82px)"
+          class="custom form-control m-l-10"
+          formControlName="EndTime"
+        />
       </div>
       <div fxFlex="25">
         <span>事件类型</span>
-        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 82px);"
-          formControlName="EventType">
+        <select
+          class="form-control custom custom-select m-l-10"
+          style="width: calc(100% - 82px)"
+          formControlName="EventType"
+        >
           <option value="">全部</option>
           <option value="1">乱丢垃圾</option>
           <option value="2">混合投放</option>
@@ -80,26 +127,38 @@
       </div>
       <div fxFlex="25">
         <span>AI模型</span>
-        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 62px);"
-          formControlName="ResourceType">
+        <select
+          class="form-control custom custom-select m-l-10"
+          style="width: calc(100% - 62px)"
+          formControlName="ResourceType"
+        >
           <option value="">全部</option>
           <ng-container *ngFor="let c of tableService.camerasAIModel">
-            <option value="{{c.Id}}">{{c.ModelName}}</option>
+            <option value="{{ c.Id }}">{{ c.ModelName }}</option>
           </ng-container>
-
         </select>
       </div>
     </div>
-
   </ng-container>
-  <div [ngStyle]="{'height': tableService.search.other ? 'calc(100% - 66px)':'calc(100% - 21px)'}">   
-
-    <ng-container *ngIf="listMode==pageListMode.table">
-      <hw-custom-table #table [model]="tableService.eventTable.dataSource"></hw-custom-table>
+  <div
+    [ngStyle]="{
+      height: tableService.search.other
+        ? 'calc(100% - 66px)'
+        : 'calc(100% - 21px)'
+    }"
+  >
+    <ng-container *ngIf="listMode == pageListMode.table">
+      <hw-custom-table
+        #table
+        [model]="tableService.eventTable.dataSource"
+      ></hw-custom-table>
     </ng-container>
-    <ng-container *ngIf="listMode==pageListMode.list">
-      <hw-illegal-drop-event-card-list [model]="tableService.eventCards.cards" [itemFn]="listGalleryTargetFn"
-        [playVideoFn]="tableService.eventTable.playVideoFn">
+    <ng-container *ngIf="listMode == pageListMode.list">
+      <hw-illegal-drop-event-card-list
+        [model]="tableService.eventCards.cards"
+        [itemFn]="listGalleryTargetFn"
+        [playVideoFn]="tableService.eventTable.playVideoFn"
+      >
       </hw-illegal-drop-event-card-list>
     </ng-container>
   </div>

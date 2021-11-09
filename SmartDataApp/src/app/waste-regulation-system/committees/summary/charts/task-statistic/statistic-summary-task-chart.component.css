@@ -24,6 +24,7 @@
 
 .task-chart-content .task-chart-content-chart .task.echarts {
   height: 100%;
+  width: 100%;
 }
 
 .task-chart-content .number-list {

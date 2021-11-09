@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HWSPlayerOptions } from "src/app/common/directive/wsplayer-directive";
 import { Language } from "src/app/common/tool/language";
 import { GetPreviewUrlParams } from "src/app/data-core/model/aiop/video-url";
+import { OnlineStatus } from "src/app/data-core/model/enum";
 import { Camera } from "src/app/data-core/model/waste-regulation/camera";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
 import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
@@ -21,13 +22,12 @@ import {
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 import { ICommitteesConverter } from "../../interface/committees-converter.interface";
 
-@Injectable()
 export class GalleryRollPageBusiness {
   constructor() {
     GlobalStoreService.change.subscribe((station: GarbageStation) => {
       this.Model.items.forEach((x) => {
         if (x.title.id === station.Id) {
-          this.Model.index = x.index;
+          this.Model.index = x.i;
           return;
         }
       });
@@ -40,6 +40,7 @@ export class GalleryRollPageBusiness {
     titleVisibility: false,
     statusBarVisibility: false,
     videoControlFullscreenVisibility: false,
+    playVideoToBig: true,
   };
   Model: GalleryRollPage;
   Converter = new GalleryRollPageConverter();
@@ -61,7 +62,7 @@ class GalleryRollPageConverter
     playerOptions?: HWSPlayerOptions
   ): GalleryRollPage {
     let page = new GalleryRollPage();
-    page.autoChangePage = false;
+    page.autoChangePage = true;
     page.index = 1;
 
     page.items = new Map<number, Gallery>();
@@ -69,28 +70,28 @@ class GalleryRollPageConverter
     for (let i = 0; i < input.length; i++) {
       const station = input[i];
 
-      page.items.set(i + 1, this.ConvertItem(station));
+      page.items.set(i + 1, this.ConvertItem(station, i + 1));
     }
 
     page.videoOptions = playerOptions;
     return page;
   }
 
-  ConvertItem(input: GarbageStation): Gallery {
+  ConvertItem(input: GarbageStation, index: number): Gallery {
     let gallery = new Gallery();
+    gallery.i = index;
     gallery.title = {
       text: input.Name,
       id: input.Id,
       state: Language.StationStateFlags(input.StationStateFlags),
       eventNumber: 0,
     };
-
     gallery.imgDesc = input.Cameras.map((camera) => {
       return {
         src: ResourceMediumRequestService.getJPG(camera.ImageUrl),
         desc: "",
         tag: { id: camera.Id },
-        state: !!camera.OnlineStatus,
+        state: camera.OnlineStatus != OnlineStatus.Online,
       };
     });
 

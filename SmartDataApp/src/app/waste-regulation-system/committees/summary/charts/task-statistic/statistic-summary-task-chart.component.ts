@@ -1,4 +1,5 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
   Component,
   ElementRef,
@@ -28,30 +29,17 @@ export class StatisticSummaryTaskChartComponent
     OnChanges,
     AfterViewInit,
     ICommitteesComponent<
-      StatisticSummaryViewModel,
+      StatisticSummaryViewModel[],
       StatisticSummaryTaskChartViewModel
     >
 {
   myChart: any;
 
-  private _Data: StatisticSummaryViewModel;
-  public get Data(): StatisticSummaryViewModel {
-    return this._Data;
-  }
   @Input()
-  public set Data(v: StatisticSummaryViewModel) {
-    this._Data = v;
-  }
+  private Data?: StatisticSummaryViewModel[];
 
-  private _data: StatisticSummaryTaskChartViewModel =
+  data: StatisticSummaryTaskChartViewModel =
     new StatisticSummaryTaskChartViewModel();
-  public get data(): StatisticSummaryTaskChartViewModel {
-    return this._data;
-  }
-  public set data(v: StatisticSummaryTaskChartViewModel) {
-    this._data = v;
-    this.setOption();
-  }
 
   @ViewChild("echarts")
   private echarts?: ElementRef<HTMLDivElement>;
@@ -59,25 +47,31 @@ export class StatisticSummaryTaskChartComponent
   option = StatisticSummaryTaskChartOption;
 
   Converter: ICommitteesConverter<
-    StatisticSummaryViewModel,
+    StatisticSummaryViewModel[],
     StatisticSummaryTaskChartViewModel
   > = new StatisticSummaryTaskChartConverter();
 
-  constructor() {}
+  constructor() {
+    console.log("constructor");
+  }
   ngOnChanges(changes: SimpleChanges): void {
+    console.log("ngOnChanges");
     this.onLoaded();
   }
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    console.log("ngAfterViewInit");
+    this.myChart = echarts.init(this.echarts.nativeElement, "dark");
+    console.log(this.echarts.nativeElement);
+    this.onLoaded();
+  }
   ngOnInit() {
-    if (this.echarts) {
-      this.myChart = echarts.init(this.echarts.nativeElement, "dark");
-      this.setOption();
-    }
+    console.log("ngOnInit");
   }
 
   onLoaded(): void {
     if (this.Data) {
       this.data = this.Converter.Convert(this.Data);
+      this.setOption();
     }
   }
 
@@ -86,9 +80,10 @@ export class StatisticSummaryTaskChartComponent
       this.option.series[0].data[0].value = parseInt(
         this.data.ratio.toString()
       );
-      debugger;
     }
     if (this.myChart) {
+      this.myChart.resize();
+      console.log("setOption");
       this.myChart.setOption(this.option, true);
     }
   }

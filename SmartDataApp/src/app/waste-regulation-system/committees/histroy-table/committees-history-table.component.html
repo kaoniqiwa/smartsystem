@@ -26,8 +26,12 @@
                 class="operate sky-blue-text2"
                 [ngStyle]="{ width: bodyWidths[3] }"
               >
-                <div><i class="mdi mdi-image-area"></i></div>
-                <div><i class="howell-icon-video"></i></div>
+                <div (click)="pictureClick($event, item)">
+                  <i class="mdi mdi-image-area"></i>
+                </div>
+                <div (click)="videoClick($event, item)">
+                  <i class="howell-icon-video"></i>
+                </div>
               </td>
               <td></td>
             </tr>

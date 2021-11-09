@@ -1,4 +1,5 @@
-import { Type } from "class-transformer";
+import { Transform, Type } from "class-transformer";
+import { transformDate } from "../transformer";
 import { EventNumber } from "./event-number";
 /**事件数量统计 */
 export class EventNumberStatistic {
@@ -6,9 +7,11 @@ export class EventNumberStatistic {
   @Type(() => EventNumber)
   EventNumbers: EventNumber[];
   /**开始时间 */
-  BeginTime: Date | string;
+  @Transform(transformDate)
+  BeginTime: Date;
   /**结束时间 */
-  EndTime: Date | string;
+  @Transform(transformDate)
+  EndTime: Date;
 }
 /**获取区划事件数量参数 */
 export class GetDivisionEventNumbersParams {

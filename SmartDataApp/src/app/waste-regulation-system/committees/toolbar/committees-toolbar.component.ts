@@ -5,13 +5,16 @@ import { SessionUser } from "src/app/common/tool/session-user";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
 
 @Component({
-  selector: "app-toolbar",
-  templateUrl: "./toolbar.component.html",
-  styleUrls: ["./toolbar.component.css"],
+  selector: "app-committees-toolbar",
+  templateUrl: "./committees-toolbar.component.html",
+  styleUrls: ["./committees-toolbar.component.css"],
 })
 export class ToolbarComponent implements OnInit {
   @Input()
   Committees?: Division;
+
+  @Input()
+  Notify?: string = "测试测试测试测试测试测试测试测试测试测试测试";
 
   HideButton: boolean = false;
   HideTitlebar: boolean = false;

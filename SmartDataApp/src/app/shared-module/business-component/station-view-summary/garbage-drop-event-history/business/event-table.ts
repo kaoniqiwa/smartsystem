@@ -50,15 +50,13 @@ export class EventTable extends BusinessTable implements IConverter {
             d.typeName = TypeNameEnum.timeOut;
           }
         );
-        this.initGalleryTargetFn(
-          findEvent.EventId,
-          [
-            ...findEvent.Data.DropImageUrls,
-            ...findEvent.Data.HandleImageUrls,
-            ...findEvent.Data.TimeoutImageUrls,
-          ],
-          event.data["index"]
-        );
+        let imgs = [
+          ...findEvent.Data.DropImageUrls,
+          ...findEvent.Data.TimeoutImageUrls,
+          ...findEvent.Data.HandleImageUrls,
+        ];
+        console.log(imgs);
+        this.initGalleryTargetFn(findEvent.EventId, imgs, event.data["index"]);
       }
     },
     tableAttrs: [

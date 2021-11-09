@@ -1,15 +1,21 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
   Component,
   ElementRef,
   Input,
+  OnChanges,
   OnInit,
+  SimpleChanges,
   ViewChild,
 } from "@angular/core";
 import { classToPlain, plainToClass } from "class-transformer";
 import { EventType } from "src/app/data-core/model/enum";
 import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
-import { GarbageStationNumberStatistic } from "src/app/data-core/model/waste-regulation/garbage-station-number-statistic";
+import {
+  GarbageStationNumberStatistic,
+  GarbageStationNumberStatisticV2,
+} from "src/app/data-core/model/waste-regulation/garbage-station-number-statistic";
 import { ICommitteesComponent } from "../../../interface/committees-component.interface";
 import { ICommitteesConverter } from "../../../interface/committees-converter.interface";
 import { EchartBarOption } from "./echart-bar.option";
@@ -26,8 +32,9 @@ declare var echarts: any;
 export class StatisticSummaryStationEventChartComponent
   implements
     AfterViewInit,
+    OnChanges,
     ICommitteesComponent<
-      GarbageStationNumberStatistic[],
+      GarbageStationNumberStatisticV2[],
       StatisticSummaryStationEventChartViewModel[]
     >
 {
@@ -35,39 +42,36 @@ export class StatisticSummaryStationEventChartComponent
   @ViewChild("echarts")
   private echarts?: ElementRef<HTMLDivElement>;
 
-  private _Data: GarbageStationNumberStatistic[];
-  public get Data(): GarbageStationNumberStatistic[] {
-    return this._Data;
-  }
   @Input()
-  public set Data(v: GarbageStationNumberStatistic[]) {
-    this._Data = v;
-    this.onLoaded();
-  }
+  Data?: GarbageStationNumberStatisticV2[];
 
   constructor() {}
+  ngOnChanges(changes: SimpleChanges): void {
+    this.onLoaded();
+  }
   Converter: ICommitteesConverter<
-    GarbageStationNumberStatistic[],
+    GarbageStationNumberStatisticV2[],
     StatisticSummaryStationEventChartViewModel[]
   > = new StatisticSummaryStationEventChartConverter();
   onLoaded(): void {
     if (this.Data) {
       let plain = classToPlain(this.Converter.Convert(this.Data));
       this.option.dataset.source = plain as Array<any>;
-      this.option.xAxis.data = this.Data.map((x) => x.Name);
+      this.option.xAxis.data = plain.map((x: { product: any }) => x.product);
       this.setOption();
     }
   }
+
   ngAfterViewInit(): void {
     if (this.echarts) {
       this.myChart = echarts.init(this.echarts.nativeElement, "dark");
-      this.setOption();
+      this.onLoaded();
     }
   }
 
   setOption() {
     if (this.myChart) {
-      console.log(this.option);
+      this.myChart.resize();
       this.myChart.setOption(this.option, true);
     }
   }

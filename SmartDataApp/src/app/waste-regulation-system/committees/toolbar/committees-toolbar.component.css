@@ -49,3 +49,36 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.notify-header {
+  margin-right: 5px;
+  background-color: rgba(127, 148, 255, 0.3);
+  height: 34px;
+  width: 15px;
+  transform: skew(-20deg, 0deg)
+}
+
+.notify-content-background {
+  background-color: rgba(127, 148, 255, 0.2);
+  color: white;
+  font-size: 14px;
+  height: 34px;
+  line-height: 34px;
+  padding: 0 10px;
+  transform: skew(-20deg, 0deg)
+}
+
+.committees-toolbar-notify {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  height: 100%;
+}
+
+.notify-content {
+  transform: skew(20deg, 0deg)
+}
+
+.committees-toolbar {
+  justify-content: space-between;
+}

@@ -1,9 +1,12 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
   Component,
   ElementRef,
   Input,
+  OnChanges,
   OnInit,
+  SimpleChanges,
   ViewChild,
 } from "@angular/core";
 import { plainToClass } from "class-transformer";
@@ -12,6 +15,7 @@ import { EventType } from "src/app/data-core/model/enum";
 import { DivisionNumberStatistic } from "src/app/data-core/model/waste-regulation/division-number-statistic";
 import { ICommitteesComponent } from "../../../interface/committees-component.interface";
 import { ICommitteesConverter } from "../../../interface/committees-converter.interface";
+import { StatisticSummaryViewModel } from "../../statistic-summary.model";
 import { EChartPieOption } from "./echart-pie.option";
 import { StatisticSummaryEventRatioChartConverter } from "./statistic-summary-event-ratio-chart.converter";
 import { StatisticSummaryEventRatioChartViewModel } from "./statistic-summary-event-ratio-chart.model";
@@ -25,8 +29,9 @@ declare var echarts: any;
 export class StatisticSummaryEventRatioChartComponent
   implements
     AfterViewInit,
+    OnChanges,
     ICommitteesComponent<
-      DivisionNumberStatistic,
+      StatisticSummaryViewModel[],
       StatisticSummaryEventRatioChartViewModel
     >
 {
@@ -35,48 +40,36 @@ export class StatisticSummaryEventRatioChartComponent
 
   myChart: any;
 
-  private _Data: DivisionNumberStatistic;
-  public get Data(): DivisionNumberStatistic {
-    return this._Data;
-  }
   @Input()
-  public set Data(v: DivisionNumberStatistic) {
-    this._Data = v;
-    this.onLoaded();
-  }
+  Data?: StatisticSummaryViewModel[];
 
-  private _data: StatisticSummaryEventRatioChartViewModel;
-  public get data(): StatisticSummaryEventRatioChartViewModel {
-    return this._data;
-  }
-  public set data(v: StatisticSummaryEventRatioChartViewModel) {
-    this._data = v;
-
-    // if (this._data) {
-    //   this.setOption(this._data);
-    // }
-  }
+  private data?: StatisticSummaryEventRatioChartViewModel;
 
   constructor() {}
+  ngOnChanges(changes: SimpleChanges): void {
+    this.onLoaded();
+  }
   Converter: ICommitteesConverter<
-    DivisionNumberStatistic,
+    StatisticSummaryViewModel[],
     StatisticSummaryEventRatioChartViewModel
   > = new StatisticSummaryEventRatioChartConverter();
 
   ngAfterViewInit(): void {
     if (this.echarts) {
       this.myChart = echarts.init(this.echarts.nativeElement, "dark");
-      this.setOption();
     }
+    this.onLoaded();
   }
   onLoaded(): void {
     if (this.Data) {
       this.data = this.Converter.Convert(this.Data);
     }
+    this.setOption();
   }
 
   setOption() {
     if (this.myChart) {
+      this.myChart.resize();
       this.myChart.setOption(this.getOption(this.EChartOptionData), true);
     }
   }
@@ -99,10 +92,12 @@ export class StatisticSummaryEventRatioChartComponent
   }
 
   getOption(data: { value: number; name: string }[]) {
-    for (let i = 0; i < EChartPieOption.series.length; i++) {
-      const serie = EChartPieOption.series[i];
+    for (let i = 0; i < this.option.series.length; i++) {
+      const serie = this.option.series[i];
       serie.data = data;
     }
-    return EChartPieOption;
+    return this.option;
   }
+
+  option = EChartPieOption;
 }

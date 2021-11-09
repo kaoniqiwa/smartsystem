@@ -51,7 +51,7 @@
           [startView]="businessService.datePicker.startView"
           [minView]="businessService.datePicker.minView"
           [defaultVal]="businessService.search.beginDate"
-          [changeDate]="startDate"
+          (changeDate)="startDate($event)"
           style="width: calc(100% - 82px)"
           class="custom form-control m-l-10"
         />

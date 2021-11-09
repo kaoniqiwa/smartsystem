@@ -11,7 +11,15 @@
 
 .chart-list>div>div {
   height: 266px;
-  margin: 10px 0px;
+  margin-bottom: 20px;
   border: 1px solid rgba(94, 110, 191, 0.2);
   padding: 20px;
+}
+
+.chart-list>div>div:last-child {
+  margin-bottom: 0;
+}
+
+.chart-list>div>div.last {
+  margin-bottom: 0;
 }

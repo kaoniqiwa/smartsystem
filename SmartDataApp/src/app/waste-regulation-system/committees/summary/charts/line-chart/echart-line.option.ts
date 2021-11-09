@@ -1,7 +1,7 @@
 export var EChartLineOption = {
   backgroundColor: "transparent",
   title: {
-    text: "乱扔垃圾统计表",
+    text: "乱扔垃圾",
     textStyle: {
       color: "#fff",
       fontSize: "24px",
@@ -42,7 +42,34 @@ export var EChartLineOption = {
   },
   xAxis: {
     type: "category",
-    data: [],
+    boundaryGap: true,
+    data: [
+      "0:00",
+      "1:00",
+      "2:00",
+      "3:00",
+      "4:00",
+      "5:00",
+      "6:00",
+      "7:00",
+      "8:00",
+      "9:00",
+      "10:00",
+      "11:00",
+      "12:00",
+      "13:00",
+      "14:00",
+      "15:00",
+      "16:00",
+      "17:00",
+      "18:00",
+      "19:00",
+      "20:00",
+      "21:00",
+      "22:00",
+      "23:00",
+      "24:00",
+    ],
     axisLine: {
       onZero: false,
     },
@@ -75,7 +102,7 @@ export var EChartLineOption = {
     {
       type: "line",
       name: "单位(起)",
-      data: [],
+      data: new Array(),
       areaStyle: {},
       lineStyle: {
         width: 4,
@@ -88,6 +115,9 @@ export var EChartLineOption = {
         show: true,
         color: "#fff",
         fontSize: 16,
+        formatter: function (params: any) {
+          return params.value;
+        },
       },
     },
   ],

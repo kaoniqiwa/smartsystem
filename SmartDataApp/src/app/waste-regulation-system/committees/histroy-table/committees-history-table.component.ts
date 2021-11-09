@@ -1,5 +1,5 @@
 import { DatePipe } from "@angular/common";
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { EventType } from "src/app/data-core/model/enum";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
 import { EventNumberStatistic } from "src/app/data-core/model/waste-regulation/division-event-numbers";
@@ -26,7 +26,9 @@ export class CommitteesHistroyTableComponent
     OnInit,
     ICommitteesComponent<
       Array<IllegalDropEventRecord | MixedIntoEventRecord>,
-      CommitteesHistoryTableViewModel[]
+      CommitteesHistoryTableViewModel<
+        IllegalDropEventRecord | MixedIntoEventRecord
+      >[]
     >
 {
   headWidths = ["10%", "60%", "15%", "calc(15% - 8px)", "8px"];
@@ -47,6 +49,14 @@ export class CommitteesHistroyTableComponent
   @Input()
   Type: EventType;
 
+  @Output()
+  OnPictureClicked: EventEmitter<
+    IllegalDropEventRecord | MixedIntoEventRecord
+  > = new EventEmitter();
+  @Output()
+  OnVideoClicked: EventEmitter<IllegalDropEventRecord | MixedIntoEventRecord> =
+    new EventEmitter();
+
   constructor(
     private service: CommitteesHistroyTableService,
     private datePipe: DatePipe
@@ -56,7 +66,9 @@ export class CommitteesHistroyTableComponent
   }
   Converter: ICommitteesConverter<
     Array<IllegalDropEventRecord | MixedIntoEventRecord>,
-    CommitteesHistoryTableViewModel[]
+    CommitteesHistoryTableViewModel<
+      IllegalDropEventRecord | MixedIntoEventRecord
+    >[]
   > = new CommitteesHistoryTableConverter();
 
   ngOnInit() {
@@ -65,7 +77,9 @@ export class CommitteesHistroyTableComponent
     });
   }
 
-  views: CommitteesHistoryTableViewModel[];
+  views: CommitteesHistoryTableViewModel<
+    IllegalDropEventRecord | MixedIntoEventRecord
+  >[];
 
   show() {
     EventType.IllegalDrop;
@@ -89,5 +103,22 @@ export class CommitteesHistroyTableComponent
   filterClick(type: EventType) {
     this.Type = type;
     this.show();
+  }
+
+  pictureClick(
+    event: Event,
+    item: CommitteesHistoryTableViewModel<
+      IllegalDropEventRecord | MixedIntoEventRecord
+    >
+  ) {
+    this.OnPictureClicked.emit(item.Data);
+  }
+  videoClick(
+    event: Event,
+    item: CommitteesHistoryTableViewModel<
+      IllegalDropEventRecord | MixedIntoEventRecord
+    >
+  ) {
+    this.OnVideoClicked.emit(item.Data);
   }
 }

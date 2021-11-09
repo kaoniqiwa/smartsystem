@@ -4,21 +4,18 @@ import {
   RecordRankDropTypes,
   RecordRankDropConverter,
 } from "../../record-rank/drop/record-rank-drop.converter";
+import { WindowOperationBussiness } from "./window-operation.business";
 
 export class RecordRankDropBussiness {
+  constructor(private window: WindowOperationBussiness) {}
   Converter = new RecordRankDropConverter();
   Types = new RecordRankDropTypes();
   Type = this.Types.Timer;
 
-  onGarbageStationSelected: (
-    bussiness: RecordRankDropBussiness,
-    station: GarbageStation
-  ) => void;
-
   OnGarbageStationSelected(station: GarbageStation) {
     EventType.MixedInto;
-    if (this.onGarbageStationSelected) {
-      this.onGarbageStationSelected(this, station);
-    }
+    this.window.garbageStation = station;
+
+    this.window.stranded.show = true;
   }
 }

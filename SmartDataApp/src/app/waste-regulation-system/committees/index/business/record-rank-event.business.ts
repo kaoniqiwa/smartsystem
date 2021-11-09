@@ -3,24 +3,20 @@ import {
   RecordRankEventTypes,
   RecordRankEventConverter,
 } from "../../record-rank/event/record-rank-event.converter";
+import { WindowOperationBussiness } from "./window-operation.business";
 
 export class RecordRankEventBussiness {
+  constructor(private window: WindowOperationBussiness) {}
   Converter = new RecordRankEventConverter();
   Types = new RecordRankEventTypes();
   Type = this.Types.IllegalDrop;
-
-  onGarbageStationSelected: (
-    sender: RecordRankEventBussiness,
-    station: GarbageStation
-  ) => void;
 
   OnTypeChanged(type: BussinessEnumItem) {
     this.Type = type;
   }
 
   OnGarbageStationSelected(station: GarbageStation) {
-    if (this.onGarbageStationSelected) {
-      this.onGarbageStationSelected(this, station);
-    }
+    this.window.garbageStation = station;
+    this.window.record.show = true;
   }
 }

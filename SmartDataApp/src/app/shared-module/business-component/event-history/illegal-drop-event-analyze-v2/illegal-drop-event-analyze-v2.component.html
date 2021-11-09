@@ -1,73 +1,98 @@
-<div style="height: calc(100% - 64px);position: relative;">
+<div style="height: calc(100% - 64px); position: relative">
   <div fxLayout="row">
     <div class="fill-height">
       <div class="second-title-bg pull-left text">
-        {{pageTitle}}
+        {{ pageTitle }}
       </div>
       <ul class="hw-ul pull-left m-t-10">
-        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.history)">
-            <div class="second-menu-btn text">
-              &nbsp;&nbsp;事件
-            </div>
-          </a></li>
-        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.sumChart)">
-            <div class="second-menu-btn selected text">
-              &nbsp;总图表
-            </div>
-          </a></li>
-        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.chart)">
-            <div class="second-menu-btn text">
-              细分图表
-            </div>
-          </a></li>
-        <li class="pull-left"><a href="javascript:" (click)="changeOtherView(otherView.analyze)">
-            <div class="second-menu-btn text">
-              数据比较
-            </div>
-          </a></li>
+        <li class="pull-left">
+          <a href="javascript:" (click)="changeOtherView(otherView.history)">
+            <div class="second-menu-btn text">&nbsp;&nbsp;事件</div>
+          </a>
+        </li>
+        <li class="pull-left">
+          <a href="javascript:" (click)="changeOtherView(otherView.sumChart)">
+            <div class="second-menu-btn selected text">&nbsp;总图表</div>
+          </a>
+        </li>
+        <li class="pull-left">
+          <a href="javascript:" (click)="changeOtherView(otherView.chart)">
+            <div class="second-menu-btn text">细分图表</div>
+          </a>
+        </li>
+        <li class="pull-left">
+          <a href="javascript:" (click)="changeOtherView(otherView.analyze)">
+            <div class="second-menu-btn text">数据比较</div>
+          </a>
+        </li>
       </ul>
-
     </div>
   </div>
-  <div fxLayout="row" fxLayoutAlign="space-between stretch" [formGroup]="businessService.search.searchform"
-    class="filter-wrap m-b-10 collapse">
+  <div
+    fxLayout="row"
+    fxLayoutAlign="space-between stretch"
+    [formGroup]="businessService.search.searchform"
+    class="filter-wrap m-b-10 collapse"
+  >
     <div fxFlex="80">
       <div fxFlex="35" class="m-r-10">
         <span>选择时间</span>
-        <input type="text" DateTimePicker #dtp [format]="'yyyy年mm月dd日'" [startView]="businessService.datePicker.startView"
-          [minView]="businessService.datePicker.minView" [defaultVal]="businessService.search.beginDate"
-          [changeDate]="startDate" style="width: calc(100% - 82px);" class="custom form-control m-l-10">
+        <input
+          type="text"
+          DateTimePicker
+          #dtp
+          [format]="'yyyy年mm月dd日'"
+          [startView]="businessService.datePicker.startView"
+          [minView]="businessService.datePicker.minView"
+          [defaultVal]="businessService.search.beginDate"
+          (changeDate)="startDate($event)"
+          style="width: calc(100% - 82px)"
+          class="custom form-control m-l-10"
+        />
       </div>
       <div fxFlex="25" class="m-r-10">
-        <span class="input-text" style="position: relative;top:2px">行政区</span>
-        <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 82px);"
-          formControlName="ClassType">
-          <option *ngIf="businessService.cityOption" value="county">街道</option>
+        <span class="input-text" style="position: relative; top: 2px"
+          >行政区</span
+        >
+        <select
+          class="form-control custom custom-select m-l-10"
+          style="width: calc(100% - 82px)"
+          formControlName="ClassType"
+        >
+          <option *ngIf="businessService.cityOption" value="county">
+            街道
+          </option>
           <option value="committees">居委会</option>
           <option value="station">投放点</option>
         </select>
       </div>
       <div fxFlex="30">
-        <button type="button" class="hw-blue-btn m-r-10 " (click)="search()">
+        <button type="button" class="hw-blue-btn m-r-10" (click)="search()">
           <i class="mdi mdi-magnify"></i>
           查询
         </button>
-        <button type="button" class="hw-blue-btn m-r-10 " (click)="exportExcel()">
+        <button
+          type="button"
+          class="hw-blue-btn m-r-10"
+          (click)="exportExcel()"
+        >
           <i class="howell-icon-export"></i>
           导出
         </button>
-        <button type="button" class="hw-blue-btn m-r-10 " (click)="exportCSV()">
+        <button type="button" class="hw-blue-btn m-r-10" (click)="exportCSV()">
           <i class="howell-icon-export"></i>
           CSV
         </button>
-
       </div>
-
     </div>
     <div fxFlex="20">
       <div class="pull-right">
-        <select (change)="changeTimeType()" class="form-control custom custom-select m-l-10" style="width: 100px;"
-          formControlName="TimeUnit">
+        <select
+          (change)="changeTimeType()"
+          class="form-control custom custom-select m-l-10"
+          style="width: 100px"
+          formControlName="TimeUnit"
+        >
           <option value="hour">日报表</option>
           <option value="week">周报表</option>
           <option value="day">月报表</option>
@@ -75,7 +100,10 @@
       </div>
     </div>
   </div>
-  <div style="height: calc(100% - 60px);position: relative;"> 
-    <hw-custom-table #table [model]="businessService.table.dataSource"></hw-custom-table> 
+  <div style="height: calc(100% - 60px); position: relative">
+    <hw-custom-table
+      #table
+      [model]="businessService.table.dataSource"
+    ></hw-custom-table>
   </div>
 </div>

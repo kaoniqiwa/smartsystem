@@ -13,7 +13,7 @@
 
 .line-chart-content {
   display: flex;
-  height: calc(100% - 56px);
+  height: 100%;
 }
 
 

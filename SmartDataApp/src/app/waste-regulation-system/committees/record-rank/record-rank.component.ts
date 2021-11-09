@@ -1,6 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { Language } from "src/app/common/tool/language";
-import { EventType } from "src/app/data-core/model/enum";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
 import { GarbageStationNumberStatistic } from "src/app/data-core/model/waste-regulation/garbage-station-number-statistic";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
@@ -11,8 +9,6 @@ import {
   RecordRankViewModel,
 } from "./record-rank.model";
 import { ICommitteesComponent } from "../interface/committees-component.interface";
-import { IllegalDropEventRecord } from "src/app/data-core/model/waste-regulation/illegal-drop-event-record";
-import { MixedIntoEventRecord } from "src/app/data-core/model/waste-regulation/mixed-into-event-record";
 import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
 
 @Component({
@@ -81,7 +77,9 @@ export class RecordRankComponent
 
   view: RecordRankViewModel = new RecordRankViewModel();
 
-  type_display = false;
+  display = {
+    type: false,
+  };
 
   constructor(private service: RecordRankService) {}
 
@@ -91,9 +89,8 @@ export class RecordRankComponent
   }
 
   onTypeChanged(t: BussinessEnumItem) {
+    this.view.EventType = t.key;
     if (this.types.length > 0) {
-      this.view.EventType = t.key;
-
       let type = this.types.find((x) => x.key == t.key);
       this.view.EventTypeName = type.value;
       this.show();
@@ -126,11 +123,11 @@ export class RecordRankComponent
 
   typeClick(event: Event, type: BussinessEnumItem) {
     this.Type = type;
-    this.type_display = false;
+    this.display.type = false;
     event.stopPropagation();
   }
   doTypeChange() {
-    this.type_display = true;
+    this.display.type = true;
   }
 
   async itemClicked(event: Event, item: RecordRankItemViewModel) {

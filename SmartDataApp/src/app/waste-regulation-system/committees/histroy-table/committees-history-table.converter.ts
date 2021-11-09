@@ -8,13 +8,17 @@ export class CommitteesHistoryTableConverter
   implements
     ICommitteesConverter<
       Array<IllegalDropEventRecord | MixedIntoEventRecord>,
-      CommitteesHistoryTableViewModel[]
+      CommitteesHistoryTableViewModel<
+        IllegalDropEventRecord | MixedIntoEventRecord
+      >[]
     >
 {
   Convert(
     input: Array<IllegalDropEventRecord | MixedIntoEventRecord>,
     datePipe: DatePipe
-  ): CommitteesHistoryTableViewModel[] {
+  ): CommitteesHistoryTableViewModel<
+    IllegalDropEventRecord | MixedIntoEventRecord
+  >[] {
     return input.map((x) => {
       return this.ConvertItem(x, datePipe);
     });
@@ -23,11 +27,16 @@ export class CommitteesHistoryTableConverter
   ConvertItem(
     input: IllegalDropEventRecord | MixedIntoEventRecord,
     datePipe: DatePipe
-  ): CommitteesHistoryTableViewModel {
-    let vm = new CommitteesHistoryTableViewModel();
+  ): CommitteesHistoryTableViewModel<
+    IllegalDropEventRecord | MixedIntoEventRecord
+  > {
+    let vm = new CommitteesHistoryTableViewModel<
+      IllegalDropEventRecord | MixedIntoEventRecord
+    >();
+    vm.Data = input;
     if (input instanceof IllegalDropEventRecord) {
       vm.Id = input.EventId;
-      vm.StationName = input.ResourceName;
+      vm.StationName = input.Data.StationName;
       vm.Time = datePipe.transform(input.EventTime, "HH:mm");
     } else if (input instanceof MixedIntoEventRecord) {
       vm.Id = input.EventId;

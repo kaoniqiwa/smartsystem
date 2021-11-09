@@ -2,7 +2,7 @@
   <div class="">
     <div class="title">垃圾处置达标率</div>
     <div>
-      <span class="text-white value">{{ view.Garde }}</span
+      <span class="text-white value">{{ view ? view.Garde : 100 }}</span
       ><span class="blue-text unit">分</span>
     </div>
   </div>
@@ -16,9 +16,9 @@
     </div>
   </div>
   <div class="">
-    <div class="title">垃圾滞留时长</div>
-    <div>
-      <span *ngIf="!!view && view.GarbageTimeHour > 0">
+    <div class="title">最大垃圾滞留时长</div>
+    <div *ngIf="view">
+      <span *ngIf="view.GarbageTimeHour > 0">
         <span class="text-white value">{{
           view ? view.GarbageTimeHour : 0
         }}</span>
