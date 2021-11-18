@@ -40,16 +40,17 @@ export class EventTable extends BusinessTable implements IConverter {
           d.imgType = ImgTypeEnum.drop;
           d.typeName = TypeNameEnum.drop;
         });
-        (findEvent.Data.HandleImageUrls as Array<HWCameraImageUrl>).map((d) => {
-          d.imgType = ImgTypeEnum.handle;
-          d.typeName = TypeNameEnum.handle;
-        });
+
         (findEvent.Data.TimeoutImageUrls as Array<HWCameraImageUrl>).map(
           (d) => {
             d.imgType = ImgTypeEnum.timeOut;
             d.typeName = TypeNameEnum.timeOut;
           }
         );
+        (findEvent.Data.HandleImageUrls as Array<HWCameraImageUrl>).map((d) => {
+          d.imgType = ImgTypeEnum.handle;
+          d.typeName = TypeNameEnum.handle;
+        });
         let imgs = [
           ...findEvent.Data.DropImageUrls,
           ...findEvent.Data.TimeoutImageUrls,
@@ -144,8 +145,8 @@ export class EventTable extends BusinessTable implements IConverter {
         tds.push(
           this.toGalleryModel(
             item.Data.DropImageUrls,
-            item.Data.HandleImageUrls,
             item.Data.TimeoutImageUrls,
+            item.Data.HandleImageUrls,
             item.EventId
           )
         );

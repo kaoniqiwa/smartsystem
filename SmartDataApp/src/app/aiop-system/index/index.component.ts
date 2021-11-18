@@ -59,8 +59,9 @@ export class IndexComponent implements OnInit {
   ) {
     titleService.setTitle("生活垃圾分类全程监管平台");
     this.u = new SessionUser();
-    if (this.u.user.name == "" || this.u.user.pwd == "")
+    if (this.u.user.name == "" || this.u.user.pwd == "") {
       this.router.navigateByUrl("login");
+    }
   }
   async ngOnInit() {
     this.systemMode.push({

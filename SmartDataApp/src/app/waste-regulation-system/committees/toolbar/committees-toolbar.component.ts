@@ -1,8 +1,12 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { SessionUser } from "src/app/common/tool/session-user";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
+import {
+  CommitteesToolbarNotifyViewModel,
+  NotifyStatus,
+} from "./committees-toolbar.model";
 
 @Component({
   selector: "app-committees-toolbar",
@@ -10,11 +14,25 @@ import { Division } from "src/app/data-core/model/waste-regulation/division";
   styleUrls: ["./committees-toolbar.component.css"],
 })
 export class ToolbarComponent implements OnInit {
+  NotifyStatus = NotifyStatus;
+
   @Input()
   Committees?: Division;
 
   @Input()
-  Notify?: string = "测试测试测试测试测试测试测试测试测试测试测试";
+  Notify?: CommitteesToolbarNotifyViewModel;
+
+  @Output()
+  OnChangePasswordClick = new EventEmitter();
+  @Output()
+  OnChangeMobileClick = new EventEmitter();
+
+  onChangePasswordClick() {
+    this.OnChangePasswordClick.emit();
+  }
+  onChangeMobileClick() {
+    this.OnChangeMobileClick.emit();
+  }
 
   HideButton: boolean = false;
   HideTitlebar: boolean = false;
@@ -47,5 +65,11 @@ export class ToolbarComponent implements OnInit {
 
   logOut() {
     this.user.clear();
+  }
+
+  notifyClick(event: Event) {
+    if (this.Notify && this.Notify.onClick) {
+      this.Notify.onClick();
+    }
   }
 }

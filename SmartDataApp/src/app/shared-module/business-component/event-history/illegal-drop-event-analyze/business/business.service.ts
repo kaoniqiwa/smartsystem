@@ -776,8 +776,8 @@ export class BusinessService extends ListAttribute {
       return null;
     param.PageIndex = 1;
     param.PageSize = this.maxSize;
-    param.BeginTime = time.begin.toISOString();
-    param.EndTime = time.end.toISOString();
+    param.BeginTime = time.begin;
+    param.EndTime = time.end;
     if (s.DivisionId) param.DivisionIds = s.DivisionId.split(",");
     else if (s.StationId) param.StationIds = s.StationId.split(",");
     return param;

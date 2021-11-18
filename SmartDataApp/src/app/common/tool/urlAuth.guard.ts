@@ -16,11 +16,12 @@ import { UserUrl } from "../../data-core/url/user-url";
 import { BaseUrl } from "../../data-core/url/IUrl";
 import { SessionUser } from "../../common/tool/session-user";
 import { Base64 } from "../../common/tool/base64";
-import { User, UserResourceRole } from "src/app/data-core/model/page";
+
 import { EnumHelper } from "./enum-helper";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 import { HowellUri } from "../howell-uri";
 import { ConfigRequestService } from "src/app/data-core/repuest/config.service";
+import { User, UserResourceRole } from "src/app/data-core/model/user";
 @Injectable({
   providedIn: "root",
 })
@@ -117,6 +118,8 @@ export class UrlAuthGuard implements CanActivate {
           .pipe(catchError(this.handleLoginError2<any>()))
           .subscribe((result: User) => {
             if (result) {
+              debugger;
+              GlobalStoreService.user = result;
               if (
                 result.Role &&
                 result.Role.length > 0 &&
@@ -133,7 +136,8 @@ export class UrlAuthGuard implements CanActivate {
                 this.formVal.name,
                 this.formVal.pwd,
                 result.Id,
-                result.Resources
+                result.Resources,
+                result
               );
             }
           });
@@ -146,6 +150,7 @@ export class UrlAuthGuard implements CanActivate {
     let observable = (error: any): Observable<T> => {
       if (error.status == 403) {
         MessageBar.response_Error("账号或密码错误");
+
         this.router.navigateByUrl("/login");
       }
 
@@ -159,8 +164,10 @@ export class UrlAuthGuard implements CanActivate {
     name: string,
     pwd: string,
     id: string,
-    userDivision: Array<UserResourceRole>
+    userDivision: Array<UserResourceRole>,
+    user: User
   ) {
+    this.sessionUser.set(user);
     this.sessionUser.autoLogin = false;
     this.sessionUser.memoryPwd = false;
     this.sessionUser.name = name;

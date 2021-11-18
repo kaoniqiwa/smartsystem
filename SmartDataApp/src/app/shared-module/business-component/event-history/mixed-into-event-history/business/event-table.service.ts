@@ -371,8 +371,8 @@ export class EventTableService extends ListAttribute {
     const param = new GetEventRecordsParams(),
       day = TheDayTime(new Date());
     param.PageIndex = pageIndex;
-    param.BeginTime = day.begin.toISOString();
-    param.EndTime = day.end.toISOString();
+    param.BeginTime = day.begin;
+    param.EndTime = day.end;
     if (pageSize) param.PageSize = pageSize;
     else {
       if (this.fillMode)
@@ -386,8 +386,8 @@ export class EventTableService extends ListAttribute {
     if (s.SearchText && search.other == false) {
       param.StationName = s.SearchText;
     } else {
-      if (s.BeginTime) param.BeginTime = s.BeginTime;
-      if (s.EndTime) param.EndTime = s.EndTime;
+      if (s.BeginTime) param.BeginTime = new Date(s.BeginTime);
+      if (s.EndTime) param.EndTime = new Date(s.EndTime);
       if (s.DivisionId) param.DivisionIds = [s.DivisionId];
       if (s.StationId) param.StationIds = [s.StationId];
       if (s.ResourceId) param.ResourceIds = [s.ResourceId];

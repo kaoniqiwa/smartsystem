@@ -144,7 +144,6 @@ export class GalleryRollPageComponent
 
   autoVideoWindowSize() {
     setTimeout(() => {
-      debugger;
       const size = domSize("video__view_wrap");
       if (this.playing && window.screen.width != size.width) {
         const vSize = domSize("item__" + this.currentPlayId);

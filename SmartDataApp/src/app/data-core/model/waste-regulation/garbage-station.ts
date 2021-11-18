@@ -247,4 +247,17 @@ export class GetGarbageStationsParams {
   WetFull?: boolean;
   /**祖辈ID(可选)，返回该ID下的所有子孙区划及其本身的垃圾房 */
   AncestorId: string;
+
+  /**	Boolean	区划ID为NULL	O */
+  DivisionIdNullable?: boolean;
+  /**	String	网格ID	O */
+  GridCellId?: string;
+  /**	Boolean	网格ID为NULL	O */
+  GridCellIdNullable?: boolean;
+  /**	String	IMEI串号	O */
+  IMEI?: string;
+  /**	String	小区ID	O */
+  CommunityId?: string;
+  /**	String 	小区名称，支持LIKE	O */
+  CommunityName?: string;
 }

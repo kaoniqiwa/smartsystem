@@ -66,6 +66,9 @@ export class GetGarbageStationStatisticNumbersParams {
   DivisionId?: string;
   /**	String	网格ID	O */
   GridCellId?: string;
+
+  /**	String	小区ID	O */
+  CommunityId?: string;
 }
 
 export class GarbageStationNumberStatisticV2 {

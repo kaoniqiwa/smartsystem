@@ -85,7 +85,9 @@ export class RecordRankComponent
 
   onLoaded() {
     this.show();
-    this.onTypeChanged(this.Type);
+    if (this.Type) {
+      this.onTypeChanged(this.Type);
+    }
   }
 
   onTypeChanged(t: BussinessEnumItem) {

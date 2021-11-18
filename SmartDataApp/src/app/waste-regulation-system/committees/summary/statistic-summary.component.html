@@ -1,6 +1,6 @@
 <div class="statistic-summary light-blue-text" (click)="windowClick()">
   <div class="header">
-    <div class="second-title-bg text title">每日汇总</div>
+    <div class="second-title-bg text title">{{ title }}</div>
     <div class="operation">
       <div class="date">
         <div>
@@ -32,12 +32,18 @@
           </ng-container>
         </div>
       </div>
+      <button type="button" class="hw-gray-m-btn" (click)="exportExcel()">
+        <i class="howell-icon-export"></i>
+        导出
+      </button>
     </div>
   </div>
   <div class="content">
     <div class="statistic-summary-header">
       <app-statistic-summary-header
         [DivisonStatistic]="divisionStatistic"
+        [EventTrigger]="exportTrigger"
+        (OnTriggerEvent)="onExport($event)"
       ></app-statistic-summary-header>
     </div>
     <div class="statistic-summary-charts">
@@ -45,6 +51,8 @@
         [DivisonStatistic]="divisionStatistic"
         [StationStatistic]="stationStatistic"
         [DivisionHistory]="divisionHistory"
+        [EventTrigger]="exportTrigger"
+        (OnTriggerEvent)="onExport($event)"
         [TimeUnit]="unit"
       ></app-statistic-summary-charts>
     </div>

@@ -668,8 +668,8 @@ export class EventChartService extends ListAttribute {
       date = new Date(this.search.date),
       theDay = TheDayTime(date);
 
-    eventParam.BeginTime = theDay.begin.toISOString();
-    eventParam.EndTime = theDay.end.toISOString();
+    eventParam.BeginTime = theDay.begin;
+    eventParam.EndTime = theDay.end;
     eventParam.StationIds = [this.search.station];
     eventParam.PageIndex = 1;
     eventParam.PageSize = this.maxSize;

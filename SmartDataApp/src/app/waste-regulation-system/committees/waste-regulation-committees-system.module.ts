@@ -24,6 +24,11 @@ import { StatisticSummaryEventRatioChartComponent } from "./summary/charts/event
 import { StatisticSummaryIllegalDropChartComponent } from "./summary/charts/line-chart/statistic-summary-line-chart.component";
 import { StatisticSummaryStationEventChartComponent } from "./summary/charts/station-event/statistic-summary-station-event-chart.component";
 import { StatisticSummaryTaskChartComponent } from "./summary/charts/task-statistic/statistic-summary-task-chart.component";
+import { MobileBindingComponent } from "./mobile/mobile-binding/mobile-binding.component";
+import { MatSliderModule } from "@angular/material";
+import { PasswordChangeComponent } from "./password-change/password-change.component";
+import { MobileViewComponent } from "./mobile/mobile-change/view/mobile-view.component";
+import { MobileChangeComponent } from "./mobile/mobile-change/mobile-change.component";
 
 @NgModule({
   declarations: [
@@ -62,6 +67,14 @@ import { StatisticSummaryTaskChartComponent } from "./summary/charts/task-statis
     StatisticSummaryStationEventChartComponent,
 
     StatisticSummaryTaskChartComponent,
+
+    MobileBindingComponent,
+
+    MobileChangeComponent,
+
+    PasswordChangeComponent,
+
+    MobileViewComponent,
   ],
   imports: [
     CommonModule,

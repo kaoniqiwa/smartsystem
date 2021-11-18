@@ -43,7 +43,7 @@
           <div style="margin-top: 6%">
             <h2 class="text-center m-b-20">用户登录</h2>
             <div class="blue-parting-line"></div>
-            <form [formGroup]="userLoginService.form">
+            <form [formGroup]="form">
               <div class="flex-item-center m-t-20">
                 <div class="input-box m-b-30">
                   <div class="icon-box">
@@ -80,8 +80,11 @@
                 </div>
               </div>
             </form>
-            <div class="fill-width" style="height: 34px; line-height: 1">
-              <div class="me m-b-0 pull-left" style="width: 50%">
+            <div
+              class="fill-width password-state"
+              style="height: 34px; line-height: 1"
+            >
+              <div class="me m-b-0">
                 <input
                   (click)="pwdCheck()"
                   [checked]="userLoginService.jpwd_"
@@ -91,7 +94,7 @@
                 />
                 <label for="jpwd" style="color: #5e6ebf">记住密码</label>
               </div>
-              <div class="me m-b-0 pull-right text-right" style="width: 50%">
+              <div class="me m-b-0">
                 <input
                   (click)="autoLoginCheck()"
                   [checked]="userLoginService.autoLogin_"
@@ -100,6 +103,11 @@
                   class="filled-in chk-col-deep-purple"
                 />
                 <label for="auto_login" style="color: #5e6ebf">自动登录</label>
+              </div>
+              <div>
+                <a style="cursor: pointer" (click)="forgetPassword()"
+                  >忘记密码</a
+                >
               </div>
             </div>
             <div class="flex-item-center m-t-0">

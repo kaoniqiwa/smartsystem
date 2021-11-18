@@ -61,8 +61,8 @@ export class StatisticalDataBufferService
     const param = new GetEventRecordsParams(),
       day = TheDayTime(new Date());
     param.PageIndex = 1;
-    param.BeginTime = day.begin.toISOString();
-    param.EndTime = day.end.toISOString();
+    param.BeginTime = day.begin;
+    param.EndTime = day.end;
     param.PageSize = this.maxSize;
     param.StationIds = stationIds;
     return this.eventRequestService.list(param);

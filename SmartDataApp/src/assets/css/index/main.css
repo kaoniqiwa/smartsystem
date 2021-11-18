@@ -189,7 +189,8 @@ h2 {
   cursor: pointer;
   background-color: unset;
   border: unset;
-  background-image: url('/assets/img/blue-btn.png')
+  background-image: url('/assets/img/blue-btn.png');
+  background-size: 100% 100%;
 }
 
 .hw-blue-btn:hover {
@@ -229,7 +230,8 @@ h2 {
   cursor: pointer;
   background-color: unset;
   border: unset;
-  background-image: url('/assets/img/green-btn.png')
+  background-image: url('/assets/img/green-btn.png');
+  background-size: 100% 100%;
 }
 
 .hw-green-btn:hover {
@@ -576,11 +578,11 @@ a.td-icon:hover i {
 }
 
 .login-btn:hover {
-  background-image: url('/assets/img/login-btn-focus.png')
+  background-image: url('/assets/img/login-btn-hover.png')
 }
 
 .login-btn:active {
-  background-image: url('/assets/img/login-btn-hover.png')
+  background-image: url('/assets/img/login-btn-focus.png')
 }
 
 /* 直角梯形 */

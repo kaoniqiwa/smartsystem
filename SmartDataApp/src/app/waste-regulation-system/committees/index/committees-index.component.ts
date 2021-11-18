@@ -2,24 +2,18 @@ import { Component, OnInit } from "@angular/core";
 
 import { MQTTEventService } from "../../../common/tool/mqtt-event/mqtt-event.service";
 import { EventPushService } from "../../../common/tool/mqtt-event/event-push.service";
-import { Title } from "@angular/platform-browser";
-import { SessionUser } from "../../../common/tool/session-user";
 import { ConfigRequestService } from "../../../data-core/repuest/config.service";
-import { ActivatedRoute } from "@angular/router";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 import { CommitteesIndexService } from "./committees-index.service";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
 import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
-import { EventType } from "src/app/data-core/model/enum";
 import { RecordRankEventBussiness } from "./business/record-rank-event.business";
 import { RecordRankDropBussiness } from "./business/record-rank-drop.business";
 import { CommitteesHistroyTableBussiness } from "./business/committees-history-table.business";
 import { GalleryRollPageBusiness } from "./business/gallery-roll-page.business";
-import { WindowViewModel } from "../window/window.model";
-import { HistoryImageWindowBussiness } from "./business/history-image-window.business";
 import { CommitteesStatisticBussiness } from "./business/committees-statistic.business";
 import { WindowOperationBussiness } from "./business/window-operation.business";
-import { IllegalDropEventRecord } from "src/app/data-core/model/waste-regulation/illegal-drop-event-record";
+
 import { CommitteesToolbarBussiness } from "./business/committees-toolbar.bussiness";
 import { DatePipe } from "@angular/common";
 
@@ -60,7 +54,11 @@ export class IndexCommitteesComponent implements OnInit {
   }
 
   bussiness = {
-    toolbar: new CommitteesToolbarBussiness(this.datePipe),
+    toolbar: new CommitteesToolbarBussiness(
+      this.window,
+      this.datePipe,
+      this.indexService
+    ),
     historyTable: new CommitteesHistroyTableBussiness(this.window),
     statistic: new CommitteesStatisticBussiness(this.window),
     rank: {

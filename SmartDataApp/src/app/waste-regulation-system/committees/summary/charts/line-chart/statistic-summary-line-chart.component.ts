@@ -4,9 +4,11 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
   ViewChild,
 } from "@angular/core";
@@ -15,9 +17,10 @@ import { EventType, TimeUnit } from "src/app/data-core/model/enum";
 import { EventNumberStatistic } from "src/app/data-core/model/waste-regulation/division-event-numbers";
 import { ICommitteesComponent } from "../../../interface/committees-component.interface";
 import { ICommitteesConverter } from "../../../interface/committees-converter.interface";
+import { IEventTrigger } from "../../../interface/committees-event-trigger.interface";
 import { EChartLineOption } from "./echart-line.option";
 import { StatisticSummaryIllegalDropChartConverter } from "./statistic-summary-line-chart.converter";
-import { StatisticSummaryIllegalDropChartViewModel } from "./statistic-summary-line-chart.model";
+import { StatisticSummaryLineChartViewModel } from "./statistic-summary-line-chart.model";
 
 declare var echarts: any;
 @Component({
@@ -31,8 +34,9 @@ export class StatisticSummaryIllegalDropChartComponent
     OnChanges,
     ICommitteesComponent<
       EventNumberStatistic[],
-      StatisticSummaryIllegalDropChartViewModel
-    >
+      StatisticSummaryLineChartViewModel
+    >,
+    IEventTrigger<StatisticSummaryLineChartViewModel>
 {
   @ViewChild("echarts")
   private echarts: ElementRef<HTMLDivElement>;
@@ -47,29 +51,37 @@ export class StatisticSummaryIllegalDropChartComponent
 
   @Input()
   TimeUnit?: TimeUnit;
+  @Input()
+  EventTrigger: EventEmitter<void>;
+  @Output()
+  OnTriggerEvent: EventEmitter<StatisticSummaryLineChartViewModel> = new EventEmitter();
 
-  private data: StatisticSummaryIllegalDropChartViewModel =
-    new StatisticSummaryIllegalDropChartViewModel();
+  private data: StatisticSummaryLineChartViewModel =
+    new StatisticSummaryLineChartViewModel();
 
   Converter: ICommitteesConverter<
     EventNumberStatistic[],
-    StatisticSummaryIllegalDropChartViewModel
+    StatisticSummaryLineChartViewModel
   > = new StatisticSummaryIllegalDropChartConverter();
 
   constructor(private datePipe: DatePipe) {}
+
   ngOnChanges(changes: SimpleChanges): void {
     this.onLoaded();
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.EventTrigger) {
+      this.EventTrigger.subscribe((x) => {
+        this.OnTriggerEvent.emit(this.data);
+      });
+    }
+  }
 
   ngAfterViewInit(): void {
     this.myChart = echarts.init(this.echarts.nativeElement, "dark");
     this.onLoaded();
   }
   onLoaded(): void {
-    if (this.Type) {
-      this.option.title.text = Language.EventType(this.Type);
-    }
     if (this.Data && this.TimeUnit) {
       this.data = this.Converter.Convert(
         this.Data,
@@ -77,6 +89,7 @@ export class StatisticSummaryIllegalDropChartComponent
         this.TimeUnit,
         this.datePipe
       );
+      this.option.title.text = this.data.title;
       this.setOption();
     }
   }
@@ -88,7 +101,7 @@ export class StatisticSummaryIllegalDropChartComponent
     }
   }
 
-  getOption(viewModel: StatisticSummaryIllegalDropChartViewModel) {
+  getOption(viewModel: StatisticSummaryLineChartViewModel) {
     if (viewModel) {
       let max = Math.max(...viewModel.data);
       for (let i = 0; i < this.option.series.length; i++) {

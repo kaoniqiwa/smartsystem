@@ -18,7 +18,7 @@ import { HowellResponse } from "../model/response";
 })
 export class HowellAuthHttpService {
   nc = 0;
-  constructor(private http: HttpClient) {}
+  constructor(public http: HttpClient) {}
 
   public postBase64String(
     url: string,
@@ -83,6 +83,15 @@ export class HowellAuthHttpService {
     url: string,
     params?: HttpParams
   ): Observable<R> {
+    const myHeaders = this.getHttpHeaders("GET", url);
+    const httpOptions = {
+      headers: myHeaders,
+      params: params,
+    };
+    return this.http.get<R>(url, httpOptions);
+  }
+
+  public httpGet<R = any>(url: string, params?: HttpParams): Observable<R> {
     const myHeaders = this.getHttpHeaders("GET", url);
     const httpOptions = {
       headers: myHeaders,

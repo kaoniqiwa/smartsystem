@@ -8,8 +8,8 @@ export class HWCameraImageUrl extends CameraImageUrl {
 
 export enum ImgTypeEnum {
   drop = "drop",
-  handle = "handle",
   timeOut = "timeOut",
+  handle = "handle",
 }
 
 export enum TypeNameEnum {

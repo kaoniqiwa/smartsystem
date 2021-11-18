@@ -1,6 +1,6 @@
-import { deserialize, plainToClass } from "class-transformer";
+import { plainToClass } from "class-transformer";
 import { DivisionType } from "src/app/data-core/model/enum";
-import { UserResourceRole } from "src/app/data-core/model/page";
+import { User, UserResourceRole } from "src/app/data-core/model/user";
 import { Md5 } from "ts-md5/dist/md5";
 export class SessionUser {
   get suffix() {
@@ -12,6 +12,17 @@ export class SessionUser {
   private readonly stationsKey = "like_stations";
   private readonly userDivisionKey = "user_division";
   private readonly userDivisionTypeKey = "user_division_type";
+  private readonly userinfo = "user_info";
+
+  get(): User {
+    let str = localStorage.getItem(this.userinfo);
+    let user = JSON.parse(str);
+    return plainToClass(User, user);
+  }
+  set(user: User) {
+    let str = JSON.stringify(user);
+    localStorage.setItem(this.userinfo, str);
+  }
 
   set userDivisionType(val: DivisionType) {
     localStorage.setItem(this.userDivisionTypeKey, val.toString());

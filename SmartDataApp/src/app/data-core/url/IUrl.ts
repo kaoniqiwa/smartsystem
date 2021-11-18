@@ -13,4 +13,5 @@ export class BaseUrl {
 export class GarbageBaseUrl {
   static garbage = "/api/howell/ver10/aiop_service/garbage_management/";
   static user = "/howell/ver10/data_service/user_system/";
+  static sms = "/howell/ver10/data_service/short_message/sms/";
 }

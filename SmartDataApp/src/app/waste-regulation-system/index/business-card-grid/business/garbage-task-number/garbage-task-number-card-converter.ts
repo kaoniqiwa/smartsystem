@@ -24,7 +24,7 @@ export class GarbageTaskNumberCardConverter implements IConverter {
       data.Name = x.Name;
       data.TotalCount = x.GarbageDropCount;
       data.UncompletedCount = x.GarbageDropCount - x.GarbageDropHandleCount;
-      data.GarbageRetentionCount = x.GarbageDropTimeoutCount;
+      data.GarbageTimeoutCount = x.GarbageDropTimeoutCount;
       data.ratio = x.GarbageDropHandleCount / x.GarbageDropCount;
       if (Number.isNaN(data.ratio)) {
         data.ratio = 1;

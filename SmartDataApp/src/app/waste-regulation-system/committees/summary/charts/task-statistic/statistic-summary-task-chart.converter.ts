@@ -18,6 +18,7 @@ export class StatisticSummaryTaskChartConverter
       const statistic = input[i];
 
       let complate = 0;
+      let handle = 0;
       if (statistic.EventNumbers) {
         for (let i = 0; i < statistic.EventNumbers.length; i++) {
           const number = statistic.EventNumbers[i];
@@ -26,10 +27,10 @@ export class StatisticSummaryTaskChartConverter
               vm.TotalCount += number.DayNumber;
               break;
             case EventType.GarbageDropTimeout:
-              vm.UncompletedCount += number.DayNumber;
+              vm.GarbageTimeoutCount += number.DayNumber;
               break;
             case EventType.GarbageDropHandle:
-              vm.GarbageRetentionCount += number.DayNumber;
+              handle += number.DayNumber;
               break;
 
             default:
@@ -37,11 +38,12 @@ export class StatisticSummaryTaskChartConverter
           }
         }
       }
+      vm.UncompletedCount = vm.TotalCount - handle;
       vm.ratio = 100;
       if (vm.TotalCount > 0) {
-        vm.ratio = Math.ceil((vm.GarbageRetentionCount / vm.TotalCount) * 100);
+        vm.ratio = Math.ceil((handle / vm.TotalCount) * 100);
       }
-      
+
       return vm;
     }
   }

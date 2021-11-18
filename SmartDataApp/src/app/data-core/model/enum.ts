@@ -213,3 +213,12 @@ export enum TimeUnit {
   Hour = 1,
   Day = 2,
 }
+export enum SmsProtocolType {
+  aliyun = "aliyun",
+}
+export enum UserState {
+  normal = 0,
+}
+export enum UserLabelType {
+  station = 1,
+}

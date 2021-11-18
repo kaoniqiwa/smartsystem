@@ -1,0 +1,11 @@
+.dropdown-menu .dropdown-item {
+  font-size: 16px
+}
+
+.dropdown-menu a.dropdown-item {
+  cursor: pointer;
+}
+
+.dropdown-menu .dropdown-item.username:hover {
+  background-color: transparent;
+}

@@ -2,20 +2,32 @@ import { DatePipe } from "@angular/common";
 import {
   AfterViewInit,
   Component,
+  EventEmitter,
   Input,
   OnChanges,
   OnInit,
   SimpleChanges,
+  ViewChild,
 } from "@angular/core";
+import { HowellExcelJS } from "src/app/common/tool/hw-excel-js/hw-excel";
 import { Language } from "src/app/common/tool/language";
 import { TheDayTime } from "src/app/common/tool/tool.service";
-import { TimeUnit } from "src/app/data-core/model/enum";
+import { EventType, TimeUnit } from "src/app/data-core/model/enum";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
 import { EventNumberStatistic } from "src/app/data-core/model/waste-regulation/division-event-numbers";
 import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
 import { GarbageStationNumberStatisticV2 } from "src/app/data-core/model/waste-regulation/garbage-station-number-statistic";
+import { TaskTableViewModel } from "../task-table/task-table.model";
+import { StatisticSummaryEventRatioChartViewModel } from "./charts/event-ratio/statistic-summary-event-ratio-chart.model";
+import { StatisticSummaryLineChartViewModel } from "./charts/line-chart/statistic-summary-line-chart.model";
+import { StatisticSummaryStationEventChartViewModel } from "./charts/station-event/statistic-summary-station-event-chart.model";
+import { StatisticSummaryTaskChartViewModel } from "./charts/task-statistic/statistic-summary-task-chart.model";
+import { StatisticSummaryHeaderComponent } from "./header/statistic-summary-header.component";
+import { StatisticSummaryExportExcelBusiness } from "./business/statistic-summary-export-excel.business";
 import { StatisticSummaryViewModel } from "./statistic-summary.model";
 import { StatisticSummaryService } from "./statistic-summary.service";
+import { StatisticSummaryHeaderViewModel } from "./header/statistic-summary-header.model";
+import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 
 @Component({
   selector: "app-statistic-summary",
@@ -26,8 +38,9 @@ import { StatisticSummaryService } from "./statistic-summary.service";
 export class StatisticSummaryComponent
   implements OnInit, OnChanges, AfterViewInit
 {
-  private _date: Date = new Date();
   private _unit: TimeUnit = TimeUnit.Hour;
+
+  private title = "汇总信息";
 
   TimeUnits: {
     value: TimeUnit;
@@ -114,6 +127,10 @@ export class StatisticSummaryComponent
         });
       }
     }
+    GlobalStoreService.interval.subscribe((x) => {
+      console.log(this.Date);
+      this.onLoaded();
+    });
   }
 
   onLoaded() {
@@ -193,5 +210,65 @@ export class StatisticSummaryComponent
   }
   windowClick() {
     this.display.timeunit = false;
+  }
+
+  // child input
+  exportTrigger = new EventEmitter();
+
+  exportBusiness = new StatisticSummaryExportExcelBusiness();
+
+  // child output
+  onExport(
+    data:
+      | StatisticSummaryHeaderViewModel
+      | StatisticSummaryTaskChartViewModel
+      | StatisticSummaryEventRatioChartViewModel
+      | StatisticSummaryLineChartViewModel
+      | StatisticSummaryStationEventChartViewModel[]
+  ) {
+    if (data instanceof StatisticSummaryHeaderViewModel) {
+      this.exportBusiness.header.export(this.title, data);
+    } else if (data instanceof StatisticSummaryTaskChartViewModel) {
+      this.exportBusiness.task.export("滞留任务处置", data);
+    } else if (data instanceof StatisticSummaryEventRatioChartViewModel) {
+      this.exportBusiness.eventRatio.export("事件占比", data);
+    } else if (data instanceof StatisticSummaryLineChartViewModel) {
+      switch (data.type) {
+        case EventType.IllegalDrop:
+          this.exportBusiness.illegalDrop.export(
+            Language.EventType(data.type),
+            data
+          );
+          break;
+        case EventType.MixedInto:
+          this.exportBusiness.mixedInto.export(
+            Language.EventType(data.type),
+            data
+          );
+          break;
+
+        default:
+          break;
+      }
+    } else if (data instanceof Array) {
+      this.exportBusiness.stations.export("投放点事件", data);
+      // for (let i = 0; i < data.length; i++) {
+      //   const item = data[i];
+      //   if (item instanceof StatisticSummaryStationEventChartViewModel) {
+      //   }
+      // }
+    } else {
+    }
+
+    let date = this.datePipe.transform(this.Date, this.language.format);
+    this.exportBusiness.writeFile(`${date} 汇总`);
+    if (this.exportBusiness.completed) {
+      this.exportBusiness = new StatisticSummaryExportExcelBusiness();
+    }
+  }
+
+  // click
+  exportExcel() {
+    this.exportTrigger.emit();
   }
 }

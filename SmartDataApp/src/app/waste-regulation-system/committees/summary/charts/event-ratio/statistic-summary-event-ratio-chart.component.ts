@@ -3,9 +3,11 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
   ViewChild,
 } from "@angular/core";
@@ -15,6 +17,7 @@ import { EventType } from "src/app/data-core/model/enum";
 import { DivisionNumberStatistic } from "src/app/data-core/model/waste-regulation/division-number-statistic";
 import { ICommitteesComponent } from "../../../interface/committees-component.interface";
 import { ICommitteesConverter } from "../../../interface/committees-converter.interface";
+import { IEventTrigger } from "../../../interface/committees-event-trigger.interface";
 import { StatisticSummaryViewModel } from "../../statistic-summary.model";
 import { EChartPieOption } from "./echart-pie.option";
 import { StatisticSummaryEventRatioChartConverter } from "./statistic-summary-event-ratio-chart.converter";
@@ -28,12 +31,14 @@ declare var echarts: any;
 })
 export class StatisticSummaryEventRatioChartComponent
   implements
+    OnInit,
     AfterViewInit,
     OnChanges,
     ICommitteesComponent<
       StatisticSummaryViewModel[],
       StatisticSummaryEventRatioChartViewModel
-    >
+    >,
+    IEventTrigger<StatisticSummaryEventRatioChartViewModel>
 {
   @ViewChild("echarts")
   private echarts?: ElementRef<HTMLDivElement>;
@@ -43,9 +48,22 @@ export class StatisticSummaryEventRatioChartComponent
   @Input()
   Data?: StatisticSummaryViewModel[];
 
+  @Input()
+  EventTrigger: EventEmitter<void>;
+  @Output()
+  OnTriggerEvent: EventEmitter<StatisticSummaryEventRatioChartViewModel> = new EventEmitter();
+
   private data?: StatisticSummaryEventRatioChartViewModel;
 
   constructor() {}
+  ngOnInit(): void {
+    if (this.EventTrigger) {
+      this.EventTrigger.subscribe((x) => {
+        this.OnTriggerEvent.emit(this.data);
+      });
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     this.onLoaded();
   }

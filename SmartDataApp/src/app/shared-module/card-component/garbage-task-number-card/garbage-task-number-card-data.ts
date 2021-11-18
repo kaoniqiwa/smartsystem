@@ -9,7 +9,7 @@ export class GarbageTaskNumberCardData {
   /**	Int32	未处理任务数量	O */
   UncompletedCount = 0;
   /** 垃圾滞留数量 */
-  GarbageRetentionCount = 0;
+  GarbageTimeoutCount = 0;
 
   ratio = 0;
 }

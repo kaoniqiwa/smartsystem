@@ -7,13 +7,19 @@ import { UserLoginService } from "./user-login.service";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
+import { FormControl, FormGroup } from "@angular/forms";
 @Component({
   selector: "app-user-login",
   templateUrl: "./user-login.component.html",
-  styleUrls: ["./user-login.component.styl"],
+  styleUrls: ["./user-login.component.css"],
   providers: [UserLoginService],
 })
 export class UserLoginComponent implements OnInit {
+  form = new FormGroup({
+    name: new FormControl(""),
+    pwd: new FormControl(""),
+  });
+
   @ViewChild("userName")
   userName: ElementRef;
 
@@ -24,6 +30,9 @@ export class UserLoginComponent implements OnInit {
     titleService: Title,
     private route: ActivatedRoute
   ) {
+    userLoginService.onFormValChanged = (value) => {
+      this.form.patchValue(value);
+    };
     this.route.queryParams.subscribe((params) => {
       for (const key in params) {
         if (key.toLowerCase() == "hidebutton") {
@@ -80,6 +89,10 @@ export class UserLoginComponent implements OnInit {
   }
 
   login() {
-    return this.userLoginService.login();
+    return this.userLoginService.login(this.form.value);
+  }
+
+  forgetPassword() {
+    this.userLoginService.getBackPassword();
   }
 }

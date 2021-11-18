@@ -21,10 +21,27 @@
   class="dropdown-menu p-b-0 p-t-0 m-t-10 list-wrap"
   x-placement="bottom-start"
 >
-  <div class="light-blue-text ele-nowrap user-name">
-    <i class="howell-icon-account m-r-5"> </i>
+  <a
+    href="javascript:void(0)"
+    class="dropdown-item light-blue-text ele-nowrap username"
+  >
+    <i class="howell-icon-account"> </i>
     {{ sessionUser.name }}
-  </div>
+  </a>
+  <a
+    *ngIf="display.changePassword"
+    href="javascript:void(0)"
+    class="dropdown-item light-blue-text"
+    (click)="changePasswordClick($event)"
+    ><i class="mdi mdi-key p-r-5"></i>修改密码</a
+  >
+  <a
+    *ngIf="display.changeMobile"
+    href="javascript:void(0)"
+    class="dropdown-item light-blue-text"
+    (click)="changeMobileClick($event)"
+    ><i class="mdi mdi-cellphone-iphone p-r-5"></i>绑定新手机</a
+  >
   <a
     routerLink="/login"
     href="javascript:void(0)"

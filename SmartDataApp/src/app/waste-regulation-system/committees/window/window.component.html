@@ -1,8 +1,5 @@
 <div class="fill-height fill-width hw-content-mask" *ngIf="Model.show">
-  <div
-    [ngClass]="{ 'custom-form-wrap': Background }"
-    style="width: 90%; height: 90%; transform: translate(5%, 5%)"
-  >
+  <div [ngClass]="{ 'custom-form-wrap': Background }" [ngStyle]="Style">
     <a class="close-winow" (click)="closeButtonClick()" *ngIf="CloseButton"
       ><i class="howell-icon-Close alert-window-close-btn"></i
     ></a>

@@ -11,16 +11,34 @@ import { BaseUrl } from "../../data-core/url/IUrl";
 import { SessionUser } from "../../common/tool/session-user";
 import { Router } from "@angular/router";
 import { Base64 } from "../../common/tool/base64";
-import { User, UserResourceRole } from "src/app/data-core/model/page";
 import { EnumHelper } from "src/app/common/tool/enum-helper";
 import { UserResourceType } from "src/app/data-core/model/enum";
 import { ConfigRequestService } from "src/app/data-core/repuest/config.service";
-@Injectable()
+import { RoutePaths } from "src/app/app-routing.module";
+import { GlobalStoreService } from "src/app/shared-module/global-store.service";
+import { User, UserResourceRole } from "src/app/data-core/model/user";
+@Injectable({
+  providedIn: "root",
+})
 export class UserLoginService {
   sessionUser: SessionUser;
-  form: FormGroup;
 
-  formVal: { name: string; pwd: string };
+  toNavigate = true;
+
+  private _formVal: { name: string; pwd: string };
+
+  get formVal() {
+    return this._formVal;
+  }
+  set formVal(val: { name: string; pwd: string }) {
+    this._formVal = val;
+    if (this.onFormValChanged) {
+      this.onFormValChanged(val);
+    }
+  }
+
+  onFormValChanged: (val: { name: string; pwd: string }) => void;
+
   autoLogin_ = false;
   jpwd_ = false;
   constructor(
@@ -29,36 +47,32 @@ export class UserLoginService {
     private router: Router
   ) {
     this.sessionUser = new SessionUser();
-    this.form = new FormGroup({
-      name: new FormControl(""),
-      pwd: new FormControl(""),
-    });
   }
 
-  onLoginSuccessed?: () => void;
+  onLoginSuccessed?: (user: User) => void;
   onLoginFaulted?: () => void;
 
-  login() {
-    const formVal: { name: string; pwd: string } = this.form.value;
-    if (!formVal.name) MessageBar.response_warning("请输入账号");
-    else if (!formVal.pwd) MessageBar.response_warning("请输入密码");
+  login(value: { name: string; pwd: string }, navigate = true) {
+    this.toNavigate = navigate;
+    if (!value.name) MessageBar.response_warning("请输入账号");
+    else if (!value.pwd) MessageBar.response_warning("请输入密码");
     else {
-      this.formVal = formVal;
-      return this.auth(formVal.name);
+      this.formVal = value;
+      return this.auth(value.name);
     }
   }
 
-  urlAuthLogin(param: { Auto: string }) {
+  urlAuthLogin(param: { Auto: string }, navigate = true) {
     if (param && param.Auto) {
       let base64 = new Base64(),
         urlParam = base64.decode(param.Auto),
         paramSplit = urlParam.split("&");
       try {
-        this.form.patchValue({
+        this.formVal = {
           name: paramSplit[0],
           pwd: paramSplit[1],
-        });
-        this.login();
+        };
+        this.login(this.formVal, navigate);
       } catch {}
     }
   }
@@ -85,18 +99,18 @@ export class UserLoginService {
 
   fillUserForm() {
     if (this.sessionUser.autoLogin) {
-      this.form.patchValue({
+      this.formVal = {
         name: this.sessionUser.name,
         pwd: this.sessionUser.pwd,
-      });
+      };
       this.jpwd_ = true;
       this.autoLogin_ = true;
-      this.login();
+      this.login(this.formVal);
     } else if (this.sessionUser.memoryPwd) {
-      this.form.patchValue({
+      this.formVal = {
         name: this.sessionUser.name,
         pwd: this.sessionUser.pwd,
-      });
+      };
       this.jpwd_ = true;
     }
   }
@@ -149,36 +163,42 @@ export class UserLoginService {
           .pipe(catchError(this.handleLoginError2<any>()))
           .subscribe((result: User) => {
             if (result) {
-              console.log(result);
+              GlobalStoreService.user = result;
               // sessionStorage.setItem('userid', );
-              if (
-                result.Role &&
-                result.Role.length > 0 &&
-                result.Role[0].PictureData === 1 &&
-                result.Role[0].PrivacyData === 1 &&
-                result.Role[0].StaticData === 1 &&
-                result.Role[0].UserData === 1
-              ) {
-                this.router.navigateByUrl("system-mode");
-              } else if (
-                result.Resources &&
-                result.Resources.length > 0 &&
-                result.Resources[0].ResourceType === UserResourceType.Committees
-              ) {
-                this.router.navigateByUrl("waste-regulation-committees");
-              } else {
-                this.router.navigateByUrl("waste-regulation");
+              if (this.toNavigate) {
+                if (
+                  result.Role &&
+                  result.Role.length > 0 &&
+                  result.Role[0].PictureData === 1 &&
+                  result.Role[0].PrivacyData === 1 &&
+                  result.Role[0].StaticData === 1 &&
+                  result.Role[0].UserData === 1
+                ) {
+                  this.router.navigateByUrl(RoutePaths.system);
+                } else if (
+                  result.Resources &&
+                  result.Resources.length > 0 &&
+                  result.Resources[0].ResourceType ===
+                    UserResourceType.Committees
+                ) {
+                  this.router.navigateByUrl(
+                    RoutePaths.wasteRegulationCommittees
+                  );
+                } else {
+                  this.router.navigateByUrl(RoutePaths.wasteRegulation);
+                }
               }
 
               if (this.onLoginSuccessed) {
-                this.onLoginSuccessed();
+                this.onLoginSuccessed(result);
               }
 
               this.memory(
                 this.formVal.name,
                 this.formVal.pwd,
                 result.Id,
-                result.Resources
+                result.Resources,
+                result
               );
             }
           });
@@ -191,8 +211,10 @@ export class UserLoginService {
     name: string,
     pwd: string,
     id: string,
-    userDivision: Array<UserResourceRole>
+    userDivision: Array<UserResourceRole>,
+    user: User
   ) {
+    this.sessionUser.set(user);
     this.sessionUser.autoLogin = this.autoLogin_;
     this.sessionUser.memoryPwd = this.jpwd_;
     this.sessionUser.name = name;
@@ -220,5 +242,9 @@ export class UserLoginService {
       )
       .pipe(catchError(this.handleLoginError<any>()))
       .toPromise();
+  }
+
+  getBackPassword() {
+    this.router.navigateByUrl(RoutePaths.passwordGetBack);
   }
 }

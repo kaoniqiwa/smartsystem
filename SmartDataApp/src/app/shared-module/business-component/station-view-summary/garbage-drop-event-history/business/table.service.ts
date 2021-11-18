@@ -95,8 +95,8 @@ export class GarbageDropEventHistoryBusinessService {
         findEvent = this.dataSource.find((x) => x.EventId == idV[0]),
         cameras = [
           ...findEvent.Data.DropImageUrls,
-          ...findEvent.Data.HandleImageUrls,
           ...findEvent.Data.TimeoutImageUrls,
+          ...findEvent.Data.HandleImageUrls,
         ] as Array<HWCameraImageUrl>;
       for (let i = 0; i < cameras.length; i++) cameras[i].id = i + "";
 

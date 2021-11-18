@@ -37,6 +37,20 @@
   font-size: 25px;
   margin-top: 20px;
   margin-left: 20px;
+  justify-content: space-between;
+  width: 440px;
+}
+
+.statistic-summary .header .operation button {
+  font-size: 16px;
+  width: 80px;
+  border: 1px solid rgb(94, 110, 191);
+  color: #eaedff;
+}
+
+.statistic-summary .header .operation button:hover {
+  color: white;
+  border-color: rgb(144, 160, 241);
 }
 
 

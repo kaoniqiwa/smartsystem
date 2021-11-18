@@ -368,7 +368,8 @@ export class MapDeployComponent implements OnInit {
   getSrc() {
     const host = document.location.hostname;
     const port = document.location.port;
-    return "http://" + host + ":" + port + "/amap/map_ts.html?v=20200925";
+    const date = new Date().format("yyyyMMddHHmmss");
+    return `http://${host}:${port}/amap/map_ts.html?v=${date}`;
   }
 
   expandableParentNode(node: FlatNode<Division | GarbageStation>) {

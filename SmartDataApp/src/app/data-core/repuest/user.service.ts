@@ -1,101 +1,163 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { HttpParams, HttpHeaders } from '@angular/common/http';
-
-import { Base64 } from '../../common/tool/base64';
-import { HowellAuthHttpService } from './howell-auth-http.service';
-import { Md5 } from 'ts-md5';
-import { PagedList, Role, User } from '../model/page';
-import { Fault } from '../model/response';
-
+import { Injectable } from "@angular/core";
+import { HowellAuthHttpService } from "./howell-auth-http.service";
+import { PagedList } from "../model/page";
+import { PasswordUrl, UserUrl } from "../url/user-url";
+import { Fault } from "../model/response";
+import {
+  GetUserLabelsParams,
+  GetUsersParams,
+  Role,
+  User,
+  UserLabel,
+} from "../model/user";
+import { UserLabelType } from "../model/enum";
+import {
+  ChangeUserPasswordParams,
+  CheckCodeParams,
+  PasswordCheckCodeResult,
+  RandomUserPaswordParams,
+} from "../model/waste-regulation/user-password";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
+export class UserRequestService {
+  constructor(private http: HowellAuthHttpService) {}
 
-export class UserService {
+  user = new UsersRequestService(this.http);
 
-  constructor(private http: HowellAuthHttpService) {
+  password = new UsersPasswordsRequestService(this.http);
+}
 
+class UsersRequestService {
+  constructor(private http: HowellAuthHttpService) {}
+  list(index: number, size: number): Promise<PagedList<User>>;
+  list(params: GetUsersParams): Promise<PagedList<User>>;
+
+  list(index: GetUsersParams | number = 1, size: number = 999) {
+    if (typeof index === "number") {
+      return this.http
+        .httpGet<PagedList<User>>(UserUrl.list(index, size))
+        .toPromise();
+    } else {
+      return this.http.post(UserUrl.user_list(), index).toPromise();
+    }
   }
 
-  configUrl = 'assets/config.json';
-  config: Config;
-
-  public getConfig(): Observable<Config> {
-    // now returns an Observable of Config
-    return this.http.get<any, Config>(this.configUrl);
+  post(user: User) {
+    return this.http.post<User, Fault>(UserUrl.base(), user).toPromise();
   }
 
-
-  getUserConfig(url: string): Observable<string> {
-    this.http.get(url);
-    return this.http.getBase64String(url).pipe(
-      catchError(this.handleError<string>(''))
-    );
+  get(userId: string): Promise<User> {
+    return this.http.httpGet<User>(UserUrl.item(userId)).toPromise();
   }
 
-  editUserConfig(url: string, base64: string): Observable<Fault> {
-    return this.http.putBase64String<Fault>(url, base64).pipe(
-      catchError(this.handleError<Fault>(''))
-    );
+  put(user: User) {
+    return this.http.put<User, Fault>(UserUrl.item(user.Id), user).toPromise();
   }
 
-  getDataList<T>(url: string, params?: HttpParams): Observable<PagedList<T>> {
-    return this.http.get<any, PagedList<T>>(url, params).pipe(
-      catchError(this.handleError<PagedList<T>>('dataList'))
-    );
+  delete(userId: string) {
+    return this.http.delete<Fault>(UserUrl.item(userId)).toPromise();
   }
 
-  postAddData(url: string, model?: any): Observable<Fault> {
-    return this.http.post<any, Fault>(url, model).pipe(
-      catchError(this.handleError<Fault>(''))
-    );
+  role = new UsersRolesRequestService(this.http);
+  label = new UsersLabelsRequestService(this.http);
+}
+
+class UsersRolesRequestService {
+  constructor(private http: HowellAuthHttpService) {}
+  list(userId: string, index: number = 1, size: number = 999) {
+    return this.http
+      .httpGet<PagedList<Role>>(UserUrl.roles_list(userId, index, size))
+      .toPromise();
   }
 
-
-  deleteData(url: string): Observable<Fault> {
-    return this.http.delete<any, Fault>(url).pipe(
-      catchError(this.handleError<Fault>('deleteData'))
-    );
+  get(userId: string, roleId: string) {
+    return this.http.httpGet(UserUrl.roles_item(userId, roleId)).toPromise();
+  }
+}
+class UsersLabelsRequestService {
+  constructor(private http: HowellAuthHttpService) {}
+  get(labelId: string, type: UserLabelType) {
+    return this.http
+      .httpGet<UserLabel>(UserUrl.label_type_item(labelId, type.toString()))
+      .toPromise();
+  }
+  delete(labelId: string, type: UserLabelType) {
+    {
+      return this.http
+        .delete<Fault>(UserUrl.label_type_item(labelId, type.toString()))
+        .toPromise();
+    }
+  }
+  post(labelId: string, label: UserLabel) {
+    {
+      return this.http
+        .post<UserLabel, Fault>(
+          UserUrl.label_type_item(labelId, label.LabelType.toString()),
+          label
+        )
+        .toPromise();
+    }
+  }
+  put(labelId: string, label: UserLabel) {
+    {
+      return this.http
+        .put<UserLabel, Fault>(
+          UserUrl.label_type_item(labelId, label.LabelType.toString()),
+          label
+        )
+        .toPromise();
+    }
   }
 
-  putEditData(url: string, model: any): Observable<Fault> {
-    return this.http.put<any, Fault>(url, model).pipe(
-      catchError(this.handleError<Fault>(''))
-    );
+  list(params: GetUserLabelsParams) {
+    return this.http
+      .post<GetUserLabelsParams, PagedList<UserLabel>>(
+        UserUrl.label_list(),
+        params
+      )
+      .toPromise();
+  }
+}
+
+class UsersPasswordsRequestService {
+  constructor(private http: HowellAuthHttpService) {}
+  random(userId: string, params: RandomUserPaswordParams) {
+    return this.http
+      .post<RandomUserPaswordParams, string>(
+        UserUrl.password_random(userId),
+        params
+      )
+      .toPromise();
+  }
+  change(userId: string, params: ChangeUserPasswordParams) {
+    return this.http
+      .post<ChangeUserPasswordParams, User>(
+        UserUrl.password_change(userId),
+        params
+      )
+      .toPromise();
   }
 
-  postDataList<T>(url: string, model: any): Observable<PagedList<T>> {
-    return this.http.post<any, PagedList<T>>(url, model).pipe(
-      catchError(this.handleError<PagedList<T>>('dataList'))
-    );
+  checkMobileNo(mobileNo: string) {
+    return this.http
+      .httpGet<Fault>(PasswordUrl.CheckMobileNo(mobileNo))
+      .toPromise();
   }
 
-  getUser(url: string): Observable<User> {
-    return this.http.get<any, User>(url).pipe(
-      catchError(this.handleError<User>(''))
-    );
+  getCheckCode(mobileNo: string) {
+    return this.http
+      .httpGet<string>(PasswordUrl.CheckCode(mobileNo))
+      .toPromise();
   }
 
-  getRole(url: string): Observable<Role> {
-    return this.http.get<any, Role>(url).pipe(
-      catchError(this.handleError<Role>(''))
-    );
-  }
-
-
-  public handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      if (((error.status === 401 || error.status === 403))) {
-
-
-        // TODO: send the error to remote logging infrastructure
-        // console.error(error); // log to console instead
-        // Let the app keep running by returning an empty result.
-        return of(result as T);
-      }
-    };
+  toCheckCode(params: CheckCodeParams) {
+    return this.http
+      .post<CheckCodeParams, PasswordCheckCodeResult>(
+        PasswordUrl.CheckCode(),
+        params
+      )
+      .toPromise();
   }
 }

@@ -3,6 +3,8 @@
     <app-committees-toolbar
       [Committees]="Committees"
       [Notify]="bussiness.toolbar.notify"
+      (OnChangePasswordClick)="bussiness.toolbar.onChangePasswordClick($event)"
+      (OnChangeMobileClick)="bussiness.toolbar.onChangeMobileClick($event)"
     ></app-committees-toolbar>
   </div>
   <div class="waste-body">
@@ -184,6 +186,27 @@
   </ng-container>
 </app-window>
 
-<!-- 
-    [videoFileFn]="tableService.eventTable.videoFileFn"
-    [imgEventFn]="tableService.galleryTargetView.galleryTargetPageFn" -->
+<app-window
+  [Model]="window.password"
+  [Style]="window.password.styles"
+  [CloseButton]="window.password.closeable"
+>
+  <ng-container *ngIf="window.password.show">
+    <app-password-change
+      (OnChanged)="window.password.onChanged($event)"
+      (OnCancel)="window.password.onCancel($event)"
+    >
+    </app-password-change>
+  </ng-container>
+</app-window>
+
+<app-window [Model]="window.mobileChange" [Style]="window.mobileChange.styles">
+  <ng-container *ngIf="window.mobileChange.show">
+    <app-mobile-change
+      (OnBinded)="window.mobileChange.onBinded($event)"
+      (OnCancel)="window.mobileChange.onCancel($event)"
+      [Step]="window.mobileChange.step"
+    >
+    </app-mobile-change>
+  </ng-container>
+</app-window>

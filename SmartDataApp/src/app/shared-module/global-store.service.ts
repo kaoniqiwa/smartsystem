@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from "@angular/core";
 import { EnumHelper } from "../common/tool/enum-helper";
 import { SessionUser } from "../common/tool/session-user";
 import { DivisionType, UserResourceType } from "../data-core/model/enum";
-import { User } from "../data-core/model/page";
+import { User } from "../data-core/model/user";
 
 @Injectable({
   providedIn: "root",
@@ -73,9 +73,7 @@ export class GlobalStoreService {
     this._divisionType = val;
   }
 
-  public static get user(): SessionUser {
-    return new SessionUser();
-  }
+  static user?: User;
 
   static interval = new EventEmitter();
   static change = new EventEmitter();

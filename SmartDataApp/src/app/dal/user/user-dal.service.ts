@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
-import { UserService } from "../../data-core/repuest/user.service";
+import { UserConfigService } from "../../data-core/repuest/user-config.service";
 import { UserUrl } from "../../data-core/url/user-url";
 
 @Injectable({
   providedIn: "root",
 })
 export class UserDalService {
-  constructor(public userService: UserService) {
+  constructor(public userService: UserConfigService) {
     this.userService = userService;
   }
 

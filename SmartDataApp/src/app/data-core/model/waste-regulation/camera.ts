@@ -1,5 +1,5 @@
 import { Transform } from "class-transformer";
-import { CameraUsage } from "../enum";
+import { CameraUsage, OnlineStatus } from "../enum";
 import { transformDate } from "../transformer";
 
 /**摄像机信息 */
@@ -42,15 +42,20 @@ export class GetGarbageStationCamerasParams {
   /**分页大小[1-100](可选) */
   PageSize?: number;
   /**摄像机ID(可选) */
-  Ids: string[];
+  Ids?: string[];
   /**垃圾房ID(可选) */
-  GarbageStationIds: string[];
+  GarbageStationIds?: string[];
   /**摄像机名称(可选) */
-  Name: string;
+  Name?: string;
   /**摄像机用途(可选) */
   CameraUsage?: number;
 
-  OnlineStatus: number;
+  OnlineStatus?: OnlineStatus;
 
-  DivisionIds: string[];
+  DivisionIds?: string[];
+
+  /**	String[]	所属网格	O */
+  GridCellIds?: string[];
+  /**	String[]	所属小区	O */
+  CommunityIds?: string[];
 }

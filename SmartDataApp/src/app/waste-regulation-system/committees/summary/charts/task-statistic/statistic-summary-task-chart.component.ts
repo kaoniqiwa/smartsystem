@@ -3,15 +3,18 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
   ViewChild,
 } from "@angular/core";
 import { classToPlain } from "class-transformer";
 import { ICommitteesComponent } from "../../../interface/committees-component.interface";
 import { ICommitteesConverter } from "../../../interface/committees-converter.interface";
+import { IEventTrigger } from "../../../interface/committees-event-trigger.interface";
 import { StatisticSummaryViewModel } from "../../statistic-summary.model";
 import { StatisticSummaryTaskChartConverter } from "./statistic-summary-task-chart.converter";
 import { StatisticSummaryTaskChartViewModel } from "./statistic-summary-task-chart.model";
@@ -31,9 +34,15 @@ export class StatisticSummaryTaskChartComponent
     ICommitteesComponent<
       StatisticSummaryViewModel[],
       StatisticSummaryTaskChartViewModel
-    >
+    >,
+    IEventTrigger<StatisticSummaryTaskChartViewModel>
 {
   myChart: any;
+
+  @Input()
+  EventTrigger: EventEmitter<void>;
+  @Output()
+  OnTriggerEvent: EventEmitter<StatisticSummaryTaskChartViewModel> = new EventEmitter();
 
   @Input()
   private Data?: StatisticSummaryViewModel[];
@@ -54,18 +63,20 @@ export class StatisticSummaryTaskChartComponent
   constructor() {
     console.log("constructor");
   }
+
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("ngOnChanges");
     this.onLoaded();
   }
   ngAfterViewInit(): void {
-    console.log("ngAfterViewInit");
     this.myChart = echarts.init(this.echarts.nativeElement, "dark");
-    console.log(this.echarts.nativeElement);
     this.onLoaded();
   }
   ngOnInit() {
-    console.log("ngOnInit");
+    if (this.EventTrigger) {
+      this.EventTrigger.subscribe((x) => {
+        this.OnTriggerEvent.emit(this.data);
+      });
+    }
   }
 
   onLoaded(): void {
