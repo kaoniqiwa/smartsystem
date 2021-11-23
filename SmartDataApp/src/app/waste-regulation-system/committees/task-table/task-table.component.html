@@ -17,8 +17,8 @@
     <table>
       <tbody class="light-blue-text">
         <ng-container *ngFor="let item of views; let i = index">
-          <tr>
-            <td [ngStyle]="{ width: bodyWidths[0] }">{{ item.Id }}</td>
+          <tr (click)="itemClick($event)">
+            <td [ngStyle]="{ width: bodyWidths[0] }">{{ item.Index }}</td>
             <td [ngStyle]="{ width: bodyWidths[1] }">{{ item.StationName }}</td>
             <td [ngStyle]="{ width: bodyWidths[2] }">{{ item.Processor }}</td>
             <td [ngStyle]="{ width: bodyWidths[3] }">{{ item.Interval }}</td>

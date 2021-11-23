@@ -64,7 +64,7 @@
           <ng-container *ngIf="businessService.divisionListView">
             <hw-level-list-panel
               [model]="dataSource"
-              [selectedFn]="changeDivisionFn"
+              (selectedFn)="changeDivisionFn($event)"
             >
             </hw-level-list-panel>
           </ng-container>

@@ -118,7 +118,6 @@ export class PasswordUrlAuthGuard implements CanActivate {
           .pipe(catchError(this.handleLoginError2<any>()))
           .subscribe((result: User) => {
             if (result) {
-              debugger;
               GlobalStoreService.user = result;
               this.memory(
                 this.formVal.name,

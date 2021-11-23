@@ -26,6 +26,14 @@
   height: 30px;
 }
 
+.task-table table tbody tr:hover {
+  cursor: pointer;
+  color: #6997ff;
+  text-decoration: underline
+}
+
+.task-table table .light-blue-text tr:hover {}
+
 .task-table .content {
   height: calc(100% - 26px);
   overflow-y: scroll;

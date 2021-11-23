@@ -19,7 +19,6 @@ export class StatisticSummaryHeaderConverter
     let vm = new StatisticSummaryHeaderViewModel();
 
     let max = 0;
-    let garde = 100;
     let gardeCount = 0;
     for (let i = 0; i < input.length; i++) {
       const statistic = input[i];
@@ -43,26 +42,26 @@ export class StatisticSummaryHeaderConverter
               break;
           }
         }
-        max = Math.max(max, statistic.MaxGarbageTime);
-        gardeCount += statistic.Garde;
       }
+      max = Math.max(max, statistic.MaxGarbageTime);
 
-      if (vm.GarbageTotal > 0) {
-        vm.GarbageHandleRatio = Math.ceil(
-          (vm.GarbageHandle / vm.GarbageTotal) * 100
-        );
-      }
-
-      if (input.length > 0) {
-        vm.Garde = Math.round(gardeCount / input.length);
-      }
-
-      vm.GarbageTimeHour = Math.floor(max / 60);
-      vm.GarbageTimeMinute = Math.ceil(max % 60);
-
-      // vm.Garde = input.
-
-      return vm;
+      gardeCount += statistic.Garde;
     }
+    if (vm.GarbageTotal > 0) {
+      vm.GarbageHandleRatio = Math.ceil(
+        (vm.GarbageHandle / vm.GarbageTotal) * 100
+      );
+    }
+
+    if (input.length > 0) {
+      vm.Garde = Math.round(gardeCount / input.length);
+    }
+
+    vm.GarbageTimeHour = Math.floor(max / 60);
+    vm.GarbageTimeMinute = Math.ceil(max % 60);
+
+    // vm.Garde = input.
+
+    return vm;
   }
 }

@@ -7,32 +7,25 @@ export class StatisticSummaryEventHistoryExportExcelBusiness
   constructor(tool: ExportTool) {
     this.tool = tool;
   }
+  data: StatisticSummaryLineChartViewModel;
   completed: boolean = false;
   tool: ExportTool;
-  export(title: string, data: StatisticSummaryLineChartViewModel): void {
-    let sheet = this.tool.excel.addWorksheet(this.tool.book, data.title);
+  export(
+    title: string,
 
-    this.tool.excel.setCellValue(sheet, this.tool.getCellName(0, 0), "时间点");
-    this.tool.excel.setCellValue(sheet, this.tool.getCellName(1, 0), "次数");
+    row: number
+  ): number {
+    try {
+      row = this.tool.setTitle(this.data.title, row);
+      let headers = ["时间点", ...this.data.xAxis];
+      row = this.tool.setRow(headers, row);
 
-    let startRow = 1;
-    for (let i = 0; i < data.xAxis.length; i++) {
-      const xAxis = data.xAxis[i];
-      this.tool.excel.setCellValue(
-        sheet,
-        this.tool.getCellName(0, i + startRow),
-        xAxis
-      );
+      let values = ["数量", ...this.data.data];
+      return this.tool.setRow(values, row);
+    } catch (ex) {
+      console.error(ex);
+    } finally {
+      this.completed = true;
     }
-    for (let i = 0; i < data.data.length; i++) {
-      const item = data.data[i];
-      this.tool.excel.setCellValue(
-        sheet,
-        this.tool.getCellName(1, i + startRow),
-        item
-      );
-    }
-
-    this.completed = true;
   }
 }

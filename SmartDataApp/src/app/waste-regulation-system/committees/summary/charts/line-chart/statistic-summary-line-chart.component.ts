@@ -67,7 +67,9 @@ export class StatisticSummaryIllegalDropChartComponent
   constructor(private datePipe: DatePipe) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.onLoaded();
+    if (!changes.TimeUnit) {
+      this.onLoaded();
+    }
   }
   ngOnInit(): void {
     if (this.EventTrigger) {
@@ -97,13 +99,16 @@ export class StatisticSummaryIllegalDropChartComponent
   setOption() {
     if (this.myChart) {
       this.myChart.resize();
-      this.myChart.setOption(this.getOption(this.data), true);
+      let option = this.getOption(this.data);
+
+      this.myChart.setOption(option);
     }
   }
 
   getOption(viewModel: StatisticSummaryLineChartViewModel) {
     if (viewModel) {
       let max = Math.max(...viewModel.data);
+
       for (let i = 0; i < this.option.series.length; i++) {
         const serie = this.option.series[i];
         serie.data = viewModel.data;
@@ -118,7 +123,6 @@ export class StatisticSummaryIllegalDropChartComponent
         };
       }
       this.option.xAxis.data = viewModel.xAxis;
-
       return this.option;
     }
   }

@@ -107,11 +107,8 @@ export class StatisticSummaryComponent
     private datePipe: DatePipe,
     private service: StatisticSummaryService
   ) {}
-  ngAfterViewInit(): void {
-    console.log("StatisticSummaryComponent ngAfterViewInit");
-  }
+  ngAfterViewInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("StatisticSummaryComponent ngOnChanges");
     if (this.Committees && this.Stations && this.Date) {
       this.onLoaded();
     }
@@ -128,9 +125,10 @@ export class StatisticSummaryComponent
       }
     }
     GlobalStoreService.interval.subscribe((x) => {
-      console.log(this.Date);
       this.onLoaded();
     });
+
+    this.exportBusiness = new StatisticSummaryExportExcelBusiness(this.title);
   }
 
   onLoaded() {
@@ -163,19 +161,19 @@ export class StatisticSummaryComponent
         .then((x) => {
           this.divisionHistory = x;
         });
-
+      console.log("aaa");
       this.service
         .divisions(this.Committees.Id, day, this.unit)
         .then(async (x) => {
+          this.stationStatistic = await this.service.stations(
+            stationIds,
+            day,
+            this.unit
+          );
+
           let array = [];
           for (let i = 0; i < x.length; i++) {
             const divisionStatistic = x[i];
-
-            this.stationStatistic = await this.service.stations(
-              stationIds,
-              day,
-              this.unit
-            );
 
             let maxGarbageTime = 0;
             let garde = 100;
@@ -215,55 +213,14 @@ export class StatisticSummaryComponent
   // child input
   exportTrigger = new EventEmitter();
 
-  exportBusiness = new StatisticSummaryExportExcelBusiness();
+  exportBusiness = new StatisticSummaryExportExcelBusiness(this.title);
 
   // child output
-  onExport(
-    data:
-      | StatisticSummaryHeaderViewModel
-      | StatisticSummaryTaskChartViewModel
-      | StatisticSummaryEventRatioChartViewModel
-      | StatisticSummaryLineChartViewModel
-      | StatisticSummaryStationEventChartViewModel[]
-  ) {
-    if (data instanceof StatisticSummaryHeaderViewModel) {
-      this.exportBusiness.header.export(this.title, data);
-    } else if (data instanceof StatisticSummaryTaskChartViewModel) {
-      this.exportBusiness.task.export("滞留任务处置", data);
-    } else if (data instanceof StatisticSummaryEventRatioChartViewModel) {
-      this.exportBusiness.eventRatio.export("事件占比", data);
-    } else if (data instanceof StatisticSummaryLineChartViewModel) {
-      switch (data.type) {
-        case EventType.IllegalDrop:
-          this.exportBusiness.illegalDrop.export(
-            Language.EventType(data.type),
-            data
-          );
-          break;
-        case EventType.MixedInto:
-          this.exportBusiness.mixedInto.export(
-            Language.EventType(data.type),
-            data
-          );
-          break;
-
-        default:
-          break;
-      }
-    } else if (data instanceof Array) {
-      this.exportBusiness.stations.export("投放点事件", data);
-      // for (let i = 0; i < data.length; i++) {
-      //   const item = data[i];
-      //   if (item instanceof StatisticSummaryStationEventChartViewModel) {
-      //   }
-      // }
-    } else {
-    }
-
+  onExport(data: any) {
     let date = this.datePipe.transform(this.Date, this.language.format);
-    this.exportBusiness.writeFile(`${date} 汇总`);
+    this.exportBusiness.export(data, `${date} ${this.title}`);
     if (this.exportBusiness.completed) {
-      this.exportBusiness = new StatisticSummaryExportExcelBusiness();
+      this.exportBusiness = new StatisticSummaryExportExcelBusiness(this.title);
     }
   }
 

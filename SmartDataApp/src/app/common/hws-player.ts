@@ -1,6 +1,6 @@
 import { ElementRef } from "@angular/core";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
-import { VideoSimpleMode } from "../shared-module/video-simple-card/video-simple";
+import { VideoSimpleModel } from "../shared-module/video-simple-card/video-simple";
 
 declare var base64encode: (str: string) => string;
 
@@ -29,7 +29,7 @@ export class HWSPlayer {
     return this._player;
   }
 
-  createUrl(model: VideoSimpleMode) {
+  createUrl(model: VideoSimpleModel) {
     // tslint:disable-next-line:max-line-length
     this.url = `ws://${model.host}:${model.port}/ws/video/howellps/${model.mode}/${model.deviceId}/${model.slot}/1/${model.mode}.mp4?user=${model.userName}&password=${model.password}"`;
     if (model.mode === "vod") {

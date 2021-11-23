@@ -17,6 +17,10 @@ export class DivisionInformationComponent implements OnInit {
   public get Station(): GarbageStation {
     return this._Station;
   }
+
+  @Input()
+  Division: Division;
+
   @Input()
   public set Station(v: GarbageStation) {
     this._Station = v;
@@ -25,8 +29,8 @@ export class DivisionInformationComponent implements OnInit {
 
   private _DefaultMember?: Member;
   get DefaultMember() {
-    if (this.Station && this.Station.Members) {
-      this._DefaultMember = this.Station.Members.pop();
+    if (this.Station && this.Station.Members && this.Station.Members) {
+      this._DefaultMember = this.Station.Members[0];
     }
     return this._DefaultMember;
   }

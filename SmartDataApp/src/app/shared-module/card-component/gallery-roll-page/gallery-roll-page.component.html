@@ -1,6 +1,10 @@
 <ng-container *ngIf="model">
   <div class="fill-width fill-height player-20">
-    <div fxLayout="row" fxLayoutAlign="space-between center">
+    <div
+      class="gallery-title"
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+    >
       <div style="width: 200px">
         <div *ngIf="config.titleVisibility">
           <h2>
@@ -31,6 +35,7 @@
         style="width: 170px; font-size: 18px"
       >
         <a
+          *ngIf="config.autoRefreshVisibility"
           class="
             nav-link
             waves-effect waves-dark
@@ -46,6 +51,7 @@
           <i class="mdi mdi-menu-down"></i>
         </a>
         <div
+          *ngIf="config.autoRefreshVisibility"
           class="dropdown-menu player-b-0 player-t-0 m-t-10 view-ul-drop"
           x-placement="bottom-start"
         >
@@ -260,6 +266,7 @@
             top: 2px;
             width: 50px;
             text-align: right;
+            right: 10px;
           "
         >
           {{ model.items.size == 0 ? 0 : model.index }}/{{

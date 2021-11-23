@@ -125,6 +125,11 @@ export class GarbageStation {
   GarbageParameters?: GarbageParameters;
 
   Members?: Member[]; //人员
+
+  /**	String	小区名称	O */
+  CommunityName?: string;
+  /**	String	小区ID	O */
+  CommunityId?: string;
 }
 
 export class Member {

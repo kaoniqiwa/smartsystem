@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Language } from "src/app/common/tool/language";
 import { EventType } from "src/app/data-core/model/enum";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
@@ -28,6 +28,8 @@ export class TaskTableComponent
 
   EventType = EventType;
 
+  data: GarbageDropEventRecord[];
+
   private _Committees: Division;
   public get Committees(): Division {
     return this._Committees;
@@ -44,6 +46,9 @@ export class TaskTableComponent
     TaskTableViewModel[]
   > = new TaskTableConverter();
 
+  @Output()
+  OnItemClicked: EventEmitter<GarbageDropEventRecord> = new EventEmitter();
+
   onLoaded() {
     this.show();
   }
@@ -51,7 +56,9 @@ export class TaskTableComponent
   show() {
     if (this.Committees) {
       this.service.load(this.Committees.Id).then((records) => {
-        this.views = this.Converter.Convert(records.Data, this.datePipe);
+        this.data = records.Data;
+
+        this.views = this.Converter.Convert(this.data, this.datePipe);
       });
     }
   }
@@ -62,5 +69,11 @@ export class TaskTableComponent
     GlobalStoreService.interval.subscribe(() => {
       this.show();
     });
+  }
+
+  itemClick(item: TaskTableViewModel) {
+    let record = this.data.find((x) => x.EventId == item.Id);
+    this.OnItemClicked.emit(record);
+    console.log(record);
   }
 }

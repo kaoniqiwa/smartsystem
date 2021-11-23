@@ -49,7 +49,6 @@ export class CommitteesToolbarBussiness {
   }
 
   onChangeMobileClick() {
-    console.log(this.window.mobileChange);
     this.window.mobileChange.show = true;
   }
 

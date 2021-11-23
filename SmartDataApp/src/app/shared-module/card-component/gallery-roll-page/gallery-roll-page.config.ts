@@ -1,6 +1,7 @@
 export interface IGalleryRollPageConfig {
   closeButtonVisibility?: boolean;
   refreshButtonVisibility?: boolean;
+  autoRefreshVisibility?: boolean;
   intervalButtonVisibility?: boolean;
   fullscreenButtonVisibility?: boolean;
   titleVisibility?: boolean;
@@ -19,4 +20,5 @@ export class GalleryRollPageConfig implements IGalleryRollPageConfig {
   videoControlPlayVisibility?: boolean = true;
   videoControlFullscreenVisibility?: boolean = true;
   playVideoToBig?: boolean = false;
+  autoRefreshVisibility?: boolean = true;
 }

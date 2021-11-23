@@ -10,63 +10,43 @@ export class StatisticSummaryEventRatioExportExcelBusiness
   constructor(tool: ExportTool) {
     this.tool = tool;
   }
+  data: StatisticSummaryEventRatioChartViewModel;
   completed: boolean = false;
   tool: ExportTool;
-  export(title: string, data: StatisticSummaryEventRatioChartViewModel): void {
-    let count = data.MixedInto + data.GarbageFull + data.IllegalDrop;
+  export(title: string, row: number): number {
+    try {
+      let count =
+        this.data.MixedInto + this.data.GarbageFull + this.data.IllegalDrop;
 
-    let sheet = this.tool.excel.addWorksheet(this.tool.book, title);
+      row = this.tool.setTitle(title, row);
 
-    this.tool.excel.setCellValue(sheet, this.tool.getCellName(0, 1), "数量");
-    this.tool.excel.setCellValue(sheet, this.tool.getCellName(0, 2), "占比");
+      let headers = [
+        "类型",
+        Language.EventType(EventType.MixedInto),
+        Language.EventType(EventType.GarbageFull),
+        Language.EventType(EventType.IllegalDrop),
+      ];
+      row = this.tool.setRow(headers, row);
 
-    this.tool.excel.setCellValue(
-      sheet,
-      this.tool.getCellName(1, 0),
-      Language.EventType(EventType.MixedInto)
-    );
-    this.tool.excel.setCellValue(
-      sheet,
-      this.tool.getCellName(1, 1),
-      `${data.MixedInto}起`
-    );
-    this.tool.excel.setCellValue(
-      sheet,
-      this.tool.getCellName(1, 2),
-      `${(data.MixedInto / count) * 100}%`
-    );
+      let numbers = [
+        "数量",
+        `${this.data.MixedInto}起`,
+        `${this.data.GarbageFull}起`,
+        `${this.data.IllegalDrop}起`,
+      ];
+      row = this.tool.setRow(numbers, row);
 
-    this.tool.excel.setCellValue(
-      sheet,
-      this.tool.getCellName(2, 0),
-      Language.EventType(EventType.GarbageFull)
-    );
-    this.tool.excel.setCellValue(
-      sheet,
-      this.tool.getCellName(2, 1),
-      `${data.GarbageFull}起`
-    );
-    this.tool.excel.setCellValue(
-      sheet,
-      this.tool.getCellName(2, 2),
-      `${(data.GarbageFull / count) * 100}%`
-    );
-
-    this.tool.excel.setCellValue(
-      sheet,
-      this.tool.getCellName(3, 0),
-      Language.EventType(EventType.IllegalDrop)
-    );
-    this.tool.excel.setCellValue(
-      sheet,
-      this.tool.getCellName(3, 1),
-      `${data.IllegalDrop}起`
-    );
-    this.tool.excel.setCellValue(
-      sheet,
-      this.tool.getCellName(3, 2),
-      `${(data.IllegalDrop / count) * 100}%`
-    );
-    this.completed = true;
+      let ratios = [
+        "占比",
+        `${(this.data.MixedInto / count) * 100}%`,
+        `${(this.data.GarbageFull / count) * 100}%`,
+        `${(this.data.IllegalDrop / count) * 100}%`,
+      ];
+      return this.tool.setRow(ratios, row);
+    } catch (ex) {
+      console.error(ex);
+    } finally {
+      this.completed = true;
+    }
   }
 }

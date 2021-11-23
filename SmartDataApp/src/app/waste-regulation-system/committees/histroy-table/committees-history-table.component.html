@@ -26,10 +26,16 @@
                 class="operate sky-blue-text2"
                 [ngStyle]="{ width: bodyWidths[3] }"
               >
-                <div (click)="pictureClick($event, item)">
+                <div
+                  (click)="pictureClick($event, item)"
+                  title="查看事件详细图片"
+                >
                   <i class="mdi mdi-image-area"></i>
                 </div>
-                <div (click)="videoClick($event, item)">
+                <div
+                  (click)="videoClick($event, item)"
+                  title="查看事件录像回放"
+                >
                   <i class="howell-icon-video"></i>
                 </div>
               </td>

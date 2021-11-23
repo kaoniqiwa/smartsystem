@@ -47,6 +47,10 @@
   cursor: pointer;
 }
 
+.history-table table tr>td.operate>div:hover {
+  color: white;
+}
+
 
 
 .history-table .filter {

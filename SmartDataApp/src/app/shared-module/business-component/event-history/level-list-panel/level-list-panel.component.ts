@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { LevelListPanel, ListNode } from "./level-list-panel";
 import { domClickFn } from "../../../../common/tool/jquery-help/jquery-help";
+import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 @Component({
   selector: "hw-level-list-panel",
   templateUrl: "./level-list-panel.component.html",
@@ -8,7 +9,8 @@ import { domClickFn } from "../../../../common/tool/jquery-help/jquery-help";
 })
 export class LevelListPanelComponent implements OnInit {
   @Input() model: LevelListPanel;
-  @Input() selectedFn: (id: string) => void;
+
+  @Output() selectedFn: EventEmitter<string> = new EventEmitter();
   private showBody = false;
   private nodes = new Array<ListNode>();
   private prevItem = false;
@@ -26,7 +28,7 @@ export class LevelListPanelComponent implements OnInit {
         .filter((f) => f.head == true)
         .map((m) => this.nodes.push(m));
       this.selectedItem = n.name;
-      if (this.selectedFn) this.selectedFn("");
+      if (this.selectedFn) this.selectedFn.emit(GlobalStoreService.divisionId);
     }
     domClickFn("body", () => {
       this.showBody = false;
@@ -37,7 +39,7 @@ export class LevelListPanelComponent implements OnInit {
     if (val == null) return;
     if ((this.model.last && val.last) || (!this.model.last && !val.last))
       this.selectedItem = val.name;
-    if (this.selectedFn) this.selectedFn(val.id);
+    if (this.selectedFn) this.selectedFn.emit(val.id);
     const filter = this.model.listNodes.filter((x) => x.parentId == val.id);
     if (filter.length) {
       this.nodes = filter;

@@ -33,7 +33,8 @@ export class TaskTableConverter
     let vm = new TaskTableViewModel();
     vm.StationName = record.Data.StationName;
     vm.Processor = record.Data.ProcessorName;
-    vm.Id = index;
+    vm.Id = record.EventId;
+    vm.Index = index;
 
     let current = record.Data.HandleTime
       ? new Date(record.Data.HandleTime)

@@ -30,14 +30,14 @@ export class MobileChangeCheckBusiness {
   }
 
   async checkMobileNo() {
-    // if (!this.checkCodeResult) {
-    //   MessageBar.response_warning("请先验证手机号。");
-    //   return;
-    // }
-    // if (this.checkCodeResult !== this.model.CheckCode) {
-    //   MessageBar.response_warning("请正确填写验证码。");
-    //   return;
-    // }
+    if (!this.checkCodeResult) {
+      MessageBar.response_warning("请先验证手机号。");
+      return;
+    }
+    if (this.checkCodeResult !== this.model.CheckCode) {
+      MessageBar.response_warning("请正确填写验证码。");
+      return;
+    }
 
     return this.service.check(this.model.MobileNo);
   }

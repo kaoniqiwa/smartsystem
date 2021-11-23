@@ -63,44 +63,49 @@ export class EventTable extends BusinessTable implements IConverter {
     tableAttrs: [
       new TableAttr({
         HeadTitleName: "投放点",
-        tdWidth: "14%",
-        tdInnerAttrName: "station",
+        tdWidth: "13%",
+        tdInnerAttrName: TableHeader.station,
       }),
-      new TableAttr({
-        HeadTitleName: "街道",
-        tdWidth: "10%",
-        tdInnerAttrName: "county",
-      }),
+      // new TableAttr({
+      //   HeadTitleName: "街道",
+      //   tdWidth: "10%",
+      //   tdInnerAttrName: "county",
+      // }),
       new TableAttr({
         HeadTitleName: "居委会",
-        tdWidth: "13%",
-        tdInnerAttrName: "committees",
+        tdWidth: "12%",
+        tdInnerAttrName: TableHeader.committees,
+      }),
+      new TableAttr({
+        HeadTitleName: "工单号",
+        tdWidth: "12%",
+        tdInnerAttrName: TableHeader.recordNo,
       }),
       new TableAttr({
         HeadTitleName: "发送时间",
         tdWidth: "12%",
-        tdInnerAttrName: "dropTime",
+        tdInnerAttrName: TableHeader.dropTime,
       }),
       new TableAttr({
         HeadTitleName: "处置时间",
         tdWidth: "9%",
-        tdInnerAttrName: "handleTime",
+        tdInnerAttrName: TableHeader.handleTime,
       }),
       new TableAttr({
         HeadTitleName: "处置员",
         tdWidth: "7%",
-        tdInnerAttrName: "processorName",
+        tdInnerAttrName: TableHeader.processorName,
       }),
       new TableAttr({
         HeadTitleName: "已发送",
         tdWidth: "7%",
-        tdInnerAttrName: "isSend",
+        tdInnerAttrName: TableHeader.isSend,
         align: true,
       }),
       new TableAttr({
         HeadTitleName: "状态",
         tdWidth: "6%",
-        tdInnerAttrName: "timeOut",
+        tdInnerAttrName: TableHeader.timeOut,
       }),
     ],
     tableOperationBtns: [
@@ -197,6 +202,8 @@ export class EventTable extends BusinessTable implements IConverter {
       const parentDivision = this.findDivisionFn(division.ParentId);
       if (parentDivision) tableField.county = parentDivision.Name;
     }
+
+    tableField.recordNo = event.Data.RecordNo;
     return tableField;
   }
 
@@ -245,6 +252,7 @@ export class TableField implements ITableField {
   handleTime: string;
   processorName: string;
   isSend: string;
+  recordNo: string;
 }
 
 class ClassNameString {
@@ -264,4 +272,15 @@ class ClassNameString {
   toString() {
     return this.value;
   }
+}
+
+enum TableHeader {
+  station = "station",
+  committees = "committees",
+  dropTime = "dropTime",
+  handleTime = "handleTime",
+  processorName = "processorName",
+  isSend = "isSend",
+  timeOut = "timeOut",
+  recordNo = "recordNo",
 }

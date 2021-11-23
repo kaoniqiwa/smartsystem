@@ -1,49 +1,45 @@
-import { Injectable } from "@angular/core";
+import { EventEmitter } from "@angular/core";
 import { HWSPlayerOptions } from "src/app/common/directive/wsplayer-directive";
 import { Language } from "src/app/common/tool/language";
-import { GetPreviewUrlParams } from "src/app/data-core/model/aiop/video-url";
+import { MessageBar } from "src/app/common/tool/message-bar";
 import { OnlineStatus } from "src/app/data-core/model/enum";
-import { Camera } from "src/app/data-core/model/waste-regulation/camera";
-import { Division } from "src/app/data-core/model/waste-regulation/division";
 import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
-import {
-  ResourceMediumRequestService,
-  ResourceSRServersRequestService,
-} from "src/app/data-core/repuest/resources.service";
-import { SRServiceRequestSerivce } from "src/app/data-core/repuest/sr-service.service";
+import { GarbageStationRequestService } from "src/app/data-core/repuest/garbage-station.service";
+import { ResourceMediumRequestService } from "src/app/data-core/repuest/resources.service";
 import {
   Gallery,
   GalleryRollPage,
+  GetPictureButtonArgs,
 } from "src/app/shared-module/card-component/gallery-roll-page/gallery-roll-page";
-import {
-  GalleryRollPageConfig,
-  IGalleryRollPageConfig,
-} from "src/app/shared-module/card-component/gallery-roll-page/gallery-roll-page.config";
+import { IGalleryRollPageConfig } from "src/app/shared-module/card-component/gallery-roll-page/gallery-roll-page.config";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 import { ICommitteesConverter } from "../../interface/committees-converter.interface";
 
 export class GalleryRollPageBusiness {
-  constructor() {
+  constructor(private stationService: GarbageStationRequestService) {
     GlobalStoreService.change.subscribe((station: GarbageStation) => {
-      this.Model.items.forEach((x) => {
-        if (x.title.id === station.Id) {
-          this.Model.index = x.i;
+      for (const value of this.Model.items.values()) {
+        if (value.title.id === station.Id) {
+          if (this.Model.index !== value.i) {
+            this.Model.index = value.i;
+          }
           return;
         }
-      });
+      }
     });
   }
   Config: IGalleryRollPageConfig = {
     closeButtonVisibility: false,
-    refreshButtonVisibility: false,
-    fullscreenButtonVisibility: false,
     titleVisibility: false,
     statusBarVisibility: false,
     videoControlFullscreenVisibility: false,
     playVideoToBig: true,
+    autoRefreshVisibility: false,
   };
   Model: GalleryRollPage;
   Converter = new GalleryRollPageConverter();
+
+  changeStation: EventEmitter<string> = new EventEmitter();
 
   async load(stations: GarbageStation[]) {
     // let params = new GetPreviewUrlParams()
@@ -51,6 +47,76 @@ export class GalleryRollPageBusiness {
     // let preview = await this.sr.preview(params)
 
     this.Model = this.Converter.Convert(stations);
+  }
+
+  onNextGroupClicked(model: Gallery) {
+    console.log(model);
+    if (model) {
+      this.changeStation.emit(model.title.id);
+    }
+  }
+  onPreviousGroupClicked(model: Gallery) {
+    console.log(model);
+    if (model) {
+      this.changeStation.emit(model.title.id);
+    }
+  }
+  async onGetPictureClicked(item: GetPictureButtonArgs) {
+    const state = (gs: GarbageStation) => {
+      return Language.StationStateFlags(gs.StationStateFlags);
+      // if (gs.StationState == 0) return "正常";
+      // else if (
+      //   enumHelper.stationState.err.indexOf(gs.StationState) > -1
+      // )
+      //   return "异常";
+      // else if (
+      //   enumHelper.stationState.full.indexOf(gs.StationState) > -1
+      // )
+      //   return "满溢";
+    };
+    if (item.g && item.g.title) {
+      /**更新投放点 */
+      const station = await this.stationService.get(item.g.title.id);
+      if (station) {
+        item.g.title.state = state(station);
+        station.Cameras.map((m) => {
+          if (m.ImageUrl) {
+            const desc = item.g.imgDesc.find((i) => i.tag.id == m.Id);
+            if (desc)
+              desc.src = ResourceMediumRequestService.getData(m.ImageUrl);
+          }
+        });
+      }
+      this.stationService.manualCapture(item.g.title.id).then((data) => {
+        item.catchState.o = true;
+        if (data) {
+          data.map((m) => {
+            if (m.Result) {
+              const desc = item.g.imgDesc.find((i) => i.tag.id == m.CameraId);
+              if (desc) desc.src = ResourceMediumRequestService.getData(m.Id);
+            }
+          });
+        }
+        if (item.msg) MessageBar.response_success();
+      });
+    }
+  }
+
+  styles: any = {};
+
+  onSizeChangeClicked(maxWindow: boolean) {
+    this.styles = maxWindow
+      ? {
+          position: "fixed",
+          right: "5px",
+          left: "5px",
+          top: "100px",
+          zIndex: 1,
+          height: "calc(100% - 105px)",
+          backgroundColor: "#0a0933",
+          border: "1px solid #5c6ebf",
+        }
+      : {};
   }
 }
 

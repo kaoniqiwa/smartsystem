@@ -1,8 +1,9 @@
 import { EventType } from "src/app/data-core/model/enum";
 
 export class TaskTableViewModel {
+  Id: string;
   /** 索引 */
-  Id: number;
+  Index: number;
   /** 厢房名称 */
   StationName: string;
   /** 处置人 */

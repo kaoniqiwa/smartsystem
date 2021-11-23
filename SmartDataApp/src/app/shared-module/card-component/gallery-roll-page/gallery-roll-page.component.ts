@@ -5,9 +5,15 @@ import {
   ViewChild,
   OnDestroy,
   ElementRef,
+  Output,
+  EventEmitter,
 } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
-import { GalleryRollPage } from "./gallery-roll-page";
+import {
+  GetPictureButtonArgs,
+  Gallery,
+  GalleryRollPage,
+} from "./gallery-roll-page";
 import {
   BasisCardComponent,
   ViewsModel,
@@ -30,10 +36,14 @@ import {
   GalleryRollPageConfig,
   IGalleryRollPageConfig,
 } from "./gallery-roll-page.config";
+import { MessageBar } from "src/app/common/tool/message-bar";
+import { ResourceMediumRequestService } from "src/app/data-core/repuest/resources.service";
+import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
+import { Language } from "src/app/common/tool/language";
 @Component({
   selector: "hw-gallery-roll-page",
   templateUrl: "./gallery-roll-page.component.html",
-  styleUrls: ["./gallery-roll-page.component.styl"],
+  styleUrls: ["./gallery-roll-page.component.css"],
   providers: [HWVideoService],
 })
 export class GalleryRollPageComponent
@@ -62,6 +72,16 @@ export class GalleryRollPageComponent
     this._config = Object.assign(this._config, v);
   }
 
+  @Output()
+  OnNextGroupClicked: EventEmitter<Gallery> = new EventEmitter();
+  @Output()
+  OnPreviousGroupClicked: EventEmitter<Gallery> = new EventEmitter();
+
+  @Output()
+  OnGetPictureClicked: EventEmitter<GetPictureButtonArgs> = new EventEmitter();
+  @Output()
+  OnSizeChangeClicked: EventEmitter<boolean> = new EventEmitter();
+
   // @ViewChild(HWSPlayerDirective)
   // player: HWSPlayerDirective;
   player: HWSPlayer;
@@ -80,7 +100,7 @@ export class GalleryRollPageComponent
     interval: -1,
     fn: null,
   };
-  galleryHeight = "calc(100% - 43px - 60px)";
+  galleryHeight = "calc(100% - 46px - 60px)";
   readonly interval_inspection_key = "99";
   user = new SessionUser();
   bigViewId = "";
@@ -163,9 +183,10 @@ export class GalleryRollPageComponent
 
   changeWindow() {
     this.maxWindow = !this.maxWindow;
-    this.galleryHeight = this.maxWindow ? "90%" : "86%";
+    //this.galleryHeight = this.maxWindow ? "90%" : "86%";
     this.btnControl(this.maxWindow);
     this.autoVideoWindowSize();
+    this.OnSizeChangeClicked.emit(this.maxWindow);
   }
 
   resetCarousel(time: number, save = false) {
@@ -327,24 +348,34 @@ export class GalleryRollPageComponent
 
   // /**下一组图片 */
   nextImgGroup() {
-    this.bigViewId = "";
-    this.model.index += 1;
-    if (this.model.index > this.model.items.size) this.model.index = 1;
-    this.resetCarousel(this.carousel.time);
-    this.tagClick(null, false);
-    if (this.player && this.player.playing) {
-      this.player.stopVideo();
+    try {
+      this.bigViewId = "";
+      this.model.index += 1;
+      if (this.model.index > this.model.items.size) this.model.index = 1;
+      this.resetCarousel(this.carousel.time);
+      this.tagClick(null, false);
+      if (this.player && this.player.playing) {
+        this.player.stopVideo();
+      }
+    } finally {
+      this.OnNextGroupClicked.emit(this.model.items.get(this.model.index));
     }
   }
 
   /**上一组图片 */
   prevImgGroup() {
-    this.bigViewId = "";
-    this.model.index -= 1;
-    if (this.model.index <= 0) this.model.index = this.model.items.size;
-    this.resetCarousel(this.carousel.time);
-    this.tagClick(null, false);
-    this.player.stopVideo();
+    try {
+      this.bigViewId = "";
+      this.model.index -= 1;
+      if (this.model.index <= 0) this.model.index = this.model.items.size;
+      this.resetCarousel(this.carousel.time);
+      this.tagClick(null, false);
+      if (this.player && this.player.playing) {
+        this.player.stopVideo();
+      }
+    } finally {
+      this.OnPreviousGroupClicked.emit(this.model.items.get(this.model.index));
+    }
   }
 
   /**
@@ -359,11 +390,13 @@ export class GalleryRollPageComponent
       const val = this.model.items.get(this.model.index);
       if (this.btnControl && this.model) {
         this.catchState.o = false;
-        this.btnControl({
+        let args = {
           g: val,
           msg: msg,
           catchState: this.catchState,
-        });
+        };
+        this.btnControl(args);
+        this.OnGetPictureClicked.emit(args);
       }
     }
   }

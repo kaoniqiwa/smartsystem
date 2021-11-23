@@ -96,9 +96,17 @@ export class PasswordCheckNameComponent implements OnInit {
       this.checkCode
     );
     if (checked && checked.Result && checked.RedirectUrl) {
+      let str = checked.RedirectUrl;
+      if (
+        location.hostname == "127.0.0.1" ||
+        location.hostname == "localhost"
+      ) {
+        let url = new HowellUri(checked.RedirectUrl);
+        url.Host = location.hostname;
+        url.Port = location.port;
+        str = url.toString();
+      }
       console.log(checked);
-      let url = new HowellUri(checked.RedirectUrl);
-      let str = `http://127.0.0.1:8899/password-to-change?${url.Query}`;
       location.href = str;
     }
   }

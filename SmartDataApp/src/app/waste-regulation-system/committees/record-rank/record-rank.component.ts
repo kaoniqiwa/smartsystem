@@ -115,6 +115,12 @@ export class RecordRankComponent
           .sort((a, b) => {
             return b.value - a.value;
           });
+        if (this.view.items.length < 10) {
+          for (let i = this.view.items.length; i < 10; i++) {
+            let item = new RecordRankItemViewModel();
+            this.view.items.push(item);
+          }
+        }
         let i = 0;
         this.view.items.forEach((x) => {
           x.Index = ++i;

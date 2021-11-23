@@ -7,50 +7,27 @@ export class StatisticSummaryTaskExportExcelBusiness
   constructor(tool: ExportTool) {
     this.tool = tool;
   }
+  data: StatisticSummaryTaskChartViewModel;
   completed: boolean = false;
   tool: ExportTool;
-  export(title: string, data: StatisticSummaryTaskChartViewModel): void {
-    let sheet = this.tool.excel.addWorksheet(this.tool.book, title);
+  export(title: string, row: number): number {
+    try {
+      row = this.tool.setTitle(title, row);
 
-    this.tool.excel.setCellValue(sheet, this.tool.getCellName(0, 0), "处置率");
-    this.tool.excel.setCellValue(
-      sheet,
-      this.tool.getCellName(0, 1),
-      `${data.ratio}%`
-    );
+      let headers = ["处置率", "发布任务数", "超时任务数", "未完成任务数"];
+      row = this.tool.setRow(headers, row);
 
-    this.tool.excel.setCellValue(
-      sheet,
-      this.tool.getCellName(1, 0),
-      "发布任务数"
-    );
-    this.tool.excel.setCellValue(
-      sheet,
-      this.tool.getCellName(1, 1),
-      `${data.TotalCount}起`
-    );
-
-    this.tool.excel.setCellValue(
-      sheet,
-      this.tool.getCellName(2, 0),
-      "超时任务数"
-    );
-    this.tool.excel.setCellValue(
-      sheet,
-      this.tool.getCellName(2, 1),
-      `${data.GarbageTimeoutCount}起`
-    );
-
-    this.tool.excel.setCellValue(
-      sheet,
-      this.tool.getCellName(3, 0),
-      "未完成任务数"
-    );
-    this.tool.excel.setCellValue(
-      sheet,
-      this.tool.getCellName(3, 1),
-      `${data.UncompletedCount}起`
-    );
-    this.completed = true;
+      let values = [
+        `${this.data.ratio}%`,
+        `${this.data.TotalCount}起`,
+        `${this.data.GarbageTimeoutCount}起`,
+        `${this.data.UncompletedCount}起`,
+      ];
+      return this.tool.setRow(values, row);
+    } catch (ex) {
+      console.error(ex);
+    } finally {
+      this.completed = true;
+    }
   }
 }

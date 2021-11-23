@@ -1,56 +1,106 @@
 <div class="alert-window text-no-select">
-    <div class="alert-window-bg p-10">
-        <div style="font-size: 20px;height: 30px;line-height: 20px;color: white">
-            <div class="pull-left collapse" [class.in]="(videoImgs&&!playing)||!videoImgs">{{cameraName}}</div>
-            <div class="pull-left collapse" [class.in]="videoImgs&&playing">{{secondName}}</div>
-            <div class="pull-right">
-                <a href="javascript:" (click)="closeWindow()">
-                    <i class="howell-icon-Close alert-window-close-btn"></i>
-                </a> 
-            </div>
-        </div>
-        <div class="fill-width" [ngStyle]="{'height': bottomTool?'calc(100% - 70px)':'calc(100% - 30px)'}" style="border: 2px solid #3283E5;">
-            <div class="fill-height fill-width collapse"  [class.in]="playing"  style="background-color: black;">
-                <!-- <div id="{{divId}}" class="video-control selected fill-height fill-width player">
-                </div> -->
-                <ng-container *ngIf="srcUrl&&playing">
-                    <iframe #iframe id="{{divId}}" [src]="srcUrl" (unload)="on_iframe_unload()" (load)="on_iframe_load()" class="video-control selected fill-height fill-width"></iframe>
-                </ng-container>  
-            </div> 
-            <ng-container *ngIf="videoImgs&&!playing">
-                <ul class="hw-ul fill-height fill-width">                    
-                    <ng-container *ngFor="let img of videoImgs">
-                      <li class="pull-left view-size-4" style="position: relative;">
-                        <img  width="100%" class="fill-height " src="{{img.src}}"
-                        onerror="this.src='../assets/img/timg-pic.jpg'" alt="">
-                        <div class="fill-width fill-height view-center mask" >
-                        <a href="javascript:" (click)="simpleVideoClick(img.id,img.name,img.time)">
-                          <div class="howell-icon-play" style="color: rgba(255,255,255,0.7);font-size: 70px; "></div>
-                        </a>
-                      </div>
-                      </li>
-                    </ng-container>
-                    <ng-container *ngFor="let item of fillBlank(videoImgs.length)">
-                        <li  class="pull-left view-size-4">
-                          <img height="100%" width="100%"  src="assets/img/black-bg.png" style="border: 2px solid transparent;" alt="">
-                        </li> 
-                      </ng-container>
-                  </ul>
-            </ng-container>
-            <ng-container *ngIf="bottomTool">
-                <div  class="m-t-10" style="height: 20px;">
-                    <div class="pull-left">
-                        <ng-container *ngFor="let l of bottomTool.left">
-                            <label class="m-b-0 m-r-10 {{l.color}}">{{l.label}}</label>
-                        </ng-container> 
-                    </div>
-                    <div class="pull-right">
-                        <ng-container *ngFor="let r of bottomTool.right">
-                            <label class="m-b-0 m-r-10 {{r.color}}">{{r.label}}</label>
-                        </ng-container> 
-                    </div>
-                </div>
-            </ng-container>
-        </div>
+  <div class="alert-window-bg p-10">
+    <div style="font-size: 20px; height: 30px; line-height: 20px; color: white">
+      <div
+        class="pull-left collapse"
+        [class.in]="(videoImgs && !playing) || !videoImgs"
+      >
+        {{ cameraName }}
+      </div>
+      <div class="pull-left collapse" [class.in]="videoImgs && playing">
+        {{ secondName }}
+      </div>
+      <div class="pull-right">
+        <a
+          *ngIf="mode === 'vod'"
+          href="javascript:void(0)"
+          class="m-r-10"
+          title="预览摄像机"
+          (click)="preview($event)"
+        >
+          <i class="howell-icon-video sky-blue-text"></i>
+        </a>
+        <a href="javascript:" (click)="closeWindow()">
+          <i class="howell-icon-Close alert-window-close-btn"></i>
+        </a>
+      </div>
     </div>
-</div> 
+    <div
+      class="fill-width"
+      [ngStyle]="{
+        height: bottomTool ? 'calc(100% - 70px)' : 'calc(100% - 30px)'
+      }"
+      style="border: 2px solid #3283e5"
+    >
+      <div
+        class="fill-height fill-width collapse"
+        [class.in]="playing"
+        style="background-color: black"
+      >
+        <!-- <div id="{{divId}}" class="video-control selected fill-height fill-width player">
+                </div> -->
+        <ng-container *ngIf="srcUrl && playing">
+          <iframe
+            #iframe
+            id="{{ divId }}"
+            [src]="srcUrl"
+            (unload)="on_iframe_unload()"
+            (load)="on_iframe_load()"
+            class="video-control selected fill-height fill-width"
+          ></iframe>
+        </ng-container>
+      </div>
+      <ng-container *ngIf="videoImgs && !playing">
+        <ul class="hw-ul fill-height fill-width">
+          <ng-container *ngFor="let img of videoImgs">
+            <li class="pull-left view-size-4" style="position: relative">
+              <img
+                width="100%"
+                class="fill-height"
+                src="{{ img.src }}"
+                onerror="this.src='../assets/img/timg-pic.jpg'"
+                alt=""
+              />
+              <div class="fill-width fill-height view-center mask">
+                <a
+                  href="javascript:"
+                  (click)="simpleVideoClick(img.id, img.name, img.time)"
+                >
+                  <div
+                    class="howell-icon-play"
+                    style="color: rgba(255, 255, 255, 0.7); font-size: 70px"
+                  ></div>
+                </a>
+              </div>
+            </li>
+          </ng-container>
+          <ng-container *ngFor="let item of fillBlank(videoImgs.length)">
+            <li class="pull-left view-size-4">
+              <img
+                height="100%"
+                width="100%"
+                src="assets/img/black-bg.png"
+                style="border: 2px solid transparent"
+                alt=""
+              />
+            </li>
+          </ng-container>
+        </ul>
+      </ng-container>
+      <ng-container *ngIf="bottomTool">
+        <div class="m-t-10" style="height: 20px">
+          <div class="pull-left">
+            <ng-container *ngFor="let l of bottomTool.left">
+              <label class="m-b-0 m-r-10 {{ l.color }}">{{ l.label }}</label>
+            </ng-container>
+          </div>
+          <div class="pull-right">
+            <ng-container *ngFor="let r of bottomTool.right">
+              <label class="m-b-0 m-r-10 {{ r.color }}">{{ r.label }}</label>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

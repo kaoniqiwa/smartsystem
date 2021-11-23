@@ -159,7 +159,7 @@
         <div class="pull-right" style="width: calc(100% - 64px)">
           <hw-level-list-panel
             [model]="tableService.divisionListView.dataSource"
-            [selectedFn]="changeDivisionFn"
+            (selectedFn)="changeDivisionFn($event)"
           ></hw-level-list-panel>
         </div>
       </div>

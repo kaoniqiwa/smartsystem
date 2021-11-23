@@ -103,6 +103,8 @@ export class IndexComponent implements OnInit {
   }
 
   async ngOnInit() {
+    GlobalStoreService.runInterval();
+
     console.log("ngOnInit");
 
     this.activatedRoute.queryParams.subscribe((param) => {

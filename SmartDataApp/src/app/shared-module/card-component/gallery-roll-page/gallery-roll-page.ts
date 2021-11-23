@@ -1,4 +1,5 @@
 import { IViewModel } from "src/app/common/abstract/base-view";
+import { IViewEvent } from "src/app/common/interface/IViewEvent";
 import { HWSPlayerOptions } from "../../../common/directive/wsplayer-directive";
 
 export class GalleryRollPage implements IViewModel {
@@ -40,4 +41,10 @@ export class Gallery {
     state: boolean;
   }[];
   index = 1;
+}
+
+export class GetPictureButtonArgs implements IViewEvent {
+  g: Gallery;
+  msg: boolean;
+  catchState: { o: boolean };
 }

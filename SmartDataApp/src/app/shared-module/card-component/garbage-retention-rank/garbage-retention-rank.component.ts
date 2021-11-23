@@ -88,8 +88,11 @@ export class GarbageRetentionRankComponent implements OnInit {
       this._loadData();
     });
   }
-  async ngOnInit() {
-    await this._loadData();
+  ngOnInit() {
+    this._loadData();
+    GlobalStoreService.interval.subscribe((x) => {
+      this._loadData();
+    });
   }
   private async _loadData() {
     console.log(this._globalStoreService.divisionId);

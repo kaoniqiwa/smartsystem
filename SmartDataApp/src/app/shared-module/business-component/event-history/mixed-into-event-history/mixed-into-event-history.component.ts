@@ -150,7 +150,7 @@ export class MixedIntoEventHistoryComponent implements OnInit, OnDestroy {
       this.tableService.garbageStations
     );
     this.tableService.divisionListView.toLevelListPanel(
-      this.tableService.divisions.filter((x) => x.ParentId != null)
+      this.tableService.divisions
     );
     this.tableService.allEventsRecordData();
 

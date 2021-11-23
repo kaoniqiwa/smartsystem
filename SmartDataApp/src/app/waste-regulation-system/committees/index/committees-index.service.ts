@@ -12,7 +12,7 @@ import { UserUrl } from "src/app/data-core/url/user-url";
 export class CommitteesIndexService {
   constructor(
     private divisionService: DivisionRequestService,
-    private stationService: GarbageStationRequestService,
+    public stationService: GarbageStationRequestService,
     private srService: StationResourceSRServersRequestService,
     private userService: UserRequestService
   ) {}

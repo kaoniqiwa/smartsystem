@@ -71,4 +71,24 @@ export class HowellUri {
       this.Segments = this.AbsolutePath.split("/");
     }
   }
+
+  toString() {
+    var param = "";
+    if (this.Querys) {
+      var i = 0;
+      for (var q in this.Querys) {
+        if (i == 0) param = "?";
+        if (i++ > 0) param += "&";
+        param += q + "=" + this.Querys[q];
+      }
+    }
+
+    var result = this.Scheme + "://";
+    if (this.UserInfo) result += this.UserInfo + "@";
+    result += this.Host;
+    if (this.Origin.indexOf(":", 6) > 0) result += ":" + this.Port;
+
+    result += this.AbsolutePath + param;
+    return result;
+  }
 }

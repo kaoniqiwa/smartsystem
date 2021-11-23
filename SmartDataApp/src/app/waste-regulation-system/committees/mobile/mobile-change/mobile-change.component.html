@@ -2,7 +2,7 @@
   <div class="fill-height" *ngIf="step == MobileChangeStep.Check">
     <app-mobile-view
       [Model]="checkBusiness.model"
-      (OnGetCheckCodeClick)="checkBusiness.getCheckCode()"
+      (OnGetCheckCodeClick)="checkBusiness.getCheckCode($event)"
       (OnCancelClick)="cancel($event)"
       (OnOKClick)="check($event)"
     ></app-mobile-view>
@@ -10,7 +10,7 @@
   <div class="fill-height" *ngIf="step == MobileChangeStep.Bind">
     <app-mobile-view
       [Model]="bindBusiness.model"
-      (OnGetCheckCodeClick)="bindBusiness.getCheckCode()"
+      (OnGetCheckCodeClick)="bindBusiness.getCheckCode($event)"
       (OnCancelClick)="cancel($event)"
       (OnOKClick)="bind($event)"
     ></app-mobile-view>

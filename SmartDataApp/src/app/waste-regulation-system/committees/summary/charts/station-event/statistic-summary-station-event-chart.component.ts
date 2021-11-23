@@ -62,12 +62,18 @@ export class StatisticSummaryStationEventChartComponent
   ngOnInit(): void {
     if (this.EventTrigger) {
       this.EventTrigger.subscribe((x) => {
+        console.log(this.data);
         this.OnTriggerEvent.emit(this.data);
       });
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
-    this.onLoaded();
+    if (changes.Data) {
+      if (changes.Data.currentValue != changes.Data.previousValue) {
+        console.log(changes);
+        this.onLoaded();
+      }
+    }
   }
   Converter: ICommitteesConverter<
     GarbageStationNumberStatisticV2[],
@@ -96,6 +102,7 @@ export class StatisticSummaryStationEventChartComponent
   setOption() {
     if (this.myChart) {
       this.myChart.resize();
+      console.log(this.option);
       this.myChart.setOption(this.option, true);
     }
   }

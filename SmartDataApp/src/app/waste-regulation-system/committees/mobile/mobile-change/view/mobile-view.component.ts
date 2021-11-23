@@ -25,10 +25,10 @@ export class MobileViewComponent implements OnInit, OnChanges {
   });
 
   get mobileNo(): string {
-    return this.form.value.mobileNo;
+    return this.form.controls.mobileNo.value;
   }
   get checkCode(): string {
-    return this.form.value.checkCode;
+    return this.form.controls.checkCode.value;
   }
 
   @Input("Model")
@@ -51,6 +51,7 @@ export class MobileViewComponent implements OnInit, OnChanges {
     if (this.model) {
       if (this.model.MobileNo) {
         this.form.patchValue({ mobileNo: this.model.MobileNo });
+        this.form.controls.mobileNo.disable();
       }
     }
   }
@@ -68,7 +69,7 @@ export class MobileViewComponent implements OnInit, OnChanges {
   }
 
   async checkMobilNo() {
-    if (!this.mobileNo) {
+    if (!this.model.MobileNo && !this.mobileNo) {
       MessageBar.response_warning("请输入手机号。");
       return false;
     }
@@ -77,11 +78,15 @@ export class MobileViewComponent implements OnInit, OnChanges {
       return false;
     }
     let result = await this.service.check(this.mobileNo);
-    if (result) {
+    if (this.model.MobileNo && result) {
+      return true;
+    } else if (result) {
+      this.seconds = 0;
       MessageBar.response_warning("该号码已被注册。");
       return false;
+    } else {
+      return true;
     }
-    return true;
   }
 
   ok() {
@@ -89,6 +94,7 @@ export class MobileViewComponent implements OnInit, OnChanges {
       MessageBar.response_warning("请填写验证码。");
       return;
     }
+    console.log(this.form.controls.mobileNo);
     this.model.CheckCode = this.checkCode;
     this.model.MobileNo = this.mobileNo;
     this.OnOKClick.emit(this.model);

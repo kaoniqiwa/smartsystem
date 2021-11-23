@@ -94,7 +94,6 @@ export class MobileBindingComponent implements OnInit {
       MessageBar.response_warning("请填写正确的验证码。");
       return;
     }
-    debugger;
     let session = new SessionUser();
     let user = session.get();
     user.MobileNo = this.mobileNo;

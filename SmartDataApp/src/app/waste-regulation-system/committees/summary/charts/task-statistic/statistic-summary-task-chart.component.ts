@@ -60,9 +60,7 @@ export class StatisticSummaryTaskChartComponent
     StatisticSummaryTaskChartViewModel
   > = new StatisticSummaryTaskChartConverter();
 
-  constructor() {
-    console.log("constructor");
-  }
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.onLoaded();
@@ -94,7 +92,6 @@ export class StatisticSummaryTaskChartComponent
     }
     if (this.myChart) {
       this.myChart.resize();
-      console.log("setOption");
       this.myChart.setOption(this.option, true);
     }
   }

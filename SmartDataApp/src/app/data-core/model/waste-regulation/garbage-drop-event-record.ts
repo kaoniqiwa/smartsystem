@@ -37,23 +37,52 @@ export class GarbageDropEventData {
   ProcessTime?: Date;
   /**	String	处置描述	O */
   ProcessDescription?: string;
+  /**	String	小区ID	O */
+  CommunityId?: string;
+  /**	String	小区名称	O */
+  CommunityName?: string;
+  /**	String	工单号	O */
+  RecordNo?: string;
 }
 
 // export class GetGarbageDropEventRecordsParams {
 export class GetGarbageDropEventRecordsParams {
-  PageIndex: number; //页码[1-n]
-  PageSize: number; //分页大小[1-100]
-  BeginTime: Date | string; //开始时间
-  EndTime: Date | string; //结束时间
-  DivisionIds: string[]; //所属区划ID列表
-  StationIds: string[]; //垃圾房ID列表
-  ResourceIds: string[]; //	资源ID列表
-  DivisionName: string; //	区划名称，支持LIKE
-  StationName: string; //	垃圾房名称，支持LIKE
-  ResourceName: string; //	资源名称，支持LIKE
-  Desc: boolean; //	是否倒序时间排列
-  GridCellIds: string[]; //	所属网格ID列表
-  GridCellName: string; //	网格名称，支持LIKE
-  IsHandle: boolean; //	是否已处置
-  IsTimeout: boolean; //是否已超时
+  /**	Int32	页码[1-n]	O */
+  PageIndex?: number;
+  /**	Int32	分页大小[1-100]	O */
+  PageSize?: number;
+  /**	DateTime	开始时间	M */
+  @Transform(transformDate)
+  BeginTime!: Date;
+  /**	DateTime	结束时间	M */
+  @Transform(transformDate)
+  EndTime!: Date;
+  /**	String[]	所属区划ID列表	O */
+  DivisionIds?: string[];
+  /**	String[]	垃圾房ID列表	O */
+  StationIds?: string[];
+  /**	String[]	资源ID列表	O */
+  ResourceIds?: string[];
+  /**	String	区划名称，支持LIKE	O */
+  DivisionName?: string;
+  /**	String	垃圾房名称，支持LIKE	O */
+  StationName?: string;
+  /**	String	资源名称，支持LIKE	O */
+  ResourceName?: string;
+  /**	Boolean	是否倒序时间排列	O */
+  Desc?: boolean;
+  /**	String[]	所属网格ID列表	O */
+  GridCellIds?: string[];
+  /**	String	网格名称，支持LIKE	O */
+  GridCellName?: string;
+  /**	Boolean	是否已处置	O */
+  IsHandle?: boolean;
+  /**	Boolean	是否已滞留	O */
+  IsTimeout?: boolean;
+  /**	String[]	所属小区ID列表	O */
+  CommunityIds?: string[];
+  /**	String	小区名称，支持LIKE	O */
+  CommunityName?: string;
+  /**	String	工单号，支持LIKE	O */
+  RecordNo?: string;
 }

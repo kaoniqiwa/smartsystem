@@ -30,7 +30,16 @@ export class StatisticSummaryIllegalDropChartConverter
       vm.xAxis = this.getXAxis(input[0].BeginTime, unit);
     }
     // 补0
-    vm.data.push(0);
+    switch (unit) {
+      case TimeUnit.Hour:
+        vm.data.push(0);
+        break;
+      case TimeUnit.Day:
+        break;
+      default:
+        break;
+    }
+
     for (let i = 0; i < input.length; i++) {
       const statistic = input[i];
       let number = statistic.EventNumbers.find(
@@ -60,9 +69,11 @@ export class StatisticSummaryIllegalDropChartConverter
       case TimeUnit.Day:
         let next = new Date(date.getFullYear(), date.getMonth() + 1);
         next.setSeconds(-1);
-        for (let i = 0; i <= next.getDate(); i++) {
-          axis.push(`${i}日`);
+        let last = next.getDate();
+        for (let i = 0; i < last; i++) {
+          axis.push(`${i + 1}日`);
         }
+
         break;
       default:
         break;

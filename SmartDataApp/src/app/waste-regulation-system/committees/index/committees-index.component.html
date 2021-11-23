@@ -2,9 +2,9 @@
   <div class="waste-header">
     <app-committees-toolbar
       [Committees]="Committees"
-      [Notify]="bussiness.toolbar.notify"
-      (OnChangePasswordClick)="bussiness.toolbar.onChangePasswordClick($event)"
-      (OnChangeMobileClick)="bussiness.toolbar.onChangeMobileClick($event)"
+      [Notify]="business.toolbar.notify"
+      (OnChangePasswordClick)="business.toolbar.onChangePasswordClick($event)"
+      (OnChangeMobileClick)="business.toolbar.onChangeMobileClick($event)"
     ></app-committees-toolbar>
   </div>
   <div class="waste-body">
@@ -13,17 +13,32 @@
         <app-committees-navication
           [Committees]="Committees"
           [Stations]="GarbageStations"
+          [StationSelected]="GarbageStationSelected"
           (OnStationClicked)="OnStationClicked($event)"
           (OnCommitteesInfoClicked)="OnCommitteesInfoClicked($event)"
-          OnCommitteesClicked=""
         ></app-committees-navication>
       </div>
     </div>
     <div class="waste-body__item waste-body__item--video">
-      <div class="waste-body__wrapper">
+      <div
+        class="waste-body__wrapper"
+        [ngStyle]="business.gallery.rollPage.styles"
+      >
         <hw-gallery-roll-page
-          [model]="bussiness.gallery.rollPage.Model"
-          [config]="bussiness.gallery.rollPage.Config"
+          [model]="business.gallery.rollPage.Model"
+          [config]="business.gallery.rollPage.Config"
+          (OnNextGroupClicked)="
+            business.gallery.rollPage.onNextGroupClicked($event)
+          "
+          (OnPreviousGroupClicked)="
+            business.gallery.rollPage.onPreviousGroupClicked($event)
+          "
+          (OnGetPictureClicked)="
+            business.gallery.rollPage.onGetPictureClicked($event)
+          "
+          (OnSizeChangeClicked)="
+            business.gallery.rollPage.onSizeChangeClicked($event)
+          "
         ></hw-gallery-roll-page>
       </div>
     </div>
@@ -31,12 +46,10 @@
       <div class="waste-body__wrapper padding">
         <app-record-rank
           [Committees]="Committees"
-          [Types]="bussiness.rank.event.Types"
-          [Type]="bussiness.rank.event.Type"
-          [Converter]="bussiness.rank.event.Converter"
-          (OnItemClicked)="
-            bussiness.rank.event.OnGarbageStationSelected($event)
-          "
+          [Types]="business.rank.event.Types"
+          [Type]="business.rank.event.Type"
+          [Converter]="business.rank.event.Converter"
+          (OnItemClicked)="business.rank.event.OnGarbageStationSelected($event)"
         ></app-record-rank>
       </div>
     </div>
@@ -51,9 +64,9 @@
       <div class="waste-body__wrapper padding">
         <app-record-rank
           [Committees]="Committees"
-          [Type]="bussiness.rank.drop.Type"
-          [Converter]="bussiness.rank.drop.Converter"
-          (OnItemClicked)="bussiness.rank.drop.OnGarbageStationSelected($event)"
+          [Type]="business.rank.drop.Type"
+          [Converter]="business.rank.drop.Converter"
+          (OnItemClicked)="business.rank.drop.OnGarbageStationSelected($event)"
         ></app-record-rank>
       </div>
     </div>
@@ -62,44 +75,47 @@
         <app-committees-statistic
           [Committees]="Committees"
           (OnAllDeviceCountClicked)="
-            bussiness.statistic.OnAllDeviceCountClicked($event)
+            business.statistic.OnAllDeviceCountClicked($event)
           "
           (OnOnlineDeviceCountClicked)="
-            bussiness.statistic.OnOnlineDeviceCountClicked($event)
+            business.statistic.OnOnlineDeviceCountClicked($event)
           "
           (OnOfflineDeviceCountClicked)="
-            bussiness.statistic.OnOfflineDeviceCountClicked($event)
+            business.statistic.OnOfflineDeviceCountClicked($event)
           "
           (OnGarbageStationCountClicked)="
-            bussiness.statistic.OnGarbageStationCountClicked($event)
+            business.statistic.OnGarbageStationCountClicked($event)
           "
           (OnGarbageDropEventCountClicked)="
-            bussiness.statistic.OnGarbageDropEventCountClicked($event)
+            business.statistic.OnGarbageDropEventCountClicked($event)
           "
           (OnGarbageFullEventCountClicked)="
-            bussiness.statistic.OnGarbageFullEventCountClicked($event)
+            business.statistic.OnGarbageFullEventCountClicked($event)
           "
           (OnIllegalDropEventCountClicked)="
-            bussiness.statistic.OnIllegalDropEventCountClicked($event)
+            business.statistic.OnIllegalDropEventCountClicked($event)
           "
           (OnMixedIntoEventCountClicked)="
-            bussiness.statistic.OnMixedIntoEventCountClicked($event)
+            business.statistic.OnMixedIntoEventCountClicked($event)
           "
         ></app-committees-statistic>
       </div>
     </div>
     <div class="waste-body__item">
       <div class="waste-body__wrapper padding">
-        <app-task-table [Committees]="Committees"></app-task-table>
+        <app-task-table
+          [Committees]="Committees"
+          (OnItemClicked)="business.taskTable.onItemClicked($event)"
+        ></app-task-table>
       </div>
     </div>
     <div class="waste-body__item">
       <div class="waste-body__wrapper padding">
         <app-histroy-table
           [Committees]="Committees"
-          [Type]="bussiness.historyTable.Type"
-          (OnPictureClicked)="bussiness.historyTable.OnPictureClicked($event)"
-          (OnVideoClicked)="bussiness.historyTable.OnVideoClicked($event)"
+          [Type]="business.historyTable.Type"
+          (OnPictureClicked)="business.historyTable.OnPictureClicked($event)"
+          (OnVideoClicked)="business.historyTable.OnVideoClicked($event)"
         ></app-histroy-table>
       </div>
     </div>

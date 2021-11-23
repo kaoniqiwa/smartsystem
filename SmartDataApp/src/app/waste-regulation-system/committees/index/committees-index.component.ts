@@ -16,6 +16,7 @@ import { WindowOperationBussiness } from "./business/window-operation.business";
 
 import { CommitteesToolbarBussiness } from "./business/committees-toolbar.bussiness";
 import { DatePipe } from "@angular/common";
+import { CommitteesTaskTableBussiness } from "./business/committees-task-table.business";
 
 @Component({
   selector: "app-committees-index",
@@ -45,15 +46,20 @@ export class IndexCommitteesComponent implements OnInit {
   ) {
     this.mqttSevice.listenerIllegalDrop(GlobalStoreService.divisionId);
     this.eventPushService.pushIllegalDrop.subscribe((x) => {
-      this.bussiness.toolbar.subscribe(x);
+      this.business.toolbar.subscribe(x);
     });
 
     window.video.getPlaybackUrl = (begin, end, cameraId) => {
       return indexService.getVideoUrl(begin, end, cameraId);
     };
+
+    this.business.gallery.rollPage.changeStation.subscribe((id) => {
+      let station = this.GarbageStations.find((station) => station.Id === id);
+      this.OnStationClicked(station);
+    });
   }
 
-  bussiness = {
+  business = {
     toolbar: new CommitteesToolbarBussiness(
       this.window,
       this.datePipe,
@@ -66,8 +72,9 @@ export class IndexCommitteesComponent implements OnInit {
       drop: new RecordRankDropBussiness(this.window),
     },
     gallery: {
-      rollPage: new GalleryRollPageBusiness(),
+      rollPage: new GalleryRollPageBusiness(this.indexService.stationService),
     },
+    taskTable: new CommitteesTaskTableBussiness(this.window),
   };
 
   async ngOnInit() {
@@ -80,7 +87,7 @@ export class IndexCommitteesComponent implements OnInit {
     if (this.GarbageStations && this.GarbageStations.length > 0) {
       this.GarbageStationSelected = this.GarbageStations[0];
 
-      this.bussiness.gallery.rollPage.load(this.GarbageStations);
+      this.business.gallery.rollPage.load(this.GarbageStations);
     }
     GlobalStoreService.runInterval();
   }
