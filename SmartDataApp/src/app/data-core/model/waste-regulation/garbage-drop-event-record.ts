@@ -1,9 +1,10 @@
-import { Transform } from "class-transformer";
+import { Transform, Type } from "class-transformer";
 import { transformDate } from "../transformer";
 import { EventRecord, CameraImageUrl } from "./event-record";
 import "reflect-metadata";
 export class GarbageDropEventRecord extends EventRecord {
   /**事件数据 */
+  @Type(() => GarbageDropEventData)
   Data!: GarbageDropEventData;
 }
 

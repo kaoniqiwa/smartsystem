@@ -1,0 +1,38 @@
+.playback-config {
+  width: 100%;
+  height: 100%;
+}
+
+
+.playback-config-header {
+  font-size: 24px;
+  color: white;
+  margin-bottom: 20 px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+}
+
+.playback-config .playback-config-content .item {
+  display: flex;
+  height: 70px;
+  align-items: center;
+}
+
+.playback-config .playback-config-content .item input {
+  width: 100%;
+}
+
+.playback-config .playback-config-content .item .title {
+  width: 150px;
+  text-align: right;
+}
+
+.playback-config .playback-config-content .operation {
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

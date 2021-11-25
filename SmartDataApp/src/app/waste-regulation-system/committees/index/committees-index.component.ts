@@ -72,7 +72,10 @@ export class IndexCommitteesComponent implements OnInit {
       drop: new RecordRankDropBussiness(this.window),
     },
     gallery: {
-      rollPage: new GalleryRollPageBusiness(this.indexService.stationService),
+      rollPage: new GalleryRollPageBusiness(
+        this.window,
+        this.indexService.stationService
+      ),
     },
     taskTable: new CommitteesTaskTableBussiness(this.window),
   };

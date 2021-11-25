@@ -39,6 +39,10 @@ export class SearchControl extends SearchHelper {
         id: EventType.GarbageDropTimeout,
         name: Language.GarbageDropEventType(EventType.GarbageDropTimeout),
       },
+      {
+        id: EventType.GarbageDropTimeoutHandle,
+        name: Language.GarbageDropEventType(EventType.GarbageDropTimeoutHandle),
+      },
     ];
   }
 

@@ -8,15 +8,28 @@ import { GarbageStationRequestService } from "src/app/data-core/repuest/garbage-
 import { ResourceMediumRequestService } from "src/app/data-core/repuest/resources.service";
 import {
   Gallery,
+  GalleryImage,
   GalleryRollPage,
   GetPictureButtonArgs,
+  PlaybackGallery,
 } from "src/app/shared-module/card-component/gallery-roll-page/gallery-roll-page";
 import { IGalleryRollPageConfig } from "src/app/shared-module/card-component/gallery-roll-page/gallery-roll-page.config";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 import { ICommitteesConverter } from "../../interface/committees-converter.interface";
+import { PlaybackViewModel } from "../../playback-config/playback-config.model";
+import { WindowOperationBussiness } from "./window-operation.business";
 
 export class GalleryRollPageBusiness {
-  constructor(private stationService: GarbageStationRequestService) {
+  constructor(
+    private window: WindowOperationBussiness,
+    private stationService: GarbageStationRequestService
+  ) {
+    window.playback.onOkClicked.subscribe((x: PlaybackViewModel) => {
+      this.playbackGallery.begin = x.begin;
+      this.playbackGallery.end = x.end;
+      this.playbackTrigger.emit(this.playbackGallery);
+    });
+
     GlobalStoreService.change.subscribe((station: GarbageStation) => {
       for (const value of this.Model.items.values()) {
         if (value.title.id === station.Id) {
@@ -28,6 +41,9 @@ export class GalleryRollPageBusiness {
       }
     });
   }
+  playbackGallery: PlaybackGallery = new PlaybackGallery();
+  playbackTrigger: EventEmitter<PlaybackGallery> = new EventEmitter();
+
   Config: IGalleryRollPageConfig = {
     closeButtonVisibility: false,
     titleVisibility: false,
@@ -35,6 +51,8 @@ export class GalleryRollPageBusiness {
     videoControlFullscreenVisibility: false,
     playVideoToBig: true,
     autoRefreshVisibility: false,
+    autoGetPicture: false,
+    playbackButtonVisibility: true,
   };
   Model: GalleryRollPage;
   Converter = new GalleryRollPageConverter();
@@ -117,6 +135,11 @@ export class GalleryRollPageBusiness {
           border: "1px solid #5c6ebf",
         }
       : {};
+  }
+
+  onPlaybackClicked(cameraId: string) {
+    this.window.playback.show = true;
+    this.playbackGallery.cameraId = cameraId;
   }
 }
 

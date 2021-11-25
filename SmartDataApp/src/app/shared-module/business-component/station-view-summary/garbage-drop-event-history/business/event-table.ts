@@ -32,7 +32,7 @@ export class EventTable extends BusinessTable implements IConverter {
     values: [],
     primaryKey: "id",
     isDisplayDetailImg: true,
-    galleryTdWidth: "16%",
+    galleryTdWidth: "11%",
     eventDelegate: (event: CustomTableEvent) => {
       if (event.eventType == CustomTableEventEnum.Img) {
         const findEvent = this.findEventFn(event.data["item"].id);
@@ -78,18 +78,23 @@ export class EventTable extends BusinessTable implements IConverter {
       }),
       new TableAttr({
         HeadTitleName: "工单号",
-        tdWidth: "12%",
+        tdWidth: "11%",
         tdInnerAttrName: TableHeader.recordNo,
       }),
       new TableAttr({
         HeadTitleName: "发送时间",
-        tdWidth: "12%",
+        tdWidth: "9%",
         tdInnerAttrName: TableHeader.dropTime,
       }),
       new TableAttr({
         HeadTitleName: "处置时间",
         tdWidth: "9%",
         tdInnerAttrName: TableHeader.handleTime,
+      }),
+      new TableAttr({
+        HeadTitleName: "滞留时长",
+        tdWidth: "9%",
+        tdInnerAttrName: TableHeader.dropTimer,
       }),
       new TableAttr({
         HeadTitleName: "处置员",
@@ -104,7 +109,7 @@ export class EventTable extends BusinessTable implements IConverter {
       }),
       new TableAttr({
         HeadTitleName: "状态",
-        tdWidth: "6%",
+        tdWidth: "7%",
         tdInnerAttrName: TableHeader.timeOut,
       }),
     ],
@@ -162,7 +167,7 @@ export class EventTable extends BusinessTable implements IConverter {
     if (output instanceof CustomTableArgs) {
       output.values = items;
       output.galleryTd = tds;
-      output.galleryTdWidth = "16%";
+      output.galleryTdWidth = "11%";
     }
     return output;
   }
@@ -187,11 +192,22 @@ export class EventTable extends BusinessTable implements IConverter {
     tableField.station = event.Data.StationName;
     tableField.dropTime = this.datePipe.transform(
       event.Data.DropTime,
-      "yyyy-MM-dd HH:mm:ss"
+      "HH:mm:ss"
     );
     tableField.handleTime = event.Data.IsHandle
       ? this.datePipe.transform(event.Data.HandleTime, "HH:mm:ss")
       : "-";
+    tableField.dropTimer = "-";
+    let handleTime = new Date();
+    if (event.Data.IsHandle) {
+      handleTime = event.Data.HandleTime;
+    }
+    let timer_time = handleTime.getTime() - event.Data.DropTime.getTime();
+
+    let timer = new Date(timer_time);
+    timer.setHours(timer.getTimezoneOffset());
+
+    tableField.dropTimer = this.datePipe.transform(timer, "HH:mm:ss");
 
     tableField.processorName = event.Data.ProcessorName || "-";
     tableField.isSend = "是";
@@ -253,6 +269,7 @@ export class TableField implements ITableField {
   processorName: string;
   isSend: string;
   recordNo: string;
+  dropTimer: string;
 }
 
 class ClassNameString {
@@ -283,4 +300,5 @@ enum TableHeader {
   isSend = "isSend",
   timeOut = "timeOut",
   recordNo = "recordNo",
+  dropTimer = "dropTimer",
 }

@@ -151,17 +151,20 @@ export class GarbageDropEventHistoryComponent implements OnInit {
     }
   };
   setSearchDivision() {
-    const division = this.tableService.divisions.find(
-      (d) => d.Id == GlobalStoreService.divisionId
-    );
-    if (division && division.DivisionType == DivisionType.City) {
-      const children = this.tableService.divisions.filter(
-        (f) => f.ParentId == division.Id
-      );
-      this.tableService.search.divisionId = children.pop().Id;
-    } else {
-      this.tableService.search.divisionId = GlobalStoreService.divisionId;
-    }
+    // const division = this.tableService.divisions.find(
+    //   (d) => d.Id == GlobalStoreService.divisionId
+    // );
+    // if (division && division.DivisionType == DivisionType.City) {
+    //   const children = this.tableService.divisions.filter(
+    //     (f) => f.ParentId == division.Id
+    //   );
+    //   if (children.length > 0) {
+    //     this.tableService.search.divisionId = children[0].Id;
+    //   }
+    // } else {
+    //   this.tableService.search.divisionId = GlobalStoreService.divisionId;
+    // }
+    this.tableService.search.divisionId = GlobalStoreService.divisionId;
   }
   async ngOnInit() {
     this.divisionDao.allDivisions().then((t) => {
@@ -184,8 +187,8 @@ export class GarbageDropEventHistoryComponent implements OnInit {
     this.tableService.playVideoToUrlFn = async (id, time, cb) => {
       const param = new GetVodUrlParams();
       param.CameraId = id;
-      param.BeginTime = time;
-      param.EndTime = time;
+      param.BeginTime = new Date(time);
+      param.EndTime = new Date(time);
       this.videoService.videoUrl(param).then((video) => {
         cb(video.WebUrl, video.Url);
       });
@@ -196,15 +199,18 @@ export class GarbageDropEventHistoryComponent implements OnInit {
     this.tableService.search.other = !this.tableService.search.other;
     setTimeout(() => {
       if (this.levelListPanel) {
-        const division = this.tableService.divisions.find(
-          (d) => d.Id == GlobalStoreService.divisionId
-        );
-        if (division && division.DivisionType == DivisionType.City) {
-          const children = this.tableService.divisions.filter(
-            (f) => f.ParentId == division.Id
-          );
-          this.levelListPanel.defaultItem(children.pop().Id);
-        } else this.levelListPanel.defaultItem(GlobalStoreService.divisionId);
+        // const division = this.tableService.divisions.find(
+        //   (d) => d.Id == GlobalStoreService.divisionId
+        // );
+        // if (division && division.DivisionType == DivisionType.City) {
+        //   const children = this.tableService.divisions.filter(
+        //     (f) => f.ParentId == division.Id
+        //   );
+        //   if (children.length > 0) {
+        //     this.levelListPanel.defaultItem(children[0].Id);
+        //   }
+        // } else this.levelListPanel.defaultItem(GlobalStoreService.divisionId);
+        this.levelListPanel.defaultItem(GlobalStoreService.divisionId);
       }
     }, 500);
   }

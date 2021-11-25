@@ -1,4 +1,10 @@
-import { Component, AfterViewInit, Output, EventEmitter } from "@angular/core";
+import {
+  Component,
+  AfterViewInit,
+  Output,
+  EventEmitter,
+  OnInit,
+} from "@angular/core";
 import { DivisionType } from "src/app/data-core/model/enum";
 import { isNullOrUndefined } from "util";
 import { SessionUser } from "../../../common/tool/session-user";
@@ -8,12 +14,19 @@ import { GlobalStoreService } from "../../global-store.service";
   templateUrl: "./user-tool.component.html",
   styleUrls: ["./user-tool.component.css"],
 })
-export class UserToolComponent {
+export class UserToolComponent implements OnInit {
   sessionUser = new SessionUser();
+
+  username: string;
+
   get hideButton() {
     return GlobalStoreService.HideButton;
   }
   constructor() {}
+  ngOnInit(): void {
+    let user = this.sessionUser.get();
+    this.username = user.Username;
+  }
 
   display = {
     changePassword:

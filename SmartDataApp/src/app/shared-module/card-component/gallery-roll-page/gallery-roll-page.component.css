@@ -140,10 +140,35 @@
 }
 
 .right-btn-group a {
-  position: relative;
-  bottom: 4px;
+  margin-right: 10px;
+  color: #fff;
+  height: 43px;
+}
+
+.right-btn-group a:hover {
+  color: #7a8de6 !important
+}
+
+.right-btn-group a>i {
+  line-height: 43px;
 }
 
 .gallery-title {
   height: 50px;
+}
+
+.operation {
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+  width: auto;
+}
+
+.glyphicon.glyphicon-stop {
+  font-size: 15px;
+}
+
+.gallery-footer {
+  display: flex;
+  justify-content: space-between;
 }

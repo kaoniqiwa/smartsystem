@@ -272,8 +272,8 @@ export class EventTableService extends ListAttribute {
       param.BeginTime = event.EventTime;
       param.EndTime = event.EventTime;
     } else if (bgTime && edTime) {
-      param.BeginTime = bgTime;
-      param.EndTime = edTime;
+      param.BeginTime = new Date(bgTime);
+      param.EndTime = new Date(edTime);
     }
     return param;
   }

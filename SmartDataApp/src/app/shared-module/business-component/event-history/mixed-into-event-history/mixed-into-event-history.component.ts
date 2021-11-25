@@ -103,7 +103,9 @@ export class MixedIntoEventHistoryComponent implements OnInit, OnDestroy {
         const children = this.tableService.divisions.filter(
           (f) => f.ParentId == division.Id
         );
-        this.tableService.search.divisionId = children.pop().Id;
+        if (children.length > 0) {
+          this.tableService.search.divisionId = children[0].Id;
+        }
       } else if (
         this.businessManageService.viewDivisionType ==
           ViewDivisionTypeEnum.TableLinkChild &&
@@ -157,8 +159,8 @@ export class MixedIntoEventHistoryComponent implements OnInit, OnDestroy {
     this.tableService.playVideoToUrlFn = (id, time, cb) => {
       const param = new GetVodUrlParams();
       param.CameraId = id;
-      param.BeginTime = time;
-      param.EndTime = time;
+      param.BeginTime = new Date(time);
+      param.EndTime = new Date(time);
       this.videoService.videoUrl(param).then((t) => cb(t.WebUrl, t.Url));
     };
   }
@@ -226,7 +228,9 @@ export class MixedIntoEventHistoryComponent implements OnInit, OnDestroy {
             const children = this.tableService.divisions.filter(
               (f) => f.ParentId == division.Id
             );
-            this.levelListPanel.defaultItem(children.pop().Id);
+            if (children.length > 0) {
+              this.levelListPanel.defaultItem(children[0].Id);
+            }
           } else this.levelListPanel.defaultItem(GlobalStoreService.divisionId);
         }
       }, 500);

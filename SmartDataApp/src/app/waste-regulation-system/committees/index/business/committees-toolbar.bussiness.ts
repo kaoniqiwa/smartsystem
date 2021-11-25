@@ -19,7 +19,7 @@ export class CommitteesToolbarBussiness {
   ) {
     this.initForUser();
 
-    window.mobileChange.bindedEvent.subscribe((x) => {
+    window.mobile.bindedEvent.subscribe((x) => {
       let user = this.session.get();
       let promise = this.service.getUser(user.Id);
       promise.then((user) => {
@@ -49,7 +49,7 @@ export class CommitteesToolbarBussiness {
   }
 
   onChangeMobileClick() {
-    this.window.mobileChange.show = true;
+    this.window.mobile.show = true;
   }
 
   async initForUser() {
@@ -64,7 +64,7 @@ export class CommitteesToolbarBussiness {
       this.notify.status = NotifyStatus.remind;
       this.notify.text = "提示：请绑定您的手机号码 点击这里绑定";
       this.notify.onClick = () => {
-        this.window.mobileChange.show = true;
+        this.window.mobile.show = true;
       };
     }
   }

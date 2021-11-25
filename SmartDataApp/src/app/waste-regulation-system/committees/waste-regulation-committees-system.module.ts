@@ -29,6 +29,7 @@ import { MatSliderModule } from "@angular/material";
 import { PasswordChangeComponent } from "./password-change/password-change.component";
 import { MobileViewComponent } from "./mobile/mobile-change/view/mobile-view.component";
 import { MobileChangeComponent } from "./mobile/mobile-change/mobile-change.component";
+import { PlaybackConfigComponent } from './playback-config/playback-config.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,8 @@ import { MobileChangeComponent } from "./mobile/mobile-change/mobile-change.comp
     PasswordChangeComponent,
 
     MobileViewComponent,
+
+    PlaybackConfigComponent,
   ],
   imports: [
     CommonModule,

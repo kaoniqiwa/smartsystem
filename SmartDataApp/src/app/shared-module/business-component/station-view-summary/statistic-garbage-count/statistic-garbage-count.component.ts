@@ -51,14 +51,14 @@ export class StatisticGarbageCountComponent implements OnInit, OnDestroy {
     this.businessService.playVideoToUrlFn = async (id, time, cb) => {
       const gb = this.businessService.findGarbageCountToTime(time + "");
       const param = new GetVodUrlParams();
-      param.BeginTime = new Date(time).toISOString();
+      param.BeginTime = new Date(time);
       param.CameraId = id;
       if (gb) {
-        param.EndTime = gb.EndTime;
+        param.EndTime = new Date(gb.EndTime);
       } else {
         const s = new Date(time);
         s.setMinutes(s.getMinutes() + 1);
-        param.EndTime = s.toISOString();
+        param.EndTime = s;
       }
 
       const vodUrl = await this.videoService.vodUrl(param);

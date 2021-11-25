@@ -28,23 +28,37 @@ export class GalleryRollPage implements IViewModel {
 export class Gallery {
   /** 由于index关联了其他方法，于是用i作为序列 */
   i = 1;
-  title: {
-    state: string;
-    text: string;
-    id: string;
-    eventNumber: number;
-  };
-  imgDesc: {
-    src: string;
-    desc: string;
-    tag: any;
-    state: boolean;
-  }[];
+  title: GalleryTitle;
+  imgDesc: GalleryImage[];
   index = 1;
+}
+
+export class GalleryTitle {
+  state: string;
+  text: string;
+  id: string;
+  eventNumber: number;
+}
+
+export class GalleryImage {
+  src: string;
+  desc: string;
+  tag: GalleryImageTag;
+  state: boolean;
+}
+export class GalleryImageTag {
+  id: string;
 }
 
 export class GetPictureButtonArgs implements IViewEvent {
   g: Gallery;
   msg: boolean;
   catchState: { o: boolean };
+}
+
+export class PlaybackGallery {
+  cameraId: string;
+  begin: Date;
+  end: Date;
+  playing: boolean = false;
 }

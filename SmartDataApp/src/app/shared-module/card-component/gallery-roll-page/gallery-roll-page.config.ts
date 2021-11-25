@@ -9,6 +9,8 @@ export interface IGalleryRollPageConfig {
   videoControlPlayVisibility?: boolean;
   videoControlFullscreenVisibility?: boolean;
   playVideoToBig?: boolean;
+  autoGetPicture?: boolean;
+  playbackButtonVisibility?: boolean;
 }
 export class GalleryRollPageConfig implements IGalleryRollPageConfig {
   closeButtonVisibility?: boolean = true;
@@ -21,4 +23,6 @@ export class GalleryRollPageConfig implements IGalleryRollPageConfig {
   videoControlFullscreenVisibility?: boolean = true;
   playVideoToBig?: boolean = false;
   autoRefreshVisibility?: boolean = true;
+  autoGetPicture?: boolean = true;
+  playbackButtonVisibility?: boolean = false;
 }

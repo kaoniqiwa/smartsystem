@@ -60,17 +60,27 @@ export class HWSPlayer {
   }
 
   stopFn(fn: Function) {
+    this.stop = fn;
     if (this.player())
       this.player().onButtonClicked = (btn) => {
-        if (btn == "stop") fn();
+        if (btn == "stop") {
+          if (this.stop) {
+            this.stop();
+          }
+        }
       };
   }
+
+  stop: Function;
 
   fullScreen() {
     this.player().fullScreen();
   }
   stopVideo() {
     this.playing = false;
+    if (this.stop) {
+      this.stop();
+    }
   }
 
   reSizeView(w?: number, h?: number) {}

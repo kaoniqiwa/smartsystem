@@ -128,6 +128,10 @@ export enum EventType {
    *	小包垃圾处置完成	7
    */
   GarbageDropHandle = 7,
+  /**
+   *	小包垃圾超时处置完成	7
+   */
+  GarbageDropTimeoutHandle = 8,
 }
 
 export enum Gender {

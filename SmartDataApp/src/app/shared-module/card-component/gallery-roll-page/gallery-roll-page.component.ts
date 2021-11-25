@@ -13,13 +13,18 @@ import {
   GetPictureButtonArgs,
   Gallery,
   GalleryRollPage,
+  GalleryImage,
+  PlaybackGallery,
 } from "./gallery-roll-page";
 import {
   BasisCardComponent,
   ViewsModel,
 } from "../../../common/abstract/base-view";
 import { HWVideoService } from "../../../data-core/dao/video-dao";
-import { GetPreviewUrlParams } from "../../../data-core/model/aiop/video-url";
+import {
+  GetPreviewUrlParams,
+  GetVodUrlParams,
+} from "../../../data-core/model/aiop/video-url";
 import {
   HWSPlayerDirective,
   HWSPlayerOptions,
@@ -50,6 +55,12 @@ export class GalleryRollPageComponent
   extends BasisCardComponent
   implements OnInit, OnDestroy
 {
+  @Input("PlaybackGallery")
+  playbackGallery: PlaybackGallery = new PlaybackGallery();
+
+  @Input()
+  PlaybackTrigger: EventEmitter<PlaybackGallery>;
+
   public get model(): GalleryRollPage {
     return this._model as GalleryRollPage;
   }
@@ -72,6 +83,18 @@ export class GalleryRollPageComponent
     this._config = Object.assign(this._config, v);
   }
 
+  private _playbackButtonVisibility: boolean;
+  public get playbackButtonVisibility(): boolean {
+    this._playbackButtonVisibility =
+      this.config.playbackButtonVisibility &&
+      this.playing &&
+      !this.playbackGallery.playing;
+    return this._playbackButtonVisibility;
+  }
+  public set playbackButtonVisibility(v: boolean) {
+    this._playbackButtonVisibility = v;
+  }
+
   @Output()
   OnNextGroupClicked: EventEmitter<Gallery> = new EventEmitter();
   @Output()
@@ -81,6 +104,8 @@ export class GalleryRollPageComponent
   OnGetPictureClicked: EventEmitter<GetPictureButtonArgs> = new EventEmitter();
   @Output()
   OnSizeChangeClicked: EventEmitter<boolean> = new EventEmitter();
+  @Output()
+  OnPlaybackClicked: EventEmitter<string> = new EventEmitter();
 
   // @ViewChild(HWSPlayerDirective)
   // player: HWSPlayerDirective;
@@ -118,6 +143,22 @@ export class GalleryRollPageComponent
   }
 
   async ngOnInit() {
+    if (this.PlaybackTrigger) {
+      this.PlaybackTrigger.subscribe((x: PlaybackGallery) => {
+        const params = new GetVodUrlParams();
+        params.CameraId = x.cameraId;
+        params.BeginTime = x.begin;
+        params.EndTime = x.end;
+        // params.Protocol = 'ws-ps';
+        // params.StreamType = config? parseInt(config):1;
+        this.videoService.videoUrl(params).then((response) => {
+          this.playbackGallery.playing = true;
+          this.createPlayer();
+          this.player.playVideo(response.WebUrl, response.Url);
+        });
+      });
+    }
+
     this.loadDatas(new ViewsModel());
     this.carousel.fn = () => {
       if (this.model && this.model.autoChangePage) this.nextImgGroup();
@@ -216,6 +257,8 @@ export class GalleryRollPageComponent
   }
 
   async playVideo(cameraId: string) {
+    this.playbackGallery.cameraId = cameraId;
+    this.playbackGallery.playing = false;
     if (this.config.playVideoToBig && !this.bigViewId) {
       this.bigView(cameraId).then(() => {
         this.playVideo(cameraId);
@@ -251,47 +294,51 @@ export class GalleryRollPageComponent
         response.Url,
         ""
       );
-      this.player = new HWSPlayer(this.sanitizer);
+      this.createPlayer();
       this.player.playVideo(videoOptions.webUrl, videoOptions.url);
-      setTimeout(() => {
-        this.player.iframe = this.iframe;
-        this.player.reSizeView(
-          this.playViewSize.width,
-          this.playViewSize.height
-        );
-        this.player.stopFn(() => {
-          this.playing = false;
-          // this.player.playViewSize=this.playViewSize;
-          this.btnControl("stop");
-          if (this.config.playVideoToBig) {
-            this.bigView();
-          }
-        });
-        this.fiveTimeVideo();
-        this.btnControl("play");
-      }, 500);
     });
+  }
+
+  createPlayer() {
+    this.player = new HWSPlayer(this.sanitizer);
+    setTimeout(() => {
+      this.player.iframe = this.iframe;
+      this.player.reSizeView(this.playViewSize.width, this.playViewSize.height);
+      this.player.stopFn(() => {
+        this.playbackGallery.cameraId = undefined;
+        this.playbackGallery.playing = false;
+        this.playing = false;
+        // this.player.playViewSize=this.playViewSize;
+        this.btnControl("stop");
+        if (this.config.playVideoToBig) {
+          this.bigView();
+        }
+      });
+      this.fiveTimeVideo();
+      this.btnControl("play");
+    }, 500);
   }
 
   get items() {
     return this.model.items.get(this.model.index);
   }
 
-  private _imgs: Array<any>;
-  set imgs(v: Array<any>) {
+  private _imgs: Array<GalleryImage>;
+  set imgs(v: Array<GalleryImage>) {
     this._imgs = v;
   }
   get imgs() {
     const val = this.model.items.get(this.model.index);
     if (val && val.imgDesc) {
       if (val.imgDesc.length > 4) {
-        this._imgs = ArrayPagination<any>(1, 9, val.imgDesc);
+        this._imgs = ArrayPagination<GalleryImage>(1, 9, val.imgDesc);
       } else {
-        this._imgs = ArrayPagination<any>(val.index, 4, val.imgDesc);
+        this._imgs = ArrayPagination<GalleryImage>(val.index, 4, val.imgDesc);
       }
     } else {
-      this._imgs = new Array();
+      this._imgs = new Array<GalleryImage>();
     }
+
     return this._imgs;
   }
 
@@ -353,7 +400,9 @@ export class GalleryRollPageComponent
       this.model.index += 1;
       if (this.model.index > this.model.items.size) this.model.index = 1;
       this.resetCarousel(this.carousel.time);
-      this.tagClick(null, false);
+      if (this.config.autoGetPicture) {
+        this.tagClick(null, false);
+      }
       if (this.player && this.player.playing) {
         this.player.stopVideo();
       }
@@ -369,7 +418,9 @@ export class GalleryRollPageComponent
       this.model.index -= 1;
       if (this.model.index <= 0) this.model.index = this.model.items.size;
       this.resetCarousel(this.carousel.time);
-      this.tagClick(null, false);
+      if (this.config.autoGetPicture) {
+        this.tagClick(null, false);
+      }
       if (this.player && this.player.playing) {
         this.player.stopVideo();
       }
@@ -404,9 +455,26 @@ export class GalleryRollPageComponent
   onIndexChanged(index: number) {
     this.bigViewId = "";
     this.resetCarousel(this.carousel.time);
-    this.tagClick(null, false);
+    if (this.config.autoGetPicture) {
+      this.tagClick(null, false);
+    }
     if (this.player && this.player.playing) {
       this.player.stopVideo();
+    }
+  }
+
+  playback() {
+    this.OnPlaybackClicked.emit(this.playbackGallery.cameraId);
+  }
+  preview() {
+    this.playVideo(this.playbackGallery.cameraId);
+  }
+  stop() {
+    if (this.player && this.player.playing) {
+      this.player.stopVideo();
+      if (this.player.stop) {
+        this.player.stop();
+      }
     }
   }
 }

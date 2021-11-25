@@ -27,6 +27,7 @@
         <hw-gallery-roll-page
           [model]="business.gallery.rollPage.Model"
           [config]="business.gallery.rollPage.Config"
+          [PlaybackTrigger]="business.gallery.rollPage.playbackTrigger"
           (OnNextGroupClicked)="
             business.gallery.rollPage.onNextGroupClicked($event)
           "
@@ -38,6 +39,9 @@
           "
           (OnSizeChangeClicked)="
             business.gallery.rollPage.onSizeChangeClicked($event)
+          "
+          (OnPlaybackClicked)="
+            business.gallery.rollPage.onPlaybackClicked($event)
           "
         ></hw-gallery-roll-page>
       </div>
@@ -216,13 +220,23 @@
   </ng-container>
 </app-window>
 
-<app-window [Model]="window.mobileChange" [Style]="window.mobileChange.styles">
-  <ng-container *ngIf="window.mobileChange.show">
+<app-window [Model]="window.mobile" [Style]="window.mobile.styles">
+  <ng-container *ngIf="window.mobile.show">
     <app-mobile-change
-      (OnBinded)="window.mobileChange.onBinded($event)"
-      (OnCancel)="window.mobileChange.onCancel($event)"
-      [Step]="window.mobileChange.step"
+      (OnBinded)="window.mobile.onBinded($event)"
+      (OnCancel)="window.mobile.onCancel($event)"
+      [Step]="window.mobile.step"
     >
     </app-mobile-change>
+  </ng-container>
+</app-window>
+
+<app-window [Model]="window.playback" [Style]="window.playback.styles">
+  <ng-container *ngIf="window.playback.show">
+    <app-playback-config
+      (OnOKClicked)="window.playback.ok($event)"
+      (OnCancelClicked)="window.playback.cancel($event)"
+    >
+    </app-playback-config>
   </ng-container>
 </app-window>

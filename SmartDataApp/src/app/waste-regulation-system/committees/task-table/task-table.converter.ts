@@ -36,13 +36,14 @@ export class TaskTableConverter
     vm.Id = record.EventId;
     vm.Index = index;
 
-    let current = record.Data.HandleTime
+    let current = record.Data.IsHandle
       ? new Date(record.Data.HandleTime)
       : new Date();
     let drop = new Date(record.Data.DropTime);
     let interval_time = current.getTime() - drop.getTime();
-
-    vm.Interval = Language.Time(interval_time / 1000 / 60);
+    let interval = new Date(interval_time);
+    interval.setHours(interval.getTimezoneOffset());
+    vm.Interval = Language.Time(interval);
     vm.Time = datePipe.transform(record.Data.DropTime, "HH:mm");
     vm.State = record.EventType;
     vm.StateLanguage = Language.GarbageDropEventType(record.EventType);

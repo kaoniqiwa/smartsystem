@@ -83,9 +83,11 @@ export class Language {
       case EventType.GarbageDrop:
         return "待处置";
       case EventType.GarbageDropTimeout:
-        return "超时处置";
+        return "超时待处置";
       case EventType.GarbageDropHandle:
         return "已处置";
+      case EventType.GarbageDropTimeoutHandle:
+        return "超时处置";
       default:
         return "";
     }
