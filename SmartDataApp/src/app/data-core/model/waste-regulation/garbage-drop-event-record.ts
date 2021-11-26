@@ -8,8 +8,15 @@ export class GarbageDropEventRecord extends EventRecord {
   Data!: GarbageDropEventData;
 }
 
+export interface GarbageDropEventStatus {
+  /**	Boolean	是否已处置	O */
+  IsHandle?: boolean;
+  /**	Boolean	是否已滞留	O */
+  IsTimeout?: boolean;
+}
+
 // export class GarbageFullEventData {
-export class GarbageDropEventData {
+export class GarbageDropEventData implements GarbageDropEventStatus {
   StationId!: string; //	垃圾房ID
   StationName!: string; //	垃圾房名称
   DivisionId?: string; //区划ID
@@ -47,7 +54,9 @@ export class GarbageDropEventData {
 }
 
 // export class GetGarbageDropEventRecordsParams {
-export class GetGarbageDropEventRecordsParams {
+export class GetGarbageDropEventRecordsParams
+  implements GarbageDropEventStatus
+{
   /**	Int32	页码[1-n]	O */
   PageIndex?: number;
   /**	Int32	分页大小[1-100]	O */
@@ -76,6 +85,7 @@ export class GetGarbageDropEventRecordsParams {
   GridCellIds?: string[];
   /**	String	网格名称，支持LIKE	O */
   GridCellName?: string;
+
   /**	Boolean	是否已处置	O */
   IsHandle?: boolean;
   /**	Boolean	是否已滞留	O */

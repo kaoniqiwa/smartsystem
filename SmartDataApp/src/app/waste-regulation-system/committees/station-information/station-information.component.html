@@ -13,16 +13,6 @@
       <div class="title">电话：</div>
       <div>{{ DefaultMember ? DefaultMember.MobileNo : "" }}</div>
     </div>
-    <ng-container *ngFor="let item of Members">
-      <div>
-        <div class="title">管理员：</div>
-        <div>{{ item ? item.Name : "" }}</div>
-      </div>
-      <div>
-        <div class="title">电话：</div>
-        <div>{{ item ? item.MobileNo : "" }}</div>
-      </div>
-    </ng-container>
     <div class="address">
       <div class="title">地址：</div>
       <div>{{ Station ? Station.Address : "" }}</div>

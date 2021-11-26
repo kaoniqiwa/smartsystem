@@ -1,4 +1,5 @@
 import { Transform } from "class-transformer";
+import { EventType, ResourceType } from "../enum";
 import { transformDate } from "../transformer";
 
 /**事件记录接口 */
@@ -30,7 +31,7 @@ export class EventRecord extends IEventRecord {
   @Transform(transformDate)
   EventTime: Date;
   /**事件类型 */
-  EventType: number;
+  EventType: EventType;
   /**事件描述信息(可选) */
   EventDescription: string;
   /**资源ID(可选) */
@@ -41,7 +42,7 @@ export class EventRecord extends IEventRecord {
    * EncodeDevice：编码设备
    * IoTSensor：物联网传感器
    */
-  ResourceType: string;
+  ResourceType: ResourceType;
   /**资源名称(可选) */
   ResourceName: string;
   /**图片ID、图片地址(可选) */

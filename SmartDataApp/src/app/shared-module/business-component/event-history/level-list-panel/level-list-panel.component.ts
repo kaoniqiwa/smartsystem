@@ -48,7 +48,6 @@ export class LevelListPanelComponent implements OnInit {
   }
 
   defaultItem(id: string) {
-    debugger;
     const node = this.model.listNodes.find((x) => x.id == id);
     this.itemClick(node);
   }

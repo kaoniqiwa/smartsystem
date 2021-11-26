@@ -34,15 +34,10 @@ export class CommitteesHistoryTableConverter
       IllegalDropEventRecord | MixedIntoEventRecord
     >();
     vm.Data = input;
-    if (input instanceof IllegalDropEventRecord) {
-      vm.Id = input.EventId;
-      vm.StationName = input.Data.StationName;
-      vm.Time = datePipe.transform(input.EventTime, "HH:mm");
-    } else if (input instanceof MixedIntoEventRecord) {
-      vm.Id = input.EventId;
-      vm.Time = datePipe.transform(input.EventTime, "HH:mm");
-    } else {
-    }
+    vm.Id = input.EventId;
+
+    vm.StationName = input.Data.StationName;
+    vm.Time = datePipe.transform(input.EventTime, "HH:mm");
     return vm;
   }
 }

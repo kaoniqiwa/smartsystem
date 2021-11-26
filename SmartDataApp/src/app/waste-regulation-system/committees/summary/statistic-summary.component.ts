@@ -161,7 +161,6 @@ export class StatisticSummaryComponent
         .then((x) => {
           this.divisionHistory = x;
         });
-      console.log("aaa");
       this.service
         .divisions(this.Committees.Id, day, this.unit)
         .then(async (x) => {

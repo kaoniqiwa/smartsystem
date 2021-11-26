@@ -42,7 +42,7 @@ export class TaskTableConverter
     let drop = new Date(record.Data.DropTime);
     let interval_time = current.getTime() - drop.getTime();
     let interval = new Date(interval_time);
-    interval.setHours(interval.getTimezoneOffset());
+    interval.setHours(interval.getHours() + interval.getTimezoneOffset() / 60);
     vm.Interval = Language.Time(interval);
     vm.Time = datePipe.transform(record.Data.DropTime, "HH:mm");
     vm.State = record.EventType;

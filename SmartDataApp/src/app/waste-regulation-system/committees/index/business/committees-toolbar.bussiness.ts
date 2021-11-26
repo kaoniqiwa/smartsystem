@@ -62,7 +62,7 @@ export class CommitteesToolbarBussiness {
     if (!user.MobileNo) {
       this.notify = new CommitteesToolbarNotifyViewModel();
       this.notify.status = NotifyStatus.remind;
-      this.notify.text = "提示：请绑定您的手机号码 点击这里绑定";
+      this.notify.text = "提示：您还未绑定手机号码 点击这里绑定";
       this.notify.onClick = () => {
         this.window.mobile.show = true;
       };

@@ -113,6 +113,7 @@ export class StatisticSummaryIllegalDropChartComponent
         const serie = this.option.series[i];
         serie.data = viewModel.data;
         serie.label.formatter = (params) => {
+          console.log(params);
           if (params.value === max) {
             return params.value;
           }
