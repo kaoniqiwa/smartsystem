@@ -7,7 +7,10 @@ import {
   EventEmitter,
 } from "@angular/core";
 import { CustomTableComponent } from "../../../custom-table/custom-table.component";
-import { EventTableService, FillMode } from "./business/event-table.service";
+import {
+  EventTableService,
+  GarbageFullEventHistoryFillMode,
+} from "./business/event-table.service";
 import { PageListMode } from "../../../../common/tool/enum-helper";
 import { ImageDesc } from "../../../image-desc-card/image-desc";
 import { Router } from "@angular/router";
@@ -41,7 +44,7 @@ export class GarbageFullHistoryComponent implements OnInit {
   @ViewChild(LevelListPanelComponent)
   levelListPanel: LevelListPanelComponent;
 
-  @Input() fillMode: FillMode;
+  @Input() fillMode: GarbageFullEventHistoryFillMode;
 
   /**
    * 用于页面 判断
@@ -121,7 +124,7 @@ export class GarbageFullHistoryComponent implements OnInit {
     if (this.isPage) {
       this.tableMinusHeight = "calc(100% - 20px)";
       this.tableSearchHeight = "calc(100% - 64px)";
-      this.tableService.fillMode = new FillMode();
+      this.tableService.fillMode = new GarbageFullEventHistoryFillMode();
       this.tableService.fillMode.divisionId = GlobalStoreService.divisionId;
 
       this.tableService.search.divisionId = GlobalStoreService.divisionId;

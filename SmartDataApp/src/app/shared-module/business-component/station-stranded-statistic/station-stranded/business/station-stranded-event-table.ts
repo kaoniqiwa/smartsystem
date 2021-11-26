@@ -102,7 +102,7 @@ export class EventTable extends BusinessTable implements IConverter {
       tooltipTd = new TooltipTd("8%", "人员");
     var tds: GalleryTdAttr[] = new Array();
     tooltipTd.listMap = new Map<string, Array<{ icon: string; tip: string }>>();
-    if (input instanceof GarbageDropEventsRecord)
+    if (input instanceof GarbageDropEventsRecordViewModel)
       for (const item of input.items) {
         let station = this.findStationFn(item.Id);
         if (station) {
@@ -190,7 +190,7 @@ export class EventTable extends BusinessTable implements IConverter {
   }
 }
 
-export class GarbageDropEventsRecord implements IBusinessData {
+export class GarbageDropEventsRecordViewModel implements IBusinessData {
   items: Array<GarbageStationNumberStatistic>;
 }
 

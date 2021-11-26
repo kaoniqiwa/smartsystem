@@ -70,7 +70,7 @@ export class EventTableService extends ListAttribute {
   resources = new Array<Camera>();
   divisionListView = new DivisionListView();
   playVideo: PlayVideo;
-  fillMode: FillMode;
+  fillMode: IllegalDropEventHistoryFillMode;
   constructor(
     private eventRequestService: IllegalDropEventRequestService,
     private divisionService: DivisionRequestService,
@@ -327,7 +327,7 @@ export class EventTableService extends ListAttribute {
   }
 }
 
-export class FillMode {
+export class IllegalDropEventHistoryFillMode {
   divisionId: string = "";
   tablePageSize: number = 9;
   cardPageSize: number = 15;

@@ -184,8 +184,14 @@ export class EventTable extends BusinessTable implements IConverter {
     //   : event.Data.IsTimeout
     //   ? "超时待处置"
     //   : "待处置";
-    let inner = Language.GarbageDropEventType(event.EventType);
-    let className = Language.GarbageDropEventTypeClassName(event.EventType);
+    let inner = Language.GarbageDropEventType(
+      event.EventType,
+      event.Data.IsTimeout
+    );
+    let className = Language.GarbageDropEventTypeClassName(
+      event.EventType,
+      event.Data.IsTimeout
+    );
     tableField.timeOut = new ClassNameString(className, inner);
 
     //`<span class="${className}">${inner}</span>`;
@@ -205,7 +211,7 @@ export class EventTable extends BusinessTable implements IConverter {
     let timer_time = handleTime.getTime() - event.Data.DropTime.getTime();
 
     let timer = new Date(timer_time);
-    timer.setHours(timer.getTimezoneOffset());
+    timer.setHours(timer.getHours() + timer.getTimezoneOffset() / 60);
 
     tableField.dropTimer = this.datePipe.transform(timer, "HH:mm:ss");
 

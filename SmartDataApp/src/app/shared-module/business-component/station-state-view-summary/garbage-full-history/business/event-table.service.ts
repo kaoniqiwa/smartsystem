@@ -68,7 +68,7 @@ export class EventTableService extends ListAttribute {
   resources = new Array<Camera>();
   divisionListView = new DivisionListView();
   playVideo: PlayVideo;
-  fillMode: FillMode;
+  fillMode: GarbageFullEventHistoryFillMode;
   videoFilesFn: (id: string) => void;
   videoFileFn: (id: string) => void;
   playVideoToUrlFn: (
@@ -454,7 +454,7 @@ export class EventTableService extends ListAttribute {
   }
 }
 
-export class FillMode {
+export class GarbageFullEventHistoryFillMode {
   divisionId: string = "";
   tablePageSize: number = 10;
   cardPageSize: number = 15;

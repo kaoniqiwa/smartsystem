@@ -78,14 +78,18 @@ export class Language {
     }
   }
 
-  static GarbageDropEventType(type: EventType) {
+  static GarbageDropEventType(type: EventType, isTimeout?: boolean) {
     switch (type) {
       case EventType.GarbageDrop:
         return "待处置";
       case EventType.GarbageDropTimeout:
         return "超时待处置";
       case EventType.GarbageDropHandle:
-        return "已处置";
+        if (isTimeout) {
+          return "超时处置";
+        } else {
+          return "已处置";
+        }
       case EventType.GarbageDropTimeoutHandle:
         return "超时处置";
       default:
@@ -93,14 +97,19 @@ export class Language {
     }
   }
 
-  static GarbageDropEventTypeClassName(type: EventType) {
+  static GarbageDropEventTypeClassName(type: EventType, isTimeout?: boolean) {
     switch (type) {
       case EventType.GarbageDrop:
         return "orange-text";
       case EventType.GarbageDropTimeout:
         return "powder-red-text";
       case EventType.GarbageDropHandle:
-        return "green-text";
+        if (isTimeout) {
+          return "sky-blue-text2";
+        } else {
+          return "green-text";
+        }
+
       default:
         return "";
     }

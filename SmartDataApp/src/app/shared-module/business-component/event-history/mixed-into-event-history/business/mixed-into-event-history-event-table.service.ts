@@ -1,6 +1,9 @@
 import { Injectable } from "@angular/core";
-import { CustomTableEvent } from "../../../../../shared-module/custom-table/custom-table-event";
-import { EventTable, MixedIntoEventsRecord } from "./event-table";
+import { CustomTableEvent } from "../../../../custom-table/custom-table-event";
+import {
+  EventTable,
+  MixedIntoEventsRecord,
+} from "./mixed-into-event-history-event-table";
 import { SearchControl } from "../../search";
 import "../../../../../common/string/hw-string";
 import {
@@ -71,7 +74,7 @@ export class EventTableService extends ListAttribute {
     name: string;
     time: Date | string;
   }>;
-  fillMode: FillMode;
+  fillMode: MixedInfoEventHistoryFillMode;
   /**视频下载列表 */
   videoDownLoad: VideoDownLoadInfo[];
   playVideoToUrlFn: (
@@ -396,7 +399,7 @@ export class EventTableService extends ListAttribute {
   }
 }
 
-export class FillMode {
+export class MixedInfoEventHistoryFillMode {
   divisionId: string = "";
   tablePageSize: number = 9;
   cardPageSize: number = 15;

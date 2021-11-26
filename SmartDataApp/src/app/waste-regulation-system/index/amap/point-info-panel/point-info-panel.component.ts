@@ -64,17 +64,6 @@ export class PointInfoPanelComponent implements OnInit {
   }
 
   ngOnInit() {}
-  private _division = 0;
-  get division() {
-    // this.divisionService.get(this.GarbageStation.DivisionId).toPromise().then(res=>{
-    //     console.log(res)
-    // })
-    console.log(++this._division);
-    return this._division;
-  }
-  set division(val) {
-    this._division = val;
-  }
 
   onGarbageStationChanged(station: GarbageStation) {
     this.state.language = Language.StationStateFlags(station.StationStateFlags);

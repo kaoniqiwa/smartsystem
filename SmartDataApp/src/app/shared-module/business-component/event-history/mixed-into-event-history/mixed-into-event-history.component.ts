@@ -8,7 +8,10 @@ import {
   OnDestroy,
 } from "@angular/core";
 import { CustomTableComponent } from "../../../../shared-module/custom-table/custom-table.component";
-import { EventTableService, FillMode } from "./business/event-table.service";
+import {
+  EventTableService,
+  MixedInfoEventHistoryFillMode,
+} from "./business/mixed-into-event-history-event-table.service";
 import { PageListMode } from "../../../../common/tool/enum-helper";
 import { ImageDesc } from "../../../image-desc-card/image-desc";
 import { Camera } from "../../../../data-core/model/waste-regulation/camera";
@@ -39,7 +42,7 @@ export class MixedIntoEventHistoryComponent implements OnInit, OnDestroy {
   @ViewChild(LevelListPanelComponent)
   levelListPanel: LevelListPanelComponent;
 
-  @Input() fillMode: FillMode;
+  @Input() fillMode: MixedInfoEventHistoryFillMode;
   @Output() OtherViewEvent = new EventEmitter<OtherViewEnum>();
   startDate = (b: Date) => {
     this.tableService.search.formBeginDate = b;
@@ -97,15 +100,13 @@ export class MixedIntoEventHistoryComponent implements OnInit, OnDestroy {
   setSearchDivision() {
     if (this.fillMode) {
       const division = this.tableService.divisions.find(
-        (d) => d.Id == this.fillMode.divisionId
+        (d) => d.Id == GlobalStoreService.divisionId
       );
+
       if (division && division.DivisionType == DivisionType.City) {
         const children = this.tableService.divisions.filter(
           (f) => f.ParentId == division.Id
         );
-        if (children.length > 0) {
-          this.tableService.search.divisionId = children[0].Id;
-        }
       } else if (
         this.businessManageService.viewDivisionType ==
           ViewDivisionTypeEnum.TableLinkChild &&
@@ -116,7 +117,9 @@ export class MixedIntoEventHistoryComponent implements OnInit, OnDestroy {
         );
         if (station) this.tableService.search.divisionId = station.DivisionId;
       } else this.tableService.search.divisionId = this.fillMode.divisionId;
-    } else this.tableService.search.divisionId = "";
+    } else {
+      this.tableService.search.divisionId = "";
+    }
   }
 
   async ngOnInit() {

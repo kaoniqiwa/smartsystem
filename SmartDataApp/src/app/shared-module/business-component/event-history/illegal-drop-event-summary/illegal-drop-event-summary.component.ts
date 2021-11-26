@@ -30,7 +30,6 @@ export class IllegalDropEventSummaryComponent implements OnInit {
   @Input()
   public set GarbageStation(v: GarbageStation | undefined) {
     this._GarbageStation = v;
-    console.log("IllegalDropEventSummaryComponent", v);
   }
 
   viewsShow = [false, false, false, false, false];

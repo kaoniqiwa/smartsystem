@@ -42,7 +42,7 @@ export class EventTableService {
   eventCards = new EventCards(this.datePipe);
   galleryTargetView = new GalleryTargetView(this.datePipe);
   playVideo: PlayVideo;
-  fillMode: FillMode;
+  fillMode: AIModeEventHistoryFillMode;
   camerasAIModel: CameraAIModel[] = new Array();
   videoService: HWVideoService;
   constructor(
@@ -51,7 +51,7 @@ export class EventTableService {
     private aiModelRequestService: AIModelRequestService,
     private datePipe: DatePipe
   ) {
-    this.fillMode = new FillMode();
+    this.fillMode = new AIModeEventHistoryFillMode();
     this.eventTable.scrollPageFn = (event: CustomTableEvent) => {
       this.requestData(event.data as any);
     };
@@ -206,7 +206,7 @@ export class EventTableService {
   }
 }
 
-export class FillMode {
+export class AIModeEventHistoryFillMode {
   divisionId: string = "";
   tablePageSize: number = 9;
   cardPageSize: number = 15;

@@ -96,7 +96,12 @@ export class CameraRegionMoveComponent implements OnInit {
     const nodes = this.tableService.regionTree.allLastChilds(
       this.treeDataSource
     );
-    for (const n of nodes) if (n.id == this.selectedNode.id) is = true;
+    for (const n of nodes) {
+      if (n.id == this.selectedNode.id) {
+        is = true;
+        break;
+      }
+    }
     return is;
   }
 }

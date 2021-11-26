@@ -10,7 +10,7 @@ import {
 import { CustomTableComponent } from "../../../../shared-module/custom-table/custom-table.component";
 import {
   EventTableService,
-  FillMode,
+  IllegalDropEventHistoryFillMode,
 } from "./business/illegal-drop-event-table.service";
 import { PageListMode } from "../../../../common/tool/enum-helper";
 import { ImageDesc } from "../../../image-desc-card/image-desc";
@@ -49,7 +49,7 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
   @ViewChild(LevelListPanelComponent)
   levelListPanel: LevelListPanelComponent;
 
-  @Input() fillMode: FillMode;
+  @Input() fillMode: IllegalDropEventHistoryFillMode;
 
   /**
    * 用于页面 判断
@@ -177,7 +177,7 @@ export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
     if (this.isPage) {
       this.tableMinusHeight = "calc(100% - 20px)";
       this.tableSearchHeight = "calc(100% - 64px)";
-      this.tableService.fillMode = new FillMode();
+      this.tableService.fillMode = new IllegalDropEventHistoryFillMode();
       this.tableService.fillMode.divisionId = GlobalStoreService.divisionId;
 
       this.tableService.search.divisionId = GlobalStoreService.divisionId;

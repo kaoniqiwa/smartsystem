@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
 import { Page } from "../../../../../data-core/model/page";
 import { GarbageStationRequestService } from "../../../../../data-core/repuest/garbage-station.service";
-import { SearchControl } from "./search";
+import { SearchControl } from "./station-stranded.search";
 import { PlayVideo } from "../../../../../aiop-system/common/play-video";
 import { GalleryTargetViewI } from "../../../station-state-view-summary/full-garbage-station/business/gallery-target";
 import { TheDayTime } from "../../../../../common/tool/tool.service";
@@ -14,7 +14,10 @@ import { GarbageDropEventRecord } from "../../../../../data-core/model/waste-reg
 import { ImageEventEnum } from "../../../../gallery-target/gallery-target";
 import { ListAttribute } from "../../../../../common/tool/table-form-helper";
 import { GetGarbageDropEventRecordsParams } from "../../../../../data-core/model/waste-regulation/garbage-drop-event-record";
-import { EventTable, GarbageDropEventsRecord } from "./event-table";
+import {
+  EventTable,
+  GarbageDropEventsRecordViewModel,
+} from "./station-stranded-event-table";
 import { HWCameraImageUrl } from "../../../camera-img-url";
 import { tooltip } from "../../../../../common/tool/jquery-help/jquery-help";
 import {
@@ -28,19 +31,16 @@ export class StationStrandedBusinessService {
 
   cameras = new Array<Camera>();
   stations = new Array<GarbageStation>();
-  dataSource_ = new Array<GarbageStationNumberStatistic>();
+  dataSource = new Array<GarbageStationNumberStatistic>();
 
   divisions = new Array<Division>();
   divisionsId = "";
 
   search = new SearchControl();
-  set dataSource(items: Array<GarbageStationNumberStatistic>) {
-    for (const x of items) this.dataSource_.push(x);
+  appendDataSource(items: Array<GarbageStationNumberStatistic>) {
+    for (const x of items) this.dataSource.push(x);
   }
 
-  get dataSource() {
-    return this.dataSource_;
-  }
   table = new EventTable(this.datePipe);
 
   //playVideoFn = async (id: string) => {
@@ -140,13 +140,15 @@ export class StationStrandedBusinessService {
     }
     const response =
       await this.garbageStationRequestService.statisticNumberList(params);
-    const data = new GarbageDropEventsRecord();
+    console.log(params);
+    console.log(response);
+    const data = new GarbageDropEventsRecordViewModel();
     data.items = response.Data;
     this.table.clearItems();
     this.dataSource = [];
     this.table.Convert(data, this.table.dataSource);
     this.table.totalCount = response.Page.TotalRecordCount;
-    this.dataSource = response.Data;
+    this.appendDataSource(response.Data);
     if (callBack) callBack(response.Page);
     setTimeout(() => {
       tooltip();

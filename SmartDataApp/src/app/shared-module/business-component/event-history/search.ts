@@ -33,7 +33,7 @@ export class SearchControl extends SearchHelper {
       },
       {
         id: EventType.GarbageDropHandle,
-        name: Language.GarbageDropEventType(EventType.GarbageDropHandle),
+        name: Language.GarbageDropEventType(EventType.GarbageDropHandle, false),
       },
       {
         id: EventType.GarbageDropTimeout,
@@ -41,7 +41,10 @@ export class SearchControl extends SearchHelper {
       },
       {
         id: EventType.GarbageDropTimeoutHandle,
-        name: Language.GarbageDropEventType(EventType.GarbageDropTimeoutHandle),
+        name: Language.GarbageDropEventType(
+          EventType.GarbageDropTimeoutHandle,
+          true
+        ),
       },
     ];
   }

@@ -46,7 +46,10 @@ export class TaskTableConverter
     vm.Interval = Language.Time(interval);
     vm.Time = datePipe.transform(record.Data.DropTime, "HH:mm");
     vm.State = record.EventType;
-    vm.StateLanguage = Language.GarbageDropEventType(record.EventType);
+    vm.StateLanguage = Language.GarbageDropEventType(
+      record.EventType,
+      record.Data.IsTimeout
+    );
     return vm;
   }
 }

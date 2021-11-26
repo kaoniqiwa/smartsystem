@@ -102,7 +102,7 @@ export class StationStrandedComponent implements OnInit {
 
   async ngOnInit() {
     //  this.businessService.divisionsId=this.divisionId;
-
+    debugger;
     this.businessService.cameras =
       await this.garbageStationCameraDao.garbageStationCameras();
     this.businessService.stations =
