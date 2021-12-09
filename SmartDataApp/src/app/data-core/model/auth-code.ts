@@ -1,5 +1,5 @@
 import { Transform } from "class-transformer";
-import { transformDate } from "./transformer";
+import { transformDateTime } from "./transformer";
 
 export class AuthCode {
   /**	String	手机号码	M */
@@ -9,10 +9,10 @@ export class AuthCode {
   /**	String	协议类型(短信运营商) 默认：aliyun	O */
   ProtocolType?: string;
   /**	DateTime	创建时间	M */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   CreateTime!: Date;
   /**	DateTime	过期时间	M */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   ExpirationTime!: Date;
   /**	String	回执ID	O */
   BizId?: string;

@@ -67,7 +67,7 @@ export class EventTable extends BusinessTable implements IConverter {
         tdInnerAttrName: TableHeader.station,
       }),
       // new TableAttr({
-      //   HeadTitleName: "街道",
+      //   HeadTitleName: Language.json.DivisionType.County,
       //   tdWidth: "10%",
       //   tdInnerAttrName: "county",
       // }),
@@ -102,7 +102,7 @@ export class EventTable extends BusinessTable implements IConverter {
         tdInnerAttrName: TableHeader.processorName,
       }),
       new TableAttr({
-        HeadTitleName: "已发送",
+        HeadTitleName: Language.json.did + "发送",
         tdWidth: "7%",
         tdInnerAttrName: TableHeader.isSend,
         align: true,
@@ -180,7 +180,7 @@ export class EventTable extends BusinessTable implements IConverter {
     // tableField.timeOut = event.Data.IsHandle
     //   ? event.Data.IsTimeout
     //     ? "超时处置"
-    //     : "已处置"
+    //     : Language.json.did + Language.json.handle
     //   : event.Data.IsTimeout
     //   ? "超时待处置"
     //   : "待处置";

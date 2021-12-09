@@ -1,5 +1,6 @@
 import { ViewsModel } from "src/app/common/abstract/base-view";
 import { IConverter } from "src/app/common/interface/IConverter";
+import { Language } from "src/app/common/tool/language";
 import { Percentage } from "src/app/common/tool/tool.service";
 import { OnlineStatus } from "src/app/data-core/model/enum";
 import { ColorEnum } from "src/app/shared-module/card-component/card-content-factory";
@@ -47,30 +48,30 @@ export class DevStatusCardConverter implements IConverter {
       output.views[0].arc = arcVal(percent);
       output.views[0].stateLabel = {
         subTitle: "系统设备在线比",
-        scaleNumber: percent + "",
+        scaleNumber: percent.toString(),
         state: level(percent),
         color: StateColorEnum[level(percent)],
       };
       output.views[0].detail.push({
         label: "全部设备数量",
-        number: input.cameraNumber + "",
+        number: input.cameraNumber.toString(),
         color: ColorEnum["sky-blue-text2"],
         tag: undefined,
-        linkTipLabel: "查看全部设备信息",
+        linkTipLabel: Language.json.see + "全部设备信息",
       });
       output.views[0].detail.push({
         label: "在线设备数量",
-        number: input.cameraNumber - input.offlineCameraNumber + "",
+        number: (input.cameraNumber - input.offlineCameraNumber).toString(),
         color: ColorEnum["green-text"],
         tag: OnlineStatus.Online,
-        linkTipLabel: "查看在线设备信息",
+        linkTipLabel: Language.json.see + "在线设备信息",
       });
       output.views[0].detail.push({
         label: "离线设备数量",
-        number: input.offlineCameraNumber + "",
+        number: input.offlineCameraNumber.toString(),
         color: ColorEnum["powder-red-text"],
         tag: OnlineStatus.Offline,
-        linkTipLabel: "查看离线设备信息",
+        linkTipLabel: Language.json.see + "离线设备信息",
       });
     }
     return output;

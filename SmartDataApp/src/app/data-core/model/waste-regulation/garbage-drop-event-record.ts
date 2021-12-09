@@ -1,5 +1,5 @@
 import { Transform, Type } from "class-transformer";
-import { transformDate } from "../transformer";
+import { transformDateTime } from "../transformer";
 import { EventRecord, CameraImageUrl } from "./event-record";
 import "reflect-metadata";
 export class GarbageDropEventRecord extends EventRecord {
@@ -23,9 +23,9 @@ export class GarbageDropEventData implements GarbageDropEventStatus {
   DivisionName?: string; //区划名称
   GridCellId?: string; //	网格单元ID
   GridCellName?: string; //	网格单元名称
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   DropTime!: Date; //落地时间
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   HandleTime?: Date; //处置时间
   IsHandle!: boolean; //小包垃圾落地是否已处置
   IsTimeout!: boolean; //是否超时
@@ -41,7 +41,7 @@ export class GarbageDropEventData implements GarbageDropEventStatus {
   /**	String	手机号码	O */
   ProcessorMobileNo?: string;
   /**	DateTime	处置时间	O */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   ProcessTime?: Date;
   /**	String	处置描述	O */
   ProcessDescription?: string;
@@ -62,10 +62,10 @@ export class GetGarbageDropEventRecordsParams
   /**	Int32	分页大小[1-100]	O */
   PageSize?: number;
   /**	DateTime	开始时间	M */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   BeginTime!: Date;
   /**	DateTime	结束时间	M */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   EndTime!: Date;
   /**	String[]	所属区划ID列表	O */
   DivisionIds?: string[];

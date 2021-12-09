@@ -30,7 +30,7 @@ import {
 } from "../../../../data-core/model/waste-regulation/garbage-station";
 import { IllegalDropEventRequestService } from "../../../../data-core/repuest/Illegal-drop-event-record";
 import { GetEventRecordsParams } from "../../../../data-core/model/waste-regulation/illegal-drop-event-record";
-import { DivisionType } from "src/app/data-core/model/enum";
+import { DivisionType, TimeUnit } from "src/app/data-core/model/enum";
 
 @Injectable({
   providedIn: "root",
@@ -170,9 +170,9 @@ export class StatisticalDataBufferService
   async stationNumberStatistic(stationIds: Array<string>) {
     const param = new GetGarbageStationStatisticNumbersParamsV2(),
       day = TheDayTime(new Date());
-    param.TimeUnit = 2;
-    param.BeginTime = day.begin.toISOString();
-    param.EndTime = day.end.toISOString();
+    param.TimeUnit = TimeUnit.Day;
+    param.BeginTime = day.begin;
+    param.EndTime = day.end;
     param.GarbageStationIds = stationIds;
     return this.garbageStationService.statisticNumberListV2(param);
   }

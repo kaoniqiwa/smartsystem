@@ -1,3 +1,4 @@
+import { Language } from "src/app/common/tool/language";
 import { SystemModeEnum } from "../../../common/tool/table-form-helper";
 export class MenuTree {
   icon: string;
@@ -53,7 +54,7 @@ export class MenuTreeMap {
       url: "/aiop/ai-models/ai-models-mgr",
     });
     menuTree.push(item);
-    item = new MenuTree("howell-icon-device2", "事件");
+    item = new MenuTree("howell-icon-device2", Language.json.event);
     item.nodes.push({
       text: "AI摄像机事件",
       url: "/aiop/event-history/ai-model-event",
@@ -98,10 +99,10 @@ export class MenuTreeMap {
     this.map.set(SystemModeEnum.supervision, menuTree);
 
     menuTree = new Array<MenuTree>();
-    item = new MenuTree("howell-icon-device2", "事件");
+    item = new MenuTree("howell-icon-device2", Language.json.event);
     item.an = true;
     item.nodes.push({
-      text: "乱丢垃圾",
+      text: Language.json.EventType.IllegalDrop,
       url: "/aiop/event-history/illegal-drop-event",
     });
     menuTree.push(item);

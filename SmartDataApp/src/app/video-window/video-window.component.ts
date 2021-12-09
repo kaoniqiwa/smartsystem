@@ -6,19 +6,14 @@ import {
   EventEmitter,
   OnDestroy,
   ViewChild,
+  ElementRef,
 } from "@angular/core";
 import { VideoPlayArgs } from "../video/mode";
 import { DatePipe } from "@angular/common";
-import { UserDalService } from "../dal/user/user-dal.service";
+import { UserConfigType, UserDalService } from "../dal/user/user-dal.service";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 
 declare var $: any;
-export const ConfigType = {
-  Map: 1,
-  MapStatisticVideo: 2,
-  MapStatisticLayout: 3,
-  GisMapVideoLive: 4,
-};
 
 @Component({
   selector: "app-video-window",
@@ -26,6 +21,9 @@ export const ConfigType = {
   styleUrls: ["./video-window.component.css"],
 })
 export class VideoWindowComponent implements OnInit, OnDestroy {
+  @ViewChild("iframe")
+  iframe: ElementRef;
+
   @Input() videoPlayArgs?: VideoPlayArgs;
   @Input() playMode: PlayModeEnum;
   @Input() cameraId = ""; // 00310101031111111000003001000003
@@ -82,7 +80,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     const saveDB = async (userId) => {
       const fault = await this.userDalService.editUserConfig(
         userId,
-        ConfigType.GisMapVideoLive.toString(),
+        UserConfigType.GisMapVideoLive,
         hd.toString()
       );
       if (fault && fault.FaultCode === 0) {
@@ -99,6 +97,19 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
   get player(): WSPlayerProxy {
     if (!this._player) {
       this._player = new WSPlayerProxy(this.divId);
+      this._player.onButtonClicked = (name) => {
+        console.log(name);
+      };
+      this._player.onPlaying = () => {
+        setTimeout(() => {
+          if (this._ruleState !== undefined) {
+            this._player.changeRuleState(this._ruleState);
+          }
+        }, 1000);
+      };
+      this._player.onRuleStateChanged = (state: boolean) => {
+        this.saveRuleState(state);
+      };
     }
     return this._player;
   }
@@ -114,13 +125,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
   date: string;
 
   private _devId = "";
-  get divId() {
-    return this._devId;
-  }
-  set divId(val: string) {
-    this._devId = val;
-    this._player = new WSPlayerProxy(this._devId);
-  }
+  divId = "div" + this.guid;
 
   screenId = "";
 
@@ -273,7 +278,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     try {
       const strStream = await this.userDalService.getUserConfig(
         this.userId,
-        ConfigType.GisMapVideoLive.toString()
+        UserConfigType.GisMapVideoLive
       );
       if (strStream) {
         this._stream = parseInt(strStream);
@@ -281,6 +286,34 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     } catch (ex) {
       console.log("getStream error");
     }
+  }
+
+  _ruleState: boolean;
+  async loadRuleState() {
+    try {
+      const strRule = await this.userDalService.getUserConfig(
+        this.userId,
+        UserConfigType.VideoRuleState
+      );
+      if (strRule) {
+        this._ruleState = JSON.parse(strRule);
+      }
+    } catch (ex) {
+      console.log("getRuleState error");
+    }
+  }
+  saveRuleState(state: boolean) {
+    const saveDB = async (userId) => {
+      const fault = await this.userDalService.editUserConfig(
+        userId,
+        UserConfigType.VideoRuleState,
+        state.toString()
+      );
+      if (fault && fault.FaultCode === 0) {
+        this._ruleState = state;
+      }
+    };
+    saveDB(this.userId);
   }
 
   initTime() {
@@ -294,6 +327,7 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
     const me = this;
 
     this.getStream();
+    this.loadRuleState();
 
     document.addEventListener("fullscreenchange", () => {
       const ele = document.getElementById("videoWindowView");
@@ -359,7 +393,6 @@ export class VideoWindowComponent implements OnInit, OnDestroy {
 
   playVideo() {
     const me = this;
-    me.divId = "div" + me.guid;
     me.screenId = "screen" + me.guid;
 
     if (me.videoPlayArgs) {

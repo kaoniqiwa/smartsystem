@@ -1,5 +1,6 @@
 import { DatePipe } from "@angular/common";
 import { FormGroup, FormControl } from "@angular/forms";
+import { Language } from "src/app/common/tool/language";
 import { SearchHelper } from "../../../../../common/tool/table-form-helper";
 export class SearchControl extends SearchHelper {
   beginDate = "";
@@ -85,11 +86,11 @@ export enum CategoryNameEnum {
   MixedInto = "mixedInto",
 }
 
-export enum CategoryNameTextEnum {
-  garbageRatio = "达标率",
-  avgGarbageTime = "平均滞留时长",
-  maxGarbageTime = "最大滞留时长",
-  garbageDuration = "总滞留时长",
-  illegalDrop = "乱丢垃圾",
-  mixedInto = "混合投放",
+export class CategoryNameTextEnum {
+  static garbageRatio = "达标率"
+  static avgGarbageTime = "平均滞留时长"
+  static maxGarbageTime = "最大滞留时长"
+  static garbageDuration = "总滞留时长"
+  static illegalDrop = Language.json.EventType.IllegalDrop
+  static mixedInto = Language.json.EventType.MixedInto
 }

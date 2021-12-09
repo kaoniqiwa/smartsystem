@@ -1,6 +1,6 @@
 import { Transform, Type } from "class-transformer";
 import { DivisionType, GisType } from "../enum";
-import { transformDate } from "../transformer";
+import { transformDateTime } from "../transformer";
 
 /**区划信息 */
 export class Division {
@@ -23,10 +23,10 @@ export class Division {
   /**区划类型，用于图标区分 */
   DivisionType!: DivisionType;
   /**创建时间 */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   CreateTime: Date;
   /**更新事件 */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   UpdateTime: Date;
   /**区划中心GIS点位(可选) */
   @Type(() => GisPoint)

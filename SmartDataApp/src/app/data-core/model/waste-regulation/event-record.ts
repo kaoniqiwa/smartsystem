@@ -1,12 +1,12 @@
 import { Transform } from "class-transformer";
 import { EventType, ResourceType } from "../enum";
-import { transformDate } from "../transformer";
+import { transformDateTime } from "../transformer";
 
 /**事件记录接口 */
 export class IEventRecord {
   /**事件ID */ Id: string;
   /**事件时间 */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   EventTime: Date;
   /**事件类型 */ EventType: number;
   /**事件描述信息(可选) */ EventDescription: string;
@@ -28,7 +28,7 @@ export class EventRecord extends IEventRecord {
   /**事件ID */
   Id: string;
   /**事件时间 */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   EventTime: Date;
   /**事件类型 */
   EventType: EventType;

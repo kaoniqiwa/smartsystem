@@ -48,7 +48,7 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
         tdInnerAttrName: "name",
       }),
       new TableAttr({
-        HeadTitleName: "街道",
+        HeadTitleName: Language.json.DivisionType.County,
         tdWidth: "15%",
         tdInnerAttrName: "county",
       }),

@@ -1,5 +1,6 @@
 import { ViewsModel } from "src/app/common/abstract/base-view";
 import { IConverter } from "src/app/common/interface/IConverter";
+import { Language } from "src/app/common/tool/language";
 import { ColorEnum } from "src/app/shared-module/card-component/card-content-factory";
 import {
   Hint,
@@ -21,39 +22,66 @@ export class DivisionGarbageSpecificationConverter implements IConverter {
     if (input instanceof Specification) {
       var hint = new Hint(),
         hints = new Array<Hint>();
-      hint.title = "垃圾投放点数量";
-      hint.linkTipLabel = "查看垃圾投放点信息";
+      hint.title =
+        Language.json.garbage + Language.json.station + Language.json.number;
+      hint.linkTipLabel =
+        Language.json.see +
+        Language.json.garbage +
+        Language.json.station +
+        Language.json.info;
       hint.subTitleColor = ColorEnum["sky-blue-text2"];
-      hint.subTitle = input.garbagePushNumber + "";
+      hint.subTitle = input.garbagePushNumber.toString();
       hint.tag = HintTag.GarbageStation;
       hints.push(hint);
       hint = new Hint();
-      hint.title = "垃圾滞留投放点";
-      hint.linkTipLabel = "查看垃圾滞留投放点信息";
+      hint.title =
+        Language.json.garbage + Language.json.stay + Language.json.station;
+      hint.linkTipLabel =
+        Language.json.see +
+        Language.json.garbage +
+        Language.json.stay +
+        Language.json.station +
+        Language.json.info;
       hint.tag = HintTag.StationStranded;
       hint.subTitleColor = ColorEnum["green-text"];
-      hint.subTitle = input.garbageStrandedNumber + "";
+      hint.subTitle = input.garbageStrandedNumber.toString();
       hints.push(hint);
       hint = new Hint();
-      hint.title = "已满溢投放点数量";
-      hint.linkTipLabel = "查看满溢投放点信息";
+      hint.title =
+        Language.json.did +
+        Language.json.full +
+        Language.json.station +
+        Language.json.number;
+      hint.linkTipLabel =
+        Language.json.see +
+        Language.json.full +
+        Language.json.station +
+        Language.json.info;
       hint.subTitleColor = ColorEnum["orange-text"];
-      hint.subTitle = input.fullPushNumber + "";
+      hint.subTitle = input.fullPushNumber.toString();
       hint.tag = HintTag.FullStation;
       hints.push(hint);
       hint = new Hint();
-      hint.title = "乱丢垃圾";
-      hint.linkTipLabel = "查看乱丢垃圾事件记录";
+      hint.title = Language.json.EventType.IllegalDrop;
+      hint.linkTipLabel =
+        Language.json.see +
+        Language.json.EventType.IllegalDrop +
+        Language.json.event +
+        Language.json.record;
       hint.subTitleColor = ColorEnum["powder-red-text"];
-      hint.subTitle = input.illegalDropNumber + "";
+      hint.subTitle = input.illegalDropNumber.toString();
       hint.tag = HintTag.IllegalDrop;
       hints.push(hint);
       hint = new Hint();
-      hint.linkTipLabel = "查看混合投放事件记录";
-      hint.title = "混合投放";
+      hint.linkTipLabel =
+        Language.json.see +
+        Language.json.EventType.MixedInto +
+        Language.json.event +
+        Language.json.record;
+      hint.title = Language.json.EventType.MixedInto;
       hint.tag = HintTag.MixedInto;
       hint.subTitleColor = ColorEnum["light-purple-text"];
-      hint.subTitle = input.hybridPushNumber + "";
+      hint.subTitle = input.hybridPushNumber.toString();
       hints.push(hint);
       output.views = [hints];
     }

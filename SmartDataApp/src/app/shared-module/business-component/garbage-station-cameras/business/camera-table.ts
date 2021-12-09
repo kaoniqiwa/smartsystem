@@ -17,6 +17,7 @@ import { Camera } from "../../../../data-core/model/waste-regulation/camera";
 import { Division } from "../../../../data-core/model/waste-regulation/division";
 import { AIOPMediumPictureUrl } from "../../../../data-core/url/aiop/resources";
 import { ResourceMediumRequestService } from "../../../../data-core/repuest/resources.service";
+import { Language } from "src/app/common/tool/language";
 export class CameraTable extends BusinessTable implements IConverter {
   showImgFn: (id: string) => void;
   dataSource = new CustomTableArgs<any>({
@@ -57,7 +58,7 @@ export class CameraTable extends BusinessTable implements IConverter {
         tdInnerAttrName: "garbageStationName",
       }),
       new TableAttr({
-        HeadTitleName: "街道",
+        HeadTitleName: Language.json.DivisionType.County,
         tdWidth: "15%",
         tdInnerAttrName: "divisionName",
       }),

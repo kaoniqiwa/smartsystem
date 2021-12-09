@@ -171,7 +171,7 @@ export class TaskStationTable extends BusinessTable implements IConverter {
       case DivisionType.County:
         return "居委会";
       case DivisionType.City:
-        return "街道";
+        return Language.json.DivisionType.County;
       default:
         break;
     }

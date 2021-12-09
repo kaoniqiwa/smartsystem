@@ -17,6 +17,7 @@ import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
 import { HowellCSV } from "../../../../common/tool/hw-excel-js/hw-csv";
 import { TITLEKEY, COLNAME } from "../../../../common/tool/hw-excel-js/data";
 import { EventType } from "src/app/data-core/model/enum";
+import { Language } from "src/app/common/tool/language";
 
 @Component({
   selector: "hw-illegal-drop-event-analyze-v2",
@@ -80,7 +81,7 @@ export class IllegalDropEventAnalyzeV2Component implements OnInit {
 
   get pageTitle() {
     return this.businessEventType == EventType.IllegalDrop
-      ? "乱丢垃圾"
+      ? Language.json.EventType.IllegalDrop
       : "混合投放";
   }
 

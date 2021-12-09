@@ -88,8 +88,8 @@ export class BusinessService extends ListAttribute {
         -1
       );
       param.TimeUnit = 2;
-      param.BeginTime = time.start.toISOString();
-      param.EndTime = time.end.toISOString();
+      param.BeginTime = time.start;
+      param.EndTime = time.end;
     } else if (s.TimeUnit == TimeUnitEnum.Week) {
       const week = OneWeekDate(
           new Date(
@@ -100,8 +100,8 @@ export class BusinessService extends ListAttribute {
         ),
         time = TheBeforeDate(week.monday, -7);
       param.TimeUnit = 3;
-      param.BeginTime = time.begin.toISOString();
-      param.EndTime = week.sunday.toISOString();
+      param.BeginTime = time.begin;
+      param.EndTime = week.sunday;
     } else if (s.TimeUnit == TimeUnitEnum.Month) {
       const time = TheBeforeDate(
           new Date(Number.parseInt(s.Year), Number.parseInt(s.Month) - 1, 1),
@@ -113,12 +113,12 @@ export class BusinessService extends ListAttribute {
           Number.parseInt(s.Month)
         );
       param.TimeUnit = 4;
-      param.BeginTime = time.begin.toISOString();
+      param.BeginTime = time.begin;
       param.EndTime = new Date(
         Number.parseInt(s.Year),
         Number.parseInt(s.Month) - 1,
         lastDay
-      ).toISOString();
+      );
     }
 
     return param;

@@ -157,8 +157,8 @@ export class BusinessService extends ListAttribute {
           )
         );
         param.TimeUnit = 1;
-        param.BeginTime = time.begin.toISOString();
-        param.EndTime = time.end.toISOString();
+        param.BeginTime = time.begin;
+        param.EndTime = time.end;
       } else if (s.TimeUnit == TimeUnitEnum.Day) {
         const date = new Date(
             Number.parseInt(s.Year),
@@ -175,8 +175,8 @@ export class BusinessService extends ListAttribute {
             59
           );
         param.TimeUnit = 2;
-        param.BeginTime = beginTime.begin.toISOString();
-        param.EndTime = endTime.toISOString();
+        param.BeginTime = beginTime.begin;
+        param.EndTime = endTime;
       }
       return param;
     }

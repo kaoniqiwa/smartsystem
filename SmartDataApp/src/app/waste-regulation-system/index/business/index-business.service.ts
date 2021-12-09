@@ -6,7 +6,7 @@ import { DivisionType, EventType } from "../../../data-core/model/enum";
 import { IBusinessConfig } from "src/app/shared-module/card-component/business-card-factory";
 
 // 垃圾滞留配置信息
-import garbageRetentionRankConfig from "./config/garbage-retention-rank.json";
+import * as garbageRetentionRankConfig from "./config/garbage-retention-rank.json";
 
 @Injectable()
 export class IndexBusinessService {

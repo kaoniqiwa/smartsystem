@@ -197,7 +197,7 @@
 <app-window [Model]="window.video" [Background]="false" [CloseButton]="false">
   <ng-container *ngIf="window.video.player">
     <hw-video-simple-card
-      [closeFn]="window.video.close"
+      (closeFn)="window.video.close($event)"
       [url]="window.video.player.url"
       [WebUrl]="window.video.player.WebUrl"
       [autostart]="true"

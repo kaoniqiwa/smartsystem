@@ -24,6 +24,7 @@ import { TITLEKEY, COLNAME } from "../../../../common/tool/hw-excel-js/data";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 import { DivisionType, EventType } from "src/app/data-core/model/enum";
 import { TreeListMode } from "src/app/shared-module/custom-tree/custom-tree";
+import { Language } from "src/app/common/tool/language";
 @Component({
   selector: "hw-illegal-drop-event-analyze",
   templateUrl: "./illegal-drop-event-analyze.component.html",
@@ -81,7 +82,7 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
 
   get pageTitle() {
     return this.businessEventType == EventType.IllegalDrop
-      ? "乱丢垃圾"
+      ? Language.json.EventType.IllegalDrop
       : "混合投放";
   }
 

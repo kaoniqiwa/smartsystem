@@ -1,6 +1,6 @@
 import { Transform } from "class-transformer";
 import { CameraUsage, OnlineStatus } from "../enum";
-import { transformDate } from "../transformer";
+import { transformDateTime } from "../transformer";
 
 /**摄像机信息 */
 export class Camera {
@@ -11,10 +11,10 @@ export class Camera {
   /**摄像机用途 */
   CameraUsage: number;
   /**创建时间 */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   CreateTime: Date = new Date();
   /**更新事件 */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   UpdateTime: Date = new Date();
   /**垃圾桶房ID */
   GarbageStationId: string;
@@ -31,7 +31,7 @@ export class Camera {
   // 照片URL或ID	O
   ImageUrl?: string;
   // 照片时间	O
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   ImageTime?: Date;
 }
 

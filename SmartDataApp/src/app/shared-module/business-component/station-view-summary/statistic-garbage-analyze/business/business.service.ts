@@ -26,6 +26,7 @@ import { EventNumber } from "../../../../../data-core/model/waste-regulation/eve
 import { EventType } from "../../../../../data-core/model/enum";
 import { IntegerDecimalNum } from "../../../../../common/tool/tool.service";
 import { ExcelData } from "../../../../../common/tool/hw-excel-js/data";
+import { Language } from "src/app/common/tool/language";
 
 @Injectable()
 export class BusinessService extends ListAttribute {
@@ -117,7 +118,7 @@ export class BusinessService extends ListAttribute {
       )
         return v + "起";
       else if (s.ClassType == CategoryNameEnum.GarbageRatio) return v + "分";
-      else return v + "分钟";
+      else return v + Language.json.Time.minute;
     };
 
     this.lineChartOption.axisTick.show = true;
@@ -242,7 +243,7 @@ export class BusinessService extends ListAttribute {
       )
         return v + "起";
       else if (s.ClassType == CategoryNameEnum.GarbageRatio) return v + "分";
-      else return v + "分钟";
+      else return v + Language.json.Time.minute;
     };
     this.barChartOption.axisTick.show = true;
     this.barChartOption.axisLine.show = true;
@@ -319,8 +320,8 @@ export class BusinessService extends ListAttribute {
         )
       );
       param.TimeUnit = 2;
-      param.BeginTime = week.monday.toISOString();
-      param.EndTime = week.sunday.toISOString();
+      param.BeginTime = week.monday;
+      param.EndTime = week.sunday;
     } else if (s.TimeUnit == TimeUnitEnum.Month) {
       const date = new Date(
           Number.parseInt(s.Year),
@@ -345,8 +346,8 @@ export class BusinessService extends ListAttribute {
           59
         );
       param.TimeUnit = 2;
-      param.BeginTime = date.toISOString();
-      param.EndTime = endTime.toISOString();
+      param.BeginTime = date;
+      param.EndTime = endTime;
     }
 
     return param;
@@ -459,15 +460,15 @@ export class BusinessService extends ListAttribute {
             break;
           case CategoryNameEnum.AvgGarbageTime:
             td[i].val = parseFloat(IntegerDecimalNum(val.AvgGarbageTime + ""));
-            dataUnit = "分钟";
+            dataUnit = Language.json.Time.minute;
             break;
           case CategoryNameEnum.MaxGarbageTime:
             td[i].val = parseFloat(IntegerDecimalNum(val.MaxGarbageTime + ""));
-            dataUnit = "分钟";
+            dataUnit = Language.json.Time.minute;
             break;
           case CategoryNameEnum.GarbageDuration:
             td[i].val = parseFloat(IntegerDecimalNum(val.GarbageDuration + ""));
-            dataUnit = "分钟";
+            dataUnit = Language.json.Time.minute;
           case CategoryNameEnum.IllegalDrop:
             td[i].val = findIllegalDrop(
               val.EventNumbers,

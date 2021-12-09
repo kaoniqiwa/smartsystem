@@ -205,11 +205,12 @@ export class GarbageStationRequestService {
   async statisticGarbageCount(
     item: GetGarbageStationStatisticGarbageCountsParams
   ) {
+    let data = classToPlain(item);
     let response = await this.requestService
       .post<
         GetGarbageStationStatisticGarbageCountsParams,
         HowellResponse<GarbageStationGarbageCountStatistic[]>
-      >(GarbageStationsUrl.statisticGarbageCountHistoryList(), item)
+      >(GarbageStationsUrl.statisticGarbageCountHistoryList(), data)
       .toPromise();
 
     return ServiceHelper.ResponseProcess(

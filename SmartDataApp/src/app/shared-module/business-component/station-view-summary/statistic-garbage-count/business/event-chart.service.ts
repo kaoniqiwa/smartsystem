@@ -27,6 +27,7 @@ import { moveView3 } from "../../../../../common/tool/jquery-help/jquery-help";
 import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 import { DivisionListView } from "../../../event-history/division-list-view";
 import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
+import { Language } from "src/app/common/tool/language";
 
 @Injectable()
 export class EventChartService extends ListAttribute {
@@ -189,25 +190,28 @@ export class EventChartService extends ListAttribute {
       {
         key: "平均滞留时长",
         vals: [
-          { val: 0, unit: "小时" },
-          { val: 0, unit: "分钟" },
+          { val: 0, unit: Language.json.Time.hour },
+          { val: 0, unit: Language.json.Time.minute },
         ],
       },
       {
         key: "最大滞留时长",
         vals: [
-          { val: 0, unit: "小时" },
-          { val: 0, unit: "分钟" },
+          { val: 0, unit: Language.json.Time.hour },
+          { val: 0, unit: Language.json.Time.minute },
         ],
       },
       {
         key: "总滞留时长",
         vals: [
-          { val: 0, unit: "小时" },
-          { val: 0, unit: "分钟" },
+          { val: 0, unit: Language.json.Time.hour },
+          { val: 0, unit: Language.json.Time.minute },
         ],
       },
-      { key: "乱丢垃圾", vals: [{ val: 0, unit: "起" }] },
+      {
+        key: Language.json.EventType.IllegalDrop,
+        vals: [{ val: 0, unit: "起" }],
+      },
     ];
   }
 
@@ -449,8 +453,10 @@ export class EventChartService extends ListAttribute {
 
         garbageCount.map((g) => {
           var gd = "";
-          gd += toHour(g.GarbageDuration).split(":")[0] + "小时";
-          gd += toHour(g.GarbageDuration).split(":")[1] + "分钟";
+          gd +=
+            toHour(g.GarbageDuration).split(":")[0] + Language.json.Time.hour;
+          gd +=
+            toHour(g.GarbageDuration).split(":")[1] + Language.json.Time.minute;
 
           this.illegalDumpData = {
             fullTime: gd,
@@ -673,11 +679,11 @@ export class EventChartService extends ListAttribute {
     eventParam.StationIds = [this.search.station];
     eventParam.PageIndex = 1;
     eventParam.PageSize = this.maxSize;
-    garbageCountsParam.Date = this.search.date;
+    garbageCountsParam.Date = new Date(this.search.date);
     garbageCountsParam.GarbageStationIds = [this.search.station];
     statisticNumbersParamsV2.GarbageStationIds = [this.search.station];
-    statisticNumbersParamsV2.BeginTime = theDay.begin.toISOString();
-    statisticNumbersParamsV2.EndTime = theDay.end.toISOString();
+    statisticNumbersParamsV2.BeginTime = theDay.begin;
+    statisticNumbersParamsV2.EndTime = theDay.end;
     statisticNumbersParamsV2.TimeUnit = 1;
     return {
       eventParam: eventParam,

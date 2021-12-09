@@ -6,6 +6,8 @@ import {
   Output,
   EventEmitter,
   ElementRef,
+  ChangeDetectorRef,
+  AfterViewInit,
 } from "@angular/core";
 import { BusinessService } from "./business/business.service";
 import { DivisionBusinessService } from "../../../../waste-regulation-system/index/business-card-grid/division-business.service";
@@ -18,13 +20,14 @@ import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
 import { HowellCSV } from "../../../../common/tool/hw-excel-js/hw-csv";
 import { TITLEKEY, COLNAME } from "../../../../common/tool/hw-excel-js/data";
 import { EventType } from "src/app/data-core/model/enum";
+import { Language } from "src/app/common/tool/language";
 @Component({
   selector: "hw-illegal-drop-event-chart",
   templateUrl: "./illegal-drop-event-chart.component.html",
   styleUrls: ["./illegal-drop-event-chart.component.styl"],
   providers: [BusinessService],
 })
-export class IllegalDropEventChartComponent implements OnInit {
+export class IllegalDropEventChartComponent implements OnInit, AfterViewInit {
   otherView = OtherViewEnum;
   @Input() businessEventType = EventType.IllegalDrop;
   @Input() changeViewFn: (index: number) => void;
@@ -47,12 +50,14 @@ export class IllegalDropEventChartComponent implements OnInit {
       const filter = this.businessService.garbageStations.filter(
         (x) => x.DivisionId == id
       );
-      this.businessService.search.toStationsDropList = filter;
+      this.businessService.search.toStationsDropList(filter);
       this.businessService.search.divisionId = id;
       this.businessService.search.stationId = "";
     } else if (id == "") {
-      this.businessService.search.toStationsDropList =
-        this.businessService.garbageStations;
+      this.businessService.search.toStationsDropList(
+        this.businessService.garbageStations
+      );
+
       this.businessService.search.stationId = id;
     }
   };
@@ -60,14 +65,18 @@ export class IllegalDropEventChartComponent implements OnInit {
     this.businessService.search.formBeginDate = b;
   };
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     private businessService: BusinessService,
     private configRequestService: ConfigRequestService,
     private divisionBusinessService: DivisionBusinessService
   ) {}
+  ngAfterViewInit(): void {
+    this.changeDetectorRef.detectChanges();
+  }
 
   get pageTitle() {
     return this.businessEventType == EventType.IllegalDrop
-      ? "乱丢垃圾"
+      ? Language.json.EventType.IllegalDrop
       : "混合投放";
   }
 
@@ -78,8 +87,10 @@ export class IllegalDropEventChartComponent implements OnInit {
     this.businessService.garbageStations =
       await this.businessService.garbageStationDao.allGarbageStations();
 
-    this.businessService.search.toStationsDropList =
-      this.businessService.garbageStations;
+    this.businessService.search.toStationsDropList(
+      this.businessService.garbageStations
+    );
+
     this.businessService.initDivisionListView();
 
     this.divisionBusinessService.illegalDropChartDefault.subscribe((id) => {

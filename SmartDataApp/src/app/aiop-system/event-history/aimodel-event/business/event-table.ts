@@ -51,7 +51,7 @@ export class EventTable extends BusinessTable implements IConverter {
         isSmallImg: true,
       }),
       new TableAttr({
-        HeadTitleName: "事件类型",
+        HeadTitleName: Language.json.event + "类型",
         tdWidth: "13%",
         tdInnerAttrName: "eventType",
       }),

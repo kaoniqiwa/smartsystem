@@ -351,8 +351,8 @@ export class BusinessService extends ListAttribute {
           )
         );
         param.TimeUnit = 1;
-        param.BeginTime = time.begin.toISOString();
-        param.EndTime = time.end.toISOString();
+        param.BeginTime = time.begin;
+        param.EndTime = time.end;
       } else if (s.TimeUnit == TimeUnitEnum.Day) {
         const date = new Date(
             Number.parseInt(s.Year),
@@ -369,8 +369,8 @@ export class BusinessService extends ListAttribute {
             59
           );
         param.TimeUnit = 2;
-        param.BeginTime = beginTime.begin.toISOString();
-        param.EndTime = endTime.toISOString();
+        param.BeginTime = beginTime.begin;
+        param.EndTime = endTime;
       } else if (s.TimeUnit == TimeUnitEnum.Week) {
         const week = OneWeekDate(
           new Date(
@@ -380,8 +380,8 @@ export class BusinessService extends ListAttribute {
           )
         );
         param.TimeUnit = 2;
-        param.BeginTime = week.monday.toISOString();
-        param.EndTime = week.sunday.toISOString();
+        param.BeginTime = week.monday;
+        param.EndTime = week.sunday;
       }
       return param;
     }

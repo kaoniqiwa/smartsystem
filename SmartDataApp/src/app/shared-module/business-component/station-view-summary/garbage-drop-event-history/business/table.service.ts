@@ -232,7 +232,6 @@ export class GarbageDropEventHistoryBusinessService {
       if (s.StationId) param.StationIds = [s.StationId];
       if (s.ResourceId) param.ResourceIds = [s.ResourceId];
       if (s.EventType) {
-        debugger;
         switch (parseInt(s.EventType)) {
           case EventType.GarbageDrop:
             param.IsHandle = false;
@@ -266,6 +265,9 @@ export class GarbageDropEventHistoryBusinessService {
     }
 
     let divisionType = GlobalStoreService.divisionType;
+
+    let begin = new Date(this.search.beginDate);
+    let end = new Date(this.search.endDate);
 
     try {
       divisionType = this.divisions.find(

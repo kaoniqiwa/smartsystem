@@ -21,6 +21,7 @@ import { BusinessTable } from "../../../../../aiop-system/common/business-table"
 import { Division } from "../../../../../data-core/model/waste-regulation/division";
 import { DivisionType } from "../../../../../data-core/model/enum";
 import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
+import { Language } from "src/app/common/tool/language";
 export class EventTable extends BusinessTable implements IConverter {
   findEventFn: (id: string) => GarbageFullEventRecord;
   initGalleryTargetFn: (event: GarbageFullEventRecord) => void;
@@ -57,7 +58,7 @@ export class EventTable extends BusinessTable implements IConverter {
         tdInnerAttrName: "station",
       }),
       new TableAttr({
-        HeadTitleName: "街道",
+        HeadTitleName: Language.json.DivisionType.County,
         tdWidth: "15%",
         tdInnerAttrName: "county",
       }),

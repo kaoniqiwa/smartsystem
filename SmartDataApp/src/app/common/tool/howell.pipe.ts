@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
+import { Language } from "./language";
 
 @Pipe({ name: "TxtEmpty" })
 export class TxtEmptyPipe implements PipeTransform {
@@ -36,7 +37,10 @@ export class TimePipe implements PipeTransform {
   transform(time: number) {
     let hour = Math.floor(time / 60);
     let minute = time - hour * 60;
-    let res = hour == 0 ? minute + "分钟" : hour + "小时" + minute + "分钟";
+    let res =
+      hour == 0
+        ? minute + Language.json.Time.minute
+        : hour + Language.json.Time.hour + minute + Language.json.Time.minute;
     return res;
   }
 }

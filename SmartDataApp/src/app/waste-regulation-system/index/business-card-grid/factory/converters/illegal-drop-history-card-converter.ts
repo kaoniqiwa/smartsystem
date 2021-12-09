@@ -1,6 +1,7 @@
 import { ViewsModel } from "src/app/common/abstract/base-view";
 import { LineOption } from "src/app/common/directive/echarts/echart";
 import { IConverter } from "src/app/common/interface/IConverter";
+import { Language } from "src/app/common/tool/language";
 import { EventNumber } from "src/app/data-core/model/waste-regulation/event-number";
 import { LineECharts } from "src/app/shared-module/card-component/line-echarts-card/line-echarts";
 import { DropEvent } from "../../business/event-drop-history/data";
@@ -30,7 +31,7 @@ export class IllegalDropHistoryCardConverter implements IConverter {
   }
 
   private joinPart(t1: LineECharts) {
-    t1.title = "今日乱丢垃圾";
+    t1.title = Language.json.today + Language.json.EventType.IllegalDrop;
     t1.option = new LineOption();
     t1.option.xAxisData = [];
     for (let i = 1; i <= 12; i++) {

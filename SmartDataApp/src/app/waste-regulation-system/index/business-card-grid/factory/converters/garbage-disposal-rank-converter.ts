@@ -1,5 +1,6 @@
 import { ViewsModel } from "src/app/common/abstract/base-view";
 import { IConverter } from "src/app/common/interface/IConverter";
+import { Language } from "src/app/common/tool/language";
 import { IntegerDecimalNum } from "src/app/common/tool/tool.service";
 import { OrderTable } from "src/app/shared-module/card-component/order-table-card/order-table";
 import { StationsScoreInfo } from "../../business/garbage-disposal-rank/data";
@@ -17,7 +18,8 @@ export class GarbageDisposalRankConverter implements IConverter {
     output.pageSize = 1;
     output.pageIndex = 1;
     if (input instanceof StationsScoreInfo) {
-      output.views[0].title = "今日小包垃圾滞留达标率排名";
+      output.views[0].title =
+        Language.json.today + "小包垃圾处置评分" + Language.json.rank;
       output.views[0].table = new Array();
       var i = 0;
       const sort = input.items.sort((a, b) => {
@@ -28,9 +30,9 @@ export class GarbageDisposalRankConverter implements IConverter {
         output.views[0].table.push({
           id: x.id,
           name: x.station,
-          subName: IntegerDecimalNum(x.score + ""),
+          subName: IntegerDecimalNum(x.score.toString()),
           subNameAfter: x.unit,
-          linkTipLabel: "查看小包垃圾处置记录",
+          linkTipLabel: Language.json.see + "小包垃圾处置记录",
         });
         i += 1;
       }
@@ -44,7 +46,7 @@ export class GarbageDisposalRankConverter implements IConverter {
             name: "-",
             subName: "0",
             subNameAfter: "分",
-            linkTipLabel: "查看小包垃圾处置记录",
+            linkTipLabel: Language.json.see + "小包垃圾处置记录",
           });
     }
     return output;

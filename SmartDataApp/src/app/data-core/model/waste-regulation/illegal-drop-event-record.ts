@@ -1,7 +1,7 @@
 import { EventRecord } from "./event-record";
 import { EventDataObject } from "./event-data-object";
 import { Transform } from "class-transformer";
-import { transformDate } from "../transformer";
+import { transformDateTime } from "../transformer";
 /**乱扔垃圾事件记录 */
 export class IllegalDropEventRecord extends EventRecord {
   /**事件数据 */
@@ -29,10 +29,10 @@ export class GetEventRecordsParams {
   /**分页大小[1-100](可选) */
   PageSize?: number;
   /**开始时间 */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   BeginTime!: Date;
   /**结束时间 */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   EndTime!: Date;
   /**所属区划ID列表(可选) */
   DivisionIds: string[];

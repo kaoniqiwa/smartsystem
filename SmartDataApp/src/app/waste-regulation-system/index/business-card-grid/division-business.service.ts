@@ -26,7 +26,6 @@ import {
   Hint,
   HintTag,
 } from "../../../shared-module/card-component/hint-card/hint";
-import { IllegalDropEventHistoryFillMode } from "../../../shared-module/business-component/event-history/illegal-drop-event-history/business/illegal-drop-event-table.service";
 import { ColorEnum } from "../../../shared-module/card-component/card-content-factory";
 import { GarbageStationRequestService } from "../../../data-core/repuest/garbage-station.service";
 import { AIOPMediumPictureUrl } from "../../../data-core/url/aiop/resources";
@@ -53,6 +52,7 @@ import { GarbageTaskNumberCardComponent } from "src/app/shared-module/card-compo
 import { GarbageStationSummaryViewPage } from "src/app/shared-module/business-component/station-view-summary/view-helper";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 import { TableContentType } from "src/app/shared-module/business-component/station-view-summary/garbage-drop-event-history/garbage-drop-event-history.component";
+import { TableFillMode } from "src/app/shared-module/business-component/business-component.model";
 
 class DivisionBusinessServiceSelected {
   GarbageStation?: GarbageStation;
@@ -69,9 +69,9 @@ export class DivisionBusinessService {
   GarbageDropEventHistoryContentType = TableContentType.event;
   GarbageDropTaskDivisionId = "";
   /**区划 */
-  illegalDropMode: IllegalDropEventHistoryFillMode;
-  mixedIntoMode: IllegalDropEventHistoryFillMode;
-  fullGarbageStationIntoMode: IllegalDropEventHistoryFillMode;
+  illegalDropMode: TableFillMode;
+  mixedIntoMode: TableFillMode;
+  fullGarbageStationIntoMode: TableFillMode;
   fullStationsView = false;
   stationListView = false;
   eventHistoryView = false;
@@ -137,14 +137,18 @@ export class DivisionBusinessService {
 
   /**显示乱扔垃圾view */
   illegalDrop(divisionsId: string) {
-    this.illegalDropMode = new IllegalDropEventHistoryFillMode();
+    this.illegalDropMode = new TableFillMode(
+      "illegal-drop-event-history",
+      9,
+      15
+    );
     this.illegalDropMode.divisionId = divisionsId;
     this.eventHistoryView = true;
   }
 
   /**显示混合投放view */
   mixedInto(divisionsId: string) {
-    this.mixedIntoMode = new IllegalDropEventHistoryFillMode();
+    this.mixedIntoMode = new TableFillMode("mixed-info-event-history", 9, 15);
     this.mixedIntoMode.divisionId = divisionsId;
     this.eventHistoryView = true;
   }
@@ -257,16 +261,27 @@ export class DivisionBusinessService {
       this.selected.GarbageStation = undefined;
       if (business instanceof BaseBusinessRefresh) {
         if (tag == HintTag.IllegalDrop) {
-          this.illegalDropMode = new IllegalDropEventHistoryFillMode();
+          this.illegalDropMode = new TableFillMode(
+            "illegal-drop-event-history",
+            9,
+            15
+          );
           this.illegalDropMode.divisionId =
             business.businessParameter.divisionId;
         } else if (tag == HintTag.MixedInto) {
-          this.mixedIntoMode = new IllegalDropEventHistoryFillMode();
+          this.mixedIntoMode = new TableFillMode(
+            "mixed-info-event-history",
+            9,
+            15
+          );
           this.mixedIntoMode.divisionId = business.businessParameter.divisionId;
         } else if (tag == HintTag.FullStation) {
           this.fullStationsView = true;
-          this.fullGarbageStationIntoMode =
-            new IllegalDropEventHistoryFillMode();
+          this.fullGarbageStationIntoMode = new TableFillMode(
+            "garbage-Full-event-history",
+            10,
+            15
+          );
           this.fullGarbageStationIntoMode.divisionId =
             business.businessParameter.divisionId;
         } else if (tag == HintTag.GarbageStation) {
@@ -298,6 +313,8 @@ export class DivisionBusinessService {
     }) => {
       if (item.eventType == null) {
         this.linkChildView(item.id, this.eventDropCard.eventType, item.drop2);
+        this.GarbageStationSummaryPageIndex =
+          GarbageStationSummaryViewPage.chart;
       } else {
         const param = new BusinessParameter(),
           stationKey = "station";
@@ -552,7 +569,11 @@ export class DivisionBusinessService {
     if (station.StationStateFlags.contains(StationState.Full)) {
       this.selected.GarbageStation = station;
       this.fullStationsView = true;
-      this.fullGarbageStationIntoMode = new IllegalDropEventHistoryFillMode();
+      this.fullGarbageStationIntoMode = new TableFillMode(
+        "garbage-Full-event-history",
+        10,
+        15
+      );
       this.eventHistoryView = true;
     }
   }

@@ -1,5 +1,8 @@
-<div class="fill-height" style="position: relative">
-  <div class="fill-height collapse" [class.in]="viewsShow[0]">
+<div class="fill-height" style="position: relative" *ngIf="!!viewsShow">
+  <div
+    class="fill-height"
+    *ngIf="viewsShow === GarbageStationSummaryViewPage.info"
+  >
     <hw-garbage-station
       (OtherViewEvent)="acceptOtherView($event)"
       [divisionsId]="divisionsId"
@@ -8,23 +11,35 @@
     >
     </hw-garbage-station>
   </div>
-  <div class="fill-height collapse" [class.in]="viewsShow[1]">
+  <div
+    class="fill-height"
+    *ngIf="viewsShow === GarbageStationSummaryViewPage.chart"
+  >
     <hw-statistic-garbage-count
       (OtherViewEvent)="acceptOtherView($event)"
     ></hw-statistic-garbage-count>
   </div>
-  <div class="fill-height collapse" [class.in]="viewsShow[2]">
+  <div
+    class="fill-height"
+    *ngIf="viewsShow === GarbageStationSummaryViewPage.sumChart"
+  >
     <hw-garbage-full-history-sum-chart
       [divisionId]="divisionsId"
       (OtherViewEvent)="acceptOtherView($event)"
     ></hw-garbage-full-history-sum-chart>
   </div>
-  <div class="fill-height collapse" [class.in]="viewsShow[3]">
+  <div
+    class="fill-height"
+    *ngIf="viewsShow === GarbageStationSummaryViewPage.analyzeChart"
+  >
     <hw-statistic-garbage-analyze
       (OtherViewEvent)="acceptOtherView($event)"
     ></hw-statistic-garbage-analyze>
   </div>
-  <div class="fill-height collapse" [class.in]="viewsShow[4]">
+  <div
+    class="fill-height"
+    *ngIf="viewsShow === GarbageStationSummaryViewPage.event"
+  >
     <hw-garbage-drop-event-history
       [handle]="GarbageDropEventHistoryHandle"
       [timeout]="GarbageDropEventHistoryTimeout"

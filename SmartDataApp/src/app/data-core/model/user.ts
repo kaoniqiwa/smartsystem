@@ -1,6 +1,6 @@
 import { Transform } from "class-transformer";
 import { Gender, UserLabelType, UserResourceType, UserState } from "./enum";
-import { transformDate } from "./transformer";
+import { transformDateTime } from "./transformer";
 
 export class User {
   /// <signature>
@@ -33,11 +33,11 @@ export class User {
   MobileNo?: string;
   Email?: string;
   Note?: string;
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   ExpiredTime!: string;
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   CreateTime!: string;
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   UpdateTime!: Date;
   State!: number;
   Role!: Role[];
@@ -113,10 +113,10 @@ export class UserLabel {
   /**	String	描述信息	O	RW */
   Note?: string;
   /**	DateTime	创建时间	M	R */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   CreateTime!: Date;
   /**	DateTime	更新时间	M	R */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   UpdateTime!: Date;
 }
 export class GetUserLabelsParams {

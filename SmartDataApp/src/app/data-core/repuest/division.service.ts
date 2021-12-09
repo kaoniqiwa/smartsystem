@@ -123,44 +123,14 @@ export class DivisionRequestService {
   }
 
   async list(item?: GetDivisionsParams) {
-    // if (!item) {
-    //   let result = ServiceHelper.cache.get<PagedList<Division>>(
-    //     ServiceHelper.key.Division
-    //   );
-    //   if (result) {
-    //     console.log("使用缓存");
-    //     return result;
-    //   }
-
-    //   item = new GetDivisionsParams();
-    // } else if (item.Ids) {
-    //   let result = new Array<Division>();
-    //   let all = true;
-    //   for (const id of item.Ids) {
-    //     let item = ServiceHelper.cacheItemByPaged.get<Division>(
-    //       ServiceHelper.key.Division,
-    //       (x) => x.Id == id
-    //     );
-    //     if (!item) {
-    //       all = false;
-    //       break;
-    //     }
-    //     result.push(item);
-    //   }
-    //   if (all) {
-    //     let page: Page = {
-    //       PageIndex: 1,
-    //       PageSize: result.length,
-    //       TotalRecordCount: result.length,
-    //       PageCount: 1,
-    //       RecordCount: result.length,
-    //     };
-    //     return {
-    //       Page: page,
-    //       Data: result,
-    //     };
-    //   }
-    // }
+    if (!item) {
+      let result = ServiceHelper.cache.get<PagedList<Division>>(
+        ServiceHelper.key.Division
+      );
+      if (result) {
+        return result;
+      }
+    }
     if (!item) {
       item = {};
     }
@@ -174,7 +144,9 @@ export class DivisionRequestService {
       )
       .toPromise();
     return ServiceHelper.ResponseProcess(response, Division).then((x) => {
-      ServiceHelper.cache.set(ServiceHelper.key.Division, x);
+      if (!item) {
+        ServiceHelper.cache.set(ServiceHelper.key.Division, x);
+      }
       return x;
     });
   }

@@ -1,18 +1,20 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from "@angular/core";
 import { CustomTreeComponent } from "../../../../shared-module/custom-tree/custom-tree.component";
 import { CameraAIModelMgrService } from "../camera-aimodel-mgr/business/camera-aimodel-mgr.service";
 import "../../../../common/string/hw-string";
-import { TreeListMode, FlatNode } from '../../../../shared-module/custom-tree/custom-tree';
+import {
+  TreeListMode,
+  FlatNode,
+} from "../../../../shared-module/custom-tree/custom-tree";
 @Component({
-  selector: 'region-camera-copy',
-  templateUrl: './region-camera-copy.component.html',
-  styleUrls: ['./region-camera-copy.component.styl']
+  selector: "region-camera-copy",
+  templateUrl: "./region-camera-copy.component.html",
+  styleUrls: ["./region-camera-copy.component.styl"],
 })
 export class RegionCameraCopyComponent implements OnInit {
-  @ViewChild('tree')
+  @ViewChild("tree")
   tree: CustomTreeComponent;
 
-  
   @Input()
   cancelFn: () => void;
   @Input()
@@ -25,18 +27,20 @@ export class RegionCameraCopyComponent implements OnInit {
     this.tree.dataSource.data = dataSource;
     this.tree.defaultItem();
     this.tree.treeControl.expandAll();
-  }
-  constructor() {
+  };
+  constructor() {}
 
+  get title() {
+    console.log("get title");
+    const find = this.mgrService.cameras.find(
+      (x) => x.Id == this.mgrService.aiCameraPanel.copyCameraId
+    );
+    if (find) return `${find.Name}模型复制`;
   }
 
-  get title(){
-     const find= this.mgrService.cameras.find(x=>x.Id == this.mgrService.aiCameraPanel.copyCameraId);
-     if(find)return `${find.Name}模型复制`;
-  }
-
-  async ngOnInit() {    
-    this.mgrService.regionCamera.tagCameraId = this.mgrService.aiCameraPanel.copyCameraId;
+  async ngOnInit() {
+    this.mgrService.regionCamera.tagCameraId =
+      this.mgrService.aiCameraPanel.copyCameraId;
     /**获取区域 */
     await this.mgrService.getRegionData();
     /**区域树结构 */
@@ -45,8 +49,13 @@ export class RegionCameraCopyComponent implements OnInit {
     const allLastChilds = this.mgrService.allLastChilds(treeNodes);
     /**补上 最后子节点 摄像机元素*/
     for (let i = 0; i < allLastChilds.length; i++) {
-      const cameras = await this.mgrService.requestRegionCamerasData(allLastChilds[i].id);
-      this.mgrService.regionCamera.loadRegionCameraTree(cameras, allLastChilds[i]);
+      const cameras = await this.mgrService.requestRegionCamerasData(
+        allLastChilds[i].id
+      );
+      this.mgrService.regionCamera.loadRegionCameraTree(
+        cameras,
+        allLastChilds[i]
+      );
       if (allLastChilds.length - 1 == i) {
         this.mgrService.regionCamera.dataSource = treeNodes;
         this.tree.dataSource.data = treeNodes;
@@ -54,7 +63,6 @@ export class RegionCameraCopyComponent implements OnInit {
       }
     }
     this.tree.treeControl.expandAll();
-
   }
 
   onSubmit() {
@@ -65,7 +73,6 @@ export class RegionCameraCopyComponent implements OnInit {
     this.mgrService.regionCamera.cameraAIModelCopyTo(nodes, () => {
       this.onCancel();
     });
-
   }
   onCancel() {
     if (this.cancelFn) this.cancelFn();

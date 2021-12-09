@@ -9,6 +9,7 @@ import {
 import { ViewsModel } from "../../../common/abstract/base-view";
 import { ColorEnum } from "../../../shared-module/card-component/card-content-factory";
 import { ImageTheme } from "../../../shared-module/card-component/image-theme-card/image-theme";
+import { Language } from "src/app/common/tool/language";
 @Injectable()
 export class IndexService {
   constructor(private bufferService: StatisticalDataBufferService) {}
@@ -48,7 +49,8 @@ export class IndexService {
         name: "-",
         subNameAfter: "起",
         subName: "0",
-        linkTipLabel: "查看事件记录",
+        linkTipLabel:
+          Language.json.see + Language.json.event + Language.json.record,
       });
 
     return view;
@@ -58,7 +60,10 @@ export class IndexService {
     const model = new ImageTheme(),
       view = new ViewsModel();
     view.views = [model];
-    model.title = close == false ? "已连接" : "断开";
+    model.title =
+      close == false
+        ? Language.json.did + Language.json.link
+        : Language.json.unlink;
     return view;
   }
 

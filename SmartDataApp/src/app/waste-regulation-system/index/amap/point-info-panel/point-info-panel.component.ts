@@ -99,10 +99,10 @@ export class PointInfoPanelComponent implements OnInit {
       let hour = Math.floor(statistic.CurrentGarbageTime / 60);
       let minute = Math.ceil(statistic.CurrentGarbageTime % 60);
 
-      this.GarbageInterval = hour ? hour + "小时" : "";
+      this.GarbageInterval = hour ? hour + Language.json.Time.hour : "";
       this.GarbageInterval = this.GarbageInterval
         ? this.GarbageInterval
-        : minute + "分钟";
+        : minute + Language.json.Time.minute;
 
       if (statistic.TodayEventNumbers) {
         for (let i = 0; i < statistic.TodayEventNumbers.length; i++) {

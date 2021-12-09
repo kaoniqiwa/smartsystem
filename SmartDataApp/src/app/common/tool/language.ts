@@ -1,3 +1,4 @@
+import { assert } from "console";
 import {
   CameraState,
   CameraType,
@@ -7,26 +8,29 @@ import {
   StationState,
   TimeUnit,
 } from "../../data-core/model/enum";
+
 import { Flags } from "../../data-core/model/flags";
+
+import language from "./language.json";
 
 export class Language {
   static StationState(state: StationState) {
     switch (state) {
       case StationState.Full:
-        return "满溢";
+        return Language.json.full;
       case StationState.Error:
-        return "异常";
+        return Language.json.error;
       default:
-        return "正常";
+        return Language.json.normal;
     }
   }
 
   static TimeUnit(unit: TimeUnit) {
     switch (unit) {
       case TimeUnit.Hour:
-        return "日报表";
+        return Language.json.Date.day + Language.json.report;
       case TimeUnit.Day:
-        return "月报表";
+        return Language.json.Date.month + Language.json.report;
       default:
         return "";
     }
@@ -45,13 +49,13 @@ export class Language {
   static CameraType(type: CameraType) {
     switch (type) {
       case CameraType.Gun:
-        return "枪机";
+        return Language.json.CameraType.Gun;
       case CameraType.Ball:
-        return "球机";
+        return Language.json.CameraType.Ball;
       case CameraType.HalfBall:
-        return "半球";
+        return Language.json.CameraType.HalfBall;
       case CameraType.AIO:
-        return "一体机";
+        return Language.json.CameraType.AIO;
       default:
         return "";
     }
@@ -60,19 +64,19 @@ export class Language {
   static EventType(type: EventType) {
     switch (type) {
       case EventType.IllegalDrop:
-        return "乱丢垃圾";
+        return Language.json.EventType.IllegalDrop;
       case EventType.MixedInto:
-        return "混合投放";
+        return Language.json.EventType.MixedInto;
       case EventType.GarbageVolume:
-        return "垃圾容量";
+        return Language.json.EventType.GarbageVolume;
       case EventType.GarbageFull:
-        return "垃圾满溢";
+        return Language.json.EventType.GarbageFull;
       case EventType.GarbageDrop:
-        return "小包垃圾待处置";
+        return Language.json.EventType.GarbageDrop;
       case EventType.GarbageDropTimeout:
-        return "小包垃圾超时待处置";
+        return Language.json.EventType.GarbageDropTimeout;
       case EventType.GarbageDropHandle:
-        return "小包垃圾已处置";
+        return Language.json.EventType.GarbageDropHandle;
       default:
         return "";
     }
@@ -81,17 +85,20 @@ export class Language {
   static GarbageDropEventType(type: EventType, isTimeout?: boolean) {
     switch (type) {
       case EventType.GarbageDrop:
-        return "待处置";
+        return Language.json.did + Language.json.handle;
       case EventType.GarbageDropTimeout:
-        return "超时待处置";
+        return (
+          Language.json.timeout + Language.json.wait + Language.json.handle
+        );
+
       case EventType.GarbageDropHandle:
         if (isTimeout) {
-          return "超时处置";
+          return Language.json.timeout + Language.json.handle;
         } else {
-          return "已处置";
+          return Language.json.did + Language.json.handle;
         }
       case EventType.GarbageDropTimeoutHandle:
-        return "超时处置";
+        return Language.json.timeout + Language.json.handle;
       default:
         return "";
     }
@@ -118,10 +125,9 @@ export class Language {
   static CameraState(state: CameraState) {
     switch (state) {
       case CameraState.DeviceError:
-        return "设备故障";
+        return Language.json.device + Language.json.fault;
       case CameraState.PlatformError:
-        return "平台故障";
-
+        return Language.json.platform + Language.json.fault;
       default:
         return "";
     }
@@ -130,14 +136,14 @@ export class Language {
   static ResourceType(type: ResourceType) {
     switch (type) {
       case ResourceType.Camera:
-        return "监控点";
+        return Language.json.monitor + Language.json.point;
       case ResourceType.EncodeDevice:
-        return "编码设备";
-      case ResourceType.IoTSensor:
-        return "物联网传感器";
-      case ResourceType.GarbageStation:
-        return "垃圾房";
+        return Language.json.encode + Language.json.device;
 
+      case ResourceType.IoTSensor:
+        return Language.json.IoT + Language.json.sensor;
+      case ResourceType.GarbageStation:
+        return Language.json.garbage + Language.json.room;
       default:
         return "";
     }
@@ -145,13 +151,13 @@ export class Language {
   static DivisionType(type: DivisionType) {
     switch (type) {
       case DivisionType.Province:
-        return "省";
+        return Language.json.DivisionType.Province;
       case DivisionType.City:
-        return "行政区划";
+        return Language.json.DivisionType.City;
       case DivisionType.County:
-        return "街道";
+        return Language.json.DivisionType.County;
       case DivisionType.Committees:
-        return "居委会";
+        return Language.json.DivisionType.Committees;
     }
   }
 
@@ -161,19 +167,21 @@ export class Language {
       const hours = parseInt((time / 60).toString());
       const minutes = parseInt((Math.ceil(time) % 60).toString());
 
-      result = hours ? hours + "小时" : "";
-      result += minutes ? minutes + "分钟" : "";
+      result = hours ? hours + Language.json.Time.hour : "";
+      result += minutes ? minutes + Language.json.Time.minute : "";
     } else {
       if (time.getHours() > 0) {
-        result = `${time.getHours()}小时${result}`;
+        result = `${time.getHours()}${Language.json.Time.hour}${result}`;
       }
       let minutes = time.getMinutes();
       if (time.getSeconds() > 0) {
         minutes++;
       }
-      result = `${result}${minutes}分钟`;
+      result = `${result}${minutes}${Language.json.Time.minute}`;
     }
 
     return result;
   }
+
+  static json = language;
 }

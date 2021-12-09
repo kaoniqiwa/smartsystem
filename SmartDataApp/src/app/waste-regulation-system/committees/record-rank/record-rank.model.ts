@@ -14,21 +14,49 @@ export class RecordRankViewModel {
   public get Title(): string {
     switch (this.EventType) {
       case EventType.IllegalDrop:
-        return "乱丢垃圾排名";
+        return Language.json.EventType.IllegalDrop + Language.json.rank;
+
       case EventType.MixedInto:
-        return "混合投放排名";
+        return Language.json.EventType.MixedInto + Language.json.rank;
       case EventType.GarbageVolume:
-        return "垃圾容量排名";
+        return (
+          Language.json.garbage + Language.json.volume + Language.json.rank
+        );
       case EventType.GarbageFull:
-        return "垃圾满溢排名";
+        return Language.json.garbage + Language.json.full + Language.json.rank;
       case EventType.GarbageDrop:
-        return "垃圾滞留投放点数量排名";
+        return (
+          Language.json.garbage +
+          Language.json.stay +
+          Language.json.station +
+          Language.json.number +
+          Language.json.rank
+        );
       case EventType.GarbageDropTimeout:
-        return "小包垃圾超时待处置排名";
+        return (
+          Language.json.small +
+          Language.json.garbage +
+          Language.json.timeout +
+          Language.json.wait +
+          Language.json.handle +
+          Language.json.rank
+        );
+
       case EventType.GarbageDropHandle:
-        return "小包垃圾已处置排名";
+        return (
+          Language.json.small +
+          Language.json.garbage +
+          Language.json.did +
+          Language.json.handle +
+          Language.json.rank
+        );
       case "Timer":
-        return "垃圾滞留时长排名";
+        return (
+          Language.json.garbage +
+          Language.json.stay +
+          Language.json.timer +
+          Language.json.rank
+        );
       default:
         return "";
     }

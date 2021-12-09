@@ -3,6 +3,7 @@ import {
   TableField,
 } from "./station-view-summary/garbage-full-history-sum-chart/business/statistic-table";
 import { HowellExcelJS } from "../../common/tool/hw-excel-js/hw-excel";
+import { Language } from "src/app/common/tool/language";
 
 export interface IXlsxFieldVal {}
 
@@ -44,7 +45,7 @@ export class StationSumHistoryXlsx extends HWExportXlsxStrategy {
         "平均滞留时长",
         "最大滞留时长",
         "总滞留时长",
-        "乱丢垃圾",
+        Language.json.EventType.IllegalDrop,
         "混合投放",
       ],
       toCellValue = (fieldStr: string) => {

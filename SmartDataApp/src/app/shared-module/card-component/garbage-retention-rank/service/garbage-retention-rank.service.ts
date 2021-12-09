@@ -57,7 +57,7 @@ export class GarbageRetentionRankService {
         // let hour = Math.floor(currentGarbageTime / 60);
         // let minute = currentGarbageTime - hour * 60;
         // let time =
-        //   hour == 0 ? minute + "分钟" : hour + "小时" + minute + "分钟";
+        //   hour == 0 ? minute + Language.json.Time.minute : hour + Language.json.Time.hour + minute + Language.json.Time.minute;
         let time = statistisc.CurrentGarbageTime >> 0;
 
         let count = statistisc.GarbageDropStationNumber;
@@ -115,7 +115,7 @@ export class GarbageRetentionRankService {
         // let hour = Math.floor(currentGarbageTime / 60);
         // let minute = currentGarbageTime - hour * 60;
         // let time =
-        //   hour == 0 ? minute + "分钟" : hour + "小时" + minute + "分钟";
+        //   hour == 0 ? minute + Language.json.Time.minute : hour + Language.json.Time.hour + minute + Language.json.Time.minute;
         let time = statistisc.CurrentGarbageTime >> 0;
 
         let count = statistisc.MaxGarbageCount;

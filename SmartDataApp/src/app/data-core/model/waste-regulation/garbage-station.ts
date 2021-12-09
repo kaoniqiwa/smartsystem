@@ -5,7 +5,7 @@ import { Exclude, Expose, Transform, Type } from "class-transformer";
 import { Gender, StationState } from "../enum";
 import { GisPoint } from "./division";
 import "reflect-metadata";
-import { transformDate } from "../transformer";
+import { transformDateTime } from "../transformer";
 /**投放点信息 */
 export class GarbageStation {
   /**垃圾房ID */
@@ -21,11 +21,11 @@ export class GarbageStation {
   /**描述信息(可选) */
   Description?: string;
   /**创建时间 */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   CreateTime: Date;
 
   /**更新事件 */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   UpdateTime: Date;
   /**GIS点位(可选) */
   GisPoint?: GisPoint;
@@ -41,7 +41,7 @@ export class GarbageStation {
   DryFull?: boolean;
   /**干垃圾满溢时间(可选) */
 
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   DryFullTime?: Date;
 
   /**干垃圾容积(可选)，单位：L */
@@ -52,7 +52,7 @@ export class GarbageStation {
   WetFull?: boolean;
   /**湿垃圾满溢时间(可选) */
 
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   WetFullTime?: Date;
 
   /**湿垃圾容积(可选)，单位：L */

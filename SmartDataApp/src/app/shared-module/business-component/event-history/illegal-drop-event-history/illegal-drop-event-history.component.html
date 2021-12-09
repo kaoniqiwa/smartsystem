@@ -22,7 +22,7 @@
     <div style="width: 80%; height: 80%; margin-left: 10%; margin-top: 6%">
       <ng-container *ngIf="tableService.playVideo">
         <hw-video-simple-card
-          [closeFn]="videoClose"
+          (closeFn)="videoClose($event)"
           [url]="tableService.playVideo.url"
           [WebUrl]="tableService.playVideo.WebUrl"
           [autostart]="true"

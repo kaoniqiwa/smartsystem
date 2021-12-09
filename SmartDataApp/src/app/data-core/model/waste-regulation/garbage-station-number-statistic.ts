@@ -1,7 +1,8 @@
 import { EventNumber } from "./event-number";
 import { StatisticTime } from "./division-number-statistic";
-import { Type } from "class-transformer";
-import { StationState } from "../enum";
+import { Transform, Type } from "class-transformer";
+import { StationState, TimeUnit } from "../enum";
+import { transformDate, transformDateTime } from "../transformer";
 
 /**垃圾房数量统计 */
 export class GarbageStationNumberStatistic {
@@ -90,25 +91,30 @@ export class GarbageStationNumberStatisticV2 {
 }
 
 export class GetGarbageStationStatisticNumbersParamsV2 {
-  BeginTime: Date | string; //开始时间
-  EndTime: Date | string; //结束时间
+  @Transform(transformDateTime)
+  BeginTime: Date; //开始时间
+  @Transform(transformDateTime)
+  EndTime: Date; //结束时间
   GarbageStationIds: string[]; //	垃圾房ID列表
-  TimeUnit: number; //	统计时间单位：
+  TimeUnit: TimeUnit; //	统计时间单位：
   //2-Day,3-Week,4-Month
   Asc: string[]; //升序排列的属性名称
   Desc: string[]; //降序排列的属性名称
 }
 
 export class GetGarbageStationStatisticGarbageCountsParams {
-  Date: Date | string;
+  @Transform(transformDate)
+  Date: Date;
   GarbageStationIds: string[]; //垃圾房ID列表
 }
 
 export class GarbageStationGarbageCountStatistic {
   Id: string; //	垃圾房ID
   Name: string; //	垃圾房名称
-  BeginTime: Date | string; //	开始时间
-  EndTime: Date | string; //结束时间
+  @Transform(transformDateTime)
+  BeginTime: Date; //	开始时间
+  @Transform(transformDateTime)
+  EndTime: Date; //结束时间
   GarbageCount: number; //	垃圾堆数量
   GarbageDuration: number; //	有垃圾时长，单位：分钟
   CleanDuration: number; //	无垃圾时长，单位：分钟

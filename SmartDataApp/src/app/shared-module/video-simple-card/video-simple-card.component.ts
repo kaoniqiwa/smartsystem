@@ -16,6 +16,10 @@ import {
 import { VideoMode, VideoSimpleModel } from "./video-simple";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { HowellUri } from "src/app/common/howell-uri";
+import {
+  UserConfigType,
+  UserDalService,
+} from "src/app/dal/user/user-dal.service";
 
 @Component({
   selector: "hw-video-simple-card",
@@ -26,6 +30,14 @@ import { HowellUri } from "src/app/common/howell-uri";
 export class VideoSimpleCardComponent
   implements OnInit, OnDestroy, AfterViewInit
 {
+  private _userId: string;
+  private get userId() {
+    if (!this._userId) {
+      this._userId = localStorage.getItem("userId");
+    }
+    return this._userId;
+  }
+
   mode: VideoMode;
 
   @ViewChild("iframe") iframe: ElementRef<HTMLIFrameElement>;
@@ -43,7 +55,8 @@ export class VideoSimpleCardComponent
   }
   @Input() cameraName: string;
   @Input() autostart: boolean;
-  @Input() closeFn: () => void;
+
+  @Output() closeFn: EventEmitter<void> = new EventEmitter();
   @Input() videoImgs: {
     id: string;
     imgSrc: string;
@@ -68,11 +81,40 @@ export class VideoSimpleCardComponent
     this._srcUrl = val;
   }
 
+  _ruleState: boolean;
+  async loadRuleState() {
+    try {
+      const strRule = await this.userDalService.getUserConfig(
+        this.userId,
+        UserConfigType.VideoRuleState
+      );
+      if (strRule) {
+        this._ruleState = JSON.parse(strRule);
+      }
+    } catch (ex) {
+      console.log("getRuleState error");
+    }
+  }
+  saveRuleState(state: boolean) {
+    const saveDB = async (userId) => {
+      const fault = await this.userDalService.editUserConfig(
+        userId,
+        UserConfigType.VideoRuleState,
+        state.toString()
+      );
+      if (fault && fault.FaultCode === 0) {
+        this._ruleState = state;
+      }
+    };
+    saveDB(this.userId);
+  }
+
   @Input()
   WebUrl: string;
 
   private _player: WSPlayerProxy;
   private get player(): WSPlayerProxy {
+    console.log("get player");
     if (!this.iframe || !this.iframe.nativeElement.src) return;
     if (!this._player) {
       this._player = new WSPlayerProxy(this.iframe.nativeElement);
@@ -87,11 +129,14 @@ export class VideoSimpleCardComponent
 
   @Input() videoWidth = "404px";
 
-  divId = "";
+  divId = "div" + this.guid;
 
   @Output() VideoPlayingEventListen: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(
+    private sanitizer: DomSanitizer,
+    private userDalService: UserDalService
+  ) {}
   ngAfterViewInit(): void {
     if (this.autostart) {
       this.play(this.WebUrl, this.url, this.cameraName);
@@ -185,21 +230,39 @@ export class VideoSimpleCardComponent
   }
 
   ngOnInit() {
-    this.divId = "div_" + this.guid;
+    this.loadRuleState();
+    this.VideoPlayingEventListen.subscribe((x) => {
+      this.eventRegist();
+    });
+  }
+
+  eventRegist() {
+    setTimeout(() => {
+      if (this.player) {
+        this.player.getPosition = (val: any) => {
+          if (val >= 1) {
+            this.playing = false;
+          }
+        };
+        this.player.onPlaying = () => {
+          setTimeout(() => {
+            if (this._ruleState !== undefined) {
+              this._player.changeRuleState(this._ruleState);
+            }
+          }, 1000);
+        };
+        this.player.onRuleStateChanged = (state: boolean) => {
+          this.saveRuleState(state);
+        };
+      } else {
+        this.eventRegist();
+      }
+    }, 100);
   }
 
   simpleVideoClick(id: string, name: string, time: Date | string) {
     this.playVideoToUrlFn(id, time, (webUrl, url) => {
       this.play(webUrl, url, name);
-      setTimeout(() => {
-        if (this.player) {
-          this.player.getPosition = (val: any) => {
-            if (val >= 1) {
-              this.playing = false;
-            }
-          };
-        }
-      }, 100);
     });
   }
 
@@ -238,8 +301,6 @@ export class VideoSimpleCardComponent
         }
       }
 
-      console.log(this.getSrc(webUrl, url, cameraName));
-
       this.srcUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
         this.getSrc(webUrl, url, cameraName)
       );
@@ -265,7 +326,7 @@ export class VideoSimpleCardComponent
       if (sc) {
         sc.parentElement.removeChild(sc);
       }
-      if (this.closeFn) this.closeFn();
+      this.closeFn.emit();
     }
   }
 
@@ -289,6 +350,7 @@ export class VideoSimpleCardComponent
 
   preview(event: Event) {
     let model = new VideoSimpleModel(this.url);
+    model.mode = VideoMode.live;
     let url = model.toString();
     this.play(this.WebUrl, url, this.cameraName, false);
   }

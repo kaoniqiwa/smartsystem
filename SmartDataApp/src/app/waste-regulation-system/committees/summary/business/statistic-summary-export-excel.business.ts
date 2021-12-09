@@ -166,7 +166,7 @@ export class StatisticSummaryExportExcelBusiness {
       this.row++;
       this.row = this.task.export("滞留任务处置", this.row);
       this.row++;
-      this.row = this.eventRatio.export("事件占比", this.row);
+      this.row = this.eventRatio.export(Language.json.event + "占比", this.row);
       this.row++;
       this.row = this.illegalDrop.export(
         Language.EventType(EventType.IllegalDrop),

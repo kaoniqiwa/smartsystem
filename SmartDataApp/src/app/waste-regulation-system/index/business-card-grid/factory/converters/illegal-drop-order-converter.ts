@@ -1,5 +1,6 @@
 import { ViewsModel } from "src/app/common/abstract/base-view";
 import { IConverter } from "src/app/common/interface/IConverter";
+import { Language } from "src/app/common/tool/language";
 import { EventType } from "src/app/data-core/model/enum";
 import { OrderTable } from "src/app/shared-module/card-component/order-table-card/order-table";
 import { EventDropOrderInfo } from "../../business/event-drop-order/data";
@@ -17,7 +18,7 @@ export class IllegalDropOrderConverter implements IConverter {
     output.pageSize = 1;
     output.pageIndex = 1;
     if (input instanceof EventDropOrderInfo) {
-      output.views[0].title = "乱扔垃圾排名";
+      output.views[0].title = "乱扔垃圾" + Language.json.rank;
       output.views[0].table = new Array();
 
       const sort = input.items.sort((a, b) => {
@@ -29,7 +30,8 @@ export class IllegalDropOrderConverter implements IConverter {
           name: x.division,
           subName: x.dropNum + "",
           subNameAfter: "起",
-          linkTipLabel: "查看事件记录",
+          linkTipLabel:
+            Language.json.see + Language.json.event + Language.json.record,
         });
       /**补空行 */
       const len = output.views[0].table.length;
@@ -40,7 +42,11 @@ export class IllegalDropOrderConverter implements IConverter {
             name: "-",
             subName: "0",
             subNameAfter: "起",
-            linkTipLabel: "查看事件记录",
+            linkTipLabel:
+              Language.json.see +
+              Language.json.event +
+              Language.json.record +
+              "",
           });
 
       if (input.dropList)

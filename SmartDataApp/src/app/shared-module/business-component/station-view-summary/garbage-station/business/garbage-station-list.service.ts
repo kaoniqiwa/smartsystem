@@ -57,7 +57,7 @@ export class BusinessService {
     const idV = id.split("&"),
       camera = this.cameras.find((x) => x.Id == idV[1]);
     const video = await this.requestVideoUrl(camera.Id);
-    this.playVideo = new PlayVideo(video.WebUrl, null, camera.Name);
+    this.playVideo = new PlayVideo(video.WebUrl, video.Url, camera.Name);
     this.playVideo.url = video.Url;
   };
 

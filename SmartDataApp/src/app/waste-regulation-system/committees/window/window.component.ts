@@ -21,10 +21,12 @@ export class WindowComponent implements OnInit {
   CloseButton = true;
 
   private _Style: any = {
-    width: "90%",
-    height: "90%",
+    width: "80%",
+    height: "80%",
     position: "absolute",
-    transform: "translate(5%, 5%)",
+    transform: "translate(-50%, -50%)",
+    top: "50%",
+    left: "50%",
   };
   public get Style(): any {
     return this._Style;

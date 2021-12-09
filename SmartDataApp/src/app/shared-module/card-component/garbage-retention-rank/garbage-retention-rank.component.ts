@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Language } from "src/app/common/tool/language";
 import { DivisionType, EventType } from "src/app/data-core/model/enum";
 import { DivisionBusinessService } from "src/app/waste-regulation-system/index/business-card-grid/division-business.service";
 import { GarbageStationSummaryViewPage } from "../../business-component/station-view-summary/view-helper";
@@ -56,7 +57,7 @@ export class GarbageRetentionRankComponent implements OnInit {
       {
         id: "retentionTime",
         content: "滞留时长",
-        title: "今日垃圾滞留时长排名",
+        title: Language.json.today + "垃圾滞留时长" + Language.json.rank,
       },
     ],
     [
@@ -64,7 +65,7 @@ export class GarbageRetentionRankComponent implements OnInit {
       {
         id: "retentionCount",
         content: "滞留数量",
-        title: "今日垃圾滞留投放点数量排名",
+        title: Language.json.today + "垃圾滞留投放点数量" + Language.json.rank,
       },
     ],
   ]);
@@ -95,7 +96,6 @@ export class GarbageRetentionRankComponent implements OnInit {
     });
   }
   private async _loadData() {
-    console.log(this._globalStoreService.divisionId);
     let divisionId = this._globalStoreService.divisionId;
     let divisionType = this._globalStoreService.divisionType;
     this.rankData = await this._garbageRetentionRankService.loadData(

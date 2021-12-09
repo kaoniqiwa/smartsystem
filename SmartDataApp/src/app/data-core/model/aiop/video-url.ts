@@ -1,5 +1,5 @@
 import { Transform } from "class-transformer";
-import { transformDate } from "../transformer";
+import { transformDateTime } from "../transformer";
 
 /**视频URL地址 */
 export class VideoUrl {
@@ -31,9 +31,9 @@ export class GetVodUrlParams {
   /**协议类型：rtmp, rtsp, hls, ws-flv, ws-ps */
   Protocol: string;
   /**开始时间 */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   BeginTime: Date;
   /**结束时间 */
-  @Transform(transformDate)
+  @Transform(transformDateTime)
   EndTime: Date;
 }

@@ -34,17 +34,16 @@ import {
   domSize,
 } from "../../../common/tool/jquery-help/jquery-help";
 import { ArrayPagination } from "../../../common/tool/tool.service";
-import { UserDalService } from "../../../dal/user/user-dal.service";
+import {
+  UserConfigType,
+  UserDalService,
+} from "../../../dal/user/user-dal.service";
 import { SessionUser } from "../../../common/tool/session-user";
 import { HWSPlayer } from "../../../common/hws-player";
 import {
   GalleryRollPageConfig,
   IGalleryRollPageConfig,
 } from "./gallery-roll-page.config";
-import { MessageBar } from "src/app/common/tool/message-bar";
-import { ResourceMediumRequestService } from "src/app/data-core/repuest/resources.service";
-import { GarbageStation } from "src/app/data-core/model/waste-regulation/garbage-station";
-import { Language } from "src/app/common/tool/language";
 @Component({
   selector: "hw-gallery-roll-page",
   templateUrl: "./gallery-roll-page.component.html",
@@ -126,7 +125,6 @@ export class GalleryRollPageComponent
     fn: null,
   };
   galleryHeight = "calc(100% - 46px - 60px)";
-  readonly interval_inspection_key = "99";
   user = new SessionUser();
   bigViewId = "";
   @ViewChild("iframe") iframe: ElementRef;
@@ -185,7 +183,7 @@ export class GalleryRollPageComponent
 
     var time = await this.userDalService.getUserConfig(
       this.user.id,
-      this.interval_inspection_key
+      UserConfigType.IntervalInspection
     );
     if (time) this.resetCarousel(parseInt(time));
     /**上来就抓图 */
@@ -240,7 +238,7 @@ export class GalleryRollPageComponent
     if (save)
       this.userDalService.editUserConfig(
         this.user.id,
-        this.interval_inspection_key,
+        UserConfigType.IntervalInspection,
         time + ""
       );
   }

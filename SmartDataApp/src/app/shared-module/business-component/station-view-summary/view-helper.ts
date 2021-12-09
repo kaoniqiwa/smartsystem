@@ -1,8 +1,8 @@
 export enum GarbageStationSummaryViewPage {
-  chart,
-  info,
-  sumChart,
-  analyzeChart,
+  chart = "chart",
+  info = "info",
+  sumChart = "sumChart",
+  analyzeChart = "analyzeChart",
   /**事件页面 */
-  event,
+  event = "event",
 }

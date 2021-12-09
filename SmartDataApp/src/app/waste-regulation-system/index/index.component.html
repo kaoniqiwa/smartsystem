@@ -129,7 +129,7 @@
         <ng-container *ngIf="divisionBusinessService.stationListView">
           <hw-garbage-station-summary
             [divisionsId]="GlobalStoreService.divisionId"
-            [PageIndex]="divisionBusinessService.GarbageStationSummaryPageIndex"
+            [viewsShow]="divisionBusinessService.GarbageStationSummaryPageIndex"
             [GarbageDropEventHistoryContentType]="
               divisionBusinessService.GarbageDropEventHistoryContentType
             "

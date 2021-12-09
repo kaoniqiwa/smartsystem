@@ -238,42 +238,36 @@ export class GarbageDropEventProcessComponent implements OnInit {
     }, 280);
   }
 
-  get reportTitle() {
-    enum ReportTypeEnum {
-      day = "日报表",
-      week = "周报表",
-      month = "月报表",
+  getReportTitle = (divisionId: string, reportType: ReportTypeEnum) => {
+    var title = "";
+    if (this.levelListPanel)
+      title =
+        this.dtp.nativeElement.value +
+        " " +
+        this.levelListPanel.selectedItem +
+        " " +
+        reportType;
+    else if (
+      this.businessManageService.viewDivisionType ==
+      this.businessManageService.viewDivisionTypeEnum.City
+    ) {
+      const dropItem = this.businessService.search.divisionsDropList.find(
+        (f) => f.id == divisionId
+      );
+      title =
+        this.dtp.nativeElement.value + " " + dropItem.name + " " + reportType;
     }
-    const sp = this.businessService.search.toSearchParam(),
-      reportType = ReportTypeEnum[sp.TimeUnit],
-      reportTitle = () => {
-        var title = "";
-        if (this.levelListPanel)
-          title =
-            this.dtp.nativeElement.value +
-            " " +
-            this.levelListPanel.selectedItem +
-            " " +
-            reportType;
-        else if (
-          this.businessManageService.viewDivisionType ==
-          this.businessManageService.viewDivisionTypeEnum.City
-        ) {
-          const dropItem = this.businessService.search.divisionsDropList.find(
-            (f) => f.id == sp.DivisionId
-          );
-          title =
-            this.dtp.nativeElement.value +
-            " " +
-            dropItem.name +
-            " " +
-            reportType;
-        }
-        return title;
-      };
+    return title;
+  };
+
+  get reportTitle() {
+    console.log("get reportTitle");
+
+    const sp = this.businessService.search.toSearchParam();
+    const reportType = ReportTypeEnum[sp.TimeUnit];
 
     return {
-      title: reportTitle(),
+      title: this.getReportTitle(sp.DivisionId, reportType),
     };
   }
 
@@ -296,4 +290,9 @@ export class GarbageDropEventProcessComponent implements OnInit {
       xlsxCt.export();
     }
   }
+}
+enum ReportTypeEnum {
+  day = "日报表",
+  week = "周报表",
+  month = "月报表",
 }

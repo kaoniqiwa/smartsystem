@@ -6,6 +6,7 @@ import {
   ViewsModel,
 } from "src/app/common/abstract/base-view";
 import { IViewEvent } from "src/app/common/interface/IViewEvent";
+import { GlobalStoreService } from "../../global-store.service";
 import {
   GarbageTaskNumberCardData,
   GarbageTaskNumberCardDatas,
@@ -95,6 +96,10 @@ export class GarbageTaskNumberCardComponent
     // this.timeSpan.onInterval = () => {};
     // 隔一段时间切换
     // this.timeSpan.run();
+    GlobalStoreService.interval.subscribe((x) => {
+      this.loadDatas(new ViewsModel<GarbageTaskNumberCardDatas>());
+      this.dataChanged();
+    });
   }
 
   onRunning() {}

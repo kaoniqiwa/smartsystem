@@ -1,5 +1,6 @@
 import { ViewsModel } from "src/app/common/abstract/base-view";
 import { IConverter } from "src/app/common/interface/IConverter";
+import { Language } from "src/app/common/tool/language";
 import { EventType } from "src/app/data-core/model/enum";
 import { OrderTable } from "src/app/shared-module/card-component/order-table-card/order-table";
 import { EventDropOrderInfo } from "../../business/event-drop-order/data";
@@ -19,8 +20,8 @@ export class DropOrderConverter implements IConverter {
     if (input instanceof EventDropOrderInfo) {
       output.views[0].title =
         input.eventType == EventType.IllegalDrop
-          ? "今日乱扔垃圾排名"
-          : "今日混合投放排名";
+          ? Language.json.today + "乱扔垃圾" + Language.json.rank
+          : Language.json.today + "混合投放" + Language.json.rank;
       output.views[0].table = new Array();
 
       const sort = input.items.sort((a, b) => {
@@ -30,9 +31,10 @@ export class DropOrderConverter implements IConverter {
         output.views[0].table.push({
           id: x.id,
           name: x.division,
-          subName: x.dropNum + "",
+          subName: x.dropNum.toString(),
           subNameAfter: "起",
-          linkTipLabel: "查看事件记录",
+          linkTipLabel:
+            Language.json.see + Language.json.event + Language.json.record,
         });
       /**补空行 */
       const len = output.views[0].table.length;
@@ -43,7 +45,8 @@ export class DropOrderConverter implements IConverter {
             name: "-",
             subName: "0",
             subNameAfter: "起",
-            linkTipLabel: "查看事件记录",
+            linkTipLabel:
+              Language.json.see + Language.json.event + Language.json.record,
           });
 
       output.views[0].dropListV1 = {

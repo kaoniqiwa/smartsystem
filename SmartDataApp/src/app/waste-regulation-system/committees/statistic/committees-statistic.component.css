@@ -24,6 +24,10 @@
   height: calc(100% + 2px);
 }
 
+.statistic-item:hover>.background {
+  background: linear-gradient(to left, #fff, #fff) left top no-repeat, linear-gradient(to bottom, #fff, #fff) left top no-repeat, linear-gradient(to left, #fff, #fff) right top no-repeat, linear-gradient(to bottom, #fff, #fff) right top no-repeat, linear-gradient(to left, #fff, #fff) left bottom no-repeat, linear-gradient(to bottom, #fff, #fff) left bottom no-repeat, linear-gradient(to left, #fff, #fff) right bottom no-repeat, linear-gradient(to left, #fff, #fff) right bottom no-repeat;
+}
+
 
 .statistic-item>.background>.inner {
   padding: 10px 5px 10px 5px;

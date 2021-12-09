@@ -74,25 +74,11 @@ export class GarbageDropEventHistoryComponent implements OnInit {
     this.contentTypeView = false;
   }
 
-  _handle?: boolean;
-  public get handle(): boolean | undefined {
-    return this._handle;
-  }
   @Input()
-  public set handle(v: boolean | undefined) {
-    this._handle = v;
-    console.log("handle", v);
-  }
+  handle?: boolean;
 
-  private _timeout?: boolean;
-  public get timeout(): boolean | undefined {
-    return this._timeout;
-  }
   @Input()
-  public set timeout(v: boolean | undefined) {
-    this._timeout = v;
-    console.log("timeout", v);
-  }
+  timeout?: boolean;
 
   constructor(
     private tableService: GarbageDropEventHistoryBusinessService,

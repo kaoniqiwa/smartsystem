@@ -216,6 +216,8 @@ export enum UserResourceType {
 export enum TimeUnit {
   Hour = 1,
   Day = 2,
+  Week = 3,
+  Month = 4,
 }
 export enum SmsProtocolType {
   aliyun = "aliyun",

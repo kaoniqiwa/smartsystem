@@ -43,6 +43,7 @@ import { SessionUser } from "../../../common/tool/session-user";
 import { GetGarbageStationStatisticNumbersParams } from "../../../data-core/model/waste-regulation/garbage-station-number-statistic";
 import { StationState } from "../../../data-core/model/enum";
 import { EnumHelper } from "src/app/common/tool/enum-helper";
+import { Language } from "src/app/common/tool/language";
 
 declare var $: any;
 
@@ -303,7 +304,11 @@ export class AMapComponent implements AfterViewInit, OnInit {
           (Math.ceil(data.CurrentGarbageTime) % 60).toString()
         );
 
-        opt.text = hours ? hours + "小时" : minutes ? minutes + "分钟" : "";
+        opt.text = hours
+          ? hours + Language.json.Time.hour
+          : minutes
+          ? minutes + Language.json.Time.minute
+          : "";
 
         const color = new CesiumDataController.Color();
         color.rgb = "#36e323";

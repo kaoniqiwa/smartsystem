@@ -5,6 +5,7 @@ import {
   TableField,
 } from "./station-view-summary/garbage-full-history-sum-chart/business/statistic-table";
 import { TaskTableField } from "./station-view-summary/garbage-drop-event-history/business/task-table";
+import { Language } from "src/app/common/tool/language";
 
 export interface ICsvFieldVal {}
 
@@ -52,13 +53,13 @@ export class StationSumHistoryCsv extends HWExportCsvStrategy {
     var no = 1;
     csvDataMap.set(COLNAME, [
       "序号",
-      "名称",
+      Language.json.name,
       "达标率",
       "平均滞留时长",
       "最大滞留时长",
       "总滞留时长",
-      "乱丢垃圾",
-      "混合投放",
+      Language.json.EventType.IllegalDrop,
+      Language.json.EventType.MixedInto,
     ]);
     csvDataMap.set(TITLEKEY, [title]);
     (fieldVal as Array<TableField>).map((v: TableField) => {

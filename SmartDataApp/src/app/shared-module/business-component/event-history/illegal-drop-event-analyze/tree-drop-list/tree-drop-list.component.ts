@@ -48,7 +48,9 @@ export class TreeDropListComponent implements OnInit {
   selectedItemFn: (item: FlatNode, lastNode: boolean) => void;
 
   selectedItemClick(selection: CustomTreeSelection) {
-    this.selectedTexts = new Array();
+    if (!this.selectedTexts) {
+      this.selectedTexts = new Array();
+    }
     let item = selection.current;
     if (
       item.checked &&

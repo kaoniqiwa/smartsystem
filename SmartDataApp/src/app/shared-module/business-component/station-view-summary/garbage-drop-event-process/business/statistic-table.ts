@@ -21,6 +21,7 @@ import {
 } from "../../../../../common/tool/tool.service";
 import { OrderByEnum } from "../../../../custom-table/custom-table-model";
 import "../../../../../common/string/hw-string";
+import { Language } from "src/app/common/tool/language";
 export class StatisticTable extends BusinessTable implements IConverter {
   dataSource = new CustomTableArgs<any>({
     hasTableOperationTd: false,
@@ -103,7 +104,7 @@ export class StatisticTable extends BusinessTable implements IConverter {
         tdInnerAttrName: "garbageDuration",
       }),
       new TableAttr({
-        HeadTitleName: "乱丢垃圾",
+        HeadTitleName: Language.json.EventType.IllegalDrop,
         tdWidth: "13.7%",
         iocnClassLabel: true,
         orderBy: {
@@ -149,7 +150,7 @@ export class StatisticTable extends BusinessTable implements IConverter {
         const hm = ToHoursMinutes(val);
         return val > 60
           ? `${hm.hours}小时${hm.minutes}分钟`
-          : hm.minutes + "分钟";
+          : hm.minutes + Language.json.Time.minute;
       },
       maxPercentage = (val: number) => {
         return val >= 1000 ? "-" : val + "%";
