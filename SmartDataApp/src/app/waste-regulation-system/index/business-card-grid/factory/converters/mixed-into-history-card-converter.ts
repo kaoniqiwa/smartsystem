@@ -33,7 +33,7 @@ export class MixedIntoHistoryCardConverter implements IConverter {
   }
 
   private joinPart(t1: LineECharts) {
-    t1.title = Language.json.today + "混合投放";
+    t1.title = Language.json.today + Language.json.EventType.MixedInto;
     t1.option = new LineOption();
     t1.option.xAxisData = [];
     for (let i = 1; i <= 12; i++) {

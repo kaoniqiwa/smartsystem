@@ -82,7 +82,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
   @Output()
   /**
-   * ContextMenu 乱扔垃圾事件
+   * ContextMenu 垃圾落地事件
    *
    * @type {EventEmitter<string>}
    * @memberof AMapComponent
@@ -436,7 +436,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
       this.LabelVisibility = false;
 
       this.client.ContextMenu.AddItem(
-        '<i class="howell-icon-nolittering" style="font-size: 18px"></i> 乱扔垃圾记录',
+        `<i class="howell-icon-nolittering" style="font-size: 18px"></i> ${Language.json.EventType.IllegalDrop}${Language.json.record}`,
         async (id: string) => {
           this.client.Events.OnElementsClicked(null);
           if (this.ContextMenuIllegalDropClickedEvent) {
@@ -451,7 +451,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         0
       );
       this.client.ContextMenu.AddItem(
-        '<i class="howell-icon-mixlittering" style="font-size: 18px"></i> 混合投放记录',
+        `<i class="howell-icon-mixlittering" style="font-size: 18px"></i> ${Language.json.EventType.MixedInto}${Language.json.record}`,
         async (id: string) => {
           this.client.Events.OnElementsClicked(null);
           if (this.ContextMenuMixedIntoClickedEvent) {
@@ -466,7 +466,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         1
       );
       this.client.ContextMenu.AddItem(
-        '<i class="howell-icon-garbagebags" style="font-size: 18px"></i> 小包垃圾落地',
+        `<i class="howell-icon-garbagebags" style="font-size: 18px"></i> ${Language.json.small}${Language.json.garbage}${Language.json.stay}`,
         async (id: string) => {
           this.client.Events.OnElementsClicked(null);
           if (this.ContextMenuGarbageCountClickedEvent) {
@@ -482,7 +482,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
       );
 
       this.client.ContextMenu.AddItem(
-        '<i class="howell-icon-Subsystem" style="font-size: 18px"></i> 投放点信息',
+        `<i class="howell-icon-Subsystem" style="font-size: 18px"></i> ${Language.json.station}${Language.json.info}`,
         async (id: string) => {
           this.client.Events.OnElementsClicked(null);
           const status = document.getElementsByClassName(
@@ -503,7 +503,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         3
       );
       this.client.ContextMenu.AddItem(
-        '<i class="howell-icon-video" style="font-size: 18px"></i> 投放点视频',
+        `<i class="howell-icon-video" style="font-size: 18px"></i> ${Language.json.station}${Language.json.video}`,
         (id: string) => {
           this.showGarbageStationCameraList(id);
         },

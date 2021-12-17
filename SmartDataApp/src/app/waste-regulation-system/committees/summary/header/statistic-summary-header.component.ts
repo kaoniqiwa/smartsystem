@@ -7,6 +7,7 @@ import {
   Output,
   SimpleChanges,
 } from "@angular/core";
+import { Language } from "src/app/common/tool/language";
 import { ICommitteesComponent } from "../../interface/committees-component.interface";
 import { ICommitteesConverter } from "../../interface/committees-converter.interface";
 import { IEventTrigger } from "../../interface/committees-event-trigger.interface";
@@ -29,6 +30,8 @@ export class StatisticSummaryHeaderComponent
     >,
     IEventTrigger<StatisticSummaryHeaderViewModel>
 {
+  Language = Language;
+
   view: StatisticSummaryHeaderViewModel = new StatisticSummaryHeaderViewModel();
 
   @Input()

@@ -1,6 +1,6 @@
 import { Point } from "../point";
 /**归一化坐标点 */
-export interface EventDataObject {
+export class EventDataObject {
   /**目标ID */
   Id: string;
   /**目标所在的归一化多边形 */

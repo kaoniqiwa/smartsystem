@@ -62,7 +62,7 @@ export class DivisionGarbageSpecificationConverter implements IConverter {
       hint.tag = HintTag.FullStation;
       hints.push(hint);
       hint = new Hint();
-      hint.title = Language.json.EventType.IllegalDrop;
+      hint.title = Language.json.EventType.IllegalDrop + Language.json.event;
       hint.linkTipLabel =
         Language.json.see +
         Language.json.EventType.IllegalDrop +
@@ -78,7 +78,7 @@ export class DivisionGarbageSpecificationConverter implements IConverter {
         Language.json.EventType.MixedInto +
         Language.json.event +
         Language.json.record;
-      hint.title = Language.json.EventType.MixedInto;
+      hint.title = Language.json.EventType.MixedInto + Language.json.event;
       hint.tag = HintTag.MixedInto;
       hint.subTitleColor = ColorEnum["light-purple-text"];
       hint.subTitle = input.hybridPushNumber.toString();

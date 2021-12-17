@@ -15,6 +15,8 @@ import { GarbageStationRequestService } from "../../../../data-core/repuest/garb
   styleUrls: ["./point-info-panel.component.css"],
 })
 export class PointInfoPanelComponent implements OnInit {
+  Language = Language;
+
   visibility: boolean;
 
   private committeeName: string = ""; // 居委会名称

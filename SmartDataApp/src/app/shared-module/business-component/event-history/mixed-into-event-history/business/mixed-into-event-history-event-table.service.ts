@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { CustomTableEvent } from "../../../../custom-table/custom-table-event";
 import {
   EventTable,
-  MixedIntoEventsRecord,
+  MixedIntoEventRecordList,
 } from "./mixed-into-event-history-event-table";
 import { SearchControl } from "../../search";
 import "../../../../../common/string/hw-string";
@@ -46,6 +46,8 @@ import { EnumHelper } from "../../../../../common/tool/enum-helper";
 import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 import { MessageBar } from "../../../../../common/tool/message-bar";
 import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
+import { Flags } from "src/app/data-core/model/flags";
+import { CameraUsage } from "src/app/data-core/model/enum";
 @Injectable()
 export class EventTableService extends ListAttribute {
   dataSource_ = new Array<MixedIntoEventRecord>();
@@ -144,11 +146,11 @@ export class EventTableService extends ListAttribute {
       if (event == null)
         event = this.allDataSource.find((x) => x.EventId == id);
       const station = this.garbageStations.find(
-          (x) => x.Id == event.Data.StationId
-        ),
-        eh = new EnumHelper();
+        (x) => x.Id == event.Data.StationId
+      );
       this.videoImgs = new Array();
       this.playVideoViewTitle = station.Name;
+
       this.videoImgs.push({
         src: ResourceMediumRequestService.getJPG(event.ImageUrl),
         id: event.ResourceId,
@@ -157,13 +159,15 @@ export class EventTableService extends ListAttribute {
       });
       if (station.Cameras)
         station.Cameras.map((m) => {
-          if (eh.cameraUsage.outside.indexOf(m.CameraUsage) > -1)
+          let flags = new Flags(m.CameraUsage);
+          if (flags.contains(CameraUsage.MixedInto)) {
             this.videoImgs.push({
               src: ResourceMediumRequestService.getJPG(m.ImageUrl),
               id: m.Id,
               name: m.Name,
               time: event.EventTime,
             });
+          }
         });
       this.videoDownLoad = null;
     };
@@ -193,8 +197,7 @@ export class EventTableService extends ListAttribute {
   /**多视频文件 列表 */
   appendVideoList(id: string) {
     const event = this.eventTable.findEventFn(id),
-      station = this.garbageStations.find((x) => x.Id == event.Data.StationId),
-      eh = new EnumHelper();
+      station = this.garbageStations.find((x) => x.Id == event.Data.StationId);
     this.videoDownLoad = new Array();
     this.videoDownLoad.push({
       stationId: station.Id,
@@ -204,7 +207,8 @@ export class EventTableService extends ListAttribute {
       eventId: id,
     });
     station.Cameras.map((m) => {
-      if (eh.cameraUsage.outside.indexOf(m.CameraUsage) > -1) {
+      let flags = new Flags(m.CameraUsage);
+      if (flags.contains(CameraUsage.MixedInto)) {
         this.videoDownLoad.push({
           stationId: station.Id,
           cameraId: m.Id,
@@ -288,7 +292,7 @@ export class EventTableService extends ListAttribute {
       const response = await this.eventRequestService.list(
         this.getRequsetParam(pageIndex, this.search)
       );
-      let data = new MixedIntoEventsRecord();
+      let data = new MixedIntoEventRecordList();
       data.items = response.Data.sort((a, b) => {
         return "".naturalCompare(a.EventTime, b.EventTime);
       });
@@ -310,7 +314,7 @@ export class EventTableService extends ListAttribute {
       const response = await this.eventRequestService.list(
         this.getRequsetParam(pageIndex, this.search, 15)
       );
-      let data = new MixedIntoEventsRecord();
+      let data = new MixedIntoEventRecordList();
       data.items = response.Data.sort((a, b) => {
         return "".naturalCompare(a.EventTime, b.EventTime);
       });
@@ -328,7 +332,7 @@ export class EventTableService extends ListAttribute {
         this.getRequsetParam(pageIndex, this.search)
       );
 
-      let data = new MixedIntoEventsRecord();
+      let data = new MixedIntoEventRecordList();
       data.items = response.Data.sort((a, b) => {
         return "".naturalCompare(a.EventTime, b.EventTime);
       });
@@ -347,7 +351,7 @@ export class EventTableService extends ListAttribute {
         this.getRequsetParam(pageIndex, this.search)
       );
 
-      let data = new MixedIntoEventsRecord();
+      let data = new MixedIntoEventRecordList();
       data.items = response.Data.sort((a, b) => {
         return "".naturalCompare(a.EventTime, b.EventTime);
       });
@@ -363,7 +367,7 @@ export class EventTableService extends ListAttribute {
     const response = await this.eventRequestService.list(
       this.getRequsetParam(1, this.search, new ListAttribute().maxSize)
     );
-    let data = new MixedIntoEventsRecord();
+    let data = new MixedIntoEventRecordList();
     data.items = response.Data.sort((a, b) => {
       return "".naturalCompare(a.EventTime, b.EventTime);
     });

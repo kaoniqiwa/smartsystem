@@ -116,7 +116,7 @@ export class BusinessService extends ListAttribute {
         s.ClassType == CategoryNameEnum.IllegalDrop ||
         s.ClassType == CategoryNameEnum.MixedInto
       )
-        return v + "起";
+        return v + Language.json.Suffix.event;
       else if (s.ClassType == CategoryNameEnum.GarbageRatio) return v + "分";
       else return v + Language.json.Time.minute;
     };
@@ -241,7 +241,7 @@ export class BusinessService extends ListAttribute {
         s.ClassType == CategoryNameEnum.IllegalDrop ||
         s.ClassType == CategoryNameEnum.MixedInto
       )
-        return v + "起";
+        return v + Language.json.Suffix.event;
       else if (s.ClassType == CategoryNameEnum.GarbageRatio) return v + "分";
       else return v + Language.json.Time.minute;
     };
@@ -474,14 +474,14 @@ export class BusinessService extends ListAttribute {
               val.EventNumbers,
               EventType.IllegalDrop
             ).DayNumber;
-            dataUnit = "起";
+            dataUnit = Language.json.Suffix.event;
             break;
           case CategoryNameEnum.MixedInto:
             td[i].val = findIllegalDrop(
               val.EventNumbers,
               EventType.MixedInto
             ).DayNumber;
-            dataUnit = "起";
+            dataUnit = Language.json.Suffix.event;
             break;
           default:
             break;

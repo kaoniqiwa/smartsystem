@@ -17,6 +17,7 @@ import { HowellExcelJS } from "../../../../common/tool/hw-excel-js/hw-excel";
 import { HowellCSV } from "../../../../common/tool/hw-excel-js/hw-csv";
 import { TITLEKEY, COLNAME } from "../../../../common/tool/hw-excel-js/data";
 import { GarbageStationSummaryViewPage } from "../view-helper";
+import { Language } from "src/app/common/tool/language";
 @Component({
   selector: "hw-statistic-garbage-analyze",
   templateUrl: "./statistic-garbage-analyze.component.html",
@@ -24,6 +25,7 @@ import { GarbageStationSummaryViewPage } from "../view-helper";
   providers: [BusinessService, GarbageStationDao],
 })
 export class StatisticGarbageAnalyzeComponent implements OnInit {
+  Language = Language;
   @Output() OtherViewEvent = new EventEmitter<GarbageStationSummaryViewPage>();
 
   @ViewChild(DateTimePickerDirective)

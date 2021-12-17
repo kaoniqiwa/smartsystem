@@ -18,7 +18,8 @@ export class IllegalDropOrderConverter implements IConverter {
     output.pageSize = 1;
     output.pageIndex = 1;
     if (input instanceof EventDropOrderInfo) {
-      output.views[0].title = "乱扔垃圾" + Language.json.rank;
+      output.views[0].title =
+        Language.json.EventType.IllegalDrop + Language.json.rank;
       output.views[0].table = new Array();
 
       const sort = input.items.sort((a, b) => {
@@ -29,7 +30,7 @@ export class IllegalDropOrderConverter implements IConverter {
           id: x.id,
           name: x.division,
           subName: x.dropNum + "",
-          subNameAfter: "起",
+          subNameAfter: Language.json.Suffix.event,
           linkTipLabel:
             Language.json.see + Language.json.event + Language.json.record,
         });
@@ -41,7 +42,7 @@ export class IllegalDropOrderConverter implements IConverter {
             id: "",
             name: "-",
             subName: "0",
-            subNameAfter: "起",
+            subNameAfter: Language.json.Suffix.event,
             linkTipLabel:
               Language.json.see +
               Language.json.event +

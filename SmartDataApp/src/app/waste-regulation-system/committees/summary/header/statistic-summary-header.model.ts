@@ -12,7 +12,7 @@ export class StatisticSummaryHeaderViewModel {
   GarbageTimeHour: number = 0;
   /** 垃圾滞留时长(分钟) */
   GarbageTimeMinute: number = 0;
-  /** 乱丢垃圾总数量 */
+  /** 垃圾落地总数量 */
   IllegalDrop: number = 0;
   /** 混合投放总数量 */
   MixedInto: number = 0;

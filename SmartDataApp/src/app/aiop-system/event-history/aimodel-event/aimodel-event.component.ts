@@ -1,41 +1,41 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { PageListMode } from '../../../common/tool/enum-helper';
-import { ImageDesc } from '../../../shared-module/image-desc-card/image-desc';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { Language } from "src/app/common/tool/language";
+import { PageListMode } from "../../../common/tool/enum-helper";
+import { ImageDesc } from "../../../shared-module/image-desc-card/image-desc";
 import { EventTableService } from "./business/event-table.service";
 @Component({
-  selector: 'app-aimodel-event',
-  templateUrl: './aimodel-event.component.html',
-  styleUrls: ['./aimodel-event.component.styl'],
-  providers:[EventTableService]
+  selector: "app-aimodel-event",
+  templateUrl: "./aimodel-event.component.html",
+  styleUrls: ["./aimodel-event.component.styl"],
+  providers: [EventTableService],
 })
 export class AIModelEventComponent implements OnInit {
-
+  Language = Language;
   listTypeView = false;
   listMode = PageListMode.table;
   pageListMode = PageListMode;
 
   startDate = (b: Date) => {
     this.tableService.search.formBeginDate = b;
-  }
+  };
 
   endDate = (b: Date) => {
     this.tableService.search.formEndDate = b;
-  }
+  };
 
   galleryTargetFn = () => {
     this.tableService.galleryTargetView.galleryTarget = null;
-  }
+  };
 
   listGalleryTargetFn = (val: ImageDesc) => {
     const event = this.tableService.eventTable.findEventFn(val.id);
     this.tableService.galleryTargetView.initGalleryTarget(event);
-  }
+  };
 
   videoClose = () => {
     this.tableService.playVideo = null;
-  }
-  constructor(private tableService: EventTableService) {
-  }
+  };
+  constructor(private tableService: EventTableService) {}
 
   async ngOnInit() {
     await this.tableService.getAIModels();
@@ -46,15 +46,23 @@ export class AIModelEventComponent implements OnInit {
   async initTableList() {
     if (this.listMode == PageListMode.table)
       await this.tableService.requestData(1, (page) => {
-        this.tableService.eventTable.initPagination(page, async (index) => {
-          await this.tableService.requestData(index);
-        },false);
+        this.tableService.eventTable.initPagination(
+          page,
+          async (index) => {
+            await this.tableService.requestData(index);
+          },
+          false
+        );
       });
     else if (this.listMode == PageListMode.list)
       await this.tableService.requestDataX(1, (page) => {
-        this.tableService.eventCards.initPagination(page, async (index) => {
-          await this.tableService.requestDataX(index);
-        },false);
+        this.tableService.eventCards.initPagination(
+          page,
+          async (index) => {
+            await this.tableService.requestDataX(index);
+          },
+          false
+        );
       });
   }
 
@@ -65,11 +73,9 @@ export class AIModelEventComponent implements OnInit {
     this.initTableList();
   }
 
-
   async search() {
     this.tableService.search.state = true;
     await this.initTableList();
     await this.tableService.allEventsRecordData();
   }
-
 }

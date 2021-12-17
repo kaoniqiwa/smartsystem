@@ -1,5 +1,6 @@
 import { DatePipe } from "@angular/common";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Language } from "src/app/common/tool/language";
 import { EventType } from "src/app/data-core/model/enum";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
 import { EventNumberStatistic } from "src/app/data-core/model/waste-regulation/division-event-numbers";
@@ -31,6 +32,7 @@ export class CommitteesHistroyTableComponent
       >[]
     >
 {
+  Language = Language;
   headWidths = ["10%", "60%", "15%", "calc(15% - 8px)", "8px"];
   bodyWidths = ["10%", "60%", "15%", "15%"];
 

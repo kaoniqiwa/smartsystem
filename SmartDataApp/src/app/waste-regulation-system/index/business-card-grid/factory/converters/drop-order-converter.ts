@@ -20,8 +20,12 @@ export class DropOrderConverter implements IConverter {
     if (input instanceof EventDropOrderInfo) {
       output.views[0].title =
         input.eventType == EventType.IllegalDrop
-          ? Language.json.today + "乱扔垃圾" + Language.json.rank
-          : Language.json.today + "混合投放" + Language.json.rank;
+          ? Language.json.today +
+            Language.json.EventType.IllegalDrop +
+            Language.json.rank
+          : Language.json.today +
+            Language.json.EventType.MixedInto +
+            Language.json.rank;
       output.views[0].table = new Array();
 
       const sort = input.items.sort((a, b) => {
@@ -32,7 +36,7 @@ export class DropOrderConverter implements IConverter {
           id: x.id,
           name: x.division,
           subName: x.dropNum.toString(),
-          subNameAfter: "起",
+          subNameAfter: Language.json.Suffix.event,
           linkTipLabel:
             Language.json.see + Language.json.event + Language.json.record,
         });
@@ -44,15 +48,15 @@ export class DropOrderConverter implements IConverter {
             id: "",
             name: "-",
             subName: "0",
-            subNameAfter: "起",
+            subNameAfter: Language.json.Suffix.event,
             linkTipLabel:
               Language.json.see + Language.json.event + Language.json.record,
           });
 
       output.views[0].dropListV1 = {
         listNodes: [
-          { id: "IllegalDrop", name: "乱扔垃圾" },
-          { id: "MixedInto", name: "混合投放" },
+          { id: "IllegalDrop", name: Language.json.EventType.IllegalDrop },
+          { id: "MixedInto", name: Language.json.EventType.MixedInto },
         ],
         fontSize: "18px",
         defaultId: "IllegalDrop",

@@ -41,13 +41,14 @@ export class IndexService {
     const model = new OrderTable();
     const view = new ViewsModel();
     view.views = [model];
-    model.title = "乱丢垃圾行为TOP10";
+    model.title =
+      Language.json.EventType.IllegalDrop + Language.json.behavior + "TOP10";
     model.table = new Array();
     for (let i = 0; i < 10; i++)
       model.table.push({
         id: "",
         name: "-",
-        subNameAfter: "起",
+        subNameAfter: Language.json.Suffix.event,
         subName: "0",
         linkTipLabel:
           Language.json.see + Language.json.event + Language.json.record,

@@ -135,7 +135,7 @@ export class DivisionBusinessService {
     this.clearEventView();
   }
 
-  /**显示乱扔垃圾view */
+  /**显示垃圾落地view */
   illegalDrop(divisionsId: string) {
     this.illegalDropMode = new TableFillMode(
       "illegal-drop-event-history",

@@ -47,6 +47,7 @@ export class GalleryTargetView {
         page.next.item.Data.Objects[0].Confidence + "",
         enlargeImage,
         page.next.item.Data.Objects,
+
         page.next.item.EventId,
         this.toDownLoadImgName(page.next.item)
       );
@@ -59,6 +60,7 @@ export class GalleryTargetView {
         page.prev.item.Data.Objects[0].Confidence + "",
         enlargeImage,
         page.prev.item.Data.Objects,
+
         page.prev.item.EventId,
         this.toDownLoadImgName(page.prev.item)
       );

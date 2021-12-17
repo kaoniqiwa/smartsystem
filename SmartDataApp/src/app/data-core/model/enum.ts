@@ -101,7 +101,7 @@ export enum DivisionType {
  */
 export enum EventType {
   /**
-   * 	乱扔垃圾事件	1
+   * 	垃圾落地事件	1
    */
   IllegalDrop = 1,
   /**
@@ -162,11 +162,12 @@ export enum StationState {
   Error = 2,
 }
 export enum CameraUsage {
+  None = 0,
   /** 容量检测 */
   Volume = 1,
   /**混合投放 */
   MixedInto = 2,
-  /**乱扔垃圾 */
+  /**垃圾落地 */
   IllegalDrop = 3,
   /**垃圾满溢 */
   GarbageFull = 4,

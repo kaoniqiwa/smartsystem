@@ -40,9 +40,16 @@
       <div class="suffix">分</div>
     </div>
     <div class="right">
+      <!-- 查看垃圾滞留投放点信息 -->
       <div
         class="item"
-        title="查看垃圾滞留投放点信息"
+        [title]="
+          Language.json.see +
+          Language.json.garbage +
+          Language.json.stay +
+          Language.json.station +
+          Language.json.info
+        "
         (click)="onGarbageCountClicked()"
       >
         <div><i class="howell-icon-garbagebags"></i></div>
@@ -53,7 +60,12 @@
       </div>
       <div
         class="item"
-        title="查看乱丢垃圾事件记录"
+        [title]="
+          Language.json.see +
+          Language.json.EventType.IllegalDrop +
+          Language.json.event +
+          Language.json.record
+        "
         (click)="onIllegalDropClicked()"
       >
         <div><i class="howell-icon-nolittering"></i></div>
@@ -61,9 +73,15 @@
           IllegalDropCount
         }}</a>
       </div>
+      <!-- "查看混合投放事件记录" -->
       <div
         class="item"
-        title="查看混合投放事件记录"
+        [title]="
+          Language.json.see +
+          Language.json.EventType.MixedInto +
+          Language.json.event +
+          Language.json.record
+        "
         (click)="onMixedIntoClicked()"
       >
         <div><i class="howell-icon-mixlittering"></i></div>
@@ -100,7 +118,7 @@
           (click)="onIllegalDropClicked()"
         >
           <div><i class="howell-icon-nolittering"></i></div>
-          <!-- <div>乱丢垃圾</div> -->
+          <!-- <div>{{Language.json.EventType.IllegalDrop}}</div> -->
           <a class="hw-link-underline value powder-red-text a-text">{{
             IllegalDropCount
           }}</a>

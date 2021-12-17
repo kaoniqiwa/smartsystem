@@ -28,6 +28,8 @@ import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resource
 import { DivisionListView } from "../../../event-history/division-list-view";
 import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
 import { Language } from "src/app/common/tool/language";
+import { Flags } from "src/app/data-core/model/flags";
+import { CameraUsage } from "src/app/data-core/model/enum";
 
 @Injectable()
 export class EventChartService extends ListAttribute {
@@ -105,7 +107,7 @@ export class EventChartService extends ListAttribute {
   }[];
   playIllegalDumpVideoTitle = "";
 
-  /**乱扔垃圾 标记 起止 时间 */
+  /**垃圾落地 标记 起止 时间 */
   illegalDropTick: Array<{
     time: string;
     tag: Array<string>;
@@ -123,7 +125,7 @@ export class EventChartService extends ListAttribute {
   illegalDropImg = "";
   /**标记事件id */
   illegalDropId = "";
-  /**乱扔垃圾事件视频 */
+  /**垃圾落地事件视频 */
   illegalDropPlayVideo: {
     url: string;
     name: string;
@@ -210,7 +212,7 @@ export class EventChartService extends ListAttribute {
       },
       {
         key: Language.json.EventType.IllegalDrop,
-        vals: [{ val: 0, unit: "起" }],
+        vals: [{ val: 0, unit: Language.json.Suffix.event }],
       },
     ];
   }
@@ -295,13 +297,16 @@ export class EventChartService extends ListAttribute {
     garbageCount: GarbageStationGarbageCountStatistic,
     time?: string
   ) {
+    debugger;
     if (garbageCount == null) {
       const station = this.garbageStations.find((x) => {
           return x.Id == this.search.station;
         }),
         eh = new EnumHelper(),
         cameras = station.Cameras.filter((c) => {
-          return eh.cameraUsage.outside.indexOf(c.CameraUsage) > -1;
+          return c.CameraUsage == 0;
+          let flags = new Flags(c.CameraUsage);
+          return flags.contains(CameraUsage.None);
         });
       if (cameras.length) {
         this.illegalDumpVideoImgs = new Array();
@@ -344,7 +349,9 @@ export class EventChartService extends ListAttribute {
         }),
         eh = new EnumHelper(),
         cameras = station.Cameras.filter((c) => {
-          return eh.cameraUsage.outside.indexOf(c.CameraUsage) > -1;
+          return c.CameraUsage == 0;
+          let flags = new Flags(c.CameraUsage);
+          return flags.contains(CameraUsage.MixedInto);
         });
       if (cameras.length) {
         this.illegalDumpVideoImgs = new Array();

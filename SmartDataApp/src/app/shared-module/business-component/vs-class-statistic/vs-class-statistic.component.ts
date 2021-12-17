@@ -9,6 +9,7 @@ import { ClassTypeEnum, TimeUnitEnum } from "./business/search";
 import { MessageBar } from "../../../common/tool/message-bar";
 import { setData } from "../../../common/tool/jquery-help/jquery-help";
 import { SessionUser } from "../../../common/tool/session-user";
+import { Language } from "src/app/common/tool/language";
 @Component({
   selector: "vs-class-statistic",
   templateUrl: "./vs-class-statistic.component.html",
@@ -16,6 +17,7 @@ import { SessionUser } from "../../../common/tool/session-user";
   providers: [BusinessService],
 })
 export class VsClassStatisticComponent implements OnInit {
+  Language = Language;
   @ViewChild(DateTimePickerDirective)
   timePicker1: DateTimePickerDirective;
 

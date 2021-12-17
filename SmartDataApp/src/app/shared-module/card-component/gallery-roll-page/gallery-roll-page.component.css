@@ -166,6 +166,7 @@
 
 .glyphicon.glyphicon-stop {
   font-size: 15px;
+  line-height: 36px !important;
 }
 
 .gallery-footer {

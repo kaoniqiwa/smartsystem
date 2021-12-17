@@ -89,7 +89,26 @@ export class GalleryTargetComponent implements OnInit, OnChanges {
         setTimeout(() => {
           clearCanvas("polygonCanvas");
 
-          drawRectangle("polygonCanvas", this.model.polygon, size);
+          let text = "";
+          if (this.model.polygon && this.model.polygon.length > 0) {
+            text =
+              this.model.polygon[0].Id +
+              " " +
+              this.model.polygon[0].Confidence +
+              "%";
+          }
+
+          let canvas = drawRectangle(
+            "polygonCanvas",
+            this.model.polygon.map((x) => x.Polygon),
+            size,
+            "red",
+            text
+          );
+          if (this.model.rules) {
+            let points = this.model.rules.map((x) => x.Polygon);
+            drawRectangle(canvas, points, size, "blue");
+          }
         });
       });
     }

@@ -147,7 +147,7 @@
   <ng-container *ngIf="window.station.show">
     <hw-garbage-station-summary
       [divisionsId]="GlobalStoreService.divisionId"
-      [PageIndex]="window.station.index"
+      [viewsShow]="window.station.index"
       [GarbageDropEventHistoryContentType]="window.station.contentType"
       [GarbageDropTaskDivisionId]="GlobalStoreService.divisionId"
       [GarbageDropEventHistoryHandle]="window.station.garbageDropHandle"

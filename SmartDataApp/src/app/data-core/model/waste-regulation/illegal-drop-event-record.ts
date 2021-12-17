@@ -1,14 +1,15 @@
 import { EventRecord } from "./event-record";
 import { EventDataObject } from "./event-data-object";
-import { Transform } from "class-transformer";
+import { Transform, Type } from "class-transformer";
 import { transformDateTime } from "../transformer";
-/**乱扔垃圾事件记录 */
+import { EventRule } from "./event-rule";
+/**垃圾落地事件记录 */
 export class IllegalDropEventRecord extends EventRecord {
   /**事件数据 */
   Data: IllegalDropEventData;
 }
 
-/**乱扔垃圾事件数据 */
+/**垃圾落地事件数据 */
 export class IllegalDropEventData {
   /**垃圾房ID */
   StationId: string;
@@ -19,7 +20,20 @@ export class IllegalDropEventData {
   /**区划名称(可选) */
   DivisionName: string;
   /**垃圾的目标(可选) */
+  @Type(() => EventDataObject)
   Objects: EventDataObject[];
+
+  /**	String	网格单元ID	O */
+  GridCellId?: string;
+  /**	String	网格单元名称	O */
+  GridCellName?: string;
+  /**	String	小区ID	O */
+  CommunityId?: string;
+  /**	String	小区名称	O */
+  CommunityName?: string;
+  /**	EventRule[]	事件规则	O */
+  @Type(() => EventRule)
+  Rules?: EventRule[];
 }
 
 /**获取事件记录参数 */

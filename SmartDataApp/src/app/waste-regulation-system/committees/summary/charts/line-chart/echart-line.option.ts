@@ -1,7 +1,9 @@
+import { Language } from "src/app/common/tool/language";
+
 export var EChartLineOption = {
   backgroundColor: "transparent",
   title: {
-    text: "乱扔垃圾",
+    text: Language.json.EventType.IllegalDrop,
     textStyle: {
       color: "#fff",
       fontSize: "24px",

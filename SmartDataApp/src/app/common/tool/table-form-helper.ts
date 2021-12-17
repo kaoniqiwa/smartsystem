@@ -67,7 +67,7 @@ export enum SystemModeEnum {
   /* 监督平台 */
   supervision,
 
-  /* *乱扔垃圾事件 */
+  /* *垃圾落地事件 */
   illegalDropEvent,
 
   /* 厢房状态 */

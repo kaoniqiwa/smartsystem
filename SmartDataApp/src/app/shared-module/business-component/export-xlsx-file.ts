@@ -46,7 +46,7 @@ export class StationSumHistoryXlsx extends HWExportXlsxStrategy {
         "最大滞留时长",
         "总滞留时长",
         Language.json.EventType.IllegalDrop,
-        "混合投放",
+        Language.json.EventType.MixedInto,
       ],
       toCellValue = (fieldStr: string) => {
         const field: FieldDesc = JSON.parse(fieldStr);

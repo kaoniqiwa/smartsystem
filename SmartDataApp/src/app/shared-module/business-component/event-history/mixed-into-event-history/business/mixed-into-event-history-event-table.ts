@@ -118,13 +118,13 @@ export class EventTable extends BusinessTable implements IConverter {
   }
   scrollPageFn: (event: CustomTableEvent) => void;
 
-  Convert<MixedIntoEventsRecord, CustomTableArgs>(
-    input: MixedIntoEventsRecord,
+  Convert<MixedIntoEventRecordList, CustomTableArgs>(
+    input: MixedIntoEventRecordList,
     output: CustomTableArgs
   ) {
     const items = new Array<TableField>();
 
-    if (input instanceof MixedIntoEventsRecord)
+    if (input instanceof MixedIntoEventRecordList)
       for (const item of input.items) {
         items.push(this.toTableModel(item));
       }
@@ -160,7 +160,7 @@ export class EventTable extends BusinessTable implements IConverter {
   }
 }
 
-export class MixedIntoEventsRecord implements IBusinessData {
+export class MixedIntoEventRecordList implements IBusinessData {
   items: MixedIntoEventRecord[];
 }
 

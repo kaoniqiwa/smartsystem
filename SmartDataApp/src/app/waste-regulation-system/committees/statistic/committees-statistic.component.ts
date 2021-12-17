@@ -8,6 +8,7 @@ import { ICommitteesComponent } from "../interface/committees-component.interfac
 import { DivisionNumberStatistic } from "src/app/data-core/model/waste-regulation/division-number-statistic";
 import { ICommitteesConverter } from "../interface/committees-converter.interface";
 import { CommitteesStatisticConverter } from "./committees-statistic.converter";
+import { Language } from "src/app/common/tool/language";
 
 @Component({
   selector: "app-committees-statistic",
@@ -20,6 +21,8 @@ export class CommitteesStatisticComponent
     OnInit,
     ICommitteesComponent<DivisionNumberStatistic, CommitteesStatisticViewModel>
 {
+  Language = Language;
+
   private _Committees: Division;
   public get Committees(): Division {
     return this._Committees;

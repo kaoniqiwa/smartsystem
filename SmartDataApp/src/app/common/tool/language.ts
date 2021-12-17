@@ -85,7 +85,7 @@ export class Language {
   static GarbageDropEventType(type: EventType, isTimeout?: boolean) {
     switch (type) {
       case EventType.GarbageDrop:
-        return Language.json.did + Language.json.handle;
+        return Language.json.wait + Language.json.handle;
       case EventType.GarbageDropTimeout:
         return (
           Language.json.timeout + Language.json.wait + Language.json.handle

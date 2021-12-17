@@ -40,6 +40,8 @@ export class StatisticSummaryEventRatioChartComponent
     >,
     IEventTrigger<StatisticSummaryEventRatioChartViewModel>
 {
+  Language = Language;
+
   @ViewChild("echarts")
   private echarts?: ElementRef<HTMLDivElement>;
 

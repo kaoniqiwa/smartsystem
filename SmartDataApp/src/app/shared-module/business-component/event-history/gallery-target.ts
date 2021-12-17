@@ -6,6 +6,8 @@ import {
   GalleryTarget,
   ImageEventEnum,
 } from "../../gallery-target/gallery-target";
+import { GalleryTargetConverter } from "../../gallery-target/gallery-target.converter";
+import { MixedIntoEventRecord } from "src/app/data-core/model/waste-regulation/mixed-into-event-record";
 
 export class GalleryTargetView {
   galleryTarget: GalleryTarget;
@@ -13,13 +15,21 @@ export class GalleryTargetView {
 
   constructor(public datePipe: DatePipe) {}
 
+  private _converter?: GalleryTargetConverter;
+  public get converter(): GalleryTargetConverter {
+    if (!this._converter) {
+      this._converter = new GalleryTargetConverter(this.datePipe);
+    }
+    return this._converter;
+  }
+
   neighborEventFn: (
     id: string,
     e: ImageEventEnum
   ) => {
     prev: boolean;
     next: boolean;
-    item: IllegalDropEventRecord;
+    item: IllegalDropEventRecord | MixedIntoEventRecord;
   };
 
   showImagePage(id: string, e: ImageEventEnum) {
@@ -40,29 +50,9 @@ export class GalleryTargetView {
     const page = this.showImagePage(id, e),
       v = this.galleryTarget.videoName || false;
     if (e == ImageEventEnum.next && page.next.item) {
-      const enlargeImage = ResourceMediumRequestService.getJPG(
-        page.next.item.ImageUrl
-      );
-      this.galleryTarget = new GalleryTarget(
-        page.next.item.Data.Objects[0].Id,
-        page.next.item.Data.Objects[0].Confidence + "",
-        enlargeImage,
-        page.next.item.Data.Objects,
-        page.next.item.EventId,
-        this.toDownLoadImgName(page.next.item)
-      );
+      this.galleryTarget = this.converter.Convert(page.next.item);
     } else if (e == ImageEventEnum.prev && page.prev.item) {
-      const enlargeImage = ResourceMediumRequestService.getJPG(
-        page.prev.item.ImageUrl
-      );
-      this.galleryTarget = new GalleryTarget(
-        page.prev.item.Data.Objects[0].Id,
-        page.prev.item.Data.Objects[0].Confidence + "",
-        enlargeImage,
-        page.prev.item.Data.Objects,
-        page.prev.item.EventId,
-        this.toDownLoadImgName(page.prev.item)
-      );
+      this.galleryTarget = this.converter.Convert(page.prev.item);
     }
     /**视频下载按钮 */
     this.galleryTarget.videoName = v;
@@ -70,32 +60,14 @@ export class GalleryTargetView {
     this.galleryTarget.imgPrev = page.prev.show;
   };
 
-  initGalleryTarget(event: IllegalDropEventRecord) {
-    const enlargeImage = ResourceMediumRequestService.getJPG(event.ImageUrl),
-      page = this.showImagePage(event.EventId, ImageEventEnum.none);
-    this.galleryTarget = new GalleryTarget(
-      event.Data.Objects[0].Id,
-      event.Data.Objects[0].Confidence + "",
-      enlargeImage,
-      event.Data.Objects,
-      event.EventId,
-      this.toDownLoadImgName(event)
-    );
+  initGalleryTarget(event: MixedIntoEventRecord) {
+    const page = this.showImagePage(event.EventId, ImageEventEnum.none);
+    this.galleryTarget = this.converter.Convert(event);
+
     this.galleryTarget.imgNext = page.next.show;
     this.galleryTarget.imgPrev = page.prev.show;
   }
 
-  toDownLoadImgName(item: IllegalDropEventRecord) {
-    var name = "";
-    name += item.ResourceName + " ";
-    name +=
-      this.datePipe.transform(item.EventTime, "yyyy年MM月dd日 hh点mm分") + " ";
-    for (const x of item.Data.Objects)
-      for (const a of x.Polygon) {
-        name += a.X + "," + a.Y + " ";
-      }
-    return name;
-  }
   enlargeImageSize = {
     width: 0,
     height: 0,

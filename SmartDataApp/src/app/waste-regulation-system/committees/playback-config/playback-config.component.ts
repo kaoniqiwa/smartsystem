@@ -80,7 +80,25 @@ export class PlaybackConfigComponent implements OnInit, AfterViewInit {
     this.beginTime = date;
   }
 
+  getDate(date: Date, time: string) {
+    let split = time.split(":");
+    let value = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      parseInt(split[0]),
+      parseInt(split[1]),
+      parseInt(split[2])
+    );
+    return value;
+  }
+
   ok() {
+    this.beginTime = this.getDate(
+      this.date,
+      this.beginControl.nativeElement.value
+    );
+    this.endTime = this.getDate(this.date, this.endControl.nativeElement.value);
     this.OnOKClicked.emit({
       begin: this.beginTime,
       end: this.endTime,

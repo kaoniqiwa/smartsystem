@@ -1,3 +1,4 @@
+import { EventRule } from "src/app/data-core/model/waste-regulation/event-rule";
 import { EventDataObject } from "../../data-core/model/waste-regulation/event-data-object";
 
 export class GalleryTarget<T = any> {
@@ -8,6 +9,7 @@ export class GalleryTarget<T = any> {
   enlargeImageName: string;
   subName: { label: string; class: string };
   polygon: EventDataObject[];
+  rules?: EventRule[];
   id: string;
   downloadImgName: string;
   videoName: boolean;
@@ -22,14 +24,17 @@ export class GalleryTarget<T = any> {
     confidence: string,
     imgSrc: string,
     polygon: EventDataObject[],
+
     id: string,
-    downloadImgName: string
+    downloadImgName: string,
+    rules?: EventRule[]
   ) {
     this.enlargeId = enlargeId;
     this.enlargeConfidence = confidence;
     this.enlargeImage = imgSrc;
     this.id = id;
     this.polygon = polygon;
+    this.rules = rules;
     this.imgNext = true;
     this.imgPrev = true;
     this.downloadImgName = downloadImgName;

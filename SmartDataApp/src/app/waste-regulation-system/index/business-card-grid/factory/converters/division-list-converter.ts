@@ -20,12 +20,16 @@ export class DivisionListConverter implements IConverter {
     output.pageIndex = 1;
     if (input instanceof Divisions) {
       output.views[0].squareItems = new Array();
-      const countys = input.items.filter((x) => x.root == true),
-        committees = input.items.filter(
-          (x) => x.root == false && x.parentId == countys[0].id
-        );
+      const countys = input.items.filter((x) => x.root == true);
+      let committees = input.items.filter(
+        (x) => x.root == false && x.parentId == countys[0].id
+      );
 
-      for (let i = 0; i < countys.length; i++)
+      committees = committees.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
+
+      for (let i = 0; i < countys.length; i++) {
         output.views[0].squareItems.push(
           new SquareItem(
             countys[i].id,
@@ -33,7 +37,7 @@ export class DivisionListConverter implements IConverter {
             countys[i].divisionType
           )
         );
-
+      }
       for (let i = 0; i < committees.length; i++)
         output.views[0].squareItems.push(
           new SquareItem(

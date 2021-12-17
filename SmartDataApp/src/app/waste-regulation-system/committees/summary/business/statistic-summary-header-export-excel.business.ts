@@ -1,4 +1,5 @@
 import { HowellExcelJS } from "src/app/common/tool/hw-excel-js/hw-excel";
+import { Language } from "src/app/common/tool/language";
 import { StatisticSummaryHeaderViewModel } from "../header/statistic-summary-header.model";
 import { ExportTool, IExport } from "./statistic-summary-export-excel.business";
 
@@ -19,8 +20,12 @@ export class StatisticSummaryHeaderExportExcelBusiness
         "垃圾处置达标率",
         "垃圾滞留处置率",
         "最大垃圾滞留时长",
-        "乱丢垃圾总数量",
-        "混合投放总数量",
+        Language.json.EventType.IllegalDrop +
+          Language.json.count +
+          Language.json.number,
+        Language.json.EventType.MixedInto +
+          Language.json.count +
+          Language.json.number,
       ];
       row = this.tool.setRow(headers, row);
 

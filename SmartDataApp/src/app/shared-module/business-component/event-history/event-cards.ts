@@ -7,6 +7,7 @@ import { ViewPagination } from "../../../shared-module/card-list-panel/card-list
 import { Page } from "../../../data-core/model/page";
 import { CardList } from "./illegal-drop-event-card-list/card-list";
 import { ResourceMediumRequestService } from "../../../data-core/repuest/resources.service";
+import { MixedIntoEventRecord } from "src/app/data-core/model/waste-regulation/mixed-into-event-record";
 export class EventCards {
   dataSource = new Array<ImageDesc>();
   cardList_: CardList;
@@ -14,7 +15,12 @@ export class EventCards {
   constructor(private datePipe: DatePipe) {
     this.cardList_ = new CardList();
   }
-  Convert(input: IllegalDropEventRecord[] | GarbageFullEventRecord[]) {
+  Convert(
+    input:
+      | IllegalDropEventRecord[]
+      | GarbageFullEventRecord[]
+      | MixedIntoEventRecord[]
+  ) {
     for (const item of input) {
       this.dataSource.push(this.toTableModel(item));
     }
@@ -46,7 +52,9 @@ export class EventCards {
     return this.cardList_;
   }
 
-  toTableModel(item: IllegalDropEventRecord | GarbageFullEventRecord) {
+  toTableModel(
+    item: IllegalDropEventRecord | GarbageFullEventRecord | MixedIntoEventRecord
+  ) {
     if (item.Data.hasOwnProperty("CameraImageUrls")) {
       return new ImageDesc(
         item.EventId,

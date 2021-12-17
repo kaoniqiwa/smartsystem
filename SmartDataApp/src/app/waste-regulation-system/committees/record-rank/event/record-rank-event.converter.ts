@@ -27,7 +27,7 @@ export class RecordRankEventConverter
     switch (type) {
       case EventType.IllegalDrop:
       case EventType.MixedInto:
-        return "起";
+        return Language.json.Suffix.event;
       case EventType.GarbageDrop:
         return "个";
       default:

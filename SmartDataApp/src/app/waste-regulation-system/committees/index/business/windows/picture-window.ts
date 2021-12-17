@@ -4,11 +4,20 @@ import { IllegalDropEventRecord } from "src/app/data-core/model/waste-regulation
 import { MixedIntoEventRecord } from "src/app/data-core/model/waste-regulation/mixed-into-event-record";
 import { ResourceMediumRequestService } from "src/app/data-core/repuest/resources.service";
 import { GalleryTarget } from "src/app/shared-module/gallery-target/gallery-target";
+import { GalleryTargetConverter } from "src/app/shared-module/gallery-target/gallery-target.converter";
 import { WindowViewModel } from "../../../window/window.model";
 
 export class DetailsPictureWindowViewModel extends WindowViewModel {
   constructor(private datePipe: DatePipe) {
     super();
+  }
+
+  private _converter?: GalleryTargetConverter;
+  public get converter(): GalleryTargetConverter {
+    if (!this._converter) {
+      this._converter = new GalleryTargetConverter(this.datePipe);
+    }
+    return this._converter;
   }
 
   close: () => void = () => {
@@ -17,29 +26,8 @@ export class DetailsPictureWindowViewModel extends WindowViewModel {
   target: GalleryTarget<IllegalDropEventRecord | MixedIntoEventRecord>;
 
   load(record: IllegalDropEventRecord | MixedIntoEventRecord) {
-    this.target = new GalleryTarget(
-      record.Id,
-      record.Data.Objects[0].Confidence.toString(),
-      ResourceMediumRequestService.getJPG(record.ImageUrl),
-      record.Data.Objects,
-      record.EventId,
-      this.toDownLoadImgName(record, this.datePipe)
-    );
+    this.target = this.converter.Convert(record);
     this.target.data = record;
-  }
-
-  toDownLoadImgName(
-    item: IllegalDropEventRecord | MixedIntoEventRecord,
-    datePipe: DatePipe
-  ) {
-    let date = datePipe.transform(item.EventTime, "yyyy年MM月dd日 hh点mm分");
-    var name = `${item.ResourceName} ${date} `;
-    name += item.ResourceName + " ";
-    for (const x of item.Data.Objects)
-      for (const a of x.Polygon) {
-        name += a.X + "," + a.Y + " ";
-      }
-    return name;
   }
 
   playVideoEvent: EventEmitter<IllegalDropEventRecord | MixedIntoEventRecord> =

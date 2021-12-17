@@ -46,6 +46,8 @@ import { GetEventRecordsParams } from "../../../../../data-core/model/waste-regu
 import { GalleryTargetItem } from "./gallery-target";
 import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
 import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
+import { Flags } from "src/app/data-core/model/flags";
+import { CameraUsage } from "src/app/data-core/model/enum";
 @Injectable()
 export class EventTableService extends ListAttribute {
   dataSource_ = new Array<GarbageFullEventRecord>();
@@ -300,9 +302,10 @@ export class EventTableService extends ListAttribute {
         const station = this.garbageStations.find(
             (g) => g.Id == event.Data.StationId
           ),
-          camera = station.Cameras.filter(
-            (x) => eh.cameraUsage.garbageFull.indexOf(x.CameraUsage) > 0
-          ),
+          camera = station.Cameras.filter((x) => {
+            let flags = new Flags(x.CameraUsage);
+            return flags.contains(CameraUsage.GarbageFull);
+          }),
           delIndex = new Array<number>();
         for (let i = 0; i < event.Data.CameraImageUrls.length; i++) {
           const index = camera.findIndex(

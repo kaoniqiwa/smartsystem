@@ -109,7 +109,11 @@
               <label
                 class="m-b-0 blue-text m-l-10 m-r-10"
                 style="font-size: 18px"
-                >{{ item.key == "乱丢垃圾" ? "起" : "分钟" }}</label
+                >{{
+                  item.key == Language.json.EventType.IllegalDrop
+                    ? "起"
+                    : "分钟"
+                }}</label
               >
             </ng-container>
           </li>

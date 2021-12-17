@@ -33,7 +33,13 @@
     </div>
   </div>
   <div class="">
-    <div class="title">乱丢垃圾总数量</div>
+    <div class="title">
+      {{
+        Language.json.EventType.IllegalDrop +
+          Language.json.count +
+          Language.json.number
+      }}
+    </div>
     <div>
       <span class="text-white value">{{ view ? view.IllegalDrop : 0 }}</span
       ><span class="blue-text unit">起</span>

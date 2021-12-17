@@ -28,6 +28,7 @@ import {
 import { DivisionType } from "../../../../data-core/model/enum";
 import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
+import { Language } from "src/app/common/tool/language";
 @Component({
   selector: "hw-illegal-drop-event-history",
   templateUrl: "./illegal-drop-event-history.component.html",
@@ -35,6 +36,7 @@ import { GlobalStoreService } from "src/app/shared-module/global-store.service";
   providers: [EventTableService],
 })
 export class IllegalDropEventHistoryComponent implements OnInit, OnDestroy {
+  Language = Language;
   listTypeView = false;
   otherDrop = false;
   otherView = OtherViewEnum;

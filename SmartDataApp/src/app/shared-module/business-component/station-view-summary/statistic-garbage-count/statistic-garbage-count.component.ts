@@ -18,6 +18,7 @@ import {
   SelectItemNodeModeEnum,
   TreeDropListV2Component,
 } from "../../vs-class-statistic/tree-drop-list-v2/tree-drop-list-v2.component";
+import { Language } from "src/app/common/tool/language";
 @Component({
   selector: "hw-statistic-garbage-count",
   templateUrl: "./statistic-garbage-count.component.html",
@@ -25,6 +26,7 @@ import {
   providers: [EventChartService, HWVideoService],
 })
 export class StatisticGarbageCountComponent implements OnInit, OnDestroy {
+  Language = Language;
   @Output() OtherViewEvent = new EventEmitter<GarbageStationSummaryViewPage>();
 
   @ViewChild(TreeDropListV2Component)

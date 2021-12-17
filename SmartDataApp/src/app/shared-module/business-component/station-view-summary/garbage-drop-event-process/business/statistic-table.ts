@@ -114,7 +114,7 @@ export class StatisticTable extends BusinessTable implements IConverter {
         tdInnerAttrName: "illegalDrop",
       }),
       new TableAttr({
-        HeadTitleName: "混合投放",
+        HeadTitleName: Language.json.EventType.MixedInto,
         tdWidth: "13.7%",
         iocnClassLabel: true,
         orderBy: {

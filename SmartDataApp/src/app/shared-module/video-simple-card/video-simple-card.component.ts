@@ -246,8 +246,8 @@ export class VideoSimpleCardComponent
         };
         this.player.onPlaying = () => {
           setTimeout(() => {
-            if (this._ruleState !== undefined) {
-              this._player.changeRuleState(this._ruleState);
+            if (this._ruleState !== undefined && this.player) {
+              this.player.changeRuleState(this._ruleState);
             }
           }, 1000);
         };
@@ -326,8 +326,10 @@ export class VideoSimpleCardComponent
       if (sc) {
         sc.parentElement.removeChild(sc);
       }
+
       this.closeFn.emit();
     }
+    this._player = undefined;
   }
 
   /**9宫格空白填补 */

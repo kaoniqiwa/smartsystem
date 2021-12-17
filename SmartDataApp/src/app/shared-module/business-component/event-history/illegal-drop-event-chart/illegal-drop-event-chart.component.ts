@@ -77,7 +77,7 @@ export class IllegalDropEventChartComponent implements OnInit, AfterViewInit {
   get pageTitle() {
     return this.businessEventType == EventType.IllegalDrop
       ? Language.json.EventType.IllegalDrop
-      : "混合投放";
+      : Language.json.EventType.MixedInto;
   }
 
   async ngOnInit() {

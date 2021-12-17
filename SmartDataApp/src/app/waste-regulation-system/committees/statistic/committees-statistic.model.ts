@@ -13,7 +13,7 @@ export class CommitteesStatisticViewModel {
   StationDropCount: number = 0;
   /** 满溢投放点 */
   StationFullCount: number = 0;
-  /** 乱丢垃圾 */
+  /** 垃圾落地 */
   IllegalDropCount: number = 0;
   /** 混合投放 */
   MixedIntoCount: number = 0;

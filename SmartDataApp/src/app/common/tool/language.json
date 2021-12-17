@@ -1,6 +1,6 @@
 {
   "EventType":{
-    "IllegalDrop":"乱丢垃圾",
+    "IllegalDrop":"垃圾落地",
     "MixedInto":"混合投放",
     "GarbageVolume":"垃圾容量",
       "GarbageFull":"垃圾满溢",
@@ -31,7 +31,9 @@
     "month":"月",
     "day":"日"
   },
-
+  "Suffix":{
+    "event":"起"
+  },
   "division":"行政区划",
   "today":"今日",
   "event":"事件",
@@ -68,5 +70,7 @@
   "station":"投放点",
   "link":"连接",
   "unlink":"断开",
-  "behavior":"行为"
+  "behavior":"行为",
+  "max":"最大",
+  "video":"视频"
 }

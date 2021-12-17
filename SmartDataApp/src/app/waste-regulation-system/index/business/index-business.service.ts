@@ -16,9 +16,9 @@ export class IndexBusinessService {
     divisionType: number /**父 区划类别 */;
     divisionsIds: Array<string>;
   };
-  illegalDropMixIntoRankConfig: Array<IBusinessConfig>; /**乱扔垃圾排名table */
+  illegalDropMixIntoRankConfig: Array<IBusinessConfig>; /**垃圾落地排名table */
   mixedIntoDropTopCardConfig: Array<IBusinessConfig>; /**混合投放排名 table */
-  illegalDropHistoryCardConfig: Array<IBusinessConfig>; /**乱扔垃圾记录 折线图 */
+  illegalDropHistoryCardConfig: Array<IBusinessConfig>; /**垃圾落地记录 折线图 */
   mixedIntoHistoryCardConfig: Array<IBusinessConfig>; /**混合投放记录 折线图  */
   divisionCardConfig: Array<IBusinessConfig>; /**区 街道 居委 列表 */
   garbageDisposalRankConfig: Array<IBusinessConfig>; /**小包垃圾处置 table */
@@ -85,7 +85,7 @@ export class IndexBusinessService {
   async garbageNumberCompareCard() {
     this.garbageNumberCompareCardConfig = new Array();
   }
-  /** 乱扔垃圾事件 */
+  /** 垃圾落地事件 */
   async illegalDropEventCard() {
     this.illegalDropEventCardConfig = new Array();
     this.illegalDropEventCardConfig.push({
@@ -176,7 +176,7 @@ export class IndexBusinessService {
   }
 
   /**
-   *  乱扔垃圾/混合投放排行榜
+   *  垃圾落地/混合投放排行榜
    */
   async illegalDropMixIntoRankCard() {
     this.illegalDropMixIntoRankConfig = new Array();

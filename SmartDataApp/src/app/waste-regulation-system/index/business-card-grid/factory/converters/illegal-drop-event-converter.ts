@@ -1,5 +1,6 @@
 import { ViewsModel } from "src/app/common/abstract/base-view";
 import { IConverter } from "src/app/common/interface/IConverter";
+import { Language } from "src/app/common/tool/language";
 import { SessionUser } from "src/app/common/tool/session-user";
 import { DateInterval } from "src/app/common/tool/tool.service";
 import { ResourceMediumRequestService } from "src/app/data-core/repuest/resources.service";
@@ -34,7 +35,7 @@ export class IllegalDropEventConverter implements IConverter {
         output.views[i].imgSrc = ResourceMediumRequestService.getJPG(
           input.items[i].ImageUrl
         );
-        output.views[i].title = "乱扔垃圾";
+        output.views[i].title = Language.json.EventType.IllegalDrop;
         output.views[i].imgDesc1Icon = "howell-icon-signal2";
         output.views[i].imgDesc1IconColor = ColorEnum["green-text"];
         output.views[i].titleColor = ColorEnum["red-text"];
@@ -56,7 +57,7 @@ export class IllegalDropEventConverter implements IConverter {
         // { stationId: string, cameraId: string }
       }
     } else if (isBoolean(input)) {
-      output.views[0].title = "乱扔垃圾";
+      output.views[0].title = Language.json.EventType.IllegalDrop;
       output.views[0].titleColor = ColorEnum["red-text"];
       output.views[0].imgDesc1 = "";
       output.views[0].imgDesc1Icon = input

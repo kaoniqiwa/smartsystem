@@ -42,6 +42,8 @@ import { GetPreviewUrlParams } from "../../../../../data-core/model/aiop/video-u
 import { HWVideoService } from "../../../../../data-core/dao/video-dao";
 import { Language } from "../../../../../common/tool/language";
 import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
+import { Flags } from "src/app/data-core/model/flags";
+import { CameraUsage } from "src/app/data-core/model/enum";
 @Injectable()
 export class BusinessService extends EnumHelper {
   playVideo: PlayVideo;
@@ -88,14 +90,16 @@ export class BusinessService extends EnumHelper {
     this.galleryTargetView.neighborEventFnI = (ids, e: ImageEventEnum) => {
       const idV = ids.split("&"),
         findStation = this.dataSource.find((x) => x.Id == idV[0]);
-      var index = findStation.Cameras.filter(
-        (j) => this.cameraUsage.garbageFull.indexOf(j.CameraUsage) > -1
-      ).findIndex((x) => x.Id == idV[1]);
+      var index = findStation.Cameras.filter((j) => {
+        let flags = new Flags(j.CameraUsage);
+        return flags.contains(CameraUsage.GarbageFull);
+      }).findIndex((x) => x.Id == idV[1]);
       var prev = true,
         next = true,
-        cameras = findStation.Cameras.filter(
-          (x) => this.cameraUsage.garbageFull.indexOf(x.CameraUsage) > -1
-        );
+        cameras = findStation.Cameras.filter((x) => {
+          let flags = new Flags(x.CameraUsage);
+          return flags.contains(CameraUsage.GarbageFull);
+        });
 
       if (e == ImageEventEnum.none) {
         if (index == 0) prev = false;
@@ -209,10 +213,10 @@ export class StatisticTable
     eventDelegate: (event: CustomTableEvent) => {
       if (event.eventType == CustomTableEventEnum.Img) {
         const findEvent = this.findGarbageFn(event.data["item"].id),
-          cameras = findEvent.Cameras.filter(
-            (x) =>
-              this.helper.cameraUsage.garbageFull.indexOf(x.CameraUsage) > -1
-          );
+          cameras = findEvent.Cameras.filter((x) => {
+            let flags = new Flags(x.CameraUsage);
+            return flags.contains(CameraUsage.GarbageFull);
+          });
         this.initGalleryTargetFn(findEvent.Id, cameras, event.data["index"]);
       }
     },
@@ -307,7 +311,8 @@ export class StatisticTable
     const galleryTdAttr = new GalleryTdAttr();
     galleryTdAttr.imgSrc = new Array<string>();
     camera.map((x) => {
-      if (this.helper.cameraUsage.garbageFull.indexOf(x.CameraUsage) > -1) {
+      let flags = new Flags(x.CameraUsage);
+      if (flags.contains(CameraUsage.GarbageFull)) {
         const find = resourceCameras.find((x1) => x1.Id == x.Id);
         if (find)
           galleryTdAttr.imgSrc.push(

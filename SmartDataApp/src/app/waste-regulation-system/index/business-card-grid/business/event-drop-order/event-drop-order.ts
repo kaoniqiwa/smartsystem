@@ -140,7 +140,7 @@ export class EventDropOrder extends BaseBusinessRefresh {
 
     if (dropList) {
       model.dropList = this.divisionDrop.get(GlobalStoreService.divisionType);
-      //统计街道 乱扔垃圾
+      //统计街道 垃圾落地
       if (dropList == "station") await stationDropInfo();
       else await fillIllegalDropInfo();
       model.defaultId = dropList;
@@ -149,14 +149,14 @@ export class EventDropOrder extends BaseBusinessRefresh {
 
       if (divisionType == DivisionType.City) {
         model.defaultId = DivisionType.County + "";
-        //统计街道 统计居委 乱扔垃圾
+        //统计街道 统计居委 垃圾落地
         await fillIllegalDropInfo();
       } else if (divisionType == DivisionType.County) {
         model.defaultId = DivisionType.Committees + "";
-        //统计居委 乱扔垃圾
+        //统计居委 垃圾落地
         await fillIllegalDropInfo();
       } else if (divisionType == DivisionType.Committees) {
-        //统计投放点 乱扔垃圾
+        //统计投放点 垃圾落地
         await stationDropInfo();
       }
     }
