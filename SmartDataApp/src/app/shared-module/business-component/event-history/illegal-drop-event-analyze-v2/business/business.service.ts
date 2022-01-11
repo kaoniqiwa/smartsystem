@@ -26,9 +26,15 @@ import { GarbageStation } from "../../../../../data-core/model/waste-regulation/
 import "../../../../../common/string/hw-string";
 import { convertEventData } from "../../business-event-type";
 import { ExcelData } from "../../../../../common/tool/hw-excel-js/data";
-import { EventAnalyzeTable, EventsAnalyzeRecord } from "./event-analyze-table";
+import {
+  EventAnalyzeTable,
+  EventsAnalyzeRecord,
+  TableField,
+} from "./event-analyze-table";
 import { SessionUser } from "../../../../../common/tool/session-user";
 import { DivisionType, EventType } from "../../../../../data-core/model/enum";
+import { CustomTableArgs } from "src/app/shared-module/custom-table/custom-table-model";
+import { Language } from "src/app/common/tool/language";
 @Injectable()
 export class BusinessService extends ListAttribute {
   divisions: Array<Division>;
@@ -119,7 +125,49 @@ export class BusinessService extends ListAttribute {
       this.table.Convert(td, this.table.dataSource);
     }
   }
+  exportExcel2(
+    args: CustomTableArgs<TableField>,
+    search: SearchControl
+  ): {
+    table: XlsxData;
+    chart: ExcelData;
+  } {
+    let s = search.toSearchParam();
+    let table = new XlsxData();
+    let chart = new ExcelData();
+    let dataMap = new Map<string, number>();
+    chart.chartTitle = "";
+    table.title = "";
+    chart.fields = [];
+    chart.titles = [];
+    chart.dataKey = ["illegal-drop"];
+    chart.chartCatStrRef = "B";
+    chart.data = {
+      "illegal-drop": {},
+    };
 
+    table.data = args.values.map((x, i) => {
+      return {
+        id: (i + 1).toString(),
+        name: x.name,
+        divisionName: x.divisionName,
+        eventNumber: x.eventNumber,
+      };
+    });
+    if (
+      s.ClassType == ClassTypeEnum.Committees ||
+      s.ClassType == ClassTypeEnum.County
+    ) {
+      table.fieldName = ["序号", "区划", "区划", "单位(起)"];
+    } else if (s.ClassType == ClassTypeEnum.Station) {
+      // const statistic_ = statistic as Array<GarbageStationNumberStatisticV2>;
+      table.fieldName = ["序号", "投放点", "区划", "单位(起)"];
+    }
+    return {
+      table: table,
+      chart: chart,
+    };
+  }
   exportExcel(
     statistic:
       | Array<DivisionNumberStatisticV2>
@@ -144,7 +192,7 @@ export class BusinessService extends ListAttribute {
       "illegal-drop": {},
     };
 
-    table.data = new Array<{ no: number; name: string; val: number }>();
+    table.data = new Array<TableField>();
     statistic_.map((m) => {
       const eventNumbers = convertEventData(
         this.businessEventType,
@@ -174,12 +222,14 @@ export class BusinessService extends ListAttribute {
       chart.fields.push(d);
       chart.data["illegal-drop"][d] = dataMap.get(d);
       table.data.push({
-        no: i,
+        id: i.toString(),
         name: d,
-        val: dataMap.get(d),
+        divisionName: "",
+        eventNumber: dataMap.get(d),
       });
       i += 1;
     }
+
     if (
       s.ClassType == ClassTypeEnum.Committees ||
       s.ClassType == ClassTypeEnum.County
@@ -423,5 +473,5 @@ export class BusinessService extends ListAttribute {
 export class XlsxData {
   title: string;
   fieldName: string[];
-  data: { no: number; name: string; val: number }[];
+  data: TableField[];
 }

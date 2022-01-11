@@ -86,9 +86,9 @@ export class IllegalDropEventAnalyzeV2Component implements OnInit {
   }
 
   exportCSV() {
-    if (this.businessService.dataSources) {
-      const data = this.businessService.exportExcel(
-          this.businessService.dataSources,
+    if (this.businessService.table.dataSource) {
+      const data = this.businessService.exportExcel2(
+          this.businessService.table.dataSource,
           this.businessService.search
         ),
         csvDataMap = new Map<string, Array<string>>(),
@@ -103,19 +103,24 @@ export class IllegalDropEventAnalyzeV2Component implements OnInit {
       csvDataMap.set(TITLEKEY, [data.table.title]);
       csvDataMap.set(COLNAME, data.table.fieldName);
       data.table.data.map((m) =>
-        csvDataMap.set(m.no + "", [m.no + "", m.name, m.val + ""])
+        csvDataMap.set(m.id, [
+          m.id,
+          m.name,
+          m.divisionName,
+          m.eventNumber.toString(),
+        ])
       );
       new HowellCSV(csvDataMap).writeCsvFile(data.table.title);
     }
   }
 
   exportExcel() {
-    if (this.businessService.dataSources) {
-      const data = this.businessService.exportExcel(
-          this.businessService.dataSources,
-          this.businessService.search
-        ),
-        evenTypeLabel = this.pageTitle;
+    if (this.businessService.table.dataSource) {
+      const data = this.businessService.exportExcel2(
+        this.businessService.table.dataSource,
+        this.businessService.search
+      );
+      const evenTypeLabel = this.pageTitle;
       const a = new HowellExcelJS();
       const b = a.createBook();
       const s = a.addWorksheet(b, "Table");
@@ -130,12 +135,14 @@ export class IllegalDropEventAnalyzeV2Component implements OnInit {
       a.setCellValue(s, "A2", data.table.fieldName[0]);
       a.setCellValue(s, "B2", data.table.fieldName[1]);
       a.setCellValue(s, "C2", data.table.fieldName[2]);
+      a.setCellValue(s, "D2", data.table.fieldName[3]);
 
       var i = 3;
       data.table.data.map((x) => {
-        a.setCellValue(s, "A" + i + "", x.no);
+        a.setCellValue(s, "A" + i + "", x.id);
         a.setCellValue(s, "B" + i + "", x.name);
-        a.setCellValue(s, "C" + i + "", x.val);
+        a.setCellValue(s, "C" + i + "", x.divisionName);
+        a.setCellValue(s, "D" + i + "", x.eventNumber);
         i += 1;
       });
 
