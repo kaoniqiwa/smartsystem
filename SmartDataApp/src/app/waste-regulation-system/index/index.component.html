@@ -163,6 +163,9 @@
               divisionBusinessService.StationStrandedGarbageStationId
             "
             [GarbageStation]="divisionBusinessService.selected.GarbageStation"
+            (garbageStationMoveToPosition)="
+              divisionBusinessService.moveToByGarbageStation($event)
+            "
           ></hw-station-stranded>
         </ng-container>
       </div>
@@ -203,6 +206,7 @@
           [class.in]="!divisionBusinessService.inspectionView"
         >
           <app-amap
+            *ngIf="false"
             #aMap
             (mapLoadedEvent)="mapLoaded($event)"
             (vsButtonClicked)="showVsView()"

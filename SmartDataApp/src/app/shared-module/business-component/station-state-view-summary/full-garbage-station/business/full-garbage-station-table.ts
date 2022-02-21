@@ -222,7 +222,7 @@ export class StatisticTable
     },
     tableAttrs: [
       new TableAttr({
-        HeadTitleName: "投放点",
+        HeadTitleName: Language.json.station,
         tdWidth: "15%",
         tdInnerAttrName: "name",
       }),
@@ -231,8 +231,14 @@ export class StatisticTable
         tdWidth: "15%",
         tdInnerAttrName: "division",
       }),
+
       new TableAttr({
-        HeadTitleName: "状态",
+        HeadTitleName: Language.json.DivisionType.Community,
+        tdWidth: "15%",
+        tdInnerAttrName: "communityName",
+      }),
+      new TableAttr({
+        HeadTitleName: Language.json.state,
         tdWidth: "15%",
         tdInnerAttrName: "state",
       }),
@@ -304,6 +310,7 @@ export class StatisticTable
     tableField.stranded = DateDifference(item.DryFullTime + "", new Date());
     const division = divisions.find((x) => x.Id == item.DivisionId);
     tableField.division = division ? division.Name : "-";
+    tableField.communityName = item.CommunityName || "-";
     return tableField;
   }
 
@@ -312,6 +319,7 @@ export class StatisticTable
     galleryTdAttr.imgSrc = new Array<string>();
     camera.map((x) => {
       let flags = new Flags(x.CameraUsage);
+
       if (flags.contains(CameraUsage.GarbageFull)) {
         const find = resourceCameras.find((x1) => x1.Id == x.Id);
         if (find)
@@ -337,4 +345,5 @@ export class TableField implements ITableField {
   state: string;
   division: string;
   stranded: string;
+  communityName: string;
 }

@@ -1,11 +1,12 @@
 import { Component, OnInit, Input } from "@angular/core";
+import { HWVideoService } from "src/app/data-core/dao/video-dao";
 import { OnlineStatus } from "src/app/data-core/model/enum";
 import { CameraTableService } from "./business/camera-table.service";
 
 @Component({
   selector: "hw-garbage-station-cameras",
   templateUrl: "./garbage-station-cameras.component.html",
-  providers: [CameraTableService],
+  providers: [CameraTableService, HWVideoService],
   styleUrls: ["./garbage-station-cameras.component.styl"],
 })
 export class GarbageStationCamerasComponent implements OnInit {
@@ -49,4 +50,11 @@ export class GarbageStationCamerasComponent implements OnInit {
       });
     });
   }
+
+  videoClose = () => {
+    this.tableService.playVideo = null;
+  };
+  galleryTargetFn = () => {
+    this.tableService.galleryTargetView.galleryTarget = null;
+  };
 }

@@ -1,5 +1,6 @@
 import { IPageTable } from "../interface/IPageTable";
-import { FormGroup } from "@angular/forms";
+import { FormControl, FormGroup } from "@angular/forms";
+import { Language } from "./language";
 
 export class TableFormControl<T> {
   show = false;
@@ -36,6 +37,16 @@ export interface FormAttribute {
 export interface TableRequestParam {}
 
 export class SearchHelper {
+  constructor() {
+    this.searchNames = [
+      { id: "StationName", name: Language.json.station },
+      { id: "CommunityName", name: Language.json.DivisionType.Community },
+    ];
+    this.searchform = new FormGroup({
+      SearchName: new FormControl("StationName"),
+    });
+  }
+  searchNames = new Array<{ id: string; name: string }>();
   state = false;
   other = false;
   private searchText_ = "";

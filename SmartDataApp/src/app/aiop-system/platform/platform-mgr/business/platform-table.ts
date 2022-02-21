@@ -17,6 +17,7 @@ import { TableFormControl } from "../../../../common/tool/table-form-helper";
 import { ConfirmDialog } from "../../../../shared-module/confirm-dialog/confirm-dialog.component";
 import { MessageBar } from "../../../../common/tool/message-bar";
 import { BusinessTable } from "../../../common/business-table";
+import { Language } from "src/app/common/tool/language";
 export class PlatformTable
   extends BusinessTable
   implements IConverter, IPageTable<Platform>
@@ -57,7 +58,7 @@ export class PlatformTable
         tdInnerAttrName: "protocolType",
       }),
       new TableAttr({
-        HeadTitleName: "状态",
+        HeadTitleName: Language.json.state,
         tdWidth: "10%",
         tdInnerAttrName: "state",
       }),

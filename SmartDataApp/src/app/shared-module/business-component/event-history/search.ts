@@ -10,6 +10,8 @@ export class SearchControl extends SearchHelper {
   endDate = "";
 
   resourcesDropList = new Array<{ id: string; name: string }>();
+
+  durationDropList = new Array<{ id: string; name: string }>();
   stationsDropList = new Array<{ id: string; name: string }>();
   EventTypeList = new Array<{ id: number; name: string }>();
   constructor(private datePipe: DatePipe) {
@@ -25,6 +27,8 @@ export class SearchControl extends SearchHelper {
       SearchText: new FormControl(""),
       ResourceId: new FormControl(""),
       EventType: new FormControl(""),
+      DropDuration: new FormControl(""),
+      SearchName: new FormControl("StationName"),
     });
     this.EventTypeList = [
       {
@@ -46,6 +50,12 @@ export class SearchControl extends SearchHelper {
           true
         ),
       },
+    ];
+    this.durationDropList = [
+      { id: "0-30", name: "30分钟内" },
+      { id: "30-60", name: "30分钟-1小时" },
+      { id: "60-120", name: "1小时-2小时" },
+      { id: "120-1440", name: "2小时以上" },
     ];
   }
 
@@ -114,6 +124,7 @@ export class SearchControl extends SearchHelper {
       StationId: "",
       ResourceId: "",
       EventType: "",
+      DropDuration: "",
     });
   }
 
@@ -131,4 +142,6 @@ export class SearchParam {
   SearchText: string;
   ResourceId: string;
   EventType: string;
+  DropDuration: string;
+  SearchName: string;
 }

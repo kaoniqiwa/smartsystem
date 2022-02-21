@@ -46,7 +46,7 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
 
   @Input() isDefaultSearch = false;
 
-  classText = "街道";
+  classText = Language.json.DivisionType.County;
   otherView = OtherViewEnum;
 
   startDate = (b: Date) => {
@@ -88,27 +88,27 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
 
   changeClassType() {
     this.dropList.clearSelectedTexts();
-    enum ClassTextEnum {
-      county = "街道",
-      committees = "居委会",
-      station = "投放点",
-    }
+
     this.businessService.changeClassType((ct: string) => {
       ////this.dropList.onlyDivisionNode = dn;
-      // if (ct == ClassTypeEnum.County) {
-      //   this.dropList.onlyCityNode = true;
-      //   this.dropList.onlyDivisionNode = true;
-      //   this.dropList.treeListMode = TreeListMode.checkedBox;
-      // } else if (ct == ClassTypeEnum.Committees) {
-      //   this.dropList.onlyDivisionNode = true;
-      //   this.dropList.onlyCityNode = false;
-      //   this.dropList.treeListMode = TreeListMode.checkedBox;
-      // } else if (ct == ClassTypeEnum.Station) {
-      //   this.dropList.onlyDivisionNode = false;
-      //   this.dropList.onlyCityNode = false;
-      //   this.dropList.treeListMode = TreeListMode.nomal;
-      // }
-
+      // // if (ct == ClassTypeEnum.County) {
+      // //   this.dropList.onlyCityNode = true;
+      // //   this.dropList.onlyDivisionNode = true;
+      // //   this.dropList.treeListMode = TreeListMode.checkedBox;
+      // // } else if (ct == ClassTypeEnum.Committees) {
+      // //   this.dropList.onlyDivisionNode = true;
+      // //   this.dropList.onlyCityNode = false;
+      // //   this.dropList.treeListMode = TreeListMode.checkedBox;
+      // // } else if (ct == ClassTypeEnum.Station) {
+      // //   this.dropList.onlyDivisionNode = false;
+      // //   this.dropList.onlyCityNode = false;
+      // //   this.dropList.treeListMode = TreeListMode.nomal;
+      // // }
+      let ClassTextEnum = {
+        county: Language.json.DivisionType.County,
+        committees: Language.json.DivisionType.Committees,
+        station: Language.json.station,
+      };
       switch (ct) {
         case ClassTypeEnum.County:
           this.dropList.onlyCityNode = true;
@@ -128,6 +128,9 @@ export class IllegalDropEventAnalyzeComponent implements OnInit {
       }
 
       this.classText = ClassTextEnum[ct];
+
+      console.log("ct:", ct);
+
       this.dropList.clear();
       this.dropList.reInit();
     });

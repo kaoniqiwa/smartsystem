@@ -1,165 +1,172 @@
-
-
 /* -----------------------------查志磊--------------------- */
 
-.map {  
-    border: none;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    display: block;
-  }
-  
-  
-  .map-bar {
-    position: relative;
-    bottom: 82px;
-    margin: 10px;
-
-    
-    -webkit-user-select:none;
-   -moz-user-select:none;
-   -ms-user-select:none;
-   user-select:none;
-  }
-  
-  
-  .map-bar.status {    
-    line-height: 16px;
-    
-    float: left;
-    list-style: none;
-    position: absolute;
-    bottom: 10px;
-right: -79px;
-  }
-  
-  .map-bar.status li {
-    height: 16px;
-    font-size: 16px;
-    margin-top: 5px;
-    float: right;
-    width: 100%;
-  }
-  .map-bar.status li div {
-    width: 10px;
-    height: 10px;
-    float: left;
-    margin-top: 2px;
-    margin-right: 5px;
-    border-radius: 50%;
-}
-  
-  .map-bar.status .normal {
-    color: #2bcf38;
-  }
-  .map-bar.status .normal div{
-    background-color: #2bcf38;
-  }
-  
-  .map-bar.status .warm {
-    color: #febd00;
-  } 
-  .map-bar.status .warm div{
-    background-color: #febd00;
-  }
-  
-  .map-bar.status .error {
-    color: #eb2d2c;
-  }
-  .map-bar.status .error div{
-    background-color: #eb2d2c;
-  }
-  
-  .map-bar.video-list {
-    background-color: rgba(0, 0, 0, 0.3);
-    position: relative;
-    right: 0;
-    bottom: 130px;
-    float: right;
-    padding: 10px 0;
-
-    max-width: 640px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    height: 110px;
-
-  }  
-  .map-bar.video-list ul {
-    list-style-type: none;
-    clear: both;
-    display: inline-flex;
-    padding-inline-start: 0;
-    padding:0 10px ;
-}
-  .map-bar.video-list .video {
-    width: 120px;
-    height: 90px;
-    float: right;
-    margin-left: 5px;    
-    border: transparent 2px solid;
-    cursor: pointer;
-  }
-  .map-bar.video-list .video:first-child{
-    margin-left: 0px;
-  }
-  .map-bar.video-list .video.error{  
-      -webkit-filter: grayscale(100%);
-      -moz-filter: grayscale(100%);
-      -ms-filter: grayscale(100%);
-      -o-filter: grayscale(100%);      
-      filter: grayscale(100%);    
-      filter: gray;  
-  }
-  .map-bar.video-list .video .error{  
-    background-color: rgba(0, 0, 0, 0.3);
-    color:white;
-    width: 120px;
-    height: 90px;
-    line-height: 90px;
-    text-align: center;
-    position: absolute;
+.map {
+  border: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: block;
 }
 
 
+.map-bar {
+  position: relative;
+  bottom: 82px;
+  margin: 10px;
 
 
-  .map-bar.video-list .video:hover {
-    border: #2d76ce 2px solid;
-  }
-
-  .map-bar.video-list .video .howell-icon-no_signal{
-    position: absolute;
-    bottom: -3px;
-  }
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
 
-  .map-bar.video-list .video img {
-    width:100%;
-    height: 100%;
-  }
-  
+.map-bar.status {
+  line-height: 16px;
 
-  .map-bar.garbage-list{
-    position: absolute;
-    top:100px;
-    right: 0;
-  }
+  float: left;
+  list-style: none;
+  position: absolute;
+  bottom: 10px;
+  right: -79px;
+}
+
+.map-bar.status li {
+  height: 16px;
+  font-size: 16px;
+  margin-top: 5px;
+  float: right;
+  width: 100%;
+}
+
+.map-bar.status li div {
+  width: 10px;
+  height: 10px;
+  float: left;
+  margin-top: 2px;
+  margin-right: 5px;
+  border-radius: 50%;
+}
+
+.map-bar.status .normal {
+  color: #2bcf38;
+}
+
+.map-bar.status .normal div {
+  background-color: #2bcf38;
+}
+
+.map-bar.status .warm {
+  color: #febd00;
+}
+
+.map-bar.status .warm div {
+  background-color: #febd00;
+}
+
+.map-bar.status .error {
+  color: #eb2d2c;
+}
+
+.map-bar.status .error div {
+  background-color: #eb2d2c;
+}
+
+.map-bar.video-list {
+  background-color: rgba(0, 0, 0, 0.3);
+  position: relative;
+  right: 0;
+  bottom: 130px;
+  float: right;
+  padding: 10px 0;
+
+  max-width: 640px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 110px;
+
+}
+
+.map-bar.video-list ul {
+  list-style-type: none;
+  clear: both;
+  display: inline-flex;
+  padding-inline-start: 0;
+  padding: 0 10px;
+}
+
+.map-bar.video-list .video {
+  width: 120px;
+  height: 90px;
+  float: right;
+  margin-left: 5px;
+  border: transparent 2px solid;
+  cursor: pointer;
+}
+
+.map-bar.video-list .video:first-child {
+  margin-left: 0px;
+}
+
+.map-bar.video-list .video.error {
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  filter: grayscale(100%);
+  filter: gray;
+}
+
+.map-bar.video-list .video .error {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  width: 120px;
+  height: 90px;
+  line-height: 90px;
+  text-align: center;
+  position: absolute;
+}
 
 
-.map-bar.list-panel
-{
+
+
+.map-bar.video-list .video:hover {
+  border: #2d76ce 2px solid;
+}
+
+.map-bar.video-list .video .howell-icon-no_signal {
+  position: absolute;
+  bottom: -3px;
+}
+
+
+.map-bar.video-list .video img {
+  width: 100%;
+  height: 100%;
+}
+
+
+.map-bar.garbage-list {
+  position: absolute;
+  top: 100px;
+  right: 0;
+}
+
+
+.map-bar.list-panel {
   position: absolute;
   bottom: 8px;
   left: 0px;
 }
-.map-bar.btn-list
-{
+
+.map-bar.btn-list {
   position: absolute;
   bottom: 8px;
   left: 42px;
   z-index: 0;
 }
+
 .map-bar.btn-list .btn {
   position: relative;
   margin-right: 6px;
@@ -169,38 +176,40 @@ right: -79px;
   height: 32px;
   background-color: #2d76ce;
   cursor: pointer;
-  clip-path: polygon(
-      25% 0%,
+  clip-path: polygon(25% 0%,
       75% 0%,
-          100% 50%,                    
-          75% 100%,
-          25% 100%,
-          0% 50%);
-          padding: 1px;
-          
+      100% 50%,
+      75% 100%,
+      25% 100%,
+      0% 50%);
+  padding: 1px;
+
 }
-.map-bar.btn-list .btn .inner{
+
+.map-bar.btn-list .btn .inner {
   height: 100%;
   width: 100%;
   background-color: #040b39;
-  clip-path: polygon(
-      25% 0%,
+  clip-path: polygon(25% 0%,
       75% 0%,
-          100% 50%,                    
-          75% 100%,
-          25% 100%,
-          0% 50%);
-    color: white;
-    line-height: 28px;
-    opacity: 0.8;
-    font-size: 18px;
-  
+      100% 50%,
+      75% 100%,
+      25% 100%,
+      0% 50%);
+  color: white;
+  line-height: 28px;
+  opacity: 0.8;
+  font-size: 18px;
+
 }
-.map-bar.btn-list .btn:hover .inner
-{
+
+.map-bar.btn-list .btn:hover .inner {
   opacity: 1;
 }
 
+.map-bar.btn-list .btn .inner.h {
+  font-size: 12px;
+}
 
 
 
@@ -209,55 +218,61 @@ right: -79px;
 
 
 
-  
-.amap-video.playing{  
-  text-align: center; /*让div内部文字居中*/			
-	margin: auto;
+
+
+.amap-video.playing {
+  text-align: center;
+  /*让div内部文字居中*/
+  margin: auto;
   position: absolute;
   /* top: 0px; */
-	top: 0px;
-	left: 0;
-	right: 0;
-	bottom: 0;
+  top: 0px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 500px;
   height: 310px;
 }
 
 
-::-webkit-scrollbar {  
-  width:6px;    
-  height:6px; 
-} 
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
 
 
-  /* -----------------------------查志磊--------------------- */
+/* -----------------------------查志磊--------------------- */
 
 
-  .map-bar.carousel{
-    bottom: 95px;
-    
-    position: absolute;
-    width: 40px;
-  }
-  .map-bar.carousel .carousel-control-prev,.map-bar.carousel .carousel-control-next{
-    background-color: #000000dd;
-    width: 30px;
-    height: 30px;
-    margin-top: 26px;
-    z-index: 4;
-    border-radius: 50%;
-  }
-  .map-bar.carousel.prev{
-    right: 580px;
-  }
-  .map-bar.carousel.next{
-    right: 22px;
-  }
+.map-bar.carousel {
+  bottom: 95px;
+
+  position: absolute;
+  width: 40px;
+}
+
+.map-bar.carousel .carousel-control-prev,
+.map-bar.carousel .carousel-control-next {
+  background-color: #000000dd;
+  width: 30px;
+  height: 30px;
+  margin-top: 26px;
+  z-index: 4;
+  border-radius: 50%;
+}
+
+.map-bar.carousel.prev {
+  right: 580px;
+}
+
+.map-bar.carousel.next {
+  right: 22px;
+}
 
 
-  .map-bar.info-panel{
-     right: 10px;
-     bottom: 10px;
-     position: absolute;
-     z-index: 1;
-  }
+.map-bar.info-panel {
+  right: 10px;
+  bottom: 10px;
+  position: absolute;
+  z-index: 1;
+}

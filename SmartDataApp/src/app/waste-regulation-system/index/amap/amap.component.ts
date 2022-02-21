@@ -137,7 +137,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     this.labelVisibility = val;
     if (val) {
       this.client.Label.Show();
-      this.setLabel(this.garbages);
+      this.setLabel(this.garbages, this.labelFilter);
     } else {
       this.client.Label.Hide();
       this.StationVisibilityByLabel = true;
@@ -149,6 +149,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
   // 当显示垃圾落地时长的时候，是否显示其他厢房
   private stationVisibilityByLabel = true;
+
   get StationVisibilityByLabel() {
     return this.stationVisibilityByLabel;
   }
@@ -238,7 +239,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
     this.setPointStatus(this.garbages);
 
     if (this.LabelVisibility) {
-      this.setLabel(this.garbages).then(() => {
+      this.setLabel(this.garbages, this.labelFilter).then(() => {
         this.StationVisibilityByLabel = this.StationVisibilityByLabel;
         setTimeout(() => {
           this.StationVisibilityByLabel = this.StationVisibilityByLabel;
@@ -247,87 +248,82 @@ export class AMapComponent implements AfterViewInit, OnInit {
     }
   }
 
-  async setLabel(
-    stations: GarbageStation[],
-    test?: {
-      id?: string;
-      value?: number;
-    }
-  ) {
+  GarbageTimeFiltering(time: number, filter: GarbageTimeFilter) {
+    if (time <= 0) return false;
+    return time >= filter;
+  }
+
+  async setLabel(stations: GarbageStation[], filter: GarbageTimeFilter) {
     const params = new GetGarbageStationStatisticNumbersParams();
     params.PageSize = 9999;
     params.Ids = stations.map((x) => x.Id);
     const list = await this.garbageService.statisticNumberList(params);
 
-    if (test) {
-      for (let i = 0; i < list.Data.length; i++) {
-        if (list.Data[i].Id === test.id) {
-          list.Data[i].CurrentGarbageTime = test.value;
-          this.testName = list.Data[i].Name;
-          break;
-        }
+    let drop = list.Data.filter((x) => {
+      let result: boolean;
+      if (x.CurrentGarbageTime > 0) {
+        result = this.GarbageTimeFiltering(x.CurrentGarbageTime, filter);
+      } else {
+        result = false;
       }
-    }
 
-    let dropIds = list.Data.filter((x) => {
-      return x.CurrentGarbageTime > 0;
-    }).map((x) => {
+      return result;
+      // return x.CurrentGarbageTime > 0;
+    });
+    let dropIds = drop.map((x) => {
       return x.Id;
     });
-
     this.dropGarbageStation = stations.filter((x) => dropIds.includes(x.Id));
 
     const opts = new Array();
-    for (let i = 0; i < list.Data.length; i++) {
-      const data = list.Data[i];
+    for (let i = 0; i < drop.length; i++) {
+      const data = drop[i];
       const station = stations.find((x) => x.Id == data.Id);
 
-      if (data.CurrentGarbageTime > 0) {
-        let point = this.points[data.Id];
-        if (!point) {
-          point = this.client.DataController.Village.Point.Get(
-            station.DivisionId,
-            station.Id
-          );
-          this.points[point.id] = point;
-        }
-        if (!point) continue;
-        const opt = new CesiumDataController.LabelOptions();
-        opt.position = point.position;
-        opt.id = point.id;
-
-        let p = data.CurrentGarbageTime / 240;
-        p = p > 1 ? 1 : p;
-
-        const hours = parseInt((data.CurrentGarbageTime / 60).toString());
-        const minutes = parseInt(
-          (Math.ceil(data.CurrentGarbageTime) % 60).toString()
+      let point = this.points[data.Id];
+      if (!point) {
+        point = this.client.DataController.Village.Point.Get(
+          station.DivisionId,
+          station.Id
         );
-
-        opt.text = hours
-          ? hours + Language.json.Time.hour
-          : minutes
-          ? minutes + Language.json.Time.minute
-          : "";
-
-        const color = new CesiumDataController.Color();
-        color.rgb = "#36e323";
-        color.hsl = new CesiumDataController.HSL();
-        color.hsl.h = 120 - parseInt((p * 90).toString());
-        color.hsl.s = 100;
-        color.hsl.l = 60;
-
-        opt.color = color;
-        opt.value = p;
-        if (opt.text) {
-          opt.image = new CesiumDataController.ImageOptions();
-          opt.image.color = color;
-          opt.image.value = p;
-          opt.image.resource = CesiumDataController.ImageResource.arcProgress;
-        }
-        opts.push(opt);
-        this.labels[opt.id] = opt;
+        this.points[point.id] = point;
       }
+      if (!point) continue;
+      const opt = new CesiumDataController.LabelOptions();
+      opt.position = point.position;
+      opt.id = point.id;
+
+      let p = data.CurrentGarbageTime / 240;
+      p = p > 1 ? 1 : p;
+
+      const hours = parseInt((data.CurrentGarbageTime / 60).toString());
+      const minutes = parseInt(
+        (Math.ceil(data.CurrentGarbageTime) % 60).toString()
+      );
+
+      opt.text = hours
+        ? hours + Language.json.Time.hour
+        : minutes
+        ? minutes + Language.json.Time.minute
+        : "";
+
+      const color = new CesiumDataController.Color();
+      color.rgb = "#36e323";
+      color.hsl = new CesiumDataController.HSL();
+      color.hsl.h = 120 - parseInt((p * 90).toString());
+      color.hsl.s = 100;
+      color.hsl.l = 60;
+
+      opt.color = color;
+      opt.value = p;
+      if (opt.text) {
+        opt.image = new CesiumDataController.ImageOptions();
+        opt.image.color = color;
+        opt.image.value = p;
+        opt.image.resource = CesiumDataController.ImageResource.arcProgress;
+      }
+      opts.push(opt);
+      this.labels[opt.id] = opt;
     }
 
     const ids = opts.map((x) => x.id);
@@ -1047,25 +1043,6 @@ export class AMapComponent implements AfterViewInit, OnInit {
 
   ChangePointInfoPanelVisibility() {}
 
-  Button4Clicked() {
-    this.StationVisibilityByLabel = !this.StationVisibilityByLabel;
-  }
-  testValue = 0;
-  testName = "";
-  ButtonTestClicked() {
-    this.testValue++;
-    console.log("testValue:", this.testValue);
-    this.setLabel(this.garbages, {
-      id: this.garbages[0].Id,
-      value: this.testValue % 2,
-    }).then(() => {
-      this.StationVisibilityByLabel = this.StationVisibilityByLabel;
-      setTimeout(() => {
-        this.StationVisibilityByLabel = this.StationVisibilityByLabel;
-      }, 5000);
-    });
-  }
-
   onPanelStateClicked(station: GarbageStation) {
     if (station.StationStateFlags.contains(StationState.Error)) {
       this.selectedGarbageStation = undefined;
@@ -1093,4 +1070,39 @@ export class AMapComponent implements AfterViewInit, OnInit {
       this.MixedIntoClickedEvent.emit(station);
     }
   }
+
+  Button4Clicked() {
+    this.StationVisibilityByLabel = !this.StationVisibilityByLabel;
+  }
+
+  labelFilter = GarbageTimeFilter.all;
+  GarbageTimeFilter = GarbageTimeFilter;
+
+  ButtonAllClicked() {
+    this.labelFilter = GarbageTimeFilter.all;
+    this.refresh();
+  }
+  Button30mClicked() {
+    this.labelFilter = GarbageTimeFilter.m30;
+    this.refresh();
+  }
+
+  Button1hClicked() {
+    this.labelFilter = GarbageTimeFilter.h1;
+    this.refresh();
+  }
+
+  Button2hClicked() {
+    this.labelFilter = GarbageTimeFilter.h2;
+    this.refresh();
+  }
+}
+
+enum GarbageTimeFilter {
+  all = 0,
+  m30 = 30 - 1,
+  h1 = 60 - 1,
+  h2 = 120 - 1,
+  h3 = 180 - 1,
+  h4 = 240 - 1,
 }

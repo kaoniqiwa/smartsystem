@@ -110,14 +110,17 @@ export class BusinessService extends ListAttribute {
         ),
         lastDay = MonthLastDay(
           Number.parseInt(s.Year),
-          Number.parseInt(s.Month)
+          Number.parseInt(s.Month) - 1
         );
       param.TimeUnit = 4;
       param.BeginTime = time.begin;
       param.EndTime = new Date(
         Number.parseInt(s.Year),
         Number.parseInt(s.Month) - 1,
-        lastDay
+        lastDay,
+        23,
+        59,
+        59
       );
     }
 

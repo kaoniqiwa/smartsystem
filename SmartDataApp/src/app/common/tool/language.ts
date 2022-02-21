@@ -7,6 +7,7 @@ import {
   ResourceType,
   StationState,
   TimeUnit,
+  UserResourceType,
 } from "../../data-core/model/enum";
 
 import { Flags } from "../../data-core/model/flags";
@@ -144,6 +145,21 @@ export class Language {
         return Language.json.IoT + Language.json.sensor;
       case ResourceType.GarbageStation:
         return Language.json.garbage + Language.json.room;
+      default:
+        return "";
+    }
+  }
+  static UserResourceType(type: UserResourceType) {
+    switch (type) {
+      case UserResourceType.City:
+        return Language.json.DivisionType.City;
+      case UserResourceType.Committees:
+        return Language.json.DivisionType.Committees;
+      case UserResourceType.County:
+        return Language.json.DivisionType.Community;
+      case UserResourceType.Station:
+        return Language.json.station;
+
       default:
         return "";
     }

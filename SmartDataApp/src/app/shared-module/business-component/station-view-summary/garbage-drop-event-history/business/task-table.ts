@@ -167,9 +167,9 @@ export class TaskStationTable extends BusinessTable implements IConverter {
   GetColumeName(type: DivisionType) {
     switch (type) {
       case DivisionType.Committees:
-        return "投放点";
+        return Language.json.station;
       case DivisionType.County:
-        return "居委会";
+        return Language.json.DivisionType.Committees;
       case DivisionType.City:
         return Language.json.DivisionType.County;
       default:

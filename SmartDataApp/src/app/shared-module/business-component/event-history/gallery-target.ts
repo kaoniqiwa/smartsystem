@@ -13,7 +13,15 @@ export class GalleryTargetView {
   galleryTarget: GalleryTarget;
   galleryTargetBox = false;
 
-  constructor(public datePipe: DatePipe) {}
+  refreshImg: {
+    state: boolean;
+  };
+
+  constructor(public datePipe: DatePipe) {
+    this.refreshImg = {
+      state: true,
+    };
+  }
 
   private _converter?: GalleryTargetConverter;
   public get converter(): GalleryTargetConverter {

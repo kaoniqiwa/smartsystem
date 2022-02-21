@@ -43,7 +43,7 @@ export class EventTable extends BusinessTable implements IConverter {
     tableAttrs: [
       new TableAttr({
         HeadTitleName: "图片",
-        tdWidth: "15%",
+        tdWidth: "12%",
         isHoverBig: true,
         isSmallImg: true,
         tdInnerAttrName: "imageUrl",
@@ -51,12 +51,12 @@ export class EventTable extends BusinessTable implements IConverter {
       }),
       new TableAttr({
         HeadTitleName: "资源名称",
-        tdWidth: "15%",
+        tdWidth: "12%",
         tdInnerAttrName: "resourceName",
       }),
       new TableAttr({
-        HeadTitleName: "投放点",
-        tdWidth: "15%",
+        HeadTitleName: Language.json.station,
+        tdWidth: "12%",
         tdInnerAttrName: "station",
       }),
       new TableAttr({
@@ -65,9 +65,14 @@ export class EventTable extends BusinessTable implements IConverter {
         tdInnerAttrName: "county",
       }),
       new TableAttr({
-        HeadTitleName: "居委会",
-        tdWidth: "15%",
+        HeadTitleName: Language.json.DivisionType.Committees,
+        tdWidth: "12%",
         tdInnerAttrName: "committees",
+      }),
+      new TableAttr({
+        HeadTitleName: Language.json.DivisionType.Community,
+        tdWidth: "12%",
+        tdInnerAttrName: "communityName",
       }),
       new TableAttr({
         HeadTitleName: "上报时间",
@@ -155,7 +160,7 @@ export class EventTable extends BusinessTable implements IConverter {
       }
     }
     tableField.station = item.Data.StationName;
-
+    tableField.communityName = item.Data.CommunityName || "-";
     return tableField;
   }
 }
@@ -172,4 +177,5 @@ export class TableField implements ITableField {
   committees: string;
   station: string;
   county: string;
+  communityName: string;
 }

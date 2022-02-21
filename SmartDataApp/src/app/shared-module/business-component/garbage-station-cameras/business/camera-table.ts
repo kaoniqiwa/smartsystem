@@ -8,6 +8,7 @@ import {
 import {
   CustomTableArgs,
   FootArgs,
+  GalleryTdAttr,
   TableAttr,
 } from "../../../custom-table/custom-table-model";
 import { ITableField } from "../../../../aiop-system/common/ITableField";
@@ -20,6 +21,7 @@ import { ResourceMediumRequestService } from "../../../../data-core/repuest/reso
 import { Language } from "src/app/common/tool/language";
 export class CameraTable extends BusinessTable implements IConverter {
   showImgFn: (id: string) => void;
+  initGalleryTargetFn: (cameraId: string) => void;
   dataSource = new CustomTableArgs<any>({
     hasTableOperationTd: false,
     hasHead: true,
@@ -28,32 +30,36 @@ export class CameraTable extends BusinessTable implements IConverter {
     primaryKey: "id",
     isDisplayDetailImg: true,
     eventDelegate: (event: CustomTableEvent) => {
-      if (event.eventType == CustomTableEventEnum.ScrollDown)
-        this.scrollPageFn(event);
-      else if (event.eventType == CustomTableEventEnum.Img)
-        this.showImgFn(event.data["id"]);
+      // if (event.eventType == CustomTableEventEnum.ScrollDown)
+      //   this.scrollPageFn(event);
+      // else if (event.eventType == CustomTableEventEnum.Img)
+      //   this.showImgFn(event.data["id"]);
+
+      if (event.eventType == CustomTableEventEnum.Img) {
+        this.initGalleryTargetFn(event.data["item"].id);
+      }
     },
     tableAttrs: [
+      // new TableAttr({
+      //   HeadTitleName: Language.json.picture,
+      //   tdWidth: "15%",
+      //   isHoverBig: true,
+      //   isSmallImg: true,
+      //   tdInnerAttrName: "imageUrl",
+      //   isImg: true,
+      // }),
       new TableAttr({
-        HeadTitleName: "图片",
+        HeadTitleName: Language.json.name,
         tdWidth: "15%",
-        isHoverBig: true,
-        isSmallImg: true,
-        tdInnerAttrName: "imageUrl",
-        isImg: true,
-      }),
-      new TableAttr({
-        HeadTitleName: "名称",
-        tdWidth: "20%",
         tdInnerAttrName: "name",
       }),
       new TableAttr({
-        HeadTitleName: "状态",
+        HeadTitleName: Language.json.state,
         tdWidth: "10%",
         tdInnerAttrName: "state",
       }),
       new TableAttr({
-        HeadTitleName: "投放点",
+        HeadTitleName: Language.json.station,
         tdWidth: "15%",
         tdInnerAttrName: "garbageStationName",
       }),
@@ -63,11 +69,18 @@ export class CameraTable extends BusinessTable implements IConverter {
         tdInnerAttrName: "divisionName",
       }),
       new TableAttr({
-        HeadTitleName: "居委会",
+        HeadTitleName: Language.json.DivisionType.Committees,
         tdWidth: "15%",
         tdInnerAttrName: "committees",
       }),
+
+      new TableAttr({
+        HeadTitleName: Language.json.DivisionType.Community,
+        tdWidth: "15%",
+        tdInnerAttrName: "communityName",
+      }),
     ],
+    galleryTd: [],
     footArgs: new FootArgs({
       hasSelectBtn: false,
       hasSelectCount: false,
@@ -84,7 +97,7 @@ export class CameraTable extends BusinessTable implements IConverter {
     output: CustomTableArgs
   ) {
     const items = new Array<TableField>();
-
+    let tds: GalleryTdAttr[] = new Array();
     if (input instanceof BusinessData)
       for (const item of input.cameras) {
         const station = input.statioins.find(
@@ -97,19 +110,22 @@ export class CameraTable extends BusinessTable implements IConverter {
           if (committees)
             division = input.divisions.find((x) => x.Id == committees.ParentId);
         }
-
+        tds.push(this.toGalleryModel(item, item.Id, camera));
         items.push(
           this.toTableModel(item, station, division, camera, committees)
         );
       }
-    if (output instanceof CustomTableArgs) output.values = items;
+    if (output instanceof CustomTableArgs) {
+      output.galleryTd = tds;
+      output.values = items;
+    }
 
     return output;
   }
 
   toTableModel(
     camera: Camera,
-    statioin: GarbageStation,
+    station: GarbageStation,
     division: Division,
     resourceCamera: Camera,
     committees: Division
@@ -122,13 +138,25 @@ export class CameraTable extends BusinessTable implements IConverter {
     tableField.imageUrl = resourceCamera
       ? ResourceMediumRequestService.getJPG(resourceCamera.ImageUrl)
       : "";
-    tableField.garbageStationName = statioin ? statioin.Name : "-";
+    tableField.garbageStationName = station ? station.Name : "-";
+    tableField.communityName = station ? station.CommunityName || "-" : "-";
     tableField.state = camera
       ? camera.OnlineStatus == 0
         ? "正常"
         : "离线"
       : "离线";
+
     return tableField;
+  }
+
+  toGalleryModel(resource: Camera, key: string, camera: Camera) {
+    const galleryTdAttr = new GalleryTdAttr();
+    galleryTdAttr.imgSrc = new Array<string>();
+    galleryTdAttr.imgSrc.push(
+      ResourceMediumRequestService.getJPG(resource.ImageUrl)
+    );
+    galleryTdAttr.key = key;
+    return galleryTdAttr;
   }
 }
 
@@ -147,4 +175,5 @@ export class TableField implements ITableField {
   imageUrl: string;
   garbageStationName: string;
   committees: string;
+  communityName: string;
 }

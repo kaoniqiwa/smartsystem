@@ -41,11 +41,17 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
         );
       }
     },
+    galleryTdWidth: "20%",
     tableAttrs: [
       new TableAttr({
-        HeadTitleName: "投放点",
-        tdWidth: "20%",
+        HeadTitleName: Language.json.station,
+        tdWidth: "15%",
         tdInnerAttrName: "name",
+      }),
+      new TableAttr({
+        HeadTitleName: Language.json.DivisionType.Community,
+        tdWidth: "15%",
+        tdInnerAttrName: "community",
       }),
       new TableAttr({
         HeadTitleName: Language.json.DivisionType.County,
@@ -53,12 +59,12 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
         tdInnerAttrName: "county",
       }),
       new TableAttr({
-        HeadTitleName: "居委会",
-        tdWidth: "20%",
+        HeadTitleName: Language.json.DivisionType.Committees,
+        tdWidth: "15%",
         tdInnerAttrName: "committees",
       }),
       new TableAttr({
-        HeadTitleName: "状态",
+        HeadTitleName: Language.json.state,
         tdWidth: "8%",
         tdInnerAttrName: "state",
       }),
@@ -121,6 +127,8 @@ export class GarbageStationTable extends BusinessTable implements IConverter {
     tableField.id = station.Id;
     tableField.name = station.Name;
     tableField.committees = "-";
+
+    tableField.community = station.CommunityName ? station.CommunityName : "-";
     const division1 = this.findDivisionFn(station.DivisionId),
       division2 = this.findDivisionFn(division1.ParentId);
     if (division1 && division1.DivisionType == DivisionType.County)
@@ -173,4 +181,5 @@ export class TableField implements ITableField {
   committees: string;
   county: string;
   state: string;
+  community: string;
 }

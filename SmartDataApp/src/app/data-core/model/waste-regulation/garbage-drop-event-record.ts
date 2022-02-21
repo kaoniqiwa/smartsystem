@@ -2,6 +2,7 @@ import { Transform, Type } from "class-transformer";
 import { transformDateTime } from "../transformer";
 import { EventRecord, CameraImageUrl } from "./event-record";
 import "reflect-metadata";
+import { CompareRange } from "./compare-range";
 export class GarbageDropEventRecord extends EventRecord {
   /**事件数据 */
   @Type(() => GarbageDropEventData)
@@ -96,4 +97,6 @@ export class GetGarbageDropEventRecordsParams
   CommunityName?: string;
   /**	String	工单号，支持LIKE	O */
   RecordNo?: string;
+
+  TakeMinutes?: CompareRange<number>;
 }

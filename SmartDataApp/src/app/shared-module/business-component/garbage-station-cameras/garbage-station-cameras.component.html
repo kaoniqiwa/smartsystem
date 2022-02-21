@@ -1,35 +1,47 @@
 <div class="fill-height">
-  <div class="fill-height fill-width hw-content-mask collapse"
-    [class.in]="tableService.findImgSrc">
-    <div style="width: 80%;height: 80%;margin-left: 10%;margin-top: 6%;">
-      <div class="custom-form-wrap">
-        <div class="title-wrap">
-          <div class="pull-left" style="width: 220px;">详细图片
-          </div>
-          <div class="pull-right">    
-            <a href="javascript:void(0)" class="close-winow" (click)="tableService.findImgSrc=''">
-              <i class="howell-icon-Close alert-window-close-btn"></i>
-            </a>
-          </div>
-        </div>
-        <div class="fill-width img-wrap">
-          <ng-container *ngIf="tableService.findImgSrc">
-            <img width="100%" class="fill-height " src="{{tableService.findImgSrc}}"
-              onerror="this.src='../assets/img/timg-pic.jpg'" alt="">         
-          </ng-container>
-        </div>
-      </div>
+  <div
+    class="fill-height fill-width hw-content-mask collapse"
+    [class.in]="tableService.galleryTargetView.galleryTarget"
+  >
+    <div style="width: 80%; height: 80%; margin-left: 10%; margin-top: 6%">
+      <hw-gallery-target
+        [model]="tableService.galleryTargetView.galleryTarget"
+        [imgEventFn]="tableService.galleryTargetView.galleryTargetPageFn"
+        [videoFn]="tableService.playVideoFn"
+        [closeViewFn]="galleryTargetFn"
+      >
+      </hw-gallery-target>
+    </div>
+  </div>
+  <div
+    class="fill-height fill-width hw-content-mask collapse"
+    [class.in]="tableService.playVideo"
+  >
+    <div style="width: 80%; height: 80%; margin-left: 10%; margin-top: 6%">
+      <ng-container *ngIf="tableService.playVideo">
+        <hw-video-simple-card
+          (closeFn)="videoClose($event)"
+          [url]="tableService.playVideo.url"
+          [WebUrl]="tableService.playVideo.WebUrl"
+          [autostart]="true"
+          [cameraName]="tableService.playVideo.name"
+        ></hw-video-simple-card>
+      </ng-container>
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
-    <div class="second-title-bg text">
-      摄像机
-    </div>
+    <div class="second-title-bg text">摄像机</div>
     <div fxLayoutAlign="center center">
-      <hw-input-search [searchEvent]="searchFn" [placeholder]="'名称'"></hw-input-search>
+      <hw-input-search
+        [searchEvent]="searchFn"
+        [placeholder]="'名称'"
+      ></hw-input-search>
     </div>
   </div>
-  <div style="height: calc(100% - 64px);">
-    <hw-custom-table #table [model]="tableService.table.dataSource"></hw-custom-table>
+  <div style="height: calc(100% - 64px)">
+    <hw-custom-table
+      #table
+      [model]="tableService.table.dataSource"
+    ></hw-custom-table>
   </div>
 </div>

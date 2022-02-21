@@ -58,6 +58,56 @@
       <i class="howell-icon-garbage" style="line-height: 30px"></i>
     </div>
   </div>
+  <div
+    class="btn"
+    (click)="ButtonAllClicked()"
+    *ngIf="LabelVisibility"
+    title="所有垃圾滞留投放点"
+    [ngStyle]="{
+      'background-color':
+        labelFilter == GarbageTimeFilter.all ? '#2bcf38' : '#2d76ce'
+    }"
+  >
+    <div class="inner" style="line-height: 28px">
+      <i class="mdi mdi-all-inclusive" style="line-height: 30px"></i>
+    </div>
+  </div>
+  <div
+    class="btn"
+    (click)="Button30mClicked()"
+    *ngIf="LabelVisibility"
+    title="垃圾滞留30分钟以上投放点"
+    [ngStyle]="{
+      'background-color':
+        labelFilter == GarbageTimeFilter.m30 ? '#2bcf38' : '#2d76ce'
+    }"
+  >
+    <div class="inner h" style="line-height: 28px">30m</div>
+  </div>
+  <div
+    class="btn"
+    (click)="Button1hClicked()"
+    *ngIf="LabelVisibility"
+    title="垃圾滞留1小时以上投放点"
+    [ngStyle]="{
+      'background-color':
+        labelFilter == GarbageTimeFilter.h1 ? '#2bcf38' : '#2d76ce'
+    }"
+  >
+    <div class="inner h" style="line-height: 28px">1h</div>
+  </div>
+  <div
+    class="btn"
+    (click)="Button2hClicked()"
+    *ngIf="LabelVisibility"
+    title="垃圾滞留2小时以上投放点"
+    [ngStyle]="{
+      'background-color':
+        labelFilter == GarbageTimeFilter.h2 ? '#2bcf38' : '#2d76ce'
+    }"
+  >
+    <div class="inner h" style="line-height: 28px">2h</div>
+  </div>
 </div>
 
 <ul class="map-bar status">

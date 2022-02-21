@@ -33,7 +33,7 @@ export class IllegalDropEventAnalyzeV2Component implements OnInit {
   @ViewChild(DateTimePickerDirective)
   timePicker: DateTimePickerDirective;
 
-  classText = "居委会";
+  classText = Language.json.DivisionType.Committees;
   otherView = OtherViewEnum;
 
   @ViewChild("dtp")

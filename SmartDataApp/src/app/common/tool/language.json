@@ -13,7 +13,7 @@
     "City":"区",
     "County":"街道",
     "Committees":"居委会",
-    "Community":"小区"
+    "Community":"社区"
   },
   "CameraType":{
     "Gun":"枪机",
@@ -72,5 +72,12 @@
   "unlink":"断开",
   "behavior":"行为",
   "max":"最大",
-  "video":"视频"
+  "video":"视频"  ,
+  "state":"状态",
+  "yes":"是",
+  "no":"否",
+  "send":"发送",
+  "people":"人员",
+  "picture":"图片"
+
 }

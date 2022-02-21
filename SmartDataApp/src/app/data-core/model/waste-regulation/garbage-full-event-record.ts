@@ -17,6 +17,15 @@ export class GarbageFullEventData {
   FullTime: string | Date; //	第一次满溢时间
   ImageUrls: string[]; //图片ID、图片地址列表
   CameraImageUrls: CameraImageUrl[];
+
+  /**	String	网格单元ID	O */
+  GridCellId?: string;
+  /**	String	网格单元名称	O */
+  GridCellName?: string;
+  /**	String	小区ID	O */
+  CommunityId?: string;
+  /**	String	小区名称	O */
+  CommunityName?: string;
 }
 
 export interface CameraImageUrl {

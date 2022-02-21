@@ -24,6 +24,8 @@ import {
   GarbageStationNumberStatistic,
   GetGarbageStationStatisticNumbersParams,
 } from "../../../../../data-core/model/waste-regulation/garbage-station-number-statistic";
+import { GetPreviewUrlParams } from "src/app/data-core/model/aiop/video-url";
+import { HWVideoService } from "src/app/data-core/dao/video-dao";
 @Injectable()
 export class StationStrandedBusinessService {
   playVideo: PlayVideo;
@@ -52,9 +54,24 @@ export class StationStrandedBusinessService {
   // this.playVideo.url_=video.Url;
   //}
 
+  playVideoFn = async (id: string) => {
+    const idV = id.split("&"),
+      camera = this.cameras.find((x) => x.Id == idV[1]),
+      video = await this.requestVideoUrl(camera.Id);
+    this.playVideo = new PlayVideo(video.WebUrl, video.Url, camera.Name);
+    this.playVideo.url = video.Url;
+  };
+  async requestVideoUrl(cameraId: string) {
+    const params = new GetPreviewUrlParams();
+    params.CameraId = cameraId;
+    const response = await this.videoService.videoUrl(params);
+    return response;
+  }
+
   constructor(
     private datePipe: DatePipe,
-    private garbageStationRequestService: GarbageStationRequestService
+    private garbageStationRequestService: GarbageStationRequestService,
+    private videoService: HWVideoService
   ) {
     this.galleryTargetView.neighborEventFnI = (ids, e: ImageEventEnum) => {
       const idV = ids.split("&"),
@@ -89,6 +106,22 @@ export class StationStrandedBusinessService {
           next: next,
         };
       }
+    };
+    this.galleryTargetView.manualCaptureFn = (stationId, cb) => {
+      this.garbageStationRequestService
+        .manualCapture(stationId)
+        .then((result) => {
+          if (result && result) {
+            const img = cb(result);
+            this.table.dataSource.galleryTd.map((g) => {
+              const oldIndex = g.imgSrc.findIndex(
+                (f) => f.indexOf(img.old) > 0
+              );
+              if (oldIndex > 0 && g.key == stationId)
+                g.imgSrc[oldIndex] = img.new;
+            });
+          }
+        });
     };
     this.table.findStationFn = (id) => {
       return this.stations.find((x) => x.Id == id);

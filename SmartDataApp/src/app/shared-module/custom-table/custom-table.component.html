@@ -103,7 +103,12 @@
             >
               <ng-container *ngIf="!attrs.iocnClassLabel">
                 <span
-                  title="{{ item[attrs.tdInnerAttrName] }}"
+                  title="{{
+                    item[attrs.tdInnerAttrName]
+                      ? item[attrs.tdInnerAttrName].title ||
+                        item[attrs.tdInnerAttrName]
+                      : ''
+                  }}"
                   class="{{
                     attrs.tdInnerAttrClassName &&
                     item[attrs.tdInnerAttrClassName]

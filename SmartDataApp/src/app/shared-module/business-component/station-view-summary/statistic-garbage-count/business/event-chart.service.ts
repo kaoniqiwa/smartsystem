@@ -297,7 +297,6 @@ export class EventChartService extends ListAttribute {
     garbageCount: GarbageStationGarbageCountStatistic,
     time?: string
   ) {
-    debugger;
     if (garbageCount == null) {
       const station = this.garbageStations.find((x) => {
           return x.Id == this.search.station;

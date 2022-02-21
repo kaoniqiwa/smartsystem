@@ -10,6 +10,7 @@ import {
   FootArgs,
   GalleryTdAttr,
   TableAttr,
+  TableOperationBtn,
   TooltipTd,
 } from "../../../../custom-table/custom-table-model";
 import { AIOPMediumPictureUrl } from "../../../../../data-core/url/aiop/resources";
@@ -22,9 +23,11 @@ import { GarbageStationNumberStatistic } from "../../../../../data-core/model/wa
 import { Camera } from "../../../../../data-core/model/waste-regulation/camera";
 import { ToHoursMinutes } from "../../../../../common/tool/tool.service";
 import { ResourceMediumRequestService } from "../../../../../data-core/repuest/resources.service";
+import { Language } from "src/app/common/tool/language";
+import { EventEmitter } from "@angular/core";
 export class EventTable extends BusinessTable implements IConverter {
   dataSource = new CustomTableArgs<any>({
-    hasTableOperationTd: false,
+    hasTableOperationTd: true,
     hasHead: true,
     isSingleElection: false,
     values: [],
@@ -42,42 +45,56 @@ export class EventTable extends BusinessTable implements IConverter {
     },
     tableAttrs: [
       new TableAttr({
-        HeadTitleName: "投放点",
-        tdWidth: "17%",
+        HeadTitleName: Language.json.station,
+        tdWidth: "12%",
         tdInnerAttrName: "station",
       }),
       new TableAttr({
-        HeadTitleName: "街道",
-        tdWidth: "13%",
+        HeadTitleName: Language.json.DivisionType.County,
+        tdWidth: "10%",
         tdInnerAttrName: "county",
       }),
       new TableAttr({
-        HeadTitleName: "居委会",
-        tdWidth: "17%",
+        HeadTitleName: Language.json.DivisionType.Committees,
+        tdWidth: "12%",
         tdInnerAttrName: "committees",
       }),
       new TableAttr({
+        HeadTitleName: Language.json.DivisionType.Community,
+        tdWidth: "10%",
+        tdInnerAttrName: "communityName",
+      }),
+      new TableAttr({
         HeadTitleName: "垃圾堆数",
-        tdWidth: "15%",
+        tdWidth: "10%",
         tdInnerAttrName: "garbageCount",
       }),
       new TableAttr({
         HeadTitleName: "滞留时间",
-        tdWidth: "15%",
+        tdWidth: "10%",
         tdInnerAttrName: "currentGarbageTime",
       }),
       new TableAttr({
         HeadTitleName: "总滞留时长",
-        tdWidth: "15%",
+        tdWidth: "10%",
         tdInnerAttrName: "garbageDuration",
       }),
     ],
     galleryTd: [],
-    tooltipTd: new TooltipTd("8%", "人员"),
+    tooltipTd: new TooltipTd("6%", Language.json.people),
     footArgs: new FootArgs({
       hasSelectBtn: false,
       hasSelectCount: false,
     }),
+    tableOperationBtns: [
+      new TableOperationBtn({
+        css: "glyphicon glyphicon-map-marker",
+        title: "地图定位",
+        callback: (item: TableField) => {
+          this.positionButtonClicked.emit(item.id);
+        },
+      }),
+    ],
   });
   findStationStatisticFn: (id: string) => GarbageStationNumberStatistic;
   findStationCameras: (id: string) => Array<Camera>;
@@ -92,16 +109,18 @@ export class EventTable extends BusinessTable implements IConverter {
   constructor(private datePipe: DatePipe) {
     super();
   }
+  positionButtonClicked: EventEmitter<string> = new EventEmitter();
   scrollPageFn: (event: CustomTableEvent) => void;
 
   Convert<GarbageDropEventsRecord, CustomTableArgs>(
     input: GarbageDropEventsRecord,
     output: CustomTableArgs
   ) {
-    const items = new Array<TableField>(),
-      tooltipTd = new TooltipTd("8%", "人员");
+    const items = new Array<TableField>();
+    let tooltipTd = new TooltipTd("6%", Language.json.people);
     var tds: GalleryTdAttr[] = new Array();
     tooltipTd.listMap = new Map<string, Array<{ icon: string; tip: string }>>();
+
     if (input instanceof GarbageDropEventsRecordViewModel)
       for (const item of input.items) {
         let station = this.findStationFn(item.Id);
@@ -116,7 +135,7 @@ export class EventTable extends BusinessTable implements IConverter {
       output.values = items;
       output.galleryTd = tds;
       output.tooltipTd = tooltipTd;
-      output.galleryTdWidth = "20%";
+      output.galleryTdWidth = "14%";
     }
     return output;
   }
@@ -150,6 +169,7 @@ export class EventTable extends BusinessTable implements IConverter {
       const parentDivision = this.findDivisionFn(division.ParentId);
       if (parentDivision) tableField.county = parentDivision.Name;
     }
+    tableField.communityName = station.CommunityName || "-";
     return tableField;
   }
 
@@ -202,4 +222,6 @@ export class TableField implements ITableField {
   station: string;
   currentGarbageTime: string;
   garbageDuration: string;
+  communityName: string;
+  menber: string;
 }

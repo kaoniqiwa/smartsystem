@@ -53,8 +53,8 @@ export class EventTable extends BusinessTable implements IConverter {
         isImg: true,
       }),
       new TableAttr({
-        HeadTitleName: "投放点",
-        tdWidth: "20%",
+        HeadTitleName: Language.json.station,
+        tdWidth: "15%",
         tdInnerAttrName: "station",
       }),
       new TableAttr({
@@ -63,13 +63,18 @@ export class EventTable extends BusinessTable implements IConverter {
         tdInnerAttrName: "county",
       }),
       new TableAttr({
-        HeadTitleName: "居委会",
-        tdWidth: "20%",
+        HeadTitleName: Language.json.DivisionType.Committees,
+        tdWidth: "15%",
         tdInnerAttrName: "committees",
       }),
       new TableAttr({
+        HeadTitleName: Language.json.DivisionType.Community,
+        tdWidth: "15%",
+        tdInnerAttrName: "communityName",
+      }),
+      new TableAttr({
         HeadTitleName: "上报时间",
-        tdWidth: "20%",
+        tdWidth: "15%",
         tdInnerAttrName: "eventTime",
       }),
     ],
@@ -137,6 +142,7 @@ export class EventTable extends BusinessTable implements IConverter {
     );
     tableField.resourceName = item.ResourceName;
     tableField.station = item.Data.StationName;
+    tableField.communityName = item.Data.CommunityName || "-";
     const division = this.findDivisionFn(item.Data.DivisionId);
     if (division) {
       if (division.DivisionType == DivisionType.Committees) {
@@ -173,4 +179,5 @@ export class TableField implements ITableField {
   station: string;
   county: string;
   imageUrl: string;
+  communityName: string;
 }

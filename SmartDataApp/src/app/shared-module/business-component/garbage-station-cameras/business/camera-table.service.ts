@@ -22,11 +22,16 @@ import { DivisionRequestService } from "../../../../data-core/repuest/division.s
 import { AIOPMediumPictureUrl } from "../../../../data-core/url/aiop/resources";
 import { ResourceMediumRequestService } from "../../../../data-core/repuest/resources.service";
 import { OnlineStatus } from "src/app/data-core/model/enum";
+import { HWVideoService } from "src/app/data-core/dao/video-dao";
+import { GalleryTargetViewI } from "./gallery-target";
+import { PlayVideo } from "src/app/aiop-system/common/play-video";
+import { GetPreviewUrlParams } from "src/app/data-core/model/aiop/video-url";
 @Injectable()
 export class CameraTableService {
+  galleryTargetView = new GalleryTargetViewI(this.datePipe);
   dataSource_ = new Array<Camera>();
 
-  set dataSource(items: Camera[]) {
+  appendDataSource(items: Camera[]) {
     for (const x of items) this.dataSource_.push(x);
   }
 
@@ -48,7 +53,8 @@ export class CameraTableService {
     garbageStationService: GarbageStationRequestService,
     private cameraService: GarbageStationCameraRequestService,
     divisionRequestService: DivisionRequestService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private videoService: HWVideoService
   ) {
     this.table.scrollPageFn = (event: CustomTableEvent) => {
       this.requestData(event.data as any);
@@ -60,6 +66,24 @@ export class CameraTableService {
     this.table.showImgFn = (id: string) => {
       const find = this.resourceCamera.find((x) => x.Id == id);
       this.findImgSrc = ResourceMediumRequestService.getJPG(find.ImageUrl);
+    };
+
+    this.galleryTargetView.manualCaptureFn = (stationId, cb) => {
+      this.garbageStationDao.manualCapture(stationId).then((result) => {
+        if (result && result) {
+          const img = cb(result);
+          this.table.dataSource.galleryTd.map((g) => {
+            const oldIndex = g.imgSrc.findIndex((f) => f.indexOf(img.old) > 0);
+            if (oldIndex > 0 && g.key == stationId)
+              g.imgSrc[oldIndex] = img.new;
+          });
+        }
+      });
+    };
+    this.table.initGalleryTargetFn = (cameraId) => {
+      this.galleryTargetView.initGalleryTargetI(
+        this.dataSource.find((x) => x.Id === cameraId)
+      );
     };
   }
 
@@ -92,11 +116,12 @@ export class CameraTableService {
     });
 
     this.table.clearItems();
-    this.dataSource = [];
+    this.dataSource_ = [];
 
     this.table.Convert(data, this.table.dataSource);
     this.table.totalCount = response.Page.TotalRecordCount;
-    this.dataSource = response.Data;
+
+    this.appendDataSource(response.Data);
     if (callBack) callBack(response.Page);
   }
 
@@ -111,4 +136,19 @@ export class CameraTableService {
 
     return param;
   }
+
+  playVideoFn = async (id: string) => {
+    const idV = id.split("&"),
+      camera = this.dataSource.find((x) => x.Id == idV[1]),
+      video = await this.requestVideoUrl(camera.Id);
+    this.playVideo = new PlayVideo(video.WebUrl, video.Url, camera.Name);
+    this.playVideo.url = video.Url;
+  };
+  async requestVideoUrl(cameraId: string) {
+    const params = new GetPreviewUrlParams();
+    params.CameraId = cameraId;
+    const response = await this.videoService.videoUrl(params);
+    return response;
+  }
+  playVideo: PlayVideo;
 }

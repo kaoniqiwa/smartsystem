@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Output } from "@angular/core";
 import { StationStrandedBusinessService } from "./business/station-stranded.business";
 import { DivisionDao } from "../../../../data-core/dao/division-dao";
 import { GarbageStationDao } from "../../../../data-core/dao/garbage-station-dao";
 import { GarbageStationCameraDao } from "../../../../data-core/dao/garbage-station-camera-dao";
 import { GarbageStation } from "../../../../data-core/model/waste-regulation/garbage-station";
 import { EventEmitter } from "@angular/core";
+import { HWVideoService } from "src/app/data-core/dao/video-dao";
 // import { HWVideoService } from "../../../../data-core/dao/video-dao";
 @Component({
   selector: "hw-station-stranded",
@@ -15,9 +16,13 @@ import { EventEmitter } from "@angular/core";
     GarbageStationDao,
     StationStrandedBusinessService,
     GarbageStationCameraDao,
+    HWVideoService,
   ],
 })
 export class StationStrandedComponent implements OnInit {
+  @Output()
+  garbageStationMoveToPosition: EventEmitter<GarbageStation> = new EventEmitter();
+
   private _divisionId?: string;
   public get divisionId(): string | undefined {
     return this._divisionId;
@@ -98,7 +103,14 @@ export class StationStrandedComponent implements OnInit {
     private garbageStationCameraDao: GarbageStationCameraDao,
     private divisionDao: DivisionDao,
     private garbageStationDao: GarbageStationDao
-  ) {}
+  ) {
+    this.businessService.table.positionButtonClicked.subscribe((id) => {
+      let station = this.businessService.stations.find((x) => x.Id === id);
+      if (station) {
+        this.garbageStationMoveToPosition.emit(station);
+      }
+    });
+  }
 
   async ngOnInit() {
     //  this.businessService.divisionsId=this.divisionId;
@@ -122,4 +134,8 @@ export class StationStrandedComponent implements OnInit {
   }
 
   onLoaded: EventEmitter<void> = new EventEmitter();
+
+  videoClose = () => {
+    this.businessService.playVideo = null;
+  };
 }

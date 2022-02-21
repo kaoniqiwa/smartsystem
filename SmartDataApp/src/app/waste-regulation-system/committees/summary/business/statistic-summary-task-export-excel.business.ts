@@ -18,7 +18,7 @@ export class StatisticSummaryTaskExportExcelBusiness
       row = this.tool.setRow(headers, row);
 
       let values = [
-        `${this.data.ratio}%`,
+        `${this.data.taskRatio}%`,
         `${this.data.TotalCount}起`,
         `${this.data.GarbageTimeoutCount}起`,
         `${this.data.UncompletedCount}起`,

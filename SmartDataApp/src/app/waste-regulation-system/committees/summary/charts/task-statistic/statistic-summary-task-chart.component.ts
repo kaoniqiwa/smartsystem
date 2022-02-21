@@ -87,7 +87,7 @@ export class StatisticSummaryTaskChartComponent
   setOption() {
     if (this.data) {
       this.option.series[0].data[0].value = parseInt(
-        this.data.ratio.toString()
+        this.data.taskRatio.toString()
       );
     }
     if (this.myChart) {

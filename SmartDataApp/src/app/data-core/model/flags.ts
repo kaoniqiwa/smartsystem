@@ -15,7 +15,7 @@ export class Flags<T extends number> {
       let value = parseInt(str[i]);
       if (value) {
         let v = Math.pow(2, x);
-        result.push(v as T);
+        result.push((x + 1) as T);
       }
     }
 

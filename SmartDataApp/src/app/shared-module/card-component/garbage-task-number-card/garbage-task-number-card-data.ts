@@ -11,7 +11,8 @@ export class GarbageTaskNumberCardData {
   /** 垃圾滞留数量 */
   GarbageTimeoutCount = 0;
 
-  ratio = 0;
+  taskRatio = 0;
+  timeoutRatio = 0;
 }
 
 export class GarbageTaskNumberCardDatas implements IViewModel {

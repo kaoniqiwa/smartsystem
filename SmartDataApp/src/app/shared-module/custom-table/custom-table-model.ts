@@ -96,6 +96,7 @@ export class TableAttr implements IViewModel {
   tdWidth: string;
   //表格Td的显示的属性名称;
   tdInnerAttrName: string;
+  tdInnerAttrTitle: string;
   //表格Td的显示的属性样式名称;
   tdInnerAttrClassName: string;
   //是否是img
@@ -127,6 +128,7 @@ export class TableAttr implements IViewModel {
       HeadTitleName?: string;
       tdWidth?: string;
       tdInnerAttrName?: string;
+      tdInnerAttrTitle?: string;
       tdInnerAttrClassName?: string;
       isImg?: boolean;
       isSmallImg?: boolean;
@@ -157,6 +159,7 @@ export class TableAttr implements IViewModel {
     this.align = options.align || false;
     this.className = options.className;
     this.itemClassName = options.itemClassName;
+    this.tdInnerAttrTitle = options.tdInnerAttrTitle || "";
   }
 }
 
@@ -261,4 +264,25 @@ export class FootArgs implements IViewModel {
 export enum OrderByEnum {
   up,
   down,
+}
+
+export class HTMLString {
+  constructor(
+    opts: {
+      className?: string;
+      title?: string;
+    },
+    value?: any
+  ) {
+    this.className = opts.className;
+    this.title = opts.title;
+    this.value = value;
+  }
+  value: string;
+  className: string;
+  title: string;
+
+  toString() {
+    return this.value;
+  }
 }

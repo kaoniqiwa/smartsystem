@@ -9,6 +9,7 @@ import {
   CustomTableArgs,
   FootArgs,
   GalleryTdAttr,
+  HTMLString,
   TableAttr,
   TableOperationBtn,
 } from "../../../../custom-table/custom-table-model";
@@ -56,14 +57,13 @@ export class EventTable extends BusinessTable implements IConverter {
           ...findEvent.Data.TimeoutImageUrls,
           ...findEvent.Data.HandleImageUrls,
         ];
-        console.log(imgs);
         this.initGalleryTargetFn(findEvent.EventId, imgs, event.data["index"]);
       }
     },
     tableAttrs: [
       new TableAttr({
-        HeadTitleName: "投放点",
-        tdWidth: "13%",
+        HeadTitleName: Language.json.station,
+        tdWidth: "11%",
         tdInnerAttrName: TableHeader.station,
       }),
       // new TableAttr({
@@ -72,9 +72,14 @@ export class EventTable extends BusinessTable implements IConverter {
       //   tdInnerAttrName: "county",
       // }),
       new TableAttr({
-        HeadTitleName: "居委会",
-        tdWidth: "12%",
+        HeadTitleName: Language.json.DivisionType.Committees,
+        tdWidth: "11%",
         tdInnerAttrName: TableHeader.committees,
+      }),
+      new TableAttr({
+        HeadTitleName: "社区名称",
+        tdWidth: "10%",
+        tdInnerAttrName: TableHeader.communityName,
       }),
       new TableAttr({
         HeadTitleName: "工单号",
@@ -101,14 +106,14 @@ export class EventTable extends BusinessTable implements IConverter {
         tdWidth: "7%",
         tdInnerAttrName: TableHeader.processorName,
       }),
+      // new TableAttr({
+      //   HeadTitleName: Language.json.did + Language.json.send,
+      //   tdWidth: "7%",
+      //   tdInnerAttrName: TableHeader.isSend,
+      //   align: true,
+      // }),
       new TableAttr({
-        HeadTitleName: Language.json.did + "发送",
-        tdWidth: "7%",
-        tdInnerAttrName: TableHeader.isSend,
-        align: true,
-      }),
-      new TableAttr({
-        HeadTitleName: "状态",
+        HeadTitleName: Language.json.state,
         tdWidth: "7%",
         tdInnerAttrName: TableHeader.timeOut,
       }),
@@ -192,7 +197,7 @@ export class EventTable extends BusinessTable implements IConverter {
       event.EventType,
       event.Data.IsTimeout
     );
-    tableField.timeOut = new ClassNameString(className, inner);
+    tableField.timeOut = new HTMLString({ className: className }, inner);
 
     //`<span class="${className}">${inner}</span>`;
     tableField.station = event.Data.StationName;
@@ -216,7 +221,7 @@ export class EventTable extends BusinessTable implements IConverter {
     tableField.dropTimer = this.datePipe.transform(timer, "HH:mm:ss");
 
     tableField.processorName = event.Data.ProcessorName || "-";
-    tableField.isSend = "是";
+    tableField.isSend = Language.json.yes;
     if (division.DivisionType == DivisionType.County)
       tableField.county = division.Name;
     else if (division.DivisionType == DivisionType.Committees) {
@@ -226,6 +231,9 @@ export class EventTable extends BusinessTable implements IConverter {
     }
 
     tableField.recordNo = event.Data.RecordNo;
+    tableField.communityName = event.Data.CommunityName
+      ? event.Data.CommunityName
+      : "-";
     return tableField;
   }
 
@@ -267,7 +275,7 @@ export class GarbageDropEventsRecord implements IBusinessData {
 export class TableField implements ITableField {
   id: string;
   county: string;
-  timeOut: ClassNameString;
+  timeOut: HTMLString;
   committees: string;
   station: string;
   dropTime: string;
@@ -275,26 +283,8 @@ export class TableField implements ITableField {
   processorName: string;
   isSend: string;
   recordNo: string;
+  communityName: string;
   dropTimer: string;
-}
-
-class ClassNameString {
-  constructor(className: string, value?: any) {
-    this.className = className;
-    this.value = value;
-  }
-  value: string;
-  private _className: string;
-  public get className(): string {
-    return this._className;
-  }
-  public set className(v: string) {
-    this._className = v;
-  }
-
-  toString() {
-    return this.value;
-  }
 }
 
 enum TableHeader {
@@ -307,4 +297,5 @@ enum TableHeader {
   timeOut = "timeOut",
   recordNo = "recordNo",
   dropTimer = "dropTimer",
+  communityName = "communityName",
 }

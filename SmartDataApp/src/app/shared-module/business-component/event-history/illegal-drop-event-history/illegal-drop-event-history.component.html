@@ -64,6 +64,16 @@
       fxLayoutAlign="center center"
       style="position: relative"
     >
+      <select
+        #stationsList
+        class="form-control custom custom-select m-l-10"
+        style="width: 100px"
+        formControlName="SearchName"
+      >
+        <ng-container *ngFor="let c of tableService.search.searchNames">
+          <option value="{{ c.id }}">{{ c.name }}</option>
+        </ng-container>
+      </select>
       <input
         type="text"
         style="width: 300px"

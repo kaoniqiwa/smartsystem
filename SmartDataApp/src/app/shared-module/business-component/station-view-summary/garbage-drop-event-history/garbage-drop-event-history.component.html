@@ -68,6 +68,16 @@
       fxLayoutAlign="center center"
       style="position: relative"
     >
+      <select
+        #stationsList
+        class="form-control custom custom-select m-l-10"
+        style="width: 100px"
+        formControlName="SearchName"
+      >
+        <ng-container *ngFor="let c of tableService.search.searchNames">
+          <option value="{{ c.id }}">{{ c.name }}</option>
+        </ng-container>
+      </select>
       <input
         type="text"
         style="width: 300px"
@@ -184,14 +194,14 @@
         </select>
       </div>
       <div fxFlex="15">
-        <span class="input-text">摄像机</span>
+        <span class="input-text">滞留时长</span>
         <select
           class="form-control custom custom-select m-l-10"
-          style="width: calc(100% - 64px)"
-          formControlName="ResourceId"
+          style="width: calc(100% - 82px)"
+          formControlName="DropDuration"
         >
           <option value="">请选择</option>
-          <ng-container *ngFor="let c of tableService.search.resourcesDropList">
+          <ng-container *ngFor="let c of tableService.search.durationDropList">
             <option value="{{ c.id }}">{{ c.name }}</option>
           </ng-container>
         </select>

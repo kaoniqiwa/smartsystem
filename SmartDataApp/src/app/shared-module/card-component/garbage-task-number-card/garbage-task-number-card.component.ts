@@ -30,9 +30,16 @@ export class GarbageTaskNumberCardComponent
   public set data(v: GarbageTaskNumberCardData) {
     this._data = v;
     if (this._data) {
-      this.option.series[0].data[0].value = parseInt(
-        this._data.ratio.toString()
-      );
+      if (this.option.series.length > 0) {
+        this.option.series[0].data[0].value = parseInt(
+          this._data.taskRatio.toString()
+        );
+      }
+      if (this.option.series.length > 1) {
+        this.option.series[1].data[0].value = parseInt(
+          this._data.timeoutRatio.toString()
+        );
+      }
       if (this.myChart) {
         this.myChart.setOption(this.option, true);
       }
@@ -50,7 +57,7 @@ export class GarbageTaskNumberCardComponent
       this.myChart = echarts.init(this.echarts.nativeElement, "dark");
       if (this.data) {
         this.option.series[0].data[0].value = parseInt(
-          this.data.ratio.toString()
+          this.data.taskRatio.toString()
         );
       }
       this.myChart.setOption(this.option, true);
@@ -112,83 +119,156 @@ export class GarbageTaskNumberCardComponent
       });
   }
 
-  option = {
-    color: ["#3a93ff"],
-    backgroundColor: "transparent",
-    series: [
+  taskSerie = {
+    type: "gauge",
+    startAngle: 90,
+    endAngle: -270,
+    radius: "80%",
+    pointer: {
+      show: false,
+    },
+    progress: {
+      show: true,
+      overlap: false,
+      roundCap: false,
+      clip: false,
+      itemStyle: {
+        borderWidth: 0,
+        color: "#3a93ff",
+      },
+    },
+    axisLine: {
+      lineStyle: {
+        width: 10,
+        color: [[1, "#4b5899"]],
+        opacity: 0.5,
+      },
+    },
+    splitLine: {
+      show: false,
+      distance: 0,
+      length: 10,
+    },
+    axisTick: {
+      show: false,
+    },
+    axisLabel: {
+      show: false,
+    },
+    data: [
       {
-        type: "gauge",
-        startAngle: 90,
-        endAngle: -270,
-        radius: "80%",
-        pointer: {
-          show: false,
-        },
-        progress: {
-          show: true,
-          overlap: false,
-          roundCap: false,
-          clip: false,
-          itemStyle: {
-            borderWidth: 8,
-            borderColor: "#3a93ff",
-          },
-        },
-        axisLine: {
-          lineStyle: {
-            width: 5,
-            color: [[1, "#6b7199"]],
-          },
-        },
-        splitLine: {
-          show: false,
-          distance: 0,
-          length: 10,
-        },
-        axisTick: {
-          show: false,
-        },
-        axisLabel: {
-          show: false,
-        },
-        data: [
-          {
-            value: 100,
-            name: "处置率",
-            title: {
-              offsetCenter: ["0%", "30%"],
-            },
-            detail: {
-              offsetCenter: ["0%", "-20%"],
-            },
-          },
-        ],
+        value: 100,
+        name: "处置率",
         title: {
-          fontSize: 16,
-          color: "#868fff",
+          offsetCenter: ["0%", "-10%"],
         },
         detail: {
-          width: 50,
-          height: 14,
-          fontSize: 50,
-          color: "auto",
-          rich: {
-            a: {
-              color: "white",
-              fontSize: 40,
-              fontWeight: "normal",
-            },
-            b: {
-              fontSize: 14,
-              color: "#cfd7ff",
-              verticalAlign: "bottom",
-            },
-          },
-          formatter: (value) => {
-            return "{a|" + value + "}{b|%}";
-          },
+          offsetCenter: ["0%", "-42%"],
         },
       },
     ],
+    title: {
+      fontSize: 14,
+      color: "#868fff",
+    },
+    detail: {
+      width: 50,
+      height: 14,
+      color: "auto",
+      rich: {
+        a: {
+          color: "white",
+          fontSize: 28,
+          fontWeight: "normal",
+        },
+        b: {
+          fontSize: 12,
+          color: "#cfd7ff",
+          // verticalAlign: "bottom",
+        },
+      },
+      formatter: (value) => {
+        return "{a|" + value + "}{b|%}";
+      },
+    },
+  };
+  timeoutSerie = {
+    type: "gauge",
+    startAngle: 90,
+    endAngle: -270,
+    radius: "70%",
+    pointer: {
+      show: false,
+    },
+    progress: {
+      show: true,
+      overlap: false,
+      roundCap: false,
+      clip: false,
+      itemStyle: {
+        borderWidth: 0,
+        color: "#ffba00",
+      },
+    },
+    axisLine: {
+      lineStyle: {
+        width: 10,
+        color: [[1, "#4b5899"]],
+        opacity: 0.3,
+      },
+    },
+    splitLine: {
+      show: false,
+      distance: 0,
+      length: 10,
+    },
+    axisTick: {
+      show: false,
+    },
+    axisLabel: {
+      show: false,
+    },
+    data: [
+      {
+        value: 100,
+        name: "超时率",
+        title: {
+          offsetCenter: ["0%", "55%"],
+        },
+        detail: {
+          offsetCenter: ["0%", "18%"],
+        },
+      },
+    ],
+    title: {
+      fontSize: 14,
+      color: "#ffba00",
+    },
+    detail: {
+      width: 50,
+      height: 14,
+      color: "auto",
+      rich: {
+        a: {
+          color: "white",
+          fontSize: 28,
+          fontWeight: "normal",
+        },
+        b: {
+          fontSize: 12,
+          color: "#cfd7ff",
+          fontFamily: "微软雅黑",
+        },
+      },
+      formatter: (value) => {
+        return "{a|" + value + "}{b|%}";
+      },
+    },
+  };
+
+  option = {
+    color: ["#3a93ff"],
+    backgroundColor: "transparent",
+    series: [this.taskSerie, this.timeoutSerie],
   };
 }

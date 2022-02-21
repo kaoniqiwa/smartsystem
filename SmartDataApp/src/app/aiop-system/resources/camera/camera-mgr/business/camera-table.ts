@@ -47,7 +47,7 @@ export class CameraTable
         tdInnerAttrName: "cameraType",
       }),
       new TableAttr({
-        HeadTitleName: "状态",
+        HeadTitleName: Language.json.state,
         tdWidth: "10%",
         tdInnerAttrName: "cameraState",
       }),

@@ -10,6 +10,7 @@ import {
 } from "../../../../../data-core/model/enum";
 import { Division } from "src/app/data-core/model/waste-regulation/division";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
+import { Language } from "src/app/common/tool/language";
 
 /**
  * 今日 事件排行
@@ -28,7 +29,7 @@ export class EventDropOrder extends BaseBusinessRefresh {
     this.divisionDrop.set(DivisionType.City, [
       {
         id: DivisionType.County + "",
-        name: "街道",
+        name: Language.json.DivisionType.County,
       },
       {
         id: DivisionType.Committees + "",
@@ -42,7 +43,7 @@ export class EventDropOrder extends BaseBusinessRefresh {
       },
       {
         id: "station",
-        name: "投放点",
+        name: Language.json.station,
       },
     ]);
   }

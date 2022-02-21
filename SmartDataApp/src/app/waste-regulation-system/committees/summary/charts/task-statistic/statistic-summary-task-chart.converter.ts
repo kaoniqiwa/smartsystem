@@ -39,10 +39,14 @@ export class StatisticSummaryTaskChartConverter
         }
       }
       vm.UncompletedCount = vm.TotalCount - handle;
-      vm.ratio = 100;
+      vm.taskRatio = 100;
       if (vm.TotalCount > 0) {
-        vm.ratio = Math.ceil((handle / vm.TotalCount) * 100);
+        vm.taskRatio = Math.ceil((handle / vm.TotalCount) * 100);
       }
+
+      vm.timeoutRatio = Math.ceil(
+        (vm.GarbageTimeoutCount / vm.TotalCount) * 100
+      );
 
       return vm;
     }

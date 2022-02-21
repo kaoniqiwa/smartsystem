@@ -30,6 +30,7 @@ import { StatisticalDataBufferService } from "src/app/waste-regulation-system/in
 import { GarbageTaskNumberBusiness } from "src/app/waste-regulation-system/index/business-card-grid/business/garbage-task-number/garbage-task-number.business";
 import { GlobalStoreService } from "src/app/shared-module/global-store.service";
 import { GarbageTaskNumberDatas } from "src/app/waste-regulation-system/index/business-card-grid/business/garbage-task-number/garbage-task-number-data";
+import { CompareRange } from "src/app/data-core/model/waste-regulation/compare-range";
 @Injectable()
 export class GarbageDropEventHistoryBusinessService {
   playVideo: PlayVideo;
@@ -224,7 +225,8 @@ export class GarbageDropEventHistoryBusinessService {
 
     const s = search.toSearchParam();
     if (s.SearchText && search.other == false) {
-      param.StationName = s.SearchText;
+      // param.StationName = s.SearchText;
+      param[s.SearchName] = s.SearchText;
     } else {
       if (s.BeginTime) param.BeginTime = new Date(s.BeginTime);
       if (s.EndTime) param.EndTime = new Date(s.EndTime);
@@ -250,6 +252,13 @@ export class GarbageDropEventHistoryBusinessService {
           default:
             break;
         }
+      }
+      if (s.DropDuration) {
+        let interval = s.DropDuration.split("-");
+        param.TakeMinutes = new CompareRange();
+        param.TakeMinutes.GreaterThan = parseInt(interval[0]);
+        param.TakeMinutes.LessThan = parseInt(interval[1]);
+        param.TakeMinutes.IsEqual = true;
       }
     }
     return param;
