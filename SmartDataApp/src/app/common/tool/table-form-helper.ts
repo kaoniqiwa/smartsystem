@@ -59,6 +59,10 @@ export class SearchHelper {
   get searchText() {
     return this.searchText_;
   }
+
+  get searchName() {
+    return this.searchform.value.SearchName;
+  }
 }
 
 export enum TableSearchEnum {

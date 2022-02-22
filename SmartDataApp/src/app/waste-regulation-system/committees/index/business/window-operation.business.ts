@@ -54,4 +54,9 @@ class GarbageStationWindowViewModel extends WindowViewModel {
 }
 class FullStationWindowViewModel extends WindowViewModel {}
 class StrandedWindowViewModel extends WindowViewModel {}
-class SummaryWindowViewModel extends WindowViewModel {}
+class SummaryWindowViewModel extends WindowViewModel {
+  style = {
+    height: "89%",
+    top: "55%",
+  };
+}

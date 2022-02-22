@@ -1,10 +1,17 @@
-<div class="custom-form-wrap" style="width: 800px;">
-  <h2 class="m-b-20">{{title}}</h2>
+<div class="custom-form-wrap" style="width: 800px">
+  <h2 class="m-b-20">{{ title }}</h2>
   <div class="m-b-20">
-    <hw-input-search [placeholder]="'名称'" [searchEvent]="searchTree"></hw-input-search>
+    <hw-input-search
+      [placeholder]="'名称'"
+      (searchEvent)="searchTree($event)"
+    ></hw-input-search>
   </div>
-  <div class="fine" style="height: calc(100% - 140px);overflow: scroll;">
-    <hw-custom-tree [mode]="treeMode" #tree [treeData]="mgrService.regionCamera.dataSource"></hw-custom-tree>
+  <div class="fine" style="height: calc(100% - 140px); overflow: scroll">
+    <hw-custom-tree
+      [mode]="treeMode"
+      #tree
+      [treeData]="mgrService.regionCamera.dataSource"
+    ></hw-custom-tree>
   </div>
   <div class="text-center">
     <button class="hw-green-m-btn m-r-10" (click)="onSubmit()">

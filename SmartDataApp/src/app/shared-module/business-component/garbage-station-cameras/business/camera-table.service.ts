@@ -129,7 +129,17 @@ export class CameraTableService {
     const param = new GetGarbageStationCamerasParams();
     param.PageIndex = pageIndex;
     param.PageSize = 10;
-    if (search.state) param.Name = search.searchText;
+    if (search.state) {
+      if (search.searchName) {
+        if (search.searchName === "CommunityName") {
+          param["CommunityName"] = search.searchText;
+        } else {
+          param.Name = search.searchText;
+        }
+      } else {
+        param.Name = search.searchText;
+      }
+    }
     param.OnlineStatus = this.cameraStateTable;
     param.DivisionIds = [this.divisionsId];
     console.log(param);

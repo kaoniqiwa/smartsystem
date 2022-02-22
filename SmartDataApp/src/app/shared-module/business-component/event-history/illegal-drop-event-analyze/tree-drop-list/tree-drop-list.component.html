@@ -33,7 +33,7 @@
       <div>
         <hw-input-search
           [placeholder]="'名称'"
-          [searchEvent]="searchTree"
+          (searchEvent)="searchTree($event)"
         ></hw-input-search>
       </div>
       <div class="fine" style="overflow: scroll; height: 300px">

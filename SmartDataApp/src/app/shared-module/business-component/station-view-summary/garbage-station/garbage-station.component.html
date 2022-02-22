@@ -78,7 +78,7 @@
         </ng-container>
       </select>
       <hw-input-search
-        [searchEvent]="searchFn"
+        (searchEvent)="searchFn($event)"
         [placeholder]="'名称'"
       ></hw-input-search>
     </div>

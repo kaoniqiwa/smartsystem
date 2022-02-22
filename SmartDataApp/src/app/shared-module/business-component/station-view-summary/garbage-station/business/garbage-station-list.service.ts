@@ -190,12 +190,22 @@ export class BusinessService {
   }
 
   getRequsetParam(pageIndex: number, search: SearchControl) {
+    let s = search.searchform.value;
     const param = new GetGarbageStationsParams();
     param.PageIndex = pageIndex;
     param.DivisionId = this.divisionsId;
     param.PageSize = 9;
-    if (search.searchText && search.other == false)
-      param.Name = search.searchText;
+    if (search.searchText && search.other == false) {
+      if (search.searchName) {
+        if (search.searchName === "CommunityName") {
+          param.CommunityName = search.searchText;
+        } else {
+          param.Name = search.searchText;
+        }
+      } else {
+        param.Name = search.searchText;
+      }
+    }
     return param;
   }
 }

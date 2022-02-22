@@ -31,7 +31,10 @@ export class GarbageTaskNumberCardConverter implements IConverter {
       }
       data.taskRatio *= 100;
 
-      data.timeoutRatio = (data.GarbageTimeoutCount / x.GarbageDropCount) * 100;
+      data.timeoutRatio =
+        x.GarbageDropCount == 0
+          ? 0
+          : (data.GarbageTimeoutCount / x.GarbageDropCount) * 100;
       return data;
     });
 

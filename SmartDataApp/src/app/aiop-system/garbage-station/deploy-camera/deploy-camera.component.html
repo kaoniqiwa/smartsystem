@@ -42,7 +42,7 @@
       [reloadStateFn]="reloadState"
     ></hw-region-camera-tree>
     <!-- <div class="m-b-20">
-      <hw-input-search [placeholder]="'名称'" [searchEvent]="searchTree"></hw-input-search>
+      <hw-input-search [placeholder]="'名称'" (searchEvent)="searchTree($event)"></hw-input-search>
     </div>
     <div class="fine" style="height: calc(100% - 90px);overflow: scroll;">
       <hw-custom-tree [mode]="treeListMode" #cameraTree [treeData]="deployCameraService.cameraTree.treeNode"

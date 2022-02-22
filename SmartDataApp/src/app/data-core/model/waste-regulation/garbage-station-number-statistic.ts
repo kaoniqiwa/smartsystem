@@ -70,6 +70,8 @@ export class GetGarbageStationStatisticNumbersParams {
 
   /**	String	小区ID	O */
   CommunityId?: string;
+
+  CommunityName?: string;
 }
 
 export class GarbageStationNumberStatisticV2 {

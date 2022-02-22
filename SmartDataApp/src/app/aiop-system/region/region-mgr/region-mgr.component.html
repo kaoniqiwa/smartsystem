@@ -7,27 +7,39 @@
           <button class="hw-green-btn m-r-10" (click)="addBtnClick()">
             <i class="howell-icon-plus"></i>
             添加
-          </button> 
-          <button class="hw-red-btn  m-r-10 " (click)="delBtnClick()" [class.gray-text]="!regionMgrService.regionTree.delBtnState"
-           [class.black]="!regionMgrService.regionTree.delBtnState">
+          </button>
+          <button
+            class="hw-red-btn m-r-10"
+            (click)="delBtnClick()"
+            [class.gray-text]="!regionMgrService.regionTree.delBtnState"
+            [class.black]="!regionMgrService.regionTree.delBtnState"
+          >
             <i class="howell-icon-delete-bin"></i>
             删除
           </button>
         </div>
         <div class="m-b-20">
-            <hw-input-search [placeholder]="'名称'"
-            [searchEvent]="searchTree"></hw-input-search>
+          <hw-input-search
+            [placeholder]="'名称'"
+            (searchEvent)="searchTree($event)"
+          ></hw-input-search>
         </div>
-        <div class="fine" style="height: calc(100% - 140px);overflow: scroll;">
-          <hw-custom-tree #tree [treeData]="regionMgrService.regionTree.dataSource"
-          [selectedItemFn]="regionMgrService.regionTree.selectedItemFn"></hw-custom-tree>
+        <div class="fine" style="height: calc(100% - 140px); overflow: scroll">
+          <hw-custom-tree
+            #tree
+            [treeData]="regionMgrService.regionTree.dataSource"
+            [selectedItemFn]="regionMgrService.regionTree.selectedItemFn"
+          ></hw-custom-tree>
         </div>
-     
       </div>
-      <div fxFlex    class="card-wrap">
-        <region-form [title]="regionMgrService.regionTree.formTitle"  [editItem]="regionMgrService.regionTree.editItem"
-        [parentId]="regionMgrService.regionTree.selectedNodeId" [cancelFn]="regionMgrService.regionTree.cancelForm"
-        [saveFn]="regionMgrService.regionTree.saveRegionForm"></region-form>
+      <div fxFlex class="card-wrap">
+        <region-form
+          [title]="regionMgrService.regionTree.formTitle"
+          [editItem]="regionMgrService.regionTree.editItem"
+          [parentId]="regionMgrService.regionTree.selectedNodeId"
+          [cancelFn]="regionMgrService.regionTree.cancelForm"
+          [saveFn]="regionMgrService.regionTree.saveRegionForm"
+        ></region-form>
       </div>
     </div>
   </div>

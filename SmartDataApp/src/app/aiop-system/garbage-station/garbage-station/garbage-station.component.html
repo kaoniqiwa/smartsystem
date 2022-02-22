@@ -1,72 +1,115 @@
 <div class="fill-height fill-width">
   <ng-container *ngIf="confirmDialog_">
-    <div  class="fill-height fill-width hw-content-mask" style="z-index: 50;">
+    <div class="fill-height fill-width hw-content-mask" style="z-index: 50">
       <hw-confirm-dialog [dialog]="confirmDialog_"></hw-confirm-dialog>
     </div>
   </ng-container>
-  <div style="width: 320px;float: left;" class="card-wrap m-r-20">
+  <div style="width: 320px; float: left" class="card-wrap m-r-20">
     <h2 class="m-b-20">垃圾厢房</h2>
     <div class="m-b-10">
       <button class="hw-green-btn m-r-10" (click)="addBtnClick()">
         <i class="howell-icon-plus"></i>
         添加
       </button>
-      <button class="hw-red-btn  m-r-10 " (click)="delBtnClick()" [class.gray-text]="!stationList.selectedNode"
-        [class.black]="!stationList.selectedNode">
+      <button
+        class="hw-red-btn m-r-10"
+        (click)="delBtnClick()"
+        [class.gray-text]="!stationList.selectedNode"
+        [class.black]="!stationList.selectedNode"
+      >
         <i class="howell-icon-delete-bin"></i>
         删除
       </button>
     </div>
     <div class="m-b-10">
-      <hw-input-search [placeholder]="'名称'" [searchEvent]="searchTree"></hw-input-search>
+      <hw-input-search
+        [placeholder]="'名称'"
+        (searchEvent)="searchTree($event)"
+      ></hw-input-search>
     </div>
-    <div class="fine" style="height: calc(100% - 140px);overflow: scroll;">
+    <div class="fine" style="height: calc(100% - 140px); overflow: scroll">
       <!-- <hw-custom-tree #stationTree [treeData]="stationList.treeNode" [selectedItemFn]=""></hw-custom-tree> -->
       <ng-container *ngFor="let d of stationList.dataSource">
-        <div class="parent-node" *ngIf="d.show" (click)="treeNodeClick(d)"
-          [ngStyle]="{'background': stationList.selectedNode&&d.id==stationList.selectedNode.id ? '#2d76ce':'unset'}">
+        <div
+          class="parent-node"
+          *ngIf="d.show"
+          (click)="treeNodeClick(d)"
+          [ngStyle]="{
+            background:
+              stationList.selectedNode && d.id == stationList.selectedNode.id
+                ? '#2d76ce'
+                : 'unset'
+          }"
+        >
           <a href="javascript:void(0)">
-            <label [class.text-white]="stationList.selectedNode&&d.id==stationList.selectedNode.id" class="m-0 default-label light-blue-text ele-nowrap default-label-width">
+            <label
+              [class.text-white]="
+                stationList.selectedNode && d.id == stationList.selectedNode.id
+              "
+              class="m-0 default-label light-blue-text ele-nowrap default-label-width"
+            >
               <i class="howell-icon-map5"></i>
-              {{d.name}}</label>
+              {{ d.name }}</label
+            >
           </a>
         </div>
       </ng-container>
     </div>
   </div>
-  <div style="width: calc(100% - 340px);" class="p-10 card-wrap   pull-left">
-    <h2 class="m-b-20">{{stationList.subTitle}}</h2>
+  <div style="width: calc(100% - 340px)" class="p-10 card-wrap pull-left">
+    <h2 class="m-b-20">{{ stationList.subTitle }}</h2>
     <div fxLayout="row" class="filter-wrap m-b-10 collapse">
       <div fxFlex="26" class="m-r-20">
         <span class="text-white">名称</span>
-        <input [readonly]="stationList.selectedNode" type="text" [value]="stationList.firstNameText" #typeName style="width: calc(100% - 46px);"
-          class="custom form-control m-l-10">
+        <input
+          [readonly]="stationList.selectedNode"
+          type="text"
+          [value]="stationList.firstNameText"
+          #typeName
+          style="width: calc(100% - 46px)"
+          class="custom form-control m-l-10"
+        />
       </div>
       <div fxFlex="30.18">
         <span class="text-white">投放口数量</span>
-        <select [disabled]="stationList.selectedNode" #trashbox (change)="changeTrashNum(trashbox.value)" class="form-control custom custom-select m-l-10"
-          style="width: calc(100% - 106px);">
-          <option [selected]="i==stationList.firstWindowNumText" *ngFor="let i of [4,5,6,7,8,9,10]" value="{{i}}">{{i}}
+        <select
+          [disabled]="stationList.selectedNode"
+          #trashbox
+          (change)="changeTrashNum(trashbox.value)"
+          class="form-control custom custom-select m-l-10"
+          style="width: calc(100% - 106px)"
+        >
+          <option
+            [selected]="i == stationList.firstWindowNumText"
+            *ngFor="let i of [4, 5, 6, 7, 8, 9, 10]"
+            value="{{ i }}"
+          >
+            {{ i }}
           </option>
-
         </select>
       </div>
       <div fxFlex="23">
         <ng-container *ngIf="!stationList.selectedNode">
-          <button (click)="saveBtnClick(typeName.value)" class="hw-green-btn m-r-10">
+          <button
+            (click)="saveBtnClick(typeName.value)"
+            class="hw-green-btn m-r-10"
+          >
             <i class="howell-icon-save"></i>
-            保存</button>
+            保存
+          </button>
         </ng-container>
-
       </div>
     </div>
-    <div fxLayout="row" style="height: calc(100% - 88px);position: relative;" fxLayoutAlign="center center">
-      <div *ngIf="stationList.selectedNode" class="fill-width mask-chart ">
-
-      </div>
-      <hw-garbage-chart #garbageChart [chartMode]="trashMode"></hw-garbage-chart>
-
+    <div
+      fxLayout="row"
+      style="height: calc(100% - 88px); position: relative"
+      fxLayoutAlign="center center"
+    >
+      <div *ngIf="stationList.selectedNode" class="fill-width mask-chart"></div>
+      <hw-garbage-chart
+        #garbageChart
+        [chartMode]="trashMode"
+      ></hw-garbage-chart>
     </div>
-
   </div>
 </div>

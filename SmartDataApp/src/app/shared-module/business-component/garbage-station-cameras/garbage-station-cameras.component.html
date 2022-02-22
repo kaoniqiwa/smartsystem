@@ -33,7 +33,7 @@
     <div class="second-title-bg text">摄像机</div>
     <div fxLayoutAlign="center center">
       <hw-input-search
-        [searchEvent]="searchFn"
+        (searchEvent)="searchFn($event)"
         [placeholder]="'名称'"
       ></hw-input-search>
     </div>

@@ -226,7 +226,11 @@ export class GarbageDropEventHistoryBusinessService {
     const s = search.toSearchParam();
     if (s.SearchText && search.other == false) {
       // param.StationName = s.SearchText;
-      param[s.SearchName] = s.SearchText;
+      if (s.SearchName) {
+        param[s.SearchName] = s.SearchText;
+      } else {
+        param.StationName = s.SearchText;
+      }
     } else {
       if (s.BeginTime) param.BeginTime = new Date(s.BeginTime);
       if (s.EndTime) param.EndTime = new Date(s.EndTime);

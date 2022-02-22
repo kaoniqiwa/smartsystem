@@ -172,7 +172,7 @@
     ></hw-station-stranded>
   </ng-container>
 </app-window>
-<app-window [Model]="window.summary">
+<app-window [Model]="window.summary" [Style]="window.summary.style">
   <ng-container *ngIf="window.summary.show">
     <app-statistic-summary
       [Committees]="Committees"

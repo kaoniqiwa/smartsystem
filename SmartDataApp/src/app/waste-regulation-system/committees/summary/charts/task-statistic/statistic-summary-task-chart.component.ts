@@ -86,9 +86,26 @@ export class StatisticSummaryTaskChartComponent
 
   setOption() {
     if (this.data) {
-      this.option.series[0].data[0].value = parseInt(
-        this.data.taskRatio.toString()
-      );
+      if (this.option.series.length > 0) {
+        if (
+          this.option.series[0].data &&
+          this.option.series[0].data.length > 0
+        ) {
+          this.option.series[0].data[0].value = parseInt(
+            this.data.taskRatio.toString()
+          );
+        }
+      }
+      if (this.option.series.length > 1) {
+        if (
+          this.option.series[1].data &&
+          this.option.series[1].data.length > 0
+        ) {
+          this.option.series[1].data[0].value = parseInt(
+            this.data.timeoutRatio.toString()
+          );
+        }
+      }
     }
     if (this.myChart) {
       this.myChart.resize();

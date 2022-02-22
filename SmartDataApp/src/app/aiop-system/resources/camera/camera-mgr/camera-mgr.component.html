@@ -1,22 +1,40 @@
 <div class="fill-height">
-  <div *ngIf="tableService.cameraTable.form.show" class="fill-height fill-width hw-content-mask">
-    <div class="hw-form-wrap" style="height: 650px;">
-      <camera-form [cancelFn]="tableService.cameraTable.form.cancelFn" [regionId]="tableService.regionTree.selectedNodeId"
-        [editItem]="tableService.cameraTable.form.editItem" [saveFn]="tableService.cameraTable.form.successSaveFn">
+  <div
+    *ngIf="tableService.cameraTable.form.show"
+    class="fill-height fill-width hw-content-mask"
+  >
+    <div class="hw-form-wrap" style="height: 650px">
+      <camera-form
+        [cancelFn]="tableService.cameraTable.form.cancelFn"
+        [regionId]="tableService.regionTree.selectedNodeId"
+        [editItem]="tableService.cameraTable.form.editItem"
+        [saveFn]="tableService.cameraTable.form.successSaveFn"
+      >
       </camera-form>
     </div>
   </div>
   <ng-container *ngIf="tableService.cameraTable.confirmDialog_">
     <div class="fill-height fill-width hw-content-mask">
-      <hw-confirm-dialog [dialog]="tableService.cameraTable.confirmDialog_"></hw-confirm-dialog>
+      <hw-confirm-dialog
+        [dialog]="tableService.cameraTable.confirmDialog_"
+      ></hw-confirm-dialog>
     </div>
   </ng-container>
 
-  <div class="fill-height fill-width hw-content-mask" *ngIf="tableService.viewShow">
-    <div class="custom-form-wrap hw-form-wrap" style="width: 800px;height: 620px;">
+  <div
+    class="fill-height fill-width hw-content-mask"
+    *ngIf="tableService.viewShow"
+  >
+    <div
+      class="custom-form-wrap hw-form-wrap"
+      style="width: 800px; height: 620px"
+    >
       <h2>绑定标签</h2>
-      <hw-input-tag-area [model]="tableService._tagSource"
-        [addTagFn]="tableService.createLabelFn" [delTagFn]="tableService.delLabelFn">
+      <hw-input-tag-area
+        [model]="tableService._tagSource"
+        [addTagFn]="tableService.createLabelFn"
+        [delTagFn]="tableService.delLabelFn"
+      >
       </hw-input-tag-area>
       <div class="text-center">
         <button class="hw-green-m-btn m-r-10" (click)="onLabelsSubmit()">
@@ -27,12 +45,19 @@
         </button>
       </div>
     </div>
-
   </div>
-  <div  class="fill-height fill-width hw-content-mask" *ngIf="cameraRegionMoveView">
-    <div class="hw-form-wrap" style="height: 650px;">
-      <camera-region-move [cameraIds]="tableSelectIds" [cancelFn]="cameraRegionMoveViewCancelFn" 
-      [tableService]="tableService" [treeService]="regionTreeService" [saveFn]="cameraRegionMoveViewSaveFn">        
+  <div
+    class="fill-height fill-width hw-content-mask"
+    *ngIf="cameraRegionMoveView"
+  >
+    <div class="hw-form-wrap" style="height: 650px">
+      <camera-region-move
+        [cameraIds]="tableSelectIds"
+        [cancelFn]="cameraRegionMoveViewCancelFn"
+        [tableService]="tableService"
+        [treeService]="regionTreeService"
+        [saveFn]="cameraRegionMoveViewSaveFn"
+      >
       </camera-region-move>
     </div>
   </div>
@@ -40,63 +65,117 @@
   <div class="fill-height">
     <div fxLayout="row" class="fill-height">
       <div fxFlex="320px" class="card-wrap m-r-20">
-        <h2 class="m-b-20">安保区域</h2>        
+        <h2 class="m-b-20">安保区域</h2>
         <div class="m-b-20">
-            <hw-input-search [placeholder]="'名称'"
-            [searchEvent]="searchTree"></hw-input-search>
+          <hw-input-search
+            [placeholder]="'名称'"
+            (searchEvent)="searchTree($event)"
+          ></hw-input-search>
         </div>
-        <div class="fine" style="height: calc(100% - 90px);overflow: scroll;">
-          <hw-custom-tree #tree [treeData]="tableService.regionTree.treeNodeSource"
-          [selectedItemFn]="tableService.regionTree.selectedItemFn"></hw-custom-tree>
+        <div class="fine" style="height: calc(100% - 90px); overflow: scroll">
+          <hw-custom-tree
+            #tree
+            [treeData]="tableService.regionTree.treeNodeSource"
+            [selectedItemFn]="tableService.regionTree.selectedItemFn"
+          ></hw-custom-tree>
         </div>
-     
       </div>
       <div fxFlex class="card-wrap">
         <h2>监控点</h2>
-        <div fxLayout="row" fxLayoutAlign="space-between stretch" class="m-b-10">
+        <div
+          fxLayout="row"
+          fxLayoutAlign="space-between stretch"
+          class="m-b-10"
+        >
           <div class="hw-btn-group">
-            <button class="hw-green-btn m-r-10" [class.black]="!tableService.regionTree.isLastNode"  [class.gray-text]="!tableService.regionTree.isLastNode"
-             [disabled]="!tableService.regionTree.isLastNode"  (click)="tableService.cameraTable.form.show=tableService.regionTree.isLastNode">
+            <button
+              class="hw-green-btn m-r-10"
+              [class.black]="!tableService.regionTree.isLastNode"
+              [class.gray-text]="!tableService.regionTree.isLastNode"
+              [disabled]="!tableService.regionTree.isLastNode"
+              (click)="
+                tableService.cameraTable.form.show =
+                  tableService.regionTree.isLastNode
+              "
+            >
               <i class="howell-icon-plus"></i>
               添加
-            </button> 
-            <button class="hw-red-btn  m-r-10 " (click)="delBtnClick()"  [class.gray-text]="!selectItems" [class.black]="!selectItems">
+            </button>
+            <button
+              class="hw-red-btn m-r-10"
+              (click)="delBtnClick()"
+              [class.gray-text]="!selectItems"
+              [class.black]="!selectItems"
+            >
               <i class="howell-icon-delete-bin"></i>
               删除
-            </button> 
-            <button class="hw-cyan-btn  m-r-10 " (click)="showBindLabels()" [disabled]="!selectItems"  [class.gray-text]="!selectItems"
-              [class.black]="!selectItems">
+            </button>
+            <button
+              class="hw-cyan-btn m-r-10"
+              (click)="showBindLabels()"
+              [disabled]="!selectItems"
+              [class.gray-text]="!selectItems"
+              [class.black]="!selectItems"
+            >
               <i class="mdi mdi-tag"></i>
               绑定标签
             </button>
-            <button class="hw-blue-btn" [disabled]="!selectItems" [class.black]="!selectItems" [class.gray-text]="!selectItems" (click)="cameraRegionMoveView=true">
+            <button
+              class="hw-blue-btn"
+              [disabled]="!selectItems"
+              [class.black]="!selectItems"
+              [class.gray-text]="!selectItems"
+              (click)="cameraRegionMoveView = true"
+            >
               <i class="howell-icon-move2"></i>
               移动至
             </button>
           </div>
           <div [formGroup]="tableService.search.searchform">
-            <input type="text" style="width: 300px;" [readonly]="tableService.search.other" formControlName="SearchText" placeholder="输入关键字"
-              class="custom form-control m-r-10">
-            <button type="button" class="hw-blue-btn m-r-10 " (click)="search()">
+            <input
+              type="text"
+              style="width: 300px"
+              [readonly]="tableService.search.other"
+              formControlName="SearchText"
+              placeholder="输入关键字"
+              class="custom form-control m-r-10"
+            />
+            <button type="button" class="hw-blue-btn m-r-10" (click)="search()">
               <i class="mdi mdi-magnify"></i>
               查询
             </button>
-            <button class="hw-cyan-m-btn"  (click)="tableService.search.other=!tableService.search.other">
+            <button
+              class="hw-cyan-m-btn"
+              (click)="tableService.search.other = !tableService.search.other"
+            >
               <i class="mdi mdi-filter-outline"></i>
             </button>
           </div>
         </div>
         <ng-container *ngIf="tableService.search.other">
-          <div fxLayout="row" [formGroup]="tableService.search.searchform"  fxLayoutGap="20px" class="filter-wrap m-b-10 collapse">
-            <div fxFlex="25" >
+          <div
+            fxLayout="row"
+            [formGroup]="tableService.search.searchform"
+            fxLayoutGap="20px"
+            class="filter-wrap m-b-10 collapse"
+          >
+            <div fxFlex="25">
               <span>名称</span>
-              <input type="text" style="width: calc(100% - 46px);" placeholder="输入关键字"
-                class="custom form-control m-l-10" formControlName="Name">
+              <input
+                type="text"
+                style="width: calc(100% - 46px)"
+                placeholder="输入关键字"
+                class="custom form-control m-l-10"
+                formControlName="Name"
+              />
             </div>
             <div fxFlex="25">
               <span>类型</span>
-              <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 46px);"
-                formControlName="CameraType">
+              <select
+                class="form-control custom custom-select m-l-10"
+                style="width: calc(100% - 46px)"
+                formControlName="CameraType"
+              >
                 <option value="">全部</option>
                 <option value="1">枪机</option>
                 <option value="2">球机</option>
@@ -106,31 +185,45 @@
             </div>
             <div fxFlex="25">
               <span>编码设备</span>
-              <select class="form-control custom custom-select m-l-10" style="width: calc(100% - 82px);"  
-              formControlName="EncodeDeviceId">
+              <select
+                class="form-control custom custom-select m-l-10"
+                style="width: calc(100% - 82px)"
+                formControlName="EncodeDeviceId"
+              >
                 <option value="">全部</option>
-                <option [value]="e.Id" *ngFor="let e of tableService.encodeDevices">
-                  {{e.Name}}
+                <option
+                  [value]="e.Id"
+                  *ngFor="let e of tableService.encodeDevices"
+                >
+                  {{ e.Name }}
                 </option>
               </select>
             </div>
             <div fxFlex="25">
-              <span style="top:4px">选择标签</span>
-              <div class="pull-right" style="width: calc(100% - 82px);">
-                <hw-input-tag-select [model]="tableService.search.inputTagSelect"></hw-input-tag-select>
+              <span style="top: 4px">选择标签</span>
+              <div class="pull-right" style="width: calc(100% - 82px)">
+                <hw-input-tag-select
+                  [model]="tableService.search.inputTagSelect"
+                ></hw-input-tag-select>
               </div>
             </div>
           </div>
-
         </ng-container>
 
-        <div [ngStyle]="{'height': tableService.search.other ? 'calc(100% - 114px)':'calc(100% - 68px)'}">
+        <div
+          [ngStyle]="{
+            height: tableService.search.other
+              ? 'calc(100% - 114px)'
+              : 'calc(100% - 68px)'
+          }"
+        >
           <!-- 68 116 -->
-          <hw-custom-table #table [model]="tableService.cameraTable.dataSource"></hw-custom-table>
+          <hw-custom-table
+            #table
+            [model]="tableService.cameraTable.dataSource"
+          ></hw-custom-table>
         </div>
-
       </div>
     </div>
-
   </div>
 </div>

@@ -26,7 +26,7 @@ export class InputSearchComponent implements OnInit {
 
   @Input() placeholder = "";
 
-  @Input() searchEvent: (text: string) => void;
+  @Output() searchEvent: EventEmitter<string> = new EventEmitter();
 
   @Input()
   focusToSelectContent = false;
@@ -51,13 +51,14 @@ export class InputSearchComponent implements OnInit {
     const clicks = fromEvent(this.searchBtn.nativeElement, "click");
     const result = clicks.pipe(throttleTime(500));
     result.subscribe((x) => {
-      if (this.searchEvent) this.searchEvent(this.searchInput.value);
+      this.searchEvent.emit(this.searchInput.value);
     });
     const keyUp = fromEvent(this.input.nativeElement, "keyup");
     const keyUpEvent = keyUp.pipe(throttleTime(500));
     keyUpEvent.subscribe((x) => {
-      if (x["key"] == "Enter" && this.searchEvent)
-        this.searchEvent(this.searchInput.value);
+      if (x["key"] == "Enter" && this.searchEvent) {
+        this.searchEvent.emit(this.searchInput.value);
+      }
     });
 
     result.subscribe((x) => this.searchChange.emit(this.searctText));

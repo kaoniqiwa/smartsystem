@@ -115,15 +115,15 @@ export class StatisticSummaryComponent
   }
 
   ngOnInit() {
-    for (const key in TimeUnit) {
-      if (typeof TimeUnit[key] === "number") {
-        const unit = TimeUnit[key] as unknown as TimeUnit;
-        this.TimeUnits.push({
-          value: unit,
-          language: Language.TimeUnit(unit),
-        });
-      }
-    }
+    this.TimeUnits.push({
+      value: TimeUnit.Hour,
+      language: Language.TimeUnit(TimeUnit.Hour),
+    });
+    this.TimeUnits.push({
+      value: TimeUnit.Day,
+      language: Language.TimeUnit(TimeUnit.Day),
+    });
+
     GlobalStoreService.interval.subscribe((x) => {
       this.onLoaded();
     });

@@ -198,8 +198,17 @@ export class StationStrandedBusinessService {
     param.PageIndex = pageIndex;
     param.GarbageDrop = true;
     param.PageSize = 9;
-    if (search.searchText && search.other == false)
-      param.Name = search.searchText;
+    if (search.searchText && search.other == false) {
+      if (search.searchName) {
+        if (search.searchName === "CommunityName") {
+          param.CommunityName = search.searchText;
+        } else {
+          param.Name = search.searchText;
+        }
+      } else {
+        param.Name = search.searchText;
+      }
+    }
     return param;
   }
 }

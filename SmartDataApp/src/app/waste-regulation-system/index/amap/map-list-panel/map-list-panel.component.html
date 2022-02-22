@@ -16,7 +16,7 @@
       </div>
       <div class="search">
         <hw-input-search
-          [searchEvent]="search"
+          (searchEvent)="search($event)"
           [placeholder]="'投放点名称'"
           [focusToSelectContent]="'true'"
         ></hw-input-search>

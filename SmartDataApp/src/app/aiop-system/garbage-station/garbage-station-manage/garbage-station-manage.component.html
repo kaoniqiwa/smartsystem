@@ -52,7 +52,7 @@
         <div>
           <hw-input-search
             [placeholder]="'名称'"
-            [searchEvent]="searchList"
+            (searchEvent)="searchList($event)"
           ></hw-input-search>
         </div>
       </div>

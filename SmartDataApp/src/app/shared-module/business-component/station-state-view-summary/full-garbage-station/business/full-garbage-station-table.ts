@@ -192,8 +192,17 @@ export class BusinessService extends EnumHelper {
     param.DivisionId = this.divisionId;
     param.DryFull = true;
     param.PageSize = 10;
-    if (search.searchText && search.other == false)
-      param.Name = search.searchText;
+    if (search.searchText && search.other == false) {
+      if (search.searchName) {
+        if (search.searchName === "CommunityName") {
+          param.CommunityName = search.searchText;
+        } else {
+          param.Name = search.searchText;
+        }
+      } else {
+        param.Name = search.searchText;
+      }
+    }
     return param;
   }
 }

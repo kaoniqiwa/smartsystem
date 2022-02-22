@@ -34,9 +34,22 @@
     <div class="fill-height">
       <div class="second-title-bg pull-left text">垃圾滞留投放点</div>
     </div>
-    <div fxLayoutAlign="center center">
+    <div
+      fxLayoutAlign="center center"
+      [formGroup]="businessService.search.searchform"
+    >
+      <select
+        #stationsList
+        class="form-control custom custom-select m-l-10"
+        style="width: 100px"
+        formControlName="SearchName"
+      >
+        <ng-container *ngFor="let c of businessService.search.searchNames">
+          <option value="{{ c.id }}">{{ c.name }}</option>
+        </ng-container>
+      </select>
       <hw-input-search
-        [searchEvent]="searchFn"
+        (searchEvent)="searchFn($event)"
         [placeholder]="'名称'"
       ></hw-input-search>
     </div>
