@@ -63,48 +63,43 @@ export class EventTable extends BusinessTable implements IConverter {
     tableAttrs: [
       new TableAttr({
         HeadTitleName: Language.json.station,
-        tdWidth: "11%",
+        tdWidth: "10%",
         tdInnerAttrName: TableHeader.station,
       }),
-      // new TableAttr({
-      //   HeadTitleName: Language.json.DivisionType.County,
-      //   tdWidth: "10%",
-      //   tdInnerAttrName: "county",
-      // }),
       new TableAttr({
         HeadTitleName: Language.json.DivisionType.Committees,
-        tdWidth: "11%",
+        tdWidth: "10%",
         tdInnerAttrName: TableHeader.committees,
       }),
       new TableAttr({
         HeadTitleName: "社区名称",
-        tdWidth: "10%",
+        tdWidth: "9%",
         tdInnerAttrName: TableHeader.communityName,
       }),
       new TableAttr({
+        HeadTitleName: Language.json.DivisionType.County,
+        tdWidth: "8%",
+        tdInnerAttrName: TableHeader.countyName,
+      }),
+      new TableAttr({
         HeadTitleName: "工单号",
-        tdWidth: "11%",
+        tdWidth: "10%",
         tdInnerAttrName: TableHeader.recordNo,
       }),
       new TableAttr({
         HeadTitleName: "发送时间",
-        tdWidth: "9%",
+        tdWidth: "8%",
         tdInnerAttrName: TableHeader.dropTime,
       }),
       new TableAttr({
         HeadTitleName: "处置时间",
-        tdWidth: "9%",
+        tdWidth: "8%",
         tdInnerAttrName: TableHeader.handleTime,
       }),
       new TableAttr({
         HeadTitleName: "滞留时长",
-        tdWidth: "9%",
+        tdWidth: "8%",
         tdInnerAttrName: TableHeader.dropTimer,
-      }),
-      new TableAttr({
-        HeadTitleName: "处置员",
-        tdWidth: "7%",
-        tdInnerAttrName: TableHeader.processorName,
       }),
       // new TableAttr({
       //   HeadTitleName: Language.json.did + Language.json.send,
@@ -116,6 +111,12 @@ export class EventTable extends BusinessTable implements IConverter {
         HeadTitleName: Language.json.state,
         tdWidth: "7%",
         tdInnerAttrName: TableHeader.timeOut,
+      }),
+
+      new TableAttr({
+        HeadTitleName: "处置员",
+        tdWidth: "7%",
+        tdInnerAttrName: TableHeader.processorName,
       }),
     ],
     tableOperationBtns: [
@@ -172,7 +173,7 @@ export class EventTable extends BusinessTable implements IConverter {
     if (output instanceof CustomTableArgs) {
       output.values = items;
       output.galleryTd = tds;
-      output.galleryTdWidth = "11%";
+      output.galleryTdWidth = "10%";
     }
     return output;
   }
@@ -222,12 +223,13 @@ export class EventTable extends BusinessTable implements IConverter {
 
     tableField.processorName = event.Data.ProcessorName || "-";
     tableField.isSend = Language.json.yes;
+    debugger;
     if (division.DivisionType == DivisionType.County)
-      tableField.county = division.Name;
+      tableField.countyName = division.Name;
     else if (division.DivisionType == DivisionType.Committees) {
       tableField.committees = division.Name;
       const parentDivision = this.findDivisionFn(division.ParentId);
-      if (parentDivision) tableField.county = parentDivision.Name;
+      if (parentDivision) tableField.countyName = parentDivision.Name;
     }
 
     tableField.recordNo = event.Data.RecordNo;
@@ -274,7 +276,7 @@ export class GarbageDropEventsRecord implements IBusinessData {
 
 export class TableField implements ITableField {
   id: string;
-  county: string;
+  countyName: string;
   timeOut: HTMLString;
   committees: string;
   station: string;
@@ -298,4 +300,5 @@ enum TableHeader {
   recordNo = "recordNo",
   dropTimer = "dropTimer",
   communityName = "communityName",
+  countyName = "countyName",
 }

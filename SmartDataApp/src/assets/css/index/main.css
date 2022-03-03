@@ -410,6 +410,7 @@ select.custom.form-control:not([size]):not([multiple]) {
   font-weight: normal;
   color: white;
   vertical-align: middle;
+  white-space: nowrap;
   /* padding-left: 40px; */
 }
 

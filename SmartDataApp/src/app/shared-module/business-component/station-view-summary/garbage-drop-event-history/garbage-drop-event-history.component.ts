@@ -31,7 +31,7 @@ import { TaskTableField } from "./business/task-table";
 @Component({
   selector: "hw-garbage-drop-event-history",
   templateUrl: "./garbage-drop-event-history.component.html",
-  styleUrls: ["./garbage-drop-event-history.component.css"],
+  styleUrls: ["./table.less", "./garbage-drop-event-history.component.css"],
   providers: [
     HWVideoService,
     GarbageDropEventHistoryBusinessService,

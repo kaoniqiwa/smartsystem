@@ -222,79 +222,17 @@
     </div>
   </ng-container>
   <div
-    class="event-table"
     [ngStyle]="{
-      height: tableService.search.other ? tableSearchHeight : tableMinusHeight,
-      display: contentType == TableContentType.event ? 'block' : 'none'
-    }"
+          height: tableService.search.other
+            ? tableSearchHeight
+            : tableMinusHeight,
+          display: contentType == TableContentType.event ? 'block' : 'none'
+        }"
   >
-    <!-- <div class="event-table-content">
-      <div class="event-table-table"> -->
     <hw-custom-table
       #eventTable
       [model]="tableService.eventTable.dataSource"
     ></hw-custom-table>
-
-    <!-- <table border="0" cellpadding="0" cellspacing="0">
-          <thead>
-            <tr>
-              <th>图片</th>
-              <th>投放点</th>
-              <th>居委会</th>
-              <th>社区名称</th>
-              <th>街道</th>
-              <th>工单号</th>
-              <th>发送时间</th>
-              <th>处置时间</th>
-              <th>滞留时长</th>
-              <th>状态</th>
-              <th>处置员</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="
-                let row of tableService.eventTable.dataSource.values;
-                let i = index
-              "
-            >
-              <td>
-                <div class="img-list">
-                  <div
-                    class="img"
-                    *ngFor="
-                      let src of tableService.eventTable.dataSource.galleryTd[i]
-                        .imgSrc
-                    "
-                    (click)="imgClick(row, src)"
-                  >
-                    <img [src]="src" alt="" />
-                  </div>
-                </div>
-              </td>
-              <td>{{ row.station }}</td>
-              <td>{{ row.committees }}</td>
-              <td>{{ row.communityName }}</td>
-              <td>{{ row.countyName }}</td>
-              <td>{{ row.recordNo }}</td>
-              <td>{{ row.dropTime }}</td>
-              <td>{{ row.handleTime }}</td>
-              <td>{{ row.dropTimer }}</td>
-              <td [ngClass]="row.timeOut.className">{{ row.timeOut.value }}</td>
-              <td>{{ row.processorName }}</td>
-              <td>
-                {{
-                  tableService.eventTable.dataSource.tableOperationBtns[0].title
-                }}
-              </td>
-            </tr>
-          </tbody>
-        </table> -->
-    <!-- </div>
-    </div>
-
-    <div class="operation"></div> -->
   </div>
   <div
     [ngStyle]="{

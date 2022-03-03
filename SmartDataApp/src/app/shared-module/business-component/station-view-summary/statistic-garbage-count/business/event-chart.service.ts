@@ -505,23 +505,23 @@ export class EventChartService extends ListAttribute {
     this.candlestickOption.xAxisLine = new Array();
     // console.log(eventNumberStatistic);
     const toFormat = function (params: { value: number }) {
-        return params.value == 0 ? "" : "{Sunny|}";
+      return params.value == 0 ? "" : "{Sunny|}";
+    };
+    const rich = {
+      value: {
+        // lineHeight: 18,
+        align: "center",
       },
-      rich = {
-        value: {
-          // lineHeight: 18,
-          align: "center",
+      Sunny: {
+        width: 12,
+        height: 18,
+        align: "center",
+        backgroundColor: {
+          image: "/assets/img/arrow-tag-a.png",
         },
-        Sunny: {
-          width: 12,
-          height: 18,
-          align: "center",
-          backgroundColor: {
-            image: "/assets/img/arrow-tag-a.png",
-          },
-          // opacity: 0.3
-        },
-      };
+        // opacity: 0.3
+      },
+    };
     for (var i = 9; i <= 21; i++)
       for (var u = 0; u < 60; u++) {
         const m = u < 10 ? "0" + u : u == 60 ? "00" : u;
