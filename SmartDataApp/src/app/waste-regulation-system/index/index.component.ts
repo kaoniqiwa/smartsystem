@@ -155,7 +155,7 @@ export class IndexComponent implements OnInit {
       };
       this.divisionBusinessService.aMap.VillageSelect(
         this.indexBusinessService.user.userDivision.pop().Id,
-        false
+        true
       );
       this.aMap.ContextMenuIllegalDropClickedEvent.subscribe((station) => {
         mapStation(station);

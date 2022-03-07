@@ -44,6 +44,7 @@ import { GetGarbageStationStatisticNumbersParams } from "../../../data-core/mode
 import { StationState } from "../../../data-core/model/enum";
 import { EnumHelper } from "src/app/common/tool/enum-helper";
 import { Language } from "src/app/common/tool/language";
+import { timer } from "rxjs";
 
 declare var $: any;
 
@@ -380,53 +381,53 @@ export class AMapComponent implements AfterViewInit, OnInit {
   ngOnInit() {
     // Detect effects of NgForTrackBy
     this.client = new CesiumMapClient(this.iframe.nativeElement);
-    this.client.Events.OnLoading = async () => {
+    this.client.Events.OnLoading = () => {
       this.dataController = this.client.DataController;
       let params = new GetGarbageStationsParams();
       params.PageSize = 9999;
-      const response = await this.garbageService.list(params);
-
-      this.garbages = response.Data;
-      if (!this.villageGarbages) {
-        this.villageGarbages = this.garbages;
-      }
-
-      for (let i = 0; i < this.garbages.length; i++) {
-        const point = this.dataController.Village.Point.Get(
-          this.garbages[i].DivisionId,
-          this.garbages[i].Id
-        );
-        if (point) {
-          this.points[point.id] = point;
-          if (point.name !== this.garbages[i].Name) {
-            point.name = this.garbages[i].Name;
-            this.dataController.Village.Point.Update(
-              this.garbages[i].DivisionId,
-              this.garbages[i].Id,
-              point
-            );
-          }
+      let promise = this.garbageService.list(params);
+      promise.then((response) => {
+        this.garbages = response.Data;
+        if (!this.villageGarbages) {
+          this.villageGarbages = this.garbages;
         }
-      }
+      });
     };
     this.client.Events.OnLoaded = async () => {
       console.log("this.client.Events.OnLoaded");
-
-      setTimeout(() => {
-        if (this.mapLoadedEvent) {
-          this.mapLoadedEvent.emit(this.client);
-        }
-      }, 0);
+      this.mapLoadedEvent.emit(this.client);
 
       const p = this.getBaseDivision();
       p.then((baseDivision) => {
         if (!baseDivision) return;
+
         this.baseDivisionId = baseDivision.Id;
+
         this.client.Village.Select(baseDivision.Id, true);
         this.refresh();
-
-        const village = this.dataController.Village.Get(baseDivision.Id);
-        this.client.Viewer.Focus(village.id);
+        this.client.Viewer.Focus(this.baseDivisionId);
+      }).then((x) => {
+        timer(10 * 1000)
+          .toPromise()
+          .then(() => {
+            for (let i = 0; i < this.garbages.length; i++) {
+              const point = this.dataController.Village.Point.Get(
+                this.garbages[i].DivisionId,
+                this.garbages[i].Id
+              );
+              if (point) {
+                this.points[point.id] = point;
+                if (point.name !== this.garbages[i].Name) {
+                  point.name = this.garbages[i].Name;
+                  this.dataController.Village.Point.Update(
+                    this.garbages[i].DivisionId,
+                    this.garbages[i].Id,
+                    point
+                  );
+                }
+              }
+            }
+          });
       });
 
       this.LabelVisibility = false;
