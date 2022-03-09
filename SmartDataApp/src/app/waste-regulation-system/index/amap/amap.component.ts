@@ -41,7 +41,7 @@ import { MapListItem, MapListItemType } from "./map-list-panel/map-list-item";
 import { Camera } from "../../../data-core/model/waste-regulation/camera";
 import { SessionUser } from "../../../common/tool/session-user";
 import { GetGarbageStationStatisticNumbersParams } from "../../../data-core/model/waste-regulation/garbage-station-number-statistic";
-import { StationState } from "../../../data-core/model/enum";
+import { DivisionType, StationState } from "../../../data-core/model/enum";
 import { EnumHelper } from "src/app/common/tool/enum-helper";
 import { Language } from "src/app/common/tool/language";
 import { timer } from "rxjs";
@@ -407,7 +407,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
         this.refresh();
         this.client.Viewer.Focus(this.baseDivisionId);
       }).then((x) => {
-        timer(10 * 1000)
+        timer(0.1 * 1000)
           .toPromise()
           .then(() => {
             for (let i = 0; i < this.garbages.length; i++) {
@@ -859,6 +859,26 @@ export class AMapComponent implements AfterViewInit, OnInit {
     }
   }
 
+  async GetPointCount(villageId: string, divisionType: DivisionType) {
+    let count = 0;
+    if (divisionType === DivisionType.Committees) {
+      let ids = this.dataController.Village.Point.GetIds(villageId);
+      count = ids.current.length;
+    } else {
+      let params = new GetDivisionsParams();
+      params.AncestorId = villageId;
+      params.PageSize = 99999;
+      let paged = await this.divisionService.list(params);
+      paged.Data.forEach((item) => {
+        let points = this.dataController.Village.Point.List(item.Id);
+        for (const key in points) {
+          count++;
+        }
+      });
+    }
+    return count;
+  }
+
   OnPanelItemClicked(item: MapListItem<Division | GarbageStation>) {
     if (!item) {
       return;
@@ -875,6 +895,14 @@ export class AMapComponent implements AfterViewInit, OnInit {
         );
         //position = village.center;
         this.client.Viewer.Focus(village.id);
+
+        this.GetPointCount(
+          village.id,
+          (item.Data as Division).DivisionType
+        ).then((x) => {
+          this.pointCount = x;
+        });
+
         break;
       case MapListItemType.GarbageStation:
         try {
@@ -889,6 +917,7 @@ export class AMapComponent implements AfterViewInit, OnInit {
       default:
         return;
     }
+
     if (this.mapPanelListItemClickedEvent) {
       this.mapPanelListItemClickedEvent.emit(item);
     }
@@ -998,8 +1027,12 @@ export class AMapComponent implements AfterViewInit, OnInit {
     if (move) {
       const village = this.dataController.Village.Get(villageId);
       this.client.Viewer.Focus(villageId);
-      let ids = this.dataController.Village.Point.GetIds(villageId);
-      this.pointCount = ids.current.length;
+      this.divisionService.get(villageId).then((village) => {
+        this.GetPointCount(village.Id, village.DivisionType).then((x) => {
+          this.pointCount = x;
+        });
+      });
+
       // this.client.Viewer.MoveTo(village.center);
     }
   }
